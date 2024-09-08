@@ -27,33 +27,34 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let value := M.copy (| γ |) in
-                                Value.Tuple
-                                  [
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::FnOnce",
-                                        impl_FnOnce_T__arrow_T,
-                                        [ Ty.tuple [ T ] ],
-                                        "call_once",
-                                        []
-                                      |),
-                                      [ M.read (| change |); Value.Tuple [ M.read (| value |) ] ]
-                                    |);
-                                    Value.Tuple []
-                                  ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let value := M.copy (| γ |) in
+                                  Value.Tuple
+                                    [
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::function::FnOnce",
+                                          impl_FnOnce_T__arrow_T,
+                                          [ Ty.tuple [ T ] ],
+                                          "call_once",
+                                          []
+                                        |),
+                                        [ M.read (| change |); Value.Tuple [ M.read (| value |) ] ]
+                                      |);
+                                      Value.Tuple []
+                                    ]))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_take_mut : M.IsFunction "alloc::collections::btree::mem::take_mut" take_mut.
@@ -137,7 +138,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_replace : M.IsFunction "alloc::collections::btree::mem::replace" replace.
@@ -167,7 +168,7 @@ Module collections.
                 M.never_to_any (|
                   M.call_closure (| M.get_function (| "core::intrinsics::abort", [] |), [] |)
                 |)))
-            | _, _, _ => M.impossible
+            | _, _, _ => M.impossible "wrong number of arguments"
             end.
           
           Axiom Implements :

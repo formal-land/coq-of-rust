@@ -22,7 +22,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
         |),
         [ M.read (| first |); M.read (| second |) ]
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_multiply : M.IsFunction "scoping_rules_lifetimes_coercion::multiply" multiply.
@@ -39,7 +39,7 @@ Definition choose_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
       (let first := M.alloc (| first |) in
       let β1 := M.alloc (| β1 |) in
       M.match_operator (| β1, [ fun γ => ltac:(M.monadic (M.read (| first |))) ] |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_choose_first :
@@ -62,9 +62,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ first := M.alloc (| Value.Integer 2 |) in
+        let~ first := M.alloc (| Value.Integer IntegerKind.I32 2 |) in
         let~ _ :=
-          let~ second := M.alloc (| Value.Integer 3 |) in
+          let~ second := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
           let~ _ :=
             let~ _ :=
               M.alloc (|
@@ -74,41 +74,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "The product is " |);
-                                M.read (| Value.String "
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "The product is " |);
+                              M.read (| Value.String "
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "i32" ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_function (|
-                                          "scoping_rules_lifetimes_coercion::multiply",
-                                          []
-                                        |),
-                                        [ first; second ]
-                                      |)
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "i32" ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_function (|
+                                        "scoping_rules_lifetimes_coercion::multiply",
+                                        []
+                                      |),
+                                      [ first; second ]
                                     |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -124,41 +120,37 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "" |);
-                                M.read (| Value.String " is the first
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "" |);
+                              M.read (| Value.String " is the first
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_function (|
-                                          "scoping_rules_lifetimes_coercion::choose_first",
-                                          []
-                                        |),
-                                        [ first; second ]
-                                      |)
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_function (|
+                                        "scoping_rules_lifetimes_coercion::choose_first",
+                                        []
+                                      |),
+                                      [ first; second ]
                                     |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -168,7 +160,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_coercion::main" main.

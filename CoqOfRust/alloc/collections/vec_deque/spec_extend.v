@@ -19,21 +19,12 @@ Module collections.
                 //     self.push_back(item);
                 // }
         
-                // May only be called if `deque.len() < deque.capacity()`
-                unsafe fn push_unchecked<T, A: Allocator>(deque: &mut VecDeque<T, A>, element: T) {
-                    // SAFETY: Because of the precondition, it's guaranteed that there is space
-                    // in the logical array after the last element.
-                    unsafe { deque.buffer_write(deque.to_physical_idx(deque.len), element) };
-                    // This can't overflow because `deque.len() < deque.capacity() <= usize::MAX`.
-                    deque.len += 1;
-                }
-        
                 while let Some(element) = iter.next() {
                     let (lower, _) = iter.size_hint();
                     self.reserve(lower.saturating_add(1));
         
                     // SAFETY: We just reserved space for at least one element.
-                    unsafe { push_unchecked(self, element) };
+                    unsafe { self.push_unchecked(element) };
         
                     // Inner loop to avoid repeatedly calling `reserve`.
                     while self.len < self.capacity() {
@@ -41,7 +32,7 @@ Module collections.
                             return;
                         };
                         // SAFETY: The loop condition guarantees that `self.len() < self.capacity()`.
-                        unsafe { push_unchecked(self, element) };
+                        unsafe { self.push_unchecked(element) };
                     }
                 }
             }
@@ -124,7 +115,10 @@ Module collections.
                                                 "saturating_add",
                                                 []
                                               |),
-                                              [ M.read (| lower |); Value.Integer 1 ]
+                                              [
+                                                M.read (| lower |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -133,8 +127,11 @@ Module collections.
                                       M.alloc (|
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Self,
-                                            "push_unchecked.spec_extend",
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::vec_deque::VecDeque")
+                                              []
+                                              [ T; A ],
+                                            "push_unchecked",
                                             []
                                           |),
                                           [ M.read (| self |); M.read (| element |) ]
@@ -150,15 +147,15 @@ Module collections.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.Pure.lt
-                                                        (M.read (|
+                                                      BinOp.lt (|
+                                                        M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             M.read (| self |),
                                                             "alloc::collections::vec_deque::VecDeque",
                                                             "len"
                                                           |)
-                                                        |))
-                                                        (M.call_closure (|
+                                                        |),
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -169,7 +166,8 @@ Module collections.
                                                             []
                                                           |),
                                                           [ M.read (| self |) ]
-                                                        |))
+                                                        |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -203,8 +201,12 @@ Module collections.
                                                           M.alloc (|
                                                             M.call_closure (|
                                                               M.get_associated_function (|
-                                                                Self,
-                                                                "push_unchecked.spec_extend",
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloc::collections::vec_deque::VecDeque")
+                                                                  []
+                                                                  [ T; A ],
+                                                                "push_unchecked",
                                                                 []
                                                               |),
                                                               [
@@ -251,7 +253,7 @@ Module collections.
                     |)))
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -376,14 +378,16 @@ Module collections.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (BinOp.Pure.eq
-                                                                      (M.read (|
+                                                                  UnOp.not (|
+                                                                    BinOp.eq (|
+                                                                      M.read (|
                                                                         M.read (| left_val |)
-                                                                      |))
-                                                                      (M.read (|
+                                                                      |),
+                                                                      M.read (|
                                                                         M.read (| right_val |)
-                                                                      |)))
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -423,59 +427,55 @@ Module collections.
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "TrustedLen iterator's size hint is not exact: "
-                                                                                        |)
-                                                                                      ]
-                                                                                  |));
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::rt::Argument",
-                                                                                            "new_debug",
-                                                                                            [
-                                                                                              Ty.tuple
-                                                                                                [
-                                                                                                  Ty.path
-                                                                                                    "usize";
-                                                                                                  Ty.apply
-                                                                                                    (Ty.path
-                                                                                                      "core::option::Option")
-                                                                                                    []
-                                                                                                    [
-                                                                                                      Ty.path
-                                                                                                        "usize"
-                                                                                                    ]
-                                                                                                ]
-                                                                                            ]
-                                                                                          |),
+                                                                                M.alloc (|
+                                                                                  Value.Array
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "TrustedLen iterator's size hint is not exact: "
+                                                                                      |)
+                                                                                    ]
+                                                                                |);
+                                                                                M.alloc (|
+                                                                                  Value.Array
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "core::fmt::rt::Argument",
+                                                                                          "new_debug",
                                                                                           [
-                                                                                            M.alloc (|
-                                                                                              Value.Tuple
-                                                                                                [
-                                                                                                  M.read (|
-                                                                                                    low
-                                                                                                  |);
-                                                                                                  M.read (|
-                                                                                                    high
-                                                                                                  |)
-                                                                                                ]
-                                                                                            |)
+                                                                                            Ty.tuple
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "usize";
+                                                                                                Ty.apply
+                                                                                                  (Ty.path
+                                                                                                    "core::option::Option")
+                                                                                                  []
+                                                                                                  [
+                                                                                                    Ty.path
+                                                                                                      "usize"
+                                                                                                  ]
+                                                                                              ]
                                                                                           ]
-                                                                                        |)
-                                                                                      ]
-                                                                                  |))
+                                                                                        |),
+                                                                                        [
+                                                                                          M.alloc (|
+                                                                                            Value.Tuple
+                                                                                              [
+                                                                                                M.read (|
+                                                                                                  low
+                                                                                                |);
+                                                                                                M.read (|
+                                                                                                  high
+                                                                                                |)
+                                                                                              ]
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
+                                                                                |)
                                                                               ]
                                                                             |)
                                                                           ]
@@ -580,14 +580,16 @@ Module collections.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (BinOp.Pure.eq
-                                                                      (M.read (|
+                                                                  UnOp.not (|
+                                                                    BinOp.eq (|
+                                                                      M.read (|
                                                                         M.read (| left_val |)
-                                                                      |))
-                                                                      (M.read (|
+                                                                      |),
+                                                                      M.read (|
                                                                         M.read (| right_val |)
-                                                                      |)))
+                                                                      |)
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -627,17 +629,15 @@ Module collections.
                                                                                 []
                                                                               |),
                                                                               [
-                                                                                (* Unsize *)
-                                                                                M.pointer_coercion
-                                                                                  (M.alloc (|
-                                                                                    Value.Array
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "The number of items written to VecDeque doesn't match the TrustedLen size hint"
-                                                                                        |)
-                                                                                      ]
-                                                                                  |))
+                                                                                M.alloc (|
+                                                                                  Value.Array
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "The number of items written to VecDeque doesn't match the TrustedLen size hint"
+                                                                                      |)
+                                                                                    ]
+                                                                                |)
                                                                               ]
                                                                             |)
                                                                           ]
@@ -673,12 +673,10 @@ Module collections.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String "capacity overflow" |) ]
-                                              |))
+                                            M.alloc (|
+                                              Value.Array
+                                                [ M.read (| Value.String "capacity overflow" |) ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -690,7 +688,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -810,17 +808,17 @@ Module collections.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (| β |))
-                        (M.call_closure (|
+                      BinOp.Wrap.add (|
+                        M.read (| β |),
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ T ],
                             "len",
                             []
                           |),
                           [ M.read (| slice |) ]
-                        |))
+                        |)
+                      |)
                     |) in
                   M.alloc (| Value.Tuple [] |) in
                 let~ _ :=
@@ -839,7 +837,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -902,7 +900,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1017,21 +1015,21 @@ Module collections.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Wrap.add
-                      Integer.Usize
-                      (M.read (| β |))
-                      (M.call_closure (|
+                    BinOp.Wrap.add (|
+                      M.read (| β |),
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "slice") [] [ T ],
                           "len",
                           []
                         |),
                         [ M.read (| slice |) ]
-                      |))
+                      |)
+                    |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

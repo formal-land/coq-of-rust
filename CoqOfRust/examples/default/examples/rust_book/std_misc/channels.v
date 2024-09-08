@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NTHREADS : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 3 |) |))).
+  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.I32 3 |) |))).
 
 (*
 fn main() {
@@ -99,7 +99,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer 0);
+                                ("start", Value.Integer IntegerKind.I32 0);
                                 ("end_",
                                   M.read (|
                                     M.read (| M.get_constant (| "channels::NTHREADS" |) |)
@@ -183,70 +183,71 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       ltac:(M.monadic
                                                         match γ with
                                                         | [ α0 ] =>
-                                                          M.match_operator (|
-                                                            M.alloc (| α0 |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (M.read (|
-                                                                    let~ _ :=
-                                                                      M.alloc (|
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "core::result::Result")
-                                                                              []
-                                                                              [
-                                                                                Ty.tuple [];
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "std::sync::mpsc::SendError")
-                                                                                  []
-                                                                                  [ Ty.path "i32" ]
-                                                                              ],
-                                                                            "unwrap",
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "std::sync::mpsc::Sender")
-                                                                                  []
-                                                                                  [ Ty.path "i32" ],
-                                                                                "send",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                thread_tx;
-                                                                                M.read (| id |)
-                                                                              ]
-                                                                            |)
-                                                                          ]
-                                                                        |)
-                                                                      |) in
-                                                                    let~ _ :=
+                                                          ltac:(M.monadic
+                                                            (M.match_operator (|
+                                                              M.alloc (| α0 |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (M.read (|
                                                                       let~ _ :=
                                                                         M.alloc (|
                                                                           M.call_closure (|
-                                                                            M.get_function (|
-                                                                              "std::io::stdio::_print",
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "std::sync::mpsc::SendError")
+                                                                                    []
+                                                                                    [ Ty.path "i32"
+                                                                                    ]
+                                                                                ],
+                                                                              "unwrap",
                                                                               []
                                                                             |),
                                                                             [
                                                                               M.call_closure (|
                                                                                 M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::Arguments",
-                                                                                  "new_v1",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "std::sync::mpsc::Sender")
+                                                                                    []
+                                                                                    [ Ty.path "i32"
+                                                                                    ],
+                                                                                  "send",
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  (* Unsize *)
-                                                                                  M.pointer_coercion
-                                                                                    (M.alloc (|
+                                                                                  thread_tx;
+                                                                                  M.read (| id |)
+                                                                                ]
+                                                                              |)
+                                                                            ]
+                                                                          |)
+                                                                        |) in
+                                                                      let~ _ :=
+                                                                        let~ _ :=
+                                                                          M.alloc (|
+                                                                            M.call_closure (|
+                                                                              M.get_function (|
+                                                                                "std::io::stdio::_print",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::Arguments",
+                                                                                    "new_v1",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.alloc (|
                                                                                       Value.Array
                                                                                         [
                                                                                           M.read (|
@@ -259,10 +260,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
 "
                                                                                           |)
                                                                                         ]
-                                                                                    |));
-                                                                                  (* Unsize *)
-                                                                                  M.pointer_coercion
-                                                                                    (M.alloc (|
+                                                                                    |);
+                                                                                    M.alloc (|
                                                                                       Value.Array
                                                                                         [
                                                                                           M.call_closure (|
@@ -278,20 +277,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                             [ id ]
                                                                                           |)
                                                                                         ]
-                                                                                    |))
-                                                                                ]
-                                                                              |)
-                                                                            ]
-                                                                          |)
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |) in
+                                                                        M.alloc (|
+                                                                          Value.Tuple []
                                                                         |) in
-                                                                      M.alloc (|
-                                                                        Value.Tuple []
-                                                                      |) in
-                                                                    M.alloc (| Value.Tuple [] |)
-                                                                  |)))
-                                                            ]
-                                                          |)
-                                                        | _ => M.impossible (||)
+                                                                      M.alloc (| Value.Tuple [] |)
+                                                                    |)))
+                                                              ]
+                                                            |)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
                                                         end))
                                                 ]
                                               |)
@@ -362,7 +362,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer 0);
+                                ("start", Value.Integer IntegerKind.I32 0);
                                 ("end_",
                                   M.read (|
                                     M.read (| M.get_constant (| "channels::NTHREADS" |) |)
@@ -588,42 +588,38 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::result::Result")
-                                                  []
-                                                  [
-                                                    Ty.path "i32";
-                                                    Ty.path "std::sync::mpsc::RecvError"
-                                                  ];
-                                                Ty.path "alloc::alloc::Global"
-                                              ]
-                                          ]
-                                        |),
-                                        [ ids ]
-                                      |)
-                                    ]
-                                |))
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "i32";
+                                                  Ty.path "std::sync::mpsc::RecvError"
+                                                ];
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
+                                        ]
+                                      |),
+                                      [ ids ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -634,7 +630,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "channels::main" main.

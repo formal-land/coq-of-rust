@@ -7,7 +7,9 @@ Module fmt.
       fn format_inner(args: Arguments<'_>) -> string::String {
           let capacity = args.estimated_capacity();
           let mut output = string::String::with_capacity(capacity);
-          output.write_fmt(args).expect("a formatting trait implementation returned an error");
+          output
+              .write_fmt(args)
+              .expect("a formatting trait implementation returned an error when the underlying stream did not");
           output
       }
   
@@ -42,23 +44,24 @@ Module fmt.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.call_closure (|
-                              M.get_function (| "alloc::fmt::format.format_inner", [] |),
-                              [ M.read (| args |) ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                M.get_function (| "alloc::fmt::format.format_inner", [] |),
+                                [ M.read (| args |) ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end));
             M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_format : M.IsFunction "alloc::fmt::format" format.
@@ -68,7 +71,9 @@ Module fmt.
         fn format_inner(args: Arguments<'_>) -> string::String {
             let capacity = args.estimated_capacity();
             let mut output = string::String::with_capacity(capacity);
-            output.write_fmt(args).expect("a formatting trait implementation returned an error");
+            output
+                .write_fmt(args)
+                .expect("a formatting trait implementation returned an error when the underlying stream did not");
             output
         }
     *)
@@ -122,13 +127,16 @@ Module fmt.
                       |),
                       [ output; M.read (| args |) ]
                     |);
-                    M.read (| Value.String "a formatting trait implementation returned an error" |)
+                    M.read (|
+                      Value.String
+                        "a formatting trait implementation returned an error when the underlying stream did not"
+                    |)
                   ]
                 |)
               |) in
             output
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_format_inner : M.IsFunction "alloc::fmt::format::format_inner" format_inner.

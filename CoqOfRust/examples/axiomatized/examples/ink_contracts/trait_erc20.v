@@ -152,17 +152,6 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_trait_erc20_Error.
 
-Module Impl_core_marker_StructuralEq_for_trait_erc20_Error.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_trait_erc20_Error.
-
 Module Impl_core_cmp_Eq_for_trait_erc20_Error.
   Definition Self : Ty.t := Ty.path "trait_erc20::Error".
   

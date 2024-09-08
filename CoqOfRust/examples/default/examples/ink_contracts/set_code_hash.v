@@ -44,7 +44,7 @@ Module Impl_core_default_Default_for_set_code_hash_Incrementer.
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -77,7 +77,7 @@ Module Impl_set_code_hash_Incrementer.
           |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -104,7 +104,7 @@ Module Impl_set_code_hash_Incrementer.
                 "set_code_hash::Incrementer",
                 "count"
               |) in
-            M.write (| β, BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 1) |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 1 |) |) in
           let~ _ :=
             let~ _ :=
               M.alloc (|
@@ -114,40 +114,35 @@ Module Impl_set_code_hash_Incrementer.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "The new count is " |);
-                                M.read (|
-                                  Value.String
-                                    ", it was modified using the original contract code.
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "The new count is " |);
+                              M.read (|
+                                Value.String ", it was modified using the original contract code.
 "
-                                |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "u32" ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "set_code_hash::Incrementer",
-                                      "count"
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                              |)
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "u32" ]
+                                |),
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "set_code_hash::Incrementer",
+                                    "count"
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -156,7 +151,7 @@ Module Impl_set_code_hash_Incrementer.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_inc : M.IsAssociatedFunction Self "inc" inc.
@@ -178,7 +173,7 @@ Module Impl_set_code_hash_Incrementer.
             "count"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -213,7 +208,12 @@ Module Impl_set_code_hash_Incrementer.
                   M.call_closure (|
                     M.get_function (|
                       "set_code_hash::set_code_hash",
-                      [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          [ Ty.path "u8" ]
+                      ]
                     |),
                     [ code_hash ]
                   |);
@@ -222,29 +222,30 @@ Module Impl_set_code_hash_Incrementer.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let err := M.copy (| γ |) in
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "std::panicking::begin_panic",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                      |),
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
-                                        |)
-                                      ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let err := M.copy (| γ |) in
+                                    M.never_to_any (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "std::panicking::begin_panic",
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                        |),
+                                        [
+                                          M.read (|
+                                            Value.String
+                                              "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                                          |)
+                                        ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
@@ -258,36 +259,32 @@ Module Impl_set_code_hash_Incrementer.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "Switched code hash to " |);
-                                M.read (| Value.String ".
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "Switched code hash to " |);
+                              M.read (| Value.String ".
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_debug",
-                                    [
-                                      Ty.apply
-                                        (Ty.path "array")
-                                        [ Value.Integer 32 ]
-                                        [ Ty.path "u8" ]
-                                    ]
-                                  |),
-                                  [ code_hash ]
-                                |)
-                              ]
-                          |))
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_debug",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      [ Ty.path "u8" ]
+                                  ]
+                                |),
+                                [ code_hash ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -296,7 +293,7 @@ Module Impl_set_code_hash_Incrementer.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_set_code : M.IsAssociatedFunction Self "set_code" set_code.

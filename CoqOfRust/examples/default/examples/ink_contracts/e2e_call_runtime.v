@@ -25,7 +25,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_AccountId.
               []
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -51,7 +51,7 @@ Module Impl_core_clone_Clone_for_e2e_call_runtime_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -107,7 +107,7 @@ Module Impl_core_default_Default_for_e2e_call_runtime_Contract.
   Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [], [] => ltac:(M.monadic (Value.StructTuple "e2e_call_runtime::Contract" []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -144,7 +144,7 @@ Module Impl_e2e_call_runtime_Contract.
           M.get_associated_function (| Ty.path "e2e_call_runtime::Contract", "init_env", [] |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -157,7 +157,7 @@ Module Impl_e2e_call_runtime_Contract.
   Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [], [] => ltac:(M.monadic (Value.StructTuple "e2e_call_runtime::Contract" []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -183,7 +183,7 @@ Module Impl_e2e_call_runtime_Contract.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_contract_balance :

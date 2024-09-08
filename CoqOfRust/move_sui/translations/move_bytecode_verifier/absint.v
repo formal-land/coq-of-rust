@@ -101,7 +101,7 @@ Module absint.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -146,7 +146,7 @@ Module absint.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -171,16 +171,16 @@ Module absint.
         ]).
   
   Definition value_ANALYZE_FUNCTION_BASE_COST : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 10 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
   
   Definition value_EXECUTE_BLOCK_BASE_COST : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 10 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
   
   Definition value_PER_BACKEDGE_COST : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 10 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
   
   Definition value_PER_SUCCESSOR_COST : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 10 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 10 |))).
   
   (* Trait *)
   (* Empty module 'TransferFunctions' *)
@@ -1248,7 +1248,7 @@ Module absint.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_analyze_function :
@@ -1627,7 +1627,7 @@ Module absint.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_execute_block :
@@ -1781,7 +1781,7 @@ Module absint.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1803,7 +1803,7 @@ Module absint.
               "index"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_index : M.IsAssociatedFunction Self "index" index.
@@ -1825,7 +1825,7 @@ Module absint.
               "code"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_code : M.IsAssociatedFunction Self "code" code.
@@ -1847,7 +1847,7 @@ Module absint.
               "parameters"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_parameters : M.IsAssociatedFunction Self "parameters" parameters.
@@ -1869,7 +1869,7 @@ Module absint.
               "return_"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_return_ : M.IsAssociatedFunction Self "return_" return_.
@@ -1891,7 +1891,7 @@ Module absint.
               "locals"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_locals : M.IsAssociatedFunction Self "locals" locals.
@@ -1913,7 +1913,7 @@ Module absint.
               "type_parameters"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_type_parameters :
@@ -1934,7 +1934,7 @@ Module absint.
             "move_bytecode_verifier::absint::FunctionContext",
             "cfg"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_cfg : M.IsAssociatedFunction Self "cfg" cfg.

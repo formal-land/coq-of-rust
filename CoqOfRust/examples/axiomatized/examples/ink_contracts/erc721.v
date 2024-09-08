@@ -132,7 +132,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc721_AccountId.
 
-Module Impl_core_convert_From_array_32_u8_for_erc721_AccountId.
+Module Impl_core_convert_From_array_Usize_32_u8_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
   Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -142,9 +142,9 @@ Module Impl_core_convert_From_array_32_u8_for_erc721_AccountId.
       "core::convert::From"
       Self
       (* Trait polymorphic types *)
-      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_32_u8_for_erc721_AccountId.
+End Impl_core_convert_From_array_Usize_32_u8_for_erc721_AccountId.
 
 Axiom Balance : (Ty.path "erc721::Balance") = (Ty.path "u128").
 
@@ -261,17 +261,6 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc721_Error.
-
-Module Impl_core_marker_StructuralEq_for_erc721_Error.
-  Definition Self : Ty.t := Ty.path "erc721::Error".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_erc721_Error.
 
 Module Impl_core_cmp_Eq_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".

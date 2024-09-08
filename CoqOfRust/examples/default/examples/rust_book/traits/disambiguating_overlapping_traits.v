@@ -44,7 +44,7 @@ Module Impl_disambiguating_overlapping_traits_UsernameWidget_for_disambiguating_
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -75,7 +75,7 @@ Module Impl_disambiguating_overlapping_traits_AgeWidget_for_disambiguating_overl
             "age"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -125,7 +125,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |),
                     [ M.read (| Value.String "rustacean" |) ]
                   |));
-                ("age", Value.Integer 28)
+                ("age", Value.Integer IntegerKind.U8 28)
               ]
           |) in
         let~ username :=
@@ -176,8 +176,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.path "alloc::string::String",
@@ -186,7 +186,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -237,7 +238,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         let~ _ :=
           M.match_operator (|
-            M.alloc (| Value.Tuple [ M.alloc (| Value.Integer 28 |); age ] |),
+            M.alloc (| Value.Tuple [ M.alloc (| Value.Integer IntegerKind.U8 28 |); age ] |),
             [
               fun γ =>
                 ltac:(M.monadic
@@ -253,10 +254,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |)))
+                                UnOp.not (|
+                                  BinOp.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -291,7 +294,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "disambiguating_overlapping_traits::main" main.

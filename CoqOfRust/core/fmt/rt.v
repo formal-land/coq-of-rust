@@ -73,7 +73,7 @@ Module fmt.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -101,7 +101,7 @@ Module fmt.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ position; fill; align; flags; precision; width ] =>
+        | [], [], [ position; fill; align; flags; precision; width ] =>
           ltac:(M.monadic
             (let position := M.alloc (| position |) in
             let fill := M.alloc (| fill |) in
@@ -119,7 +119,7 @@ Module fmt.
                 ("precision", M.read (| precision |));
                 ("width", M.read (| width |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -177,7 +177,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -210,7 +210,7 @@ Module fmt.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -220,7 +220,7 @@ Module fmt.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -230,9 +230,9 @@ Module fmt.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -242,17 +242,6 @@ Module fmt.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_fmt_rt_Alignment.
-    
-    Module Impl_core_marker_StructuralEq_for_core_fmt_rt_Alignment.
-      Definition Self : Ty.t := Ty.path "core::fmt::rt::Alignment".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_fmt_rt_Alignment.
     
     Module Impl_core_cmp_Eq_for_core_fmt_rt_Alignment.
       Definition Self : Ty.t := Ty.path "core::fmt::rt::Alignment".
@@ -268,7 +257,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -332,7 +321,7 @@ Module fmt.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -405,7 +394,7 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -416,25 +405,110 @@ Module fmt.
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_core_fmt_rt_Flag.
     
+    (*
+    Enum ArgumentType
+    {
+      const_params := [];
+      ty_params := [];
+      variants :=
+        [
+          {
+            name := "Placeholder";
+            item :=
+              StructRecord
+                [
+                  ("value", Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ]);
+                  ("formatter",
+                    Ty.function
+                      [
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ];
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ]));
+                  ("_lifetime",
+                    Ty.apply
+                      (Ty.path "core::marker::PhantomData")
+                      []
+                      [ Ty.apply (Ty.path "&") [] [ Ty.tuple [] ] ])
+                ];
+            discriminant := None;
+          };
+          {
+            name := "Count";
+            item := StructTuple [ Ty.path "usize" ];
+            discriminant := None;
+          }
+        ];
+    }
+    *)
+    
+    Module Impl_core_marker_Copy_for_core_fmt_rt_ArgumentType.
+      Definition Self : Ty.t := Ty.path "core::fmt::rt::ArgumentType".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::Copy"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_Copy_for_core_fmt_rt_ArgumentType.
+    
+    Module Impl_core_clone_Clone_for_core_fmt_rt_ArgumentType.
+      Definition Self : Ty.t := Ty.path "core::fmt::rt::ArgumentType".
+      
+      (* Clone *)
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                Value.DeclaredButUndefined,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        Value.DeclaredButUndefined,
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Value.DeclaredButUndefined,
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        Value.DeclaredButUndefined,
+                                        [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::clone::Clone"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("clone", InstanceField.Method clone) ].
+    End Impl_core_clone_Clone_for_core_fmt_rt_ArgumentType.
+    
     (* StructRecord
       {
         name := "Argument";
         const_params := [];
         ty_params := [];
-        fields :=
-          [
-            ("value", Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Opaque" ]);
-            ("formatter",
-              Ty.function
-                [
-                  Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Opaque" ];
-                  Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
-                ]
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]))
-          ];
+        fields := [ ("ty", Ty.path "core::fmt::rt::ArgumentType") ];
       } *)
     
     Module Impl_core_marker_Copy_for_core_fmt_rt_Argument.
@@ -460,17 +534,10 @@ Module fmt.
             M.read (|
               M.match_operator (|
                 Value.DeclaredButUndefined,
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        Value.DeclaredButUndefined,
-                        [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
-                      |)))
-                ]
+                [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -486,15 +553,16 @@ Module fmt.
       
       (*
           fn new<'b, T>(x: &'b T, f: fn(&T, &mut Formatter<'_>) -> Result) -> Argument<'b> {
-              // SAFETY: `mem::transmute(x)` is safe because
-              //     1. `&'b T` keeps the lifetime it originated with `'b`
-              //              (so as to not have an unbounded lifetime)
-              //     2. `&'b T` and `&'b Opaque` have the same memory layout
-              //              (when `T` is `Sized`, as it is here)
-              // `mem::transmute(f)` is safe since `fn(&T, &mut Formatter<'_>) -> Result`
-              // and `fn(&Opaque, &mut Formatter<'_>) -> Result` have the same ABI
-              // (as long as `T` is `Sized`)
-              unsafe { Argument { formatter: mem::transmute(f), value: mem::transmute(x) } }
+              Argument {
+                  // INVARIANT: this creates an `ArgumentType<'b>` from a `&'b T` and
+                  // a `fn(&T, ...)`, so the invariant is maintained.
+                  ty: ArgumentType::Placeholder {
+                      value: NonNull::from(x).cast(),
+                      // SAFETY: function pointers always have the same layout.
+                      formatter: unsafe { mem::transmute(f) },
+                      _lifetime: PhantomData,
+                  },
+              }
           }
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -506,46 +574,64 @@ Module fmt.
             Value.StructRecord
               "core::fmt::rt::Argument"
               [
-                ("formatter",
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::intrinsics::transmute",
-                      [
-                        Ty.function
+                ("ty",
+                  Value.StructRecord
+                    "core::fmt::rt::ArgumentType::Placeholder"
+                    [
+                      ("value",
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "cast",
+                            [ Ty.tuple [] ]
+                          |),
                           [
-                            Ty.apply (Ty.path "&") [] [ T ];
-                            Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::convert::From",
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                "from",
+                                []
+                              |),
+                              [ M.read (| x |) ]
+                            |)
                           ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
-                        Ty.function
-                          [
-                            Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Opaque" ];
-                            Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
-                          ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                      ]
-                    |),
-                    [ M.read (| f |) ]
-                  |));
-                ("value",
-                  M.call_closure (|
-                    M.get_function (|
-                      "core::intrinsics::transmute",
-                      [
-                        Ty.apply (Ty.path "&") [] [ T ];
-                        Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::rt::Opaque" ]
-                      ]
-                    |),
-                    [ M.read (| x |) ]
-                  |))
+                        |));
+                      ("formatter",
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::intrinsics::transmute",
+                            [
+                              Ty.function
+                                [
+                                  Ty.apply (Ty.path "&") [] [ T ];
+                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
+                              Ty.function
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::ptr::non_null::NonNull")
+                                    []
+                                    [ Ty.tuple [] ];
+                                  Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]
+                                ]
+                                (Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                            ]
+                          |),
+                          [ M.read (| f |) ]
+                        |));
+                      ("_lifetime", Value.StructTuple "core::marker::PhantomData" [])
+                    ])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -568,7 +654,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_display : M.IsAssociatedFunction Self "new_display" new_display.
@@ -591,7 +677,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_debug : M.IsAssociatedFunction Self "new_debug" new_debug.
@@ -614,7 +700,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_octal : M.IsAssociatedFunction Self "new_octal" new_octal.
@@ -638,7 +724,7 @@ Module fmt.
                   (M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_lower_hex :
@@ -663,7 +749,7 @@ Module fmt.
                   (M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_upper_hex :
@@ -687,7 +773,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Pointer", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_pointer : M.IsAssociatedFunction Self "new_pointer" new_pointer.
@@ -710,7 +796,7 @@ Module fmt.
                 M.pointer_coercion (M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_binary : M.IsAssociatedFunction Self "new_binary" new_binary.
@@ -734,7 +820,7 @@ Module fmt.
                   (M.get_trait_method (| "core::fmt::LowerExp", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_lower_exp :
@@ -759,7 +845,7 @@ Module fmt.
                   (M.get_trait_method (| "core::fmt::UpperExp", T, [], "fmt", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_upper_exp :
@@ -767,7 +853,7 @@ Module fmt.
       
       (*
           pub fn from_usize(x: &usize) -> Argument<'_> {
-              Self::new(x, USIZE_MARKER)
+              Argument { ty: ArgumentType::Count( *x) }
           }
       *)
       Definition from_usize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -775,25 +861,33 @@ Module fmt.
         | [], [], [ x ] =>
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.path "core::fmt::rt::Argument",
-                "new",
-                [ Ty.path "usize" ]
-              |),
+            Value.StructRecord
+              "core::fmt::rt::Argument"
               [
-                M.read (| x |);
-                M.read (| M.read (| M.get_constant (| "core::fmt::rt::USIZE_MARKER" |) |) |)
-              ]
-            |)))
-        | _, _, _ => M.impossible
+                ("ty",
+                  Value.StructTuple
+                    "core::fmt::rt::ArgumentType::Count"
+                    [ M.read (| M.read (| x |) |) ])
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_usize : M.IsAssociatedFunction Self "from_usize" from_usize.
       
       (*
-          pub(super) fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-              (self.formatter)(self.value, f)
+          pub(super) unsafe fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+              match self.ty {
+                  // SAFETY:
+                  // Because of the invariant that if `formatter` had the type
+                  // `fn(&T, _) -> _` then `value` has type `&'b T` where `'b` is
+                  // the lifetime of the `ArgumentType`, and because references
+                  // and `NonNull` are ABI-compatible, this is completely equivalent
+                  // to calling the original function passed to `new` with the
+                  // original reference, which is sound.
+                  ArgumentType::Placeholder { formatter, value, .. } => unsafe { formatter(value, f) },
+                  // SAFETY: the caller promised this.
+                  ArgumentType::Count(_) => unsafe { unreachable_unchecked() },
+              }
           }
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -802,42 +896,65 @@ Module fmt.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
-            M.call_closure (|
-              M.read (|
+            M.read (|
+              M.match_operator (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "core::fmt::rt::Argument",
-                  "formatter"
-                |)
-              |),
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::fmt::rt::Argument",
-                    "value"
-                  |)
-                |);
-                M.read (| f |)
-              ]
+                  "ty"
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "core::fmt::rt::ArgumentType::Placeholder",
+                          "formatter"
+                        |) in
+                      let γ0_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "core::fmt::rt::ArgumentType::Placeholder",
+                          "value"
+                        |) in
+                      let formatter := M.copy (| γ0_0 |) in
+                      let value := M.copy (| γ0_1 |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          M.read (| formatter |),
+                          [ M.read (| value |); M.read (| f |) ]
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::fmt::rt::ArgumentType::Count",
+                          0
+                        |) in
+                      M.alloc (|
+                        M.never_to_any (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::unreachable_unchecked", [] |),
+                            []
+                          |)
+                        |)
+                      |)))
+                ]
+              |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_fmt : M.IsAssociatedFunction Self "fmt" fmt.
       
       (*
           pub(super) fn as_usize(&self) -> Option<usize> {
-              // We are type punning a bit here: USIZE_MARKER only takes an &usize but
-              // formatter takes an &Opaque. Rust understandably doesn't think we should compare
-              // the function pointers if they don't have the same signature, so we cast to
-              // usizes to tell it that we just want to compare addresses.
-              if self.formatter as usize == USIZE_MARKER as usize {
-                  // SAFETY: The `formatter` field is only set to USIZE_MARKER if
-                  // the value is a usize, so this is safe
-                  Some(unsafe { *(self.value as *const _ as *const usize) })
-              } else {
-                  None
+              match self.ty {
+                  ArgumentType::Count(count) => Some(count),
+                  ArgumentType::Placeholder { .. } => None,
               }
           }
       *)
@@ -848,56 +965,33 @@ Module fmt.
             (let self := M.alloc (| self |) in
             M.read (|
               M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::fmt::rt::Argument",
+                  "ty"
+                |),
                 [
                   fun γ =>
                     ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.rust_cast
-                                (M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::fmt::rt::Argument",
-                                    "formatter"
-                                  |)
-                                |)))
-                              (M.rust_cast
-                                (M.read (|
-                                  M.read (| M.get_constant (| "core::fmt::rt::USIZE_MARKER" |) |)
-                                |)))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::fmt::rt::ArgumentType::Count",
+                          0
+                        |) in
+                      let count := M.copy (| γ0_0 |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.read (|
-                              M.rust_cast
-                                (M.read (|
-                                  M.use
-                                    (M.alloc (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::fmt::rt::Argument",
-                                          "value"
-                                        |)
-                                      |)
-                                    |))
-                                |))
-                            |)
-                          ]
+                        Value.StructTuple "core::option::Option::Some" [ M.read (| count |) ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (let _ :=
+                        M.is_struct_tuple (| γ, "core::fmt::rt::ArgumentType::Placeholder" |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_usize : M.IsAssociatedFunction Self "as_usize" as_usize.
@@ -910,7 +1004,7 @@ Module fmt.
       Definition none (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [] => ltac:(M.monadic (Value.Array []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_none : M.IsAssociatedFunction Self "none" none.
@@ -937,65 +1031,10 @@ Module fmt.
         | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord "core::fmt::rt::UnsafeArg" [ ("_private", Value.Tuple []) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
     End Impl_core_fmt_rt_UnsafeArg.
-    
-    (* Foreign type 'Opaque' *)
-    
-    Definition value_USIZE_MARKER : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            M.alloc (|
-              (* ClosureFnPointer(Normal) *)
-              M.pointer_coercion
-                (M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0; α1 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let ptr := M.copy (| γ |) in
-                                M.match_operator (|
-                                  M.alloc (| α1 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (M.read (|
-                                          let~ _v :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "core::ptr::read_volatile",
-                                                  [ Ty.path "usize" ]
-                                                |),
-                                                [ M.read (| ptr |) ]
-                                              |)
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.read (|
-                                                M.loop (|
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                                |)
-                                              |)
-                                            |)
-                                          |)
-                                        |)))
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end)))
-            |)
-          |))).
   End rt.
 End fmt.

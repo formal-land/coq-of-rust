@@ -46,7 +46,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -77,26 +77,22 @@ Module ops.
                 M.read (| f |);
                 M.read (| Value.String "IndexRange" |);
                 M.read (| Value.String "start" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::ops::index_range::IndexRange",
+                  "start"
+                |);
+                M.read (| Value.String "end" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::ops::index_range::IndexRange",
-                    "start"
-                  |));
-                M.read (| Value.String "end" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::ops::index_range::IndexRange",
-                      "end"
-                    |)
-                  |))
+                    "end"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -129,39 +125,41 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::ops::index_range::IndexRange",
                     "start"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "core::ops::index_range::IndexRange",
                     "start"
                   |)
-                |)),
+                |)
+              |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::ops::index_range::IndexRange",
                       "end"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::ops::index_range::IndexRange",
                       "end"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -171,17 +169,6 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ops_index_range_IndexRange.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ops_index_range_IndexRange.
-      Definition Self : Ty.t := Ty.path "core::ops::index_range::IndexRange".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_index_range_IndexRange.
     
     Module Impl_core_cmp_Eq_for_core_ops_index_range_IndexRange.
       Definition Self : Ty.t := Ty.path "core::ops::index_range::IndexRange".
@@ -202,7 +189,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -219,16 +206,17 @@ Module ops.
       
       (*
           pub const unsafe fn new_unchecked(start: usize, end: usize) -> Self {
-              crate::panic::debug_assert_nounwind!(
-                  start <= end,
-                  "IndexRange::new_unchecked requires `start <= end`"
+              ub_checks::assert_unsafe_precondition!(
+                  check_library_ub,
+                  "IndexRange::new_unchecked requires `start <= end`",
+                  (start: usize = start, end: usize = end) => start <= end,
               );
               IndexRange { start, end }
           }
       *)
       Definition new_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ start; end_ ] =>
+        | [], [], [ start; end_ ] =>
           ltac:(M.monadic
             (let start := M.alloc (| start |) in
             let end_ := M.alloc (| end_ |) in
@@ -239,61 +227,28 @@ Module ops.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                []
+                              |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.le (M.read (| start |)) (M.read (| end_ |)))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::panicking::panic_nounwind_fmt",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            []
-                                          |),
-                                          [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "IndexRange::new_unchecked requires `start <= end`"
-                                                    |)
-                                                  ]
-                                              |))
-                                          ]
-                                        |);
-                                        Value.Bool false
-                                      ]
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)));
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.new_unchecked",
+                                []
+                              |),
+                              [ M.read (| start |); M.read (| end_ |) ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
@@ -303,7 +258,7 @@ Module ops.
                   [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -316,13 +271,13 @@ Module ops.
       *)
       Definition zero_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ end_ ] =>
+        | [], [], [ end_ ] =>
           ltac:(M.monadic
             (let end_ := M.alloc (| end_ |) in
             Value.StructRecord
               "core::ops::index_range::IndexRange"
-              [ ("start", Value.Integer 0); ("end_", M.read (| end_ |)) ]))
-        | _, _, _ => M.impossible
+              [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", M.read (| end_ |)) ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_zero_to : M.IsAssociatedFunction Self "zero_to" zero_to.
@@ -334,7 +289,7 @@ Module ops.
       *)
       Definition start (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -344,7 +299,7 @@ Module ops.
                 "start"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_start : M.IsAssociatedFunction Self "start" start.
@@ -356,7 +311,7 @@ Module ops.
       *)
       Definition end_ (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -366,7 +321,7 @@ Module ops.
                 "end"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_end_ : M.IsAssociatedFunction Self "end_" end_.
@@ -374,16 +329,16 @@ Module ops.
       (*
           pub const fn len(&self) -> usize {
               // SAFETY: By invariant, this cannot wrap
-              unsafe { unchecked_sub(self.end, self.start) }
+              unsafe { self.end.unchecked_sub(self.start) }
           }
       *)
       Definition len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
               [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -401,7 +356,7 @@ Module ops.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -412,7 +367,7 @@ Module ops.
       
               let value = self.start;
               // SAFETY: The range isn't empty, so this cannot overflow
-              self.start = unsafe { unchecked_add(value, 1) };
+              self.start = unsafe { value.unchecked_add(1) };
               value
           }
       *)
@@ -440,22 +395,24 @@ Module ops.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.lt
-                                            (M.read (|
+                                        UnOp.not (|
+                                          BinOp.lt (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "core::ops::index_range::IndexRange",
                                                 "start"
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "core::ops::index_range::IndexRange",
                                                 "end"
                                               |)
-                                            |)))
+                                            |)
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -497,13 +454,13 @@ Module ops.
                     "start"
                   |),
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_add", [ Ty.path "usize" ] |),
-                    [ M.read (| value |); Value.Integer 1 ]
+                    M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
+                    [ M.read (| value |); Value.Integer IntegerKind.Usize 1 ]
                   |)
                 |) in
               value
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_next_unchecked :
@@ -514,7 +471,7 @@ Module ops.
               debug_assert!(self.start < self.end);
       
               // SAFETY: The range isn't empty, so this cannot overflow
-              let value = unsafe { unchecked_sub(self.end, 1) };
+              let value = unsafe { self.end.unchecked_sub(1) };
               self.end = value;
               value
           }
@@ -543,22 +500,24 @@ Module ops.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.lt
-                                            (M.read (|
+                                        UnOp.not (|
+                                          BinOp.lt (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "core::ops::index_range::IndexRange",
                                                 "start"
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "core::ops::index_range::IndexRange",
                                                 "end"
                                               |)
-                                            |)))
+                                            |)
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -587,7 +546,7 @@ Module ops.
               let~ value :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
+                    M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
                     [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -596,7 +555,7 @@ Module ops.
                           "end"
                         |)
                       |);
-                      Value.Integer 1
+                      Value.Integer IntegerKind.Usize 1
                     ]
                   |)
                 |) in
@@ -611,7 +570,7 @@ Module ops.
                 |) in
               value
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_next_back_unchecked :
@@ -622,7 +581,7 @@ Module ops.
               let mid = if n <= self.len() {
                   // SAFETY: We just checked that this will be between start and end,
                   // and thus the addition cannot overflow.
-                  unsafe { unchecked_add(self.start, n) }
+                  unsafe { self.start.unchecked_add(n) }
               } else {
                   self.end
               };
@@ -648,9 +607,9 @@ Module ops.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.le
-                                  (M.read (| n |))
-                                  (M.call_closure (|
+                                BinOp.le (|
+                                  M.read (| n |),
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::iter::traits::exact_size::ExactSizeIterator",
                                       Ty.apply
@@ -662,16 +621,14 @@ Module ops.
                                       []
                                     |),
                                     [ self ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (|
-                                "core::intrinsics::unchecked_add",
-                                [ Ty.path "usize" ]
-                              |),
+                              M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -721,7 +678,7 @@ Module ops.
                 |) in
               prefix
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_take_prefix : M.IsAssociatedFunction Self "take_prefix" take_prefix.
@@ -731,7 +688,7 @@ Module ops.
               let mid = if n <= self.len() {
                   // SAFETY: We just checked that this will be between start and end,
                   // and thus the addition cannot overflow.
-                  unsafe { unchecked_sub(self.end, n) }
+                  unsafe { self.end.unchecked_sub(n) }
               } else {
                   self.start
               };
@@ -757,9 +714,9 @@ Module ops.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.le
-                                  (M.read (| n |))
-                                  (M.call_closure (|
+                                BinOp.le (|
+                                  M.read (| n |),
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::iter::traits::exact_size::ExactSizeIterator",
                                       Ty.apply
@@ -771,16 +728,14 @@ Module ops.
                                       []
                                     |),
                                     [ self ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (|
-                                "core::intrinsics::unchecked_sub",
-                                [ Ty.path "usize" ]
-                              |),
+                              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
                               [
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -830,7 +785,7 @@ Module ops.
                 |) in
               suffix
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_take_suffix : M.IsAssociatedFunction Self "take_suffix" take_suffix.
@@ -866,8 +821,8 @@ Module ops.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.call_closure (|
+                            BinOp.gt (|
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply
@@ -879,8 +834,9 @@ Module ops.
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (Value.Integer 0)
+                              |),
+                              Value.Integer IntegerKind.Usize 0
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -903,7 +859,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -937,13 +893,13 @@ Module ops.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               let taken = self.take_prefix(n);
-              NonZeroUsize::new(n - taken.len()).map_or(Ok(()), Err)
+              NonZero::new(n - taken.len()).map_or(Ok(()), Err)
           }
       *)
       Definition advance_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -970,40 +926,46 @@ Module ops.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
                       [
-                        BinOp.Wrap.sub
-                          Integer.Usize
-                          (M.read (| n |))
-                          (M.call_closure (|
+                        BinOp.Wrap.sub (|
+                          M.read (| n |),
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::ops::index_range::IndexRange",
                               "len",
                               []
                             |),
                             [ taken ]
-                          |))
+                          |)
+                        |)
                       ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
@@ -1012,7 +974,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1056,8 +1018,8 @@ Module ops.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.call_closure (|
+                            BinOp.gt (|
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply
@@ -1069,8 +1031,9 @@ Module ops.
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (Value.Integer 0)
+                              |),
+                              Value.Integer IntegerKind.Usize 0
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1093,13 +1056,13 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               let taken = self.take_suffix(n);
-              NonZeroUsize::new(n - taken.len()).map_or(Ok(()), Err)
+              NonZero::new(n - taken.len()).map_or(Ok(()), Err)
           }
       *)
       Definition advance_back_by (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1126,40 +1089,46 @@ Module ops.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
                       [
-                        BinOp.Wrap.sub
-                          Integer.Usize
-                          (M.read (| n |))
-                          (M.call_closure (|
+                        BinOp.Wrap.sub (|
+                          M.read (| n |),
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::ops::index_range::IndexRange",
                               "len",
                               []
                             |),
                             [ taken ]
-                          |))
+                          |)
+                        |)
                       ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
@@ -1168,7 +1137,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1204,7 +1173,7 @@ Module ops.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

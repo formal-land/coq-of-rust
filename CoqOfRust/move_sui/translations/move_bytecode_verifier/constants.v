@@ -36,41 +36,42 @@ Module constants.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let e := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "move_binary_format::errors::PartialVMError",
-                                "finish",
-                                []
-                              |),
-                              [
-                                M.read (| e |);
-                                Value.StructTuple
-                                  "move_binary_format::errors::Location::Module"
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::CompiledModule",
-                                        "self_id",
-                                        []
-                                      |),
-                                      [ M.read (| module |) ]
-                                    |)
-                                  ]
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let e := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_binary_format::errors::PartialVMError",
+                                  "finish",
+                                  []
+                                |),
+                                [
+                                  M.read (| e |);
+                                  Value.StructTuple
+                                    "move_binary_format::errors::Location::Module"
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::CompiledModule",
+                                          "self_id",
+                                          []
+                                        |),
+                                        [ M.read (| module |) ]
+                                      |)
+                                    ]
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module :
@@ -293,7 +294,7 @@ Module constants.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_impl :
@@ -411,7 +412,7 @@ Module constants.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_constant :
@@ -477,7 +478,7 @@ Module constants.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_constant_type :
@@ -541,7 +542,7 @@ Module constants.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_constant_data :

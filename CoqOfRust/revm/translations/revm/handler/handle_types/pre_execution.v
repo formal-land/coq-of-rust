@@ -118,110 +118,104 @@ Module handler.
                 "revm::handler::handle_types::pre_execution::PreExecutionHandler"
                 [
                   ("load_precompiles",
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::sync::Arc")
-                            []
-                            [
-                              Ty.function
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
+                          []
+                          [
+                            Ty.function
+                              []
+                              (Ty.apply
+                                (Ty.path "revm::context::context_precompiles::ContextPrecompiles")
                                 []
-                                (Ty.apply
-                                  (Ty.path "revm::context::context_precompiles::ContextPrecompiles")
-                                  []
-                                  [ DB ]);
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "new",
-                          []
-                        |),
-                        [
-                          M.get_function (|
-                            "revm::handler::mainnet::pre_execution::load_precompiles",
-                            [ SPEC; DB ]
-                          |)
-                        ]
-                      |)));
+                                [ DB ]);
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        []
+                      |),
+                      [
+                        M.get_function (|
+                          "revm::handler::mainnet::pre_execution::load_precompiles",
+                          [ SPEC; DB ]
+                        |)
+                      ]
+                    |));
                   ("load_accounts",
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::sync::Arc")
-                            []
-                            [
-                              Ty.function
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.tuple [];
-                                    Ty.apply
-                                      (Ty.path "revm_primitives::result::EVMError")
-                                      []
-                                      [ Ty.associated ]
-                                  ]);
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "new",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
                           []
-                        |),
-                        [
-                          M.get_function (|
-                            "revm::handler::mainnet::pre_execution::load_accounts",
-                            [ SPEC; EXT; DB ]
-                          |)
-                        ]
-                      |)));
+                          [
+                            Ty.function
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ]
+                              ]
+                              (Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "revm_primitives::result::EVMError")
+                                    []
+                                    [ Ty.associated ]
+                                ]);
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        []
+                      |),
+                      [
+                        M.get_function (|
+                          "revm::handler::mainnet::pre_execution::load_accounts",
+                          [ SPEC; EXT; DB ]
+                        |)
+                      ]
+                    |));
                   ("deduct_caller",
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::sync::Arc")
-                            []
-                            [
-                              Ty.function
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.tuple [];
-                                    Ty.apply
-                                      (Ty.path "revm_primitives::result::EVMError")
-                                      []
-                                      [ Ty.associated ]
-                                  ]);
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "new",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
                           []
-                        |),
-                        [
-                          M.get_function (|
-                            "revm::handler::mainnet::pre_execution::deduct_caller",
-                            [ SPEC; EXT; DB ]
-                          |)
-                        ]
-                      |)))
+                          [
+                            Ty.function
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ]
+                              ]
+                              (Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "revm_primitives::result::EVMError")
+                                    []
+                                    [ Ty.associated ]
+                                ]);
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        []
+                      |),
+                      [
+                        M.get_function (|
+                          "revm::handler::mainnet::pre_execution::deduct_caller",
+                          [ SPEC; EXT; DB ]
+                        |)
+                      ]
+                    |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -294,7 +288,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_deduct_caller :
@@ -368,7 +362,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_load_accounts :
@@ -425,7 +419,7 @@ Module handler.
                   Value.Tuple []
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_load_precompiles :

@@ -20,72 +20,72 @@ Module ptr.
           M.get_function (| "core::ptr::drop_in_place", [ T ] |),
           [ M.read (| to_drop |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_drop_in_place : M.IsFunction "core::ptr::drop_in_place" drop_in_place.
   
   (*
   pub const fn null<T: ?Sized + Thin>() -> *const T {
-      from_raw_parts(invalid(0), ())
+      from_raw_parts(without_provenance::<()>(0), ())
   }
   *)
   Definition null (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [] =>
+    | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_function (| "core::ptr::metadata::from_raw_parts", [ T ] |),
+          M.get_function (| "core::ptr::metadata::from_raw_parts", [ T; Ty.tuple [] ] |),
           [
             M.call_closure (|
-              M.get_function (| "core::ptr::invalid", [ Ty.tuple [] ] |),
-              [ Value.Integer 0 ]
+              M.get_function (| "core::ptr::without_provenance", [ Ty.tuple [] ] |),
+              [ Value.Integer IntegerKind.Usize 0 ]
             |);
             Value.Tuple []
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_null : M.IsFunction "core::ptr::null" null.
   
   (*
   pub const fn null_mut<T: ?Sized + Thin>() -> *mut T {
-      from_raw_parts_mut(invalid_mut(0), ())
+      from_raw_parts_mut(without_provenance_mut::<()>(0), ())
   }
   *)
   Definition null_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [] =>
+    | [], [ T ], [] =>
       ltac:(M.monadic
         (M.call_closure (|
-          M.get_function (| "core::ptr::metadata::from_raw_parts_mut", [ T ] |),
+          M.get_function (| "core::ptr::metadata::from_raw_parts_mut", [ T; Ty.tuple [] ] |),
           [
             M.call_closure (|
-              M.get_function (| "core::ptr::invalid_mut", [ Ty.tuple [] ] |),
-              [ Value.Integer 0 ]
+              M.get_function (| "core::ptr::without_provenance_mut", [ Ty.tuple [] ] |),
+              [ Value.Integer IntegerKind.Usize 0 ]
             |);
             Value.Tuple []
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_null_mut : M.IsFunction "core::ptr::null_mut" null_mut.
   
   (*
-  pub const fn invalid<T>(addr: usize) -> *const T {
+  pub const fn without_provenance<T>(addr: usize) -> *const T {
       // FIXME(strict_provenance_magic): I am magic and should be a compiler intrinsic.
       // We use transmute rather than a cast so tools like Miri can tell that this
-      // is *not* the same as from_exposed_addr.
+      // is *not* the same as with_exposed_provenance.
       // SAFETY: every valid integer is also a valid pointer (as long as you don't dereference that
       // pointer).
       unsafe { mem::transmute(addr) }
   }
   *)
-  Definition invalid (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition without_provenance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ addr ] =>
+    | [], [ T ], [ addr ] =>
       ltac:(M.monadic
         (let addr := M.alloc (| addr |) in
         M.call_closure (|
@@ -95,24 +95,43 @@ Module ptr.
           |),
           [ M.read (| addr |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_invalid : M.IsFunction "core::ptr::invalid" invalid.
+  Axiom Function_without_provenance :
+    M.IsFunction "core::ptr::without_provenance" without_provenance.
   
   (*
-  pub const fn invalid_mut<T>(addr: usize) -> *mut T {
+  pub const fn dangling<T>() -> *const T {
+      without_provenance(mem::align_of::<T>())
+  }
+  *)
+  Definition dangling (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [] =>
+      ltac:(M.monadic
+        (M.call_closure (|
+          M.get_function (| "core::ptr::without_provenance", [ T ] |),
+          [ M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |) ]
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom Function_dangling : M.IsFunction "core::ptr::dangling" dangling.
+  
+  (*
+  pub const fn without_provenance_mut<T>(addr: usize) -> *mut T {
       // FIXME(strict_provenance_magic): I am magic and should be a compiler intrinsic.
       // We use transmute rather than a cast so tools like Miri can tell that this
-      // is *not* the same as from_exposed_addr.
+      // is *not* the same as with_exposed_provenance.
       // SAFETY: every valid integer is also a valid pointer (as long as you don't dereference that
       // pointer).
       unsafe { mem::transmute(addr) }
   }
   *)
-  Definition invalid_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition without_provenance_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ addr ] =>
+    | [], [ T ], [ addr ] =>
       ltac:(M.monadic
         (let addr := M.alloc (| addr |) in
         M.call_closure (|
@@ -122,13 +141,32 @@ Module ptr.
           |),
           [ M.read (| addr |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_invalid_mut : M.IsFunction "core::ptr::invalid_mut" invalid_mut.
+  Axiom Function_without_provenance_mut :
+    M.IsFunction "core::ptr::without_provenance_mut" without_provenance_mut.
   
   (*
-  pub fn from_exposed_addr<T>(addr: usize) -> *const T
+  pub const fn dangling_mut<T>() -> *mut T {
+      without_provenance_mut(mem::align_of::<T>())
+  }
+  *)
+  Definition dangling_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [] =>
+      ltac:(M.monadic
+        (M.call_closure (|
+          M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
+          [ M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |) ]
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom Function_dangling_mut : M.IsFunction "core::ptr::dangling_mut" dangling_mut.
+  
+  (*
+  pub fn with_exposed_provenance<T>(addr: usize) -> *const T
   where
       T: Sized,
   {
@@ -136,19 +174,20 @@ Module ptr.
       addr as *const T
   }
   *)
-  Definition from_exposed_addr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition with_exposed_provenance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [ T ], [ addr ] =>
       ltac:(M.monadic
         (let addr := M.alloc (| addr |) in
         M.rust_cast (M.read (| addr |))))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_exposed_addr : M.IsFunction "core::ptr::from_exposed_addr" from_exposed_addr.
+  Axiom Function_with_exposed_provenance :
+    M.IsFunction "core::ptr::with_exposed_provenance" with_exposed_provenance.
   
   (*
-  pub fn from_exposed_addr_mut<T>(addr: usize) -> *mut T
+  pub fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T
   where
       T: Sized,
   {
@@ -156,17 +195,21 @@ Module ptr.
       addr as *mut T
   }
   *)
-  Definition from_exposed_addr_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition with_exposed_provenance_mut
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
     match ε, τ, α with
     | [], [ T ], [ addr ] =>
       ltac:(M.monadic
         (let addr := M.alloc (| addr |) in
         M.rust_cast (M.read (| addr |))))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Axiom Function_from_exposed_addr_mut :
-    M.IsFunction "core::ptr::from_exposed_addr_mut" from_exposed_addr_mut.
+  Axiom Function_with_exposed_provenance_mut :
+    M.IsFunction "core::ptr::with_exposed_provenance_mut" with_exposed_provenance_mut.
   
   (*
   pub const fn from_ref<T: ?Sized>(r: &T) -> *const T {
@@ -175,11 +218,11 @@ Module ptr.
   *)
   Definition from_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ r ] =>
+    | [], [ T ], [ r ] =>
       ltac:(M.monadic
         (let r := M.alloc (| r |) in
         M.read (| r |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_ref : M.IsFunction "core::ptr::from_ref" from_ref.
@@ -191,44 +234,34 @@ Module ptr.
   *)
   Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ r ] =>
+    | [], [ T ], [ r ] =>
       ltac:(M.monadic
         (let r := M.alloc (| r |) in
         M.read (| r |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_mut : M.IsFunction "core::ptr::from_mut" from_mut.
   
   (*
   pub const fn slice_from_raw_parts<T>(data: *const T, len: usize) -> *const [T] {
-      from_raw_parts(data.cast(), len)
+      from_raw_parts(data, len)
   }
   *)
   Definition slice_from_raw_parts (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ data; len ] =>
+    | [], [ T ], [ data; len ] =>
       ltac:(M.monadic
         (let data := M.alloc (| data |) in
         let len := M.alloc (| len |) in
         M.call_closure (|
           M.get_function (|
             "core::ptr::metadata::from_raw_parts",
-            [ Ty.apply (Ty.path "slice") [] [ T ] ]
+            [ Ty.apply (Ty.path "slice") [] [ T ]; T ]
           |),
-          [
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [] [ T ],
-                "cast",
-                [ Ty.tuple [] ]
-              |),
-              [ M.read (| data |) ]
-            |);
-            M.read (| len |)
-          ]
+          [ M.read (| data |); M.read (| len |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_slice_from_raw_parts :
@@ -236,33 +269,23 @@ Module ptr.
   
   (*
   pub const fn slice_from_raw_parts_mut<T>(data: *mut T, len: usize) -> *mut [T] {
-      from_raw_parts_mut(data.cast(), len)
+      from_raw_parts_mut(data, len)
   }
   *)
   Definition slice_from_raw_parts_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ data; len ] =>
+    | [], [ T ], [ data; len ] =>
       ltac:(M.monadic
         (let data := M.alloc (| data |) in
         let len := M.alloc (| len |) in
         M.call_closure (|
           M.get_function (|
             "core::ptr::metadata::from_raw_parts_mut",
-            [ Ty.apply (Ty.path "slice") [] [ T ] ]
+            [ Ty.apply (Ty.path "slice") [] [ T ]; T ]
           |),
-          [
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*mut") [] [ T ],
-                "cast",
-                [ Ty.tuple [] ]
-              |),
-              [ M.read (| data |) ]
-            |);
-            M.read (| len |)
-          ]
+          [ M.read (| data |); M.read (| len |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_slice_from_raw_parts_mut :
@@ -288,7 +311,7 @@ Module ptr.
   *)
   Definition swap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ x; y ] =>
+    | [], [ T ], [ x; y ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
@@ -318,7 +341,7 @@ Module ptr.
                     |),
                     [ tmp ]
                   |);
-                  Value.Integer 1
+                  Value.Integer IntegerKind.Usize 1
                 ]
               |)
             |) in
@@ -329,7 +352,7 @@ Module ptr.
                 [
                   (* MutToConstPointer *) M.pointer_coercion (M.read (| y |));
                   M.read (| x |);
-                  Value.Integer 1
+                  Value.Integer IntegerKind.Usize 1
                 ]
               |)
             |) in
@@ -347,13 +370,13 @@ Module ptr.
                     [ tmp ]
                   |);
                   M.read (| y |);
-                  Value.Integer 1
+                  Value.Integer IntegerKind.Usize 1
                 ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_swap : M.IsFunction "core::ptr::swap" swap.
@@ -379,18 +402,21 @@ Module ptr.
           };
       }
   
-      // SAFETY: the caller must guarantee that `x` and `y` are
-      // valid for writes and properly aligned.
-      unsafe {
-          assert_unsafe_precondition!(
-              "ptr::swap_nonoverlapping requires that both pointer arguments are aligned and non-null \
-              and the specified memory ranges do not overlap",
-              [T](x: *mut T, y: *mut T, count: usize) =>
-              is_aligned_and_not_null(x)
-                  && is_aligned_and_not_null(y)
-                  && is_nonoverlapping(x, y, count)
-          );
-      }
+      ub_checks::assert_unsafe_precondition!(
+          check_language_ub,
+          "ptr::swap_nonoverlapping requires that both pointer arguments are aligned and non-null \
+          and the specified memory ranges do not overlap",
+          (
+              x: *mut () = x as *mut (),
+              y: *mut () = y as *mut (),
+              size: usize = size_of::<T>(),
+              align: usize = align_of::<T>(),
+              count: usize = count,
+          ) =>
+          ub_checks::is_aligned_and_not_null(x, align)
+              && ub_checks::is_aligned_and_not_null(y, align)
+              && ub_checks::is_nonoverlapping(x, y, size, count)
+      );
   
       // Split up the slice into small power-of-two-sized chunks that LLVM is able
       // to vectorize (unless it's a special type with more-than-pointer alignment,
@@ -409,7 +435,7 @@ Module ptr.
   *)
   Definition swap_nonoverlapping (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ x; y; count ] =>
+    | [], [ T ], [ x; y; count ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
@@ -418,60 +444,47 @@ Module ptr.
           ltac:(M.monadic
             (M.read (|
               let~ _ :=
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.alloc (|
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
                               M.call_closure (|
-                                M.get_function (|
-                                  "core::intrinsics::const_eval_select",
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.apply (Ty.path "*mut") [] [ T ];
-                                        Ty.apply (Ty.path "*mut") [] [ T ];
-                                        Ty.path "usize"
-                                      ];
-                                    Ty.function
-                                      [
-                                        Ty.apply (Ty.path "*mut") [] [ T ];
-                                        Ty.apply (Ty.path "*mut") [] [ T ];
-                                        Ty.path "usize"
-                                      ]
-                                      (Ty.tuple []);
-                                    Ty.function
-                                      [
-                                        Ty.apply (Ty.path "*mut") [] [ T ];
-                                        Ty.apply (Ty.path "*mut") [] [ T ];
-                                        Ty.path "usize"
-                                      ]
-                                      (Ty.tuple []);
-                                    Ty.tuple []
-                                  ]
-                                |),
-                                [
-                                  Value.Tuple
-                                    [ M.read (| x |); M.read (| y |); M.read (| count |) ];
-                                  M.get_function (|
-                                    "core::ptr::swap_nonoverlapping.comptime",
-                                    []
-                                  |);
-                                  M.get_function (| "core::ptr::swap_nonoverlapping.runtime", [] |)
-                                ]
+                                M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                                []
                               |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                M.alloc (| Value.Tuple [] |) in
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::ptr::swap_nonoverlapping.precondition_check",
+                                []
+                              |),
+                              [
+                                M.rust_cast (M.read (| x |));
+                                M.rust_cast (M.read (| y |));
+                                M.call_closure (|
+                                  M.get_function (| "core::mem::size_of", [ T ] |),
+                                  []
+                                |);
+                                M.call_closure (|
+                                  M.get_function (| "core::mem::align_of", [ T ] |),
+                                  []
+                                |);
+                                M.read (| count |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
               let~ _ :=
                 M.match_operator (|
                   M.alloc (| Value.Tuple [] |),
@@ -482,19 +495,20 @@ Module ptr.
                           M.use
                             (M.alloc (|
                               LogicalOp.and (|
-                                BinOp.Pure.le
-                                  (M.call_closure (|
+                                BinOp.le (|
+                                  M.call_closure (|
                                     M.get_function (| "core::mem::align_of", [ T ] |),
                                     []
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_function (| "core::mem::size_of", [ Ty.path "usize" ] |),
                                     []
-                                  |)),
+                                  |)
+                                |),
                                 ltac:(M.monadic
                                   (LogicalOp.or (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "usize",
                                           "is_power_of_two",
@@ -506,23 +520,25 @@ Module ptr.
                                             []
                                           |)
                                         ]
-                                      |)),
+                                      |)
+                                    |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.gt
-                                        (M.call_closure (|
+                                      (BinOp.gt (|
+                                        M.call_closure (|
                                           M.get_function (| "core::mem::size_of", [ T ] |),
                                           []
-                                        |))
-                                        (BinOp.Wrap.mul
-                                          Integer.Usize
-                                          (M.call_closure (|
+                                        |),
+                                        BinOp.Wrap.mul (|
+                                          M.call_closure (|
                                             M.get_function (|
                                               "core::mem::size_of",
                                               [ Ty.path "usize" ]
                                             |),
                                             []
-                                          |))
-                                          (Value.Integer 2))))
+                                          |),
+                                          Value.Integer IntegerKind.Usize 2
+                                        |)
+                                      |)))
                                   |)))
                               |)
                             |)) in
@@ -538,34 +554,36 @@ Module ptr.
                                     M.use
                                       (M.alloc (|
                                         LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.call_closure (|
+                                          BinOp.ge (|
+                                            M.call_closure (|
                                               M.get_function (| "core::mem::align_of", [ T ] |),
                                               []
-                                            |))
-                                            (M.call_closure (|
+                                            |),
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::mem::align_of",
                                                 [ Ty.path "usize" ]
                                               |),
                                               []
-                                            |)),
+                                            |)
+                                          |),
                                           ltac:(M.monadic
-                                            (BinOp.Pure.eq
-                                              (BinOp.Wrap.rem
-                                                Integer.Usize
-                                                (M.call_closure (|
+                                            (BinOp.eq (|
+                                              BinOp.Wrap.rem (|
+                                                M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
-                                                |))
-                                                (M.call_closure (|
+                                                |),
+                                                M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   []
-                                                |)))
-                                              (Value.Integer 0)))
+                                                |)
+                                              |),
+                                              Value.Integer IntegerKind.Usize 0
+                                            |)))
                                         |)
                                       |)) in
                                   let _ :=
@@ -600,22 +618,22 @@ Module ptr.
                                           |) in
                                         let~ count :=
                                           M.alloc (|
-                                            BinOp.Wrap.mul
-                                              Integer.Usize
-                                              (M.read (| count |))
-                                              (BinOp.Wrap.div
-                                                Integer.Usize
-                                                (M.call_closure (|
+                                            BinOp.Wrap.mul (|
+                                              M.read (| count |),
+                                              BinOp.Wrap.div (|
+                                                M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
-                                                |))
-                                                (M.call_closure (|
+                                                |),
+                                                M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
                                                     [ Ty.path "usize" ]
                                                   |),
                                                   []
-                                                |)))
+                                                |)
+                                              |)
+                                            |)
                                           |) in
                                         M.return_ (|
                                           M.call_closure (|
@@ -642,34 +660,36 @@ Module ptr.
                                     M.use
                                       (M.alloc (|
                                         LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.call_closure (|
+                                          BinOp.ge (|
+                                            M.call_closure (|
                                               M.get_function (| "core::mem::align_of", [ T ] |),
                                               []
-                                            |))
-                                            (M.call_closure (|
+                                            |),
+                                            M.call_closure (|
                                               M.get_function (|
                                                 "core::mem::align_of",
                                                 [ Ty.path "u8" ]
                                               |),
                                               []
-                                            |)),
+                                            |)
+                                          |),
                                           ltac:(M.monadic
-                                            (BinOp.Pure.eq
-                                              (BinOp.Wrap.rem
-                                                Integer.Usize
-                                                (M.call_closure (|
+                                            (BinOp.eq (|
+                                              BinOp.Wrap.rem (|
+                                                M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
-                                                |))
-                                                (M.call_closure (|
+                                                |),
+                                                M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
                                                     [ Ty.path "u8" ]
                                                   |),
                                                   []
-                                                |)))
-                                              (Value.Integer 0)))
+                                                |)
+                                              |),
+                                              Value.Integer IntegerKind.Usize 0
+                                            |)))
                                         |)
                                       |)) in
                                   let _ :=
@@ -704,22 +724,22 @@ Module ptr.
                                           |) in
                                         let~ count :=
                                           M.alloc (|
-                                            BinOp.Wrap.mul
-                                              Integer.Usize
-                                              (M.read (| count |))
-                                              (BinOp.Wrap.div
-                                                Integer.Usize
-                                                (M.call_closure (|
+                                            BinOp.Wrap.mul (|
+                                              M.read (| count |),
+                                              BinOp.Wrap.div (|
+                                                M.call_closure (|
                                                   M.get_function (| "core::mem::size_of", [ T ] |),
                                                   []
-                                                |))
-                                                (M.call_closure (|
+                                                |),
+                                                M.call_closure (|
                                                   M.get_function (|
                                                     "core::mem::size_of",
                                                     [ Ty.path "u8" ]
                                                   |),
                                                   []
-                                                |)))
+                                                |)
+                                              |)
+                                            |)
                                           |) in
                                         M.return_ (|
                                           M.call_closure (|
@@ -748,7 +768,7 @@ Module ptr.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_swap_nonoverlapping :
@@ -761,11 +781,26 @@ Module ptr.
       let mut i = 0;
       while i < count {
           // SAFETY: By precondition, `i` is in-bounds because it's below `n`
-          let x = unsafe { &mut *x.add(i) };
+          let x = unsafe { x.add(i) };
           // SAFETY: By precondition, `i` is in-bounds because it's below `n`
           // and it's distinct from `x` since the ranges are non-overlapping
-          let y = unsafe { &mut *y.add(i) };
-          mem::swap_simple::<MaybeUninit<T>>(x, y);
+          let y = unsafe { y.add(i) };
+  
+          // If we end up here, it's because we're using a simple type -- like
+          // a small power-of-two-sized thing -- or a special type with particularly
+          // large alignment, particularly SIMD types.
+          // Thus, we're fine just reading-and-writing it, as either it's small
+          // and that works well anyway or it's special and the type's author
+          // presumably wanted things to be done in the larger chunk.
+  
+          // SAFETY: we're only ever given pointers that are valid to read/write,
+          // including being aligned, and nothing here panics so it's drop-safe.
+          unsafe {
+              let a: MaybeUninit<T> = read(x);
+              let b: MaybeUninit<T> = read(y);
+              write(x, b);
+              write(y, a);
+          }
   
           i += 1;
       }
@@ -777,7 +812,7 @@ Module ptr.
       (α : list Value.t)
       : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ x; y; count ] =>
+    | [], [ T ], [ x; y; count ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         let y := M.alloc (| y |) in
@@ -805,7 +840,7 @@ Module ptr.
                 [ M.read (| y |) ]
               |)
             |) in
-          let~ i := M.alloc (| Value.Integer 0 |) in
+          let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
           M.loop (|
             ltac:(M.monadic
               (M.match_operator (|
@@ -814,7 +849,7 @@ Module ptr.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.lt (M.read (| i |)) (M.read (| count |)) |)) in
+                        M.use (M.alloc (| BinOp.lt (| M.read (| i |), M.read (| count |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ x :=
                         M.alloc (|
@@ -847,20 +882,56 @@ Module ptr.
                           |)
                         |) in
                       let~ _ :=
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_function (|
-                              "core::mem::swap_simple",
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                            |),
-                            [ M.read (| x |); M.read (| y |) ]
-                          |)
-                        |) in
+                        let~ a :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::ptr::read",
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
+                              |),
+                              [ (* MutToConstPointer *) M.pointer_coercion (M.read (| x |)) ]
+                            |)
+                          |) in
+                        let~ b :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::ptr::read",
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
+                              |),
+                              [ (* MutToConstPointer *) M.pointer_coercion (M.read (| y |)) ]
+                            |)
+                          |) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::ptr::write",
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
+                              |),
+                              [ M.read (| x |); M.read (| b |) ]
+                            |)
+                          |) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::ptr::write",
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                                ]
+                              |),
+                              [ M.read (| y |); M.read (| a |) ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |) in
                       let~ _ :=
                         let β := i in
                         M.write (|
                           β,
-                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ =>
@@ -878,78 +949,78 @@ Module ptr.
               |)))
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_swap_nonoverlapping_simple_untyped :
     M.IsFunction "core::ptr::swap_nonoverlapping_simple_untyped" swap_nonoverlapping_simple_untyped.
   
   (*
-  pub const unsafe fn replace<T>(dst: *mut T, mut src: T) -> T {
+  pub const unsafe fn replace<T>(dst: *mut T, src: T) -> T {
       // SAFETY: the caller must guarantee that `dst` is valid to be
       // cast to a mutable reference (valid for writes, aligned, initialized),
       // and cannot overlap `src` since `dst` must point to a distinct
       // allocated object.
       unsafe {
-          assert_unsafe_precondition!(
+          ub_checks::assert_unsafe_precondition!(
+              check_language_ub,
               "ptr::replace requires that the pointer argument is aligned and non-null",
-              [T](dst: *mut T) => is_aligned_and_not_null(dst)
+              (
+                  addr: *const () = dst as *const (),
+                  align: usize = align_of::<T>(),
+              ) => ub_checks::is_aligned_and_not_null(addr, align)
           );
-          mem::swap(&mut *dst, &mut src); // cannot overlap
+          mem::replace(&mut *dst, src)
       }
-      src
   }
   *)
   Definition replace (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ dst; src ] =>
+    | [], [ T ], [ dst; src ] =>
       ltac:(M.monadic
         (let dst := M.alloc (| dst |) in
         let src := M.alloc (| src |) in
         M.read (|
           let~ _ :=
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        M.alloc (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
                           M.call_closure (|
-                            M.get_function (|
-                              "core::intrinsics::const_eval_select",
-                              [
-                                Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ] ];
-                                Ty.function [ Ty.apply (Ty.path "*mut") [] [ T ] ] (Ty.tuple []);
-                                Ty.function [ Ty.apply (Ty.path "*mut") [] [ T ] ] (Ty.tuple []);
-                                Ty.tuple []
-                              ]
-                            |),
-                            [
-                              Value.Tuple [ M.read (| dst |) ];
-                              M.get_function (| "core::ptr::replace.comptime", [] |);
-                              M.get_function (| "core::ptr::replace.runtime", [] |)
-                            ]
+                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            []
                           |)
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-            let~ _ :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "core::mem::swap", [ T ] |),
-                  [ M.read (| dst |); src ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
-          src
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let~ _ :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_function (| "core::ptr::replace.precondition_check", [] |),
+                          [
+                            M.rust_cast (M.read (| dst |));
+                            M.call_closure (|
+                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              []
+                            |)
+                          ]
+                        |)
+                      |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
+            |) in
+          M.alloc (|
+            M.call_closure (|
+              M.get_function (| "core::mem::replace", [ T ] |),
+              [ M.read (| dst |); M.read (| src |) ]
+            |)
+          |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_replace : M.IsFunction "core::ptr::replace" replace.
@@ -961,7 +1032,7 @@ Module ptr.
       // provides enough information to know that this is a typed operation.
   
       // However, as of March 2023 the compiler was not capable of taking advantage
-      // of that information.  Thus the implementation here switched to an intrinsic,
+      // of that information. Thus, the implementation here switched to an intrinsic,
       // which lowers to `_0 = *src` in MIR, to address a few issues:
       //
       // - Using `MaybeUninit::assume_init` after a `copy_nonoverlapping` was not
@@ -984,9 +1055,14 @@ Module ptr.
   
       // SAFETY: the caller must guarantee that `src` is valid for reads.
       unsafe {
-          assert_unsafe_precondition!(
+          #[cfg(debug_assertions)] // Too expensive to always enable (for now?)
+          ub_checks::assert_unsafe_precondition!(
+              check_language_ub,
               "ptr::read requires that the pointer argument is aligned and non-null",
-              [T](src: *const T) => is_aligned_and_not_null(src)
+              (
+                  addr: *const () = src as *const (),
+                  align: usize = align_of::<T>(),
+              ) => ub_checks::is_aligned_and_not_null(addr, align)
           );
           crate::intrinsics::read_via_copy(src)
       }
@@ -994,7 +1070,7 @@ Module ptr.
   *)
   Definition read (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ src ] =>
+    | [], [ T ], [ src ] =>
       ltac:(M.monadic
         (let src := M.alloc (| src |) in
         M.read (|
@@ -1004,24 +1080,25 @@ Module ptr.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            []
+                          |)
+                        |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (|
-                            "core::intrinsics::const_eval_select",
-                            [
-                              Ty.tuple [ Ty.apply (Ty.path "*const") [] [ T ] ];
-                              Ty.function [ Ty.apply (Ty.path "*const") [] [ T ] ] (Ty.tuple []);
-                              Ty.function [ Ty.apply (Ty.path "*const") [] [ T ] ] (Ty.tuple []);
-                              Ty.tuple []
-                            ]
-                          |),
+                          M.get_function (| "core::ptr::read.precondition_check", [] |),
                           [
-                            Value.Tuple [ M.read (| src |) ];
-                            M.get_function (| "core::ptr::read.comptime", [] |);
-                            M.get_function (| "core::ptr::read.runtime", [] |)
+                            M.rust_cast (M.read (| src |));
+                            M.call_closure (|
+                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              []
+                            |)
                           ]
                         |)
                       |) in
@@ -1036,7 +1113,7 @@ Module ptr.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_read : M.IsFunction "core::ptr::read" read.
@@ -1058,7 +1135,7 @@ Module ptr.
   *)
   Definition read_unaligned (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ src ] =>
+    | [], [ T ], [ src ] =>
       ltac:(M.monadic
         (let src := M.alloc (| src |) in
         M.read (|
@@ -1103,7 +1180,7 @@ Module ptr.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_read_unaligned : M.IsFunction "core::ptr::read_unaligned" read_unaligned.
@@ -1122,9 +1199,14 @@ Module ptr.
       // `dst` cannot overlap `src` because the caller has mutable access
       // to `dst` while `src` is owned by this function.
       unsafe {
-          assert_unsafe_precondition!(
+          #[cfg(debug_assertions)] // Too expensive to always enable (for now?)
+          ub_checks::assert_unsafe_precondition!(
+              check_language_ub,
               "ptr::write requires that the pointer argument is aligned and non-null",
-              [T](dst: *mut T) => is_aligned_and_not_null(dst)
+              (
+                  addr: *mut () = dst as *mut (),
+                  align: usize = align_of::<T>(),
+              ) => ub_checks::is_aligned_and_not_null(addr, align)
           );
           intrinsics::write_via_move(dst, src)
       }
@@ -1132,7 +1214,7 @@ Module ptr.
   *)
   Definition write (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ dst; src ] =>
+    | [], [ T ], [ dst; src ] =>
       ltac:(M.monadic
         (let dst := M.alloc (| dst |) in
         let src := M.alloc (| src |) in
@@ -1143,24 +1225,25 @@ Module ptr.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            []
+                          |)
+                        |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (|
-                            "core::intrinsics::const_eval_select",
-                            [
-                              Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ] ];
-                              Ty.function [ Ty.apply (Ty.path "*mut") [] [ T ] ] (Ty.tuple []);
-                              Ty.function [ Ty.apply (Ty.path "*mut") [] [ T ] ] (Ty.tuple []);
-                              Ty.tuple []
-                            ]
-                          |),
+                          M.get_function (| "core::ptr::write.precondition_check", [] |),
                           [
-                            Value.Tuple [ M.read (| dst |) ];
-                            M.get_function (| "core::ptr::write.comptime", [] |);
-                            M.get_function (| "core::ptr::write.runtime", [] |)
+                            M.rust_cast (M.read (| dst |));
+                            M.call_closure (|
+                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              []
+                            |)
                           ]
                         |)
                       |) in
@@ -1175,7 +1258,7 @@ Module ptr.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_write : M.IsFunction "core::ptr::write" write.
@@ -1186,7 +1269,7 @@ Module ptr.
       // `dst` cannot overlap `src` because the caller has mutable access
       // to `dst` while `src` is owned by this function.
       unsafe {
-          copy_nonoverlapping(&src as *const T as *const u8, dst as *mut u8, mem::size_of::<T>());
+          copy_nonoverlapping(addr_of!(src) as *const u8, dst as *mut u8, mem::size_of::<T>());
           // We are calling the intrinsic directly to avoid function calls in the generated code.
           intrinsics::forget(src);
       }
@@ -1194,7 +1277,7 @@ Module ptr.
   *)
   Definition write_unaligned (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ dst; src ] =>
+    | [], [ T ], [ dst; src ] =>
       ltac:(M.monadic
         (let dst := M.alloc (| dst |) in
         let src := M.alloc (| src |) in
@@ -1204,7 +1287,7 @@ Module ptr.
               M.call_closure (|
                 M.get_function (| "core::intrinsics::copy_nonoverlapping", [ Ty.path "u8" ] |),
                 [
-                  M.rust_cast (M.read (| M.use (M.alloc (| src |)) |));
+                  M.rust_cast src;
                   M.rust_cast (M.read (| dst |));
                   M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |)
                 ]
@@ -1219,7 +1302,7 @@ Module ptr.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_write_unaligned : M.IsFunction "core::ptr::write_unaligned" write_unaligned.
@@ -1228,9 +1311,13 @@ Module ptr.
   pub unsafe fn read_volatile<T>(src: *const T) -> T {
       // SAFETY: the caller must uphold the safety contract for `volatile_load`.
       unsafe {
-          assert_unsafe_precondition!(
+          ub_checks::assert_unsafe_precondition!(
+              check_language_ub,
               "ptr::read_volatile requires that the pointer argument is aligned and non-null",
-              [T](src: *const T) => is_aligned_and_not_null(src)
+              (
+                  addr: *const () = src as *const (),
+                  align: usize = align_of::<T>(),
+              ) => ub_checks::is_aligned_and_not_null(addr, align)
           );
           intrinsics::volatile_load(src)
       }
@@ -1248,24 +1335,25 @@ Module ptr.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            []
+                          |)
+                        |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (|
-                            "core::intrinsics::const_eval_select",
-                            [
-                              Ty.tuple [ Ty.apply (Ty.path "*const") [] [ T ] ];
-                              Ty.function [ Ty.apply (Ty.path "*const") [] [ T ] ] (Ty.tuple []);
-                              Ty.function [ Ty.apply (Ty.path "*const") [] [ T ] ] (Ty.tuple []);
-                              Ty.tuple []
-                            ]
-                          |),
+                          M.get_function (| "core::ptr::read_volatile.precondition_check", [] |),
                           [
-                            Value.Tuple [ M.read (| src |) ];
-                            M.get_function (| "core::ptr::read_volatile.comptime", [] |);
-                            M.get_function (| "core::ptr::read_volatile.runtime", [] |)
+                            M.rust_cast (M.read (| src |));
+                            M.call_closure (|
+                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              []
+                            |)
                           ]
                         |)
                       |) in
@@ -1280,7 +1368,7 @@ Module ptr.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_read_volatile : M.IsFunction "core::ptr::read_volatile" read_volatile.
@@ -1289,9 +1377,13 @@ Module ptr.
   pub unsafe fn write_volatile<T>(dst: *mut T, src: T) {
       // SAFETY: the caller must uphold the safety contract for `volatile_store`.
       unsafe {
-          assert_unsafe_precondition!(
+          ub_checks::assert_unsafe_precondition!(
+              check_language_ub,
               "ptr::write_volatile requires that the pointer argument is aligned and non-null",
-              [T](dst: *mut T) => is_aligned_and_not_null(dst)
+              (
+                  addr: *mut () = dst as *mut (),
+                  align: usize = align_of::<T>(),
+              ) => ub_checks::is_aligned_and_not_null(addr, align)
           );
           intrinsics::volatile_store(dst, src);
       }
@@ -1310,24 +1402,25 @@ Module ptr.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            []
+                          |)
+                        |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
-                          M.get_function (|
-                            "core::intrinsics::const_eval_select",
-                            [
-                              Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ T ] ];
-                              Ty.function [ Ty.apply (Ty.path "*mut") [] [ T ] ] (Ty.tuple []);
-                              Ty.function [ Ty.apply (Ty.path "*mut") [] [ T ] ] (Ty.tuple []);
-                              Ty.tuple []
-                            ]
-                          |),
+                          M.get_function (| "core::ptr::write_volatile.precondition_check", [] |),
                           [
-                            Value.Tuple [ M.read (| dst |) ];
-                            M.get_function (| "core::ptr::write_volatile.comptime", [] |);
-                            M.get_function (| "core::ptr::write_volatile.runtime", [] |)
+                            M.rust_cast (M.read (| dst |));
+                            M.call_closure (|
+                              M.get_function (| "core::mem::align_of", [ T ] |),
+                              []
+                            |)
                           ]
                         |)
                       |) in
@@ -1344,7 +1437,7 @@ Module ptr.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_write_volatile : M.IsFunction "core::ptr::write_volatile" write_volatile.
@@ -1479,7 +1572,7 @@ Module ptr.
           let y = cttz_nonzero(a);
           if x < y { x } else { y }
       };
-      // SAFETY: gcdpow has an upper-bound that’s at most the number of bits in a usize.
+      // SAFETY: gcdpow has an upper-bound that’s at most the number of bits in a `usize`.
       let gcd = unsafe { unchecked_shl(1usize, gcdpow) };
       // SAFETY: gcd is always greater or equal to 1.
       if addr & unsafe { unchecked_sub(gcd, 1) } == 0 {
@@ -1528,7 +1621,7 @@ Module ptr.
   *)
   Definition align_offset (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ p; a ] =>
+    | [], [ T ], [ p; a ] =>
       ltac:(M.monadic
         (let p := M.alloc (| p |) in
         let a := M.alloc (| a |) in
@@ -1553,7 +1646,7 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
-                    [ M.read (| a |); Value.Integer 1 ]
+                    [ M.read (| a |); Value.Integer IntegerKind.Usize 1 ]
                   |)
                 |) in
               let~ _ :=
@@ -1564,7 +1657,9 @@ Module ptr.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.eq (M.read (| stride |)) (Value.Integer 0) |)) in
+                            (M.alloc (|
+                              BinOp.eq (| M.read (| stride |), Value.Integer IntegerKind.Usize 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -1572,7 +1667,7 @@ Module ptr.
                             M.read (|
                               let~ p_mod_a :=
                                 M.alloc (|
-                                  BinOp.Pure.bit_and (M.read (| addr |)) (M.read (| a_minus_one |))
+                                  BinOp.bit_and (M.read (| addr |)) (M.read (| a_minus_one |))
                                 |) in
                               M.return_ (|
                                 M.read (|
@@ -1584,16 +1679,17 @@ Module ptr.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.eq
-                                                  (M.read (| p_mod_a |))
-                                                  (Value.Integer 0)
+                                                BinOp.eq (|
+                                                  M.read (| p_mod_a |),
+                                                  Value.Integer IntegerKind.Usize 0
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
-                                          M.alloc (| Value.Integer 0 |)));
+                                          M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                                       fun γ =>
                                         ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
                                     ]
@@ -1622,7 +1718,10 @@ Module ptr.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq (M.read (| a_mod_stride |)) (Value.Integer 0)
+                              BinOp.eq (|
+                                M.read (| a_mod_stride |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1631,7 +1730,7 @@ Module ptr.
                             M.read (|
                               let~ aligned_address :=
                                 M.alloc (|
-                                  BinOp.Pure.bit_and
+                                  BinOp.bit_and
                                     (M.call_closure (|
                                       M.get_function (|
                                         "core::intrinsics::wrapping_add",
@@ -1644,7 +1743,7 @@ Module ptr.
                                         "core::intrinsics::wrapping_sub",
                                         [ Ty.path "usize" ]
                                       |),
-                                      [ Value.Integer 0; M.read (| a |) ]
+                                      [ Value.Integer IntegerKind.Usize 0; M.read (| a |) ]
                                     |))
                                 |) in
                               let~ byte_offset :=
@@ -1661,7 +1760,7 @@ Module ptr.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_function (| "core::intrinsics::assume", [] |),
-                                    [ BinOp.Pure.lt (M.read (| byte_offset |)) (M.read (| a |)) ]
+                                    [ BinOp.lt (| M.read (| byte_offset |), M.read (| a |) |) ]
                                   |)
                                 |) in
                               let~ addr_mod_stride :=
@@ -1684,9 +1783,10 @@ Module ptr.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.eq
-                                                  (M.read (| addr_mod_stride |))
-                                                  (Value.Integer 0)
+                                                BinOp.eq (|
+                                                  M.read (| addr_mod_stride |),
+                                                  Value.Integer IntegerKind.Usize 0
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -1736,7 +1836,7 @@ Module ptr.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.alloc (| BinOp.Pure.lt (M.read (| x |)) (M.read (| y |)) |)) in
+                            M.use (M.alloc (| BinOp.lt (| M.read (| x |), M.read (| y |) |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           x));
@@ -1747,8 +1847,11 @@ Module ptr.
               let~ gcd :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::intrinsics::unchecked_shl", [ Ty.path "usize" ] |),
-                    [ Value.Integer 1; M.read (| gcdpow |) ]
+                    M.get_function (|
+                      "core::intrinsics::unchecked_shl",
+                      [ Ty.path "usize"; Ty.path "u32" ]
+                    |),
+                    [ Value.Integer IntegerKind.Usize 1; M.read (| gcdpow |) ]
                   |)
                 |) in
               let~ _ :=
@@ -1760,17 +1863,18 @@ Module ptr.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (BinOp.Pure.bit_and
+                              BinOp.eq (|
+                                BinOp.bit_and
                                   (M.read (| addr |))
                                   (M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::unchecked_sub",
                                       [ Ty.path "usize" ]
                                     |),
-                                    [ M.read (| gcd |); Value.Integer 1 ]
-                                  |)))
-                                (Value.Integer 0)
+                                    [ M.read (| gcd |); Value.Integer IntegerKind.Usize 1 ]
+                                  |)),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1782,7 +1886,7 @@ Module ptr.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::unchecked_shr",
-                                      [ Ty.path "usize" ]
+                                      [ Ty.path "usize"; Ty.path "u32" ]
                                     |),
                                     [ M.read (| a |); M.read (| gcdpow |) ]
                                   |)
@@ -1794,7 +1898,7 @@ Module ptr.
                                       "core::intrinsics::unchecked_sub",
                                       [ Ty.path "usize" ]
                                     |),
-                                    [ M.read (| a2 |); Value.Integer 1 ]
+                                    [ M.read (| a2 |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |) in
                               let~ s2 :=
@@ -1802,10 +1906,10 @@ Module ptr.
                                   M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::unchecked_shr",
-                                      [ Ty.path "usize" ]
+                                      [ Ty.path "usize"; Ty.path "u32" ]
                                     |),
                                     [
-                                      BinOp.Pure.bit_and
+                                      BinOp.bit_and
                                         (M.read (| stride |))
                                         (M.read (| a_minus_one |));
                                       M.read (| gcdpow |)
@@ -1824,10 +1928,10 @@ Module ptr.
                                       M.call_closure (|
                                         M.get_function (|
                                           "core::intrinsics::unchecked_shr",
-                                          [ Ty.path "usize" ]
+                                          [ Ty.path "usize"; Ty.path "u32" ]
                                         |),
                                         [
-                                          BinOp.Pure.bit_and
+                                          BinOp.bit_and
                                             (M.read (| addr |))
                                             (M.read (| a_minus_one |));
                                           M.read (| gcdpow |)
@@ -1837,7 +1941,7 @@ Module ptr.
                                   |)
                                 |) in
                               M.return_ (|
-                                BinOp.Pure.bit_and
+                                BinOp.bit_and
                                   (M.call_closure (|
                                     M.get_function (|
                                       "core::intrinsics::wrapping_mul",
@@ -1862,7 +1966,7 @@ Module ptr.
               M.get_constant (| "core::num::MAX" |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_align_offset : M.IsFunction "core::ptr::align_offset" align_offset.
@@ -1913,7 +2017,7 @@ Module ptr.
     *)
     Definition mod_inv (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ x; m ] =>
+      | [], [], [ x; m ] =>
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           let m := M.alloc (| m |) in
@@ -1922,7 +2026,7 @@ Module ptr.
               M.alloc (|
                 M.call_closure (|
                   M.get_function (| "core::intrinsics::unchecked_sub", [ Ty.path "usize" ] |),
-                  [ M.read (| m |); Value.Integer 1 ]
+                  [ M.read (| m |); Value.Integer IntegerKind.Usize 1 ]
                 |)
               |) in
             let~ inverse :=
@@ -1932,18 +2036,19 @@ Module ptr.
                     M.SubPointer.get_array_field (|
                       M.get_constant (| "core::ptr::align_offset::mod_inv::INV_TABLE_MOD_16" |),
                       M.alloc (|
-                        BinOp.Wrap.shr
-                          (BinOp.Pure.bit_and
+                        BinOp.Wrap.shr (|
+                          BinOp.bit_and
                             (M.read (| x |))
-                            (BinOp.Wrap.sub
-                              Integer.Usize
-                              (M.read (|
+                            (BinOp.Wrap.sub (|
+                              M.read (|
                                 M.get_constant (|
                                   "core::ptr::align_offset::mod_inv::INV_TABLE_MOD"
                                 |)
-                              |))
-                              (Value.Integer 1)))
-                          (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)),
+                          Value.Integer IntegerKind.I32 1
+                        |)
                       |)
                     |)
                   |))
@@ -1962,7 +2067,7 @@ Module ptr.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ge (M.read (| mod_gate |)) (M.read (| m |))
+                                  BinOp.ge (| M.read (| mod_gate |), M.read (| m |) |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1983,7 +2088,7 @@ Module ptr.
                               [ Ty.path "usize" ]
                             |),
                             [
-                              Value.Integer 2;
+                              Value.Integer IntegerKind.Usize 2;
                               M.call_closure (|
                                 M.get_function (|
                                   "core::intrinsics::wrapping_mul",
@@ -2034,9 +2139,9 @@ Module ptr.
                     ]
                   |)))
               |) in
-            M.alloc (| BinOp.Pure.bit_and (M.read (| inverse |)) (M.read (| m_minus_one |)) |)
+            M.alloc (| BinOp.bit_and (M.read (| inverse |)) (M.read (| m_minus_one |)) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_mod_inv : M.IsFunction "core::ptr::align_offset::mod_inv" mod_inv.
@@ -2048,19 +2153,19 @@ Module ptr.
             (M.alloc (|
               Value.Array
                 [
-                  Value.Integer 1;
-                  Value.Integer 11;
-                  Value.Integer 13;
-                  Value.Integer 7;
-                  Value.Integer 9;
-                  Value.Integer 3;
-                  Value.Integer 5;
-                  Value.Integer 15
+                  Value.Integer IntegerKind.U8 1;
+                  Value.Integer IntegerKind.U8 11;
+                  Value.Integer IntegerKind.U8 13;
+                  Value.Integer IntegerKind.U8 7;
+                  Value.Integer IntegerKind.U8 9;
+                  Value.Integer IntegerKind.U8 3;
+                  Value.Integer IntegerKind.U8 5;
+                  Value.Integer IntegerKind.U8 15
                 ]
             |))).
       
       Definition value_INV_TABLE_MOD : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
     End mod_inv.
   End align_offset.
   
@@ -2075,8 +2180,8 @@ Module ptr.
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
-        BinOp.Pure.eq (M.read (| a |)) (M.read (| b |))))
-    | _, _, _ => M.impossible
+        BinOp.eq (| M.read (| a |), M.read (| b |) |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_eq : M.IsFunction "core::ptr::eq" eq.
@@ -2092,11 +2197,37 @@ Module ptr.
       ltac:(M.monadic
         (let p := M.alloc (| p |) in
         let q := M.alloc (| q |) in
-        BinOp.Pure.eq (M.rust_cast (M.read (| p |))) (M.rust_cast (M.read (| q |)))))
-    | _, _, _ => M.impossible
+        BinOp.eq (| M.rust_cast (M.read (| p |)), M.rust_cast (M.read (| q |)) |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_addr_eq : M.IsFunction "core::ptr::addr_eq" addr_eq.
+  
+  (*
+  pub fn fn_addr_eq<T: FnPtr, U: FnPtr>(f: T, g: U) -> bool {
+      f.addr() == g.addr()
+  }
+  *)
+  Definition fn_addr_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; U ], [ f; g ] =>
+      ltac:(M.monadic
+        (let f := M.alloc (| f |) in
+        let g := M.alloc (| g |) in
+        BinOp.eq (|
+          M.call_closure (|
+            M.get_trait_method (| "core::marker::FnPtr", T, [], "addr", [] |),
+            [ M.read (| f |) ]
+          |),
+          M.call_closure (|
+            M.get_trait_method (| "core::marker::FnPtr", U, [], "addr", [] |),
+            [ M.read (| g |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom Function_fn_addr_eq : M.IsFunction "core::ptr::fn_addr_eq" fn_addr_eq.
   
   (*
   pub fn hash<T: ?Sized, S: hash::Hasher>(hashee: *const T, into: &mut S) {
@@ -2126,7 +2257,7 @@ Module ptr.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_hash : M.IsFunction "core::ptr::hash" hash.
@@ -2146,16 +2277,17 @@ Module ptr.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
               [ M.read (| M.read (| self |) |) ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_trait_method (| "core::marker::FnPtr", F, [], "addr", [] |),
               [ M.read (| M.read (| other |) |) ]
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2213,7 +2345,7 @@ Module ptr.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2263,7 +2395,7 @@ Module ptr.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2301,7 +2433,7 @@ Module ptr.
                 |))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2339,7 +2471,7 @@ Module ptr.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2377,7 +2509,7 @@ Module ptr.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

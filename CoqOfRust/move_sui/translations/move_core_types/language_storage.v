@@ -2,9 +2,11 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module language_storage.
-  Definition value_CODE_TAG : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
+  Definition value_CODE_TAG : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
   
-  Definition value_RESOURCE_TAG : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+  Definition value_RESOURCE_TAG : Value.t :=
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
   
   Definition value_CORE_CODE_ADDRESS : Value.t :=
     M.run ltac:(M.monadic (M.get_constant (| "move_core_types::account_address::ONE" |))).
@@ -35,54 +37,57 @@ Module language_storage.
                 []
               |),
               [
-                (* ClosureFnPointer(Normal) *)
+                (* ClosureFnPointer(Safe) *)
                 M.pointer_coercion
                   (M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::arith::Add",
-                                      Ty.apply
-                                        (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                                        []
-                                        [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                        ],
-                                      [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::arith::Add",
                                         Ty.apply
                                           (Ty.path "move_core_types::gas_algebra::GasQuantity")
                                           []
                                           [
                                             Ty.path
                                               "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                          ]
-                                      ],
-                                      "add",
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.get_constant (|
-                                          "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE"
+                                          ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                            ]
+                                        ],
+                                        "add",
+                                        []
+                                      |),
+                                      [
+                                        M.read (|
+                                          M.get_constant (|
+                                            "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE"
+                                          |)
+                                        |);
+                                        M.read (|
+                                          M.get_constant (|
+                                            "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE"
+                                          |)
                                         |)
-                                      |);
-                                      M.read (|
-                                        M.get_constant (|
-                                          "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE"
-                                        |)
-                                      |)
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end)))
               ]
             |)
@@ -209,7 +214,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 0;
+                            Value.Integer IntegerKind.U32 0;
                             M.read (| Value.String "bool" |)
                           ]
                         |)
@@ -233,7 +238,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 1;
+                            Value.Integer IntegerKind.U32 1;
                             M.read (| Value.String "u8" |)
                           ]
                         |)
@@ -257,7 +262,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 2;
+                            Value.Integer IntegerKind.U32 2;
                             M.read (| Value.String "u64" |)
                           ]
                         |)
@@ -281,7 +286,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 3;
+                            Value.Integer IntegerKind.U32 3;
                             M.read (| Value.String "u128" |)
                           ]
                         |)
@@ -305,7 +310,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 4;
+                            Value.Integer IntegerKind.U32 4;
                             M.read (| Value.String "address" |)
                           ]
                         |)
@@ -329,7 +334,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 5;
+                            Value.Integer IntegerKind.U32 5;
                             M.read (| Value.String "signer" |)
                           ]
                         |)
@@ -363,7 +368,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 6;
+                            Value.Integer IntegerKind.U32 6;
                             M.read (| Value.String "vector" |);
                             M.read (| __field0 |)
                           ]
@@ -398,7 +403,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 7;
+                            Value.Integer IntegerKind.U32 7;
                             M.read (| Value.String "struct" |);
                             M.read (| __field0 |)
                           ]
@@ -423,7 +428,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 8;
+                            Value.Integer IntegerKind.U32 8;
                             M.read (| Value.String "u16" |)
                           ]
                         |)
@@ -447,7 +452,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 9;
+                            Value.Integer IntegerKind.U32 9;
                             M.read (| Value.String "u32" |)
                           ]
                         |)
@@ -471,7 +476,7 @@ Module language_storage.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "TypeTag" |);
-                            Value.Integer 10;
+                            Value.Integer IntegerKind.U32 10;
                             M.read (| Value.String "u256" |)
                           ]
                         |)
@@ -479,7 +484,7 @@ Module language_storage.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -522,7 +527,7 @@ Module language_storage.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -560,19 +565,19 @@ Module language_storage.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "StructTag" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (BinOp.Wrap.add
-                                    Integer.Usize
-                                    (BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.rust_cast (Value.Bool false))
-                                      (Value.Integer 1))
-                                    (Value.Integer 1))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  BinOp.Wrap.add (|
+                                    BinOp.Wrap.add (|
+                                      M.rust_cast (Value.Bool false),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -852,7 +857,7 @@ Module language_storage.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -893,7 +898,7 @@ Module language_storage.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -931,13 +936,13 @@ Module language_storage.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "ResourceKey" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -1099,7 +1104,7 @@ Module language_storage.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1140,7 +1145,7 @@ Module language_storage.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1178,13 +1183,13 @@ Module language_storage.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "ModuleId" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -1346,7 +1351,7 @@ Module language_storage.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1387,7 +1392,7 @@ Module language_storage.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1536,11 +1541,7 @@ Module language_storage.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Vector" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -1560,11 +1561,7 @@ Module language_storage.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Struct" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -1624,7 +1621,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1657,7 +1654,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1667,7 +1664,7 @@ Module language_storage.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1679,7 +1676,7 @@ Module language_storage.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -1710,25 +1707,35 @@ Module language_storage.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
+                                    (Ty.path "&")
                                     []
                                     [
-                                      Ty.path "move_core_types::language_storage::TypeTag";
-                                      Ty.path "alloc::alloc::Global"
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::language_storage::TypeTag";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ],
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                      (Ty.path "&")
                                       []
                                       [
-                                        Ty.path "move_core_types::language_storage::TypeTag";
-                                        Ty.path "alloc::alloc::Global"
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path "move_core_types::language_storage::TypeTag";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -1756,25 +1763,35 @@ Module language_storage.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
+                                    (Ty.path "&")
                                     []
                                     [
-                                      Ty.path "move_core_types::language_storage::StructTag";
-                                      Ty.path "alloc::alloc::Global"
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::language_storage::StructTag";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ],
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                      (Ty.path "&")
                                       []
                                       [
-                                        Ty.path "move_core_types::language_storage::StructTag";
-                                        Ty.path "alloc::alloc::Global"
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path "move_core_types::language_storage::StructTag";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -1784,7 +1801,7 @@ Module language_storage.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1806,7 +1823,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1820,7 +1837,7 @@ Module language_storage.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -1886,7 +1903,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1896,17 +1913,6 @@ Module language_storage.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_language_storage_TypeTag.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_language_storage_TypeTag.
-    Definition Self : Ty.t := Ty.path "move_core_types::language_storage::TypeTag".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_language_storage_TypeTag.
   
   Module Impl_core_cmp_Eq_for_move_core_types_language_storage_TypeTag.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::TypeTag".
@@ -1934,7 +1940,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2122,7 +2128,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2144,7 +2150,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2154,7 +2160,7 @@ Module language_storage.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2270,13 +2276,13 @@ Module language_storage.
                           "partial_cmp",
                           []
                         |),
-                        [ __self_tag; __arg1_tag ]
+                        [ __self_discr; __arg1_discr ]
                       |)
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2298,7 +2304,7 @@ Module language_storage.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2308,7 +2314,7 @@ Module language_storage.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2322,7 +2328,7 @@ Module language_storage.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |),
               [
@@ -2420,7 +2426,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2460,7 +2466,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_string :
@@ -2508,7 +2514,7 @@ Module language_storage.
           Value.StructRecord
             "move_core_types::language_storage::to_canonical_display::CanonicalDisplay"
             [ ("data", M.read (| self |)); ("with_prefix", M.read (| with_prefix |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_display :
@@ -2686,23 +2692,24 @@ Module language_storage.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "move_core_types::gas_algebra::GasQuantity")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                            ],
+                                          "new",
                                           []
-                                          [
-                                            Ty.path
-                                              "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                          ],
-                                        "new",
-                                        []
-                                      |),
-                                      [ Value.Integer 0 ]
-                                    |)
-                                  |)
-                                | _ => M.impossible (||)
+                                        |),
+                                        [ Value.Integer IntegerKind.U64 0 ]
+                                      |)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -2750,7 +2757,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_abstract_size_for_gas_metering :
@@ -2777,7 +2784,7 @@ Module language_storage.
             M.get_function (| "move_core_types::parser::parse_type_tag", [] |),
             [ M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2830,42 +2837,34 @@ Module language_storage.
               M.read (| f |);
               M.read (| Value.String "StructTag" |);
               M.read (| Value.String "address" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::language_storage::StructTag",
-                  "address"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::language_storage::StructTag",
+                "address"
+              |);
               M.read (| Value.String "module" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::language_storage::StructTag",
-                  "module"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::language_storage::StructTag",
+                "module"
+              |);
               M.read (| Value.String "name" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::language_storage::StructTag",
+                "name"
+              |);
+              M.read (| Value.String "type_params" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::language_storage::StructTag",
-                  "name"
-                |));
-              M.read (| Value.String "type_params" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::language_storage::StructTag",
-                    "type_params"
-                  |)
-                |))
+                  "type_params"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3004,7 +3003,7 @@ Module language_storage.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3112,7 +3111,7 @@ Module language_storage.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3122,17 +3121,6 @@ Module language_storage.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_language_storage_StructTag.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_language_storage_StructTag.
-    Definition Self : Ty.t := Ty.path "move_core_types::language_storage::StructTag".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_language_storage_StructTag.
   
   Module Impl_core_cmp_Eq_for_move_core_types_language_storage_StructTag.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::StructTag".
@@ -3167,7 +3155,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3266,7 +3254,7 @@ Module language_storage.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3448,7 +3436,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3603,7 +3591,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3639,35 +3627,36 @@ Module language_storage.
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u8" ];
-                                Ty.path "alloc::alloc::Global"
-                              ],
-                            "new",
+                    M.read (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
                             []
-                          |),
-                          [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    M.get_constant (|
-                                      "move_core_types::language_storage::RESOURCE_TAG"
-                                    |)
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "u8" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          "new",
+                          []
+                        |),
+                        [
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (|
+                                  M.get_constant (|
+                                    "move_core_types::language_storage::RESOURCE_TAG"
                                   |)
-                                ]
-                            |)
-                          ]
-                        |)
-                      |))
+                                |)
+                              ]
+                          |)
+                        ]
+                      |)
+                    |)
                   ]
                 |)
               |) in
@@ -3716,7 +3705,7 @@ Module language_storage.
               |) in
             key
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_access_vector :
@@ -3832,7 +3821,7 @@ Module language_storage.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_ascii_string :
@@ -3948,7 +3937,7 @@ Module language_storage.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_std_string :
@@ -3996,7 +3985,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_module_id : M.IsAssociatedFunction Self "module_id" module_id.
@@ -4027,7 +4016,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_string :
@@ -4079,7 +4068,7 @@ Module language_storage.
           Value.StructRecord
             "move_core_types::language_storage::to_canonical_display::CanonicalDisplay"
             [ ("data", M.read (| self |)); ("with_prefix", M.read (| with_prefix |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_display :
@@ -4305,37 +4294,29 @@ Module language_storage.
                       "new",
                       []
                     |),
-                    [ Value.Integer 0 ]
+                    [ Value.Integer IntegerKind.U64 0 ]
                   |);
                   M.closure
                     (fun γ =>
                       ltac:(M.monadic
                         match γ with
                         | [ α0; α1 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let accum := M.copy (| γ |) in
-                                  M.match_operator (|
-                                    M.alloc (| α1 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let val := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::arith::Add",
-                                              Ty.apply
-                                                (Ty.path
-                                                  "move_core_types::gas_algebra::GasQuantity")
-                                                []
-                                                [
-                                                  Ty.path
-                                                    "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                                ],
-                                              [
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let accum := M.copy (| γ |) in
+                                    M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let val := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::arith::Add",
                                                 Ty.apply
                                                   (Ty.path
                                                     "move_core_types::gas_algebra::GasQuantity")
@@ -4343,35 +4324,44 @@ Module language_storage.
                                                   [
                                                     Ty.path
                                                       "move_core_types::gas_algebra::AbstractMemoryUnit"
-                                                  ]
-                                              ],
-                                              "add",
-                                              []
-                                            |),
-                                            [
-                                              M.read (| accum |);
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path
-                                                    "move_core_types::language_storage::TypeTag",
-                                                  "abstract_size_for_gas_metering",
-                                                  []
-                                                |),
-                                                [ M.read (| val |) ]
-                                              |)
-                                            ]
-                                          |)))
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                                  ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "move_core_types::gas_algebra::GasQuantity")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_core_types::gas_algebra::AbstractMemoryUnit"
+                                                    ]
+                                                ],
+                                                "add",
+                                                []
+                                              |),
+                                              [
+                                                M.read (| accum |);
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path
+                                                      "move_core_types::language_storage::TypeTag",
+                                                    "abstract_size_for_gas_metering",
+                                                    []
+                                                  |),
+                                                  [ M.read (| val |) ]
+                                                |)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_abstract_size_for_gas_metering :
@@ -4398,7 +4388,7 @@ Module language_storage.
             M.get_function (| "move_core_types::parser::parse_struct_tag", [] |),
             [ M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4444,26 +4434,22 @@ Module language_storage.
               M.read (| f |);
               M.read (| Value.String "ResourceKey" |);
               M.read (| Value.String "address" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::language_storage::ResourceKey",
+                "address"
+              |);
+              M.read (| Value.String "type_" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::language_storage::ResourceKey",
-                  "address"
-                |));
-              M.read (| Value.String "type_" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::language_storage::ResourceKey",
-                    "type_"
-                  |)
-                |))
+                  "type_"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4540,7 +4526,7 @@ Module language_storage.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4602,7 +4588,7 @@ Module language_storage.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4612,17 +4598,6 @@ Module language_storage.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_language_storage_ResourceKey.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_language_storage_ResourceKey.
-    Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ResourceKey".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_language_storage_ResourceKey.
   
   Module Impl_core_cmp_Eq_for_move_core_types_language_storage_ResourceKey.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ResourceKey".
@@ -4650,7 +4625,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4709,7 +4684,7 @@ Module language_storage.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4795,7 +4770,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4875,7 +4850,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4906,7 +4881,7 @@ Module language_storage.
               "address"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
@@ -4926,7 +4901,7 @@ Module language_storage.
             "move_core_types::language_storage::ResourceKey",
             "type_"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_type_ : M.IsAssociatedFunction Self "type_" type_.
@@ -4944,7 +4919,7 @@ Module language_storage.
           Value.StructRecord
             "move_core_types::language_storage::ResourceKey"
             [ ("address", M.read (| address |)); ("type_", M.read (| type_ |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -4985,26 +4960,22 @@ Module language_storage.
               M.read (| f |);
               M.read (| Value.String "ModuleId" |);
               M.read (| Value.String "address" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::language_storage::ModuleId",
+                "address"
+              |);
+              M.read (| Value.String "name" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::language_storage::ModuleId",
-                  "address"
-                |));
-              M.read (| Value.String "name" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::language_storage::ModuleId",
-                    "name"
-                  |)
-                |))
+                  "name"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5081,7 +5052,7 @@ Module language_storage.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5143,7 +5114,7 @@ Module language_storage.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5153,17 +5124,6 @@ Module language_storage.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("hash", InstanceField.Method hash) ].
   End Impl_core_hash_Hash_for_move_core_types_language_storage_ModuleId.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_language_storage_ModuleId.
-    Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ModuleId".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_language_storage_ModuleId.
   
   Module Impl_core_cmp_Eq_for_move_core_types_language_storage_ModuleId.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ModuleId".
@@ -5191,7 +5151,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5250,7 +5210,7 @@ Module language_storage.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5336,7 +5296,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5416,7 +5376,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5462,7 +5422,7 @@ Module language_storage.
                 |)
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5491,7 +5451,7 @@ Module language_storage.
           Value.StructRecord
             "move_core_types::language_storage::ModuleId"
             [ ("address", M.read (| address |)); ("name", M.read (| name |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -5522,7 +5482,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_name : M.IsAssociatedFunction Self "name" name.
@@ -5542,7 +5502,7 @@ Module language_storage.
             "move_core_types::language_storage::ModuleId",
             "address"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_address : M.IsAssociatedFunction Self "address" address.
@@ -5569,35 +5529,34 @@ Module language_storage.
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u8" ];
-                                Ty.path "alloc::alloc::Global"
-                              ],
-                            "new",
+                    M.read (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
                             []
-                          |),
-                          [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    M.get_constant (|
-                                      "move_core_types::language_storage::CODE_TAG"
-                                    |)
-                                  |)
-                                ]
-                            |)
-                          ]
-                        |)
-                      |))
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "u8" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          "new",
+                          []
+                        |),
+                        [
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (|
+                                  M.get_constant (| "move_core_types::language_storage::CODE_TAG" |)
+                                |)
+                              ]
+                          |)
+                        ]
+                      |)
+                    |)
                   ]
                 |)
               |) in
@@ -5646,7 +5605,7 @@ Module language_storage.
               |) in
             key
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_access_vector :
@@ -5678,7 +5637,7 @@ Module language_storage.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_string :
@@ -5717,7 +5676,7 @@ Module language_storage.
           Value.StructRecord
             "move_core_types::language_storage::to_canonical_display::IdDisplay"
             [ ("id", M.read (| self |)); ("with_prefix", M.read (| with_prefix |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_canonical_display :
@@ -5732,76 +5691,81 @@ Module language_storage.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            let~ res :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (| "alloc::fmt::format", [] |),
-                  [
+          M.call_closure (|
+            M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+            [
+              M.read (|
+                let~ res :=
+                  M.alloc (|
                     M.call_closure (|
-                      M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                      M.get_function (| "alloc::fmt::format", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "0x" |); M.read (| Value.String "::" |) ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "alloc::string::String" ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path
-                                            "move_core_types::account_address::AccountAddress",
-                                          "short_str_lossless",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "move_core_types::language_storage::ModuleId",
-                                            "address"
-                                          |)
-                                        ]
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "new_v1",
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "0x" |); M.read (| Value.String "::" |) ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "alloc::string::String" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_core_types::account_address::AccountAddress",
+                                            "short_str_lossless",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "move_core_types::language_storage::ModuleId",
+                                              "address"
+                                            |)
+                                          ]
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "move_core_types::identifier::Identifier" ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_core_types::language_storage::ModuleId",
-                                      "name"
-                                    |)
-                                  ]
-                                |)
-                              ]
-                          |))
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "move_core_types::identifier::Identifier" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "move_core_types::language_storage::ModuleId",
+                                        "name"
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
+                          ]
+                        |)
                       ]
                     |)
-                  ]
-                |)
-              |) in
-            res
+                  |) in
+                res
+              |)
+            ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_short_str_lossless :
@@ -5829,39 +5793,36 @@ Module language_storage.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.associated ]
-                            |),
-                            [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_core_types::language_storage::ModuleId",
-                                    "to_canonical_display",
-                                    []
-                                  |),
-                                  [ M.read (| self |); Value.Bool false ]
-                                |)
+                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.associated ]
+                          |),
+                          [
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::language_storage::ModuleId",
+                                  "to_canonical_display",
+                                  []
+                                |),
+                                [ M.read (| self |); Value.Bool false ]
                               |)
-                            ]
-                          |)
-                        ]
-                    |))
+                            |)
+                          ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5935,77 +5896,73 @@ Module language_storage.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "0x" |);
-                                          M.read (| Value.String "::" |);
-                                          M.read (| Value.String "::" |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "alloc::string::String" ]
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "move_core_types::account_address::AccountAddress",
-                                                    "short_str_lossless",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "move_core_types::language_storage::StructTag",
-                                                      "address"
-                                                    |)
-                                                  ]
-                                                |)
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "0x" |);
+                                        M.read (| Value.String "::" |);
+                                        M.read (| Value.String "::" |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "alloc::string::String" ]
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_core_types::account_address::AccountAddress",
+                                                  "short_str_lossless",
+                                                  []
+                                                |),
+                                                [
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "move_core_types::language_storage::StructTag",
+                                                    "address"
+                                                  |)
+                                                ]
                                               |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "move_core_types::identifier::Identifier" ]
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "move_core_types::language_storage::StructTag",
-                                                "module"
-                                              |)
-                                            ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [ Ty.path "move_core_types::identifier::Identifier" ]
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "move_core_types::language_storage::StructTag",
-                                                "name"
-                                              |)
-                                            ]
-                                          |)
-                                        ]
-                                    |))
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "move_core_types::identifier::Identifier" ]
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "move_core_types::language_storage::StructTag",
+                                              "module"
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "move_core_types::identifier::Identifier" ]
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "move_core_types::language_storage::StructTag",
+                                              "name"
+                                            |)
+                                          ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -6144,11 +6101,9 @@ Module language_storage.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array [ M.read (| Value.String "<" |) ]
-                                              |))
+                                            M.alloc (|
+                                              Value.Array [ M.read (| Value.String "<" |) ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -6237,34 +6192,30 @@ Module language_storage.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array [ M.read (| Value.String "" |) ]
-                                              |));
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::rt::Argument",
-                                                        "new_display",
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "&")
-                                                            []
-                                                            [
-                                                              Ty.path
-                                                                "move_core_types::language_storage::TypeTag"
-                                                            ]
-                                                        ]
-                                                      |),
-                                                      [ first_ty ]
-                                                    |)
-                                                  ]
-                                              |))
+                                            M.alloc (|
+                                              Value.Array [ M.read (| Value.String "" |) ]
+                                            |);
+                                            M.alloc (|
+                                              Value.Array
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::fmt::rt::Argument",
+                                                      "new_display",
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "move_core_types::language_storage::TypeTag"
+                                                          ]
+                                                      ]
+                                                    |),
+                                                    [ first_ty ]
+                                                  |)
+                                                ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -6395,7 +6346,7 @@ Module language_storage.
                                               |)
                                             ]
                                           |);
-                                          Value.Integer 1
+                                          Value.Integer IntegerKind.Usize 1
                                         ]
                                       |)
                                     ]
@@ -6486,40 +6437,36 @@ Module language_storage.
                                                                       []
                                                                     |),
                                                                     [
-                                                                      (* Unsize *)
-                                                                      M.pointer_coercion
-                                                                        (M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.read (|
-                                                                                Value.String ", "
-                                                                              |)
-                                                                            ]
-                                                                        |));
-                                                                      (* Unsize *)
-                                                                      M.pointer_coercion
-                                                                        (M.alloc (|
-                                                                          Value.Array
-                                                                            [
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "new_display",
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path "&")
-                                                                                      []
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "move_core_types::language_storage::TypeTag"
-                                                                                      ]
-                                                                                  ]
-                                                                                |),
-                                                                                [ ty ]
-                                                                              |)
-                                                                            ]
-                                                                        |))
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String ", "
+                                                                            |)
+                                                                          ]
+                                                                      |);
+                                                                      M.alloc (|
+                                                                        Value.Array
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::rt::Argument",
+                                                                                "new_display",
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path "&")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "move_core_types::language_storage::TypeTag"
+                                                                                    ]
+                                                                                ]
+                                                                              |),
+                                                                              [ ty ]
+                                                                            |)
+                                                                          ]
+                                                                      |)
                                                                     ]
                                                                   |)
                                                                 ]
@@ -6623,11 +6570,9 @@ Module language_storage.
                                             []
                                           |),
                                           [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array [ M.read (| Value.String ">" |) ]
-                                              |))
+                                            M.alloc (|
+                                              Value.Array [ M.read (| Value.String ">" |) ]
+                                            |)
                                           ]
                                         |)
                                       ]
@@ -6693,7 +6638,7 @@ Module language_storage.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6760,38 +6705,34 @@ Module language_storage.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::language_storage::StructTag";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ]
-                                          ]
-                                        |),
-                                        [ s ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::language_storage::StructTag";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ]
+                                        ]
+                                      |),
+                                      [ s ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6823,44 +6764,40 @@ Module language_storage.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "vector<" |);
-                                      M.read (| Value.String ">" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::language_storage::TypeTag";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ]
-                                          ]
-                                        |),
-                                        [ ty ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "vector<" |);
+                                    M.read (| Value.String ">" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::language_storage::TypeTag";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ]
+                                        ]
+                                      |),
+                                      [ ty ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -6886,11 +6823,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6918,11 +6851,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6950,11 +6879,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6982,11 +6907,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |) ]
                           |)
                         ]
                       |)
@@ -7014,11 +6935,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |) ]
                           |)
                         ]
                       |)
@@ -7046,11 +6963,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |) ]
                           |)
                         ]
                       |)
@@ -7078,11 +6991,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |) ]
                           |)
                         ]
                       |)
@@ -7110,11 +7019,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |) ]
                           |)
                         ]
                       |)
@@ -7142,11 +7047,7 @@ Module language_storage.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |) ]
                           |)
                         ]
                       |)
@@ -7154,7 +7055,7 @@ Module language_storage.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7186,62 +7087,58 @@ Module language_storage.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array [ M.read (| Value.String "0x" |); M.read (| Value.String "/" |) ]
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "alloc::string::String" ]
-                            |),
-                            [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_core_types::account_address::AccountAddress",
-                                    "short_str_lossless",
-                                    []
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "move_core_types::language_storage::ResourceKey",
-                                      "address"
-                                    |)
-                                  ]
-                                |)
+                  M.alloc (|
+                    Value.Array [ M.read (| Value.String "0x" |); M.read (| Value.String "/" |) ]
+                  |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "alloc::string::String" ]
+                          |),
+                          [
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "move_core_types::account_address::AccountAddress",
+                                  "short_str_lossless",
+                                  []
+                                |),
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "move_core_types::language_storage::ResourceKey",
+                                    "address"
+                                  |)
+                                ]
                               |)
-                            ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "move_core_types::language_storage::StructTag" ]
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "move_core_types::language_storage::ResourceKey",
-                                "type_"
-                              |)
-                            ]
-                          |)
-                        ]
-                    |))
+                            |)
+                          ]
+                        |);
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "move_core_types::language_storage::StructTag" ]
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "move_core_types::language_storage::ResourceKey",
+                              "type_"
+                            |)
+                          ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7283,7 +7180,7 @@ Module language_storage.
                 [ M.read (| t |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

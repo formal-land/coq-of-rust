@@ -30,35 +30,31 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (| Value.Array [ M.read (| Value.String "Circle of radius " |) ] |));
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::rt::Argument",
-                            "new_display",
-                            [ Ty.path "i32" ]
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "converting_to_string::Circle",
-                              "radius"
-                            |)
-                          ]
-                        |)
-                      ]
-                  |))
+                M.alloc (| Value.Array [ M.read (| Value.String "Circle of radius " |) ] |);
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::rt::Argument",
+                          "new_display",
+                          [ Ty.path "i32" ]
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "converting_to_string::Circle",
+                            "radius"
+                          |)
+                        ]
+                      |)
+                    ]
+                |)
               ]
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -82,7 +78,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ circle :=
           M.alloc (|
-            Value.StructRecord "converting_to_string::Circle" [ ("radius", Value.Integer 6) ]
+            Value.StructRecord
+              "converting_to_string::Circle"
+              [ ("radius", Value.Integer IntegerKind.I32 6) ]
           |) in
         let~ _ :=
           M.alloc (|
@@ -99,7 +97,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "converting_to_string::main" main.

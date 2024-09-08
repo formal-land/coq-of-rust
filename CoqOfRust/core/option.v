@@ -35,114 +35,6 @@ Module option.
         (* Instance *) [].
   End Impl_core_marker_Copy_where_core_marker_Copy_T_for_core_option_Option_T.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_option_Option_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
-    
-    (* PartialOrd *)
-    Definition partial_cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match ε, τ, α with
-      | [], [], [ self; other ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
-          M.read (|
-            let~ __self_tag :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |) in
-            let~ __arg1_tag :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                  |),
-                  [ M.read (| other |) ]
-                |)
-              |) in
-            M.match_operator (|
-              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let γ0_0 := M.read (| γ0_0 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_0,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let __self_0 := M.alloc (| γ2_0 |) in
-                    let γ0_1 := M.read (| γ0_1 |) in
-                    let γ2_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ0_1,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let __arg1_0 := M.alloc (| γ2_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::cmp::PartialOrd",
-                          T,
-                          [ T ],
-                          "partial_cmp",
-                          []
-                        |),
-                        [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::cmp::PartialOrd",
-                          Ty.path "isize",
-                          [ Ty.path "isize" ],
-                          "partial_cmp",
-                          []
-                        |),
-                        [ __self_tag; __arg1_tag ]
-                      |)
-                    |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      forall (T : Ty.t),
-      M.IsTraitInstance
-        "core::cmp::PartialOrd"
-        (Self T)
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_option_Option_T.
-  
-  Module Impl_core_marker_StructuralEq_for_core_option_Option_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
-    
-    Axiom Implements :
-      forall (T : Ty.t),
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        (Self T)
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_core_option_Option_T.
-  
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_option_Option_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
     
@@ -164,7 +56,7 @@ Module option.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -176,102 +68,6 @@ Module option.
         (* Instance *)
         [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq T)) ].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_option_Option_T.
-  
-  Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_option_Option_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
-    
-    (* Ord *)
-    Definition cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match ε, τ, α with
-      | [], [], [ self; other ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let other := M.alloc (| other |) in
-          M.read (|
-            let~ __self_tag :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |) in
-            let~ __arg1_tag :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
-                  |),
-                  [ M.read (| other |) ]
-                |)
-              |) in
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
-                    M.match_operator (|
-                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "core::option::Option::Some",
-                                0
-                              |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
-                      ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let cmp := M.copy (| γ |) in
-                    cmp))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      forall (T : Ty.t),
-      M.IsTraitInstance
-        "core::cmp::Ord"
-        (Self T)
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
-  End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_option_Option_T.
   
   Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_option_Option_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
@@ -319,17 +115,13 @@ Module option.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Some" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Some" |); __self_0 ]
                       |)
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -353,7 +145,7 @@ Module option.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -367,7 +159,7 @@ Module option.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -393,7 +185,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -416,7 +208,7 @@ Module option.
     Definition is_some (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -436,7 +228,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_some :
@@ -490,7 +282,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_some_and :
@@ -505,24 +297,79 @@ Module option.
     Definition is_none (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.not (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::option::Option") [] [ T ],
                 "is_some",
                 []
               |),
               [ M.read (| self |) ]
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_none :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "is_none" (is_none T).
+    
+    (*
+        pub fn is_none_or(self, f: impl FnOnce(T) -> bool) -> bool {
+            match self {
+                None => true,
+                Some(x) => f(x),
+            }
+        }
+    *)
+    Definition is_none_or (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self T in
+      match ε, τ, α with
+      | [], [ impl_FnOnce_T__arrow_bool ], [ self; f ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let f := M.alloc (| f |) in
+          M.read (|
+            M.match_operator (|
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                    M.alloc (| Value.Bool true |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let x := M.copy (| γ0_0 |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::function::FnOnce",
+                          impl_FnOnce_T__arrow_bool,
+                          [ Ty.tuple [ T ] ],
+                          "call_once",
+                          []
+                        |),
+                        [ M.read (| f |); Value.Tuple [ M.read (| x |) ] ]
+                      |)
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_is_none_or :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction (Self T) "is_none_or" (is_none_or T).
     
     (*
         pub const fn as_ref(&self) -> Option<&T> {
@@ -535,7 +382,7 @@ Module option.
     Definition as_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -561,7 +408,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ref :
@@ -579,7 +426,7 @@ Module option.
     Definition as_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -605,7 +452,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_mut :
@@ -625,7 +472,7 @@ Module option.
     Definition as_pin_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -691,7 +538,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_pin_ref :
@@ -713,7 +560,7 @@ Module option.
     Definition as_pin_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -779,7 +626,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_pin_mut :
@@ -787,7 +634,38 @@ Module option.
       M.IsAssociatedFunction (Self T) "as_pin_mut" (as_pin_mut T).
     
     (*
-        pub fn as_slice(&self) -> &[T] {
+        const fn len(&self) -> usize {
+            // Using the intrinsic avoids emitting a branch to get the 0 or 1.
+            let discriminant: isize = crate::intrinsics::discriminant_value(self);
+            discriminant as usize
+        }
+    *)
+    Definition len (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self T in
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            let~ discriminant :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [ Ty.apply (Ty.path "core::option::Option") [] [ T ] ]
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              |) in
+            M.alloc (| M.rust_cast (M.read (| discriminant |)) |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_len : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "len" (len T).
+    
+    (*
+        pub const fn as_slice(&self) -> &[T] {
             // SAFETY: When the `Option` is `Some`, we're using the actual pointer
             // to the payload, with a length of 1, so this is equivalent to
             // `slice::from_ref`, and thus is safe.
@@ -801,7 +679,7 @@ Module option.
             unsafe {
                 slice::from_raw_parts(
                     (self as *const Self).byte_add(core::mem::offset_of!(Self, Some.0)).cast(),
-                    usize::from(self.is_some()),
+                    self.len(),
                 )
             }
         }
@@ -836,41 +714,24 @@ Module option.
                     |),
                     [
                       M.read (| M.use (M.alloc (| M.read (| self |) |)) |);
-                      M.call_closure (|
-                        M.get_function (| "core::hint::must_use", [ Ty.path "usize" ] |),
-                        [
-                          M.read (|
-                            (* `OffsetOf` expression are not handled yet *)
-                            M.alloc (| Value.Tuple [] |)
-                          |)
-                        ]
+                      M.read (|
+                        (* `OffsetOf` expression are not handled yet *) M.alloc (| Value.Tuple [] |)
                       |)
                     ]
                   |)
                 ]
               |);
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::convert::From",
-                  Ty.path "usize",
-                  [ Ty.path "bool" ],
-                  "from",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                  "len",
                   []
                 |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      "is_some",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                ]
+                [ M.read (| self |) ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_slice :
@@ -878,7 +739,7 @@ Module option.
       M.IsAssociatedFunction (Self T) "as_slice" (as_slice T).
     
     (*
-        pub fn as_mut_slice(&mut self) -> &mut [T] {
+        pub const fn as_mut_slice(&mut self) -> &mut [T] {
             // SAFETY: When the `Option` is `Some`, we're using the actual pointer
             // to the payload, with a length of 1, so this is equivalent to
             // `slice::from_mut`, and thus is safe.
@@ -894,7 +755,7 @@ Module option.
             unsafe {
                 slice::from_raw_parts_mut(
                     (self as *mut Self).byte_add(core::mem::offset_of!(Self, Some.0)).cast(),
-                    usize::from(self.is_some()),
+                    self.len(),
                 )
             }
         }
@@ -929,41 +790,24 @@ Module option.
                     |),
                     [
                       M.read (| M.use (M.alloc (| M.read (| self |) |)) |);
-                      M.call_closure (|
-                        M.get_function (| "core::hint::must_use", [ Ty.path "usize" ] |),
-                        [
-                          M.read (|
-                            (* `OffsetOf` expression are not handled yet *)
-                            M.alloc (| Value.Tuple [] |)
-                          |)
-                        ]
+                      M.read (|
+                        (* `OffsetOf` expression are not handled yet *) M.alloc (| Value.Tuple [] |)
                       |)
                     ]
                   |)
                 ]
               |);
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::convert::From",
-                  Ty.path "usize",
-                  [ Ty.path "bool" ],
-                  "from",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                  "len",
                   []
                 |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      "is_some",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                ]
+                [ M.read (| self |) ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_mut_slice :
@@ -981,7 +825,7 @@ Module option.
     Definition expect (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self; msg ] =>
+      | [], [], [ self; msg ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let msg := M.alloc (| msg |) in
@@ -1013,7 +857,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_expect :
@@ -1024,14 +868,14 @@ Module option.
         pub const fn unwrap(self) -> T {
             match self {
                 Some(val) => val,
-                None => panic("called `Option::unwrap()` on a `None` value"),
+                None => unwrap_failed(),
             }
         }
     *)
     Definition unwrap (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -1054,16 +898,15 @@ Module option.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic", [] |),
-                          [ M.read (| Value.String "called `Option::unwrap()` on a `None` value" |)
-                          ]
+                          M.get_function (| "core::option::unwrap_failed", [] |),
+                          []
                         |)
                       |)
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unwrap :
@@ -1106,7 +949,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unwrap_or :
@@ -1168,7 +1011,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unwrap_or_else :
@@ -1223,7 +1066,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unwrap_or_default :
@@ -1232,7 +1075,6 @@ Module option.
     
     (*
         pub const unsafe fn unwrap_unchecked(self) -> T {
-            debug_assert!(self.is_some());
             match self {
                 Some(val) => val,
                 // SAFETY: the safety contract must be upheld by the caller.
@@ -1248,58 +1090,10 @@ Module option.
         : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ _ :=
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                                            "is_some",
-                                            []
-                                          |),
-                                          [ self ]
-                                        |))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (| "core::panicking::panic", [] |),
-                                      [ M.read (| Value.String "assertion failed: self.is_some()" |)
-                                      ]
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
             M.match_operator (|
               self,
               [
@@ -1327,7 +1121,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unwrap_unchecked :
@@ -1388,7 +1182,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
@@ -1443,7 +1237,7 @@ Module option.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_inspect :
@@ -1501,7 +1295,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map_or :
@@ -1571,7 +1365,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map_or_else :
@@ -1616,7 +1410,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_ok_or :
@@ -1677,7 +1471,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_ok_or_else :
@@ -1740,7 +1534,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_deref :
@@ -1809,7 +1603,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_deref_mut :
@@ -1824,7 +1618,7 @@ Module option.
     Definition iter (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructRecord
@@ -1845,7 +1639,7 @@ Module option.
                       |))
                   ])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_iter :
@@ -1881,7 +1675,7 @@ Module option.
                       |))
                   ])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_iter_mut :
@@ -1923,7 +1717,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_and : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "and" (and T).
@@ -1978,7 +1772,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_and_then :
@@ -2066,7 +1860,7 @@ Module option.
                 M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_filter :
@@ -2109,7 +1903,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_or : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "or" (or T).
@@ -2164,7 +1958,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_or_else :
@@ -2222,7 +2016,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_xor : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "xor" (xor T).
@@ -2271,7 +2065,7 @@ Module option.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_insert :
@@ -2337,7 +2131,7 @@ Module option.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_or_insert :
@@ -2374,7 +2168,7 @@ Module option.
               M.get_trait_method (| "core::default::Default", T, [], "default", [] |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_or_insert_default :
@@ -2462,7 +2256,7 @@ Module option.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_or_insert_with :
@@ -2478,7 +2272,7 @@ Module option.
     Definition take (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -2488,7 +2282,7 @@ Module option.
             |),
             [ M.read (| self |); Value.StructTuple "core::option::Option::None" [] ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take :
@@ -2558,7 +2352,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_take_if :
@@ -2573,7 +2367,7 @@ Module option.
     Definition replace (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self; value ] =>
+      | [], [], [ self; value ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
@@ -2587,7 +2381,7 @@ Module option.
               Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_replace :
@@ -2641,7 +2435,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_zip : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "zip" (zip T).
@@ -2708,7 +2502,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_zip_with :
@@ -2770,7 +2564,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unzip :
@@ -2798,7 +2592,7 @@ Module option.
     Definition copied (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2825,7 +2619,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_copied :
@@ -2879,7 +2673,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_cloned :
@@ -2905,7 +2699,7 @@ Module option.
     Definition copied (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -2932,7 +2726,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_copied :
@@ -2986,7 +2780,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_cloned :
@@ -3013,7 +2807,7 @@ Module option.
     Definition transpose (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T E in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -3069,7 +2863,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_transpose :
@@ -3078,20 +2872,41 @@ Module option.
   End Impl_core_option_Option_core_result_Result_T_E.
   
   (*
+  const fn unwrap_failed() -> ! {
+      panic("called `Option::unwrap()` on a `None` value")
+  }
+  *)
+  Definition unwrap_failed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.call_closure (|
+          M.get_function (| "core::panicking::panic", [] |),
+          [ M.read (| Value.String "called `Option::unwrap()` on a `None` value" |) ]
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom Function_unwrap_failed : M.IsFunction "core::option::unwrap_failed" unwrap_failed.
+  
+  (*
   const fn expect_failed(msg: &str) -> ! {
-      panic_str(msg)
+      panic_display(&msg)
   }
   *)
   Definition expect_failed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [ msg ] =>
+    | [], [], [ msg ] =>
       ltac:(M.monadic
         (let msg := M.alloc (| msg |) in
         M.call_closure (|
-          M.get_function (| "core::panicking::panic_str", [] |),
-          [ M.read (| msg |) ]
+          M.get_function (|
+            "core::panicking::panic_display",
+            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+          |),
+          [ msg ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_expect_failed : M.IsFunction "core::option::expect_failed" expect_failed.
@@ -3145,7 +2960,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3215,7 +3030,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3243,7 +3058,7 @@ Module option.
       let Self : Ty.t := Self T in
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::None" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3278,7 +3093,7 @@ Module option.
           Value.StructRecord
             "core::option::IntoIter"
             [ ("inner", Value.StructRecord "core::option::Item" [ ("opt", M.read (| self |)) ]) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3324,7 +3139,7 @@ Module option.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3370,7 +3185,7 @@ Module option.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3402,7 +3217,7 @@ Module option.
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           Value.StructTuple "core::option::Option::Some" [ M.read (| val |) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3437,7 +3252,7 @@ Module option.
             |),
             [ M.read (| o |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3473,7 +3288,7 @@ Module option.
             |),
             [ M.read (| o |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3506,7 +3321,14 @@ Module option.
     
     (*
         fn eq(&self, other: &Self) -> bool {
-            SpecOptionPartialEq::eq(self, other)
+            // Spelling out the cases explicitly optimizes better than
+            // `_ => false`
+            match (self, other) {
+                (Some(l), Some(r)) => *l == *r,
+                (Some(_), None) => false,
+                (None, Some(_)) => false,
+                (None, None) => true,
+            }
         }
     *)
     Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3516,47 +3338,9 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          M.call_closure (|
-            M.get_trait_method (| "core::option::SpecOptionPartialEq", T, [], "eq", [] |),
-            [ M.read (| self |); M.read (| other |) ]
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      forall (T : Ty.t),
-      M.IsTraitInstance
-        "core::cmp::PartialEq"
-        (Self T)
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_option_Option_T.
-  
-  (* Trait *)
-  (* Empty module 'SpecOptionPartialEq' *)
-  
-  Module Impl_core_option_SpecOptionPartialEq_where_core_cmp_PartialEq_T_for_T.
-    Definition Self (T : Ty.t) : Ty.t := T.
-    
-    (*
-        default fn eq(l: &Option<T>, r: &Option<T>) -> bool {
-            match (l, r) {
-                (Some(l), Some(r)) => *l == *r,
-                (None, None) => true,
-                _ => false,
-            }
-        }
-    *)
-    Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self T in
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
           M.read (|
             M.match_operator (|
-              M.alloc (| Value.Tuple [ M.read (| l |); M.read (| r |) ] |),
+              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
                 fun γ =>
                   ltac:(M.monadic
@@ -3589,1296 +3373,274 @@ Module option.
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let γ0_0 := M.read (| γ0_0 |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let γ0_1 := M.read (| γ0_1 |) in
+                    let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
+                    M.alloc (| Value.Bool false |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_0 := M.read (| γ0_0 |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                    let γ0_1 := M.read (| γ0_1 |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_1,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    M.alloc (| Value.Bool false |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_0 := M.read (| γ0_0 |) in
                     let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
                     let γ0_1 := M.read (| γ0_1 |) in
                     let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
-                    M.alloc (| Value.Bool true |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
+                    M.alloc (| Value.Bool true |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
       forall (T : Ty.t),
       M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
+        "core::cmp::PartialEq"
         (Self T)
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-  End Impl_core_option_SpecOptionPartialEq_where_core_cmp_PartialEq_T_for_T.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_option_Option_T.
   
-  Module Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroU8.
-    Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU8".
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_option_Option_T.
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
     
     (*
-                    fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-                        l.map(Self::get).unwrap_or(0) == r.map(Self::get).unwrap_or(0)
-                    }
-    *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroU8" ],
-                    "map",
-                    [
-                      Ty.path "u8";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroU8" ] (Ty.path "u8")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU8",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroU8" ],
-                    "map",
-                    [
-                      Ty.path "u8";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroU8" ] (Ty.path "u8")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU8",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroU8.
-  
-  Module Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroU16.
-    Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU16".
-    
-    (*
-                    fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-                        l.map(Self::get).unwrap_or(0) == r.map(Self::get).unwrap_or(0)
-                    }
-    *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroU16" ],
-                    "map",
-                    [
-                      Ty.path "u16";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroU16" ] (Ty.path "u16")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU16",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroU16" ],
-                    "map",
-                    [
-                      Ty.path "u16";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroU16" ] (Ty.path "u16")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU16",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroU16.
-  
-  Module Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroU32.
-    Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU32".
-    
-    (*
-                    fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-                        l.map(Self::get).unwrap_or(0) == r.map(Self::get).unwrap_or(0)
-                    }
-    *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroU32" ],
-                    "map",
-                    [
-                      Ty.path "u32";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroU32" ] (Ty.path "u32")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU32",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroU32" ],
-                    "map",
-                    [
-                      Ty.path "u32";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroU32" ] (Ty.path "u32")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU32",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroU32.
-  
-  Module Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroU64.
-    Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU64".
-    
-    (*
-                    fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-                        l.map(Self::get).unwrap_or(0) == r.map(Self::get).unwrap_or(0)
-                    }
-    *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroU64" ],
-                    "map",
-                    [
-                      Ty.path "u64";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroU64" ] (Ty.path "u64")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU64",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroU64" ],
-                    "map",
-                    [
-                      Ty.path "u64";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroU64" ] (Ty.path "u64")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU64",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroU64.
-  
-  Module Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroU128.
-    Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU128".
-    
-    (*
-                    fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-                        l.map(Self::get).unwrap_or(0) == r.map(Self::get).unwrap_or(0)
-                    }
-    *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroU128" ],
-                    "map",
-                    [
-                      Ty.path "u128";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroU128" ] (Ty.path "u128")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU128",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u128" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroU128" ],
-                    "map",
-                    [
-                      Ty.path "u128";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroU128" ] (Ty.path "u128")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU128",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroU128.
-  
-  Module Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroUsize.
-    Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroUsize".
-    
-    (*
-                    fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-                        l.map(Self::get).unwrap_or(0) == r.map(Self::get).unwrap_or(0)
-                    }
-    *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
-                    "map",
-                    [
-                      Ty.path "usize";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroUsize" ] (Ty.path "usize")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroUsize",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
-                    "map",
-                    [
-                      Ty.path "usize";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroUsize" ] (Ty.path "usize")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroUsize",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroUsize.
-  
-  Module Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroI8.
-    Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI8".
-    
-    (*
-                    fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-                        l.map(Self::get).unwrap_or(0) == r.map(Self::get).unwrap_or(0)
-                    }
-    *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroI8" ],
-                    "map",
-                    [
-                      Ty.path "i8";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroI8" ] (Ty.path "i8")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroI8",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroI8" ],
-                    "map",
-                    [
-                      Ty.path "i8";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroI8" ] (Ty.path "i8")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroI8",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroI8.
-  
-  Module Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroI16.
-    Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI16".
-    
-    (*
-                    fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-                        l.map(Self::get).unwrap_or(0) == r.map(Self::get).unwrap_or(0)
-                    }
-    *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroI16" ],
-                    "map",
-                    [
-                      Ty.path "i16";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroI16" ] (Ty.path "i16")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroI16",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroI16" ],
-                    "map",
-                    [
-                      Ty.path "i16";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroI16" ] (Ty.path "i16")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroI16",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroI16.
-  
-  Module Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroI32.
-    Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI32".
-    
-    (*
-                    fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-                        l.map(Self::get).unwrap_or(0) == r.map(Self::get).unwrap_or(0)
-                    }
-    *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroI32" ],
-                    "map",
-                    [
-                      Ty.path "i32";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroI32" ] (Ty.path "i32")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroI32",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroI32" ],
-                    "map",
-                    [
-                      Ty.path "i32";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroI32" ] (Ty.path "i32")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroI32",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroI32.
-  
-  Module Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroI64.
-    Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI64".
-    
-    (*
-                    fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-                        l.map(Self::get).unwrap_or(0) == r.map(Self::get).unwrap_or(0)
-                    }
-    *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroI64" ],
-                    "map",
-                    [
-                      Ty.path "i64";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroI64" ] (Ty.path "i64")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroI64",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroI64" ],
-                    "map",
-                    [
-                      Ty.path "i64";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroI64" ] (Ty.path "i64")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroI64",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroI64.
-  
-  Module Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroI128.
-    Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI128".
-    
-    (*
-                    fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-                        l.map(Self::get).unwrap_or(0) == r.map(Self::get).unwrap_or(0)
-                    }
-    *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroI128" ],
-                    "map",
-                    [
-                      Ty.path "i128";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroI128" ] (Ty.path "i128")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroI128",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroI128" ],
-                    "map",
-                    [
-                      Ty.path "i128";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroI128" ] (Ty.path "i128")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroI128",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroI128.
-  
-  Module Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroIsize.
-    Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroIsize".
-    
-    (*
-                    fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-                        l.map(Self::get).unwrap_or(0) == r.map(Self::get).unwrap_or(0)
-                    }
-    *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ l; r ] =>
-        ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroIsize" ],
-                    "map",
-                    [
-                      Ty.path "isize";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroIsize" ] (Ty.path "isize")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroIsize",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
-                "unwrap_or",
-                []
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "core::num::nonzero::NonZeroIsize" ],
-                    "map",
-                    [
-                      Ty.path "isize";
-                      Ty.function [ Ty.path "core::num::nonzero::NonZeroIsize" ] (Ty.path "isize")
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroIsize",
-                      "get",
-                      []
-                    |)
-                  ]
-                |);
-                Value.Integer 0
-              ]
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_num_nonzero_NonZeroIsize.
-  
-  Module Impl_core_option_SpecOptionPartialEq_for_core_ptr_non_null_NonNull_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
-    
-    (*
-        fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-            l.map(Self::as_ptr).unwrap_or_else(|| crate::ptr::null_mut())
-                == r.map(Self::as_ptr).unwrap_or_else(|| crate::ptr::null_mut())
+        fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
+            match (self, other) {
+                (Some(l), Some(r)) => l.partial_cmp(r),
+                (Some(_), None) => Some(cmp::Ordering::Greater),
+                (None, Some(_)) => Some(cmp::Ordering::Less),
+                (None, None) => Some(cmp::Ordering::Equal),
+            }
         }
     *)
-    Definition eq (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition partial_cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [], [], [ l; r ] =>
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
-                "unwrap_or_else",
-                [ Ty.function [ Ty.tuple [] ] (Ty.apply (Ty.path "*mut") [] [ T ]) ]
-              |),
+          (let self := M.alloc (| self |) in
+          let other := M.alloc (| other |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
-                    "map",
-                    [
-                      Ty.apply (Ty.path "*mut") [] [ T ];
-                      Ty.function
-                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
-                        (Ty.apply (Ty.path "*mut") [] [ T ])
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| l |) |);
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                      "as_ptr",
-                      []
-                    |)
-                  ]
-                |);
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.call_closure (|
-                                  M.get_function (| "core::ptr::null_mut", [ T ] |),
-                                  []
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_0 := M.read (| γ0_0 |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let l := M.alloc (| γ2_0 |) in
+                    let γ0_1 := M.read (| γ0_1 |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_1,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let r := M.alloc (| γ2_0 |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::cmp::PartialOrd",
+                          T,
+                          [ T ],
+                          "partial_cmp",
+                          []
+                        |),
+                        [ M.read (| l |); M.read (| r |) ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_0 := M.read (| γ0_0 |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let γ0_1 := M.read (| γ0_1 |) in
+                    let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ Value.StructTuple "core::cmp::Ordering::Greater" [] ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_0 := M.read (| γ0_0 |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                    let γ0_1 := M.read (| γ0_1 |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_1,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ Value.StructTuple "core::cmp::Ordering::Less" [] ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_0 := M.read (| γ0_0 |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                    let γ0_1 := M.read (| γ0_1 |) in
+                    let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "core::option::Option::Some"
+                        [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]
+                    |)))
               ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ],
-                "unwrap_or_else",
-                [ Ty.function [ Ty.tuple [] ] (Ty.apply (Ty.path "*mut") [] [ T ]) ]
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
-                    "map",
-                    [
-                      Ty.apply (Ty.path "*mut") [] [ T ];
-                      Ty.function
-                        [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
-                        (Ty.apply (Ty.path "*mut") [] [ T ])
-                    ]
-                  |),
-                  [
-                    M.read (| M.read (| r |) |);
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                      "as_ptr",
-                      []
-                    |)
-                  ]
-                |);
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.call_closure (|
-                                  M.get_function (| "core::ptr::null_mut", [ T ] |),
-                                  []
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end))
-              ]
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
       forall (T : Ty.t),
       M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
+        "core::cmp::PartialOrd"
         (Self T)
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_ptr_non_null_NonNull_T.
+        (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_option_Option_T.
   
-  Module Impl_core_option_SpecOptionPartialEq_for_core_cmp_Ordering.
-    Definition Self : Ty.t := Ty.path "core::cmp::Ordering".
+  Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_option_Option_T.
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
     
     (*
-        fn eq(l: &Option<Self>, r: &Option<Self>) -> bool {
-            l.map_or(2, |x| x as i8) == r.map_or(2, |x| x as i8)
+        fn cmp(&self, other: &Self) -> cmp::Ordering {
+            match (self, other) {
+                (Some(l), Some(r)) => l.cmp(r),
+                (Some(_), None) => cmp::Ordering::Greater,
+                (None, Some(_)) => cmp::Ordering::Less,
+                (None, None) => cmp::Ordering::Equal,
+            }
         }
     *)
-    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition cmp (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [], [], [ l; r ] =>
+      | [], [], [ self; other ] =>
         ltac:(M.monadic
-          (let l := M.alloc (| l |) in
-          let r := M.alloc (| r |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-                "map_or",
-                [
-                  Ty.path "i8";
-                  Ty.function [ Ty.tuple [ Ty.path "core::cmp::Ordering" ] ] (Ty.path "i8")
-                ]
-              |),
+          (let self := M.alloc (| self |) in
+          let other := M.alloc (| other |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
               [
-                M.read (| M.read (| l |) |);
-                Value.Integer 2;
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let x := M.copy (| γ |) in
-                                M.rust_cast (M.read (| x |))))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end))
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_0 := M.read (| γ0_0 |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let l := M.alloc (| γ2_0 |) in
+                    let γ0_1 := M.read (| γ0_1 |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_1,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let r := M.alloc (| γ2_0 |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (| "core::cmp::Ord", T, [], "cmp", [] |),
+                        [ M.read (| l |); M.read (| r |) ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_0 := M.read (| γ0_0 |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_0,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let γ0_1 := M.read (| γ0_1 |) in
+                    let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
+                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Greater" [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_0 := M.read (| γ0_0 |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                    let γ0_1 := M.read (| γ0_1 |) in
+                    let γ2_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ0_1,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Less" [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_0 := M.read (| γ0_0 |) in
+                    let _ := M.is_struct_tuple (| γ0_0, "core::option::Option::None" |) in
+                    let γ0_1 := M.read (| γ0_1 |) in
+                    let _ := M.is_struct_tuple (| γ0_1, "core::option::Option::None" |) in
+                    M.alloc (| Value.StructTuple "core::cmp::Ordering::Equal" [] |)))
               ]
-            |))
-            (M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::cmp::Ordering" ],
-                "map_or",
-                [
-                  Ty.path "i8";
-                  Ty.function [ Ty.tuple [ Ty.path "core::cmp::Ordering" ] ] (Ty.path "i8")
-                ]
-              |),
-              [
-                M.read (| M.read (| r |) |);
-                Value.Integer 2;
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let x := M.copy (| γ |) in
-                                M.rust_cast (M.read (| x |))))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end))
-              ]
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
+      forall (T : Ty.t),
       M.IsTraitInstance
-        "core::option::SpecOptionPartialEq"
-        Self
+        "core::cmp::Ord"
+        (Self T)
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_option_SpecOptionPartialEq_for_core_cmp_Ordering.
+        (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
+  End Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_option_Option_T.
   
   (* StructRecord
     {
@@ -4919,7 +3681,7 @@ Module option.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4952,18 +3714,16 @@ Module option.
               M.read (| f |);
               M.read (| Value.String "Item" |);
               M.read (| Value.String "opt" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::option::Item",
-                    "opt"
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::option::Item",
+                  "opt"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5006,15 +3766,13 @@ Module option.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
         fn size_hint(&self) -> (usize, Option<usize>) {
-            match self.opt {
-                Some(_) => (1, Some(1)),
-                None => (0, Some(0)),
-            }
+            let len = self.len();
+            (len, Some(len))
         }
     *)
     Definition size_hint (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -5024,42 +3782,28 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            M.match_operator (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::option::Item",
-                "opt"
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    M.alloc (|
-                      Value.Tuple
-                        [
-                          Value.Integer 1;
-                          Value.StructTuple "core::option::Option::Some" [ Value.Integer 1 ]
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (|
-                      Value.Tuple
-                        [
-                          Value.Integer 0;
-                          Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
-                        ]
-                    |)))
-              ]
+            let~ len :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::iter::traits::exact_size::ExactSizeIterator",
+                    Ty.apply (Ty.path "core::option::Item") [] [ A ],
+                    [],
+                    "len",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              |) in
+            M.alloc (|
+              Value.Tuple
+                [
+                  M.read (| len |);
+                  Value.StructTuple "core::option::Option::Some" [ M.read (| len |) ]
+                ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5104,7 +3848,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5119,13 +3863,41 @@ Module option.
   Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_option_Item_A.
     Definition Self (A : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Item") [] [ A ].
     
+    (*
+        fn len(&self) -> usize {
+            self.opt.len()
+        }
+    *)
+    Definition len (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self A in
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "core::option::Option") [] [ A ],
+              "len",
+              []
+            |),
+            [
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::option::Item",
+                "opt"
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
     Axiom Implements :
       forall (A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::exact_size::ExactSizeIterator"
         (Self A)
         (* Trait polymorphic types *) []
-        (* Instance *) [].
+        (* Instance *) [ ("len", InstanceField.Method (len A)) ].
   End Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_option_Item_A.
   
   Module Impl_core_iter_traits_marker_FusedIterator_for_core_option_Item_A.
@@ -5183,18 +3955,16 @@ Module option.
               M.read (| f |);
               M.read (| Value.String "Iter" |);
               M.read (| Value.String "inner" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::option::Iter",
-                    "inner"
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::option::Iter",
+                  "inner"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5239,7 +4009,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5269,7 +4039,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5316,7 +4086,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5399,7 +4169,7 @@ Module option.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5444,18 +4214,16 @@ Module option.
               M.read (| f |);
               M.read (| Value.String "IterMut" |);
               M.read (| Value.String "inner" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::option::IterMut",
-                    "inner"
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::option::IterMut",
+                  "inner"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5500,7 +4268,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5530,7 +4298,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5577,7 +4345,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5664,7 +4432,7 @@ Module option.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5697,18 +4465,16 @@ Module option.
               M.read (| f |);
               M.read (| Value.String "IntoIter" |);
               M.read (| Value.String "inner" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::option::IntoIter",
-                    "inner"
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::option::IntoIter",
+                  "inner"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5753,7 +4519,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5783,7 +4549,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5830,7 +4596,7 @@ Module option.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5941,38 +4707,39 @@ Module option.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let i := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  Ty.apply
-                                    (Ty.path "core::iter::adapters::GenericShunt")
-                                    []
-                                    [
-                                      Ty.associated;
-                                      Ty.apply
-                                        (Ty.path "core::option::Option")
-                                        []
-                                        [ Ty.path "core::convert::Infallible" ]
-                                    ],
-                                  [],
-                                  "collect",
-                                  [ V ]
-                                |),
-                                [ M.read (| i |) ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let i := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    Ty.apply
+                                      (Ty.path "core::iter::adapters::GenericShunt")
+                                      []
+                                      [
+                                        Ty.associated;
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "core::convert::Infallible" ]
+                                      ],
+                                    [],
+                                    "collect",
+                                    [ V ]
+                                  |),
+                                  [ M.read (| i |) ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6006,7 +4773,7 @@ Module option.
         ltac:(M.monadic
           (let output := M.alloc (| output |) in
           Value.StructTuple "core::option::Option::Some" [ M.read (| output |) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -6052,7 +4819,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6070,7 +4837,7 @@ Module option.
         ].
   End Impl_core_ops_try_trait_Try_for_core_option_Option_T.
   
-  Module Impl_core_ops_try_trait_FromResidual_for_core_option_Option_T.
+  Module Impl_core_ops_try_trait_FromResidual_core_option_Option_core_convert_Infallible_for_core_option_Option_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
     
     (*
@@ -6097,7 +4864,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6105,9 +4872,13 @@ Module option.
       M.IsTraitInstance
         "core::ops::try_trait::FromResidual"
         (Self T)
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [
+          (* R *)
+          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::convert::Infallible" ]
+        ]
         (* Instance *) [ ("from_residual", InstanceField.Method (from_residual T)) ].
-  End Impl_core_ops_try_trait_FromResidual_for_core_option_Option_T.
+  End Impl_core_ops_try_trait_FromResidual_core_option_Option_core_convert_Infallible_for_core_option_Option_T.
   
   Module Impl_core_ops_try_trait_FromResidual_core_ops_try_trait_Yeet_Tuple__for_core_option_Option_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ T ].
@@ -6133,7 +4904,7 @@ Module option.
                   Value.StructTuple "core::option::Option::None" []))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6180,7 +4951,7 @@ Module option.
     Definition flatten (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6204,7 +4975,7 @@ Module option.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_flatten :

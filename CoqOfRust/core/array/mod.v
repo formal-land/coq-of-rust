@@ -3,6 +3,33 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module array.
   (*
+  pub fn repeat<T: Clone, const N: usize>(val: T) -> [T; N] {
+      from_trusted_iterator(repeat_n(val, N))
+  }
+  *)
+  Definition repeat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [ N ], [ T ], [ val ] =>
+      ltac:(M.monadic
+        (let val := M.alloc (| val |) in
+        M.call_closure (|
+          M.get_function (|
+            "core::array::from_trusted_iterator",
+            [ T; Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ T ] ]
+          |),
+          [
+            M.call_closure (|
+              M.get_function (| "core::iter::sources::repeat_n::repeat_n", [ T ] |),
+              [ M.read (| val |); M.read (| M.get_constant (| "core::array::repeat::N" |) |) ]
+            |)
+          ]
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom Function_repeat : M.IsFunction "core::array::repeat" repeat.
+  
+  (*
   pub fn from_fn<T, const N: usize, F>(cb: F) -> [T; N]
   where
       F: FnMut(usize) -> T,
@@ -42,7 +69,7 @@ Module array.
             0
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_fn : M.IsFunction "core::array::from_fn" from_fn.
@@ -54,7 +81,7 @@ Module array.
       R: Try,
       R::Residual: Residual<[R::Output; N]>,
   {
-      let mut array = MaybeUninit::uninit_array::<N>();
+      let mut array = [const { MaybeUninit::uninit() }; N];
       match try_from_fn_erased(&mut array, cb) {
           ControlFlow::Break(r) => FromResidual::from_residual(r),
           ControlFlow::Continue(()) => {
@@ -72,20 +99,16 @@ Module array.
         M.read (|
           let~ array :=
             M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.associated ],
-                  "uninit_array",
-                  []
-                |),
-                []
+              repeat (|
+                M.read (| M.get_constant (| "core::array::try_from_fn_discriminant" |) |),
+                N
               |)
             |) in
           M.match_operator (|
             M.alloc (|
               M.call_closure (|
                 M.get_function (| "core::array::try_from_fn_erased", [ Ty.associated; R; F ] |),
-                [ (* Unsize *) M.pointer_coercion array; M.read (| cb |) ]
+                [ array; M.read (| cb |) ]
               |)
             |),
             [
@@ -145,7 +168,7 @@ Module array.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_try_from_fn : M.IsFunction "core::array::try_from_fn" try_from_fn.
@@ -158,18 +181,18 @@ Module array.
   *)
   Definition from_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ s ] =>
+    | [], [ T ], [ s ] =>
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         M.call_closure (|
           M.get_associated_function (|
             Ty.apply (Ty.path "*const") [] [ T ],
             "cast",
-            [ Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ T ] ]
+            [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ]
           |),
           [ M.read (| M.use (M.alloc (| M.read (| s |) |)) |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_ref : M.IsFunction "core::array::from_ref" from_ref.
@@ -182,18 +205,18 @@ Module array.
   *)
   Definition from_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ s ] =>
+    | [], [ T ], [ s ] =>
       ltac:(M.monadic
         (let s := M.alloc (| s |) in
         M.call_closure (|
           M.get_associated_function (|
             Ty.apply (Ty.path "*mut") [] [ T ],
             "cast",
-            [ Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ T ] ]
+            [ Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ] ]
           |),
           [ M.read (| M.use (M.alloc (| M.read (| s |) |)) |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_mut : M.IsFunction "core::array::from_mut" from_mut.
@@ -225,18 +248,16 @@ Module array.
             [
               M.read (| f |);
               M.read (| Value.String "TryFromSliceError" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "core::array::TryFromSliceError",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "core::array::TryFromSliceError",
+                  0
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -273,7 +294,7 @@ Module array.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -315,7 +336,7 @@ Module array.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -340,7 +361,7 @@ Module array.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "could not convert slice to array" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -365,7 +386,7 @@ Module array.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.never_to_any (| M.read (| M.match_operator (| x, [] |) |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -406,7 +427,7 @@ Module array.
             |),
             [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -448,7 +469,7 @@ Module array.
             |),
             [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -480,8 +501,8 @@ Module array.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          (* Unsize *) M.pointer_coercion (M.read (| self |))))
-      | _, _, _ => M.impossible
+          M.read (| self |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -513,8 +534,8 @@ Module array.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          (* Unsize *) M.pointer_coercion (M.read (| self |))))
-      | _, _, _ => M.impossible
+          M.read (| self |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -574,7 +595,7 @@ Module array.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -624,7 +645,7 @@ Module array.
             |),
             [ M.read (| slice |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -680,16 +701,17 @@ Module array.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.eq
-                            (M.call_closure (|
+                          BinOp.eq (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| slice |) ]
-                            |))
-                            (M.read (| M.get_constant (| "core::array::N" |) |))
+                            |),
+                            M.read (| M.get_constant (| "core::array::N" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ ptr :=
@@ -717,7 +739,7 @@ Module array.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -773,16 +795,17 @@ Module array.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.eq
-                            (M.call_closure (|
+                          BinOp.eq (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
                                 []
                               |),
                               [ M.read (| slice |) ]
-                            |))
-                            (M.read (| M.get_constant (| "core::array::N" |) |))
+                            |),
+                            M.read (| M.get_constant (| "core::array::N" |) |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ ptr :=
@@ -810,7 +833,7 @@ Module array.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -870,7 +893,7 @@ Module array.
               M.read (| state |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -927,7 +950,7 @@ Module array.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -969,9 +992,9 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1018,9 +1041,9 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter_mut", [] |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1069,14 +1092,9 @@ Module array.
               "index",
               []
             |),
-            [
-              M.read (|
-                M.use (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |))
-              |);
-              M.read (| index |)
-            ]
+            [ M.read (| M.use (M.alloc (| M.read (| self |) |)) |); M.read (| index |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1121,14 +1139,9 @@ Module array.
               "index_mut",
               []
             |),
-            [
-              M.read (|
-                M.use (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |))
-              |);
-              M.read (| index |)
-            ]
+            [ M.read (| M.use (M.alloc (| M.read (| self |) |)) |); M.read (| index |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1196,7 +1209,7 @@ Module array.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1252,7 +1265,7 @@ Module array.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1308,7 +1321,7 @@ Module array.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1364,7 +1377,7 @@ Module array.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1420,7 +1433,7 @@ Module array.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1495,7 +1508,7 @@ Module array.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1543,7 +1556,7 @@ Module array.
             M.get_trait_method (| "core::array::SpecArrayClone", T, [], "clone", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1573,15 +1586,12 @@ Module array.
                     "clone_from_slice",
                     []
                   |),
-                  [
-                    (* Unsize *) M.pointer_coercion (M.read (| self |));
-                    (* Unsize *) M.pointer_coercion (M.read (| other |))
-                  ]
+                  [ M.read (| self |); M.read (| other |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1637,13 +1647,13 @@ Module array.
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
-                    [ (* Unsize *) M.pointer_coercion (M.read (| array |)) ]
+                    [ M.read (| array |) ]
                   |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1670,7 +1680,7 @@ Module array.
         ltac:(M.monadic
           (let array := M.alloc (| array |) in
           M.read (| M.read (| array |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1682,8 +1692,9 @@ Module array.
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_array_SpecArrayClone_where_core_marker_Copy_T_for_T.
   
-  Module Impl_core_default_Default_where_core_default_Default_T_for_array_32_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ T ].
+  Module Impl_core_default_Default_where_core_default_Default_T_for_array_Usize_32_T.
+    Definition Self (T : Ty.t) : Ty.t :=
+      Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ T ].
     
     (*
                 fn default() -> [T; $n] {
@@ -1826,7 +1837,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1836,7 +1847,7 @@ Module array.
         (Self T)
         (* Trait polymorphic types *) []
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
-  End Impl_core_default_Default_where_core_default_Default_T_for_array_32_T.
+  End Impl_core_default_Default_where_core_default_Default_T_for_array_Usize_32_T.
   
   Module Impl_core_default_Default_where_core_default_Default_T_for_array_expr_T.
     Definition Self (T : Ty.t) : Ty.t :=
@@ -1982,7 +1993,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2125,7 +2136,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2264,7 +2275,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2399,7 +2410,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2530,7 +2541,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2657,7 +2668,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2780,7 +2791,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2899,7 +2910,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3014,7 +3025,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3125,7 +3136,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3232,7 +3243,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3335,7 +3346,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3434,7 +3445,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3529,7 +3540,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3620,7 +3631,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3707,7 +3718,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3790,7 +3801,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3869,7 +3880,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3944,7 +3955,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4015,7 +4026,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4082,7 +4093,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4145,7 +4156,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4204,7 +4215,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4259,7 +4270,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4310,7 +4321,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4357,7 +4368,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4400,7 +4411,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4439,7 +4450,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4474,7 +4485,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4505,7 +4516,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4532,7 +4543,7 @@ Module array.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4586,7 +4597,7 @@ Module array.
       let Self : Ty.t := Self T in
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (Value.Array []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4630,8 +4641,8 @@ Module array.
                     Ty.apply (Ty.path "array") [ N ] [ T ],
                     "try_map",
                     [
-                      Ty.associated;
-                      Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ U ]
+                      Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ U ];
+                      Ty.associated
                     ]
                   |),
                   [
@@ -4651,7 +4662,7 @@ Module array.
               0
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map :
@@ -4659,11 +4670,9 @@ Module array.
       M.IsAssociatedFunction (Self N T) "map" (map N T).
     
     (*
-        pub fn try_map<F, R>(self, f: F) -> ChangeOutputType<R, [R::Output; N]>
+        pub fn try_map<R>(self, f: impl FnMut(T) -> R) -> ChangeOutputType<R, [R::Output; N]>
         where
-            F: FnMut(T) -> R,
-            R: Try,
-            R::Residual: Residual<[R::Output; N]>,
+            R: Try<Residual: Residual<[R::Output; N]>>,
         {
             drain_array_with(self, |iter| try_from_trusted_iterator(iter.map(f)))
         }
@@ -4677,7 +4686,7 @@ Module array.
         : M :=
       let Self : Ty.t := Self N T in
       match ε, τ, α with
-      | [], [ F; R ], [ self; f ] =>
+      | [], [ R; impl_FnMut_T__arrow_R ], [ self; f ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let f := M.alloc (| f |) in
@@ -4699,44 +4708,48 @@ Module array.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let iter := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_function (|
-                                  "core::array::try_from_trusted_iterator",
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let iter := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_function (|
+                                    "core::array::try_from_trusted_iterator",
+                                    [
+                                      Ty.associated;
+                                      R;
+                                      Ty.apply
+                                        (Ty.path "core::iter::adapters::map::Map")
+                                        []
+                                        [
+                                          Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ];
+                                          impl_FnMut_T__arrow_R
+                                        ]
+                                    ]
+                                  |),
                                   [
-                                    Ty.associated;
-                                    R;
-                                    Ty.apply
-                                      (Ty.path "core::iter::adapters::map::Map")
-                                      []
-                                      [ Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ]; F ]
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ],
+                                        [],
+                                        "map",
+                                        [ R; impl_FnMut_T__arrow_R ]
+                                      |),
+                                      [ M.read (| iter |); M.read (| f |) ]
+                                    |)
                                   ]
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ],
-                                      [],
-                                      "map",
-                                      [ R; F ]
-                                    |),
-                                    [ M.read (| iter |); M.read (| f |) ]
-                                  |)
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_map :
@@ -4757,11 +4770,11 @@ Module array.
         : M :=
       let Self : Ty.t := Self N T in
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          (* Unsize *) M.pointer_coercion (M.read (| self |))))
-      | _, _, _ => M.impossible
+          M.read (| self |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_slice :
@@ -4785,8 +4798,8 @@ Module array.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          (* Unsize *) M.pointer_coercion (M.read (| self |))))
-      | _, _, _ => M.impossible
+          M.read (| self |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_mut_slice :
@@ -4821,11 +4834,11 @@ Module array.
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
-                [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                [ M.read (| self |) ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_each_ref :
@@ -4860,11 +4873,11 @@ Module array.
             [
               M.call_closure (|
                 M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter_mut", [] |),
-                [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                [ M.read (| self |) ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_each_mut :
@@ -4873,7 +4886,7 @@ Module array.
     
     (*
         pub fn split_array_ref<const M: usize>(&self) -> (&[T; M], &[T]) {
-            (&self[..]).split_array_ref::<M>()
+            (&self[..]).split_first_chunk::<M>().unwrap()
         }
     *)
     Definition split_array_ref
@@ -4890,24 +4903,42 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [] [ T ],
-              "split_array_ref",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ];
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    ]
+                ],
+              "unwrap",
               []
             |),
             [
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.apply (Ty.path "array") [ N ] [ T ],
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ T ],
+                  "split_first_chunk",
                   []
                 |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                [
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.apply (Ty.path "array") [ N ] [ T ],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      []
+                    |),
+                    [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  |)
+                ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_array_ref :
@@ -4916,7 +4947,7 @@ Module array.
     
     (*
         pub fn split_array_mut<const M: usize>(&mut self) -> (&mut [T; M], &mut [T]) {
-            (&mut self[..]).split_array_mut::<M>()
+            (&mut self[..]).split_first_chunk_mut::<M>().unwrap()
         }
     *)
     Definition split_array_mut
@@ -4933,24 +4964,42 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [] [ T ],
-              "split_array_mut",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                    ]
+                ],
+              "unwrap",
               []
             |),
             [
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::IndexMut",
-                  Ty.apply (Ty.path "array") [ N ] [ T ],
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index_mut",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ T ],
+                  "split_first_chunk_mut",
                   []
                 |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                [
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::IndexMut",
+                      Ty.apply (Ty.path "array") [ N ] [ T ],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index_mut",
+                      []
+                    |),
+                    [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  |)
+                ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_array_mut :
@@ -4959,7 +5008,7 @@ Module array.
     
     (*
         pub fn rsplit_array_ref<const M: usize>(&self) -> (&[T], &[T; M]) {
-            (&self[..]).rsplit_array_ref::<M>()
+            (&self[..]).split_last_chunk::<M>().unwrap()
         }
     *)
     Definition rsplit_array_ref
@@ -4976,24 +5025,42 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [] [ T ],
-              "rsplit_array_ref",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ]
+                    ]
+                ],
+              "unwrap",
               []
             |),
             [
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.apply (Ty.path "array") [ N ] [ T ],
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ T ],
+                  "split_last_chunk",
                   []
                 |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                [
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::Index",
+                      Ty.apply (Ty.path "array") [ N ] [ T ],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index",
+                      []
+                    |),
+                    [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  |)
+                ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplit_array_ref :
@@ -5002,7 +5069,7 @@ Module array.
     
     (*
         pub fn rsplit_array_mut<const M: usize>(&mut self) -> (&mut [T], &mut [T; M]) {
-            (&mut self[..]).rsplit_array_mut::<M>()
+            (&mut self[..]).split_last_chunk_mut::<M>().unwrap()
         }
     *)
     Definition rsplit_array_mut
@@ -5019,24 +5086,42 @@ Module array.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "slice") [] [ T ],
-              "rsplit_array_mut",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [
+                  Ty.tuple
+                    [
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                      Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ M ] [ T ] ]
+                    ]
+                ],
+              "unwrap",
               []
             |),
             [
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::IndexMut",
-                  Ty.apply (Ty.path "array") [ N ] [ T ],
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index_mut",
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ T ],
+                  "split_last_chunk_mut",
                   []
                 |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                [
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::ops::index::IndexMut",
+                      Ty.apply (Ty.path "array") [ N ] [ T ],
+                      [ Ty.path "core::ops::range::RangeFull" ],
+                      "index_mut",
+                      []
+                    |),
+                    [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
+                  |)
+                ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_rsplit_array_mut :
@@ -5100,7 +5185,7 @@ Module array.
             0
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_from_trusted_iterator :
@@ -5141,9 +5226,9 @@ Module array.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.ge
-                              (M.read (|
+                          UnOp.not (|
+                            BinOp.ge (|
+                              M.read (|
                                 M.SubPointer.get_tuple_field (|
                                   M.alloc (|
                                     M.call_closure (|
@@ -5159,10 +5244,12 @@ Module array.
                                   |),
                                   0
                                 |)
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.get_constant (| "core::array::try_from_trusted_iterator::N" |)
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -5188,7 +5275,7 @@ Module array.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_try_from_trusted_iterator :
@@ -5214,26 +5301,27 @@ Module array.
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.call_closure (|
-                            M.get_trait_method (|
-                              "core::iter::traits::unchecked_iterator::UncheckedIterator",
-                              impl_UncheckedIterator_Item___T_,
-                              [],
-                              "next_unchecked",
-                              []
-                            |),
-                            [ iter ]
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.call_closure (|
+                              M.get_trait_method (|
+                                "core::iter::traits::unchecked_iterator::UncheckedIterator",
+                                impl_UncheckedIterator_Item___T_,
+                                [],
+                                "next_unchecked",
+                                []
+                              |),
+                              [ iter ]
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_next : M.IsFunction "core::array::try_from_trusted_iterator::next" next.
@@ -5277,7 +5365,10 @@ Module array.
                 M.alloc (|
                   Value.StructRecord
                     "core::array::Guard"
-                    [ ("array_mut", M.read (| buffer |)); ("initialized", Value.Integer 0) ]
+                    [
+                      ("array_mut", M.read (| buffer |));
+                      ("initialized", Value.Integer IntegerKind.Usize 0)
+                    ]
                 |) in
               let~ _ :=
                 M.loop (|
@@ -5290,15 +5381,15 @@ Module array.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt
-                                    (M.read (|
+                                  BinOp.lt (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         guard,
                                         "core::array::Guard",
                                         "initialized"
                                       |)
-                                    |))
-                                    (M.call_closure (|
+                                    |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "slice")
@@ -5321,7 +5412,8 @@ Module array.
                                           |)
                                         |)
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5474,7 +5566,7 @@ Module array.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_try_from_fn_erased :
@@ -5584,13 +5676,13 @@ Module array.
                         "initialized"
                       |)
                     |);
-                    Value.Integer 1
+                    Value.Integer IntegerKind.Usize 1
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_push_unchecked :
@@ -5637,16 +5729,16 @@ Module array.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.le
-                                          (M.read (|
+                                      UnOp.not (|
+                                        BinOp.le (|
+                                          M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "core::array::Guard",
                                               "initialized"
                                             |)
-                                          |))
-                                          (M.call_closure (|
+                                          |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "slice")
@@ -5669,7 +5761,9 @@ Module array.
                                                 |)
                                               |)
                                             ]
-                                          |)))
+                                          |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -5751,7 +5845,7 @@ Module array.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5767,7 +5861,7 @@ Module array.
   pub(crate) fn iter_next_chunk<T, const N: usize>(
       iter: &mut impl Iterator<Item = T>,
   ) -> Result<[T; N], IntoIter<T, N>> {
-      let mut array = MaybeUninit::uninit_array::<N>();
+      let mut array = [const { MaybeUninit::uninit() }; N];
       let r = iter_next_chunk_erased(&mut array, iter);
       match r {
           Ok(()) => {
@@ -5789,13 +5883,9 @@ Module array.
         M.read (|
           let~ array :=
             M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                  "uninit_array",
-                  []
-                |),
-                []
+              repeat (|
+                M.read (| M.get_constant (| "core::array::iter_next_chunk_discriminant" |) |),
+                N
               |)
             |) in
           let~ r :=
@@ -5805,7 +5895,7 @@ Module array.
                   "core::array::iter_next_chunk_erased",
                   [ T; impl_Iterator_Item___T_ ]
                 |),
-                [ (* Unsize *) M.pointer_coercion array; M.read (| iter |) ]
+                [ array; M.read (| iter |) ]
               |)
             |) in
           M.match_operator (|
@@ -5848,7 +5938,10 @@ Module array.
                             M.read (| array |);
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [ ("start", Value.Integer 0); ("end_", M.read (| initialized |)) ]
+                              [
+                                ("start", Value.Integer IntegerKind.Usize 0);
+                                ("end_", M.read (| initialized |))
+                              ]
                           ]
                         |)
                       ]
@@ -5856,7 +5949,7 @@ Module array.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_iter_next_chunk : M.IsFunction "core::array::iter_next_chunk" iter_next_chunk.
@@ -5895,7 +5988,10 @@ Module array.
             M.alloc (|
               Value.StructRecord
                 "core::array::Guard"
-                [ ("array_mut", M.read (| buffer |)); ("initialized", Value.Integer 0) ]
+                [
+                  ("array_mut", M.read (| buffer |));
+                  ("initialized", Value.Integer IntegerKind.Usize 0)
+                ]
             |) in
           let~ _ :=
             M.loop (|
@@ -5908,15 +6004,15 @@ Module array.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (|
+                              BinOp.lt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     guard,
                                     "core::array::Guard",
                                     "initialized"
                                   |)
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "slice")
@@ -5939,7 +6035,8 @@ Module array.
                                       |)
                                     |)
                                   ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6006,7 +6103,7 @@ Module array.
             |) in
           M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_iter_next_chunk_erased :

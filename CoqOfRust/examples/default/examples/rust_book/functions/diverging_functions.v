@@ -11,7 +11,7 @@ fn main() {
 Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [] => ltac:(M.monadic (Value.Tuple []))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "diverging_functions::main" main.
@@ -33,7 +33,7 @@ Module main.
           |),
           [ M.read (| Value.String "This call never returns." |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_foo : M.IsFunction "diverging_functions::main::foo" foo.

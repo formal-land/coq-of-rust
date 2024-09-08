@@ -30,7 +30,7 @@ Module sync.
                     []
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -90,7 +90,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -114,11 +114,11 @@ Module sync.
       Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ t ] =>
+        | [], [], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             Value.StructRecord "core::sync::exclusive::Exclusive" [ ("inner", M.read (| t |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -133,7 +133,7 @@ Module sync.
       Definition into_inner (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -143,7 +143,7 @@ Module sync.
                 "inner"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -157,7 +157,7 @@ Module sync.
       Definition get_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -165,7 +165,7 @@ Module sync.
               "core::sync::exclusive::Exclusive",
               "inner"
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_mut :
@@ -182,7 +182,7 @@ Module sync.
       Definition get_pin_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -214,7 +214,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_pin_mut :
@@ -230,11 +230,11 @@ Module sync.
       Definition from_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ r ] =>
+        | [], [], [ r ] =>
           ltac:(M.monadic
             (let r := M.alloc (| r |) in
             M.rust_cast (M.read (| M.use (M.alloc (| M.read (| r |) |)) |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_mut :
@@ -256,7 +256,7 @@ Module sync.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ r ] =>
+        | [], [], [ r ] =>
           ltac:(M.monadic
             (let r := M.alloc (| r |) in
             M.call_closure (|
@@ -296,7 +296,7 @@ Module sync.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_pin_mut :
@@ -328,7 +328,7 @@ Module sync.
               |),
               [ M.read (| t |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -378,7 +378,7 @@ Module sync.
                 M.read (| args |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -429,7 +429,7 @@ Module sync.
                 M.read (| args |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -474,7 +474,7 @@ Module sync.
                 M.read (| cx |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -523,7 +523,7 @@ Module sync.
                 M.read (| arg |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

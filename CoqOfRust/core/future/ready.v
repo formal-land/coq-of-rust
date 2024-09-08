@@ -31,18 +31,16 @@ Module future.
               [
                 M.read (| f |);
                 M.read (| Value.String "Ready" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::future::ready::Ready",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::future::ready::Ready",
+                    0
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -84,7 +82,7 @@ Module future.
                   ]
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -171,7 +169,7 @@ Module future.
                   ]
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -211,7 +209,7 @@ Module future.
                 M.read (| Value.String "Called `into_inner()` on `Ready` after completion" |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -232,7 +230,7 @@ Module future.
           Value.StructTuple
             "core::future::ready::Ready"
             [ Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_ready : M.IsFunction "core::future::ready::ready" ready.

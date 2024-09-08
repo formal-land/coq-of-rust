@@ -57,11 +57,7 @@ Module ops.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Continue" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Continue" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -81,17 +77,13 @@ Module ops.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Break" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Break" |); __self_0 ]
                         |)
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -161,7 +153,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -212,7 +204,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -222,7 +214,7 @@ Module ops.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -234,7 +226,7 @@ Module ops.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -264,12 +256,12 @@ Module ops.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    C,
-                                    [ C ],
+                                    Ty.apply (Ty.path "&") [] [ C ],
+                                    [ Ty.apply (Ty.path "&") [] [ C ] ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -296,12 +288,12 @@ Module ops.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    B,
-                                    [ B ],
+                                    Ty.apply (Ty.path "&") [] [ B ],
+                                    [ Ty.apply (Ty.path "&") [] [ B ] ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -320,7 +312,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -331,19 +323,6 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method (eq B C)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_C_for_core_ops_control_flow_ControlFlow_B_C.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ops_control_flow_ControlFlow_B_C.
-      Definition Self (B C : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
-      
-      Axiom Implements :
-        forall (B C : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self B C)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_control_flow_ControlFlow_B_C.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_B_where_core_cmp_Eq_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
@@ -374,7 +353,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -401,7 +380,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -421,7 +400,7 @@ Module ops.
                       "hash",
                       [ __H ]
                     |),
-                    [ __self_tag; M.read (| state |) ]
+                    [ __self_discr; M.read (| state |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -462,7 +441,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -507,7 +486,7 @@ Module ops.
             Value.StructTuple
               "core::ops::control_flow::ControlFlow::Continue"
               [ M.read (| output |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -563,7 +542,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -581,7 +560,7 @@ Module ops.
           ].
     End Impl_core_ops_try_trait_Try_for_core_ops_control_flow_ControlFlow_B_C.
     
-    Module Impl_core_ops_try_trait_FromResidual_for_core_ops_control_flow_ControlFlow_B_C.
+    Module Impl_core_ops_try_trait_FromResidual_core_ops_control_flow_ControlFlow_B_core_convert_Infallible_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
@@ -624,7 +603,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -632,9 +611,16 @@ Module ops.
         M.IsTraitInstance
           "core::ops::try_trait::FromResidual"
           (Self B C)
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [
+            (* R *)
+            Ty.apply
+              (Ty.path "core::ops::control_flow::ControlFlow")
+              []
+              [ B; Ty.path "core::convert::Infallible" ]
+          ]
           (* Instance *) [ ("from_residual", InstanceField.Method (from_residual B C)) ].
-    End Impl_core_ops_try_trait_FromResidual_for_core_ops_control_flow_ControlFlow_B_C.
+    End Impl_core_ops_try_trait_FromResidual_core_ops_control_flow_ControlFlow_B_core_convert_Infallible_for_core_ops_control_flow_ControlFlow_B_C.
     
     Module Impl_core_ops_try_trait_Residual_C_for_core_ops_control_flow_ControlFlow_B_core_convert_Infallible.
       Definition Self (B C : Ty.t) : Ty.t :=
@@ -688,7 +674,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_break :
@@ -728,7 +714,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_continue :
@@ -781,7 +767,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_break_value :
@@ -852,7 +838,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_map_break :
@@ -902,7 +888,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_continue_value :
@@ -978,7 +964,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_map_continue :
@@ -1055,7 +1041,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_try :
@@ -1114,7 +1100,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_try :

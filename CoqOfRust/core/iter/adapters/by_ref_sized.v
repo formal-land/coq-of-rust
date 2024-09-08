@@ -33,18 +33,16 @@ Module iter.
                 [
                   M.read (| f |);
                   M.read (| Value.String "ByRefSized" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::by_ref_sized::ByRefSized",
-                        0
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::by_ref_sized::ByRefSized",
+                      0
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -92,7 +90,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -124,11 +122,11 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 I::advance_by(self.0, n)
             }
         *)
@@ -163,7 +161,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -191,7 +189,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -250,7 +248,7 @@ Module iter.
                   0
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -290,7 +288,7 @@ Module iter.
                   M.read (| f |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -344,11 +342,11 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 I::advance_back_by(self.0, n)
             }
         *)
@@ -383,7 +381,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -417,7 +415,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -476,7 +474,7 @@ Module iter.
                   0
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -516,7 +514,7 @@ Module iter.
                   M.read (| f |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

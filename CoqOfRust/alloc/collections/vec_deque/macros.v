@@ -36,8 +36,8 @@ Module collections.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne
-                                    (M.call_closure (|
+                                  BinOp.ne (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -47,15 +47,16 @@ Module collections.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |))
-                                    (M.call_closure (|
+                                    |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "alloc::vec::Vec") [] [ U; A ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| other |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -170,7 +171,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -216,8 +217,8 @@ Module collections.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne
-                                    (M.call_closure (|
+                                  BinOp.ne (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -227,15 +228,16 @@ Module collections.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |))
-                                    (M.call_closure (|
+                                    |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| M.read (| other |) |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -350,7 +352,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -396,8 +398,8 @@ Module collections.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne
-                                    (M.call_closure (|
+                                  BinOp.ne (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -407,15 +409,16 @@ Module collections.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |))
-                                    (M.call_closure (|
+                                    |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| M.read (| other |) |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -530,7 +533,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -582,8 +585,8 @@ Module collections.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne
-                                    (M.call_closure (|
+                                  BinOp.ne (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -593,15 +596,16 @@ Module collections.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |))
-                                    (M.call_closure (|
+                                    |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
                                         []
                                       |),
-                                      [ (* Unsize *) M.pointer_coercion (M.read (| other |)) ]
-                                    |))
+                                      [ M.read (| other |) ]
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -716,7 +720,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -767,8 +771,8 @@ Module collections.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne
-                                    (M.call_closure (|
+                                  BinOp.ne (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -778,18 +782,16 @@ Module collections.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |))
-                                    (M.call_closure (|
+                                    |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
                                         []
                                       |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| M.read (| other |) |))
-                                      ]
-                                    |))
+                                      [ M.read (| M.read (| other |) |) ]
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -904,7 +906,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -956,8 +958,8 @@ Module collections.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.ne
-                                    (M.call_closure (|
+                                  BinOp.ne (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "alloc::collections::vec_deque::VecDeque")
@@ -967,18 +969,16 @@ Module collections.
                                         []
                                       |),
                                       [ M.read (| self |) ]
-                                    |))
-                                    (M.call_closure (|
+                                    |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ U ],
                                         "len",
                                         []
                                       |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion (M.read (| M.read (| other |) |))
-                                      ]
-                                    |))
+                                      [ M.read (| M.read (| other |) |) ]
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1093,7 +1093,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

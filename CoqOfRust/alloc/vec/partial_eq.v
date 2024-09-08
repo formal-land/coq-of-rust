@@ -46,7 +46,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
@@ -88,7 +88,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -148,7 +148,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
@@ -193,7 +193,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -252,7 +252,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
@@ -297,7 +297,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -357,7 +357,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
@@ -402,7 +402,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -462,7 +462,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
@@ -507,7 +507,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -563,7 +563,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
@@ -605,7 +605,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -660,7 +660,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
@@ -702,7 +702,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -774,7 +774,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
@@ -831,7 +831,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -906,7 +906,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
@@ -966,7 +966,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1041,7 +1041,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
@@ -1101,7 +1101,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1164,7 +1164,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
@@ -1212,7 +1212,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1277,7 +1277,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*             fn ne(&self, other: &$rhs) -> bool { self[..] != other[..] } *)
@@ -1328,7 +1328,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

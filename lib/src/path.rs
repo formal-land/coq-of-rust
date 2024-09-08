@@ -130,8 +130,8 @@ pub(crate) fn to_valid_coq_name(is_value: IsValue, str: &str) -> String {
     let str = str.replace("r#", "");
 
     let reserved_names = [
-        "M", "Set", "Type", "Unset", "at", "by", "else", "end", "exists", "fix", "if", "pair",
-        "then", "tt", "unit", "with",
+        "M", "Set", "Type", "Unset", "at", "by", "else", "end", "exists", "fix", "fun", "if",
+        "pair", "then", "tt", "unit", "with",
     ];
 
     if reserved_names.contains(&str.as_str()) {
@@ -148,9 +148,11 @@ pub(crate) fn to_valid_coq_name(is_value: IsValue, str: &str) -> String {
         .iter()
         .fold(str.to_string(), |acc, &char| acc.replace(char, "_"));
 
-    if is_value == IsValue::Yes && str.chars().next().unwrap().is_uppercase() {
-        format!("value_{}", str)
-    } else {
-        str
+    if let Some(first_char) = str.chars().next() {
+        if is_value == IsValue::Yes && first_char.is_uppercase() {
+            return format!("value_{}", str);
+        }
     }
+
+    str
 }

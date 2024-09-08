@@ -30,14 +30,15 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| self |), "derive::Centimeters", 0 |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "derive::Centimeters", 0 |)
-          |))))
-    | _, _, _ => M.impossible
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -71,7 +72,7 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "derive::Centimeters", 0 |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -109,14 +110,12 @@ Module Impl_core_fmt_Debug_for_derive_Inches.
           [
             M.read (| f |);
             M.read (| Value.String "Inches" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (| M.read (| self |), "derive::Inches", 0 |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (| M.read (| self |), "derive::Inches", 0 |)
+            |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -155,16 +154,16 @@ Module Impl_derive_Inches.
                     Value.StructTuple
                       "derive::Centimeters"
                       [
-                        BinOp.Wrap.mul
-                          Integer.Usize
-                          (M.rust_cast (M.read (| inches |)))
-                          (M.read (| UnsupportedLiteral |))
+                        BinOp.Wrap.mul (|
+                          M.rust_cast (M.read (| inches |)),
+                          M.read (| UnsupportedLiteral |)
+                        |)
                       ]
                   |)))
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_to_centimeters :
@@ -211,8 +210,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ _one_second := M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer 1 ] |) in
-        let~ foot := M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer 12 ] |) in
+        let~ _one_second :=
+          M.alloc (| Value.StructTuple "derive::Seconds" [ Value.Integer IntegerKind.I32 1 ] |) in
+        let~ foot :=
+          M.alloc (| Value.StructTuple "derive::Inches" [ Value.Integer IntegerKind.I32 12 ] |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -222,31 +223,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "One foot equals " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "One foot equals " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "derive::Inches" ]
-                                |),
-                                [ foot ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "derive::Inches" ]
+                              |),
+                              [ foot ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -305,31 +302,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "One foot is " |);
-                              M.read (| Value.String " than one meter.
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "One foot is " |);
+                            M.read (| Value.String " than one meter.
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [ cmp ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              |),
+                              [ cmp ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -338,7 +331,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "derive::main" main.

@@ -48,7 +48,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -154,7 +154,7 @@ Module Impl_core_default_Default_for_erc721_AccountId.
               []
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -180,7 +180,7 @@ Module Impl_core_clone_Clone_for_erc721_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -219,14 +219,15 @@ Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| self |), "erc721::AccountId", 0 |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (| M.read (| other |), "erc721::AccountId", 0 |)
-          |))))
-    | _, _, _ => M.impossible
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -237,7 +238,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc721_AccountId.
 
-Module Impl_core_convert_From_array_32_u8_for_erc721_AccountId.
+Module Impl_core_convert_From_array_Usize_32_u8_for_erc721_AccountId.
   Definition Self : Ty.t := Ty.path "erc721::AccountId".
   
   (*
@@ -252,9 +253,9 @@ Module Impl_core_convert_From_array_32_u8_for_erc721_AccountId.
       "core::convert::From"
       Self
       (* Trait polymorphic types *)
-      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_32_u8_for_erc721_AccountId.
+End Impl_core_convert_From_array_Usize_32_u8_for_erc721_AccountId.
 
 Axiom Balance : (Ty.path "erc721::Balance") = (Ty.path "u128").
 
@@ -360,7 +361,7 @@ Module Impl_core_default_Default_for_erc721_Erc721.
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -439,7 +440,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -449,7 +450,7 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -459,9 +460,9 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -471,17 +472,6 @@ Module Impl_core_cmp_PartialEq_for_erc721_Error.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_erc721_Error.
-
-Module Impl_core_marker_StructuralEq_for_erc721_Error.
-  Definition Self : Ty.t := Ty.path "erc721::Error".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_erc721_Error.
 
 Module Impl_core_cmp_Eq_for_erc721_Error.
   Definition Self : Ty.t := Ty.path "erc721::Error".
@@ -497,7 +487,7 @@ Module Impl_core_cmp_Eq_for_erc721_Error.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -519,7 +509,7 @@ Module Impl_core_clone_Clone_for_erc721_Error.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -618,7 +608,7 @@ Module Impl_erc721_Env.
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "erc721::Env", "caller" |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -659,7 +649,7 @@ Module Impl_erc721_Erc721.
           M.get_associated_function (| Ty.path "erc721::Erc721", "init_env", [] |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -683,7 +673,7 @@ Module Impl_erc721_Erc721.
           |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -724,10 +714,10 @@ Module Impl_erc721_Erc721.
                 M.read (| of |)
               ]
             |);
-            M.read (| M.use (M.alloc (| Value.Integer 0 |)) |)
+            M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U32 0 |)) |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_balance_of_or_zero :
@@ -768,7 +758,7 @@ Module Impl_erc721_Erc721.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_clear_approval :
@@ -805,7 +795,7 @@ Module Impl_erc721_Erc721.
             M.alloc (| Value.Tuple [ M.read (| owner |); M.read (| operator |) ] |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_approved_for_all :
@@ -837,7 +827,7 @@ Module Impl_erc721_Erc721.
             id
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_owner_of : M.IsAssociatedFunction Self "owner_of" owner_of.
@@ -889,11 +879,21 @@ Module Impl_erc721_Erc721.
                           M.get_trait_method (|
                             "core::convert::From",
                             Ty.path "erc721::AccountId",
-                            [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                [ Ty.path "u8" ]
+                            ],
                             "from",
                             []
                           |),
-                          [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
+                          [
+                            repeat (|
+                              Value.Integer IntegerKind.U8 0,
+                              Value.Integer IntegerKind.Usize 32
+                            |)
+                          ]
                         |)
                       ]
                   |)
@@ -999,7 +999,7 @@ Module Impl_erc721_Erc721.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_approved_or_owner :
@@ -1031,7 +1031,7 @@ Module Impl_erc721_Erc721.
             id
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_exists_ : M.IsAssociatedFunction Self "exists_" exists_.
@@ -1051,7 +1051,7 @@ Module Impl_erc721_Erc721.
           M.get_associated_function (| Ty.path "erc721::Erc721", "balance_of_or_zero", [] |),
           [ M.read (| self |); owner ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_balance_of : M.IsAssociatedFunction Self "balance_of" balance_of.
@@ -1082,7 +1082,7 @@ Module Impl_erc721_Erc721.
             id
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_approved : M.IsAssociatedFunction Self "get_approved" get_approved.
@@ -1103,7 +1103,7 @@ Module Impl_erc721_Erc721.
           M.get_associated_function (| Ty.path "erc721::Erc721", "approved_for_all", [] |),
           [ M.read (| self |); M.read (| owner |); M.read (| operator |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_is_approved_for_all :
@@ -1284,7 +1284,7 @@ Module Impl_erc721_Erc721.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_approve_for_all :
@@ -1386,7 +1386,7 @@ Module Impl_erc721_Erc721.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_set_approval_for_all :
@@ -1461,8 +1461,8 @@ Module Impl_erc721_Erc721.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (LogicalOp.or (|
+                              UnOp.not (|
+                                LogicalOp.or (|
                                   M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
@@ -1514,7 +1514,8 @@ Module Impl_erc721_Erc721.
                                         M.read (| caller |)
                                       ]
                                     |)))
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1559,13 +1560,18 @@ Module Impl_erc721_Erc721.
                                         [
                                           Ty.apply
                                             (Ty.path "array")
-                                            [ Value.Integer 32 ]
+                                            [ Value.Integer IntegerKind.Usize 32 ]
                                             [ Ty.path "u8" ]
                                         ],
                                         "from",
                                         []
                                       |),
-                                      [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
+                                      [
+                                        repeat (|
+                                          Value.Integer IntegerKind.U8 0,
+                                          Value.Integer IntegerKind.Usize 32
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 ]
@@ -1683,7 +1689,7 @@ Module Impl_erc721_Erc721.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_approve_for : M.IsAssociatedFunction Self "approve_for" approve_for.
@@ -1784,7 +1790,7 @@ Module Impl_erc721_Erc721.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_approve : M.IsAssociatedFunction Self "approve" approve.
@@ -1850,8 +1856,8 @@ Module Impl_erc721_Erc721.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "erc721::Mapping")
@@ -1861,7 +1867,8 @@ Module Impl_erc721_Erc721.
                                             []
                                           |),
                                           [ M.read (| token_owner |); id ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1939,21 +1946,25 @@ Module Impl_erc721_Erc721.
                                               ltac:(M.monadic
                                                 match γ with
                                                 | [ α0 ] =>
-                                                  M.match_operator (|
-                                                    M.alloc (| α0 |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let c := M.copy (| γ |) in
-                                                          BinOp.Wrap.sub
-                                                            Integer.U32
-                                                            (M.read (| c |))
-                                                            (M.read (|
-                                                              M.use (M.alloc (| Value.Integer 1 |))
-                                                            |))))
-                                                    ]
-                                                  |)
-                                                | _ => M.impossible (||)
+                                                  ltac:(M.monadic
+                                                    (M.match_operator (|
+                                                      M.alloc (| α0 |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let c := M.copy (| γ |) in
+                                                            BinOp.Wrap.sub (|
+                                                              M.read (| c |),
+                                                              M.read (|
+                                                                M.use
+                                                                  (M.alloc (|
+                                                                    Value.Integer IntegerKind.U32 1
+                                                                  |))
+                                                              |)
+                                                            |)))
+                                                      ]
+                                                    |)))
+                                                | _ => M.impossible "wrong number of arguments"
                                                 end))
                                         ]
                                       |);
@@ -2054,7 +2065,7 @@ Module Impl_erc721_Erc721.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_remove_token_from :
@@ -2232,7 +2243,7 @@ Module Impl_erc721_Erc721.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
@@ -2339,7 +2350,7 @@ Module Impl_erc721_Erc721.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_transfer_from :
@@ -2485,13 +2496,18 @@ Module Impl_erc721_Erc721.
                                         [
                                           Ty.apply
                                             (Ty.path "array")
-                                            [ Value.Integer 32 ]
+                                            [ Value.Integer IntegerKind.Usize 32 ]
                                             [ Ty.path "u8" ]
                                         ],
                                         "from",
                                         []
                                       |),
-                                      [ repeat (| Value.Integer 0, Value.Integer 32 |) ]
+                                      [
+                                        repeat (|
+                                          Value.Integer IntegerKind.U8 0,
+                                          Value.Integer IntegerKind.Usize 32
+                                        |)
+                                      ]
                                     |)
                                   ]);
                               ("to",
@@ -2507,7 +2523,7 @@ Module Impl_erc721_Erc721.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_mint : M.IsAssociatedFunction Self "mint" mint.

@@ -21,35 +21,30 @@ Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    BinOp.Wrap.add
-                                      Integer.I32
-                                      (M.read (| number |))
-                                      (Value.Integer 1)
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  BinOp.Wrap.add (|
+                                    M.read (| number |),
+                                    Value.Integer IntegerKind.I32 1
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -58,7 +53,7 @@ Definition increase (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_increase : M.IsFunction "program_arguments_parsing::increase" increase.
@@ -83,35 +78,30 @@ Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    BinOp.Wrap.sub
-                                      Integer.I32
-                                      (M.read (| number |))
-                                      (Value.Integer 1)
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  BinOp.Wrap.sub (|
+                                    M.read (| number |),
+                                    Value.Integer IntegerKind.I32 1
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -120,7 +110,7 @@ Definition decrease (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_decrease : M.IsFunction "program_arguments_parsing::decrease" decrease.
@@ -150,22 +140,20 @@ Definition help (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (|
-                                Value.String
-                                  "usage:
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (|
+                              Value.String
+                                "usage:
 match_args <string>
     Check whether given string is the answer.
 match_args {increase|decrease} <integer>
     Increase or decrease given integer by one.
 "
-                              |)
-                            ]
-                        |))
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -174,7 +162,7 @@ match_args {increase|decrease} <integer>
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_help : M.IsFunction "program_arguments_parsing::help" help.
@@ -266,7 +254,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.Usize 1
+                      |) in
                     let~ _ :=
                       let~ _ :=
                         M.alloc (|
@@ -280,18 +272,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "My name is 'match_args'. Try passing some arguments!
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "My name is 'match_args'. Try passing some arguments!
 "
-                                          |)
-                                        ]
-                                    |))
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -301,7 +291,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.Usize 2
+                      |) in
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -330,7 +324,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     "index",
                                     []
                                   |),
-                                  [ args; Value.Integer 1 ]
+                                  [ args; Value.Integer IntegerKind.Usize 1 ]
                                 |)
                               ]
                             |)
@@ -349,7 +343,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             let _ :=
                               M.is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
-                                Value.Integer 42
+                                Value.Integer IntegerKind.I32 42
                               |) in
                             let~ _ :=
                               M.alloc (|
@@ -363,13 +357,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "This is the answer!
+                                        M.alloc (|
+                                          Value.Array
+                                            [ M.read (| Value.String "This is the answer!
 " |) ]
-                                          |))
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -390,14 +382,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "This is not the answer.
-" |)
-                                              ]
-                                          |))
+                                        M.alloc (|
+                                          Value.Array
+                                            [ M.read (| Value.String "This is not the answer.
+" |) ]
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -408,7 +397,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.Usize 3
+                      |) in
                     let~ cmd :=
                       M.alloc (|
                         M.call_closure (|
@@ -422,7 +415,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             "index",
                             []
                           |),
-                          [ args; Value.Integer 1 ]
+                          [ args; Value.Integer IntegerKind.Usize 1 ]
                         |)
                       |) in
                     let~ num :=
@@ -438,7 +431,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             "index",
                             []
                           |),
-                          [ args; Value.Integer 2 ]
+                          [ args; Value.Integer IntegerKind.Usize 2 ]
                         |)
                       |) in
                     let~ number :=
@@ -500,18 +493,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (|
-                                                              Value.String
-                                                                "error: second argument not an integer
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (|
+                                                            Value.String
+                                                              "error: second argument not an integer
 "
-                                                            |)
-                                                          ]
-                                                      |))
+                                                          |)
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -590,17 +581,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "error: invalid command
-"
-                                                  |)
-                                                ]
-                                            |))
+                                          M.alloc (|
+                                            Value.Array
+                                              [ M.read (| Value.String "error: invalid command
+" |)
+                                              ]
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -631,7 +617,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)
           |)))
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "program_arguments_parsing::main" main.

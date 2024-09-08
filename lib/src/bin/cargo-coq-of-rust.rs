@@ -1,3 +1,5 @@
+#![feature(rustc_private)]
+
 use clap::*;
 use coq_of_rust_lib::options::Args;
 use std::{

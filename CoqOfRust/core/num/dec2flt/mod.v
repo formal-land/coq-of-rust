@@ -23,7 +23,7 @@ Module num.
               M.get_function (| "core::num::dec2flt::dec2flt", [ Ty.path "f32" ] |),
               [ M.read (| src |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -55,7 +55,7 @@ Module num.
               M.get_function (| "core::num::dec2flt::dec2flt", [ Ty.path "f64" ] |),
               [ M.read (| src |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -95,18 +95,16 @@ Module num.
                 M.read (| f |);
                 M.read (| Value.String "ParseFloatError" |);
                 M.read (| Value.String "kind" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::dec2flt::ParseFloatError",
-                      "kind"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::dec2flt::ParseFloatError",
+                    "kind"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -147,7 +145,7 @@ Module num.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -200,7 +198,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -210,17 +208,6 @@ Module num.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_num_dec2flt_ParseFloatError.
-    
-    Module Impl_core_marker_StructuralEq_for_core_num_dec2flt_ParseFloatError.
-      Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_num_dec2flt_ParseFloatError.
     
     Module Impl_core_cmp_Eq_for_core_num_dec2flt_ParseFloatError.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
@@ -241,7 +228,7 @@ Module num.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -315,7 +302,7 @@ Module num.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -358,7 +345,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -391,7 +378,7 @@ Module num.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -401,7 +388,7 @@ Module num.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -411,9 +398,9 @@ Module num.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -423,17 +410,6 @@ Module num.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_num_dec2flt_FloatErrorKind.
-    
-    Module Impl_core_marker_StructuralEq_for_core_num_dec2flt_FloatErrorKind.
-      Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_num_dec2flt_FloatErrorKind.
     
     Module Impl_core_cmp_Eq_for_core_num_dec2flt_FloatErrorKind.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
@@ -449,7 +425,7 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -500,7 +476,7 @@ Module num.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -542,7 +518,7 @@ Module num.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -565,7 +541,7 @@ Module num.
           (Value.StructRecord
             "core::num::dec2flt::ParseFloatError"
             [ ("kind", Value.StructTuple "core::num::dec2flt::FloatErrorKind::Empty" []) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_pfe_empty : M.IsFunction "core::num::dec2flt::pfe_empty" pfe_empty.
@@ -582,7 +558,7 @@ Module num.
           (Value.StructRecord
             "core::num::dec2flt::ParseFloatError"
             [ ("kind", Value.StructTuple "core::num::dec2flt::FloatErrorKind::Invalid" []) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_pfe_invalid : M.IsFunction "core::num::dec2flt::pfe_invalid" pfe_invalid.
@@ -612,22 +588,23 @@ Module num.
               let β := word in
               M.write (|
                 β,
-                BinOp.Pure.bit_or
+                BinOp.bit_or
                   (M.read (| β |))
-                  (BinOp.Wrap.shl
-                    (M.rust_cast
+                  (BinOp.Wrap.shl (|
+                    M.rust_cast
                       (M.read (|
                         M.SubPointer.get_struct_record_field (|
                           x,
                           "core::num::dec2flt::common::BiasedFp",
                           "e"
                         |)
-                      |)))
-                    (M.read (|
+                      |)),
+                    M.read (|
                       M.get_constant (|
                         "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
                       |)
-                    |)))
+                    |)
+                  |))
               |) in
             M.alloc (|
               M.call_closure (|
@@ -642,7 +619,7 @@ Module num.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_biased_fp_to_float :
@@ -670,8 +647,10 @@ Module num.
             None => return Err(pfe_invalid()),
         };
         num.negative = negative;
-        if let Some(value) = num.try_fast_path::<F>() {
-            return Ok(value);
+        if !cfg!(feature = "optimize_for_size") {
+            if let Some(value) = num.try_fast_path::<F>() {
+                return Ok(value);
+            }
         }
     
         // If significant digits were truncated, then we can have rounding error
@@ -759,7 +738,7 @@ Module num.
                     |)
                   |) in
                 let~ negative :=
-                  M.alloc (| BinOp.Pure.eq (M.read (| c |)) (M.read (| UnsupportedLiteral |)) |) in
+                  M.alloc (| BinOp.eq (| M.read (| c |), M.read (| UnsupportedLiteral |) |) |) in
                 let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -770,11 +749,12 @@ Module num.
                             M.use
                               (M.alloc (|
                                 LogicalOp.or (|
-                                  BinOp.Pure.eq (M.read (| c |)) (M.read (| UnsupportedLiteral |)),
+                                  BinOp.eq (| M.read (| c |), M.read (| UnsupportedLiteral |) |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| c |))
-                                      (M.read (| UnsupportedLiteral |))))
+                                    (BinOp.eq (|
+                                      M.read (| c |),
+                                      M.read (| UnsupportedLiteral |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -799,7 +779,7 @@ Module num.
                                   M.read (| s |);
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
-                                    [ ("start", Value.Integer 1) ]
+                                    [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                 ]
                               |)
                             |) in
@@ -937,34 +917,45 @@ Module num.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::num::dec2flt::number::Number",
-                                  "try_fast_path",
-                                  [ F ]
-                                |),
-                                [ num ]
-                              |)
-                            |) in
-                          let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::option::Option::Some",
-                              0
-                            |) in
-                          let value := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Ok"
-                                    [ M.read (| value |) ]
-                                |)
-                              |)
-                            |)
+                          (let γ := M.use (M.alloc (| UnOp.not (| Value.Bool false |) |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.match_operator (|
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::num::dec2flt::number::Number",
+                                          "try_fast_path",
+                                          [ F ]
+                                        |),
+                                        [ num ]
+                                      |)
+                                    |) in
+                                  let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::option::Option::Some",
+                                      0
+                                    |) in
+                                  let value := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          Value.StructTuple
+                                            "core::result::Result::Ok"
+                                            [ M.read (| value |) ]
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
@@ -1010,15 +1001,16 @@ Module num.
                                       |)
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.ge
-                                        (M.read (|
+                                      (BinOp.ge (|
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             fp,
                                             "core::num::dec2flt::common::BiasedFp",
                                             "e"
                                           |)
-                                        |))
-                                        (Value.Integer 0)))
+                                        |),
+                                        Value.Integer IntegerKind.I32 0
+                                      |)))
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
@@ -1045,16 +1037,16 @@ Module num.
                                                   "exponent"
                                                 |)
                                               |);
-                                              BinOp.Wrap.add
-                                                Integer.U64
-                                                (M.read (|
+                                              BinOp.Wrap.add (|
+                                                M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     num,
                                                     "core::num::dec2flt::number::Number",
                                                     "mantissa"
                                                   |)
-                                                |))
-                                                (Value.Integer 1)
+                                                |),
+                                                Value.Integer IntegerKind.U64 1
+                                              |)
                                             ]
                                           |)
                                         |)
@@ -1071,7 +1063,7 @@ Module num.
                                 "core::num::dec2flt::common::BiasedFp",
                                 "e"
                               |),
-                              Value.Integer (-1)
+                              Value.Integer IntegerKind.I32 (-1)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1086,15 +1078,16 @@ Module num.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.read (|
+                                BinOp.lt (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       fp,
                                       "core::num::dec2flt::common::BiasedFp",
                                       "e"
                                     |)
-                                  |))
-                                  (Value.Integer 0)
+                                  |),
+                                  Value.Integer IntegerKind.I32 0
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1150,7 +1143,7 @@ Module num.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| float |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_dec2flt : M.IsFunction "core::num::dec2flt::dec2flt" dec2flt.

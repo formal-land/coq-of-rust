@@ -60,11 +60,7 @@ Module effects.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "New" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "New" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -84,11 +80,7 @@ Module effects.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Modify" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Modify" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -108,7 +100,7 @@ Module effects.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -182,7 +174,7 @@ Module effects.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -193,18 +185,6 @@ Module effects.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("clone", InstanceField.Method (clone T)) ].
   End Impl_core_clone_Clone_where_core_clone_Clone_T_for_move_core_types_effects_Op_T.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_effects_Op_T.
-    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ].
-    
-    Axiom Implements :
-      forall (T : Ty.t),
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        (Self T)
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_effects_Op_T.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_move_core_types_effects_Op_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "move_core_types::effects::Op") [] [ T ].
@@ -227,7 +207,7 @@ Module effects.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -264,7 +244,7 @@ Module effects.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -274,7 +254,7 @@ Module effects.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -286,7 +266,7 @@ Module effects.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -314,8 +294,14 @@ Module effects.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ T ],
+                                  [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -340,8 +326,14 @@ Module effects.
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
                               M.call_closure (|
-                                M.get_trait_method (| "core::cmp::PartialEq", T, [ T ], "eq", [] |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ T ],
+                                  [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -351,7 +343,7 @@ Module effects.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -375,7 +367,7 @@ Module effects.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -385,7 +377,7 @@ Module effects.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -399,7 +391,7 @@ Module effects.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |),
               [
@@ -473,7 +465,7 @@ Module effects.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -497,7 +489,7 @@ Module effects.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -507,7 +499,7 @@ Module effects.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -595,13 +587,13 @@ Module effects.
                           "partial_cmp",
                           []
                         |),
-                        [ __self_tag; __arg1_tag ]
+                        [ __self_discr; __arg1_discr ]
                       |)
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -671,7 +663,7 @@ Module effects.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ref :
@@ -760,7 +752,7 @@ Module effects.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_map : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "map" (map T).
@@ -816,10 +808,13 @@ Module effects.
                           ltac:(M.monadic
                             match γ with
                             | [ data ] =>
-                              M.alloc (|
-                                Value.StructTuple "core::option::Option::Some" [ M.read (| data |) ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  Value.StructTuple
+                                    "core::option::Option::Some"
+                                    [ M.read (| data |) ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -829,7 +824,7 @@ Module effects.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_ok : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "ok" (ok T).
@@ -899,26 +894,22 @@ Module effects.
               M.read (| f |);
               M.read (| Value.String "AccountChangeSet" |);
               M.read (| Value.String "modules" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::effects::AccountChangeSet",
+                "modules"
+              |);
+              M.read (| Value.String "resources" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::effects::AccountChangeSet",
-                  "modules"
-                |));
-              M.read (| Value.String "resources" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::effects::AccountChangeSet",
-                    "resources"
-                  |)
-                |))
+                  "resources"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1006,7 +997,7 @@ Module effects.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1016,17 +1007,6 @@ Module effects.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_effects_AccountChangeSet.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_effects_AccountChangeSet.
-    Definition Self : Ty.t := Ty.path "move_core_types::effects::AccountChangeSet".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_effects_AccountChangeSet.
   
   Module Impl_core_cmp_Eq_for_move_core_types_effects_AccountChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::AccountChangeSet".
@@ -1054,7 +1034,7 @@ Module effects.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1196,7 +1176,7 @@ Module effects.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1306,7 +1286,7 @@ Module effects.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1456,7 +1436,7 @@ Module effects.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1719,14 +1699,17 @@ Module effects.
                                                                       ltac:(M.monadic
                                                                         match γ with
                                                                         | [] =>
-                                                                          let γ1_0 :=
-                                                                            M.SubPointer.get_struct_tuple_field (|
-                                                                              γ0_1,
-                                                                              "move_core_types::effects::Op::New",
-                                                                              0
-                                                                            |) in
-                                                                          Value.Tuple []
-                                                                        | _ => M.impossible (||)
+                                                                          ltac:(M.monadic
+                                                                            (let γ1_0 :=
+                                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                                γ0_1,
+                                                                                "move_core_types::effects::Op::New",
+                                                                                0
+                                                                              |) in
+                                                                            Value.Tuple []))
+                                                                        | _ =>
+                                                                          M.impossible
+                                                                            "wrong number of arguments"
                                                                         end))
                                                                 |)));
                                                             fun γ =>
@@ -1771,8 +1754,12 @@ Module effects.
                                                                     (fun γ =>
                                                                       ltac:(M.monadic
                                                                         match γ with
-                                                                        | [] => Value.Tuple []
-                                                                        | _ => M.impossible (||)
+                                                                        | [] =>
+                                                                          ltac:(M.monadic
+                                                                            (Value.Tuple []))
+                                                                        | _ =>
+                                                                          M.impossible
+                                                                            "wrong number of arguments"
                                                                         end))
                                                                 |)))
                                                           ],
@@ -1781,33 +1768,32 @@ Module effects.
                                                               ltac:(M.monadic
                                                                 match γ with
                                                                 | [] =>
-                                                                  M.alloc (|
-                                                                    M.never_to_any (|
-                                                                      M.read (|
-                                                                        M.return_ (|
-                                                                          Value.StructTuple
-                                                                            "core::result::Result::Err"
-                                                                            [
-                                                                              M.read (|
-                                                                                let~ error :=
-                                                                                  M.alloc (|
-                                                                                    M.call_closure (|
-                                                                                      M.get_function (|
-                                                                                        "anyhow::__private::format_err",
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "core::fmt::Arguments",
-                                                                                            "new_const",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            (* Unsize *)
-                                                                                            M.pointer_coercion
-                                                                                              (M.alloc (|
+                                                                  ltac:(M.monadic
+                                                                    (M.alloc (|
+                                                                      M.never_to_any (|
+                                                                        M.read (|
+                                                                          M.return_ (|
+                                                                            Value.StructTuple
+                                                                              "core::result::Result::Err"
+                                                                              [
+                                                                                M.read (|
+                                                                                  let~ error :=
+                                                                                    M.alloc (|
+                                                                                      M.call_closure (|
+                                                                                        M.get_function (|
+                                                                                          "anyhow::__private::format_err",
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "core::fmt::Arguments",
+                                                                                              "new_const",
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.alloc (|
                                                                                                 Value.Array
                                                                                                   [
                                                                                                     M.read (|
@@ -1815,20 +1801,22 @@ Module effects.
                                                                                                         "The given change sets cannot be squashed"
                                                                                                     |)
                                                                                                   ]
-                                                                                              |))
-                                                                                          ]
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
-                                                                                  |) in
-                                                                                error
-                                                                              |)
-                                                                            ]
+                                                                                              |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    |) in
+                                                                                  error
+                                                                                |)
+                                                                              ]
+                                                                          |)
                                                                         |)
                                                                       |)
-                                                                    |)
-                                                                  |)
-                                                                | _ => M.impossible (||)
+                                                                    |)))
+                                                                | _ =>
+                                                                  M.impossible
+                                                                    "wrong number of arguments"
                                                                 end))
                                                         |)));
                                                     fun γ =>
@@ -2015,7 +2003,7 @@ Module effects.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_squash : M.IsFunction "move_core_types::effects::squash" squash.
@@ -2040,7 +2028,7 @@ Module effects.
           Value.StructRecord
             "move_core_types::effects::AccountChangeSet"
             [ ("modules", M.read (| modules |)); ("resources", M.read (| resources |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_modules_resources :
@@ -2110,7 +2098,7 @@ Module effects.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -2197,95 +2185,102 @@ Module effects.
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
-                                          M.read (|
-                                            let~ res :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_function (| "alloc::fmt::format", [] |),
-                                                  [
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "core::hint::must_use",
+                                              [ Ty.path "alloc::string::String" ]
+                                            |),
+                                            [
+                                              M.read (|
+                                                let~ res :=
+                                                  M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::Arguments",
-                                                        "new_v1",
-                                                        []
-                                                      |),
+                                                      M.get_function (| "alloc::fmt::format", [] |),
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (| Value.String "Module " |);
-                                                                M.read (|
-                                                                  Value.String " already exists"
-                                                                |)
-                                                              ]
-                                                          |));
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_core_types::identifier::Identifier"
-                                                                        ]
-                                                                    ]
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::collections::btree::map::entry::OccupiedEntry")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_core_types::identifier::Identifier";
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "move_core_types::effects::Op")
-                                                                                []
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "alloc::vec::Vec")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path "u8";
-                                                                                      Ty.path
-                                                                                        "alloc::alloc::Global"
-                                                                                    ]
-                                                                                ];
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
-                                                                            ],
-                                                                          "key",
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::Arguments",
+                                                            "new_v1",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String "Module "
+                                                                  |);
+                                                                  M.read (|
+                                                                    Value.String " already exists"
+                                                                  |)
+                                                                ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_display",
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
                                                                           []
-                                                                        |),
-                                                                        [ entry ]
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_core_types::identifier::Identifier"
+                                                                          ]
+                                                                      ]
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_core_types::identifier::Identifier";
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "move_core_types::effects::Op")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "alloc::vec::Vec")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u8";
+                                                                                        Ty.path
+                                                                                          "alloc::alloc::Global"
+                                                                                      ]
+                                                                                  ];
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ],
+                                                                            "key",
+                                                                            []
+                                                                          |),
+                                                                          [ entry ]
+                                                                        |)
                                                                       |)
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                          |))
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                            |)
+                                                          ]
+                                                        |)
                                                       ]
                                                     |)
-                                                  ]
-                                                |)
-                                              |) in
-                                            res
+                                                  |) in
+                                                res
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -2335,7 +2330,7 @@ Module effects.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_add_module_op :
@@ -2423,97 +2418,102 @@ Module effects.
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
-                                          M.read (|
-                                            let~ res :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_function (| "alloc::fmt::format", [] |),
-                                                  [
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "core::hint::must_use",
+                                              [ Ty.path "alloc::string::String" ]
+                                            |),
+                                            [
+                                              M.read (|
+                                                let~ res :=
+                                                  M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::Arguments",
-                                                        "new_v1",
-                                                        []
-                                                      |),
+                                                      M.get_function (| "alloc::fmt::format", [] |),
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String "Resource "
-                                                                |);
-                                                                M.read (|
-                                                                  Value.String " already exists"
-                                                                |)
-                                                              ]
-                                                          |));
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "move_core_types::language_storage::StructTag"
-                                                                        ]
-                                                                    ]
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::collections::btree::map::entry::OccupiedEntry")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "move_core_types::language_storage::StructTag";
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "move_core_types::effects::Op")
-                                                                                []
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "alloc::vec::Vec")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path "u8";
-                                                                                      Ty.path
-                                                                                        "alloc::alloc::Global"
-                                                                                    ]
-                                                                                ];
-                                                                              Ty.path
-                                                                                "alloc::alloc::Global"
-                                                                            ],
-                                                                          "key",
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::Arguments",
+                                                            "new_v1",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String "Resource "
+                                                                  |);
+                                                                  M.read (|
+                                                                    Value.String " already exists"
+                                                                  |)
+                                                                ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_display",
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
                                                                           []
-                                                                        |),
-                                                                        [ entry ]
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_core_types::language_storage::StructTag"
+                                                                          ]
+                                                                      ]
+                                                                    |),
+                                                                    [
+                                                                      M.alloc (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::collections::btree::map::entry::OccupiedEntry")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "move_core_types::language_storage::StructTag";
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "move_core_types::effects::Op")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "alloc::vec::Vec")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u8";
+                                                                                        Ty.path
+                                                                                          "alloc::alloc::Global"
+                                                                                      ]
+                                                                                  ];
+                                                                                Ty.path
+                                                                                  "alloc::alloc::Global"
+                                                                              ],
+                                                                            "key",
+                                                                            []
+                                                                          |),
+                                                                          [ entry ]
+                                                                        |)
                                                                       |)
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                          |))
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                            |)
+                                                          ]
+                                                        |)
                                                       ]
                                                     |)
-                                                  ]
-                                                |)
-                                              |) in
-                                            res
+                                                  |) in
+                                                res
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -2563,7 +2563,7 @@ Module effects.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_add_resource_op :
@@ -2601,7 +2601,7 @@ Module effects.
                 |)
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -2623,7 +2623,7 @@ Module effects.
               "resources"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_resources :
@@ -2646,7 +2646,7 @@ Module effects.
               "modules"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_modules : M.IsAssociatedFunction Self "into_modules" into_modules.
@@ -2666,7 +2666,7 @@ Module effects.
             "move_core_types::effects::AccountChangeSet",
             "modules"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_modules : M.IsAssociatedFunction Self "modules" modules.
@@ -2686,7 +2686,7 @@ Module effects.
             "move_core_types::effects::AccountChangeSet",
             "resources"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_resources : M.IsAssociatedFunction Self "resources" resources.
@@ -2762,7 +2762,7 @@ Module effects.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -2907,7 +2907,7 @@ Module effects.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_squash : M.IsAssociatedFunction Self "squash" squash.
@@ -2952,18 +2952,16 @@ Module effects.
               M.read (| f |);
               M.read (| Value.String "ChangeSet" |);
               M.read (| Value.String "accounts" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::effects::ChangeSet",
-                    "accounts"
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "move_core_types::effects::ChangeSet",
+                  "accounts"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3011,7 +3009,7 @@ Module effects.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3021,17 +3019,6 @@ Module effects.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_effects_ChangeSet.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_effects_ChangeSet.
-    Definition Self : Ty.t := Ty.path "move_core_types::effects::ChangeSet".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_effects_ChangeSet.
   
   Module Impl_core_cmp_Eq_for_move_core_types_effects_ChangeSet.
     Definition Self : Ty.t := Ty.path "move_core_types::effects::ChangeSet".
@@ -3052,7 +3039,7 @@ Module effects.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3122,7 +3109,7 @@ Module effects.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3171,7 +3158,7 @@ Module effects.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3229,7 +3216,7 @@ Module effects.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3260,7 +3247,7 @@ Module effects.
             |),
             []
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3305,7 +3292,7 @@ Module effects.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -3388,58 +3375,62 @@ Module effects.
                                           [ Ty.path "alloc::string::String" ]
                                         |),
                                         [
-                                          M.read (|
-                                            let~ res :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_function (| "alloc::fmt::format", [] |),
-                                                  [
+                                          M.call_closure (|
+                                            M.get_function (|
+                                              "core::hint::must_use",
+                                              [ Ty.path "alloc::string::String" ]
+                                            |),
+                                            [
+                                              M.read (|
+                                                let~ res :=
+                                                  M.alloc (|
                                                     M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::Arguments",
-                                                        "new_v1",
-                                                        []
-                                                      |),
+                                                      M.get_function (| "alloc::fmt::format", [] |),
                                                       [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "Failed to add account change set. Account "
-                                                                |);
-                                                                M.read (|
-                                                                  Value.String " already exists."
-                                                                |)
-                                                              ]
-                                                          |));
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_display",
-                                                                    [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "core::fmt::Arguments",
+                                                            "new_v1",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      "Failed to add account change set. Account "
+                                                                  |);
+                                                                  M.read (|
+                                                                    Value.String " already exists."
+                                                                  |)
+                                                                ]
+                                                            |);
+                                                            M.alloc (|
+                                                              Value.Array
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
                                                                       Ty.path
-                                                                        "move_core_types::account_address::AccountAddress"
-                                                                    ]
-                                                                  |),
-                                                                  [ addr ]
-                                                                |)
-                                                              ]
-                                                          |))
+                                                                        "core::fmt::rt::Argument",
+                                                                      "new_display",
+                                                                      [
+                                                                        Ty.path
+                                                                          "move_core_types::account_address::AccountAddress"
+                                                                      ]
+                                                                    |),
+                                                                    [ addr ]
+                                                                  |)
+                                                                ]
+                                                            |)
+                                                          ]
+                                                        |)
                                                       ]
                                                     |)
-                                                  ]
-                                                |)
-                                              |) in
-                                            res
+                                                  |) in
+                                                res
+                                              |)
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -3481,7 +3472,7 @@ Module effects.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_add_account_changeset :
@@ -3502,7 +3493,7 @@ Module effects.
             "move_core_types::effects::ChangeSet",
             "accounts"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_accounts : M.IsAssociatedFunction Self "accounts" accounts.
@@ -3524,7 +3515,7 @@ Module effects.
               "accounts"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -3639,7 +3630,7 @@ Module effects.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_get_or_insert_account_changeset :
@@ -3715,7 +3706,7 @@ Module effects.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_add_module_op :
@@ -3763,7 +3754,7 @@ Module effects.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_add_resource_op :
@@ -4065,7 +4056,7 @@ Module effects.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_squash : M.IsAssociatedFunction Self "squash" squash.
@@ -4249,40 +4240,24 @@ Module effects.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let addr := M.copy (| γ0_0 |) in
-                              let account := M.copy (| γ0_1 |) in
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::map::IntoIter")
-                                    []
-                                    [
-                                      Ty.path "move_core_types::identifier::Identifier";
-                                      Ty.apply
-                                        (Ty.path "move_core_types::effects::Op")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
-                                            []
-                                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                        ];
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  [],
-                                  "map",
-                                  [
-                                    Ty.tuple
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                let addr := M.copy (| γ0_0 |) in
+                                let account := M.copy (| γ0_1 |) in
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::iter::traits::iterator::Iterator",
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::map::IntoIter")
+                                      []
                                       [
-                                        Ty.path "move_core_types::language_storage::ModuleId";
+                                        Ty.path "move_core_types::identifier::Identifier";
                                         Ty.apply
                                           (Ty.path "move_core_types::effects::Op")
                                           []
@@ -4291,29 +4266,13 @@ Module effects.
                                               (Ty.path "alloc::vec::Vec")
                                               []
                                               [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                          ]
-                                      ];
-                                    Ty.function
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.path "move_core_types::identifier::Identifier";
-                                                Ty.apply
-                                                  (Ty.path "move_core_types::effects::Op")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::Vec")
-                                                      []
-                                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
-                                                      ]
-                                                  ]
-                                              ]
-                                          ]
-                                      ]
-                                      (Ty.tuple
+                                          ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    "map",
+                                    [
+                                      Ty.tuple
                                         [
                                           Ty.path "move_core_types::language_storage::ModuleId";
                                           Ty.apply
@@ -4325,88 +4284,124 @@ Module effects.
                                                 []
                                                 [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                             ]
-                                        ])
-                                  ]
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::collect::IntoIterator",
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::map::BTreeMap")
-                                        []
+                                        ];
+                                      Ty.function
                                         [
-                                          Ty.path "move_core_types::identifier::Identifier";
-                                          Ty.apply
-                                            (Ty.path "move_core_types::effects::Op")
-                                            []
+                                          Ty.tuple
                                             [
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                            ];
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      [],
-                                      "into_iter",
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          account,
-                                          "move_core_types::effects::AccountChangeSet",
-                                          "modules"
-                                        |)
-                                      |)
-                                    ]
-                                  |);
-                                  M.closure
-                                    (fun γ =>
-                                      ltac:(M.monadic
-                                        match γ with
-                                        | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                                  let γ0_1 :=
-                                                    M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                  let module_name := M.copy (| γ0_0 |) in
-                                                  let blob_opt := M.copy (| γ0_1 |) in
-                                                  Value.Tuple
+                                              Ty.tuple
+                                                [
+                                                  Ty.path "move_core_types::identifier::Identifier";
+                                                  Ty.apply
+                                                    (Ty.path "move_core_types::effects::Op")
+                                                    []
                                                     [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_core_types::language_storage::ModuleId",
-                                                          "new",
-                                                          []
-                                                        |),
+                                                      Ty.apply
+                                                        (Ty.path "alloc::vec::Vec")
+                                                        []
                                                         [
-                                                          M.read (| addr |);
-                                                          M.read (| module_name |)
+                                                          Ty.path "u8";
+                                                          Ty.path "alloc::alloc::Global"
                                                         ]
-                                                      |);
-                                                      M.read (| blob_opt |)
-                                                    ]))
+                                                    ]
+                                                ]
                                             ]
+                                        ]
+                                        (Ty.tuple
+                                          [
+                                            Ty.path "move_core_types::language_storage::ModuleId";
+                                            Ty.apply
+                                              (Ty.path "move_core_types::effects::Op")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                              ]
+                                          ])
+                                    ]
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::collect::IntoIterator",
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                          []
+                                          [
+                                            Ty.path "move_core_types::identifier::Identifier";
+                                            Ty.apply
+                                              (Ty.path "move_core_types::effects::Op")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                              ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        [],
+                                        "into_iter",
+                                        []
+                                      |),
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            account,
+                                            "move_core_types::effects::AccountChangeSet",
+                                            "modules"
                                           |)
-                                        | _ => M.impossible (||)
-                                        end))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                        |)
+                                      ]
+                                    |);
+                                    M.closure
+                                      (fun γ =>
+                                        ltac:(M.monadic
+                                          match γ with
+                                          | [ α0 ] =>
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                      let γ0_1 :=
+                                                        M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                      let module_name := M.copy (| γ0_0 |) in
+                                                      let blob_opt := M.copy (| γ0_1 |) in
+                                                      Value.Tuple
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "move_core_types::language_storage::ModuleId",
+                                                              "new",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.read (| addr |);
+                                                              M.read (| module_name |)
+                                                            ]
+                                                          |);
+                                                          M.read (| blob_opt |)
+                                                        ]))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
+                                          end))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_modules : M.IsAssociatedFunction Self "into_modules" into_modules.
@@ -4614,91 +4609,41 @@ Module effects.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let addr := M.copy (| γ0_0 |) in
-                              let account := M.copy (| γ0_1 |) in
-                              M.read (|
-                                let~ addr := M.copy (| M.read (| addr |) |) in
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::map::Iter")
-                                        []
-                                        [
-                                          Ty.path "move_core_types::identifier::Identifier";
-                                          Ty.apply
-                                            (Ty.path "move_core_types::effects::Op")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                            ]
-                                        ],
-                                      [],
-                                      "map",
-                                      [
-                                        Ty.tuple
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                let addr := M.copy (| γ0_0 |) in
+                                let account := M.copy (| γ0_1 |) in
+                                M.read (|
+                                  let~ addr := M.copy (| M.read (| addr |) |) in
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::map::Iter")
+                                          []
                                           [
-                                            Ty.path
-                                              "move_core_types::account_address::AccountAddress";
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "move_core_types::identifier::Identifier" ];
+                                            Ty.path "move_core_types::identifier::Identifier";
                                             Ty.apply
                                               (Ty.path "move_core_types::effects::Op")
                                               []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "&")
+                                                  (Ty.path "alloc::vec::Vec")
                                                   []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                               ]
-                                          ];
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_core_types::identifier::Identifier"
-                                                      ];
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "move_core_types::effects::Op")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "alloc::vec::Vec")
-                                                              []
-                                                              [
-                                                                Ty.path "u8";
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ]
-                                                          ]
-                                                      ]
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.tuple
+                                          ],
+                                        [],
+                                        "map",
+                                        [
+                                          Ty.tuple
                                             [
                                               Ty.path
                                                 "move_core_types::account_address::AccountAddress";
@@ -4717,123 +4662,126 @@ Module effects.
                                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
                                                     ]
                                                 ]
-                                            ])
-                                      ]
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::map::BTreeMap")
-                                            []
+                                            ];
+                                          Ty.function
                                             [
-                                              Ty.path "move_core_types::identifier::Identifier";
-                                              Ty.apply
-                                                (Ty.path "move_core_types::effects::Op")
-                                                []
+                                              Ty.tuple
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::Vec")
-                                                    []
-                                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                                ];
-                                              Ty.path "alloc::alloc::Global"
-                                            ],
-                                          "iter",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| account |),
-                                            "move_core_types::effects::AccountChangeSet",
-                                            "modules"
-                                          |)
-                                        ]
-                                      |);
-                                      M.closure
-                                        (fun γ =>
-                                          ltac:(M.monadic
-                                            match γ with
-                                            | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                                      let γ0_1 :=
-                                                        M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                      let module_name := M.copy (| γ0_0 |) in
-                                                      let op := M.copy (| γ0_1 |) in
-                                                      Value.Tuple
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
                                                         [
-                                                          M.read (| addr |);
-                                                          M.read (| module_name |);
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_core_types::identifier::Identifier"
+                                                        ];
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "move_core_types::effects::Op")
+                                                            []
+                                                            [
                                                               Ty.apply
-                                                                (Ty.path
-                                                                  "move_core_types::effects::Op")
+                                                                (Ty.path "alloc::vec::Vec")
                                                                 []
                                                                 [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
-                                                                        [
-                                                                          Ty.path "u8";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ]
-                                                                    ]
-                                                                ],
-                                                              "map",
-                                                              [
-                                                                Ty.function
-                                                                  [
-                                                                    Ty.tuple
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::vec::Vec")
-                                                                              []
-                                                                              [
-                                                                                Ty.path "u8";
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ]
-                                                                          ]
-                                                                      ]
-                                                                  ]
-                                                                  (Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "slice")
-                                                                        []
-                                                                        [ Ty.path "u8" ]
-                                                                    ]);
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "slice")
-                                                                      []
-                                                                      [ Ty.path "u8" ]
-                                                                  ]
-                                                              ]
-                                                            |),
+                                                                  Ty.path "u8";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                            (Ty.tuple
+                                              [
+                                                Ty.path
+                                                  "move_core_types::account_address::AccountAddress";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::identifier::Identifier"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "move_core_types::effects::Op")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]
+                                                  ]
+                                              ])
+                                        ]
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                              []
+                                              [
+                                                Ty.path "move_core_types::identifier::Identifier";
+                                                Ty.apply
+                                                  (Ty.path "move_core_types::effects::Op")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ];
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
+                                            "iter",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| account |),
+                                              "move_core_types::effects::AccountChangeSet",
+                                              "modules"
+                                            |)
+                                          ]
+                                        |);
+                                        M.closure
+                                          (fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                ltac:(M.monadic
+                                                  (M.match_operator (|
+                                                    M.alloc (| α0 |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              0
+                                                            |) in
+                                                          let γ0_1 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              1
+                                                            |) in
+                                                          let module_name := M.copy (| γ0_0 |) in
+                                                          let op := M.copy (| γ0_1 |) in
+                                                          Value.Tuple
                                                             [
+                                                              M.read (| addr |);
+                                                              M.read (| module_name |);
                                                               M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
@@ -4842,78 +4790,156 @@ Module effects.
                                                                     []
                                                                     [
                                                                       Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
+                                                                        (Ty.path "&")
                                                                         []
                                                                         [
-                                                                          Ty.path "u8";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path "u8";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ]
                                                                         ]
                                                                     ],
-                                                                  "as_ref",
-                                                                  []
-                                                                |),
-                                                                [ M.read (| op |) ]
-                                                              |);
-                                                              M.closure
-                                                                (fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    match γ with
-                                                                    | [ α0 ] =>
-                                                                      M.match_operator (|
-                                                                        M.alloc (| α0 |),
-                                                                        [
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let v :=
-                                                                                M.copy (| γ |) in
-                                                                              M.call_closure (|
-                                                                                M.get_trait_method (|
-                                                                                  "core::convert::AsRef",
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "alloc::vec::Vec")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path "u8";
-                                                                                      Ty.path
-                                                                                        "alloc::alloc::Global"
-                                                                                    ],
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "slice")
-                                                                                      []
-                                                                                      [ Ty.path "u8"
-                                                                                      ]
-                                                                                  ],
-                                                                                  "as_ref",
+                                                                  "map",
+                                                                  [
+                                                                    Ty.function
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
                                                                                   []
-                                                                                |),
-                                                                                [ M.read (| v |) ]
-                                                                              |)))
-                                                                        ]
-                                                                      |)
-                                                                    | _ => M.impossible (||)
-                                                                    end))
-                                                            ]
-                                                          |)
-                                                        ]))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
-                                            end))
-                                    ]
+                                                                                  [
+                                                                                    Ty.path "u8";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ]
+                                                                              ]
+                                                                          ]
+                                                                      ]
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [ Ty.path "u8" ]
+                                                                        ]);
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]
+                                                                  ]
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "move_core_types::effects::Op")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path "u8";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ]
+                                                                        ],
+                                                                      "as_ref",
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| op |) ]
+                                                                  |);
+                                                                  M.closure
+                                                                    (fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        match γ with
+                                                                        | [ α0 ] =>
+                                                                          ltac:(M.monadic
+                                                                            (M.match_operator (|
+                                                                              M.alloc (| α0 |),
+                                                                              [
+                                                                                fun γ =>
+                                                                                  ltac:(M.monadic
+                                                                                    (let v :=
+                                                                                      M.copy (|
+                                                                                        γ
+                                                                                      |) in
+                                                                                    M.call_closure (|
+                                                                                      M.get_trait_method (|
+                                                                                        "core::convert::AsRef",
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "alloc::vec::Vec")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8";
+                                                                                            Ty.path
+                                                                                              "alloc::alloc::Global"
+                                                                                          ],
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "slice")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u8"
+                                                                                            ]
+                                                                                        ],
+                                                                                        "as_ref",
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          v
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)))
+                                                                              ]
+                                                                            |)))
+                                                                        | _ =>
+                                                                          M.impossible
+                                                                            "wrong number of arguments"
+                                                                        end))
+                                                                ]
+                                                              |)
+                                                            ]))
+                                                    ]
+                                                  |)))
+                                              | _ => M.impossible "wrong number of arguments"
+                                              end))
+                                      ]
+                                    |)
                                   |)
-                                |)
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_modules : M.IsAssociatedFunction Self "modules" modules.
@@ -5121,94 +5147,41 @@ Module effects.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                              let addr := M.copy (| γ0_0 |) in
-                              let account := M.copy (| γ0_1 |) in
-                              M.read (|
-                                let~ addr := M.copy (| M.read (| addr |) |) in
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "alloc::collections::btree::map::Iter")
-                                        []
-                                        [
-                                          Ty.path "move_core_types::language_storage::StructTag";
-                                          Ty.apply
-                                            (Ty.path "move_core_types::effects::Op")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                            ]
-                                        ],
-                                      [],
-                                      "map",
-                                      [
-                                        Ty.tuple
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                let addr := M.copy (| γ0_0 |) in
+                                let account := M.copy (| γ0_1 |) in
+                                M.read (|
+                                  let~ addr := M.copy (| M.read (| addr |) |) in
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.apply
+                                          (Ty.path "alloc::collections::btree::map::Iter")
+                                          []
                                           [
-                                            Ty.path
-                                              "move_core_types::account_address::AccountAddress";
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_core_types::language_storage::StructTag"
-                                              ];
+                                            Ty.path "move_core_types::language_storage::StructTag";
                                             Ty.apply
                                               (Ty.path "move_core_types::effects::Op")
                                               []
                                               [
                                                 Ty.apply
-                                                  (Ty.path "&")
+                                                  (Ty.path "alloc::vec::Vec")
                                                   []
-                                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
                                               ]
-                                          ];
-                                        Ty.function
-                                          [
-                                            Ty.tuple
-                                              [
-                                                Ty.tuple
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_core_types::language_storage::StructTag"
-                                                      ];
-                                                    Ty.apply
-                                                      (Ty.path "&")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "move_core_types::effects::Op")
-                                                          []
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "alloc::vec::Vec")
-                                                              []
-                                                              [
-                                                                Ty.path "u8";
-                                                                Ty.path "alloc::alloc::Global"
-                                                              ]
-                                                          ]
-                                                      ]
-                                                  ]
-                                              ]
-                                          ]
-                                          (Ty.tuple
+                                          ],
+                                        [],
+                                        "map",
+                                        [
+                                          Ty.tuple
                                             [
                                               Ty.path
                                                 "move_core_types::account_address::AccountAddress";
@@ -5229,124 +5202,127 @@ Module effects.
                                                     [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ]
                                                     ]
                                                 ]
-                                            ])
-                                      ]
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::map::BTreeMap")
-                                            []
+                                            ];
+                                          Ty.function
                                             [
-                                              Ty.path
-                                                "move_core_types::language_storage::StructTag";
-                                              Ty.apply
-                                                (Ty.path "move_core_types::effects::Op")
-                                                []
+                                              Ty.tuple
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::Vec")
-                                                    []
-                                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                                ];
-                                              Ty.path "alloc::alloc::Global"
-                                            ],
-                                          "iter",
-                                          []
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| account |),
-                                            "move_core_types::effects::AccountChangeSet",
-                                            "resources"
-                                          |)
-                                        ]
-                                      |);
-                                      M.closure
-                                        (fun γ =>
-                                          ltac:(M.monadic
-                                            match γ with
-                                            | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                                      let γ0_1 :=
-                                                        M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                      let struct_tag := M.copy (| γ0_0 |) in
-                                                      let op := M.copy (| γ0_1 |) in
-                                                      Value.Tuple
+                                                  Ty.tuple
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
                                                         [
-                                                          M.read (| addr |);
-                                                          M.read (| struct_tag |);
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_core_types::language_storage::StructTag"
+                                                        ];
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path "move_core_types::effects::Op")
+                                                            []
+                                                            [
                                                               Ty.apply
-                                                                (Ty.path
-                                                                  "move_core_types::effects::Op")
+                                                                (Ty.path "alloc::vec::Vec")
                                                                 []
                                                                 [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
-                                                                        []
-                                                                        [
-                                                                          Ty.path "u8";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ]
-                                                                    ]
-                                                                ],
-                                                              "map",
-                                                              [
-                                                                Ty.function
-                                                                  [
-                                                                    Ty.tuple
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path "&")
-                                                                          []
-                                                                          [
-                                                                            Ty.apply
-                                                                              (Ty.path
-                                                                                "alloc::vec::Vec")
-                                                                              []
-                                                                              [
-                                                                                Ty.path "u8";
-                                                                                Ty.path
-                                                                                  "alloc::alloc::Global"
-                                                                              ]
-                                                                          ]
-                                                                      ]
-                                                                  ]
-                                                                  (Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "slice")
-                                                                        []
-                                                                        [ Ty.path "u8" ]
-                                                                    ]);
-                                                                Ty.apply
-                                                                  (Ty.path "&")
-                                                                  []
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "slice")
-                                                                      []
-                                                                      [ Ty.path "u8" ]
-                                                                  ]
-                                                              ]
-                                                            |),
+                                                                  Ty.path "u8";
+                                                                  Ty.path "alloc::alloc::Global"
+                                                                ]
+                                                            ]
+                                                        ]
+                                                    ]
+                                                ]
+                                            ]
+                                            (Ty.tuple
+                                              [
+                                                Ty.path
+                                                  "move_core_types::account_address::AccountAddress";
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.path
+                                                      "move_core_types::language_storage::StructTag"
+                                                  ];
+                                                Ty.apply
+                                                  (Ty.path "move_core_types::effects::Op")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ]
+                                                      ]
+                                                  ]
+                                              ])
+                                        ]
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                              []
+                                              [
+                                                Ty.path
+                                                  "move_core_types::language_storage::StructTag";
+                                                Ty.apply
+                                                  (Ty.path "move_core_types::effects::Op")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
+                                                      ]
+                                                  ];
+                                                Ty.path "alloc::alloc::Global"
+                                              ],
+                                            "iter",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| account |),
+                                              "move_core_types::effects::AccountChangeSet",
+                                              "resources"
+                                            |)
+                                          ]
+                                        |);
+                                        M.closure
+                                          (fun γ =>
+                                            ltac:(M.monadic
+                                              match γ with
+                                              | [ α0 ] =>
+                                                ltac:(M.monadic
+                                                  (M.match_operator (|
+                                                    M.alloc (| α0 |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              0
+                                                            |) in
+                                                          let γ0_1 :=
+                                                            M.SubPointer.get_tuple_field (|
+                                                              γ,
+                                                              1
+                                                            |) in
+                                                          let struct_tag := M.copy (| γ0_0 |) in
+                                                          let op := M.copy (| γ0_1 |) in
+                                                          Value.Tuple
                                                             [
+                                                              M.read (| addr |);
+                                                              M.read (| struct_tag |);
                                                               M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
@@ -5355,78 +5331,156 @@ Module effects.
                                                                     []
                                                                     [
                                                                       Ty.apply
-                                                                        (Ty.path "alloc::vec::Vec")
+                                                                        (Ty.path "&")
                                                                         []
                                                                         [
-                                                                          Ty.path "u8";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path "u8";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ]
                                                                         ]
                                                                     ],
-                                                                  "as_ref",
-                                                                  []
-                                                                |),
-                                                                [ M.read (| op |) ]
-                                                              |);
-                                                              M.closure
-                                                                (fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    match γ with
-                                                                    | [ α0 ] =>
-                                                                      M.match_operator (|
-                                                                        M.alloc (| α0 |),
-                                                                        [
-                                                                          fun γ =>
-                                                                            ltac:(M.monadic
-                                                                              (let v :=
-                                                                                M.copy (| γ |) in
-                                                                              M.call_closure (|
-                                                                                M.get_trait_method (|
-                                                                                  "core::convert::AsRef",
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "alloc::vec::Vec")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path "u8";
-                                                                                      Ty.path
-                                                                                        "alloc::alloc::Global"
-                                                                                    ],
-                                                                                  [
-                                                                                    Ty.apply
-                                                                                      (Ty.path
-                                                                                        "slice")
-                                                                                      []
-                                                                                      [ Ty.path "u8"
-                                                                                      ]
-                                                                                  ],
-                                                                                  "as_ref",
+                                                                  "map",
+                                                                  [
+                                                                    Ty.function
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path "&")
+                                                                              []
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
                                                                                   []
-                                                                                |),
-                                                                                [ M.read (| v |) ]
-                                                                              |)))
-                                                                        ]
-                                                                      |)
-                                                                    | _ => M.impossible (||)
-                                                                    end))
-                                                            ]
-                                                          |)
-                                                        ]))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
-                                            end))
-                                    ]
+                                                                                  [
+                                                                                    Ty.path "u8";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ]
+                                                                              ]
+                                                                          ]
+                                                                      ]
+                                                                      (Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path "slice")
+                                                                            []
+                                                                            [ Ty.path "u8" ]
+                                                                        ]);
+                                                                    Ty.apply
+                                                                      (Ty.path "&")
+                                                                      []
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "slice")
+                                                                          []
+                                                                          [ Ty.path "u8" ]
+                                                                      ]
+                                                                  ]
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "move_core_types::effects::Op")
+                                                                        []
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path "u8";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ]
+                                                                        ],
+                                                                      "as_ref",
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| op |) ]
+                                                                  |);
+                                                                  M.closure
+                                                                    (fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        match γ with
+                                                                        | [ α0 ] =>
+                                                                          ltac:(M.monadic
+                                                                            (M.match_operator (|
+                                                                              M.alloc (| α0 |),
+                                                                              [
+                                                                                fun γ =>
+                                                                                  ltac:(M.monadic
+                                                                                    (let v :=
+                                                                                      M.copy (|
+                                                                                        γ
+                                                                                      |) in
+                                                                                    M.call_closure (|
+                                                                                      M.get_trait_method (|
+                                                                                        "core::convert::AsRef",
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "alloc::vec::Vec")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8";
+                                                                                            Ty.path
+                                                                                              "alloc::alloc::Global"
+                                                                                          ],
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "slice")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u8"
+                                                                                            ]
+                                                                                        ],
+                                                                                        "as_ref",
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          v
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)))
+                                                                              ]
+                                                                            |)))
+                                                                        | _ =>
+                                                                          M.impossible
+                                                                            "wrong number of arguments"
+                                                                        end))
+                                                                ]
+                                                              |)
+                                                            ]))
+                                                    ]
+                                                  |)))
+                                              | _ => M.impossible "wrong number of arguments"
+                                              end))
+                                      ]
+                                    |)
                                   |)
-                                |)
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_resources : M.IsAssociatedFunction Self "resources" resources.

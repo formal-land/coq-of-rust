@@ -123,7 +123,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -165,11 +165,7 @@ Module bytecode.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "LegacyRaw" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "LegacyRaw" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -189,11 +185,7 @@ Module bytecode.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "LegacyAnalyzed" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "LegacyAnalyzed" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -213,17 +205,13 @@ Module bytecode.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Eof" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Eof" |); __self_0 ]
                       |)
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -256,7 +244,7 @@ Module bytecode.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -266,7 +254,7 @@ Module bytecode.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -278,7 +266,7 @@ Module bytecode.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -308,48 +296,66 @@ Module bytecode.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "alloy_primitives::bytes_::Bytes",
-                                  [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                  "eq",
-                                  []
-                                |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_0,
-                                "revm_primitives::bytecode::Bytecode::LegacyAnalyzed",
-                                0
-                              |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ0_1,
-                                "revm_primitives::bytecode::Bytecode::LegacyAnalyzed",
-                                0
-                              |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.path
-                                    "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "alloy_primitives::bytes_::Bytes" ],
                                   [
-                                    Ty.path
-                                      "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode"
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "revm_primitives::bytecode::Bytecode::LegacyAnalyzed",
+                                0
+                              |) in
+                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "revm_primitives::bytecode::Bytecode::LegacyAnalyzed",
+                                0
+                              |) in
+                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.path
+                                        "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode"
+                                    ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.path
+                                          "revm_primitives::bytecode::legacy::LegacyAnalyzedBytecode"
+                                      ]
+                                  ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -376,12 +382,20 @@ Module bytecode.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "revm_primitives::bytecode::eof::Eof",
-                                  [ Ty.path "revm_primitives::bytecode::eof::Eof" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_primitives::bytecode::eof::Eof" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "revm_primitives::bytecode::eof::Eof" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -400,7 +414,7 @@ Module bytecode.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -410,17 +424,6 @@ Module bytecode.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_bytecode_Bytecode.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_Bytecode.
-    Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::Bytecode".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_Bytecode.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_bytecode_Bytecode.
     Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::Bytecode".
@@ -455,7 +458,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -478,7 +481,7 @@ Module bytecode.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -492,7 +495,7 @@ Module bytecode.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -567,7 +570,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -599,7 +602,7 @@ Module bytecode.
             |),
             []
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -636,7 +639,7 @@ Module bytecode.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -688,7 +691,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_legacy_jump_table :
@@ -756,7 +759,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_hash_slow : M.IsAssociatedFunction Self "hash_slow" hash_slow.
@@ -796,7 +799,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_eof : M.IsAssociatedFunction Self "eof" eof.
@@ -829,7 +832,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_eof : M.IsAssociatedFunction Self "is_eof" is_eof.
@@ -847,7 +850,7 @@ Module bytecode.
           Value.StructTuple
             "revm_primitives::bytecode::Bytecode::LegacyRaw"
             [ M.read (| bytecode |) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_raw : M.IsAssociatedFunction Self "new_raw" new_raw.
@@ -884,7 +887,7 @@ Module bytecode.
                 [ M.read (| bytecode |); M.read (| original_len |); M.read (| jump_table |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_analyzed : M.IsAssociatedFunction Self "new_analyzed" new_analyzed.
@@ -979,7 +982,7 @@ Module bytecode.
                                 "revm_primitives::bytecode::eof::Eof",
                                 "body"
                               |);
-                              Value.Integer 0
+                              Value.Integer IntegerKind.Usize 0
                             ]
                           |);
                           M.read (| Value.String "Valid EOF has at least one code section" |)
@@ -989,7 +992,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_bytecode : M.IsAssociatedFunction Self "bytecode" bytecode.
@@ -1004,8 +1007,8 @@ Module bytecode.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.read (|
+          UnOp.not (|
+            M.read (|
               M.match_operator (|
                 self,
                 [
@@ -1022,8 +1025,9 @@ Module bytecode.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                 ]
               |)
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_execution_ready :
@@ -1123,7 +1127,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_original_bytes :
@@ -1245,7 +1249,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_original_byte_slice :
@@ -1339,7 +1343,7 @@ Module bytecode.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -1354,17 +1358,18 @@ Module bytecode.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.path "revm_primitives::bytecode::Bytecode",
                 "len",
                 []
               |),
               [ M.read (| self |) ]
-            |))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+            |),
+            Value.Integer IntegerKind.Usize 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.

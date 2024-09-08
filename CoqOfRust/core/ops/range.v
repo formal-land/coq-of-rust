@@ -32,7 +32,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -50,7 +50,7 @@ Module ops.
       Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::ops::range::RangeFull" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -83,7 +83,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             Value.Bool true))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -93,17 +93,6 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_ops_range_RangeFull.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeFull.
-      Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_RangeFull.
     
     Module Impl_core_cmp_Eq_for_core_ops_range_RangeFull.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
@@ -119,7 +108,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -142,7 +131,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -173,15 +162,11 @@ Module ops.
                 M.read (| fmt |);
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                  [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |))
-                  ]
+                  [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -237,7 +222,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -273,7 +258,7 @@ Module ops.
                     []
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -343,7 +328,7 @@ Module ops.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -354,19 +339,6 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_Range_Idx.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_Range_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ].
-      
-      Axiom Implements :
-        forall (Idx : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self Idx)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_Range_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_Range_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
@@ -390,7 +362,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -445,7 +417,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -588,11 +560,7 @@ Module ops.
                                     "new_const",
                                     []
                                   |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |))
-                                  ]
+                                  [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
                                 |)
                               ]
                             |)
@@ -733,7 +701,7 @@ Module ops.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -775,7 +743,7 @@ Module ops.
               |),
               [ M.read (| self |); M.read (| item |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_contains :
@@ -793,8 +761,8 @@ Module ops.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            UnOp.Pure.not
-              (M.call_closure (|
+            UnOp.not (|
+              M.call_closure (|
                 M.get_trait_method (| "core::cmp::PartialOrd", Idx, [ Idx ], "lt", [] |),
                 [
                   M.SubPointer.get_struct_record_field (|
@@ -808,8 +776,9 @@ Module ops.
                     "end"
                   |)
                 ]
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_empty :
@@ -851,7 +820,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -903,7 +872,7 @@ Module ops.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -914,19 +883,6 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeFrom_Idx.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeFrom_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ].
-      
-      Axiom Implements :
-        forall (Idx : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self Idx)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_RangeFrom_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeFrom_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
@@ -950,7 +906,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -987,7 +943,7 @@ Module ops.
                 M.read (| state |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1129,11 +1085,7 @@ Module ops.
                                     "new_const",
                                     []
                                   |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |))
-                                  ]
+                                  [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
                                 |)
                               ]
                             |)
@@ -1194,7 +1146,7 @@ Module ops.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1236,7 +1188,7 @@ Module ops.
               |),
               [ M.read (| self |); M.read (| item |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_contains :
@@ -1291,7 +1243,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1343,7 +1295,7 @@ Module ops.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1354,19 +1306,6 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeTo_Idx.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeTo_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
-      
-      Axiom Implements :
-        forall (Idx : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self Idx)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_RangeTo_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeTo_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
@@ -1390,7 +1329,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1427,7 +1366,7 @@ Module ops.
                 M.read (| state |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1489,11 +1428,7 @@ Module ops.
                                     "new_const",
                                     []
                                   |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |))
-                                  ]
+                                  [ M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |) ]
                                 |)
                               ]
                             |)
@@ -1634,7 +1569,7 @@ Module ops.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1676,7 +1611,7 @@ Module ops.
               |),
               [ M.read (| self |); M.read (| item |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_contains :
@@ -1740,7 +1675,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1812,23 +1747,24 @@ Module ops.
                   |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::ops::range::RangeInclusive",
                       "exhausted"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::ops::range::RangeInclusive",
                       "exhausted"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1839,19 +1775,6 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeInclusive_Idx.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeInclusive_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ].
-      
-      Axiom Implements :
-        forall (Idx : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self Idx)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_RangeInclusive_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
@@ -1882,7 +1805,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1951,7 +1874,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1975,7 +1898,7 @@ Module ops.
       Definition new (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
         match ε, τ, α with
-        | [ host ], [], [ start; end_ ] =>
+        | [], [], [ start; end_ ] =>
           ltac:(M.monadic
             (let start := M.alloc (| start |) in
             let end_ := M.alloc (| end_ |) in
@@ -1986,7 +1909,7 @@ Module ops.
                 ("end_", M.read (| end_ |));
                 ("exhausted", Value.Bool false)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -2001,7 +1924,7 @@ Module ops.
       Definition start (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -2009,7 +1932,7 @@ Module ops.
               "core::ops::range::RangeInclusive",
               "start"
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_start :
@@ -2024,7 +1947,7 @@ Module ops.
       Definition end_ (Idx : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self Idx in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.SubPointer.get_struct_record_field (|
@@ -2032,7 +1955,7 @@ Module ops.
               "core::ops::range::RangeInclusive",
               "end"
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_end_ :
@@ -2052,7 +1975,7 @@ Module ops.
           : M :=
         let Self : Ty.t := Self Idx in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple
@@ -2072,7 +1995,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -2104,7 +2027,7 @@ Module ops.
               |),
               [ M.read (| self |); M.read (| item |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_contains :
@@ -2131,8 +2054,8 @@ Module ops.
                 |)
               |),
               ltac:(M.monadic
-                (UnOp.Pure.not
-                  (M.call_closure (|
+                (UnOp.not (|
+                  M.call_closure (|
                     M.get_trait_method (| "core::cmp::PartialOrd", Idx, [ Idx ], "le", [] |),
                     [
                       M.SubPointer.get_struct_record_field (|
@@ -2146,9 +2069,10 @@ Module ops.
                         "end"
                       |)
                     ]
-                  |))))
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_empty :
@@ -2172,22 +2096,22 @@ Module ops.
       *)
       Definition into_slice_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               let~ exclusive_end :=
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.Usize
-                    (M.read (|
+                  BinOp.Wrap.add (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
                         "core::ops::range::RangeInclusive",
                         "end"
                       |)
-                    |))
-                    (Value.Integer 1)
+                    |),
+                    Value.Integer IntegerKind.Usize 1
+                  |)
                 |) in
               let~ start :=
                 M.copy (|
@@ -2222,7 +2146,7 @@ Module ops.
                   [ ("start", M.read (| start |)); ("end_", M.read (| exclusive_end |)) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_slice_range :
@@ -2363,13 +2287,7 @@ Module ops.
                                     "new_const",
                                     []
                                   |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array [ M.read (| Value.String "..=" |) ]
-                                      |))
-                                  ]
+                                  [ M.alloc (| Value.Array [ M.read (| Value.String "..=" |) ] |) ]
                                 |)
                               ]
                             |)
@@ -2552,12 +2470,10 @@ Module ops.
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [ M.read (| Value.String " (exhausted)" |) ]
-                                                |))
+                                              M.alloc (|
+                                                Value.Array
+                                                  [ M.read (| Value.String " (exhausted)" |) ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -2623,7 +2539,7 @@ Module ops.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2683,7 +2599,7 @@ Module ops.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2735,7 +2651,7 @@ Module ops.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2746,19 +2662,6 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeToInclusive_Idx.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_RangeToInclusive_Idx.
-      Definition Self (Idx : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
-      
-      Axiom Implements :
-        forall (Idx : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self Idx)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_RangeToInclusive_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
@@ -2782,7 +2685,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2819,7 +2722,7 @@ Module ops.
                 M.read (| state |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2881,13 +2784,7 @@ Module ops.
                                     "new_const",
                                     []
                                   |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array [ M.read (| Value.String "..=" |) ]
-                                      |))
-                                  ]
+                                  [ M.alloc (| Value.Array [ M.read (| Value.String "..=" |) ] |) ]
                                 |)
                               ]
                             |)
@@ -3028,7 +2925,7 @@ Module ops.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3070,7 +2967,7 @@ Module ops.
               |),
               [ M.read (| self |); M.read (| item |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_contains :
@@ -3166,7 +3063,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3222,11 +3119,7 @@ Module ops.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Included" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Included" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -3246,11 +3139,7 @@ Module ops.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Excluded" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Excluded" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -3270,7 +3159,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3294,7 +3183,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3314,7 +3203,7 @@ Module ops.
                       "hash",
                       [ __H ]
                     |),
-                    [ __self_tag; M.read (| state |) ]
+                    [ __self_discr; M.read (| state |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -3356,7 +3245,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3392,7 +3281,7 @@ Module ops.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3402,7 +3291,7 @@ Module ops.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3414,7 +3303,7 @@ Module ops.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -3444,12 +3333,12 @@ Module ops.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    T,
-                                    [ T ],
+                                    Ty.apply (Ty.path "&") [] [ T ],
+                                    [ Ty.apply (Ty.path "&") [] [ T ] ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -3476,12 +3365,12 @@ Module ops.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    T,
-                                    [ T ],
+                                    Ty.apply (Ty.path "&") [] [ T ],
+                                    [ Ty.apply (Ty.path "&") [] [ T ] ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -3491,7 +3380,7 @@ Module ops.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3502,18 +3391,6 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_ops_range_Bound_T.
-    
-    Module Impl_core_marker_StructuralEq_for_core_ops_range_Bound_T.
-      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
-      
-      Axiom Implements :
-        forall (T : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self T)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_ops_range_Bound_T.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_ops_range_Bound_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
@@ -3536,7 +3413,7 @@ Module ops.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3602,7 +3479,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ref :
@@ -3659,7 +3536,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut :
@@ -3743,7 +3620,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_map :
@@ -3819,7 +3696,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_cloned :
@@ -3972,7 +3849,7 @@ Module ops.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_contains :
@@ -3995,7 +3872,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4010,7 +3887,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4050,7 +3927,7 @@ Module ops.
                   "start"
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4065,7 +3942,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4096,7 +3973,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4119,7 +3996,7 @@ Module ops.
                   "end"
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4158,7 +4035,7 @@ Module ops.
                   "start"
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4181,7 +4058,7 @@ Module ops.
                   "end"
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4221,7 +4098,7 @@ Module ops.
                   "start"
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4282,7 +4159,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4314,7 +4191,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4337,7 +4214,7 @@ Module ops.
                   "end"
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4417,7 +4294,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4476,7 +4353,7 @@ Module ops.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4512,7 +4389,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.SubPointer.get_tuple_field (| M.read (| self |), 0 |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4527,7 +4404,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.SubPointer.get_tuple_field (| M.read (| self |), 1 |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4569,7 +4446,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4584,7 +4461,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4616,7 +4493,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4641,7 +4518,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4683,7 +4560,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4708,7 +4585,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4753,7 +4630,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4778,7 +4655,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4813,7 +4690,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::ops::range::Bound::Unbounded" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4838,7 +4715,7 @@ Module ops.
                   |)
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

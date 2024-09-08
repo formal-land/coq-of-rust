@@ -190,7 +190,7 @@ Module interpreter_action.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -233,85 +233,63 @@ Module interpreter_action.
                 |) in
               let~ values :=
                 M.alloc (|
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                              "input"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                              "return_memory_offset"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                              "gas_limit"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                              "bytecode_address"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                              "target_address"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                              "caller"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                              "value"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                              "scheme"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                              "is_static"
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                "is_eof"
-                              |)
-                            |))
-                        ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                          "input"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                          "return_memory_offset"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                          "gas_limit"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                          "bytecode_address"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                          "target_address"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                          "caller"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                          "value"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                          "scheme"
+                        |);
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                          "is_static"
+                        |);
+                        M.alloc (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                            "is_eof"
+                          |)
+                        |)
+                      ]
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -323,13 +301,13 @@ Module interpreter_action.
                   [
                     M.read (| f |);
                     M.read (| Value.String "CallInputs" |);
-                    (* Unsize *) M.pointer_coercion (M.read (| names |));
+                    M.read (| names |);
                     M.read (| values |)
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -425,21 +403,22 @@ Module interpreter_action.
                                 |)))
                             |),
                             ltac:(M.monadic
-                              (BinOp.Pure.eq
-                                (M.read (|
+                              (BinOp.eq (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                                     "gas_limit"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| other |),
                                     "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                                     "gas_limit"
                                   |)
-                                |))))
+                                |)
+                              |)))
                           |),
                           ltac:(M.monadic
                             (M.call_closure (|
@@ -558,40 +537,42 @@ Module interpreter_action.
                     |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                         "is_static"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                         "is_static"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                       "is_eof"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_interpreter::interpreter_action::call_inputs::CallInputs",
                       "is_eof"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -601,18 +582,6 @@ Module interpreter_action.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
-      Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_call_inputs_CallInputs.
       Definition Self : Ty.t :=
@@ -682,7 +651,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -894,7 +863,7 @@ Module interpreter_action.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1007,14 +976,17 @@ Module interpreter_action.
                                 ("return_memory_offset",
                                   Value.StructRecord
                                     "core::ops::range::Range"
-                                    [ ("start", Value.Integer 0); ("end_", Value.Integer 0) ])
+                                    [
+                                      ("start", Value.Integer IntegerKind.Usize 0);
+                                      ("end_", Value.Integer IntegerKind.Usize 0)
+                                    ])
                               ]
                           ]
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1078,7 +1050,7 @@ Module interpreter_action.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_boxed : M.IsAssociatedFunction Self "new_boxed" new_boxed.
@@ -1098,13 +1070,23 @@ Module interpreter_action.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
+                  [
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []
+                  ],
                 "is_some_and",
                 [
                   Ty.function
                     [
                       Ty.tuple
-                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            []
                         ]
                     ]
                     (Ty.path "bool")
@@ -1130,37 +1112,44 @@ Module interpreter_action.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let x := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialOrd",
-                                    Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
-                                      [],
-                                    [
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let x := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialOrd",
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
-                                        []
-                                    ],
-                                    "gt",
-                                    []
-                                  |),
-                                  [ x; M.get_constant (| "ruint::ZERO" |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
+                                        [],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      ],
+                                      "gt",
+                                      []
+                                    |),
+                                    [ x; M.get_constant (| "ruint::ZERO" |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_transfers_value :
@@ -1190,7 +1179,7 @@ Module interpreter_action.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_transfer_value :
@@ -1220,7 +1209,7 @@ Module interpreter_action.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_apparent_value :
@@ -1243,7 +1232,7 @@ Module interpreter_action.
                 "caller"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_transfer_from :
@@ -1266,7 +1255,7 @@ Module interpreter_action.
                 "target_address"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_transfer_to : M.IsAssociatedFunction Self "transfer_to" transfer_to.
@@ -1295,7 +1284,7 @@ Module interpreter_action.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_call_value : M.IsAssociatedFunction Self "call_value" call_value.
@@ -1343,7 +1332,7 @@ Module interpreter_action.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1426,7 +1415,7 @@ Module interpreter_action.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1461,7 +1450,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1471,7 +1460,7 @@ Module interpreter_action.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1481,9 +1470,9 @@ Module interpreter_action.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1493,18 +1482,6 @@ Module interpreter_action.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
-      Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::call_inputs::CallScheme".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_call_inputs_CallScheme.
       Definition Self : Ty.t :=
@@ -1521,7 +1498,7 @@ Module interpreter_action.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1545,7 +1522,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1558,11 +1535,11 @@ Module interpreter_action.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1584,14 +1561,24 @@ Module interpreter_action.
             name := "Transfer";
             item :=
               StructTuple
-                [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ];
+                [
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    []
+                ];
             discriminant := None;
           };
           {
             name := "Apparent";
             item :=
               StructTuple
-                [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ];
+                [
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    []
+                ];
             discriminant := None;
           }
         ];
@@ -1631,7 +1618,10 @@ Module interpreter_action.
                                 "core::clone::Clone",
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [],
                                 [],
                                 "clone",
@@ -1660,7 +1650,10 @@ Module interpreter_action.
                                 "core::clone::Clone",
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [],
                                 [],
                                 "clone",
@@ -1673,7 +1666,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1716,11 +1709,7 @@ Module interpreter_action.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Transfer" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Transfer" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -1740,17 +1729,13 @@ Module interpreter_action.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Apparent" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Apparent" |); __self_0 ]
                         |)
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1785,7 +1770,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1795,7 +1780,7 @@ Module interpreter_action.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1807,7 +1792,7 @@ Module interpreter_action.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -1838,19 +1823,35 @@ Module interpreter_action.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
-                                      [],
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      ],
                                     [
                                       Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        (Ty.path "&")
                                         []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        ]
                                     ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -1878,19 +1879,35 @@ Module interpreter_action.
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
                                     Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
-                                      [],
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      ],
                                     [
                                       Ty.apply
-                                        (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        (Ty.path "&")
                                         []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        ]
                                     ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -1909,7 +1926,7 @@ Module interpreter_action.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1919,18 +1936,6 @@ Module interpreter_action.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
-      Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_call_inputs_CallValue.
       Definition Self : Ty.t :=
@@ -1952,7 +1957,7 @@ Module interpreter_action.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1976,7 +1981,7 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1996,7 +2001,7 @@ Module interpreter_action.
                       "hash",
                       [ __H ]
                     |),
-                    [ __self_tag; M.read (| state |) ]
+                    [ __self_discr; M.read (| state |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -2018,7 +2023,10 @@ Module interpreter_action.
                             "core::hash::Hash",
                             Ty.apply
                               (Ty.path "ruint::Uint")
-                              [ Value.Integer 256; Value.Integer 4 ]
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               [],
                             [],
                             "hash",
@@ -2043,7 +2051,10 @@ Module interpreter_action.
                             "core::hash::Hash",
                             Ty.apply
                               (Ty.path "ruint::Uint")
-                              [ Value.Integer 256; Value.Integer 4 ]
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
                               [],
                             [],
                             "hash",
@@ -2055,7 +2066,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2082,7 +2093,7 @@ Module interpreter_action.
             (Value.StructTuple
               "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
               [ M.read (| M.get_constant (| "ruint::ZERO" |) |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2142,12 +2153,15 @@ Module interpreter_action.
                         M.closure
                           (fun γ =>
                             ltac:(M.monadic
-                              match γ with | [ value ] => value | _ => M.impossible (||) end))
+                              match γ with
+                              | [ value ] => ltac:(M.monadic value)
+                              | _ => M.impossible "wrong number of arguments"
+                              end))
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -2193,7 +2207,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_transfer : M.IsAssociatedFunction Self "transfer" transfer.
@@ -2226,7 +2240,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_transfer : M.IsAssociatedFunction Self "is_transfer" is_transfer.
@@ -2272,7 +2286,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_apparent : M.IsAssociatedFunction Self "apparent" apparent.
@@ -2305,7 +2319,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_apparent : M.IsAssociatedFunction Self "is_apparent" is_apparent.

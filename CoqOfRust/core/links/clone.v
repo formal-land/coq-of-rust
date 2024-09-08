@@ -13,15 +13,18 @@ Import Run.
     }
 *)
 Module Clone.
-  Record RunImpl (Self : Set) (Self_ty : Ty.t) `{ToValue Self} : Set := {
-    clone : {clone @
-      IsTraitMethod.t "core::clone::Clone" Self_ty [] "clone" clone *
-      forall (self : Ref.t Self),
+  Definition Run_clone (Self : Set) `{Link Self} : Set :=
+    {clone @
+      IsTraitMethod.t "core::clone::Clone" (to_ty Self) [] "clone" clone *
+      forall (self : Ref.t Pointer.Kind.Ref Self),
         {{
-          clone [] [] [ φ self ] ⇓
-          fun (v : Self) => inl (φ v)
+          clone [] [] [ to_value self ] ⇓
+          output_pure Self
         }}
-    };
+    }.
+
+  Record Run (Self : Set) `{Link Self} : Set := {
+    clone : Run_clone Self;
     (* TODO: add [clone_from] *)
   }.
 End Clone.

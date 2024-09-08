@@ -39,7 +39,7 @@ Module instructions.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -111,7 +111,7 @@ Module instructions.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -144,7 +144,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -154,7 +154,7 @@ Module instructions.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -164,9 +164,9 @@ Module instructions.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -176,17 +176,6 @@ Module instructions.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_instructions_i256_Sign.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_instructions_i256_Sign.
-      Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_instructions_i256_Sign.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_instructions_i256_Sign.
       Definition Self : Ty.t := Ty.path "revm_interpreter::instructions::i256::Sign".
@@ -202,7 +191,7 @@ Module instructions.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -225,7 +214,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -235,7 +224,7 @@ Module instructions.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -254,11 +243,11 @@ Module instructions.
                     "partial_cmp",
                     []
                   |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -280,7 +269,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -290,7 +279,7 @@ Module instructions.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -303,11 +292,11 @@ Module instructions.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "i8", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -329,7 +318,7 @@ Module instructions.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -342,11 +331,11 @@ Module instructions.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "i8", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -363,17 +352,20 @@ Module instructions.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
                 "from_limbs",
                 []
               |),
               [
                 Value.Array
                   [
-                    Value.Integer 18446744073709551615;
-                    Value.Integer 18446744073709551615;
-                    Value.Integer 18446744073709551615;
-                    Value.Integer 9223372036854775807
+                    Value.Integer IntegerKind.U64 18446744073709551615;
+                    Value.Integer IntegerKind.U64 18446744073709551615;
+                    Value.Integer IntegerKind.U64 18446744073709551615;
+                    Value.Integer IntegerKind.U64 9223372036854775807
                   ]
               ]
             |)
@@ -385,24 +377,27 @@ Module instructions.
           (M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
                 "from_limbs",
                 []
               |),
               [
                 Value.Array
                   [
-                    Value.Integer 0;
-                    Value.Integer 0;
-                    Value.Integer 0;
-                    Value.Integer 9223372036854775808
+                    Value.Integer IntegerKind.U64 0;
+                    Value.Integer IntegerKind.U64 0;
+                    Value.Integer IntegerKind.U64 0;
+                    Value.Integer IntegerKind.U64 9223372036854775808
                   ]
               ]
             |)
           |))).
     
     Definition value_FLIPH_BITMASK_U64 : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 9223372036854775807 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9223372036854775807 |))).
     
     (*
     pub fn i256_sign(val: &U256) -> Sign {
@@ -432,17 +427,20 @@ Module instructions.
                             M.get_associated_function (|
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [],
                               "bit",
                               []
                             |),
                             [
                               M.read (| val |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.read (| M.get_constant (| "ruint::BITS'1" |) |))
-                                (Value.Integer 1)
+                              BinOp.Wrap.sub (|
+                                M.read (| M.get_constant (| "ruint::BITS'1" |) |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |)) in
@@ -464,12 +462,18 @@ Module instructions.
                               "core::cmp::PartialEq",
                               Ty.apply
                                 (Ty.path "ruint::Uint")
-                                [ Value.Integer 256; Value.Integer 4 ]
+                                [
+                                  Value.Integer IntegerKind.Usize 256;
+                                  Value.Integer IntegerKind.Usize 4
+                                ]
                                 [],
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   []
                               ],
                               "ne",
@@ -483,7 +487,7 @@ Module instructions.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i256_sign :
@@ -555,7 +559,7 @@ Module instructions.
               |) in
             sign
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i256_sign_compl :
@@ -580,17 +584,20 @@ Module instructions.
                 M.SubPointer.get_array_field (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       "as_limbs_mut",
                       []
                     |),
                     [ M.read (| val |) ]
                   |),
-                  M.alloc (| Value.Integer 3 |)
+                  M.alloc (| Value.Integer IntegerKind.Usize 3 |)
                 |) in
               M.write (|
                 β,
-                BinOp.Pure.bit_and
+                BinOp.bit_and
                   (M.read (| β |))
                   (M.read (|
                     M.get_constant (| "revm_interpreter::instructions::i256::FLIPH_BITMASK_U64" |)
@@ -598,7 +605,7 @@ Module instructions.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_u256_remove_sign :
@@ -625,7 +632,7 @@ Module instructions.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_two_compl_mut :
@@ -643,13 +650,16 @@ Module instructions.
           (let op := M.alloc (| op |) in
           M.call_closure (|
             M.get_associated_function (|
-              Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+              Ty.apply
+                (Ty.path "ruint::Uint")
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                [],
               "wrapping_neg",
               []
             |),
             [ M.read (| op |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_two_compl :
@@ -711,7 +721,8 @@ Module instructions.
                           "core::cmp::Ord",
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [],
                           [],
                           "cmp",
@@ -727,7 +738,7 @@ Module instructions.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i256_cmp :
@@ -845,12 +856,18 @@ Module instructions.
                                       "core::cmp::PartialEq",
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         [],
                                       [
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                           []
                                       ],
                                       "eq",
@@ -869,12 +886,18 @@ Module instructions.
                                         "core::cmp::PartialEq",
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                           [],
                                         [
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
                                             []
                                         ],
                                         "eq",
@@ -887,12 +910,15 @@ Module instructions.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
-                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
                                                 [],
                                               "from",
                                               [ Ty.path "i32" ]
                                             |),
-                                            [ Value.Integer 1 ]
+                                            [ Value.Integer IntegerKind.I32 1 ]
                                           |)
                                         |)
                                       ]
@@ -930,8 +956,16 @@ Module instructions.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::arith::Div",
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            []
                         ],
                         "div",
                         []
@@ -1051,7 +1085,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i256_div :
@@ -1193,8 +1227,16 @@ Module instructions.
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            []
                         ],
                         "rem",
                         []
@@ -1254,7 +1296,7 @@ Module instructions.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i256_mod :

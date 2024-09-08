@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_NUM : Value.t :=
-  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 18 |) |))).
+  M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.I32 18 |) |))).
 
 (*
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
@@ -24,7 +24,7 @@ Definition coerce_static (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
               |)))
         ]
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_coerce_static :
@@ -70,31 +70,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "static_string: " |);
-                                M.read (| Value.String "
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "static_string: " |);
+                              M.read (| Value.String "
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                  |),
-                                  [ static_string ]
-                                |)
-                              ]
-                          |))
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                |),
+                                [ static_string ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -103,7 +99,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |) in
         let~ _ :=
-          let~ lifetime_num := M.alloc (| Value.Integer 9 |) in
+          let~ lifetime_num := M.alloc (| Value.Integer IntegerKind.I32 9 |) in
           let~ coerced_static :=
             M.alloc (|
               M.call_closure (|
@@ -123,31 +119,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "coerced_static: " |);
-                                M.read (| Value.String "
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "coerced_static: " |);
+                              M.read (| Value.String "
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                  |),
-                                  [ coerced_static ]
-                                |)
-                              ]
-                          |))
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                |),
+                                [ coerced_static ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -164,37 +156,33 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "NUM: " |);
-                              M.read (| Value.String " stays accessible!
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "NUM: " |);
+                            M.read (| Value.String " stays accessible!
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.read (|
-                                    M.get_constant (|
-                                      "scoping_rules_lifetimes_reference_lifetime_static::NUM"
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.read (|
+                                  M.get_constant (|
+                                    "scoping_rules_lifetimes_reference_lifetime_static::NUM"
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -203,7 +191,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_reference_lifetime_static::main" main.

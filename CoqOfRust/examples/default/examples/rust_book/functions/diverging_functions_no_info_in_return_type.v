@@ -9,7 +9,7 @@ fn some_fn() {
 Definition some_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [] => ltac:(M.monadic (Value.Tuple []))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_some_fn : M.IsFunction "diverging_functions_no_info_in_return_type::some_fn" some_fn.
@@ -40,17 +40,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (|
-                              Value.String "This function returns and you can see this line.
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.read (|
+                            Value.String "This function returns and you can see this line.
 "
-                            |)
-                          ]
-                      |))
+                          |)
+                        ]
+                    |)
                   ]
                 |)
               ]
@@ -58,7 +56,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "diverging_functions_no_info_in_return_type::main" main.

@@ -80,17 +80,13 @@ Module kzg.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Custom" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Custom" |); __self_0 ]
                         |)
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -162,7 +158,7 @@ Module kzg.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -182,7 +178,7 @@ Module kzg.
         | [], [], [] =>
           ltac:(M.monadic
             (Value.StructTuple "revm_primitives::kzg::env_settings::EnvKzgSettings::Default" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -192,17 +188,6 @@ Module kzg.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_revm_primitives_kzg_env_settings_EnvKzgSettings.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_primitives_kzg_env_settings_EnvKzgSettings.
-      Definition Self : Ty.t := Ty.path "revm_primitives::kzg::env_settings::EnvKzgSettings".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_primitives_kzg_env_settings_EnvKzgSettings.
     
     Module Impl_core_cmp_Eq_for_revm_primitives_kzg_env_settings_EnvKzgSettings.
       Definition Self : Ty.t := Ty.path "revm_primitives::kzg::env_settings::EnvKzgSettings".
@@ -223,7 +208,7 @@ Module kzg.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -314,7 +299,7 @@ Module kzg.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -429,7 +414,7 @@ Module kzg.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -507,37 +492,36 @@ Module kzg.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.read (|
-                                              let~ settings :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::result::Result")
-                                                        []
-                                                        [
-                                                          Ty.path "c_kzg::bindings::KZGSettings";
-                                                          Ty.path "c_kzg::bindings::Error"
-                                                        ],
-                                                      "expect",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "c_kzg::bindings::KZGSettings",
-                                                          "load_trusted_setup",
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.read (|
+                                                let~ settings :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "core::result::Result")
                                                           []
-                                                        |),
-                                                        [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.call_closure (|
+                                                          [
+                                                            Ty.path "c_kzg::bindings::KZGSettings";
+                                                            Ty.path "c_kzg::bindings::Error"
+                                                          ],
+                                                        "expect",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path "c_kzg::bindings::KZGSettings",
+                                                            "load_trusted_setup",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
                                                               M.get_trait_method (|
                                                                 "core::convert::AsRef",
                                                                 Ty.path
@@ -545,11 +529,19 @@ Module kzg.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "array")
-                                                                    [ Value.Integer 4096 ]
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        4096
+                                                                    ]
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "array")
-                                                                        [ Value.Integer 48 ]
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            48
+                                                                        ]
                                                                         [ Ty.path "u8" ]
                                                                     ]
                                                                 ],
@@ -563,10 +555,8 @@ Module kzg.
                                                                   |)
                                                                 |)
                                                               ]
-                                                            |));
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.call_closure (|
+                                                            |);
+                                                            M.call_closure (|
                                                               M.get_trait_method (|
                                                                 "core::convert::AsRef",
                                                                 Ty.path
@@ -574,11 +564,19 @@ Module kzg.
                                                                 [
                                                                   Ty.apply
                                                                     (Ty.path "array")
-                                                                    [ Value.Integer 65 ]
+                                                                    [
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        65
+                                                                    ]
                                                                     [
                                                                       Ty.apply
                                                                         (Ty.path "array")
-                                                                        [ Value.Integer 96 ]
+                                                                        [
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            96
+                                                                        ]
                                                                         [ Ty.path "u8" ]
                                                                     ]
                                                                 ],
@@ -592,36 +590,36 @@ Module kzg.
                                                                   |)
                                                                 |)
                                                               ]
-                                                            |))
-                                                        ]
-                                                      |);
-                                                      M.read (|
-                                                        Value.String
-                                                          "failed to load default trusted setup"
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |) in
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "alloc::boxed::Box")
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        M.read (|
+                                                          Value.String
+                                                            "failed to load default trusted setup"
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  |) in
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "alloc::boxed::Box")
+                                                        []
+                                                        [
+                                                          Ty.path "c_kzg::bindings::KZGSettings";
+                                                          Ty.path "alloc::alloc::Global"
+                                                        ],
+                                                      "new",
                                                       []
-                                                      [
-                                                        Ty.path "c_kzg::bindings::KZGSettings";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ],
-                                                    "new",
-                                                    []
-                                                  |),
-                                                  [ M.read (| settings |) ]
+                                                    |),
+                                                    [ M.read (| settings |) ]
+                                                  |)
                                                 |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -657,7 +655,7 @@ Module kzg.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.

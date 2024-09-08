@@ -55,7 +55,7 @@ Module collections.
                   M.read (| state |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -112,7 +112,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -187,7 +187,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -239,7 +239,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -290,12 +290,12 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
-            fn clone_from(&mut self, other: &Self) {
-                self.map.clone_from(&other.map);
+            fn clone_from(&mut self, source: &Self) {
+                self.map.clone_from(&source.map);
             }
         *)
         Definition clone_from
@@ -306,10 +306,10 @@ Module collections.
             : M :=
           let Self : Ty.t := Self T A in
           match ε, τ, α with
-          | [], [], [ self; other ] =>
+          | [], [], [ self; source ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
+              let source := M.alloc (| source |) in
               M.read (|
                 let~ _ :=
                   M.alloc (|
@@ -331,7 +331,7 @@ Module collections.
                           "map"
                         |);
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| other |),
+                          M.read (| source |),
                           "alloc::collections::btree::set::BTreeSet",
                           "map"
                         |)
@@ -340,7 +340,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -411,34 +411,32 @@ Module collections.
                           [ M.read (| f |); M.read (| Value.String "Iter" |) ]
                         |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::clone::Clone",
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::map::Keys")
-                                []
-                                [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
-                              [],
-                              "clone",
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::clone::Clone",
+                            Ty.apply
+                              (Ty.path "alloc::collections::btree::map::Keys")
                               []
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::btree::set::Iter",
-                                "iter"
-                              |)
-                            ]
-                          |)
-                        |))
+                              [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                            [],
+                            "clone",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::btree::set::Iter",
+                              "iter"
+                            |)
+                          ]
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -487,18 +485,16 @@ Module collections.
                   M.read (| f |);
                   M.read (| Value.String "IntoIter" |);
                   M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::IntoIter",
-                        "iter"
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::btree::set::IntoIter",
+                      "iter"
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -547,18 +543,16 @@ Module collections.
                   M.read (| f |);
                   M.read (| Value.String "Range" |);
                   M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::btree::set::Range",
-                        "iter"
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::btree::set::Range",
+                      "iter"
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -712,11 +706,11 @@ Module collections.
                                         |)
                                       |);
                                       M.read (| Value.String "self_iter" |);
-                                      (* Unsize *) M.pointer_coercion (M.read (| self_iter |))
+                                      M.read (| self_iter |)
                                     ]
                                   |);
                                   M.read (| Value.String "other_iter" |);
-                                  (* Unsize *) M.pointer_coercion (M.read (| other_iter |))
+                                  M.read (| other_iter |)
                                 ]
                               |)
                             ]
@@ -772,11 +766,11 @@ Module collections.
                                         |)
                                       |);
                                       M.read (| Value.String "self_iter" |);
-                                      (* Unsize *) M.pointer_coercion (M.read (| self_iter |))
+                                      M.read (| self_iter |)
                                     ]
                                   |);
                                   M.read (| Value.String "other_iter" |);
-                                  (* Unsize *) M.pointer_coercion (M.read (| other_set |))
+                                  M.read (| other_set |)
                                 ]
                               |)
                             ]
@@ -817,7 +811,7 @@ Module collections.
                                       [ M.read (| f |); M.read (| Value.String "Iterate" |) ]
                                     |)
                                   |);
-                                  (* Unsize *) M.pointer_coercion (M.read (| x |))
+                                  M.read (| x |)
                                 ]
                               |)
                             ]
@@ -826,7 +820,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -878,18 +872,16 @@ Module collections.
                           [ M.read (| f |); M.read (| Value.String "Difference" |) ]
                         |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::Difference",
-                          "inner"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::Difference",
+                        "inner"
+                      |)
                     ]
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -955,18 +947,16 @@ Module collections.
                           [ M.read (| f |); M.read (| Value.String "SymmetricDifference" |) ]
                         |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_tuple_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::SymmetricDifference",
-                          0
-                        |))
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::SymmetricDifference",
+                        0
+                      |)
                     ]
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1115,11 +1105,11 @@ Module collections.
                                         |)
                                       |);
                                       M.read (| Value.String "a" |);
-                                      (* Unsize *) M.pointer_coercion (M.read (| a |))
+                                      M.read (| a |)
                                     ]
                                   |);
                                   M.read (| Value.String "b" |);
-                                  (* Unsize *) M.pointer_coercion (M.read (| b |))
+                                  M.read (| b |)
                                 ]
                               |)
                             ]
@@ -1175,11 +1165,11 @@ Module collections.
                                         |)
                                       |);
                                       M.read (| Value.String "small_iter" |);
-                                      (* Unsize *) M.pointer_coercion (M.read (| small_iter |))
+                                      M.read (| small_iter |)
                                     ]
                                   |);
                                   M.read (| Value.String "large_set" |);
-                                  (* Unsize *) M.pointer_coercion (M.read (| large_set |))
+                                  M.read (| large_set |)
                                 ]
                               |)
                             ]
@@ -1220,7 +1210,7 @@ Module collections.
                                       [ M.read (| f |); M.read (| Value.String "Answer" |) ]
                                     |)
                                   |);
-                                  (* Unsize *) M.pointer_coercion (M.read (| x |))
+                                  M.read (| x |)
                                 ]
                               |)
                             ]
@@ -1229,7 +1219,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1281,18 +1271,16 @@ Module collections.
                           [ M.read (| f |); M.read (| Value.String "Intersection" |) ]
                         |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::Intersection",
-                          "inner"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::Intersection",
+                        "inner"
+                      |)
                     ]
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1358,18 +1346,16 @@ Module collections.
                           [ M.read (| f |); M.read (| Value.String "Union" |) ]
                         |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_tuple_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::set::Union",
-                          0
-                        |))
+                      M.SubPointer.get_struct_tuple_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::Union",
+                        0
+                      |)
                     ]
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1382,7 +1368,7 @@ Module collections.
       End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_btree_set_Union_T.
       
       Definition value_ITER_PERFORMANCE_TIPPING_SIZE_DIFF : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer 16 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
       
       Module Impl_alloc_collections_btree_set_BTreeSet_T_alloc_alloc_Global.
         Definition Self (T : Ty.t) : Ty.t :=
@@ -1421,7 +1407,7 @@ Module collections.
                       []
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -1460,7 +1446,7 @@ Module collections.
                       [ M.read (| alloc |) ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_in :
@@ -1507,7 +1493,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_range :
@@ -1845,25 +1831,28 @@ Module collections.
                                                             ltac:(M.monadic
                                                               match γ with
                                                               | [] =>
-                                                                M.alloc (|
-                                                                  Value.StructTuple
-                                                                    "alloc::collections::btree::set::DifferenceInner::Iterate"
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "alloc::collections::btree::set::BTreeSet")
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (|
+                                                                    Value.StructTuple
+                                                                      "alloc::collections::btree::set::DifferenceInner::Iterate"
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "alloc::collections::btree::set::BTreeSet")
+                                                                              []
+                                                                              [ T; A ],
+                                                                            "iter",
                                                                             []
-                                                                            [ T; A ],
-                                                                          "iter",
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| self |) ]
-                                                                      |)
-                                                                    ]
-                                                                |)
-                                                              | _ => M.impossible (||)
+                                                                          |),
+                                                                          [ M.read (| self |) ]
+                                                                        |)
+                                                                      ]
+                                                                  |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
                                                               end))
                                                       |)));
                                                   fun γ =>
@@ -1966,8 +1955,8 @@ Module collections.
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.alloc (|
-                                                          BinOp.Pure.le
-                                                            (M.call_closure (|
+                                                          BinOp.le (|
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -1978,10 +1967,9 @@ Module collections.
                                                                 []
                                                               |),
                                                               [ M.read (| self |) ]
-                                                            |))
-                                                            (BinOp.Wrap.div
-                                                              Integer.Usize
-                                                              (M.call_closure (|
+                                                            |),
+                                                            BinOp.Wrap.div (|
+                                                              M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -1992,12 +1980,14 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [ M.read (| other |) ]
-                                                              |))
-                                                              (M.read (|
+                                                              |),
+                                                              M.read (|
                                                                 M.get_constant (|
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                                 |)
-                                                              |)))
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2084,7 +2074,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_difference :
@@ -2146,7 +2136,7 @@ Module collections.
                     ]
                   |)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_symmetric_difference :
@@ -2454,16 +2444,19 @@ Module collections.
                                                             ltac:(M.monadic
                                                               match γ with
                                                               | [] =>
-                                                                M.alloc (|
-                                                                  Value.StructTuple
-                                                                    "alloc::collections::btree::set::IntersectionInner::Answer"
-                                                                    [
-                                                                      Value.StructTuple
-                                                                        "core::option::Option::None"
-                                                                        []
-                                                                    ]
-                                                                |)
-                                                              | _ => M.impossible (||)
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (|
+                                                                    Value.StructTuple
+                                                                      "alloc::collections::btree::set::IntersectionInner::Answer"
+                                                                      [
+                                                                        Value.StructTuple
+                                                                          "core::option::Option::None"
+                                                                          []
+                                                                      ]
+                                                                  |)))
+                                                              | _ =>
+                                                                M.impossible
+                                                                  "wrong number of arguments"
                                                               end))
                                                       |)));
                                                   fun γ =>
@@ -2510,8 +2503,8 @@ Module collections.
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.alloc (|
-                                                          BinOp.Pure.le
-                                                            (M.call_closure (|
+                                                          BinOp.le (|
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -2522,10 +2515,9 @@ Module collections.
                                                                 []
                                                               |),
                                                               [ M.read (| self |) ]
-                                                            |))
-                                                            (BinOp.Wrap.div
-                                                              Integer.Usize
-                                                              (M.call_closure (|
+                                                            |),
+                                                            BinOp.Wrap.div (|
+                                                              M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -2536,12 +2528,14 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [ M.read (| other |) ]
-                                                              |))
-                                                              (M.read (|
+                                                              |),
+                                                              M.read (|
                                                                 M.get_constant (|
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                                 |)
-                                                              |)))
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2572,8 +2566,8 @@ Module collections.
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.alloc (|
-                                                          BinOp.Pure.le
-                                                            (M.call_closure (|
+                                                          BinOp.le (|
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -2584,10 +2578,9 @@ Module collections.
                                                                 []
                                                               |),
                                                               [ M.read (| other |) ]
-                                                            |))
-                                                            (BinOp.Wrap.div
-                                                              Integer.Usize
-                                                              (M.call_closure (|
+                                                            |),
+                                                            BinOp.Wrap.div (|
+                                                              M.call_closure (|
                                                                 M.get_associated_function (|
                                                                   Ty.apply
                                                                     (Ty.path
@@ -2598,12 +2591,14 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [ M.read (| self |) ]
-                                                              |))
-                                                              (M.read (|
+                                                              |),
+                                                              M.read (|
                                                                 M.get_constant (|
                                                                   "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                                 |)
-                                                              |)))
+                                                              |)
+                                                            |)
+                                                          |)
                                                         |) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -2675,7 +2670,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_intersection :
@@ -2729,7 +2724,7 @@ Module collections.
                     ]
                   |)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_union :
@@ -2767,7 +2762,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_clear :
@@ -2813,7 +2808,7 @@ Module collections.
                   M.read (| value |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_contains :
@@ -2856,7 +2851,7 @@ Module collections.
                   M.read (| value |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_get :
@@ -2921,7 +2916,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_disjoint :
@@ -3011,8 +3006,8 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.gt
-                                      (M.call_closure (|
+                                    BinOp.gt (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -3022,8 +3017,8 @@ Module collections.
                                           []
                                         |),
                                         [ M.read (| self |) ]
-                                      |))
-                                      (M.call_closure (|
+                                      |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -3033,7 +3028,8 @@ Module collections.
                                           []
                                         |),
                                         [ M.read (| other |) ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3332,8 +3328,8 @@ Module collections.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.le
-                                                      (M.call_closure (|
+                                                    BinOp.le (|
+                                                      M.call_closure (|
                                                         M.get_trait_method (|
                                                           "core::iter::traits::exact_size::ExactSizeIterator",
                                                           Ty.apply
@@ -3346,10 +3342,9 @@ Module collections.
                                                           []
                                                         |),
                                                         [ self_iter ]
-                                                      |))
-                                                      (BinOp.Wrap.div
-                                                        Integer.Usize
-                                                        (M.call_closure (|
+                                                      |),
+                                                      BinOp.Wrap.div (|
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.apply
                                                               (Ty.path
@@ -3360,12 +3355,14 @@ Module collections.
                                                             []
                                                           |),
                                                           [ M.read (| other |) ]
-                                                        |))
-                                                        (M.read (|
+                                                        |),
+                                                        M.read (|
                                                           M.get_constant (|
                                                             "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF"
                                                           |)
-                                                        |)))
+                                                        |)
+                                                      |)
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -3447,8 +3444,8 @@ Module collections.
                                                                               (let γ :=
                                                                                 M.use
                                                                                   (M.alloc (|
-                                                                                    UnOp.Pure.not
-                                                                                      (M.call_closure (|
+                                                                                    UnOp.not (|
+                                                                                      M.call_closure (|
                                                                                         M.get_associated_function (|
                                                                                           Ty.apply
                                                                                             (Ty.path
@@ -3467,7 +3464,8 @@ Module collections.
                                                                                             next
                                                                                           |)
                                                                                         ]
-                                                                                      |))
+                                                                                      |)
+                                                                                    |)
                                                                                   |)) in
                                                                               let _ :=
                                                                                 M.is_constant_or_break_match (|
@@ -3633,35 +3631,38 @@ Module collections.
                                                                       ltac:(M.monadic
                                                                         match γ with
                                                                         | [ α0 ] =>
-                                                                          M.match_operator (|
-                                                                            M.alloc (| α0 |),
-                                                                            [
-                                                                              fun γ =>
-                                                                                ltac:(M.monadic
-                                                                                  (let other1 :=
-                                                                                    M.copy (|
-                                                                                      γ
-                                                                                    |) in
-                                                                                  M.call_closure (|
-                                                                                    M.get_trait_method (|
-                                                                                      "core::cmp::Ord",
-                                                                                      T,
-                                                                                      [],
-                                                                                      "cmp",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        self1
-                                                                                      |);
-                                                                                      M.read (|
-                                                                                        other1
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)))
-                                                                            ]
-                                                                          |)
-                                                                        | _ => M.impossible (||)
+                                                                          ltac:(M.monadic
+                                                                            (M.match_operator (|
+                                                                              M.alloc (| α0 |),
+                                                                              [
+                                                                                fun γ =>
+                                                                                  ltac:(M.monadic
+                                                                                    (let other1 :=
+                                                                                      M.copy (|
+                                                                                        γ
+                                                                                      |) in
+                                                                                    M.call_closure (|
+                                                                                      M.get_trait_method (|
+                                                                                        "core::cmp::Ord",
+                                                                                        T,
+                                                                                        [],
+                                                                                        "cmp",
+                                                                                        []
+                                                                                      |),
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          self1
+                                                                                        |);
+                                                                                        M.read (|
+                                                                                          other1
+                                                                                        |)
+                                                                                      ]
+                                                                                    |)))
+                                                                              ]
+                                                                            |)))
+                                                                        | _ =>
+                                                                          M.impossible
+                                                                            "wrong number of arguments"
                                                                         end))
                                                                 ]
                                                               |)
@@ -3744,7 +3745,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_subset :
@@ -3779,7 +3780,7 @@ Module collections.
                 |),
                 [ M.read (| other |); M.read (| self |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_superset :
@@ -3858,22 +3859,23 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let k := M.copy (| γ0_0 |) in
-                                  M.read (| k |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_first :
@@ -3952,22 +3954,23 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let k := M.copy (| γ0_0 |) in
-                                  M.read (| k |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_last :
@@ -4034,20 +4037,21 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let kv := M.copy (| γ |) in
-                                  M.read (| M.SubPointer.get_tuple_field (| kv, 0 |) |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let kv := M.copy (| γ |) in
+                                    M.read (| M.SubPointer.get_tuple_field (| kv, 0 |) |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_pop_first :
@@ -4114,20 +4118,21 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let kv := M.copy (| γ |) in
-                                  M.read (| M.SubPointer.get_tuple_field (| kv, 0 |) |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let kv := M.copy (| γ |) in
+                                    M.read (| M.SubPointer.get_tuple_field (| kv, 0 |) |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_pop_last :
@@ -4191,7 +4196,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_insert :
@@ -4233,7 +4238,7 @@ Module collections.
                   M.read (| value |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_replace :
@@ -4288,7 +4293,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_remove :
@@ -4331,7 +4336,7 @@ Module collections.
                   M.read (| value |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_take :
@@ -4395,26 +4400,29 @@ Module collections.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let v := M.copy (| γ |) in
-                                            UnOp.Pure.not
-                                              (M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::function::FnMut",
-                                                  F,
-                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                  "call_mut",
-                                                  []
-                                                |),
-                                                [ f; Value.Tuple [ M.read (| v |) ] ]
-                                              |))))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let v := M.copy (| γ |) in
+                                              UnOp.not (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::function::FnMut",
+                                                    F,
+                                                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                    ],
+                                                    "call_mut",
+                                                    []
+                                                  |),
+                                                  [ f; Value.Tuple [ M.read (| v |) ] ]
+                                                |)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |);
@@ -4424,7 +4432,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_retain :
@@ -4475,7 +4483,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_append :
@@ -4526,7 +4534,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_split_off :
@@ -4595,7 +4603,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_extract_if :
@@ -4635,7 +4643,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_iter :
@@ -4670,7 +4678,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_len :
@@ -4693,22 +4701,227 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Pure.eq
-                (M.call_closure (|
+              BinOp.eq (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
                     "len",
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                (Value.Integer 0)))
-          | _, _, _ => M.impossible
+                |),
+                Value.Integer IntegerKind.Usize 0
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_empty :
           forall (T A : Ty.t),
           M.IsAssociatedFunction (Self T A) "is_empty" (is_empty T A).
+        
+        (*
+            pub fn lower_bound<Q: ?Sized>(&self, bound: Bound<&Q>) -> Cursor<'_, T>
+            where
+                T: Borrow<Q> + Ord,
+                Q: Ord,
+            {
+                Cursor { inner: self.map.lower_bound(bound) }
+            }
+        *)
+        Definition lower_bound
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [ Q ], [ self; bound ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let bound := M.alloc (| bound |) in
+              Value.StructRecord
+                "alloc::collections::btree::set::Cursor"
+                [
+                  ("inner",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                        "lower_bound",
+                        [ Q ]
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |);
+                        M.read (| bound |)
+                      ]
+                    |))
+                ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_lower_bound :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "lower_bound" (lower_bound T A).
+        
+        (*
+            pub fn lower_bound_mut<Q: ?Sized>(&mut self, bound: Bound<&Q>) -> CursorMut<'_, T, A>
+            where
+                T: Borrow<Q> + Ord,
+                Q: Ord,
+            {
+                CursorMut { inner: self.map.lower_bound_mut(bound) }
+            }
+        *)
+        Definition lower_bound_mut
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [ Q ], [ self; bound ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let bound := M.alloc (| bound |) in
+              Value.StructRecord
+                "alloc::collections::btree::set::CursorMut"
+                [
+                  ("inner",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                        "lower_bound_mut",
+                        [ Q ]
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |);
+                        M.read (| bound |)
+                      ]
+                    |))
+                ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_lower_bound_mut :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "lower_bound_mut" (lower_bound_mut T A).
+        
+        (*
+            pub fn upper_bound<Q: ?Sized>(&self, bound: Bound<&Q>) -> Cursor<'_, T>
+            where
+                T: Borrow<Q> + Ord,
+                Q: Ord,
+            {
+                Cursor { inner: self.map.upper_bound(bound) }
+            }
+        *)
+        Definition upper_bound
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [ Q ], [ self; bound ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let bound := M.alloc (| bound |) in
+              Value.StructRecord
+                "alloc::collections::btree::set::Cursor"
+                [
+                  ("inner",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                        "upper_bound",
+                        [ Q ]
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |);
+                        M.read (| bound |)
+                      ]
+                    |))
+                ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_upper_bound :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "upper_bound" (upper_bound T A).
+        
+        (*
+            pub unsafe fn upper_bound_mut<Q: ?Sized>(&mut self, bound: Bound<&Q>) -> CursorMut<'_, T, A>
+            where
+                T: Borrow<Q> + Ord,
+                Q: Ord,
+            {
+                CursorMut { inner: self.map.upper_bound_mut(bound) }
+            }
+        *)
+        Definition upper_bound_mut
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [ Q ], [ self; bound ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let bound := M.alloc (| bound |) in
+              Value.StructRecord
+                "alloc::collections::btree::set::CursorMut"
+                [
+                  ("inner",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                        "upper_bound_mut",
+                        [ Q ]
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::set::BTreeSet",
+                          "map"
+                        |);
+                        M.read (| bound |)
+                      ]
+                    |))
+                ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_upper_bound_mut :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "upper_bound_mut" (upper_bound_mut T A).
         (*
             fn from_sorted_iter<I: Iterator<Item = T>>(iter: I, alloc: A) -> BTreeSet<T, A> {
                 let iter = iter.map(|k| (k, SetValZST::default()));
@@ -4752,30 +4965,31 @@ Module collections.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let k := M.copy (| γ |) in
-                                        Value.Tuple
-                                          [
-                                            M.read (| k |);
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::default::Default",
-                                                Ty.path
-                                                  "alloc::collections::btree::set_val::SetValZST",
-                                                [],
-                                                "default",
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let k := M.copy (| γ |) in
+                                          Value.Tuple
+                                            [
+                                              M.read (| k |);
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::default::Default",
+                                                  Ty.path
+                                                    "alloc::collections::btree::set_val::SetValZST",
+                                                  [],
+                                                  "default",
+                                                  []
+                                                |),
                                                 []
-                                              |),
-                                              []
-                                            |)
-                                          ]))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                              |)
+                                            ]))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -4811,7 +5025,7 @@ Module collections.
                     [ ("map", M.read (| map |)) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_from_sorted_iter :
@@ -4985,7 +5199,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5042,11 +5256,12 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.eq
-                                      (M.read (|
+                                    BinOp.eq (|
+                                      M.read (|
                                         M.get_constant (| "alloc::collections::btree::set::N" |)
-                                      |))
-                                      (Value.Integer 0)
+                                      |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -5083,7 +5298,7 @@ Module collections.
                             "sort",
                             []
                           |),
-                          [ (* Unsize *) M.pointer_coercion arr ]
+                          [ arr ]
                         |)
                       |) in
                     let~ iter :=
@@ -5119,30 +5334,31 @@ Module collections.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let k := M.copy (| γ |) in
-                                            Value.Tuple
-                                              [
-                                                M.read (| k |);
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::default::Default",
-                                                    Ty.path
-                                                      "alloc::collections::btree::set_val::SetValZST",
-                                                    [],
-                                                    "default",
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let k := M.copy (| γ |) in
+                                              Value.Tuple
+                                                [
+                                                  M.read (| k |);
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::default::Default",
+                                                      Ty.path
+                                                        "alloc::collections::btree::set_val::SetValZST",
+                                                      [],
+                                                      "default",
+                                                      []
+                                                    |),
                                                     []
-                                                  |),
-                                                  []
-                                                |)
-                                              ]))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                  |)
+                                                ]))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -5184,7 +5400,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5249,7 +5465,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5304,7 +5520,7 @@ Module collections.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5378,71 +5594,70 @@ Module collections.
                           [ M.read (| f |); M.read (| Value.String "ExtractIf" |) ]
                         |)
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::option::Option")
-                                []
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.apply (Ty.path "&") [] [ T ];
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                                  ]
+                              ],
+                            "map",
+                            [
+                              Ty.apply (Ty.path "&") [] [ T ];
+                              Ty.function
                                 [
                                   Ty.tuple
                                     [
-                                      Ty.apply (Ty.path "&") [] [ T ];
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                                      Ty.tuple
+                                        [
+                                          Ty.apply (Ty.path "&") [] [ T ];
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "alloc::collections::btree::set_val::SetValZST"
+                                            ]
+                                        ]
                                     ]
-                                ],
-                              "map",
-                              [
-                                Ty.apply (Ty.path "&") [] [ T ];
-                                Ty.function
-                                  [
-                                    Ty.tuple
-                                      [
-                                        Ty.tuple
-                                          [
-                                            Ty.apply (Ty.path "&") [] [ T ];
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "alloc::collections::btree::set_val::SetValZST"
-                                              ]
-                                          ]
-                                      ]
-                                  ]
-                                  (Ty.apply (Ty.path "&") [] [ T ])
-                              ]
-                            |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::map::ExtractIfInner")
-                                    []
-                                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
-                                  "peek",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::btree::set::ExtractIf",
-                                    "inner"
-                                  |)
                                 ]
-                              |);
-                              M.closure
-                                (fun γ =>
-                                  ltac:(M.monadic
-                                    match γ with
-                                    | [ α0 ] =>
-                                      M.match_operator (|
+                                (Ty.apply (Ty.path "&") [] [ T ])
+                            ]
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::map::ExtractIfInner")
+                                  []
+                                  [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                                "peek",
+                                []
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::btree::set::ExtractIf",
+                                  "inner"
+                                |)
+                              ]
+                            |);
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0 ] =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
                                         M.alloc (| α0 |),
                                         [
                                           fun γ =>
@@ -5453,17 +5668,17 @@ Module collections.
                                               let k := M.copy (| γ0_0 |) in
                                               M.read (| k |)))
                                         ]
-                                      |)
-                                    | _ => M.impossible (||)
-                                    end))
-                            ]
-                          |)
-                        |))
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end))
+                          ]
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5511,33 +5726,35 @@ Module collections.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let k := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let _v := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                F,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ M.read (| pred |); Value.Tuple [ M.read (| k |) ] ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let k := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _v := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  F,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ M.read (| pred |); Value.Tuple [ M.read (| k |) ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |) in
                 M.alloc (|
@@ -5609,24 +5826,25 @@ Module collections.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                      let k := M.copy (| γ0_0 |) in
-                                      M.read (| k |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                        let k := M.copy (| γ0_0 |) in
+                                        M.read (| k |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -5662,7 +5880,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5737,40 +5955,41 @@ Module collections.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let elem := M.copy (| γ |) in
-                                        M.read (|
-                                          let~ _ :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::btree::set::BTreeSet")
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let elem := M.copy (| γ |) in
+                                          M.read (|
+                                            let~ _ :=
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::btree::set::BTreeSet")
+                                                      []
+                                                      [ T; A ],
+                                                    "insert",
                                                     []
-                                                    [ T; A ],
-                                                  "insert",
-                                                  []
-                                                |),
-                                                [ M.read (| self |); M.read (| elem |) ]
-                                              |)
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                                  |),
+                                                  [ M.read (| self |); M.read (| elem |) ]
+                                                |)
+                                              |) in
+                                            M.alloc (| Value.Tuple [] |)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -5804,7 +6023,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5880,7 +6099,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -5926,7 +6145,7 @@ Module collections.
                       |)))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -5970,7 +6189,7 @@ Module collections.
                 |),
                 []
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6071,7 +6290,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6187,7 +6406,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6303,7 +6522,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6414,7 +6633,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6492,7 +6711,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6543,7 +6762,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6592,7 +6811,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6625,7 +6844,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6649,7 +6868,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6676,7 +6895,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6703,7 +6922,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6757,7 +6976,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6803,7 +7022,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6889,22 +7108,23 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let k := M.copy (| γ0_0 |) in
-                                  M.read (| k |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -6942,7 +7162,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6991,7 +7211,7 @@ Module collections.
                       []
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7066,22 +7286,23 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let k := M.copy (| γ0_0 |) in
-                                  M.read (| k |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7127,7 +7348,7 @@ Module collections.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7184,7 +7405,7 @@ Module collections.
                       []
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7235,7 +7456,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7325,22 +7546,23 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let k := M.copy (| γ0_0 |) in
-                                  M.read (| k |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -7364,7 +7586,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -7391,7 +7613,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -7418,7 +7640,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7512,22 +7734,23 @@ Module collections.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                  let k := M.copy (| γ0_0 |) in
-                                  M.read (| k |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7584,7 +7807,7 @@ Module collections.
                       []
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7763,7 +7986,7 @@ Module collections.
                       |)
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7985,30 +8208,31 @@ Module collections.
                                                   ltac:(M.monadic
                                                     match γ with
                                                     | [ α0 ] =>
-                                                      M.match_operator (|
-                                                        M.alloc (| α0 |),
-                                                        [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let other_next := M.copy (| γ |) in
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::cmp::Ord",
-                                                                  T,
-                                                                  [],
-                                                                  "cmp",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.read (| self_next |);
-                                                                  M.read (|
-                                                                    M.read (| other_next |)
-                                                                  |)
-                                                                ]
-                                                              |)))
-                                                        ]
-                                                      |)
-                                                    | _ => M.impossible (||)
+                                                      ltac:(M.monadic
+                                                        (M.match_operator (|
+                                                          M.alloc (| α0 |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let other_next := M.copy (| γ |) in
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::cmp::Ord",
+                                                                    T,
+                                                                    [],
+                                                                    "cmp",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.read (| self_next |);
+                                                                    M.read (|
+                                                                      M.read (| other_next |)
+                                                                    |)
+                                                                  ]
+                                                                |)))
+                                                          ]
+                                                        |)))
+                                                    | _ => M.impossible "wrong number of arguments"
                                                     end))
                                             ]
                                           |)
@@ -8310,8 +8534,8 @@ Module collections.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    UnOp.Pure.not
-                                                      (M.call_closure (|
+                                                    UnOp.not (|
+                                                      M.call_closure (|
                                                         M.get_associated_function (|
                                                           Ty.apply
                                                             (Ty.path
@@ -8325,7 +8549,8 @@ Module collections.
                                                           M.read (| M.read (| other_set |) |);
                                                           M.read (| self_next |)
                                                         ]
-                                                      |))
+                                                      |)
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -8379,7 +8604,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -8541,7 +8766,7 @@ Module collections.
                                   |),
                                   [ M.read (| iter |) ]
                                 |);
-                                Value.Integer 0
+                                Value.Integer IntegerKind.Usize 0
                               ]
                           |)))
                     ]
@@ -8572,7 +8797,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -8596,7 +8821,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8665,7 +8890,7 @@ Module collections.
                     ]
                   |)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -8826,7 +9051,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -8875,21 +9100,16 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 0;
+                              Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| a_len |))
-                                    (M.read (| b_len |))
-                                ]
+                                [ BinOp.Wrap.add (| M.read (| a_len |), M.read (| b_len |) |) ]
                             ]
                         |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -8913,7 +9133,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9091,7 +9311,7 @@ Module collections.
                       |)
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -9757,7 +9977,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -9811,7 +10031,7 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 0;
+                              Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
@@ -9862,7 +10082,7 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 0;
+                              Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [
@@ -9895,8 +10115,10 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 0;
-                              Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                              Value.Integer IntegerKind.Usize 0;
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [ Value.Integer IntegerKind.Usize 0 ]
                             ]
                         |)));
                     fun γ =>
@@ -9917,14 +10139,16 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 1;
-                              Value.StructTuple "core::option::Option::Some" [ Value.Integer 1 ]
+                              Value.Integer IntegerKind.Usize 1;
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [ Value.Integer IntegerKind.Usize 1 ]
                             ]
                         |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -9948,7 +10172,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -10017,7 +10241,7 @@ Module collections.
                     ]
                   |)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -10106,7 +10330,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -10159,18 +10383,13 @@ Module collections.
                               |);
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| a_len |))
-                                    (M.read (| b_len |))
-                                ]
+                                [ BinOp.Wrap.add (| M.read (| a_len |), M.read (| b_len |) |) ]
                             ]
                         |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -10194,7 +10413,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -10224,6 +10443,2134 @@ Module collections.
             (* Trait polymorphic types *) []
             (* Instance *) [].
       End Impl_core_iter_traits_marker_FusedIterator_where_core_cmp_Ord_T_for_alloc_collections_btree_set_Union_T.
+      
+      (* StructRecord
+        {
+          name := "Cursor";
+          const_params := [];
+          ty_params := [ "K" ];
+          fields :=
+            [
+              ("inner",
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::Cursor")
+                  []
+                  [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ])
+            ];
+        } *)
+      
+      Module Impl_core_clone_Clone_where_core_clone_Clone_K_for_alloc_collections_btree_set_Cursor_K.
+        Definition Self (K : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "alloc::collections::btree::set::Cursor") [] [ K ].
+        
+        (* Clone *)
+        Definition clone (K : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self K in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              Value.StructRecord
+                "alloc::collections::btree::set::Cursor"
+                [
+                  ("inner",
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::clone::Clone",
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::Cursor")
+                          []
+                          [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                        [],
+                        "clone",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::set::Cursor",
+                          "inner"
+                        |)
+                      ]
+                    |))
+                ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom Implements :
+          forall (K : Ty.t),
+          M.IsTraitInstance
+            "core::clone::Clone"
+            (Self K)
+            (* Trait polymorphic types *) []
+            (* Instance *) [ ("clone", InstanceField.Method (clone K)) ].
+      End Impl_core_clone_Clone_where_core_clone_Clone_K_for_alloc_collections_btree_set_Cursor_K.
+      
+      Module Impl_core_fmt_Debug_where_core_fmt_Debug_K_for_alloc_collections_btree_set_Cursor_K.
+        Definition Self (K : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "alloc::collections::btree::set::Cursor") [] [ K ].
+        
+        (*
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                f.write_str("Cursor")
+            }
+        *)
+        Definition fmt (K : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self K in
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let f := M.alloc (| f |) in
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                [ M.read (| f |); M.read (| Value.String "Cursor" |) ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom Implements :
+          forall (K : Ty.t),
+          M.IsTraitInstance
+            "core::fmt::Debug"
+            (Self K)
+            (* Trait polymorphic types *) []
+            (* Instance *) [ ("fmt", InstanceField.Method (fmt K)) ].
+      End Impl_core_fmt_Debug_where_core_fmt_Debug_K_for_alloc_collections_btree_set_Cursor_K.
+      
+      (* StructRecord
+        {
+          name := "CursorMut";
+          const_params := [];
+          ty_params := [ "K"; "A" ];
+          fields :=
+            [
+              ("inner",
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::CursorMut")
+                  []
+                  [ K; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ])
+            ];
+        } *)
+      
+      Module Impl_core_fmt_Debug_where_core_fmt_Debug_K_for_alloc_collections_btree_set_CursorMut_K_A.
+        Definition Self (K A : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "alloc::collections::btree::set::CursorMut") [] [ K; A ].
+        
+        (*
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                f.write_str("CursorMut")
+            }
+        *)
+        Definition fmt (K A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self K A in
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let f := M.alloc (| f |) in
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                [ M.read (| f |); M.read (| Value.String "CursorMut" |) ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom Implements :
+          forall (K A : Ty.t),
+          M.IsTraitInstance
+            "core::fmt::Debug"
+            (Self K A)
+            (* Trait polymorphic types *) []
+            (* Instance *) [ ("fmt", InstanceField.Method (fmt K A)) ].
+      End Impl_core_fmt_Debug_where_core_fmt_Debug_K_for_alloc_collections_btree_set_CursorMut_K_A.
+      
+      (* StructRecord
+        {
+          name := "CursorMutKey";
+          const_params := [];
+          ty_params := [ "K"; "A" ];
+          fields :=
+            [
+              ("inner",
+                Ty.apply
+                  (Ty.path "alloc::collections::btree::map::CursorMutKey")
+                  []
+                  [ K; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ])
+            ];
+        } *)
+      
+      Module Impl_core_fmt_Debug_where_core_fmt_Debug_K_for_alloc_collections_btree_set_CursorMutKey_K_A.
+        Definition Self (K A : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "alloc::collections::btree::set::CursorMutKey") [] [ K; A ].
+        
+        (*
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                f.write_str("CursorMutKey")
+            }
+        *)
+        Definition fmt (K A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self K A in
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let f := M.alloc (| f |) in
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                [ M.read (| f |); M.read (| Value.String "CursorMutKey" |) ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom Implements :
+          forall (K A : Ty.t),
+          M.IsTraitInstance
+            "core::fmt::Debug"
+            (Self K A)
+            (* Trait polymorphic types *) []
+            (* Instance *) [ ("fmt", InstanceField.Method (fmt K A)) ].
+      End Impl_core_fmt_Debug_where_core_fmt_Debug_K_for_alloc_collections_btree_set_CursorMutKey_K_A.
+      
+      Module Impl_alloc_collections_btree_set_Cursor_K.
+        Definition Self (K : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "alloc::collections::btree::set::Cursor") [] [ K ].
+        
+        (*
+            pub fn next(&mut self) -> Option<&'a K> {
+                self.inner.next().map(|(k, _)| k)
+            }
+        *)
+        Definition next (K : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self K in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&") [] [ K ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
+                  [
+                    Ty.apply (Ty.path "&") [] [ K ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&") [] [ K ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&") [] [ K ])
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::Cursor")
+                        []
+                        [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                      "next",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::Cursor",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_next :
+          forall (K : Ty.t),
+          M.IsAssociatedFunction (Self K) "next" (next K).
+        
+        (*
+            pub fn prev(&mut self) -> Option<&'a K> {
+                self.inner.prev().map(|(k, _)| k)
+            }
+        *)
+        Definition prev (K : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self K in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&") [] [ K ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
+                  [
+                    Ty.apply (Ty.path "&") [] [ K ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&") [] [ K ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&") [] [ K ])
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::Cursor")
+                        []
+                        [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                      "prev",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::Cursor",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_prev :
+          forall (K : Ty.t),
+          M.IsAssociatedFunction (Self K) "prev" (prev K).
+        
+        (*
+            pub fn peek_next(&self) -> Option<&'a K> {
+                self.inner.peek_next().map(|(k, _)| k)
+            }
+        *)
+        Definition peek_next (K : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self K in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&") [] [ K ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
+                  [
+                    Ty.apply (Ty.path "&") [] [ K ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&") [] [ K ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&") [] [ K ])
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::Cursor")
+                        []
+                        [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                      "peek_next",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::Cursor",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_peek_next :
+          forall (K : Ty.t),
+          M.IsAssociatedFunction (Self K) "peek_next" (peek_next K).
+        
+        (*
+            pub fn peek_prev(&self) -> Option<&'a K> {
+                self.inner.peek_prev().map(|(k, _)| k)
+            }
+        *)
+        Definition peek_prev (K : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self K in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&") [] [ K ];
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
+                  [
+                    Ty.apply (Ty.path "&") [] [ K ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&") [] [ K ];
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&") [] [ K ])
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::Cursor")
+                        []
+                        [ K; Ty.path "alloc::collections::btree::set_val::SetValZST" ],
+                      "peek_prev",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::Cursor",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_peek_prev :
+          forall (K : Ty.t),
+          M.IsAssociatedFunction (Self K) "peek_prev" (peek_prev K).
+      End Impl_alloc_collections_btree_set_Cursor_K.
+      
+      Module Impl_alloc_collections_btree_set_CursorMut_T_A.
+        Definition Self (T A : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "alloc::collections::btree::set::CursorMut") [] [ T; A ].
+        
+        (*
+            pub fn next(&mut self) -> Option<&T> {
+                self.inner.next().map(|(k, _)| k)
+            }
+        *)
+        Definition next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&") [] [ T ];
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
+                  [
+                    Ty.apply (Ty.path "&") [] [ T ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&") [] [ T ];
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&") [] [ T ])
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::CursorMut")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "next",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::CursorMut",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_next :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "next" (next T A).
+        
+        (*
+            pub fn prev(&mut self) -> Option<&T> {
+                self.inner.prev().map(|(k, _)| k)
+            }
+        *)
+        Definition prev (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&") [] [ T ];
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
+                  [
+                    Ty.apply (Ty.path "&") [] [ T ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&") [] [ T ];
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&") [] [ T ])
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::CursorMut")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "prev",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::CursorMut",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_prev :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "prev" (prev T A).
+        
+        (*
+            pub fn peek_next(&mut self) -> Option<&T> {
+                self.inner.peek_next().map(|(k, _)| k)
+            }
+        *)
+        Definition peek_next
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&") [] [ T ];
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
+                  [
+                    Ty.apply (Ty.path "&") [] [ T ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&") [] [ T ];
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&") [] [ T ])
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::CursorMut")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "peek_next",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::CursorMut",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_peek_next :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "peek_next" (peek_next T A).
+        
+        (*
+            pub fn peek_prev(&mut self) -> Option<&T> {
+                self.inner.peek_prev().map(|(k, _)| k)
+            }
+        *)
+        Definition peek_prev
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&") [] [ T ];
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
+                  [
+                    Ty.apply (Ty.path "&") [] [ T ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&") [] [ T ];
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&") [] [ T ])
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::CursorMut")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "peek_prev",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::CursorMut",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_peek_prev :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "peek_prev" (peek_prev T A).
+        
+        (*
+            pub fn as_cursor(&self) -> Cursor<'_, T> {
+                Cursor { inner: self.inner.as_cursor() }
+            }
+        *)
+        Definition as_cursor
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              Value.StructRecord
+                "alloc::collections::btree::set::Cursor"
+                [
+                  ("inner",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::CursorMut")
+                          []
+                          [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                        "as_cursor",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::set::CursorMut",
+                          "inner"
+                        |)
+                      ]
+                    |))
+                ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_as_cursor :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "as_cursor" (as_cursor T A).
+        
+        (*
+            pub unsafe fn with_mutable_key(self) -> CursorMutKey<'a, T, A> {
+                CursorMutKey { inner: unsafe { self.inner.with_mutable_key() } }
+            }
+        *)
+        Definition with_mutable_key
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              Value.StructRecord
+                "alloc::collections::btree::set::CursorMutKey"
+                [
+                  ("inner",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::CursorMut")
+                          []
+                          [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                        "with_mutable_key",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::set::CursorMut",
+                            "inner"
+                          |)
+                        |)
+                      ]
+                    |))
+                ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_with_mutable_key :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "with_mutable_key" (with_mutable_key T A).
+        (*
+            pub unsafe fn insert_after_unchecked(&mut self, value: T) {
+                unsafe { self.inner.insert_after_unchecked(value, SetValZST) }
+            }
+        *)
+        Definition insert_after_unchecked
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self; value ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let value := M.alloc (| value |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::CursorMut")
+                    []
+                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  "insert_after_unchecked",
+                  []
+                |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::btree::set::CursorMut",
+                    "inner"
+                  |);
+                  M.read (| value |);
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_insert_after_unchecked :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "insert_after_unchecked" (insert_after_unchecked T A).
+        
+        (*
+            pub unsafe fn insert_before_unchecked(&mut self, value: T) {
+                unsafe { self.inner.insert_before_unchecked(value, SetValZST) }
+            }
+        *)
+        Definition insert_before_unchecked
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self; value ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let value := M.alloc (| value |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::CursorMut")
+                    []
+                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  "insert_before_unchecked",
+                  []
+                |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::btree::set::CursorMut",
+                    "inner"
+                  |);
+                  M.read (| value |);
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_insert_before_unchecked :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "insert_before_unchecked" (insert_before_unchecked T A).
+        
+        (*
+            pub fn insert_after(&mut self, value: T) -> Result<(), UnorderedKeyError> {
+                self.inner.insert_after(value, SetValZST)
+            }
+        *)
+        Definition insert_after
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self; value ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let value := M.alloc (| value |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::CursorMut")
+                    []
+                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  "insert_after",
+                  []
+                |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::btree::set::CursorMut",
+                    "inner"
+                  |);
+                  M.read (| value |);
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_insert_after :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "insert_after" (insert_after T A).
+        
+        (*
+            pub fn insert_before(&mut self, value: T) -> Result<(), UnorderedKeyError> {
+                self.inner.insert_before(value, SetValZST)
+            }
+        *)
+        Definition insert_before
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self; value ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let value := M.alloc (| value |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::CursorMut")
+                    []
+                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  "insert_before",
+                  []
+                |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::btree::set::CursorMut",
+                    "inner"
+                  |);
+                  M.read (| value |);
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_insert_before :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "insert_before" (insert_before T A).
+        
+        (*
+            pub fn remove_next(&mut self) -> Option<T> {
+                self.inner.remove_next().map(|(k, _)| k)
+            }
+        *)
+        Definition remove_next
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
+                  "map",
+                  [
+                    T;
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                          ]
+                      ]
+                      T
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::CursorMut")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "remove_next",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::CursorMut",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_remove_next :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "remove_next" (remove_next T A).
+        
+        (*
+            pub fn remove_prev(&mut self) -> Option<T> {
+                self.inner.remove_prev().map(|(k, _)| k)
+            }
+        *)
+        Definition remove_prev
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
+                  "map",
+                  [
+                    T;
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                          ]
+                      ]
+                      T
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::CursorMut")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "remove_prev",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::CursorMut",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_remove_prev :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "remove_prev" (remove_prev T A).
+      End Impl_alloc_collections_btree_set_CursorMut_T_A.
+      
+      Module Impl_alloc_collections_btree_set_CursorMutKey_T_A.
+        Definition Self (T A : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "alloc::collections::btree::set::CursorMutKey") [] [ T; A ].
+        
+        (*
+            pub fn next(&mut self) -> Option<&mut T> {
+                self.inner.next().map(|(k, _)| k)
+            }
+        *)
+        Definition next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&mut") [] [ T ];
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
+                  [
+                    Ty.apply (Ty.path "&mut") [] [ T ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&mut") [] [ T ];
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&mut") [] [ T ])
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::CursorMutKey")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "next",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::CursorMutKey",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_next :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "next" (next T A).
+        
+        (*
+            pub fn prev(&mut self) -> Option<&mut T> {
+                self.inner.prev().map(|(k, _)| k)
+            }
+        *)
+        Definition prev (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&mut") [] [ T ];
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
+                  [
+                    Ty.apply (Ty.path "&mut") [] [ T ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&mut") [] [ T ];
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&mut") [] [ T ])
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::CursorMutKey")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "prev",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::CursorMutKey",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_prev :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "prev" (prev T A).
+        
+        (*
+            pub fn peek_next(&mut self) -> Option<&mut T> {
+                self.inner.peek_next().map(|(k, _)| k)
+            }
+        *)
+        Definition peek_next
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&mut") [] [ T ];
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
+                  [
+                    Ty.apply (Ty.path "&mut") [] [ T ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&mut") [] [ T ];
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&mut") [] [ T ])
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::CursorMutKey")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "peek_next",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::CursorMutKey",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_peek_next :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "peek_next" (peek_next T A).
+        
+        (*
+            pub fn peek_prev(&mut self) -> Option<&mut T> {
+                self.inner.peek_prev().map(|(k, _)| k)
+            }
+        *)
+        Definition peek_prev
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [
+                      Ty.tuple
+                        [
+                          Ty.apply (Ty.path "&mut") [] [ T ];
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                        ]
+                    ],
+                  "map",
+                  [
+                    Ty.apply (Ty.path "&mut") [] [ T ];
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [
+                            Ty.tuple
+                              [
+                                Ty.apply (Ty.path "&mut") [] [ T ];
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                              ]
+                          ]
+                      ]
+                      (Ty.apply (Ty.path "&mut") [] [ T ])
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::CursorMutKey")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "peek_prev",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::CursorMutKey",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_peek_prev :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "peek_prev" (peek_prev T A).
+        
+        (*
+            pub fn as_cursor(&self) -> Cursor<'_, T> {
+                Cursor { inner: self.inner.as_cursor() }
+            }
+        *)
+        Definition as_cursor
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              Value.StructRecord
+                "alloc::collections::btree::set::Cursor"
+                [
+                  ("inner",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::CursorMutKey")
+                          []
+                          [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                        "as_cursor",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::btree::set::CursorMutKey",
+                          "inner"
+                        |)
+                      ]
+                    |))
+                ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_as_cursor :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "as_cursor" (as_cursor T A).
+        (*
+            pub unsafe fn insert_after_unchecked(&mut self, value: T) {
+                unsafe { self.inner.insert_after_unchecked(value, SetValZST) }
+            }
+        *)
+        Definition insert_after_unchecked
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self; value ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let value := M.alloc (| value |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::CursorMutKey")
+                    []
+                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  "insert_after_unchecked",
+                  []
+                |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::btree::set::CursorMutKey",
+                    "inner"
+                  |);
+                  M.read (| value |);
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_insert_after_unchecked :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "insert_after_unchecked" (insert_after_unchecked T A).
+        
+        (*
+            pub unsafe fn insert_before_unchecked(&mut self, value: T) {
+                unsafe { self.inner.insert_before_unchecked(value, SetValZST) }
+            }
+        *)
+        Definition insert_before_unchecked
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self; value ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let value := M.alloc (| value |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::CursorMutKey")
+                    []
+                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  "insert_before_unchecked",
+                  []
+                |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::btree::set::CursorMutKey",
+                    "inner"
+                  |);
+                  M.read (| value |);
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_insert_before_unchecked :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "insert_before_unchecked" (insert_before_unchecked T A).
+        
+        (*
+            pub fn insert_after(&mut self, value: T) -> Result<(), UnorderedKeyError> {
+                self.inner.insert_after(value, SetValZST)
+            }
+        *)
+        Definition insert_after
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self; value ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let value := M.alloc (| value |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::CursorMutKey")
+                    []
+                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  "insert_after",
+                  []
+                |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::btree::set::CursorMutKey",
+                    "inner"
+                  |);
+                  M.read (| value |);
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_insert_after :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "insert_after" (insert_after T A).
+        
+        (*
+            pub fn insert_before(&mut self, value: T) -> Result<(), UnorderedKeyError> {
+                self.inner.insert_before(value, SetValZST)
+            }
+        *)
+        Definition insert_before
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self; value ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let value := M.alloc (| value |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::map::CursorMutKey")
+                    []
+                    [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                  "insert_before",
+                  []
+                |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "alloc::collections::btree::set::CursorMutKey",
+                    "inner"
+                  |);
+                  M.read (| value |);
+                  Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_insert_before :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "insert_before" (insert_before T A).
+        
+        (*
+            pub fn remove_next(&mut self) -> Option<T> {
+                self.inner.remove_next().map(|(k, _)| k)
+            }
+        *)
+        Definition remove_next
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
+                  "map",
+                  [
+                    T;
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                          ]
+                      ]
+                      T
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::CursorMutKey")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "remove_next",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::CursorMutKey",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_remove_next :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "remove_next" (remove_next T A).
+        
+        (*
+            pub fn remove_prev(&mut self) -> Option<T> {
+                self.inner.remove_prev().map(|(k, _)| k)
+            }
+        *)
+        Definition remove_prev
+            (T A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self T A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ] ],
+                  "map",
+                  [
+                    T;
+                    Ty.function
+                      [
+                        Ty.tuple
+                          [ Ty.tuple [ T; Ty.path "alloc::collections::btree::set_val::SetValZST" ]
+                          ]
+                      ]
+                      T
+                  ]
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::collections::btree::map::CursorMutKey")
+                        []
+                        [ T; Ty.path "alloc::collections::btree::set_val::SetValZST"; A ],
+                      "remove_prev",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::set::CursorMutKey",
+                        "inner"
+                      |)
+                    ]
+                  |);
+                  M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let k := M.copy (| γ0_0 |) in
+                                    M.read (| k |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end))
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_remove_prev :
+          forall (T A : Ty.t),
+          M.IsAssociatedFunction (Self T A) "remove_prev" (remove_prev T A).
+      End Impl_alloc_collections_btree_set_CursorMutKey_T_A.
+      
+      
     End set.
   End btree.
 End collections.

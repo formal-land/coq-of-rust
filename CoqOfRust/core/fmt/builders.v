@@ -39,7 +39,7 @@ Module fmt.
             (Value.StructRecord
               "core::fmt::builders::PadAdapterState"
               [ ("on_newline", Value.Bool true) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -94,15 +94,14 @@ Module fmt.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let buf := M.copy (| γ |) in
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.call_closure (|
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let buf := M.copy (| γ |) in
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "core::option::Option")
@@ -115,20 +114,16 @@ Module fmt.
                                       M.read (| slot |);
                                       Value.StructRecord
                                         "core::fmt::builders::PadAdapter"
-                                        [
-                                          ("buf",
-                                            (* Unsize *) M.pointer_coercion (M.read (| buf |)));
-                                          ("state", M.read (| state |))
-                                        ]
+                                        [ ("buf", M.read (| buf |)); ("state", M.read (| state |)) ]
                                     ]
-                                  |))))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrap : M.IsAssociatedFunction Self "wrap" wrap.
@@ -488,7 +483,7 @@ Module fmt.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -635,7 +630,7 @@ Module fmt.
                         "core::fmt::builders::PadAdapterState",
                         "on_newline"
                       |),
-                      BinOp.Pure.eq (M.read (| c |)) (Value.UnicodeChar 10)
+                      BinOp.eq (| M.read (| c |), Value.UnicodeChar 10 |)
                     |) in
                   M.alloc (|
                     M.call_closure (|
@@ -660,7 +655,7 @@ Module fmt.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -725,7 +720,7 @@ Module fmt.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_debug_struct_new :
@@ -767,29 +762,30 @@ Module fmt.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let f := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::fmt::Debug",
-                                    Ty.dyn [ ("core::fmt::Debug::Trait", []) ],
-                                    [],
-                                    "fmt",
-                                    []
-                                  |),
-                                  [ M.read (| value |); M.read (| f |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let f := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::fmt::Debug",
+                                      Ty.dyn [ ("core::fmt::Debug::Trait", []) ],
+                                      [],
+                                      "fmt",
+                                      []
+                                    |),
+                                    [ M.read (| value |); M.read (| f |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_field : M.IsAssociatedFunction Self "field" field.
@@ -869,2185 +865,36 @@ Module fmt.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.read (|
-                                        M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "core::fmt::builders::DebugStruct",
-                                                          "is_pretty",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
-                                                    |)) in
-                                                let _ :=
-                                                  M.is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ :=
-                                                            M.use
-                                                              (M.alloc (|
-                                                                UnOp.Pure.not
-                                                                  (M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| self |),
-                                                                      "core::fmt::builders::DebugStruct",
-                                                                      "has_fields"
-                                                                    |)
-                                                                  |))
-                                                              |)) in
-                                                          let _ :=
-                                                            M.is_constant_or_break_match (|
-                                                              M.read (| γ |),
-                                                              Value.Bool true
-                                                            |) in
-                                                          let~ _ :=
-                                                            M.match_operator (|
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_trait_method (|
-                                                                    "core::ops::try_trait::Try",
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::result::Result")
-                                                                      []
-                                                                      [
-                                                                        Ty.tuple [];
-                                                                        Ty.path "core::fmt::Error"
-                                                                      ],
-                                                                    [],
-                                                                    "branch",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::Formatter",
-                                                                        "write_str",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| self |),
-                                                                            "core::fmt::builders::DebugStruct",
-                                                                            "fmt"
-                                                                          |)
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String " {
-"
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ0_0 :=
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        γ,
-                                                                        "core::ops::control_flow::ControlFlow::Break",
-                                                                        0
-                                                                      |) in
-                                                                    let residual :=
-                                                                      M.copy (| γ0_0 |) in
-                                                                    M.alloc (|
-                                                                      M.never_to_any (|
-                                                                        M.read (|
-                                                                          M.return_ (|
-                                                                            M.call_closure (|
-                                                                              M.get_trait_method (|
-                                                                                "core::ops::try_trait::FromResidual",
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::result::Result")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.tuple [];
-                                                                                    Ty.path
-                                                                                      "core::fmt::Error"
-                                                                                  ],
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "core::result::Result")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "core::convert::Infallible";
-                                                                                      Ty.path
-                                                                                        "core::fmt::Error"
-                                                                                    ]
-                                                                                ],
-                                                                                "from_residual",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.read (|
-                                                                                  residual
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          |)
-                                                                        |)
-                                                                      |)
-                                                                    |)));
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ0_0 :=
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        γ,
-                                                                        "core::ops::control_flow::ControlFlow::Continue",
-                                                                        0
-                                                                      |) in
-                                                                    let val := M.copy (| γ0_0 |) in
-                                                                    val))
-                                                              ]
-                                                            |) in
-                                                          M.alloc (| Value.Tuple [] |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
-                                                    ]
-                                                  |) in
-                                                let~ slot :=
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::None"
-                                                      []
-                                                  |) in
-                                                let~ state :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::default::Default",
-                                                        Ty.path
-                                                          "core::fmt::builders::PadAdapterState",
-                                                        [],
-                                                        "default",
-                                                        []
-                                                      |),
-                                                      []
-                                                    |)
-                                                  |) in
-                                                let~ writer :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::builders::PadAdapter",
-                                                        "wrap",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
-                                                            "core::fmt::builders::DebugStruct",
-                                                            "fmt"
-                                                          |)
-                                                        |);
-                                                        slot;
-                                                        state
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.path "core::fmt::Error"
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::Formatter",
-                                                              "write_str",
-                                                              []
-                                                            |),
-                                                            [ writer; M.read (| name |) ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.tuple [];
-                                                                          Ty.path "core::fmt::Error"
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.path "core::fmt::Error"
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::Formatter",
-                                                              "write_str",
-                                                              []
-                                                            |),
-                                                            [ writer; M.read (| Value.String ": " |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.tuple [];
-                                                                          Ty.path "core::fmt::Error"
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.path "core::fmt::Error"
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::function::FnOnce",
-                                                              F,
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&mut")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::fmt::Formatter"
-                                                                      ]
-                                                                  ]
-                                                              ],
-                                                              "call_once",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| value_fmt |);
-                                                              Value.Tuple [ writer ]
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.tuple [];
-                                                                          Ty.path "core::fmt::Error"
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |) in
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::Formatter",
-                                                      "write_str",
-                                                      []
-                                                    |),
-                                                    [ writer; M.read (| Value.String ",
-" |) ]
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let~ prefix :=
-                                                  M.copy (|
-                                                    M.match_operator (|
-                                                      M.alloc (| Value.Tuple [] |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ :=
-                                                              M.use
-                                                                (M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "core::fmt::builders::DebugStruct",
-                                                                  "has_fields"
-                                                                |)) in
-                                                            let _ :=
-                                                              M.is_constant_or_break_match (|
-                                                                M.read (| γ |),
-                                                                Value.Bool true
-                                                              |) in
-                                                            Value.String ", "));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (|
-                                                              M.read (| Value.String " { " |)
-                                                            |)))
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.path "core::fmt::Error"
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::Formatter",
-                                                              "write_str",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "core::fmt::builders::DebugStruct",
-                                                                  "fmt"
-                                                                |)
-                                                              |);
-                                                              M.read (| prefix |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.tuple [];
-                                                                          Ty.path "core::fmt::Error"
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.path "core::fmt::Error"
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::Formatter",
-                                                              "write_str",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "core::fmt::builders::DebugStruct",
-                                                                  "fmt"
-                                                                |)
-                                                              |);
-                                                              M.read (| name |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.tuple [];
-                                                                          Ty.path "core::fmt::Error"
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.path "core::fmt::Error"
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::Formatter",
-                                                              "write_str",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "core::fmt::builders::DebugStruct",
-                                                                  "fmt"
-                                                                |)
-                                                              |);
-                                                              M.read (| Value.String ": " |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.tuple [];
-                                                                          Ty.path "core::fmt::Error"
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |) in
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnOnce",
-                                                      F,
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&mut")
-                                                              []
-                                                              [ Ty.path "core::fmt::Formatter" ]
-                                                          ]
-                                                      ],
-                                                      "call_once",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.read (| value_fmt |);
-                                                      Value.Tuple
-                                                        [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "core::fmt::builders::DebugStruct",
-                                                              "fmt"
-                                                            |)
-                                                          |)
-                                                        ]
-                                                    ]
-                                                  |)
-                                                |)))
-                                          ]
-                                        |)
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |)
-                |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::fmt::builders::DebugStruct",
-                    "has_fields"
-                  |),
-                  Value.Bool true
-                |) in
-              M.alloc (| M.read (| self |) |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_field_with : M.IsAssociatedFunction Self "field_with" field_with.
-      
-      (*
-          pub fn finish_non_exhaustive(&mut self) -> fmt::Result {
-              self.result = self.result.and_then(|_| {
-                  if self.has_fields {
-                      if self.is_pretty() {
-                          let mut slot = None;
-                          let mut state = Default::default();
-                          let mut writer = PadAdapter::wrap(self.fmt, &mut slot, &mut state);
-                          writer.write_str("..\n")?;
-                          self.fmt.write_str("}")
-                      } else {
-                          self.fmt.write_str(", .. }")
-                      }
-                  } else {
-                      self.fmt.write_str(" { .. }")
-                  }
-              });
-              self.result
-          }
-      *)
-      Definition finish_non_exhaustive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::fmt::builders::DebugStruct",
-                    "result"
-                  |),
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      "and_then",
-                      [
-                        Ty.tuple [];
-                        Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                      ]
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::fmt::builders::DebugStruct",
-                          "result"
-                        |)
-                      |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.read (|
-                                        M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "core::fmt::builders::DebugStruct",
-                                                      "has_fields"
-                                                    |)) in
-                                                let _ :=
-                                                  M.is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                M.match_operator (|
-                                                  M.alloc (| Value.Tuple [] |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ :=
-                                                          M.use
-                                                            (M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "core::fmt::builders::DebugStruct",
-                                                                  "is_pretty",
-                                                                  []
-                                                                |),
-                                                                [ M.read (| self |) ]
-                                                              |)
-                                                            |)) in
-                                                        let _ :=
-                                                          M.is_constant_or_break_match (|
-                                                            M.read (| γ |),
-                                                            Value.Bool true
-                                                          |) in
-                                                        let~ slot :=
-                                                          M.alloc (|
-                                                            Value.StructTuple
-                                                              "core::option::Option::None"
-                                                              []
-                                                          |) in
-                                                        let~ state :=
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::default::Default",
-                                                                Ty.path
-                                                                  "core::fmt::builders::PadAdapterState",
-                                                                [],
-                                                                "default",
-                                                                []
-                                                              |),
-                                                              []
-                                                            |)
-                                                          |) in
-                                                        let~ writer :=
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path
-                                                                  "core::fmt::builders::PadAdapter",
-                                                                "wrap",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.read (|
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "core::fmt::builders::DebugStruct",
-                                                                    "fmt"
-                                                                  |)
-                                                                |);
-                                                                slot;
-                                                                state
-                                                              ]
-                                                            |)
-                                                          |) in
-                                                        let~ _ :=
-                                                          M.match_operator (|
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::ops::try_trait::Try",
-                                                                  Ty.apply
-                                                                    (Ty.path "core::result::Result")
-                                                                    []
-                                                                    [
-                                                                      Ty.tuple [];
-                                                                      Ty.path "core::fmt::Error"
-                                                                    ],
-                                                                  [],
-                                                                  "branch",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::Formatter",
-                                                                      "write_str",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      writer;
-                                                                      M.read (|
-                                                                        Value.String "..
-"
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                      γ,
-                                                                      "core::ops::control_flow::ControlFlow::Break",
-                                                                      0
-                                                                    |) in
-                                                                  let residual :=
-                                                                    M.copy (| γ0_0 |) in
-                                                                  M.alloc (|
-                                                                    M.never_to_any (|
-                                                                      M.read (|
-                                                                        M.return_ (|
-                                                                          M.call_closure (|
-                                                                            M.get_trait_method (|
-                                                                              "core::ops::try_trait::FromResidual",
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "core::result::Result")
-                                                                                []
-                                                                                [
-                                                                                  Ty.tuple [];
-                                                                                  Ty.path
-                                                                                    "core::fmt::Error"
-                                                                                ],
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::result::Result")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "core::convert::Infallible";
-                                                                                    Ty.path
-                                                                                      "core::fmt::Error"
-                                                                                  ]
-                                                                              ],
-                                                                              "from_residual",
-                                                                              []
-                                                                            |),
-                                                                            [ M.read (| residual |)
-                                                                            ]
-                                                                          |)
-                                                                        |)
-                                                                      |)
-                                                                    |)
-                                                                  |)));
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                      γ,
-                                                                      "core::ops::control_flow::ControlFlow::Continue",
-                                                                      0
-                                                                    |) in
-                                                                  let val := M.copy (| γ0_0 |) in
-                                                                  val))
-                                                            ]
-                                                          |) in
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::Formatter",
-                                                              "write_str",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "core::fmt::builders::DebugStruct",
-                                                                  "fmt"
-                                                                |)
-                                                              |);
-                                                              M.read (| Value.String "}" |)
-                                                            ]
-                                                          |)
-                                                        |)));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::Formatter",
-                                                              "write_str",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "core::fmt::builders::DebugStruct",
-                                                                  "fmt"
-                                                                |)
-                                                              |);
-                                                              M.read (| Value.String ", .. }" |)
-                                                            ]
-                                                          |)
-                                                        |)))
-                                                  ]
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::Formatter",
-                                                      "write_str",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.read (|
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| self |),
-                                                          "core::fmt::builders::DebugStruct",
-                                                          "fmt"
-                                                        |)
-                                                      |);
-                                                      M.read (| Value.String " { .. }" |)
-                                                    ]
-                                                  |)
-                                                |)))
-                                          ]
-                                        |)
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |)
-                |) in
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::fmt::builders::DebugStruct",
-                "result"
-              |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_finish_non_exhaustive :
-        M.IsAssociatedFunction Self "finish_non_exhaustive" finish_non_exhaustive.
-      
-      (*
-          pub fn finish(&mut self) -> fmt::Result {
-              if self.has_fields {
-                  self.result = self.result.and_then(|_| {
-                      if self.is_pretty() { self.fmt.write_str("}") } else { self.fmt.write_str(" }") }
-                  });
-              }
-              self.result
-          }
-      *)
-      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (|
-              let~ _ :=
-                M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::fmt::builders::DebugStruct",
-                              "has_fields"
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
-                          M.write (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::fmt::builders::DebugStruct",
-                              "result"
-                            |),
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                "and_then",
-                                [
-                                  Ty.tuple [];
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                                ]
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::fmt::builders::DebugStruct",
-                                    "result"
-                                  |)
-                                |);
-                                M.closure
-                                  (fun γ =>
-                                    ltac:(M.monadic
-                                      match γ with
-                                      | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (M.read (|
-                                                  M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ :=
-                                                            M.use
-                                                              (M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::builders::DebugStruct",
-                                                                    "is_pretty",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| self |) ]
-                                                                |)
-                                                              |)) in
-                                                          let _ :=
-                                                            M.is_constant_or_break_match (|
-                                                              M.read (| γ |),
-                                                              Value.Bool true
-                                                            |) in
-                                                          M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::Formatter",
-                                                                "write_str",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.read (|
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "core::fmt::builders::DebugStruct",
-                                                                    "fmt"
-                                                                  |)
-                                                                |);
-                                                                M.read (| Value.String "}" |)
-                                                              ]
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.alloc (|
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::Formatter",
-                                                                "write_str",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.read (|
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "core::fmt::builders::DebugStruct",
-                                                                    "fmt"
-                                                                  |)
-                                                                |);
-                                                                M.read (| Value.String " }" |)
-                                                              ]
-                                                            |)
-                                                          |)))
-                                                    ]
-                                                  |)
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
-                                      end))
-                              ]
-                            |)
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
-                |) in
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::fmt::builders::DebugStruct",
-                "result"
-              |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
-      
-      (*
-          fn is_pretty(&self) -> bool {
-              self.fmt.alternate()
-          }
-      *)
-      Definition is_pretty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "alternate", [] |),
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::fmt::builders::DebugStruct",
-                    "fmt"
-                  |)
-                |)
-              ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
-    End Impl_core_fmt_builders_DebugStruct.
-    
-    (* StructRecord
-      {
-        name := "DebugTuple";
-        const_params := [];
-        ty_params := [];
-        fields :=
-          [
-            ("fmt", Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]);
-            ("result",
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
-            ("fields", Ty.path "usize");
-            ("empty_name", Ty.path "bool")
-          ];
-      } *)
-    
-    (*
-    pub(super) fn debug_tuple_new<'a, 'b>(
-        fmt: &'a mut fmt::Formatter<'b>,
-        name: &str,
-    ) -> DebugTuple<'a, 'b> {
-        let result = fmt.write_str(name);
-        DebugTuple { fmt, result, fields: 0, empty_name: name.is_empty() }
-    }
-    *)
-    Definition debug_tuple_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ fmt; name ] =>
-        ltac:(M.monadic
-          (let fmt := M.alloc (| fmt |) in
-          let name := M.alloc (| name |) in
-          M.read (|
-            let~ result :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-                  [ M.read (| fmt |); M.read (| name |) ]
-                |)
-              |) in
-            M.alloc (|
-              Value.StructRecord
-                "core::fmt::builders::DebugTuple"
-                [
-                  ("fmt", M.read (| fmt |));
-                  ("result", M.read (| result |));
-                  ("fields", Value.Integer 0);
-                  ("empty_name",
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.path "str", "is_empty", [] |),
-                      [ M.read (| name |) ]
-                    |))
-                ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Function_debug_tuple_new :
-      M.IsFunction "core::fmt::builders::debug_tuple_new" debug_tuple_new.
-    
-    Module Impl_core_fmt_builders_DebugTuple.
-      Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugTuple".
-      
-      (*
-          pub fn field(&mut self, value: &dyn fmt::Debug) -> &mut Self {
-              self.field_with(|f| value.fmt(f))
-          }
-      *)
-      Definition field (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self; value ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let value := M.alloc (| value |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.path "core::fmt::builders::DebugTuple",
-                "field_with",
-                [
-                  Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ] ]
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                ]
-              |),
-              [
-                M.read (| self |);
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
                               ltac:(M.monadic
-                                (let f := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::fmt::Debug",
-                                    Ty.dyn [ ("core::fmt::Debug::Trait", []) ],
-                                    [],
-                                    "fmt",
-                                    []
-                                  |),
-                                  [ M.read (| value |); M.read (| f |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end))
-              ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_field : M.IsAssociatedFunction Self "field" field.
-      
-      (*
-          pub fn field_with<F>(&mut self, value_fmt: F) -> &mut Self
-          where
-              F: FnOnce(&mut fmt::Formatter<'_>) -> fmt::Result,
-          {
-              self.result = self.result.and_then(|_| {
-                  if self.is_pretty() {
-                      if self.fields == 0 {
-                          self.fmt.write_str("(\n")?;
-                      }
-                      let mut slot = None;
-                      let mut state = Default::default();
-                      let mut writer = PadAdapter::wrap(self.fmt, &mut slot, &mut state);
-                      value_fmt(&mut writer)?;
-                      writer.write_str(",\n")
-                  } else {
-                      let prefix = if self.fields == 0 { "(" } else { ", " };
-                      self.fmt.write_str(prefix)?;
-                      value_fmt(self.fmt)
-                  }
-              });
-      
-              self.fields += 1;
-              self
-          }
-      *)
-      Definition field_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [ F ], [ self; value_fmt ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let value_fmt := M.alloc (| value_fmt |) in
-            M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::fmt::builders::DebugTuple",
-                    "result"
-                  |),
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      "and_then",
-                      [
-                        Ty.tuple [];
-                        Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                      ]
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::fmt::builders::DebugTuple",
-                          "result"
-                        |)
-                      |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.read (|
-                                        M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::builders::DebugTuple",
-                                                          "is_pretty",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
-                                                    |)) in
-                                                let _ :=
-                                                  M.is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ :=
-                                                            M.use
-                                                              (M.alloc (|
-                                                                BinOp.Pure.eq
-                                                                  (M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| self |),
-                                                                      "core::fmt::builders::DebugTuple",
-                                                                      "fields"
-                                                                    |)
-                                                                  |))
-                                                                  (Value.Integer 0)
-                                                              |)) in
-                                                          let _ :=
-                                                            M.is_constant_or_break_match (|
-                                                              M.read (| γ |),
-                                                              Value.Bool true
-                                                            |) in
-                                                          let~ _ :=
-                                                            M.match_operator (|
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_trait_method (|
-                                                                    "core::ops::try_trait::Try",
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::result::Result")
-                                                                      []
-                                                                      [
-                                                                        Ty.tuple [];
-                                                                        Ty.path "core::fmt::Error"
-                                                                      ],
-                                                                    [],
-                                                                    "branch",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::Formatter",
-                                                                        "write_str",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| self |),
-                                                                            "core::fmt::builders::DebugTuple",
-                                                                            "fmt"
-                                                                          |)
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String "(
-"
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ0_0 :=
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        γ,
-                                                                        "core::ops::control_flow::ControlFlow::Break",
-                                                                        0
-                                                                      |) in
-                                                                    let residual :=
-                                                                      M.copy (| γ0_0 |) in
-                                                                    M.alloc (|
-                                                                      M.never_to_any (|
-                                                                        M.read (|
-                                                                          M.return_ (|
-                                                                            M.call_closure (|
-                                                                              M.get_trait_method (|
-                                                                                "core::ops::try_trait::FromResidual",
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::result::Result")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.tuple [];
-                                                                                    Ty.path
-                                                                                      "core::fmt::Error"
-                                                                                  ],
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "core::result::Result")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "core::convert::Infallible";
-                                                                                      Ty.path
-                                                                                        "core::fmt::Error"
-                                                                                    ]
-                                                                                ],
-                                                                                "from_residual",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.read (|
-                                                                                  residual
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          |)
-                                                                        |)
-                                                                      |)
-                                                                    |)));
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ0_0 :=
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        γ,
-                                                                        "core::ops::control_flow::ControlFlow::Continue",
-                                                                        0
-                                                                      |) in
-                                                                    let val := M.copy (| γ0_0 |) in
-                                                                    val))
-                                                              ]
-                                                            |) in
-                                                          M.alloc (| Value.Tuple [] |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
-                                                    ]
-                                                  |) in
-                                                let~ slot :=
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::None"
-                                                      []
-                                                  |) in
-                                                let~ state :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::default::Default",
-                                                        Ty.path
-                                                          "core::fmt::builders::PadAdapterState",
-                                                        [],
-                                                        "default",
-                                                        []
-                                                      |),
-                                                      []
-                                                    |)
-                                                  |) in
-                                                let~ writer :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::builders::PadAdapter",
-                                                        "wrap",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
-                                                            "core::fmt::builders::DebugTuple",
-                                                            "fmt"
-                                                          |)
-                                                        |);
-                                                        slot;
-                                                        state
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.read (|
+                                          M.match_operator (|
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "core::fmt::builders::DebugStruct",
+                                                            "is_pretty",
                                                             []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.path "core::fmt::Error"
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::function::FnOnce",
-                                                              F,
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&mut")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::fmt::Formatter"
-                                                                      ]
-                                                                  ]
-                                                              ],
-                                                              "call_once",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| value_fmt |);
-                                                              Value.Tuple [ writer ]
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.tuple [];
-                                                                          Ty.path "core::fmt::Error"
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |) in
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::Formatter",
-                                                      "write_str",
-                                                      []
-                                                    |),
-                                                    [ writer; M.read (| Value.String ",
-" |) ]
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let~ prefix :=
-                                                  M.copy (|
-                                                    M.match_operator (|
-                                                      M.alloc (| Value.Tuple [] |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ :=
-                                                              M.use
-                                                                (M.alloc (|
-                                                                  BinOp.Pure.eq
-                                                                    (M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| self |),
-                                                                        "core::fmt::builders::DebugTuple",
-                                                                        "fields"
-                                                                      |)
-                                                                    |))
-                                                                    (Value.Integer 0)
-                                                                |)) in
-                                                            let _ :=
-                                                              M.is_constant_or_break_match (|
-                                                                M.read (| γ |),
-                                                                Value.Bool true
-                                                              |) in
-                                                            Value.String "("));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (M.alloc (|
-                                                              M.read (| Value.String ", " |)
-                                                            |)))
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.path "core::fmt::Error"
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::Formatter",
-                                                              "write_str",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (|
-                                                                M.SubPointer.get_struct_record_field (|
-                                                                  M.read (| self |),
-                                                                  "core::fmt::builders::DebugTuple",
-                                                                  "fmt"
-                                                                |)
-                                                              |);
-                                                              M.read (| prefix |)
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.tuple [];
-                                                                          Ty.path "core::fmt::Error"
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |) in
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnOnce",
-                                                      F,
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&mut")
-                                                              []
-                                                              [ Ty.path "core::fmt::Formatter" ]
-                                                          ]
-                                                      ],
-                                                      "call_once",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.read (| value_fmt |);
-                                                      Value.Tuple
-                                                        [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "core::fmt::builders::DebugTuple",
-                                                              "fmt"
-                                                            |)
-                                                          |)
-                                                        ]
-                                                    ]
-                                                  |)
-                                                |)))
-                                          ]
-                                        |)
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |)
-                |) in
-              let~ _ :=
-                let β :=
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::fmt::builders::DebugTuple",
-                    "fields"
-                  |) in
-                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
-              M.alloc (| M.read (| self |) |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_field_with : M.IsAssociatedFunction Self "field_with" field_with.
-      
-      (*
-          pub fn finish(&mut self) -> fmt::Result {
-              if self.fields > 0 {
-                  self.result = self.result.and_then(|_| {
-                      if self.fields == 1 && self.empty_name && !self.is_pretty() {
-                          self.fmt.write_str(",")?;
-                      }
-                      self.fmt.write_str(")")
-                  });
-              }
-              self.result
-          }
-      *)
-      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (|
-              let~ _ :=
-                M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::fmt::builders::DebugTuple",
-                                    "fields"
-                                  |)
-                                |))
-                                (Value.Integer 0)
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
-                          M.write (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::fmt::builders::DebugTuple",
-                              "result"
-                            |),
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                "and_then",
-                                [
-                                  Ty.tuple [];
-                                  Ty.function
-                                    [ Ty.tuple [ Ty.tuple [] ] ]
-                                    (Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                                ]
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::fmt::builders::DebugTuple",
-                                    "result"
-                                  |)
-                                |);
-                                M.closure
-                                  (fun γ =>
-                                    ltac:(M.monadic
-                                      match γ with
-                                      | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (M.read (|
+                                                          |),
+                                                          [ M.read (| self |) ]
+                                                        |)
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
                                                   let~ _ :=
                                                     M.match_operator (|
                                                       M.alloc (| Value.Tuple [] |),
@@ -3057,37 +904,14 @@ Module fmt.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  LogicalOp.and (|
-                                                                    LogicalOp.and (|
-                                                                      BinOp.Pure.eq
-                                                                        (M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| self |),
-                                                                            "core::fmt::builders::DebugTuple",
-                                                                            "fields"
-                                                                          |)
-                                                                        |))
-                                                                        (Value.Integer 1),
-                                                                      ltac:(M.monadic
-                                                                        (M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| self |),
-                                                                            "core::fmt::builders::DebugTuple",
-                                                                            "empty_name"
-                                                                          |)
-                                                                        |)))
-                                                                    |),
-                                                                    ltac:(M.monadic
-                                                                      (UnOp.Pure.not
-                                                                        (M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::builders::DebugTuple",
-                                                                            "is_pretty",
-                                                                            []
-                                                                          |),
-                                                                          [ M.read (| self |) ]
-                                                                        |))))
+                                                                  UnOp.not (|
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.read (| self |),
+                                                                        "core::fmt::builders::DebugStruct",
+                                                                        "has_fields"
+                                                                      |)
+                                                                    |)
                                                                   |)
                                                                 |)) in
                                                             let _ :=
@@ -3125,12 +949,13 @@ Module fmt.
                                                                           M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (| self |),
-                                                                              "core::fmt::builders::DebugTuple",
+                                                                              "core::fmt::builders::DebugStruct",
                                                                               "fmt"
                                                                             |)
                                                                           |);
                                                                           M.read (|
-                                                                            Value.String ","
+                                                                            Value.String " {
+"
                                                                           |)
                                                                         ]
                                                                       |)
@@ -3208,7 +1033,2271 @@ Module fmt.
                                                             (M.alloc (| Value.Tuple [] |)))
                                                       ]
                                                     |) in
+                                                  let~ slot :=
+                                                    M.alloc (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
+                                                    |) in
+                                                  let~ state :=
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::default::Default",
+                                                          Ty.path
+                                                            "core::fmt::builders::PadAdapterState",
+                                                          [],
+                                                          "default",
+                                                          []
+                                                        |),
+                                                        []
+                                                      |)
+                                                    |) in
+                                                  let~ writer :=
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::builders::PadAdapter",
+                                                          "wrap",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| self |),
+                                                              "core::fmt::builders::DebugStruct",
+                                                              "fmt"
+                                                            |)
+                                                          |);
+                                                          slot;
+                                                          state
+                                                        ]
+                                                      |)
+                                                    |) in
+                                                  let~ _ :=
+                                                    M.match_operator (|
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::Try",
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path "core::fmt::Error"
+                                                              ],
+                                                            [],
+                                                            "branch",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [ writer; M.read (| name |) ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Break",
+                                                                0
+                                                              |) in
+                                                            let residual := M.copy (| γ0_0 |) in
+                                                            M.alloc (|
+                                                              M.never_to_any (|
+                                                                M.read (|
+                                                                  M.return_ (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::try_trait::FromResidual",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ]
+                                                                        ],
+                                                                        "from_residual",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| residual |) ]
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                                0
+                                                              |) in
+                                                            let val := M.copy (| γ0_0 |) in
+                                                            val))
+                                                      ]
+                                                    |) in
+                                                  let~ _ :=
+                                                    M.match_operator (|
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::Try",
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path "core::fmt::Error"
+                                                              ],
+                                                            [],
+                                                            "branch",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [
+                                                                writer;
+                                                                M.read (| Value.String ": " |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Break",
+                                                                0
+                                                              |) in
+                                                            let residual := M.copy (| γ0_0 |) in
+                                                            M.alloc (|
+                                                              M.never_to_any (|
+                                                                M.read (|
+                                                                  M.return_ (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::try_trait::FromResidual",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ]
+                                                                        ],
+                                                                        "from_residual",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| residual |) ]
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                                0
+                                                              |) in
+                                                            let val := M.copy (| γ0_0 |) in
+                                                            val))
+                                                      ]
+                                                    |) in
+                                                  let~ _ :=
+                                                    M.match_operator (|
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::Try",
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path "core::fmt::Error"
+                                                              ],
+                                                            [],
+                                                            "branch",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::function::FnOnce",
+                                                                F,
+                                                                [
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&mut")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::Formatter"
+                                                                        ]
+                                                                    ]
+                                                                ],
+                                                                "call_once",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (| value_fmt |);
+                                                                Value.Tuple [ writer ]
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Break",
+                                                                0
+                                                              |) in
+                                                            let residual := M.copy (| γ0_0 |) in
+                                                            M.alloc (|
+                                                              M.never_to_any (|
+                                                                M.read (|
+                                                                  M.return_ (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::try_trait::FromResidual",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ]
+                                                                        ],
+                                                                        "from_residual",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| residual |) ]
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                                0
+                                                              |) in
+                                                            let val := M.copy (| γ0_0 |) in
+                                                            val))
+                                                      ]
+                                                    |) in
                                                   M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::Formatter",
+                                                        "write_str",
+                                                        []
+                                                      |),
+                                                      [ writer; M.read (| Value.String ",
+" |) ]
+                                                    |)
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let~ prefix :=
+                                                    M.copy (|
+                                                      M.match_operator (|
+                                                        M.alloc (| Value.Tuple [] |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ :=
+                                                                M.use
+                                                                  (M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::builders::DebugStruct",
+                                                                    "has_fields"
+                                                                  |)) in
+                                                              let _ :=
+                                                                M.is_constant_or_break_match (|
+                                                                  M.read (| γ |),
+                                                                  Value.Bool true
+                                                                |) in
+                                                              Value.String ", "));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (|
+                                                                M.read (| Value.String " { " |)
+                                                              |)))
+                                                        ]
+                                                      |)
+                                                    |) in
+                                                  let~ _ :=
+                                                    M.match_operator (|
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::Try",
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path "core::fmt::Error"
+                                                              ],
+                                                            [],
+                                                            "branch",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::builders::DebugStruct",
+                                                                    "fmt"
+                                                                  |)
+                                                                |);
+                                                                M.read (| prefix |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Break",
+                                                                0
+                                                              |) in
+                                                            let residual := M.copy (| γ0_0 |) in
+                                                            M.alloc (|
+                                                              M.never_to_any (|
+                                                                M.read (|
+                                                                  M.return_ (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::try_trait::FromResidual",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ]
+                                                                        ],
+                                                                        "from_residual",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| residual |) ]
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                                0
+                                                              |) in
+                                                            let val := M.copy (| γ0_0 |) in
+                                                            val))
+                                                      ]
+                                                    |) in
+                                                  let~ _ :=
+                                                    M.match_operator (|
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::Try",
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path "core::fmt::Error"
+                                                              ],
+                                                            [],
+                                                            "branch",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::builders::DebugStruct",
+                                                                    "fmt"
+                                                                  |)
+                                                                |);
+                                                                M.read (| name |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Break",
+                                                                0
+                                                              |) in
+                                                            let residual := M.copy (| γ0_0 |) in
+                                                            M.alloc (|
+                                                              M.never_to_any (|
+                                                                M.read (|
+                                                                  M.return_ (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::try_trait::FromResidual",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ]
+                                                                        ],
+                                                                        "from_residual",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| residual |) ]
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                                0
+                                                              |) in
+                                                            let val := M.copy (| γ0_0 |) in
+                                                            val))
+                                                      ]
+                                                    |) in
+                                                  let~ _ :=
+                                                    M.match_operator (|
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::Try",
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path "core::fmt::Error"
+                                                              ],
+                                                            [],
+                                                            "branch",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::builders::DebugStruct",
+                                                                    "fmt"
+                                                                  |)
+                                                                |);
+                                                                M.read (| Value.String ": " |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Break",
+                                                                0
+                                                              |) in
+                                                            let residual := M.copy (| γ0_0 |) in
+                                                            M.alloc (|
+                                                              M.never_to_any (|
+                                                                M.read (|
+                                                                  M.return_ (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::try_trait::FromResidual",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ]
+                                                                        ],
+                                                                        "from_residual",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| residual |) ]
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                                0
+                                                              |) in
+                                                            let val := M.copy (| γ0_0 |) in
+                                                            val))
+                                                      ]
+                                                    |) in
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnOnce",
+                                                        F,
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&mut")
+                                                                []
+                                                                [ Ty.path "core::fmt::Formatter" ]
+                                                            ]
+                                                        ],
+                                                        "call_once",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.read (| value_fmt |);
+                                                        Value.Tuple
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::fmt::builders::DebugStruct",
+                                                                "fmt"
+                                                              |)
+                                                            |)
+                                                          ]
+                                                      ]
+                                                    |)
+                                                  |)))
+                                            ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |) in
+              let~ _ :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::fmt::builders::DebugStruct",
+                    "has_fields"
+                  |),
+                  Value.Bool true
+                |) in
+              M.alloc (| M.read (| self |) |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_field_with : M.IsAssociatedFunction Self "field_with" field_with.
+      
+      (*
+          pub fn finish_non_exhaustive(&mut self) -> fmt::Result {
+              self.result = self.result.and_then(|_| {
+                  if self.has_fields {
+                      if self.is_pretty() {
+                          let mut slot = None;
+                          let mut state = Default::default();
+                          let mut writer = PadAdapter::wrap(self.fmt, &mut slot, &mut state);
+                          writer.write_str("..\n")?;
+                          self.fmt.write_str("}")
+                      } else {
+                          self.fmt.write_str(", .. }")
+                      }
+                  } else {
+                      self.fmt.write_str(" { .. }")
+                  }
+              });
+              self.result
+          }
+      *)
+      Definition finish_non_exhaustive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              let~ _ :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::fmt::builders::DebugStruct",
+                    "result"
+                  |),
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      "and_then",
+                      [
+                        Ty.tuple [];
+                        Ty.function
+                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                      ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::fmt::builders::DebugStruct",
+                          "result"
+                        |)
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.read (|
+                                          M.match_operator (|
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::fmt::builders::DebugStruct",
+                                                        "has_fields"
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  M.match_operator (|
+                                                    M.alloc (| Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use
+                                                              (M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::builders::DebugStruct",
+                                                                    "is_pretty",
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| self |) ]
+                                                                |)
+                                                              |)) in
+                                                          let _ :=
+                                                            M.is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          let~ slot :=
+                                                            M.alloc (|
+                                                              Value.StructTuple
+                                                                "core::option::Option::None"
+                                                                []
+                                                            |) in
+                                                          let~ state :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::default::Default",
+                                                                  Ty.path
+                                                                    "core::fmt::builders::PadAdapterState",
+                                                                  [],
+                                                                  "default",
+                                                                  []
+                                                                |),
+                                                                []
+                                                              |)
+                                                            |) in
+                                                          let~ writer :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::fmt::builders::PadAdapter",
+                                                                  "wrap",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| self |),
+                                                                      "core::fmt::builders::DebugStruct",
+                                                                      "fmt"
+                                                                    |)
+                                                                  |);
+                                                                  slot;
+                                                                  state
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          let~ _ :=
+                                                            M.match_operator (|
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::try_trait::Try",
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path "core::fmt::Error"
+                                                                      ],
+                                                                    [],
+                                                                    "branch",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Formatter",
+                                                                        "write_str",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        writer;
+                                                                        M.read (|
+                                                                          Value.String "..
+"
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Break",
+                                                                        0
+                                                                      |) in
+                                                                    let residual :=
+                                                                      M.copy (| γ0_0 |) in
+                                                                    M.alloc (|
+                                                                      M.never_to_any (|
+                                                                        M.read (|
+                                                                          M.return_ (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::try_trait::FromResidual",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "core::fmt::Error"
+                                                                                  ],
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
+                                                                                      Ty.path
+                                                                                        "core::fmt::Error"
+                                                                                    ]
+                                                                                ],
+                                                                                "from_residual",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.read (|
+                                                                                  residual
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)));
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Continue",
+                                                                        0
+                                                                      |) in
+                                                                    let val := M.copy (| γ0_0 |) in
+                                                                    val))
+                                                              ]
+                                                            |) in
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::builders::DebugStruct",
+                                                                    "fmt"
+                                                                  |)
+                                                                |);
+                                                                M.read (| Value.String "}" |)
+                                                              ]
+                                                            |)
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::builders::DebugStruct",
+                                                                    "fmt"
+                                                                  |)
+                                                                |);
+                                                                M.read (| Value.String ", .. }" |)
+                                                              ]
+                                                            |)
+                                                          |)))
+                                                    ]
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::Formatter",
+                                                        "write_str",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "core::fmt::builders::DebugStruct",
+                                                            "fmt"
+                                                          |)
+                                                        |);
+                                                        M.read (| Value.String " { .. }" |)
+                                                      ]
+                                                    |)
+                                                  |)))
+                                            ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |) in
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::fmt::builders::DebugStruct",
+                "result"
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_finish_non_exhaustive :
+        M.IsAssociatedFunction Self "finish_non_exhaustive" finish_non_exhaustive.
+      
+      (*
+          pub fn finish(&mut self) -> fmt::Result {
+              if self.has_fields {
+                  self.result = self.result.and_then(|_| {
+                      if self.is_pretty() { self.fmt.write_str("}") } else { self.fmt.write_str(" }") }
+                  });
+              }
+              self.result
+          }
+      *)
+      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::fmt::builders::DebugStruct",
+                              "has_fields"
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ _ :=
+                          M.write (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::fmt::builders::DebugStruct",
+                              "result"
+                            |),
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                "and_then",
+                                [
+                                  Ty.tuple [];
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.tuple [] ] ]
+                                    (Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                                ]
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::fmt::builders::DebugStruct",
+                                    "result"
+                                  |)
+                                |);
+                                M.closure
+                                  (fun γ =>
+                                    ltac:(M.monadic
+                                      match γ with
+                                      | [ α0 ] =>
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (M.read (|
+                                                    M.match_operator (|
+                                                      M.alloc (| Value.Tuple [] |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ :=
+                                                              M.use
+                                                                (M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::builders::DebugStruct",
+                                                                      "is_pretty",
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| self |) ]
+                                                                  |)
+                                                                |)) in
+                                                            let _ :=
+                                                              M.is_constant_or_break_match (|
+                                                                M.read (| γ |),
+                                                                Value.Bool true
+                                                              |) in
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::Formatter",
+                                                                  "write_str",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| self |),
+                                                                      "core::fmt::builders::DebugStruct",
+                                                                      "fmt"
+                                                                    |)
+                                                                  |);
+                                                                  M.read (| Value.String "}" |)
+                                                                ]
+                                                              |)
+                                                            |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::Formatter",
+                                                                  "write_str",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| self |),
+                                                                      "core::fmt::builders::DebugStruct",
+                                                                      "fmt"
+                                                                    |)
+                                                                  |);
+                                                                  M.read (| Value.String " }" |)
+                                                                ]
+                                                              |)
+                                                            |)))
+                                                      ]
+                                                    |)
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => M.impossible "wrong number of arguments"
+                                      end))
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::fmt::builders::DebugStruct",
+                "result"
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
+      
+      (*
+          fn is_pretty(&self) -> bool {
+              self.fmt.alternate()
+          }
+      *)
+      Definition is_pretty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "alternate", [] |),
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::fmt::builders::DebugStruct",
+                    "fmt"
+                  |)
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
+    End Impl_core_fmt_builders_DebugStruct.
+    
+    (* StructRecord
+      {
+        name := "DebugTuple";
+        const_params := [];
+        ty_params := [];
+        fields :=
+          [
+            ("fmt", Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]);
+            ("result",
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
+            ("fields", Ty.path "usize");
+            ("empty_name", Ty.path "bool")
+          ];
+      } *)
+    
+    (*
+    pub(super) fn debug_tuple_new<'a, 'b>(
+        fmt: &'a mut fmt::Formatter<'b>,
+        name: &str,
+    ) -> DebugTuple<'a, 'b> {
+        let result = fmt.write_str(name);
+        DebugTuple { fmt, result, fields: 0, empty_name: name.is_empty() }
+    }
+    *)
+    Definition debug_tuple_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ fmt; name ] =>
+        ltac:(M.monadic
+          (let fmt := M.alloc (| fmt |) in
+          let name := M.alloc (| name |) in
+          M.read (|
+            let~ result :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                  [ M.read (| fmt |); M.read (| name |) ]
+                |)
+              |) in
+            M.alloc (|
+              Value.StructRecord
+                "core::fmt::builders::DebugTuple"
+                [
+                  ("fmt", M.read (| fmt |));
+                  ("result", M.read (| result |));
+                  ("fields", Value.Integer IntegerKind.Usize 0);
+                  ("empty_name",
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "str", "is_empty", [] |),
+                      [ M.read (| name |) ]
+                    |))
+                ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_debug_tuple_new :
+      M.IsFunction "core::fmt::builders::debug_tuple_new" debug_tuple_new.
+    
+    Module Impl_core_fmt_builders_DebugTuple.
+      Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugTuple".
+      
+      (*
+          pub fn field(&mut self, value: &dyn fmt::Debug) -> &mut Self {
+              self.field_with(|f| value.fmt(f))
+          }
+      *)
+      Definition field (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; value ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let value := M.alloc (| value |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "core::fmt::builders::DebugTuple",
+                "field_with",
+                [
+                  Ty.function
+                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ] ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                ]
+              |),
+              [
+                M.read (| self |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let f := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::fmt::Debug",
+                                      Ty.dyn [ ("core::fmt::Debug::Trait", []) ],
+                                      [],
+                                      "fmt",
+                                      []
+                                    |),
+                                    [ M.read (| value |); M.read (| f |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_field : M.IsAssociatedFunction Self "field" field.
+      
+      (*
+          pub fn field_with<F>(&mut self, value_fmt: F) -> &mut Self
+          where
+              F: FnOnce(&mut fmt::Formatter<'_>) -> fmt::Result,
+          {
+              self.result = self.result.and_then(|_| {
+                  if self.is_pretty() {
+                      if self.fields == 0 {
+                          self.fmt.write_str("(\n")?;
+                      }
+                      let mut slot = None;
+                      let mut state = Default::default();
+                      let mut writer = PadAdapter::wrap(self.fmt, &mut slot, &mut state);
+                      value_fmt(&mut writer)?;
+                      writer.write_str(",\n")
+                  } else {
+                      let prefix = if self.fields == 0 { "(" } else { ", " };
+                      self.fmt.write_str(prefix)?;
+                      value_fmt(self.fmt)
+                  }
+              });
+      
+              self.fields += 1;
+              self
+          }
+      *)
+      Definition field_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; value_fmt ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let value_fmt := M.alloc (| value_fmt |) in
+            M.read (|
+              let~ _ :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::fmt::builders::DebugTuple",
+                    "result"
+                  |),
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      "and_then",
+                      [
+                        Ty.tuple [];
+                        Ty.function
+                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                      ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::fmt::builders::DebugTuple",
+                          "result"
+                        |)
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.read (|
+                                          M.match_operator (|
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "core::fmt::builders::DebugTuple",
+                                                            "is_pretty",
+                                                            []
+                                                          |),
+                                                          [ M.read (| self |) ]
+                                                        |)
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  let~ _ :=
+                                                    M.match_operator (|
+                                                      M.alloc (| Value.Tuple [] |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ :=
+                                                              M.use
+                                                                (M.alloc (|
+                                                                  BinOp.eq (|
+                                                                    M.read (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.read (| self |),
+                                                                        "core::fmt::builders::DebugTuple",
+                                                                        "fields"
+                                                                      |)
+                                                                    |),
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      0
+                                                                  |)
+                                                                |)) in
+                                                            let _ :=
+                                                              M.is_constant_or_break_match (|
+                                                                M.read (| γ |),
+                                                                Value.Bool true
+                                                              |) in
+                                                            let~ _ :=
+                                                              M.match_operator (|
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::try_trait::Try",
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path "core::fmt::Error"
+                                                                        ],
+                                                                      [],
+                                                                      "branch",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::Formatter",
+                                                                          "write_str",
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.read (| self |),
+                                                                              "core::fmt::builders::DebugTuple",
+                                                                              "fmt"
+                                                                            |)
+                                                                          |);
+                                                                          M.read (|
+                                                                            Value.String "(
+"
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ0_0 :=
+                                                                        M.SubPointer.get_struct_tuple_field (|
+                                                                          γ,
+                                                                          "core::ops::control_flow::ControlFlow::Break",
+                                                                          0
+                                                                        |) in
+                                                                      let residual :=
+                                                                        M.copy (| γ0_0 |) in
+                                                                      M.alloc (|
+                                                                        M.never_to_any (|
+                                                                          M.read (|
+                                                                            M.return_ (|
+                                                                              M.call_closure (|
+                                                                                M.get_trait_method (|
+                                                                                  "core::ops::try_trait::FromResidual",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "core::fmt::Error"
+                                                                                    ],
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "core::convert::Infallible";
+                                                                                        Ty.path
+                                                                                          "core::fmt::Error"
+                                                                                      ]
+                                                                                  ],
+                                                                                  "from_residual",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.read (|
+                                                                                    residual
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)));
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ0_0 :=
+                                                                        M.SubPointer.get_struct_tuple_field (|
+                                                                          γ,
+                                                                          "core::ops::control_flow::ControlFlow::Continue",
+                                                                          0
+                                                                        |) in
+                                                                      let val :=
+                                                                        M.copy (| γ0_0 |) in
+                                                                      val))
+                                                                ]
+                                                              |) in
+                                                            M.alloc (| Value.Tuple [] |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (M.alloc (| Value.Tuple [] |)))
+                                                      ]
+                                                    |) in
+                                                  let~ slot :=
+                                                    M.alloc (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
+                                                    |) in
+                                                  let~ state :=
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::default::Default",
+                                                          Ty.path
+                                                            "core::fmt::builders::PadAdapterState",
+                                                          [],
+                                                          "default",
+                                                          []
+                                                        |),
+                                                        []
+                                                      |)
+                                                    |) in
+                                                  let~ writer :=
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::builders::PadAdapter",
+                                                          "wrap",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| self |),
+                                                              "core::fmt::builders::DebugTuple",
+                                                              "fmt"
+                                                            |)
+                                                          |);
+                                                          slot;
+                                                          state
+                                                        ]
+                                                      |)
+                                                    |) in
+                                                  let~ _ :=
+                                                    M.match_operator (|
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::Try",
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path "core::fmt::Error"
+                                                              ],
+                                                            [],
+                                                            "branch",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::function::FnOnce",
+                                                                F,
+                                                                [
+                                                                  Ty.tuple
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&mut")
+                                                                        []
+                                                                        [
+                                                                          Ty.path
+                                                                            "core::fmt::Formatter"
+                                                                        ]
+                                                                    ]
+                                                                ],
+                                                                "call_once",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (| value_fmt |);
+                                                                Value.Tuple [ writer ]
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Break",
+                                                                0
+                                                              |) in
+                                                            let residual := M.copy (| γ0_0 |) in
+                                                            M.alloc (|
+                                                              M.never_to_any (|
+                                                                M.read (|
+                                                                  M.return_ (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::try_trait::FromResidual",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ]
+                                                                        ],
+                                                                        "from_residual",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| residual |) ]
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                                0
+                                                              |) in
+                                                            let val := M.copy (| γ0_0 |) in
+                                                            val))
+                                                      ]
+                                                    |) in
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::Formatter",
+                                                        "write_str",
+                                                        []
+                                                      |),
+                                                      [ writer; M.read (| Value.String ",
+" |) ]
+                                                    |)
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let~ prefix :=
+                                                    M.copy (|
+                                                      M.match_operator (|
+                                                        M.alloc (| Value.Tuple [] |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ :=
+                                                                M.use
+                                                                  (M.alloc (|
+                                                                    BinOp.eq (|
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| self |),
+                                                                          "core::fmt::builders::DebugTuple",
+                                                                          "fields"
+                                                                        |)
+                                                                      |),
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        0
+                                                                    |)
+                                                                  |)) in
+                                                              let _ :=
+                                                                M.is_constant_or_break_match (|
+                                                                  M.read (| γ |),
+                                                                  Value.Bool true
+                                                                |) in
+                                                              Value.String "("));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (|
+                                                                M.read (| Value.String ", " |)
+                                                              |)))
+                                                        ]
+                                                      |)
+                                                    |) in
+                                                  let~ _ :=
+                                                    M.match_operator (|
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::Try",
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path "core::fmt::Error"
+                                                              ],
+                                                            [],
+                                                            "branch",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::builders::DebugTuple",
+                                                                    "fmt"
+                                                                  |)
+                                                                |);
+                                                                M.read (| prefix |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Break",
+                                                                0
+                                                              |) in
+                                                            let residual := M.copy (| γ0_0 |) in
+                                                            M.alloc (|
+                                                              M.never_to_any (|
+                                                                M.read (|
+                                                                  M.return_ (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::try_trait::FromResidual",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ]
+                                                                        ],
+                                                                        "from_residual",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| residual |) ]
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                                0
+                                                              |) in
+                                                            let val := M.copy (| γ0_0 |) in
+                                                            val))
+                                                      ]
+                                                    |) in
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnOnce",
+                                                        F,
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&mut")
+                                                                []
+                                                                [ Ty.path "core::fmt::Formatter" ]
+                                                            ]
+                                                        ],
+                                                        "call_once",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.read (| value_fmt |);
+                                                        Value.Tuple
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::fmt::builders::DebugTuple",
+                                                                "fmt"
+                                                              |)
+                                                            |)
+                                                          ]
+                                                      ]
+                                                    |)
+                                                  |)))
+                                            ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |) in
+              let~ _ :=
+                let β :=
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::fmt::builders::DebugTuple",
+                    "fields"
+                  |) in
+                M.write (|
+                  β,
+                  BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                |) in
+              M.alloc (| M.read (| self |) |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_field_with : M.IsAssociatedFunction Self "field_with" field_with.
+      
+      (*
+          pub fn finish_non_exhaustive(&mut self) -> fmt::Result {
+              self.result = self.result.and_then(|_| {
+                  if self.fields > 0 {
+                      if self.is_pretty() {
+                          let mut slot = None;
+                          let mut state = Default::default();
+                          let mut writer = PadAdapter::wrap(self.fmt, &mut slot, &mut state);
+                          writer.write_str("..\n")?;
+                          self.fmt.write_str(")")
+                      } else {
+                          self.fmt.write_str(", ..)")
+                      }
+                  } else {
+                      self.fmt.write_str("(..)")
+                  }
+              });
+              self.result
+          }
+      *)
+      Definition finish_non_exhaustive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              let~ _ :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::fmt::builders::DebugTuple",
+                    "result"
+                  |),
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      "and_then",
+                      [
+                        Ty.tuple [];
+                        Ty.function
+                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                      ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::fmt::builders::DebugTuple",
+                          "result"
+                        |)
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.read (|
+                                          M.match_operator (|
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.alloc (|
+                                                        BinOp.gt (|
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| self |),
+                                                              "core::fmt::builders::DebugTuple",
+                                                              "fields"
+                                                            |)
+                                                          |),
+                                                          Value.Integer IntegerKind.Usize 0
+                                                        |)
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  M.match_operator (|
+                                                    M.alloc (| Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use
+                                                              (M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::builders::DebugTuple",
+                                                                    "is_pretty",
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| self |) ]
+                                                                |)
+                                                              |)) in
+                                                          let _ :=
+                                                            M.is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          let~ slot :=
+                                                            M.alloc (|
+                                                              Value.StructTuple
+                                                                "core::option::Option::None"
+                                                                []
+                                                            |) in
+                                                          let~ state :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::default::Default",
+                                                                  Ty.path
+                                                                    "core::fmt::builders::PadAdapterState",
+                                                                  [],
+                                                                  "default",
+                                                                  []
+                                                                |),
+                                                                []
+                                                              |)
+                                                            |) in
+                                                          let~ writer :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::fmt::builders::PadAdapter",
+                                                                  "wrap",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| self |),
+                                                                      "core::fmt::builders::DebugTuple",
+                                                                      "fmt"
+                                                                    |)
+                                                                  |);
+                                                                  slot;
+                                                                  state
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          let~ _ :=
+                                                            M.match_operator (|
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::try_trait::Try",
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path "core::fmt::Error"
+                                                                      ],
+                                                                    [],
+                                                                    "branch",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Formatter",
+                                                                        "write_str",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        writer;
+                                                                        M.read (|
+                                                                          Value.String "..
+"
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Break",
+                                                                        0
+                                                                      |) in
+                                                                    let residual :=
+                                                                      M.copy (| γ0_0 |) in
+                                                                    M.alloc (|
+                                                                      M.never_to_any (|
+                                                                        M.read (|
+                                                                          M.return_ (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::try_trait::FromResidual",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "core::fmt::Error"
+                                                                                  ],
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
+                                                                                      Ty.path
+                                                                                        "core::fmt::Error"
+                                                                                    ]
+                                                                                ],
+                                                                                "from_residual",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.read (|
+                                                                                  residual
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)));
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Continue",
+                                                                        0
+                                                                      |) in
+                                                                    let val := M.copy (| γ0_0 |) in
+                                                                    val))
+                                                              ]
+                                                            |) in
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::builders::DebugTuple",
+                                                                    "fmt"
+                                                                  |)
+                                                                |);
+                                                                M.read (| Value.String ")" |)
+                                                              ]
+                                                            |)
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::builders::DebugTuple",
+                                                                    "fmt"
+                                                                  |)
+                                                                |);
+                                                                M.read (| Value.String ", ..)" |)
+                                                              ]
+                                                            |)
+                                                          |)))
+                                                    ]
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (M.alloc (|
                                                     M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.path "core::fmt::Formatter",
@@ -3223,14 +3312,305 @@ Module fmt.
                                                             "fmt"
                                                           |)
                                                         |);
-                                                        M.read (| Value.String ")" |)
+                                                        M.read (| Value.String "(..)" |)
                                                       ]
                                                     |)
-                                                  |)
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                                  |)))
+                                            ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |) in
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::fmt::builders::DebugTuple",
+                "result"
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_finish_non_exhaustive :
+        M.IsAssociatedFunction Self "finish_non_exhaustive" finish_non_exhaustive.
+      
+      (*
+          pub fn finish(&mut self) -> fmt::Result {
+              if self.fields > 0 {
+                  self.result = self.result.and_then(|_| {
+                      if self.fields == 1 && self.empty_name && !self.is_pretty() {
+                          self.fmt.write_str(",")?;
+                      }
+                      self.fmt.write_str(")")
+                  });
+              }
+              self.result
+          }
+      *)
+      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              BinOp.gt (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::fmt::builders::DebugTuple",
+                                    "fields"
+                                  |)
+                                |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ _ :=
+                          M.write (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::fmt::builders::DebugTuple",
+                              "result"
+                            |),
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::result::Result")
+                                  []
+                                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                "and_then",
+                                [
+                                  Ty.tuple [];
+                                  Ty.function
+                                    [ Ty.tuple [ Ty.tuple [] ] ]
+                                    (Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                                ]
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::fmt::builders::DebugTuple",
+                                    "result"
+                                  |)
+                                |);
+                                M.closure
+                                  (fun γ =>
+                                    ltac:(M.monadic
+                                      match γ with
+                                      | [ α0 ] =>
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (M.read (|
+                                                    let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (| Value.Tuple [] |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ :=
+                                                                M.use
+                                                                  (M.alloc (|
+                                                                    LogicalOp.and (|
+                                                                      LogicalOp.and (|
+                                                                        BinOp.eq (|
+                                                                          M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.read (| self |),
+                                                                              "core::fmt::builders::DebugTuple",
+                                                                              "fields"
+                                                                            |)
+                                                                          |),
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        |),
+                                                                        ltac:(M.monadic
+                                                                          (M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.read (| self |),
+                                                                              "core::fmt::builders::DebugTuple",
+                                                                              "empty_name"
+                                                                            |)
+                                                                          |)))
+                                                                      |),
+                                                                      ltac:(M.monadic
+                                                                        (UnOp.not (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::builders::DebugTuple",
+                                                                              "is_pretty",
+                                                                              []
+                                                                            |),
+                                                                            [ M.read (| self |) ]
+                                                                          |)
+                                                                        |)))
+                                                                    |)
+                                                                  |)) in
+                                                              let _ :=
+                                                                M.is_constant_or_break_match (|
+                                                                  M.read (| γ |),
+                                                                  Value.Bool true
+                                                                |) in
+                                                              let~ _ :=
+                                                                M.match_operator (|
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::try_trait::Try",
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.tuple [];
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ],
+                                                                        [],
+                                                                        "branch",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::Formatter",
+                                                                            "write_str",
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.read (| self |),
+                                                                                "core::fmt::builders::DebugTuple",
+                                                                                "fmt"
+                                                                              |)
+                                                                            |);
+                                                                            M.read (|
+                                                                              Value.String ","
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ0_0 :=
+                                                                          M.SubPointer.get_struct_tuple_field (|
+                                                                            γ,
+                                                                            "core::ops::control_flow::ControlFlow::Break",
+                                                                            0
+                                                                          |) in
+                                                                        let residual :=
+                                                                          M.copy (| γ0_0 |) in
+                                                                        M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.read (|
+                                                                              M.return_ (|
+                                                                                M.call_closure (|
+                                                                                  M.get_trait_method (|
+                                                                                    "core::ops::try_trait::FromResidual",
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple [];
+                                                                                        Ty.path
+                                                                                          "core::fmt::Error"
+                                                                                      ],
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::result::Result")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::convert::Infallible";
+                                                                                          Ty.path
+                                                                                            "core::fmt::Error"
+                                                                                        ]
+                                                                                    ],
+                                                                                    "from_residual",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      residual
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)));
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ0_0 :=
+                                                                          M.SubPointer.get_struct_tuple_field (|
+                                                                            γ,
+                                                                            "core::ops::control_flow::ControlFlow::Continue",
+                                                                            0
+                                                                          |) in
+                                                                        let val :=
+                                                                          M.copy (| γ0_0 |) in
+                                                                        val))
+                                                                  ]
+                                                                |) in
+                                                              M.alloc (| Value.Tuple [] |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (| Value.Tuple [] |)))
+                                                        ]
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::Formatter",
+                                                          "write_str",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| self |),
+                                                              "core::fmt::builders::DebugTuple",
+                                                              "fmt"
+                                                            |)
+                                                          |);
+                                                          M.read (| Value.String ")" |)
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)
@@ -3245,7 +3625,7 @@ Module fmt.
                 "result"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -3272,7 +3652,7 @@ Module fmt.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
@@ -3368,1528 +3748,13 @@ Module fmt.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.read (|
-                                        M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::builders::DebugInner",
-                                                          "is_pretty",
-                                                          []
-                                                        |),
-                                                        [ M.read (| self |) ]
-                                                      |)
-                                                    |)) in
-                                                let _ :=
-                                                  M.is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ :=
-                                                            M.use
-                                                              (M.alloc (|
-                                                                UnOp.Pure.not
-                                                                  (M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| self |),
-                                                                      "core::fmt::builders::DebugInner",
-                                                                      "has_fields"
-                                                                    |)
-                                                                  |))
-                                                              |)) in
-                                                          let _ :=
-                                                            M.is_constant_or_break_match (|
-                                                              M.read (| γ |),
-                                                              Value.Bool true
-                                                            |) in
-                                                          let~ _ :=
-                                                            M.match_operator (|
-                                                              M.alloc (|
-                                                                M.call_closure (|
-                                                                  M.get_trait_method (|
-                                                                    "core::ops::try_trait::Try",
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::result::Result")
-                                                                      []
-                                                                      [
-                                                                        Ty.tuple [];
-                                                                        Ty.path "core::fmt::Error"
-                                                                      ],
-                                                                    [],
-                                                                    "branch",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.path
-                                                                          "core::fmt::Formatter",
-                                                                        "write_str",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.read (|
-                                                                          M.SubPointer.get_struct_record_field (|
-                                                                            M.read (| self |),
-                                                                            "core::fmt::builders::DebugInner",
-                                                                            "fmt"
-                                                                          |)
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String "
-"
-                                                                        |)
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ0_0 :=
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        γ,
-                                                                        "core::ops::control_flow::ControlFlow::Break",
-                                                                        0
-                                                                      |) in
-                                                                    let residual :=
-                                                                      M.copy (| γ0_0 |) in
-                                                                    M.alloc (|
-                                                                      M.never_to_any (|
-                                                                        M.read (|
-                                                                          M.return_ (|
-                                                                            M.call_closure (|
-                                                                              M.get_trait_method (|
-                                                                                "core::ops::try_trait::FromResidual",
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::result::Result")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.tuple [];
-                                                                                    Ty.path
-                                                                                      "core::fmt::Error"
-                                                                                  ],
-                                                                                [
-                                                                                  Ty.apply
-                                                                                    (Ty.path
-                                                                                      "core::result::Result")
-                                                                                    []
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "core::convert::Infallible";
-                                                                                      Ty.path
-                                                                                        "core::fmt::Error"
-                                                                                    ]
-                                                                                ],
-                                                                                "from_residual",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.read (|
-                                                                                  residual
-                                                                                |)
-                                                                              ]
-                                                                            |)
-                                                                          |)
-                                                                        |)
-                                                                      |)
-                                                                    |)));
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ0_0 :=
-                                                                      M.SubPointer.get_struct_tuple_field (|
-                                                                        γ,
-                                                                        "core::ops::control_flow::ControlFlow::Continue",
-                                                                        0
-                                                                      |) in
-                                                                    let val := M.copy (| γ0_0 |) in
-                                                                    val))
-                                                              ]
-                                                            |) in
-                                                          M.alloc (| Value.Tuple [] |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
-                                                    ]
-                                                  |) in
-                                                let~ slot :=
-                                                  M.alloc (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::None"
-                                                      []
-                                                  |) in
-                                                let~ state :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::default::Default",
-                                                        Ty.path
-                                                          "core::fmt::builders::PadAdapterState",
-                                                        [],
-                                                        "default",
-                                                        []
-                                                      |),
-                                                      []
-                                                    |)
-                                                  |) in
-                                                let~ writer :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::builders::PadAdapter",
-                                                        "wrap",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
-                                                            "core::fmt::builders::DebugInner",
-                                                            "fmt"
-                                                          |)
-                                                        |);
-                                                        slot;
-                                                        state
-                                                      ]
-                                                    |)
-                                                  |) in
-                                                let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.path "core::fmt::Error"
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::function::FnOnce",
-                                                              F,
-                                                              [
-                                                                Ty.tuple
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&mut")
-                                                                      []
-                                                                      [
-                                                                        Ty.path
-                                                                          "core::fmt::Formatter"
-                                                                      ]
-                                                                  ]
-                                                              ],
-                                                              "call_once",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.read (| entry_fmt |);
-                                                              Value.Tuple [ writer ]
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.tuple [];
-                                                                          Ty.path "core::fmt::Error"
-                                                                        ],
-                                                                      [
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |) in
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::Formatter",
-                                                      "write_str",
-                                                      []
-                                                    |),
-                                                    [ writer; M.read (| Value.String ",
-" |) ]
-                                                  |)
-                                                |)));
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (| Value.Tuple [] |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ :=
-                                                            M.use
-                                                              (M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
-                                                                "core::fmt::builders::DebugInner",
-                                                                "has_fields"
-                                                              |)) in
-                                                          let _ :=
-                                                            M.is_constant_or_break_match (|
-                                                              M.read (| γ |),
-                                                              Value.Bool true
-                                                            |) in
-                                                          M.match_operator (|
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::ops::try_trait::Try",
-                                                                  Ty.apply
-                                                                    (Ty.path "core::result::Result")
-                                                                    []
-                                                                    [
-                                                                      Ty.tuple [];
-                                                                      Ty.path "core::fmt::Error"
-                                                                    ],
-                                                                  [],
-                                                                  "branch",
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.path
-                                                                        "core::fmt::Formatter",
-                                                                      "write_str",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.read (|
-                                                                        M.SubPointer.get_struct_record_field (|
-                                                                          M.read (| self |),
-                                                                          "core::fmt::builders::DebugInner",
-                                                                          "fmt"
-                                                                        |)
-                                                                      |);
-                                                                      M.read (| Value.String ", " |)
-                                                                    ]
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                      γ,
-                                                                      "core::ops::control_flow::ControlFlow::Break",
-                                                                      0
-                                                                    |) in
-                                                                  let residual :=
-                                                                    M.copy (| γ0_0 |) in
-                                                                  M.alloc (|
-                                                                    M.never_to_any (|
-                                                                      M.read (|
-                                                                        M.return_ (|
-                                                                          M.call_closure (|
-                                                                            M.get_trait_method (|
-                                                                              "core::ops::try_trait::FromResidual",
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "core::result::Result")
-                                                                                []
-                                                                                [
-                                                                                  Ty.tuple [];
-                                                                                  Ty.path
-                                                                                    "core::fmt::Error"
-                                                                                ],
-                                                                              [
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::result::Result")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "core::convert::Infallible";
-                                                                                    Ty.path
-                                                                                      "core::fmt::Error"
-                                                                                  ]
-                                                                              ],
-                                                                              "from_residual",
-                                                                              []
-                                                                            |),
-                                                                            [ M.read (| residual |)
-                                                                            ]
-                                                                          |)
-                                                                        |)
-                                                                      |)
-                                                                    |)
-                                                                  |)));
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ0_0 :=
-                                                                    M.SubPointer.get_struct_tuple_field (|
-                                                                      γ,
-                                                                      "core::ops::control_flow::ControlFlow::Continue",
-                                                                      0
-                                                                    |) in
-                                                                  let val := M.copy (| γ0_0 |) in
-                                                                  val))
-                                                            ]
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (M.alloc (| Value.Tuple [] |)))
-                                                    ]
-                                                  |) in
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnOnce",
-                                                      F,
-                                                      [
-                                                        Ty.tuple
-                                                          [
-                                                            Ty.apply
-                                                              (Ty.path "&mut")
-                                                              []
-                                                              [ Ty.path "core::fmt::Formatter" ]
-                                                          ]
-                                                      ],
-                                                      "call_once",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.read (| entry_fmt |);
-                                                      Value.Tuple
-                                                        [
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "core::fmt::builders::DebugInner",
-                                                              "fmt"
-                                                            |)
-                                                          |)
-                                                        ]
-                                                    ]
-                                                  |)
-                                                |)))
-                                          ]
-                                        |)
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |)
-                |) in
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::fmt::builders::DebugInner",
-                    "has_fields"
-                  |),
-                  Value.Bool true
-                |) in
-              M.alloc (| Value.Tuple [] |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
-      
-      (*
-          fn is_pretty(&self) -> bool {
-              self.fmt.alternate()
-          }
-      *)
-      Definition is_pretty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "alternate", [] |),
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::fmt::builders::DebugInner",
-                    "fmt"
-                  |)
-                |)
-              ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
-    End Impl_core_fmt_builders_DebugInner.
-    
-    (* StructRecord
-      {
-        name := "DebugSet";
-        const_params := [];
-        ty_params := [];
-        fields := [ ("inner", Ty.path "core::fmt::builders::DebugInner") ];
-      } *)
-    
-    (*
-    pub(super) fn debug_set_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>) -> DebugSet<'a, 'b> {
-        let result = fmt.write_str("{");
-        DebugSet { inner: DebugInner { fmt, result, has_fields: false } }
-    }
-    *)
-    Definition debug_set_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ fmt ] =>
-        ltac:(M.monadic
-          (let fmt := M.alloc (| fmt |) in
-          M.read (|
-            let~ result :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-                  [ M.read (| fmt |); M.read (| Value.String "{" |) ]
-                |)
-              |) in
-            M.alloc (|
-              Value.StructRecord
-                "core::fmt::builders::DebugSet"
-                [
-                  ("inner",
-                    Value.StructRecord
-                      "core::fmt::builders::DebugInner"
-                      [
-                        ("fmt", M.read (| fmt |));
-                        ("result", M.read (| result |));
-                        ("has_fields", Value.Bool false)
-                      ])
-                ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Function_debug_set_new : M.IsFunction "core::fmt::builders::debug_set_new" debug_set_new.
-    
-    Module Impl_core_fmt_builders_DebugSet.
-      Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugSet".
-      
-      (*
-          pub fn entry(&mut self, entry: &dyn fmt::Debug) -> &mut Self {
-              self.inner.entry_with(|f| entry.fmt(f));
-              self
-          }
-      *)
-      Definition entry (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self; entry ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let entry := M.alloc (| entry |) in
-            M.read (|
-              let~ _ :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugInner",
-                      "entry_with",
-                      [
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                          ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                      ]
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::fmt::builders::DebugSet",
-                        "inner"
-                      |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let f := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::fmt::Debug",
-                                          Ty.dyn [ ("core::fmt::Debug::Trait", []) ],
-                                          [],
-                                          "fmt",
-                                          []
-                                        |),
-                                        [ M.read (| entry |); M.read (| f |) ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |)
-                |) in
-              M.alloc (| M.read (| self |) |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
-      
-      (*
-          pub fn entry_with<F>(&mut self, entry_fmt: F) -> &mut Self
-          where
-              F: FnOnce(&mut fmt::Formatter<'_>) -> fmt::Result,
-          {
-              self.inner.entry_with(entry_fmt);
-              self
-          }
-      *)
-      Definition entry_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [ F ], [ self; entry_fmt ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let entry_fmt := M.alloc (| entry_fmt |) in
-            M.read (|
-              let~ _ :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugInner",
-                      "entry_with",
-                      [ F ]
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::fmt::builders::DebugSet",
-                        "inner"
-                      |);
-                      M.read (| entry_fmt |)
-                    ]
-                  |)
-                |) in
-              M.alloc (| M.read (| self |) |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
-      
-      (*
-          pub fn entries<D, I>(&mut self, entries: I) -> &mut Self
-          where
-              D: fmt::Debug,
-              I: IntoIterator<Item = D>,
-          {
-              for entry in entries {
-                  self.entry(&entry);
-              }
-              self
-          }
-      *)
-      Definition entries (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [ D; _ as I ], [ self; entries ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let entries := M.alloc (| entries |) in
-            M.read (|
-              let~ _ :=
-                M.use
-                  (M.match_operator (|
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::iter::traits::collect::IntoIterator",
-                          I,
-                          [],
-                          "into_iter",
-                          []
-                        |),
-                        [ M.read (| entries |) ]
-                      |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
-                          M.loop (|
-                            ltac:(M.monadic
-                              (let~ _ :=
-                                M.match_operator (|
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
-                                        Ty.associated,
-                                        [],
-                                        "next",
-                                        []
-                                      |),
-                                      [ iter ]
-                                    |)
-                                  |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let _ :=
-                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                        M.alloc (|
-                                          M.never_to_any (| M.read (| M.break (||) |) |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            γ,
-                                            "core::option::Option::Some",
-                                            0
-                                          |) in
-                                        let entry := M.copy (| γ0_0 |) in
-                                        let~ _ :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::builders::DebugSet",
-                                                "entry",
-                                                []
-                                              |),
-                                              [
-                                                M.read (| self |);
-                                                (* Unsize *) M.pointer_coercion entry
-                                              ]
-                                            |)
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |)))
-                                  ]
-                                |) in
-                              M.alloc (| Value.Tuple [] |)))
-                          |)))
-                    ]
-                  |)) in
-              M.alloc (| M.read (| self |) |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
-      
-      (*
-          pub fn finish(&mut self) -> fmt::Result {
-              self.inner.result.and_then(|_| self.inner.fmt.write_str("}"))
-          }
-      *)
-      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                "and_then",
-                [
-                  Ty.tuple [];
-                  Ty.function
-                    [ Ty.tuple [ Ty.tuple [] ] ]
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                ]
-              |),
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::fmt::builders::DebugSet",
-                      "inner"
-                    |),
-                    "core::fmt::builders::DebugInner",
-                    "result"
-                  |)
-                |);
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
                               ltac:(M.monadic
-                                (M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::Formatter",
-                                    "write_str",
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::fmt::builders::DebugSet",
-                                          "inner"
-                                        |),
-                                        "core::fmt::builders::DebugInner",
-                                        "fmt"
-                                      |)
-                                    |);
-                                    M.read (| Value.String "}" |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end))
-              ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
-    End Impl_core_fmt_builders_DebugSet.
-    
-    (* StructRecord
-      {
-        name := "DebugList";
-        const_params := [];
-        ty_params := [];
-        fields := [ ("inner", Ty.path "core::fmt::builders::DebugInner") ];
-      } *)
-    
-    (*
-    pub(super) fn debug_list_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>) -> DebugList<'a, 'b> {
-        let result = fmt.write_str("[");
-        DebugList { inner: DebugInner { fmt, result, has_fields: false } }
-    }
-    *)
-    Definition debug_list_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ fmt ] =>
-        ltac:(M.monadic
-          (let fmt := M.alloc (| fmt |) in
-          M.read (|
-            let~ result :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-                  [ M.read (| fmt |); M.read (| Value.String "[" |) ]
-                |)
-              |) in
-            M.alloc (|
-              Value.StructRecord
-                "core::fmt::builders::DebugList"
-                [
-                  ("inner",
-                    Value.StructRecord
-                      "core::fmt::builders::DebugInner"
-                      [
-                        ("fmt", M.read (| fmt |));
-                        ("result", M.read (| result |));
-                        ("has_fields", Value.Bool false)
-                      ])
-                ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Function_debug_list_new :
-      M.IsFunction "core::fmt::builders::debug_list_new" debug_list_new.
-    
-    Module Impl_core_fmt_builders_DebugList.
-      Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugList".
-      
-      (*
-          pub fn entry(&mut self, entry: &dyn fmt::Debug) -> &mut Self {
-              self.inner.entry_with(|f| entry.fmt(f));
-              self
-          }
-      *)
-      Definition entry (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self; entry ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let entry := M.alloc (| entry |) in
-            M.read (|
-              let~ _ :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugInner",
-                      "entry_with",
-                      [
-                        Ty.function
-                          [
-                            Ty.tuple
-                              [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
-                          ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                      ]
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::fmt::builders::DebugList",
-                        "inner"
-                      |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let f := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::fmt::Debug",
-                                          Ty.dyn [ ("core::fmt::Debug::Trait", []) ],
-                                          [],
-                                          "fmt",
-                                          []
-                                        |),
-                                        [ M.read (| entry |); M.read (| f |) ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
-                            end))
-                    ]
-                  |)
-                |) in
-              M.alloc (| M.read (| self |) |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
-      
-      (*
-          pub fn entry_with<F>(&mut self, entry_fmt: F) -> &mut Self
-          where
-              F: FnOnce(&mut fmt::Formatter<'_>) -> fmt::Result,
-          {
-              self.inner.entry_with(entry_fmt);
-              self
-          }
-      *)
-      Definition entry_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [ F ], [ self; entry_fmt ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let entry_fmt := M.alloc (| entry_fmt |) in
-            M.read (|
-              let~ _ :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::builders::DebugInner",
-                      "entry_with",
-                      [ F ]
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::fmt::builders::DebugList",
-                        "inner"
-                      |);
-                      M.read (| entry_fmt |)
-                    ]
-                  |)
-                |) in
-              M.alloc (| M.read (| self |) |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
-      
-      (*
-          pub fn entries<D, I>(&mut self, entries: I) -> &mut Self
-          where
-              D: fmt::Debug,
-              I: IntoIterator<Item = D>,
-          {
-              for entry in entries {
-                  self.entry(&entry);
-              }
-              self
-          }
-      *)
-      Definition entries (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [ D; _ as I ], [ self; entries ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let entries := M.alloc (| entries |) in
-            M.read (|
-              let~ _ :=
-                M.use
-                  (M.match_operator (|
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::iter::traits::collect::IntoIterator",
-                          I,
-                          [],
-                          "into_iter",
-                          []
-                        |),
-                        [ M.read (| entries |) ]
-                      |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let iter := M.copy (| γ |) in
-                          M.loop (|
-                            ltac:(M.monadic
-                              (let~ _ :=
-                                M.match_operator (|
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
-                                        Ty.associated,
-                                        [],
-                                        "next",
-                                        []
-                                      |),
-                                      [ iter ]
-                                    |)
-                                  |),
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let _ :=
-                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                        M.alloc (|
-                                          M.never_to_any (| M.read (| M.break (||) |) |)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ0_0 :=
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            γ,
-                                            "core::option::Option::Some",
-                                            0
-                                          |) in
-                                        let entry := M.copy (| γ0_0 |) in
-                                        let~ _ :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "core::fmt::builders::DebugList",
-                                                "entry",
-                                                []
-                                              |),
-                                              [
-                                                M.read (| self |);
-                                                (* Unsize *) M.pointer_coercion entry
-                                              ]
-                                            |)
-                                          |) in
-                                        M.alloc (| Value.Tuple [] |)))
-                                  ]
-                                |) in
-                              M.alloc (| Value.Tuple [] |)))
-                          |)))
-                    ]
-                  |)) in
-              M.alloc (| M.read (| self |) |)
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
-      
-      (*
-          pub fn finish(&mut self) -> fmt::Result {
-              self.inner.result.and_then(|_| self.inner.fmt.write_str("]"))
-          }
-      *)
-      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                "and_then",
-                [
-                  Ty.tuple [];
-                  Ty.function
-                    [ Ty.tuple [ Ty.tuple [] ] ]
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                ]
-              |),
-              [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::fmt::builders::DebugList",
-                      "inner"
-                    |),
-                    "core::fmt::builders::DebugInner",
-                    "result"
-                  |)
-                |);
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::Formatter",
-                                    "write_str",
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::fmt::builders::DebugList",
-                                          "inner"
-                                        |),
-                                        "core::fmt::builders::DebugInner",
-                                        "fmt"
-                                      |)
-                                    |);
-                                    M.read (| Value.String "]" |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end))
-              ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
-    End Impl_core_fmt_builders_DebugList.
-    
-    (* StructRecord
-      {
-        name := "DebugMap";
-        const_params := [];
-        ty_params := [];
-        fields :=
-          [
-            ("fmt", Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]);
-            ("result",
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
-            ("has_fields", Ty.path "bool");
-            ("has_key", Ty.path "bool");
-            ("state", Ty.path "core::fmt::builders::PadAdapterState")
-          ];
-      } *)
-    
-    (*
-    pub(super) fn debug_map_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>) -> DebugMap<'a, 'b> {
-        let result = fmt.write_str("{");
-        DebugMap { fmt, result, has_fields: false, has_key: false, state: Default::default() }
-    }
-    *)
-    Definition debug_map_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ fmt ] =>
-        ltac:(M.monadic
-          (let fmt := M.alloc (| fmt |) in
-          M.read (|
-            let~ result :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
-                  [ M.read (| fmt |); M.read (| Value.String "{" |) ]
-                |)
-              |) in
-            M.alloc (|
-              Value.StructRecord
-                "core::fmt::builders::DebugMap"
-                [
-                  ("fmt", M.read (| fmt |));
-                  ("result", M.read (| result |));
-                  ("has_fields", Value.Bool false);
-                  ("has_key", Value.Bool false);
-                  ("state",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::default::Default",
-                        Ty.path "core::fmt::builders::PadAdapterState",
-                        [],
-                        "default",
-                        []
-                      |),
-                      []
-                    |))
-                ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Function_debug_map_new : M.IsFunction "core::fmt::builders::debug_map_new" debug_map_new.
-    
-    Module Impl_core_fmt_builders_DebugMap.
-      Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugMap".
-      
-      (*
-          pub fn entry(&mut self, key: &dyn fmt::Debug, value: &dyn fmt::Debug) -> &mut Self {
-              self.key(key).value(value)
-          }
-      *)
-      Definition entry (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self; key; value ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let key := M.alloc (| key |) in
-            let value := M.alloc (| value |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "core::fmt::builders::DebugMap", "value", [] |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::builders::DebugMap",
-                    "key",
-                    []
-                  |),
-                  [ M.read (| self |); (* Unsize *) M.pointer_coercion (M.read (| key |)) ]
-                |);
-                (* Unsize *) M.pointer_coercion (M.read (| value |))
-              ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
-      
-      (*
-          pub fn key(&mut self, key: &dyn fmt::Debug) -> &mut Self {
-              self.key_with(|f| key.fmt(f))
-          }
-      *)
-      Definition key (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self; key ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let key := M.alloc (| key |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.path "core::fmt::builders::DebugMap",
-                "key_with",
-                [
-                  Ty.function
-                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ] ]
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                ]
-              |),
-              [
-                M.read (| self |);
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let f := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::fmt::Debug",
-                                    Ty.dyn [ ("core::fmt::Debug::Trait", []) ],
-                                    [],
-                                    "fmt",
-                                    []
-                                  |),
-                                  [ M.read (| key |); M.read (| f |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end))
-              ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_key : M.IsAssociatedFunction Self "key" key.
-      
-      (*
-          pub fn key_with<F>(&mut self, key_fmt: F) -> &mut Self
-          where
-              F: FnOnce(&mut fmt::Formatter<'_>) -> fmt::Result,
-          {
-              self.result = self.result.and_then(|_| {
-                  assert!(
-                      !self.has_key,
-                      "attempted to begin a new map entry \
-                                          without completing the previous one"
-                  );
-      
-                  if self.is_pretty() {
-                      if !self.has_fields {
-                          self.fmt.write_str("\n")?;
-                      }
-                      let mut slot = None;
-                      self.state = Default::default();
-                      let mut writer = PadAdapter::wrap(self.fmt, &mut slot, &mut self.state);
-                      key_fmt(&mut writer)?;
-                      writer.write_str(": ")?;
-                  } else {
-                      if self.has_fields {
-                          self.fmt.write_str(", ")?
-                      }
-                      key_fmt(self.fmt)?;
-                      self.fmt.write_str(": ")?;
-                  }
-      
-                  self.has_key = true;
-                  Ok(())
-              });
-      
-              self
-          }
-      *)
-      Definition key_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [ F ], [ self; key_fmt ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            let key_fmt := M.alloc (| key_fmt |) in
-            M.read (|
-              let~ _ :=
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::fmt::builders::DebugMap",
-                    "result"
-                  |),
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                      "and_then",
-                      [
-                        Ty.tuple [];
-                        Ty.function
-                          [ Ty.tuple [ Ty.tuple [] ] ]
-                          (Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                      ]
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::fmt::builders::DebugMap",
-                          "result"
-                        |)
-                      |);
-                      M.closure
-                        (fun γ =>
-                          ltac:(M.monadic
-                            match γ with
-                            | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.read (|
-                                        let~ _ :=
-                                          M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.use
-                                                      (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (UnOp.Pure.not
-                                                            (M.read (|
-                                                              M.SubPointer.get_struct_record_field (|
-                                                                M.read (| self |),
-                                                                "core::fmt::builders::DebugMap",
-                                                                "has_key"
-                                                              |)
-                                                            |)))
-                                                      |)) in
-                                                  let _ :=
-                                                    M.is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  M.alloc (|
-                                                    M.never_to_any (|
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::panicking::panic_fmt",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::Arguments",
-                                                              "new_const",
-                                                              []
-                                                            |),
-                                                            [
-                                                              (* Unsize *)
-                                                              M.pointer_coercion
-                                                                (M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "attempted to begin a new map entry without completing the previous one"
-                                                                      |)
-                                                                    ]
-                                                                |))
-                                                            ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |)
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                            ]
-                                          |) in
-                                        let~ _ :=
+                                        (M.read (|
                                           M.match_operator (|
                                             M.alloc (| Value.Tuple [] |),
                                             [
@@ -4900,7 +3765,8 @@ Module fmt.
                                                       (M.alloc (|
                                                         M.call_closure (|
                                                           M.get_associated_function (|
-                                                            Ty.path "core::fmt::builders::DebugMap",
+                                                            Ty.path
+                                                              "core::fmt::builders::DebugInner",
                                                             "is_pretty",
                                                             []
                                                           |),
@@ -4921,14 +3787,15 @@ Module fmt.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  UnOp.Pure.not
-                                                                    (M.read (|
+                                                                  UnOp.not (|
+                                                                    M.read (|
                                                                       M.SubPointer.get_struct_record_field (|
                                                                         M.read (| self |),
-                                                                        "core::fmt::builders::DebugMap",
+                                                                        "core::fmt::builders::DebugInner",
                                                                         "has_fields"
                                                                       |)
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -4965,7 +3832,7 @@ Module fmt.
                                                                           M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (| self |),
-                                                                              "core::fmt::builders::DebugMap",
+                                                                              "core::fmt::builders::DebugInner",
                                                                               "fmt"
                                                                             |)
                                                                           |);
@@ -5055,13 +3922,8 @@ Module fmt.
                                                         "core::option::Option::None"
                                                         []
                                                     |) in
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::fmt::builders::DebugMap",
-                                                        "state"
-                                                      |),
+                                                  let~ state :=
+                                                    M.alloc (|
                                                       M.call_closure (|
                                                         M.get_trait_method (|
                                                           "core::default::Default",
@@ -5086,16 +3948,12 @@ Module fmt.
                                                           M.read (|
                                                             M.SubPointer.get_struct_record_field (|
                                                               M.read (| self |),
-                                                              "core::fmt::builders::DebugMap",
+                                                              "core::fmt::builders::DebugInner",
                                                               "fmt"
                                                             |)
                                                           |);
                                                           slot;
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
-                                                            "core::fmt::builders::DebugMap",
-                                                            "state"
-                                                          |)
+                                                          state
                                                         ]
                                                       |)
                                                     |) in
@@ -5137,7 +3995,7 @@ Module fmt.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (| key_fmt |);
+                                                                M.read (| entry_fmt |);
                                                                 Value.Tuple [ writer ]
                                                               ]
                                                             |)
@@ -5203,98 +4061,17 @@ Module fmt.
                                                             val))
                                                       ]
                                                     |) in
-                                                  let~ _ :=
-                                                    M.match_operator (|
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::Try",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.tuple [];
-                                                                Ty.path "core::fmt::Error"
-                                                              ],
-                                                            [],
-                                                            "branch",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::Formatter",
-                                                                "write_str",
-                                                                []
-                                                              |),
-                                                              [
-                                                                writer;
-                                                                M.read (| Value.String ": " |)
-                                                              ]
-                                                            |)
-                                                          ]
-                                                        |)
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::Formatter",
+                                                        "write_str",
+                                                        []
                                                       |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Break",
-                                                                0
-                                                              |) in
-                                                            let residual := M.copy (| γ0_0 |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
-                                                                    M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::try_trait::FromResidual",
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.tuple [];
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ],
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::result::Result")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "core::convert::Infallible";
-                                                                              Ty.path
-                                                                                "core::fmt::Error"
-                                                                            ]
-                                                                        ],
-                                                                        "from_residual",
-                                                                        []
-                                                                      |),
-                                                                      [ M.read (| residual |) ]
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                                0
-                                                              |) in
-                                                            let val := M.copy (| γ0_0 |) in
-                                                            val))
-                                                      ]
-                                                    |) in
-                                                  M.alloc (| Value.Tuple [] |)));
+                                                      [ writer; M.read (| Value.String ",
+" |) ]
+                                                    |)
+                                                  |)));
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let~ _ :=
@@ -5307,7 +4084,7 @@ Module fmt.
                                                               M.use
                                                                 (M.SubPointer.get_struct_record_field (|
                                                                   M.read (| self |),
-                                                                  "core::fmt::builders::DebugMap",
+                                                                  "core::fmt::builders::DebugInner",
                                                                   "has_fields"
                                                                 |)) in
                                                             let _ :=
@@ -5344,7 +4121,7 @@ Module fmt.
                                                                         M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
                                                                             M.read (| self |),
-                                                                            "core::fmt::builders::DebugMap",
+                                                                            "core::fmt::builders::DebugInner",
                                                                             "fmt"
                                                                           |)
                                                                         |);
@@ -5425,137 +4202,628 @@ Module fmt.
                                                             (M.alloc (| Value.Tuple [] |)))
                                                       ]
                                                     |) in
-                                                  let~ _ :=
-                                                    M.match_operator (|
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::Try",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.tuple [];
-                                                                Ty.path "core::fmt::Error"
-                                                              ],
-                                                            [],
-                                                            "branch",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::function::FnOnce",
-                                                                F,
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&mut")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "core::fmt::Formatter"
-                                                                        ]
-                                                                    ]
-                                                                ],
-                                                                "call_once",
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnOnce",
+                                                        F,
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&mut")
                                                                 []
-                                                              |),
-                                                              [
-                                                                M.read (| key_fmt |);
-                                                                Value.Tuple
-                                                                  [
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| self |),
-                                                                        "core::fmt::builders::DebugMap",
-                                                                        "fmt"
-                                                                      |)
-                                                                    |)
-                                                                  ]
-                                                              ]
-                                                            |)
-                                                          ]
-                                                        |)
+                                                                [ Ty.path "core::fmt::Formatter" ]
+                                                            ]
+                                                        ],
+                                                        "call_once",
+                                                        []
                                                       |),
                                                       [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Break",
-                                                                0
-                                                              |) in
-                                                            let residual := M.copy (| γ0_0 |) in
+                                                        M.read (| entry_fmt |);
+                                                        Value.Tuple
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::fmt::builders::DebugInner",
+                                                                "fmt"
+                                                              |)
+                                                            |)
+                                                          ]
+                                                      ]
+                                                    |)
+                                                  |)))
+                                            ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |) in
+              let~ _ :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::fmt::builders::DebugInner",
+                    "has_fields"
+                  |),
+                  Value.Bool true
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
+      
+      (*
+          fn is_pretty(&self) -> bool {
+              self.fmt.alternate()
+          }
+      *)
+      Definition is_pretty (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "alternate", [] |),
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::fmt::builders::DebugInner",
+                    "fmt"
+                  |)
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
+    End Impl_core_fmt_builders_DebugInner.
+    
+    (* StructRecord
+      {
+        name := "DebugSet";
+        const_params := [];
+        ty_params := [];
+        fields := [ ("inner", Ty.path "core::fmt::builders::DebugInner") ];
+      } *)
+    
+    (*
+    pub(super) fn debug_set_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>) -> DebugSet<'a, 'b> {
+        let result = fmt.write_str("{");
+        DebugSet { inner: DebugInner { fmt, result, has_fields: false } }
+    }
+    *)
+    Definition debug_set_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ fmt ] =>
+        ltac:(M.monadic
+          (let fmt := M.alloc (| fmt |) in
+          M.read (|
+            let~ result :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                  [ M.read (| fmt |); M.read (| Value.String "{" |) ]
+                |)
+              |) in
+            M.alloc (|
+              Value.StructRecord
+                "core::fmt::builders::DebugSet"
+                [
+                  ("inner",
+                    Value.StructRecord
+                      "core::fmt::builders::DebugInner"
+                      [
+                        ("fmt", M.read (| fmt |));
+                        ("result", M.read (| result |));
+                        ("has_fields", Value.Bool false)
+                      ])
+                ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_debug_set_new : M.IsFunction "core::fmt::builders::debug_set_new" debug_set_new.
+    
+    Module Impl_core_fmt_builders_DebugSet.
+      Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugSet".
+      
+      (*
+          pub fn entry(&mut self, entry: &dyn fmt::Debug) -> &mut Self {
+              self.inner.entry_with(|f| entry.fmt(f));
+              self
+          }
+      *)
+      Definition entry (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; entry ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let entry := M.alloc (| entry |) in
+            M.read (|
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::builders::DebugInner",
+                      "entry_with",
+                      [
+                        Ty.function
+                          [
+                            Ty.tuple
+                              [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
+                          ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                      ]
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::fmt::builders::DebugSet",
+                        "inner"
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let f := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::fmt::Debug",
+                                            Ty.dyn [ ("core::fmt::Debug::Trait", []) ],
+                                            [],
+                                            "fmt",
+                                            []
+                                          |),
+                                          [ M.read (| entry |); M.read (| f |) ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |) in
+              M.alloc (| M.read (| self |) |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
+      
+      (*
+          pub fn entry_with<F>(&mut self, entry_fmt: F) -> &mut Self
+          where
+              F: FnOnce(&mut fmt::Formatter<'_>) -> fmt::Result,
+          {
+              self.inner.entry_with(entry_fmt);
+              self
+          }
+      *)
+      Definition entry_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; entry_fmt ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let entry_fmt := M.alloc (| entry_fmt |) in
+            M.read (|
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::builders::DebugInner",
+                      "entry_with",
+                      [ F ]
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::fmt::builders::DebugSet",
+                        "inner"
+                      |);
+                      M.read (| entry_fmt |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| M.read (| self |) |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
+      
+      (*
+          pub fn entries<D, I>(&mut self, entries: I) -> &mut Self
+          where
+              D: fmt::Debug,
+              I: IntoIterator<Item = D>,
+          {
+              for entry in entries {
+                  self.entry(&entry);
+              }
+              self
+          }
+      *)
+      Definition entries (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ D; _ as I ], [ self; entries ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let entries := M.alloc (| entries |) in
+            M.read (|
+              let~ _ :=
+                M.use
+                  (M.match_operator (|
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::collect::IntoIterator",
+                          I,
+                          [],
+                          "into_iter",
+                          []
+                        |),
+                        [ M.read (| entries |) ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let iter := M.copy (| γ |) in
+                          M.loop (|
+                            ltac:(M.monadic
+                              (let~ _ :=
+                                M.match_operator (|
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.associated,
+                                        [],
+                                        "next",
+                                        []
+                                      |),
+                                      [ iter ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
+                                          M.never_to_any (| M.read (| M.break (||) |) |)
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::option::Option::Some",
+                                            0
+                                          |) in
+                                        let entry := M.copy (| γ0_0 |) in
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::builders::DebugSet",
+                                                "entry",
+                                                []
+                                              |),
+                                              [ M.read (| self |); entry ]
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |) in
+                              M.alloc (| Value.Tuple [] |)))
+                          |)))
+                    ]
+                  |)) in
+              M.alloc (| M.read (| self |) |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
+      
+      (*
+          pub fn finish_non_exhaustive(&mut self) -> fmt::Result {
+              self.inner.result = self.inner.result.and_then(|_| {
+                  if self.inner.has_fields {
+                      if self.inner.is_pretty() {
+                          let mut slot = None;
+                          let mut state = Default::default();
+                          let mut writer = PadAdapter::wrap(self.inner.fmt, &mut slot, &mut state);
+                          writer.write_str("..\n")?;
+                          self.inner.fmt.write_str("}")
+                      } else {
+                          self.inner.fmt.write_str(", ..}")
+                      }
+                  } else {
+                      self.inner.fmt.write_str("..}")
+                  }
+              });
+              self.inner.result
+          }
+      *)
+      Definition finish_non_exhaustive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              let~ _ :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::fmt::builders::DebugSet",
+                      "inner"
+                    |),
+                    "core::fmt::builders::DebugInner",
+                    "result"
+                  |),
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      "and_then",
+                      [
+                        Ty.tuple [];
+                        Ty.function
+                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                      ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::fmt::builders::DebugSet",
+                            "inner"
+                          |),
+                          "core::fmt::builders::DebugInner",
+                          "result"
+                        |)
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.read (|
+                                          M.match_operator (|
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.SubPointer.get_struct_record_field (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::fmt::builders::DebugSet",
+                                                          "inner"
+                                                        |),
+                                                        "core::fmt::builders::DebugInner",
+                                                        "has_fields"
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  M.match_operator (|
+                                                    M.alloc (| Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use
+                                                              (M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::builders::DebugInner",
+                                                                    "is_pretty",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| self |),
+                                                                      "core::fmt::builders::DebugSet",
+                                                                      "inner"
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |)) in
+                                                          let _ :=
+                                                            M.is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          let~ slot :=
                                                             M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
+                                                              Value.StructTuple
+                                                                "core::option::Option::None"
+                                                                []
+                                                            |) in
+                                                          let~ state :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::default::Default",
+                                                                  Ty.path
+                                                                    "core::fmt::builders::PadAdapterState",
+                                                                  [],
+                                                                  "default",
+                                                                  []
+                                                                |),
+                                                                []
+                                                              |)
+                                                            |) in
+                                                          let~ writer :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::fmt::builders::PadAdapter",
+                                                                  "wrap",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.read (| self |),
+                                                                        "core::fmt::builders::DebugSet",
+                                                                        "inner"
+                                                                      |),
+                                                                      "core::fmt::builders::DebugInner",
+                                                                      "fmt"
+                                                                    |)
+                                                                  |);
+                                                                  slot;
+                                                                  state
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          let~ _ :=
+                                                            M.match_operator (|
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::try_trait::Try",
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path "core::fmt::Error"
+                                                                      ],
+                                                                    [],
+                                                                    "branch",
+                                                                    []
+                                                                  |),
+                                                                  [
                                                                     M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::try_trait::FromResidual",
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.tuple [];
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ],
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::result::Result")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "core::convert::Infallible";
-                                                                              Ty.path
-                                                                                "core::fmt::Error"
-                                                                            ]
-                                                                        ],
-                                                                        "from_residual",
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Formatter",
+                                                                        "write_str",
                                                                         []
                                                                       |),
-                                                                      [ M.read (| residual |) ]
+                                                                      [
+                                                                        writer;
+                                                                        M.read (|
+                                                                          Value.String "..
+"
+                                                                        |)
+                                                                      ]
                                                                     |)
-                                                                  |)
+                                                                  ]
                                                                 |)
-                                                              |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                                0
-                                                              |) in
-                                                            let val := M.copy (| γ0_0 |) in
-                                                            val))
-                                                      ]
-                                                    |) in
-                                                  let~ _ :=
-                                                    M.match_operator (|
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::Try",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
+                                                              |),
                                                               [
-                                                                Ty.tuple [];
-                                                                Ty.path "core::fmt::Error"
-                                                              ],
-                                                            [],
-                                                            "branch",
-                                                            []
-                                                          |),
-                                                          [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Break",
+                                                                        0
+                                                                      |) in
+                                                                    let residual :=
+                                                                      M.copy (| γ0_0 |) in
+                                                                    M.alloc (|
+                                                                      M.never_to_any (|
+                                                                        M.read (|
+                                                                          M.return_ (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::try_trait::FromResidual",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "core::fmt::Error"
+                                                                                  ],
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
+                                                                                      Ty.path
+                                                                                        "core::fmt::Error"
+                                                                                    ]
+                                                                                ],
+                                                                                "from_residual",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.read (|
+                                                                                  residual
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)));
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Continue",
+                                                                        0
+                                                                      |) in
+                                                                    let val := M.copy (| γ0_0 |) in
+                                                                    val))
+                                                              ]
+                                                            |) in
+                                                          M.alloc (|
                                                             M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.path "core::fmt::Formatter",
@@ -5565,34 +4833,1274 @@ Module fmt.
                                                               [
                                                                 M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "core::fmt::builders::DebugMap",
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| self |),
+                                                                      "core::fmt::builders::DebugSet",
+                                                                      "inner"
+                                                                    |),
+                                                                    "core::fmt::builders::DebugInner",
                                                                     "fmt"
                                                                   |)
                                                                 |);
-                                                                M.read (| Value.String ": " |)
+                                                                M.read (| Value.String "}" |)
+                                                              ]
+                                                            |)
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| self |),
+                                                                      "core::fmt::builders::DebugSet",
+                                                                      "inner"
+                                                                    |),
+                                                                    "core::fmt::builders::DebugInner",
+                                                                    "fmt"
+                                                                  |)
+                                                                |);
+                                                                M.read (| Value.String ", ..}" |)
+                                                              ]
+                                                            |)
+                                                          |)))
+                                                    ]
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::Formatter",
+                                                        "write_str",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| self |),
+                                                              "core::fmt::builders::DebugSet",
+                                                              "inner"
+                                                            |),
+                                                            "core::fmt::builders::DebugInner",
+                                                            "fmt"
+                                                          |)
+                                                        |);
+                                                        M.read (| Value.String "..}" |)
+                                                      ]
+                                                    |)
+                                                  |)))
+                                            ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |) in
+              M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::fmt::builders::DebugSet",
+                  "inner"
+                |),
+                "core::fmt::builders::DebugInner",
+                "result"
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_finish_non_exhaustive :
+        M.IsAssociatedFunction Self "finish_non_exhaustive" finish_non_exhaustive.
+      
+      (*
+          pub fn finish(&mut self) -> fmt::Result {
+              self.inner.result = self.inner.result.and_then(|_| self.inner.fmt.write_str("}"));
+              self.inner.result
+          }
+      *)
+      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              let~ _ :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::fmt::builders::DebugSet",
+                      "inner"
+                    |),
+                    "core::fmt::builders::DebugInner",
+                    "result"
+                  |),
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      "and_then",
+                      [
+                        Ty.tuple [];
+                        Ty.function
+                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                      ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::fmt::builders::DebugSet",
+                            "inner"
+                          |),
+                          "core::fmt::builders::DebugInner",
+                          "result"
+                        |)
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Formatter",
+                                            "write_str",
+                                            []
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::fmt::builders::DebugSet",
+                                                  "inner"
+                                                |),
+                                                "core::fmt::builders::DebugInner",
+                                                "fmt"
+                                              |)
+                                            |);
+                                            M.read (| Value.String "}" |)
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |) in
+              M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::fmt::builders::DebugSet",
+                  "inner"
+                |),
+                "core::fmt::builders::DebugInner",
+                "result"
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
+    End Impl_core_fmt_builders_DebugSet.
+    
+    (* StructRecord
+      {
+        name := "DebugList";
+        const_params := [];
+        ty_params := [];
+        fields := [ ("inner", Ty.path "core::fmt::builders::DebugInner") ];
+      } *)
+    
+    (*
+    pub(super) fn debug_list_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>) -> DebugList<'a, 'b> {
+        let result = fmt.write_str("[");
+        DebugList { inner: DebugInner { fmt, result, has_fields: false } }
+    }
+    *)
+    Definition debug_list_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ fmt ] =>
+        ltac:(M.monadic
+          (let fmt := M.alloc (| fmt |) in
+          M.read (|
+            let~ result :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                  [ M.read (| fmt |); M.read (| Value.String "[" |) ]
+                |)
+              |) in
+            M.alloc (|
+              Value.StructRecord
+                "core::fmt::builders::DebugList"
+                [
+                  ("inner",
+                    Value.StructRecord
+                      "core::fmt::builders::DebugInner"
+                      [
+                        ("fmt", M.read (| fmt |));
+                        ("result", M.read (| result |));
+                        ("has_fields", Value.Bool false)
+                      ])
+                ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_debug_list_new :
+      M.IsFunction "core::fmt::builders::debug_list_new" debug_list_new.
+    
+    Module Impl_core_fmt_builders_DebugList.
+      Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugList".
+      
+      (*
+          pub fn entry(&mut self, entry: &dyn fmt::Debug) -> &mut Self {
+              self.inner.entry_with(|f| entry.fmt(f));
+              self
+          }
+      *)
+      Definition entry (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; entry ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let entry := M.alloc (| entry |) in
+            M.read (|
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::builders::DebugInner",
+                      "entry_with",
+                      [
+                        Ty.function
+                          [
+                            Ty.tuple
+                              [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ]
+                          ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                      ]
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::fmt::builders::DebugList",
+                        "inner"
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let f := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::fmt::Debug",
+                                            Ty.dyn [ ("core::fmt::Debug::Trait", []) ],
+                                            [],
+                                            "fmt",
+                                            []
+                                          |),
+                                          [ M.read (| entry |); M.read (| f |) ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |) in
+              M.alloc (| M.read (| self |) |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
+      
+      (*
+          pub fn entry_with<F>(&mut self, entry_fmt: F) -> &mut Self
+          where
+              F: FnOnce(&mut fmt::Formatter<'_>) -> fmt::Result,
+          {
+              self.inner.entry_with(entry_fmt);
+              self
+          }
+      *)
+      Definition entry_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; entry_fmt ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let entry_fmt := M.alloc (| entry_fmt |) in
+            M.read (|
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::builders::DebugInner",
+                      "entry_with",
+                      [ F ]
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::fmt::builders::DebugList",
+                        "inner"
+                      |);
+                      M.read (| entry_fmt |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| M.read (| self |) |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_entry_with : M.IsAssociatedFunction Self "entry_with" entry_with.
+      
+      (*
+          pub fn entries<D, I>(&mut self, entries: I) -> &mut Self
+          where
+              D: fmt::Debug,
+              I: IntoIterator<Item = D>,
+          {
+              for entry in entries {
+                  self.entry(&entry);
+              }
+              self
+          }
+      *)
+      Definition entries (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ D; _ as I ], [ self; entries ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let entries := M.alloc (| entries |) in
+            M.read (|
+              let~ _ :=
+                M.use
+                  (M.match_operator (|
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::iter::traits::collect::IntoIterator",
+                          I,
+                          [],
+                          "into_iter",
+                          []
+                        |),
+                        [ M.read (| entries |) ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let iter := M.copy (| γ |) in
+                          M.loop (|
+                            ltac:(M.monadic
+                              (let~ _ :=
+                                M.match_operator (|
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::iter::traits::iterator::Iterator",
+                                        Ty.associated,
+                                        [],
+                                        "next",
+                                        []
+                                      |),
+                                      [ iter ]
+                                    |)
+                                  |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let _ :=
+                                          M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                        M.alloc (|
+                                          M.never_to_any (| M.read (| M.break (||) |) |)
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 :=
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            γ,
+                                            "core::option::Option::Some",
+                                            0
+                                          |) in
+                                        let entry := M.copy (| γ0_0 |) in
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::builders::DebugList",
+                                                "entry",
+                                                []
+                                              |),
+                                              [ M.read (| self |); entry ]
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |) in
+                              M.alloc (| Value.Tuple [] |)))
+                          |)))
+                    ]
+                  |)) in
+              M.alloc (| M.read (| self |) |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
+      
+      (*
+          pub fn finish_non_exhaustive(&mut self) -> fmt::Result {
+              self.inner.result.and_then(|_| {
+                  if self.inner.has_fields {
+                      if self.inner.is_pretty() {
+                          let mut slot = None;
+                          let mut state = Default::default();
+                          let mut writer = PadAdapter::wrap(self.inner.fmt, &mut slot, &mut state);
+                          writer.write_str("..\n")?;
+                          self.inner.fmt.write_str("]")
+                      } else {
+                          self.inner.fmt.write_str(", ..]")
+                      }
+                  } else {
+                      self.inner.fmt.write_str("..]")
+                  }
+              })
+          }
+      *)
+      Definition finish_non_exhaustive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                "and_then",
+                [
+                  Ty.tuple [];
+                  Ty.function
+                    [ Ty.tuple [ Ty.tuple [] ] ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                ]
+              |),
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::fmt::builders::DebugList",
+                      "inner"
+                    |),
+                    "core::fmt::builders::DebugInner",
+                    "result"
+                  |)
+                |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (M.read (|
+                                    M.match_operator (|
+                                      M.alloc (| Value.Tuple [] |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ :=
+                                              M.use
+                                                (M.SubPointer.get_struct_record_field (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::fmt::builders::DebugList",
+                                                    "inner"
+                                                  |),
+                                                  "core::fmt::builders::DebugInner",
+                                                  "has_fields"
+                                                |)) in
+                                            let _ :=
+                                              M.is_constant_or_break_match (|
+                                                M.read (| γ |),
+                                                Value.Bool true
+                                              |) in
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "core::fmt::builders::DebugInner",
+                                                              "is_pretty",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::fmt::builders::DebugList",
+                                                                "inner"
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    let~ slot :=
+                                                      M.alloc (|
+                                                        Value.StructTuple
+                                                          "core::option::Option::None"
+                                                          []
+                                                      |) in
+                                                    let~ state :=
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::default::Default",
+                                                            Ty.path
+                                                              "core::fmt::builders::PadAdapterState",
+                                                            [],
+                                                            "default",
+                                                            []
+                                                          |),
+                                                          []
+                                                        |)
+                                                      |) in
+                                                    let~ writer :=
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "core::fmt::builders::PadAdapter",
+                                                            "wrap",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::fmt::builders::DebugList",
+                                                                  "inner"
+                                                                |),
+                                                                "core::fmt::builders::DebugInner",
+                                                                "fmt"
+                                                              |)
+                                                            |);
+                                                            slot;
+                                                            state
+                                                          ]
+                                                        |)
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::try_trait::Try",
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
+                                                                ],
+                                                              [],
+                                                              "branch",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::Formatter",
+                                                                  "write_str",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  writer;
+                                                                  M.read (| Value.String "..
+" |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                  0
+                                                                |) in
+                                                              let residual := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::FromResidual",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "core::fmt::Error"
+                                                                              ]
+                                                                          ],
+                                                                          "from_residual",
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| residual |) ]
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                  0
+                                                                |) in
+                                                              let val := M.copy (| γ0_0 |) in
+                                                              val))
+                                                        ]
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::Formatter",
+                                                          "write_str",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::fmt::builders::DebugList",
+                                                                "inner"
+                                                              |),
+                                                              "core::fmt::builders::DebugInner",
+                                                              "fmt"
+                                                            |)
+                                                          |);
+                                                          M.read (| Value.String "]" |)
+                                                        ]
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::Formatter",
+                                                          "write_str",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::fmt::builders::DebugList",
+                                                                "inner"
+                                                              |),
+                                                              "core::fmt::builders::DebugInner",
+                                                              "fmt"
+                                                            |)
+                                                          |);
+                                                          M.read (| Value.String ", ..]" |)
+                                                        ]
+                                                      |)
+                                                    |)))
+                                              ]
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::fmt::Formatter",
+                                                  "write_str",
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::fmt::builders::DebugList",
+                                                        "inner"
+                                                      |),
+                                                      "core::fmt::builders::DebugInner",
+                                                      "fmt"
+                                                    |)
+                                                  |);
+                                                  M.read (| Value.String "..]" |)
+                                                ]
+                                              |)
+                                            |)))
+                                      ]
+                                    |)
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_finish_non_exhaustive :
+        M.IsAssociatedFunction Self "finish_non_exhaustive" finish_non_exhaustive.
+      
+      (*
+          pub fn finish(&mut self) -> fmt::Result {
+              self.inner.result = self.inner.result.and_then(|_| self.inner.fmt.write_str("]"));
+              self.inner.result
+          }
+      *)
+      Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              let~ _ :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::fmt::builders::DebugList",
+                      "inner"
+                    |),
+                    "core::fmt::builders::DebugInner",
+                    "result"
+                  |),
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      "and_then",
+                      [
+                        Ty.tuple [];
+                        Ty.function
+                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                      ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::fmt::builders::DebugList",
+                            "inner"
+                          |),
+                          "core::fmt::builders::DebugInner",
+                          "result"
+                        |)
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::Formatter",
+                                            "write_str",
+                                            []
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::fmt::builders::DebugList",
+                                                  "inner"
+                                                |),
+                                                "core::fmt::builders::DebugInner",
+                                                "fmt"
+                                              |)
+                                            |);
+                                            M.read (| Value.String "]" |)
+                                          ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |) in
+              M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::fmt::builders::DebugList",
+                  "inner"
+                |),
+                "core::fmt::builders::DebugInner",
+                "result"
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
+    End Impl_core_fmt_builders_DebugList.
+    
+    (* StructRecord
+      {
+        name := "DebugMap";
+        const_params := [];
+        ty_params := [];
+        fields :=
+          [
+            ("fmt", Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ]);
+            ("result",
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
+            ("has_fields", Ty.path "bool");
+            ("has_key", Ty.path "bool");
+            ("state", Ty.path "core::fmt::builders::PadAdapterState")
+          ];
+      } *)
+    
+    (*
+    pub(super) fn debug_map_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>) -> DebugMap<'a, 'b> {
+        let result = fmt.write_str("{");
+        DebugMap { fmt, result, has_fields: false, has_key: false, state: Default::default() }
+    }
+    *)
+    Definition debug_map_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ fmt ] =>
+        ltac:(M.monadic
+          (let fmt := M.alloc (| fmt |) in
+          M.read (|
+            let~ result :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
+                  [ M.read (| fmt |); M.read (| Value.String "{" |) ]
+                |)
+              |) in
+            M.alloc (|
+              Value.StructRecord
+                "core::fmt::builders::DebugMap"
+                [
+                  ("fmt", M.read (| fmt |));
+                  ("result", M.read (| result |));
+                  ("has_fields", Value.Bool false);
+                  ("has_key", Value.Bool false);
+                  ("state",
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.path "core::fmt::builders::PadAdapterState",
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |))
+                ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_debug_map_new : M.IsFunction "core::fmt::builders::debug_map_new" debug_map_new.
+    
+    Module Impl_core_fmt_builders_DebugMap.
+      Definition Self : Ty.t := Ty.path "core::fmt::builders::DebugMap".
+      
+      (*
+          pub fn entry(&mut self, key: &dyn fmt::Debug, value: &dyn fmt::Debug) -> &mut Self {
+              self.key(key).value(value)
+          }
+      *)
+      Definition entry (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; key; value ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let key := M.alloc (| key |) in
+            let value := M.alloc (| value |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::fmt::builders::DebugMap", "value", [] |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::builders::DebugMap",
+                    "key",
+                    []
+                  |),
+                  [ M.read (| self |); M.read (| key |) ]
+                |);
+                M.read (| value |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_entry : M.IsAssociatedFunction Self "entry" entry.
+      
+      (*
+          pub fn key(&mut self, key: &dyn fmt::Debug) -> &mut Self {
+              self.key_with(|f| key.fmt(f))
+          }
+      *)
+      Definition key (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; key ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let key := M.alloc (| key |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "core::fmt::builders::DebugMap",
+                "key_with",
+                [
+                  Ty.function
+                    [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::fmt::Formatter" ] ] ]
+                    (Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                ]
+              |),
+              [
+                M.read (| self |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let f := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::fmt::Debug",
+                                      Ty.dyn [ ("core::fmt::Debug::Trait", []) ],
+                                      [],
+                                      "fmt",
+                                      []
+                                    |),
+                                    [ M.read (| key |); M.read (| f |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_key : M.IsAssociatedFunction Self "key" key.
+      
+      (*
+          pub fn key_with<F>(&mut self, key_fmt: F) -> &mut Self
+          where
+              F: FnOnce(&mut fmt::Formatter<'_>) -> fmt::Result,
+          {
+              self.result = self.result.and_then(|_| {
+                  assert!(
+                      !self.has_key,
+                      "attempted to begin a new map entry \
+                                          without completing the previous one"
+                  );
+      
+                  if self.is_pretty() {
+                      if !self.has_fields {
+                          self.fmt.write_str("\n")?;
+                      }
+                      let mut slot = None;
+                      self.state = Default::default();
+                      let mut writer = PadAdapter::wrap(self.fmt, &mut slot, &mut self.state);
+                      key_fmt(&mut writer)?;
+                      writer.write_str(": ")?;
+                  } else {
+                      if self.has_fields {
+                          self.fmt.write_str(", ")?
+                      }
+                      key_fmt(self.fmt)?;
+                      self.fmt.write_str(": ")?;
+                  }
+      
+                  self.has_key = true;
+                  Ok(())
+              });
+      
+              self
+          }
+      *)
+      Definition key_with (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ F ], [ self; key_fmt ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let key_fmt := M.alloc (| key_fmt |) in
+            M.read (|
+              let~ _ :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::fmt::builders::DebugMap",
+                    "result"
+                  |),
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      "and_then",
+                      [
+                        Ty.tuple [];
+                        Ty.function
+                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                      ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::fmt::builders::DebugMap",
+                          "result"
+                        |)
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.read (|
+                                          let~ _ :=
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          UnOp.not (|
+                                                            UnOp.not (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::fmt::builders::DebugMap",
+                                                                  "has_key"
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::panicking::panic_fmt",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Arguments",
+                                                                "new_const",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          "attempted to begin a new map entry without completing the previous one"
+                                                                      |)
+                                                                    ]
+                                                                |)
                                                               ]
                                                             |)
                                                           ]
                                                         |)
-                                                      |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Break",
-                                                                0
-                                                              |) in
-                                                            let residual := M.copy (| γ0_0 |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |) in
+                                          let~ _ :=
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "core::fmt::builders::DebugMap",
+                                                              "is_pretty",
+                                                              []
+                                                            |),
+                                                            [ M.read (| self |) ]
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (| Value.Tuple [] |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ :=
+                                                                M.use
+                                                                  (M.alloc (|
+                                                                    UnOp.not (|
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| self |),
+                                                                          "core::fmt::builders::DebugMap",
+                                                                          "has_fields"
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)) in
+                                                              let _ :=
+                                                                M.is_constant_or_break_match (|
+                                                                  M.read (| γ |),
+                                                                  Value.Bool true
+                                                                |) in
+                                                              let~ _ :=
+                                                                M.match_operator (|
+                                                                  M.alloc (|
                                                                     M.call_closure (|
                                                                       M.get_trait_method (|
-                                                                        "core::ops::try_trait::FromResidual",
+                                                                        "core::ops::try_trait::Try",
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
@@ -5602,67 +6110,722 @@ Module fmt.
                                                                             Ty.path
                                                                               "core::fmt::Error"
                                                                           ],
-                                                                        [
+                                                                        [],
+                                                                        "branch",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Ty.path
+                                                                              "core::fmt::Formatter",
+                                                                            "write_str",
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.read (|
+                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                M.read (| self |),
+                                                                                "core::fmt::builders::DebugMap",
+                                                                                "fmt"
+                                                                              |)
+                                                                            |);
+                                                                            M.read (|
+                                                                              Value.String "
+"
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  |),
+                                                                  [
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ0_0 :=
+                                                                          M.SubPointer.get_struct_tuple_field (|
+                                                                            γ,
+                                                                            "core::ops::control_flow::ControlFlow::Break",
+                                                                            0
+                                                                          |) in
+                                                                        let residual :=
+                                                                          M.copy (| γ0_0 |) in
+                                                                        M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.read (|
+                                                                              M.return_ (|
+                                                                                M.call_closure (|
+                                                                                  M.get_trait_method (|
+                                                                                    "core::ops::try_trait::FromResidual",
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.tuple [];
+                                                                                        Ty.path
+                                                                                          "core::fmt::Error"
+                                                                                      ],
+                                                                                    [
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "core::result::Result")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "core::convert::Infallible";
+                                                                                          Ty.path
+                                                                                            "core::fmt::Error"
+                                                                                        ]
+                                                                                    ],
+                                                                                    "from_residual",
+                                                                                    []
+                                                                                  |),
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      residual
+                                                                                    |)
+                                                                                  ]
+                                                                                |)
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)));
+                                                                    fun γ =>
+                                                                      ltac:(M.monadic
+                                                                        (let γ0_0 :=
+                                                                          M.SubPointer.get_struct_tuple_field (|
+                                                                            γ,
+                                                                            "core::ops::control_flow::ControlFlow::Continue",
+                                                                            0
+                                                                          |) in
+                                                                        let val :=
+                                                                          M.copy (| γ0_0 |) in
+                                                                        val))
+                                                                  ]
+                                                                |) in
+                                                              M.alloc (| Value.Tuple [] |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (| Value.Tuple [] |)))
+                                                        ]
+                                                      |) in
+                                                    let~ slot :=
+                                                      M.alloc (|
+                                                        Value.StructTuple
+                                                          "core::option::Option::None"
+                                                          []
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.write (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::fmt::builders::DebugMap",
+                                                          "state"
+                                                        |),
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::default::Default",
+                                                            Ty.path
+                                                              "core::fmt::builders::PadAdapterState",
+                                                            [],
+                                                            "default",
+                                                            []
+                                                          |),
+                                                          []
+                                                        |)
+                                                      |) in
+                                                    let~ writer :=
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "core::fmt::builders::PadAdapter",
+                                                            "wrap",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::fmt::builders::DebugMap",
+                                                                "fmt"
+                                                              |)
+                                                            |);
+                                                            slot;
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| self |),
+                                                              "core::fmt::builders::DebugMap",
+                                                              "state"
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::try_trait::Try",
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
+                                                                ],
+                                                              [],
+                                                              "branch",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::function::FnOnce",
+                                                                  F,
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&mut")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::Formatter"
+                                                                          ]
+                                                                      ]
+                                                                  ],
+                                                                  "call_once",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (| key_fmt |);
+                                                                  Value.Tuple [ writer ]
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                  0
+                                                                |) in
+                                                              let residual := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::FromResidual",
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
                                                                             []
                                                                             [
-                                                                              Ty.path
-                                                                                "core::convert::Infallible";
+                                                                              Ty.tuple [];
                                                                               Ty.path
                                                                                 "core::fmt::Error"
-                                                                            ]
-                                                                        ],
-                                                                        "from_residual",
-                                                                        []
-                                                                      |),
-                                                                      [ M.read (| residual |) ]
+                                                                            ],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "core::fmt::Error"
+                                                                              ]
+                                                                          ],
+                                                                          "from_residual",
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| residual |) ]
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                  0
+                                                                |) in
+                                                              let val := M.copy (| γ0_0 |) in
+                                                              val))
+                                                        ]
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::try_trait::Try",
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
+                                                                ],
+                                                              [],
+                                                              "branch",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::Formatter",
+                                                                  "write_str",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  writer;
+                                                                  M.read (| Value.String ": " |)
+                                                                ]
                                                               |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                                0
-                                                              |) in
-                                                            let val := M.copy (| γ0_0 |) in
-                                                            val))
-                                                      ]
-                                                    |) in
-                                                  M.alloc (| Value.Tuple [] |)))
-                                            ]
-                                          |) in
-                                        let~ _ :=
-                                          M.write (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::fmt::builders::DebugMap",
-                                              "has_key"
-                                            |),
-                                            Value.Bool true
-                                          |) in
-                                        M.alloc (|
-                                          Value.StructTuple
-                                            "core::result::Result::Ok"
-                                            [ Value.Tuple [] ]
-                                        |)
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                  0
+                                                                |) in
+                                                              let residual := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::FromResidual",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "core::fmt::Error"
+                                                                              ]
+                                                                          ],
+                                                                          "from_residual",
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| residual |) ]
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                  0
+                                                                |) in
+                                                              let val := M.copy (| γ0_0 |) in
+                                                              val))
+                                                        ]
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (| Value.Tuple [] |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ :=
+                                                                M.use
+                                                                  (M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::builders::DebugMap",
+                                                                    "has_fields"
+                                                                  |)) in
+                                                              let _ :=
+                                                                M.is_constant_or_break_match (|
+                                                                  M.read (| γ |),
+                                                                  Value.Bool true
+                                                                |) in
+                                                              M.match_operator (|
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::try_trait::Try",
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path "core::fmt::Error"
+                                                                        ],
+                                                                      [],
+                                                                      "branch",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::fmt::Formatter",
+                                                                          "write_str",
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.read (|
+                                                                            M.SubPointer.get_struct_record_field (|
+                                                                              M.read (| self |),
+                                                                              "core::fmt::builders::DebugMap",
+                                                                              "fmt"
+                                                                            |)
+                                                                          |);
+                                                                          M.read (|
+                                                                            Value.String ", "
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ0_0 :=
+                                                                        M.SubPointer.get_struct_tuple_field (|
+                                                                          γ,
+                                                                          "core::ops::control_flow::ControlFlow::Break",
+                                                                          0
+                                                                        |) in
+                                                                      let residual :=
+                                                                        M.copy (| γ0_0 |) in
+                                                                      M.alloc (|
+                                                                        M.never_to_any (|
+                                                                          M.read (|
+                                                                            M.return_ (|
+                                                                              M.call_closure (|
+                                                                                M.get_trait_method (|
+                                                                                  "core::ops::try_trait::FromResidual",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.tuple [];
+                                                                                      Ty.path
+                                                                                        "core::fmt::Error"
+                                                                                    ],
+                                                                                  [
+                                                                                    Ty.apply
+                                                                                      (Ty.path
+                                                                                        "core::result::Result")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "core::convert::Infallible";
+                                                                                        Ty.path
+                                                                                          "core::fmt::Error"
+                                                                                      ]
+                                                                                  ],
+                                                                                  "from_residual",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.read (|
+                                                                                    residual
+                                                                                  |)
+                                                                                ]
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)));
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ0_0 :=
+                                                                        M.SubPointer.get_struct_tuple_field (|
+                                                                          γ,
+                                                                          "core::ops::control_flow::ControlFlow::Continue",
+                                                                          0
+                                                                        |) in
+                                                                      let val :=
+                                                                        M.copy (| γ0_0 |) in
+                                                                      val))
+                                                                ]
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (| Value.Tuple [] |)))
+                                                        ]
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::try_trait::Try",
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
+                                                                ],
+                                                              [],
+                                                              "branch",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::function::FnOnce",
+                                                                  F,
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&mut")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::Formatter"
+                                                                          ]
+                                                                      ]
+                                                                  ],
+                                                                  "call_once",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (| key_fmt |);
+                                                                  Value.Tuple
+                                                                    [
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| self |),
+                                                                          "core::fmt::builders::DebugMap",
+                                                                          "fmt"
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                  0
+                                                                |) in
+                                                              let residual := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::FromResidual",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "core::fmt::Error"
+                                                                              ]
+                                                                          ],
+                                                                          "from_residual",
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| residual |) ]
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                  0
+                                                                |) in
+                                                              let val := M.copy (| γ0_0 |) in
+                                                              val))
+                                                        ]
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::try_trait::Try",
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
+                                                                ],
+                                                              [],
+                                                              "branch",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::Formatter",
+                                                                  "write_str",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| self |),
+                                                                      "core::fmt::builders::DebugMap",
+                                                                      "fmt"
+                                                                    |)
+                                                                  |);
+                                                                  M.read (| Value.String ": " |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                  0
+                                                                |) in
+                                                              let residual := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::FromResidual",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "core::fmt::Error"
+                                                                              ]
+                                                                          ],
+                                                                          "from_residual",
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| residual |) ]
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                  0
+                                                                |) in
+                                                              let val := M.copy (| γ0_0 |) in
+                                                              val))
+                                                        ]
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |) in
+                                          let~ _ :=
+                                            M.write (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::fmt::builders::DebugMap",
+                                                "has_key"
+                                              |),
+                                              Value.Bool true
+                                            |) in
+                                          M.alloc (|
+                                            Value.StructTuple
+                                              "core::result::Result::Ok"
+                                              [ Value.Tuple [] ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_key_with : M.IsAssociatedFunction Self "key_with" key_with.
@@ -5698,29 +6861,30 @@ Module fmt.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let f := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::fmt::Debug",
-                                    Ty.dyn [ ("core::fmt::Debug::Trait", []) ],
-                                    [],
-                                    "fmt",
-                                    []
-                                  |),
-                                  [ M.read (| value |); M.read (| f |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let f := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::fmt::Debug",
+                                      Ty.dyn [ ("core::fmt::Debug::Trait", []) ],
+                                      [],
+                                      "fmt",
+                                      []
+                                    |),
+                                    [ M.read (| value |); M.read (| f |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_value : M.IsAssociatedFunction Self "value" value.
@@ -5794,53 +6958,53 @@ Module fmt.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (M.read (|
-                                        let~ _ :=
-                                          M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.use
-                                                      (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| self |),
-                                                              "core::fmt::builders::DebugMap",
-                                                              "has_key"
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.read (|
+                                          let~ _ :=
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          UnOp.not (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::fmt::builders::DebugMap",
+                                                                "has_key"
+                                                              |)
                                                             |)
-                                                          |))
-                                                      |)) in
-                                                  let _ :=
-                                                    M.is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  M.alloc (|
-                                                    M.never_to_any (|
-                                                      M.call_closure (|
-                                                        M.get_function (|
-                                                          "core::panicking::panic_fmt",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::Arguments",
-                                                              "new_const",
-                                                              []
-                                                            |),
-                                                            [
-                                                              (* Unsize *)
-                                                              M.pointer_coercion
-                                                                (M.alloc (|
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::panicking::panic_fmt",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Arguments",
+                                                                "new_const",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.alloc (|
                                                                   Value.Array
                                                                     [
                                                                       M.read (|
@@ -5848,404 +7012,406 @@ Module fmt.
                                                                           "attempted to format a map value before its key"
                                                                       |)
                                                                     ]
-                                                                |))
-                                                            ]
-                                                          |)
-                                                        ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
                                                       |)
-                                                    |)
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                            ]
-                                          |) in
-                                        let~ _ :=
-                                          M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.use
-                                                      (M.alloc (|
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |) in
+                                          let~ _ :=
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path
+                                                                "core::fmt::builders::DebugMap",
+                                                              "is_pretty",
+                                                              []
+                                                            |),
+                                                            [ M.read (| self |) ]
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    let~ slot :=
+                                                      M.alloc (|
+                                                        Value.StructTuple
+                                                          "core::option::Option::None"
+                                                          []
+                                                      |) in
+                                                    let~ writer :=
+                                                      M.alloc (|
                                                         M.call_closure (|
                                                           M.get_associated_function (|
-                                                            Ty.path "core::fmt::builders::DebugMap",
-                                                            "is_pretty",
+                                                            Ty.path
+                                                              "core::fmt::builders::PadAdapter",
+                                                            "wrap",
                                                             []
                                                           |),
-                                                          [ M.read (| self |) ]
-                                                        |)
-                                                      |)) in
-                                                  let _ :=
-                                                    M.is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  let~ slot :=
-                                                    M.alloc (|
-                                                      Value.StructTuple
-                                                        "core::option::Option::None"
-                                                        []
-                                                    |) in
-                                                  let~ writer :=
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::builders::PadAdapter",
-                                                          "wrap",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.read (|
+                                                          [
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.read (| self |),
+                                                                "core::fmt::builders::DebugMap",
+                                                                "fmt"
+                                                              |)
+                                                            |);
+                                                            slot;
                                                             M.SubPointer.get_struct_record_field (|
                                                               M.read (| self |),
                                                               "core::fmt::builders::DebugMap",
-                                                              "fmt"
-                                                            |)
-                                                          |);
-                                                          slot;
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
-                                                            "core::fmt::builders::DebugMap",
-                                                            "state"
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |) in
-                                                  let~ _ :=
-                                                    M.match_operator (|
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::Try",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.tuple [];
-                                                                Ty.path "core::fmt::Error"
-                                                              ],
-                                                            [],
-                                                            "branch",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::function::FnOnce",
-                                                                F,
-                                                                [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&mut")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "core::fmt::Formatter"
-                                                                        ]
-                                                                    ]
-                                                                ],
-                                                                "call_once",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.read (| value_fmt |);
-                                                                Value.Tuple [ writer ]
-                                                              ]
+                                                              "state"
                                                             |)
                                                           ]
                                                         |)
-                                                      |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Break",
-                                                                0
-                                                              |) in
-                                                            let residual := M.copy (| γ0_0 |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
-                                                                    M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::try_trait::FromResidual",
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.tuple [];
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ],
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::result::Result")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "core::convert::Infallible";
-                                                                              Ty.path
-                                                                                "core::fmt::Error"
-                                                                            ]
-                                                                        ],
-                                                                        "from_residual",
-                                                                        []
-                                                                      |),
-                                                                      [ M.read (| residual |) ]
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                                0
-                                                              |) in
-                                                            let val := M.copy (| γ0_0 |) in
-                                                            val))
-                                                      ]
-                                                    |) in
-                                                  let~ _ :=
-                                                    M.match_operator (|
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::Try",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.tuple [];
-                                                                Ty.path "core::fmt::Error"
-                                                              ],
-                                                            [],
-                                                            "branch",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::Formatter",
-                                                                "write_str",
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::try_trait::Try",
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
                                                                 []
-                                                              |),
-                                                              [
-                                                                writer;
-                                                                M.read (| Value.String ",
-" |)
-                                                              ]
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Break",
-                                                                0
-                                                              |) in
-                                                            let residual := M.copy (| γ0_0 |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
-                                                                    M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::try_trait::FromResidual",
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.tuple [];
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ],
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::result::Result")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "core::convert::Infallible";
-                                                                              Ty.path
-                                                                                "core::fmt::Error"
-                                                                            ]
-                                                                        ],
-                                                                        "from_residual",
-                                                                        []
-                                                                      |),
-                                                                      [ M.read (| residual |) ]
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                                0
-                                                              |) in
-                                                            let val := M.copy (| γ0_0 |) in
-                                                            val))
-                                                      ]
-                                                    |) in
-                                                  M.alloc (| Value.Tuple [] |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let~ _ :=
-                                                    M.match_operator (|
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::Try",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.tuple [];
-                                                                Ty.path "core::fmt::Error"
-                                                              ],
-                                                            [],
-                                                            "branch",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_trait_method (|
-                                                                "core::ops::function::FnOnce",
-                                                                F,
                                                                 [
-                                                                  Ty.tuple
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path "&mut")
-                                                                        []
-                                                                        [
-                                                                          Ty.path
-                                                                            "core::fmt::Formatter"
-                                                                        ]
-                                                                    ]
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
                                                                 ],
-                                                                "call_once",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.read (| value_fmt |);
-                                                                Value.Tuple
+                                                              [],
+                                                              "branch",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::function::FnOnce",
+                                                                  F,
                                                                   [
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| self |),
-                                                                        "core::fmt::builders::DebugMap",
-                                                                        "fmt"
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&mut")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::Formatter"
+                                                                          ]
+                                                                      ]
+                                                                  ],
+                                                                  "call_once",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (| value_fmt |);
+                                                                  Value.Tuple [ writer ]
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                  0
+                                                                |) in
+                                                              let residual := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::FromResidual",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "core::fmt::Error"
+                                                                              ]
+                                                                          ],
+                                                                          "from_residual",
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| residual |) ]
                                                                       |)
                                                                     |)
-                                                                  ]
-                                                              ]
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Break",
-                                                                0
-                                                              |) in
-                                                            let residual := M.copy (| γ0_0 |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
-                                                                    M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::try_trait::FromResidual",
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.tuple [];
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ],
-                                                                        [
+                                                                  |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                  0
+                                                                |) in
+                                                              let val := M.copy (| γ0_0 |) in
+                                                              val))
+                                                        ]
+                                                      |) in
+                                                    let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::try_trait::Try",
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
+                                                                ],
+                                                              [],
+                                                              "branch",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path "core::fmt::Formatter",
+                                                                  "write_str",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  writer;
+                                                                  M.read (| Value.String ",
+" |)
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                  0
+                                                                |) in
+                                                              let residual := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::FromResidual",
                                                                           Ty.apply
                                                                             (Ty.path
                                                                               "core::result::Result")
                                                                             []
                                                                             [
-                                                                              Ty.path
-                                                                                "core::convert::Infallible";
+                                                                              Ty.tuple [];
                                                                               Ty.path
                                                                                 "core::fmt::Error"
-                                                                            ]
-                                                                        ],
-                                                                        "from_residual",
-                                                                        []
-                                                                      |),
-                                                                      [ M.read (| residual |) ]
+                                                                            ],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "core::fmt::Error"
+                                                                              ]
+                                                                          ],
+                                                                          "from_residual",
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| residual |) ]
+                                                                      |)
                                                                     |)
                                                                   |)
                                                                 |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                  0
+                                                                |) in
+                                                              let val := M.copy (| γ0_0 |) in
+                                                              val))
+                                                        ]
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::try_trait::Try",
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
+                                                                ],
+                                                              [],
+                                                              "branch",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::function::FnOnce",
+                                                                  F,
+                                                                  [
+                                                                    Ty.tuple
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&mut")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::fmt::Formatter"
+                                                                          ]
+                                                                      ]
+                                                                  ],
+                                                                  "call_once",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (| value_fmt |);
+                                                                  Value.Tuple
+                                                                    [
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| self |),
+                                                                          "core::fmt::builders::DebugMap",
+                                                                          "fmt"
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                ]
                                                               |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                                0
-                                                              |) in
-                                                            let val := M.copy (| γ0_0 |) in
-                                                            val))
-                                                      ]
-                                                    |) in
-                                                  M.alloc (| Value.Tuple [] |)))
-                                            ]
-                                          |) in
-                                        let~ _ :=
-                                          M.write (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::fmt::builders::DebugMap",
-                                              "has_key"
-                                            |),
-                                            Value.Bool false
-                                          |) in
-                                        M.alloc (|
-                                          Value.StructTuple
-                                            "core::result::Result::Ok"
-                                            [ Value.Tuple [] ]
-                                        |)
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                  0
+                                                                |) in
+                                                              let residual := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::FromResidual",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "core::fmt::Error"
+                                                                              ]
+                                                                          ],
+                                                                          "from_residual",
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| residual |) ]
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                  0
+                                                                |) in
+                                                              let val := M.copy (| γ0_0 |) in
+                                                              val))
+                                                        ]
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |) in
+                                          let~ _ :=
+                                            M.write (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "core::fmt::builders::DebugMap",
+                                                "has_key"
+                                              |),
+                                              Value.Bool false
+                                            |) in
+                                          M.alloc (|
+                                            Value.StructTuple
+                                              "core::result::Result::Ok"
+                                              [ Value.Tuple [] ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
@@ -6261,7 +7427,7 @@ Module fmt.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_value_with : M.IsAssociatedFunction Self "value_with" value_with.
@@ -6349,11 +7515,7 @@ Module fmt.
                                                 "entry",
                                                 []
                                               |),
-                                              [
-                                                M.read (| self |);
-                                                (* Unsize *) M.pointer_coercion k;
-                                                (* Unsize *) M.pointer_coercion v
-                                              ]
+                                              [ M.read (| self |); k; v ]
                                             |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
@@ -6365,18 +7527,419 @@ Module fmt.
                   |)) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_entries : M.IsAssociatedFunction Self "entries" entries.
       
       (*
+          pub fn finish_non_exhaustive(&mut self) -> fmt::Result {
+              self.result = self.result.and_then(|_| {
+                  assert!(!self.has_key, "attempted to finish a map with a partial entry");
+      
+                  if self.has_fields {
+                      if self.is_pretty() {
+                          let mut slot = None;
+                          let mut state = Default::default();
+                          let mut writer = PadAdapter::wrap(self.fmt, &mut slot, &mut state);
+                          writer.write_str("..\n")?;
+                          self.fmt.write_str("}")
+                      } else {
+                          self.fmt.write_str(", ..}")
+                      }
+                  } else {
+                      self.fmt.write_str("..}")
+                  }
+              });
+              self.result
+          }
+      *)
+      Definition finish_non_exhaustive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              let~ _ :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::fmt::builders::DebugMap",
+                    "result"
+                  |),
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      "and_then",
+                      [
+                        Ty.tuple [];
+                        Ty.function
+                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                      ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::fmt::builders::DebugMap",
+                          "result"
+                        |)
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.read (|
+                                          let~ _ :=
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          UnOp.not (|
+                                                            UnOp.not (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::fmt::builders::DebugMap",
+                                                                  "has_key"
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::panicking::panic_fmt",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Arguments",
+                                                                "new_const",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          "attempted to finish a map with a partial entry"
+                                                                      |)
+                                                                    ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |) in
+                                          M.match_operator (|
+                                            M.alloc (| Value.Tuple [] |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let γ :=
+                                                    M.use
+                                                      (M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "core::fmt::builders::DebugMap",
+                                                        "has_fields"
+                                                      |)) in
+                                                  let _ :=
+                                                    M.is_constant_or_break_match (|
+                                                      M.read (| γ |),
+                                                      Value.Bool true
+                                                    |) in
+                                                  M.match_operator (|
+                                                    M.alloc (| Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use
+                                                              (M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::builders::DebugMap",
+                                                                    "is_pretty",
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| self |) ]
+                                                                |)
+                                                              |)) in
+                                                          let _ :=
+                                                            M.is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          let~ slot :=
+                                                            M.alloc (|
+                                                              Value.StructTuple
+                                                                "core::option::Option::None"
+                                                                []
+                                                            |) in
+                                                          let~ state :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::default::Default",
+                                                                  Ty.path
+                                                                    "core::fmt::builders::PadAdapterState",
+                                                                  [],
+                                                                  "default",
+                                                                  []
+                                                                |),
+                                                                []
+                                                              |)
+                                                            |) in
+                                                          let~ writer :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "core::fmt::builders::PadAdapter",
+                                                                  "wrap",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| self |),
+                                                                      "core::fmt::builders::DebugMap",
+                                                                      "fmt"
+                                                                    |)
+                                                                  |);
+                                                                  slot;
+                                                                  state
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          let~ _ :=
+                                                            M.match_operator (|
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::try_trait::Try",
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path "core::fmt::Error"
+                                                                      ],
+                                                                    [],
+                                                                    "branch",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Formatter",
+                                                                        "write_str",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        writer;
+                                                                        M.read (|
+                                                                          Value.String "..
+"
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Break",
+                                                                        0
+                                                                      |) in
+                                                                    let residual :=
+                                                                      M.copy (| γ0_0 |) in
+                                                                    M.alloc (|
+                                                                      M.never_to_any (|
+                                                                        M.read (|
+                                                                          M.return_ (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::try_trait::FromResidual",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "core::fmt::Error"
+                                                                                  ],
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
+                                                                                      Ty.path
+                                                                                        "core::fmt::Error"
+                                                                                    ]
+                                                                                ],
+                                                                                "from_residual",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.read (|
+                                                                                  residual
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)));
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Continue",
+                                                                        0
+                                                                      |) in
+                                                                    let val := M.copy (| γ0_0 |) in
+                                                                    val))
+                                                              ]
+                                                            |) in
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::builders::DebugMap",
+                                                                    "fmt"
+                                                                  |)
+                                                                |);
+                                                                M.read (| Value.String "}" |)
+                                                              ]
+                                                            |)
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Formatter",
+                                                                "write_str",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::builders::DebugMap",
+                                                                    "fmt"
+                                                                  |)
+                                                                |);
+                                                                M.read (| Value.String ", ..}" |)
+                                                              ]
+                                                            |)
+                                                          |)))
+                                                    ]
+                                                  |)));
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::Formatter",
+                                                        "write_str",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| self |),
+                                                            "core::fmt::builders::DebugMap",
+                                                            "fmt"
+                                                          |)
+                                                        |);
+                                                        M.read (| Value.String "..}" |)
+                                                      ]
+                                                    |)
+                                                  |)))
+                                            ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |) in
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::fmt::builders::DebugMap",
+                "result"
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_finish_non_exhaustive :
+        M.IsAssociatedFunction Self "finish_non_exhaustive" finish_non_exhaustive.
+      
+      (*
           pub fn finish(&mut self) -> fmt::Result {
-              self.result.and_then(|_| {
+              self.result = self.result.and_then(|_| {
                   assert!(!self.has_key, "attempted to finish a map with a partial entry");
       
                   self.fmt.write_str("}")
-              })
+              });
+              self.result
           }
       *)
       Definition finish (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -6384,128 +7947,145 @@ Module fmt.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                "and_then",
-                [
-                  Ty.tuple [];
-                  Ty.function
-                    [ Ty.tuple [ Ty.tuple [] ] ]
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ])
-                ]
-              |),
-              [
-                M.read (|
+            M.read (|
+              let~ _ :=
+                M.write (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::fmt::builders::DebugMap",
                     "result"
-                  |)
-                |);
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
+                  |),
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                      "and_then",
+                      [
+                        Ty.tuple [];
+                        Ty.function
+                          [ Ty.tuple [ Ty.tuple [] ] ]
+                          (Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ])
+                      ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::fmt::builders::DebugMap",
+                          "result"
+                        |)
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
                               ltac:(M.monadic
-                                (M.read (|
-                                  let~ _ :=
-                                    M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  UnOp.Pure.not
-                                                    (UnOp.Pure.not
-                                                      (M.read (|
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| self |),
-                                                          "core::fmt::builders::DebugMap",
-                                                          "has_key"
-                                                        |)
-                                                      |)))
-                                                |)) in
-                                            let _ :=
-                                              M.is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            M.alloc (|
-                                              M.never_to_any (|
-                                                M.call_closure (|
-                                                  M.get_function (|
-                                                    "core::panicking::panic_fmt",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::Arguments",
-                                                        "new_const",
-                                                        []
-                                                      |),
-                                                      [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.read (|
+                                          let~ _ :=
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          UnOp.not (|
+                                                            UnOp.not (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "core::fmt::builders::DebugMap",
+                                                                  "has_key"
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.call_closure (|
+                                                          M.get_function (|
+                                                            "core::panicking::panic_fmt",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::Arguments",
+                                                                "new_const",
+                                                                []
+                                                              |),
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "attempted to finish a map with a partial entry"
+                                                                M.alloc (|
+                                                                  Value.Array
+                                                                    [
+                                                                      M.read (|
+                                                                        Value.String
+                                                                          "attempted to finish a map with a partial entry"
+                                                                      |)
+                                                                    ]
                                                                 |)
                                                               ]
-                                                          |))
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
-                                              |)
-                                            |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                      ]
-                                    |) in
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Formatter",
-                                        "write_str",
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "core::fmt::builders::DebugMap",
-                                            "fmt"
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |) in
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Formatter",
+                                                "write_str",
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "core::fmt::builders::DebugMap",
+                                                    "fmt"
+                                                  |)
+                                                |);
+                                                M.read (| Value.String "}" |)
+                                              ]
+                                            |)
                                           |)
-                                        |);
-                                        M.read (| Value.String "}" |)
-                                      ]
-                                    |)
-                                  |)
+                                        |)))
+                                  ]
                                 |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end))
-              ]
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
+                  |)
+                |) in
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "core::fmt::builders::DebugMap",
+                "result"
+              |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_finish : M.IsAssociatedFunction Self "finish" finish.
@@ -6532,23 +8112,39 @@ Module fmt.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_pretty : M.IsAssociatedFunction Self "is_pretty" is_pretty.
     End Impl_core_fmt_builders_DebugMap.
     
+    (*
+    pub fn from_fn<F: Fn(&mut fmt::Formatter<'_>) -> fmt::Result>(f: F) -> FromFn<F> {
+        FromFn(f)
+    }
+    *)
+    Definition from_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ F ], [ f ] =>
+        ltac:(M.monadic
+          (let f := M.alloc (| f |) in
+          Value.StructTuple "core::fmt::builders::FromFn" [ M.read (| f |) ]))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_from_fn : M.IsFunction "core::fmt::builders::from_fn" from_fn.
+    
     (* StructTuple
       {
-        name := "FormatterFn";
+        name := "FromFn";
         const_params := [];
         ty_params := [ "F" ];
         fields := [ F ];
       } *)
     
-    Module Impl_core_fmt_Debug_where_core_ops_function_Fn_F_Tuple_ref_mut_core_fmt_Formatter__for_core_fmt_builders_FormatterFn_F.
+    Module Impl_core_fmt_Debug_where_core_ops_function_Fn_F_Tuple_ref_mut_core_fmt_Formatter__for_core_fmt_builders_FromFn_F.
       Definition Self (F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::fmt::builders::FormatterFn") [] [ F ].
+        Ty.apply (Ty.path "core::fmt::builders::FromFn") [] [ F ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -6573,13 +8169,13 @@ Module fmt.
               [
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
-                  "core::fmt::builders::FormatterFn",
+                  "core::fmt::builders::FromFn",
                   0
                 |);
                 Value.Tuple [ M.read (| f |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6589,11 +8185,11 @@ Module fmt.
           (Self F)
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method (fmt F)) ].
-    End Impl_core_fmt_Debug_where_core_ops_function_Fn_F_Tuple_ref_mut_core_fmt_Formatter__for_core_fmt_builders_FormatterFn_F.
+    End Impl_core_fmt_Debug_where_core_ops_function_Fn_F_Tuple_ref_mut_core_fmt_Formatter__for_core_fmt_builders_FromFn_F.
     
-    Module Impl_core_fmt_Display_where_core_ops_function_Fn_F_Tuple_ref_mut_core_fmt_Formatter__for_core_fmt_builders_FormatterFn_F.
+    Module Impl_core_fmt_Display_where_core_ops_function_Fn_F_Tuple_ref_mut_core_fmt_Formatter__for_core_fmt_builders_FromFn_F.
       Definition Self (F : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::fmt::builders::FormatterFn") [] [ F ].
+        Ty.apply (Ty.path "core::fmt::builders::FromFn") [] [ F ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -6618,13 +8214,13 @@ Module fmt.
               [
                 M.SubPointer.get_struct_tuple_field (|
                   M.read (| self |),
-                  "core::fmt::builders::FormatterFn",
+                  "core::fmt::builders::FromFn",
                   0
                 |);
                 Value.Tuple [ M.read (| f |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6634,6 +8230,6 @@ Module fmt.
           (Self F)
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method (fmt F)) ].
-    End Impl_core_fmt_Display_where_core_ops_function_Fn_F_Tuple_ref_mut_core_fmt_Formatter__for_core_fmt_builders_FormatterFn_F.
+    End Impl_core_fmt_Display_where_core_ops_function_Fn_F_Tuple_ref_mut_core_fmt_Formatter__for_core_fmt_builders_FromFn_F.
   End builders.
 End fmt.

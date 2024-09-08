@@ -207,7 +207,7 @@ Module iter.
                 M.read (| Value.String "overflow in `Step::forward`" |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_forward : M.IsProvidedMethod "core::iter::range::Step" "forward" forward.
@@ -226,7 +226,7 @@ Module iter.
               M.get_trait_method (| "core::iter::range::Step", Self, [], "forward", [] |),
               [ M.read (| start |); M.read (| count |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_forward_unchecked :
@@ -257,7 +257,7 @@ Module iter.
                 M.read (| Value.String "overflow in `Step::backward`" |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_backward :
@@ -277,7 +277,7 @@ Module iter.
               M.get_trait_method (| "core::iter::range::Step", Self, [], "backward", [] |),
               [ M.read (| start |); M.read (| count |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_backward_unchecked :
@@ -286,44 +286,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u8", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -378,10 +340,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.U8
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.add (|
+                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              Value.Integer IntegerKind.U8 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -395,7 +357,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -451,10 +413,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.U8
-                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              Value.Integer IntegerKind.U8 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -468,7 +430,45 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.unchecked_add(n as Self) }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u8", "unchecked_add", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.unchecked_sub(n as Self) }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u8", "unchecked_sub", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -496,9 +496,10 @@ Module iter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.read (| M.read (| start |) |))
-                              (M.read (| M.read (| end_ |) |))
+                            BinOp.le (|
+                              M.read (| M.read (| start |) |),
+                              M.read (| M.read (| end_ |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -506,10 +507,10 @@ Module iter.
                           "core::option::Option::Some"
                           [
                             M.rust_cast
-                              (BinOp.Wrap.sub
-                                Integer.U8
-                                (M.read (| M.read (| end_ |) |))
-                                (M.read (| M.read (| start |) |)))
+                              (BinOp.Wrap.sub (|
+                                M.read (| M.read (| end_ |) |),
+                                M.read (| M.read (| start |) |)
+                              |))
                           ]
                       |)));
                   fun γ =>
@@ -518,7 +519,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -577,7 +578,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -636,7 +637,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -646,10 +647,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -658,44 +659,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i8", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i8", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -750,10 +713,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.I8
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.add (|
+                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              Value.Integer IntegerKind.I8 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -767,7 +730,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -823,10 +786,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.I8
-                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              Value.Integer IntegerKind.I8 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -840,7 +803,63 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.checked_add_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i8", "checked_add_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.checked_sub_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i8" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i8", "checked_sub_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -872,9 +891,10 @@ Module iter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.read (| M.read (| start |) |))
-                              (M.read (| M.read (| end_ |) |))
+                            BinOp.le (|
+                              M.read (| M.read (| start |) |),
+                              M.read (| M.read (| end_ |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -897,7 +917,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -966,7 +986,7 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.ge (M.read (| wrapped |)) (M.read (| start |))
+                                    BinOp.ge (| M.read (| wrapped |), M.read (| start |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -995,7 +1015,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1064,7 +1084,7 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.le (M.read (| wrapped |)) (M.read (| start |))
+                                    BinOp.le (| M.read (| wrapped |), M.read (| start |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1093,7 +1113,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1103,10 +1123,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -1115,44 +1135,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u16", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -1207,10 +1189,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.U16
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.add (|
+                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              Value.Integer IntegerKind.U16 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -1224,7 +1206,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1280,10 +1262,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.U16
-                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              Value.Integer IntegerKind.U16 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -1297,7 +1279,45 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.unchecked_add(n as Self) }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u16", "unchecked_add", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.unchecked_sub(n as Self) }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u16", "unchecked_sub", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1325,9 +1345,10 @@ Module iter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.read (| M.read (| start |) |))
-                              (M.read (| M.read (| end_ |) |))
+                            BinOp.le (|
+                              M.read (| M.read (| start |) |),
+                              M.read (| M.read (| end_ |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1335,10 +1356,10 @@ Module iter.
                           "core::option::Option::Some"
                           [
                             M.rust_cast
-                              (BinOp.Wrap.sub
-                                Integer.U16
-                                (M.read (| M.read (| end_ |) |))
-                                (M.read (| M.read (| start |) |)))
+                              (BinOp.Wrap.sub (|
+                                M.read (| M.read (| end_ |) |),
+                                M.read (| M.read (| start |) |)
+                              |))
                           ]
                       |)));
                   fun γ =>
@@ -1347,7 +1368,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1406,7 +1427,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1465,7 +1486,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1475,10 +1496,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -1487,44 +1508,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i16", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i16", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -1579,10 +1562,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.I16
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.add (|
+                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              Value.Integer IntegerKind.I16 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -1596,7 +1579,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1652,10 +1635,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.I16
-                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              Value.Integer IntegerKind.I16 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -1669,7 +1652,63 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.checked_add_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i16", "checked_add_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.checked_sub_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i16" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i16", "checked_sub_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1701,9 +1740,10 @@ Module iter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.read (| M.read (| start |) |))
-                              (M.read (| M.read (| end_ |) |))
+                            BinOp.le (|
+                              M.read (| M.read (| start |) |),
+                              M.read (| M.read (| end_ |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1726,7 +1766,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1795,7 +1835,7 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.ge (M.read (| wrapped |)) (M.read (| start |))
+                                    BinOp.ge (| M.read (| wrapped |), M.read (| start |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1824,7 +1864,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1893,7 +1933,7 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.le (M.read (| wrapped |)) (M.read (| start |))
+                                    BinOp.le (| M.read (| wrapped |), M.read (| start |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1922,7 +1962,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1932,10 +1972,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -1944,44 +1984,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u32", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -2036,10 +2038,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.U32
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.add (|
+                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              Value.Integer IntegerKind.U32 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -2053,7 +2055,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2109,10 +2111,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.U32
-                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              Value.Integer IntegerKind.U32 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -2126,7 +2128,45 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.unchecked_add(n as Self) }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u32", "unchecked_add", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.unchecked_sub(n as Self) }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u32", "unchecked_sub", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2154,9 +2194,10 @@ Module iter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.read (| M.read (| start |) |))
-                              (M.read (| M.read (| end_ |) |))
+                            BinOp.le (|
+                              M.read (| M.read (| start |) |),
+                              M.read (| M.read (| end_ |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2164,10 +2205,10 @@ Module iter.
                           "core::option::Option::Some"
                           [
                             M.rust_cast
-                              (BinOp.Wrap.sub
-                                Integer.U32
-                                (M.read (| M.read (| end_ |) |))
-                                (M.read (| M.read (| start |) |)))
+                              (BinOp.Wrap.sub (|
+                                M.read (| M.read (| end_ |) |),
+                                M.read (| M.read (| start |) |)
+                              |))
                           ]
                       |)));
                   fun γ =>
@@ -2176,7 +2217,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2235,7 +2276,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2294,7 +2335,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2304,10 +2345,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -2316,44 +2357,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i32", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i32", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -2408,10 +2411,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.I32
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.add (|
+                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              Value.Integer IntegerKind.I32 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -2425,7 +2428,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2481,10 +2484,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.I32
-                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              Value.Integer IntegerKind.I32 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -2498,7 +2501,63 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.checked_add_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i32", "checked_add_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.checked_sub_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i32", "checked_sub_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2530,9 +2589,10 @@ Module iter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.read (| M.read (| start |) |))
-                              (M.read (| M.read (| end_ |) |))
+                            BinOp.le (|
+                              M.read (| M.read (| start |) |),
+                              M.read (| M.read (| end_ |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2555,7 +2615,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2624,7 +2684,7 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.ge (M.read (| wrapped |)) (M.read (| start |))
+                                    BinOp.ge (| M.read (| wrapped |), M.read (| start |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -2653,7 +2713,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2722,7 +2782,7 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.le (M.read (| wrapped |)) (M.read (| start |))
+                                    BinOp.le (| M.read (| wrapped |), M.read (| start |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -2751,7 +2811,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2761,10 +2821,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -2773,44 +2833,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -2865,10 +2887,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.U64
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.add (|
+                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              Value.Integer IntegerKind.U64 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -2882,7 +2904,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2938,10 +2960,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.U64
-                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              Value.Integer IntegerKind.U64 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -2955,7 +2977,45 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.unchecked_add(n as Self) }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u64", "unchecked_add", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.unchecked_sub(n as Self) }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u64", "unchecked_sub", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2983,9 +3043,10 @@ Module iter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.read (| M.read (| start |) |))
-                              (M.read (| M.read (| end_ |) |))
+                            BinOp.le (|
+                              M.read (| M.read (| start |) |),
+                              M.read (| M.read (| end_ |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2993,10 +3054,10 @@ Module iter.
                           "core::option::Option::Some"
                           [
                             M.rust_cast
-                              (BinOp.Wrap.sub
-                                Integer.U64
-                                (M.read (| M.read (| end_ |) |))
-                                (M.read (| M.read (| start |) |)))
+                              (BinOp.Wrap.sub (|
+                                M.read (| M.read (| end_ |) |),
+                                M.read (| M.read (| start |) |)
+                              |))
                           ]
                       |)));
                   fun γ =>
@@ -3005,7 +3066,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3064,7 +3125,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3123,7 +3184,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3133,10 +3194,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -3145,44 +3206,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i64", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i64", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -3237,10 +3260,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.I64
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.add (|
+                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              Value.Integer IntegerKind.I64 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -3254,7 +3277,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3310,10 +3333,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.I64
-                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              Value.Integer IntegerKind.I64 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -3327,7 +3350,63 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.checked_add_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i64", "checked_add_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.checked_sub_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i64" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i64", "checked_sub_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3359,9 +3438,10 @@ Module iter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.read (| M.read (| start |) |))
-                              (M.read (| M.read (| end_ |) |))
+                            BinOp.le (|
+                              M.read (| M.read (| start |) |),
+                              M.read (| M.read (| end_ |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3384,7 +3464,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3453,7 +3533,7 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.ge (M.read (| wrapped |)) (M.read (| start |))
+                                    BinOp.ge (| M.read (| wrapped |), M.read (| start |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3482,7 +3562,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3551,7 +3631,7 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.le (M.read (| wrapped |)) (M.read (| start |))
+                                    BinOp.le (| M.read (| wrapped |), M.read (| start |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3580,7 +3660,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3590,10 +3670,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -3602,44 +3682,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
-              [ M.read (| start |); M.read (| M.use n |) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
-              [ M.read (| start |); M.read (| M.use n |) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -3694,10 +3736,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.add (|
+                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -3711,7 +3753,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3767,10 +3809,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.Usize
-                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -3784,7 +3826,45 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.unchecked_add(n as Self) }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "usize", "unchecked_add", [] |),
+              [ M.read (| start |); M.read (| M.use n |) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.unchecked_sub(n as Self) }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "usize", "unchecked_sub", [] |),
+              [ M.read (| start |); M.read (| M.use n |) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3812,9 +3892,10 @@ Module iter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.read (| M.read (| start |) |))
-                              (M.read (| M.read (| end_ |) |))
+                            BinOp.le (|
+                              M.read (| M.read (| start |) |),
+                              M.read (| M.read (| end_ |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3824,10 +3905,10 @@ Module iter.
                             M.read (|
                               M.use
                                 (M.alloc (|
-                                  BinOp.Wrap.sub
-                                    Integer.Usize
-                                    (M.read (| M.read (| end_ |) |))
-                                    (M.read (| M.read (| start |) |))
+                                  BinOp.Wrap.sub (|
+                                    M.read (| M.read (| end_ |) |),
+                                    M.read (| M.read (| start |) |)
+                                  |)
                                 |))
                             |)
                           ]
@@ -3838,7 +3919,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3897,7 +3978,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3956,7 +4037,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3966,10 +4047,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -3978,44 +4059,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "isize", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "isize", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -4070,10 +4113,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.Isize
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.add (|
+                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              Value.Integer IntegerKind.Isize 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -4087,7 +4130,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4143,10 +4186,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.Isize
-                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              Value.Integer IntegerKind.Isize 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -4160,7 +4203,63 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.checked_add_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "isize", "checked_add_unsigned", [] |),
+                  [ M.read (| start |); M.read (| M.use n |) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.checked_sub_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "isize" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "isize", "checked_sub_unsigned", [] |),
+                  [ M.read (| start |); M.read (| M.use n |) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4192,9 +4291,10 @@ Module iter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.read (| M.read (| start |) |))
-                              (M.read (| M.read (| end_ |) |))
+                            BinOp.le (|
+                              M.read (| M.read (| start |) |),
+                              M.read (| M.read (| end_ |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4217,7 +4317,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4286,7 +4386,7 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.ge (M.read (| wrapped |)) (M.read (| start |))
+                                    BinOp.ge (| M.read (| wrapped |), M.read (| start |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4315,7 +4415,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4384,7 +4484,7 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.le (M.read (| wrapped |)) (M.read (| start |))
+                                    BinOp.le (| M.read (| wrapped |), M.read (| start |) |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4413,7 +4513,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4423,10 +4523,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -4435,44 +4535,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "u128", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -4527,10 +4589,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.U128
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.add (|
+                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              Value.Integer IntegerKind.U128 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -4544,7 +4606,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4600,10 +4662,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.U128
-                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              Value.Integer IntegerKind.U128 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -4617,7 +4679,45 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.unchecked_add(n as Self) }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u128", "unchecked_add", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.unchecked_sub(n as Self) }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "u128", "unchecked_sub", [] |),
+              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4644,9 +4744,10 @@ Module iter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.read (| M.read (| start |) |))
-                              (M.read (| M.read (| end_ |) |))
+                            BinOp.le (|
+                              M.read (| M.read (| start |) |),
+                              M.read (| M.read (| end_ |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4669,10 +4770,10 @@ Module iter.
                                 []
                               |),
                               [
-                                BinOp.Wrap.sub
-                                  Integer.U128
-                                  (M.read (| M.read (| end_ |) |))
-                                  (M.read (| M.read (| start |) |))
+                                BinOp.Wrap.sub (|
+                                  M.read (| M.read (| end_ |) |),
+                                  M.read (| M.read (| start |) |)
+                                |)
                               ]
                             |)
                           ]
@@ -4684,7 +4785,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4702,7 +4803,7 @@ Module iter.
               M.get_associated_function (| Ty.path "u128", "checked_add", [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4720,7 +4821,7 @@ Module iter.
               M.get_associated_function (| Ty.path "u128", "checked_sub", [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4730,10 +4831,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -4742,44 +4843,6 @@ Module iter.
     
     Module Impl_core_iter_range_Step_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
-      
-      (*
-              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
-                  unsafe { start.unchecked_add(n as Self) }
-              }
-      *)
-      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i128", "unchecked_add", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
-      
-      (*
-              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
-                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
-                  unsafe { start.unchecked_sub(n as Self) }
-              }
-      *)
-      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ start; n ] =>
-          ltac:(M.monadic
-            (let start := M.alloc (| start |) in
-            let n := M.alloc (| n |) in
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "i128", "unchecked_sub", [] |),
-              [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
-            |)))
-        | _, _, _ => M.impossible
-        end.
       
       (*
               fn forward(start: Self, n: usize) -> Self {
@@ -4834,10 +4897,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.I128
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.add (|
+                              M.read (| M.get_constant (| "core::num::MAX" |) |),
+                              Value.Integer IntegerKind.I128 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -4851,7 +4914,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4907,10 +4970,10 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           M.alloc (|
-                            BinOp.Wrap.sub
-                              Integer.I128
-                              (M.read (| M.get_constant (| "core::num::MIN" |) |))
-                              (Value.Integer 1)
+                            BinOp.Wrap.sub (|
+                              M.read (| M.get_constant (| "core::num::MIN" |) |),
+                              Value.Integer IntegerKind.I128 1
+                            |)
                           |),
                           [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                         |)));
@@ -4924,7 +4987,63 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn forward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start + n` doesn't overflow.
+                  unsafe { start.checked_add_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition forward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i128", "checked_add_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+              unsafe fn backward_unchecked(start: Self, n: usize) -> Self {
+                  // SAFETY: the caller has to guarantee that `start - n` doesn't overflow.
+                  unsafe { start.checked_sub_unsigned(n as $unsigned).unwrap_unchecked() }
+              }
+      *)
+      Definition backward_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ start; n ] =>
+          ltac:(M.monadic
+            (let start := M.alloc (| start |) in
+            let n := M.alloc (| n |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
+                "unwrap_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "i128", "checked_sub_unsigned", [] |),
+                  [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4956,9 +5075,10 @@ Module iter.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.read (| M.read (| start |) |))
-                              (M.read (| M.read (| end_ |) |))
+                            BinOp.le (|
+                              M.read (| M.read (| start |) |),
+                              M.read (| M.read (| end_ |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
@@ -5015,7 +5135,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5033,7 +5153,7 @@ Module iter.
               M.get_associated_function (| Ty.path "i128", "checked_add", [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5051,7 +5171,7 @@ Module iter.
               M.get_associated_function (| Ty.path "i128", "checked_sub", [] |),
               [ M.read (| start |); M.rust_cast (M.read (| n |)) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5061,10 +5181,10 @@ Module iter.
           (* Trait polymorphic types *) []
           (* Instance *)
           [
-            ("forward_unchecked", InstanceField.Method forward_unchecked);
-            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("forward", InstanceField.Method forward);
             ("backward", InstanceField.Method backward);
+            ("forward_unchecked", InstanceField.Method forward_unchecked);
+            ("backward_unchecked", InstanceField.Method backward_unchecked);
             ("steps_between", InstanceField.Method steps_between);
             ("forward_checked", InstanceField.Method forward_checked);
             ("backward_checked", InstanceField.Method backward_checked)
@@ -5121,7 +5241,7 @@ Module iter.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.le (M.read (| start |)) (M.read (| end_ |))
+                                            BinOp.le (| M.read (| start |), M.read (| end_ |) |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -5130,10 +5250,7 @@ Module iter.
                                         |) in
                                       let~ count :=
                                         M.alloc (|
-                                          BinOp.Wrap.sub
-                                            Integer.U32
-                                            (M.read (| end_ |))
-                                            (M.read (| start |))
+                                          BinOp.Wrap.sub (| M.read (| end_ |), M.read (| start |) |)
                                         |) in
                                       M.match_operator (|
                                         M.alloc (| Value.Tuple [] |),
@@ -5144,13 +5261,15 @@ Module iter.
                                                 M.use
                                                   (M.alloc (|
                                                     LogicalOp.and (|
-                                                      BinOp.Pure.lt
-                                                        (M.read (| start |))
-                                                        (Value.Integer 55296),
+                                                      BinOp.lt (|
+                                                        M.read (| start |),
+                                                        Value.Integer IntegerKind.U32 55296
+                                                      |),
                                                       ltac:(M.monadic
-                                                        (BinOp.Pure.le
-                                                          (Value.Integer 57344)
-                                                          (M.read (| end_ |))))
+                                                        (BinOp.le (|
+                                                          Value.Integer IntegerKind.U32 57344,
+                                                          M.read (| end_ |)
+                                                        |)))
                                                     |)
                                                   |)) in
                                               let _ :=
@@ -5181,10 +5300,10 @@ Module iter.
                                                         []
                                                       |),
                                                       [
-                                                        BinOp.Wrap.sub
-                                                          Integer.U32
-                                                          (M.read (| count |))
-                                                          (Value.Integer 2048)
+                                                        BinOp.Wrap.sub (|
+                                                          M.read (| count |),
+                                                          Value.Integer IntegerKind.U32 2048
+                                                        |)
                                                       ]
                                                     |)
                                                   ]
@@ -5233,7 +5352,7 @@ Module iter.
                     |)))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5347,9 +5466,15 @@ Module iter.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.and (|
-                                    BinOp.Pure.lt (M.read (| start |)) (Value.Integer 55296),
+                                    BinOp.lt (|
+                                      M.read (| start |),
+                                      Value.Integer IntegerKind.U32 55296
+                                    |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.le (Value.Integer 55296) (M.read (| res |))))
+                                      (BinOp.le (|
+                                        Value.Integer IntegerKind.U32 55296,
+                                        M.read (| res |)
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -5380,7 +5505,8 @@ Module iter.
                                               "forward_checked",
                                               []
                                             |),
-                                            [ M.read (| res |); Value.Integer 2048 ]
+                                            [ M.read (| res |); Value.Integer IntegerKind.Usize 2048
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -5447,10 +5573,11 @@ Module iter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.le
-                                  (M.read (| res |))
-                                  (M.rust_cast
-                                    (M.read (| M.get_constant (| "core::char::methods::MAX" |) |)))
+                                BinOp.le (|
+                                  M.read (| res |),
+                                  M.rust_cast
+                                    (M.read (| M.get_constant (| "core::char::methods::MAX" |) |))
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5475,7 +5602,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5585,9 +5712,15 @@ Module iter.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.and (|
-                                    BinOp.Pure.ge (M.read (| start |)) (Value.Integer 57344),
+                                    BinOp.ge (|
+                                      M.read (| start |),
+                                      Value.Integer IntegerKind.U32 57344
+                                    |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.gt (Value.Integer 57344) (M.read (| res |))))
+                                      (BinOp.gt (|
+                                        Value.Integer IntegerKind.U32 57344,
+                                        M.read (| res |)
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -5618,7 +5751,8 @@ Module iter.
                                               "backward_checked",
                                               []
                                             |),
-                                            [ M.read (| res |); Value.Integer 2048 ]
+                                            [ M.read (| res |); Value.Integer IntegerKind.Usize 2048
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -5689,7 +5823,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5739,9 +5873,15 @@ Module iter.
                           M.use
                             (M.alloc (|
                               LogicalOp.and (|
-                                BinOp.Pure.lt (M.read (| start |)) (Value.Integer 55296),
+                                BinOp.lt (|
+                                  M.read (| start |),
+                                  Value.Integer IntegerKind.U32 55296
+                                |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.le (Value.Integer 55296) (M.read (| res |))))
+                                  (BinOp.le (|
+                                    Value.Integer IntegerKind.U32 55296,
+                                    M.read (| res |)
+                                  |)))
                               |)
                             |)) in
                         let _ :=
@@ -5757,7 +5897,7 @@ Module iter.
                                 "forward_unchecked",
                                 []
                               |),
-                              [ M.read (| res |); Value.Integer 2048 ]
+                              [ M.read (| res |); Value.Integer IntegerKind.Usize 2048 ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -5771,7 +5911,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5821,9 +5961,15 @@ Module iter.
                           M.use
                             (M.alloc (|
                               LogicalOp.and (|
-                                BinOp.Pure.ge (M.read (| start |)) (Value.Integer 57344),
+                                BinOp.ge (|
+                                  M.read (| start |),
+                                  Value.Integer IntegerKind.U32 57344
+                                |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.gt (Value.Integer 57344) (M.read (| res |))))
+                                  (BinOp.gt (|
+                                    Value.Integer IntegerKind.U32 57344,
+                                    M.read (| res |)
+                                  |)))
                               |)
                             |)) in
                         let _ :=
@@ -5839,7 +5985,7 @@ Module iter.
                                 "backward_unchecked",
                                 []
                               |),
-                              [ M.read (| res |); Value.Integer 2048 ]
+                              [ M.read (| res |); Value.Integer IntegerKind.Usize 2048 ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -5853,7 +5999,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5934,7 +6080,7 @@ Module iter.
                     |)))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6049,7 +6195,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6170,7 +6316,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6224,7 +6370,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6278,7 +6424,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6359,7 +6505,7 @@ Module iter.
                     |)))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6410,7 +6556,7 @@ Module iter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6461,7 +6607,7 @@ Module iter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6506,7 +6652,7 @@ Module iter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6551,7 +6697,7 @@ Module iter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6632,7 +6778,7 @@ Module iter.
                     |)))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6683,7 +6829,7 @@ Module iter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6734,7 +6880,7 @@ Module iter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6779,7 +6925,7 @@ Module iter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6824,7 +6970,7 @@ Module iter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6928,7 +7074,7 @@ Module iter.
                                       |)
                                     ]
                                   |);
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.Usize 1
                                 ]
                               |);
                               M.read (| Value.String "`Step` invariants not upheld" |)
@@ -6958,7 +7104,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -7099,7 +7245,7 @@ Module iter.
                                                         |),
                                                         [ plus_n ]
                                                       |);
-                                                      Value.Integer 1
+                                                      Value.Integer IntegerKind.Usize 1
                                                     ]
                                                   |);
                                                   M.read (|
@@ -7143,11 +7289,11 @@ Module iter.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          default fn spec_advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          default fn spec_advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               let available = if self.start <= self.end {
                   Step::steps_between(&self.start, &self.end).unwrap_or(usize::MAX)
               } else {
@@ -7159,7 +7305,7 @@ Module iter.
               self.start =
                   Step::forward_checked(self.start.clone(), taken).expect("`Step` invariants not upheld");
       
-              NonZeroUsize::new(n - taken).map_or(Ok(()), Err)
+              NonZero::new(n - taken).map_or(Ok(()), Err)
           }
       *)
       Definition spec_advance_by
@@ -7242,7 +7388,7 @@ Module iter.
                               ]
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                     ]
                   |)
                 |) in
@@ -7299,29 +7445,35 @@ Module iter.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
-                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| taken |)) ]
+                      [ BinOp.Wrap.sub (| M.read (| n |), M.read (| taken |) |) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -7329,7 +7481,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -7419,7 +7571,7 @@ Module iter.
                                       |)
                                     ]
                                   |);
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.Usize 1
                                 ]
                               |);
                               M.read (| Value.String "`Step` invariants not upheld" |)
@@ -7448,7 +7600,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -7583,7 +7735,10 @@ Module iter.
                                                       "backward_checked",
                                                       []
                                                     |),
-                                                    [ M.read (| minus_n |); Value.Integer 1 ]
+                                                    [
+                                                      M.read (| minus_n |);
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    ]
                                                   |);
                                                   M.read (|
                                                     Value.String "`Step` invariants not upheld"
@@ -7643,11 +7798,11 @@ Module iter.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          default fn spec_advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          default fn spec_advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               let available = if self.start <= self.end {
                   Step::steps_between(&self.start, &self.end).unwrap_or(usize::MAX)
               } else {
@@ -7659,7 +7814,7 @@ Module iter.
               self.end =
                   Step::backward_checked(self.end.clone(), taken).expect("`Step` invariants not upheld");
       
-              NonZeroUsize::new(n - taken).map_or(Ok(()), Err)
+              NonZero::new(n - taken).map_or(Ok(()), Err)
           }
       *)
       Definition spec_advance_back_by
@@ -7742,7 +7897,7 @@ Module iter.
                               ]
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                     ]
                   |)
                 |) in
@@ -7799,29 +7954,35 @@ Module iter.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
-                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| taken |)) ]
+                      [ BinOp.Wrap.sub (| M.read (| n |), M.read (| taken |) |) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -7829,7 +7990,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7920,7 +8081,7 @@ Module iter.
                               "forward_unchecked",
                               []
                             |),
-                            [ M.read (| old |); Value.Integer 1 ]
+                            [ M.read (| old |); Value.Integer IntegerKind.Usize 1 ]
                           |)
                         |) in
                       M.alloc (|
@@ -7932,7 +8093,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8043,7 +8204,10 @@ Module iter.
                                                   "forward_unchecked",
                                                   []
                                                 |),
-                                                [ M.read (| plus_n |); Value.Integer 1 ]
+                                                [
+                                                  M.read (| plus_n |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
                                               |)
                                             |) in
                                           M.return_ (|
@@ -8078,11 +8242,11 @@ Module iter.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn spec_advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn spec_advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               let available = if self.start <= self.end {
                   Step::steps_between(&self.start, &self.end).unwrap_or(usize::MAX)
               } else {
@@ -8097,7 +8261,7 @@ Module iter.
               // Otherwise 0 is returned which always safe to use.
               self.start = unsafe { Step::forward_unchecked(self.start, taken) };
       
-              NonZeroUsize::new(n - taken).map_or(Ok(()), Err)
+              NonZero::new(n - taken).map_or(Ok(()), Err)
           }
       *)
       Definition spec_advance_by
@@ -8180,7 +8344,7 @@ Module iter.
                               ]
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                     ]
                   |)
                 |) in
@@ -8224,29 +8388,35 @@ Module iter.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
-                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| taken |)) ]
+                      [ BinOp.Wrap.sub (| M.read (| n |), M.read (| taken |) |) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -8254,7 +8424,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8328,7 +8498,7 @@ Module iter.
                                   "end"
                                 |)
                               |);
-                              Value.Integer 1
+                              Value.Integer IntegerKind.Usize 1
                             ]
                           |)
                         |) in
@@ -8351,7 +8521,7 @@ Module iter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8467,7 +8637,10 @@ Module iter.
                                                   "backward_unchecked",
                                                   []
                                                 |),
-                                                [ M.read (| minus_n |); Value.Integer 1 ]
+                                                [
+                                                  M.read (| minus_n |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
                                               |)
                                             |) in
                                           M.return_ (|
@@ -8510,11 +8683,11 @@ Module iter.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn spec_advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn spec_advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               let available = if self.start <= self.end {
                   Step::steps_between(&self.start, &self.end).unwrap_or(usize::MAX)
               } else {
@@ -8526,7 +8699,7 @@ Module iter.
               // SAFETY: same as the spec_advance_by() implementation
               self.end = unsafe { Step::backward_unchecked(self.end, taken) };
       
-              NonZeroUsize::new(n - taken).map_or(Ok(()), Err)
+              NonZero::new(n - taken).map_or(Ok(()), Err)
           }
       *)
       Definition spec_advance_back_by
@@ -8609,7 +8782,7 @@ Module iter.
                               ]
                             |)
                           |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                     ]
                   |)
                 |) in
@@ -8653,29 +8826,35 @@ Module iter.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
-                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| taken |)) ]
+                      [ BinOp.Wrap.sub (| M.read (| n |), M.read (| taken |) |) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -8683,7 +8862,7 @@ Module iter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8730,7 +8909,7 @@ Module iter.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8821,14 +9000,16 @@ Module iter.
                       (M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8905,11 +9086,11 @@ Module iter.
                           ]
                         |)
                       |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Integer 0 |)))
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8934,7 +9115,7 @@ Module iter.
               |),
               [ M.read (| self |); M.read (| n |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8958,7 +9139,7 @@ Module iter.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8985,7 +9166,7 @@ Module iter.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -9012,7 +9193,7 @@ Module iter.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -9027,11 +9208,11 @@ Module iter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Bool true))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               self.spec_advance_by(n)
           }
       *)
@@ -9052,7 +9233,7 @@ Module iter.
               |),
               [ M.read (| self |); M.read (| n |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -9095,7 +9276,7 @@ Module iter.
                 M.read (| idx |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9560,7 +9741,7 @@ Module iter.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -9585,11 +9766,11 @@ Module iter.
               |),
               [ M.read (| self |); M.read (| n |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               self.spec_advance_back_by(n)
           }
       *)
@@ -9615,7 +9796,7 @@ Module iter.
               |),
               [ M.read (| self |); M.read (| n |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9691,7 +9872,7 @@ Module iter.
                           |)
                         ]
                       |);
-                      Value.Integer 1
+                      Value.Integer IntegerKind.Usize 1
                     ]
                   |)
                 |) in
@@ -9713,7 +9894,7 @@ Module iter.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -9732,7 +9913,7 @@ Module iter.
                 M.read (| M.get_constant (| "core::num::MAX" |) |);
                 Value.StructTuple "core::option::Option::None" []
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -9783,13 +9964,13 @@ Module iter.
                         M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
                         [ plus_n ]
                       |);
-                      Value.Integer 1
+                      Value.Integer IntegerKind.Usize 1
                     ]
                   |)
                 |) in
               M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| plus_n |) ] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9969,7 +10150,7 @@ Module iter.
                                                   |)
                                                 ]
                                               |);
-                                              Value.Integer 1
+                                              Value.Integer IntegerKind.Usize 1
                                             ]
                                           |);
                                           M.read (| Value.String "`Step` invariants not upheld" |)
@@ -10025,7 +10206,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -10190,7 +10371,7 @@ Module iter.
                                                 |)
                                               ]
                                             |);
-                                            Value.Integer 1
+                                            Value.Integer IntegerKind.Usize 1
                                           ]
                                         |);
                                         M.read (| Value.String "`Step` invariants not upheld" |)
@@ -10453,7 +10634,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -10587,7 +10768,7 @@ Module iter.
                                                   |)
                                                 ]
                                               |);
-                                              Value.Integer 1
+                                              Value.Integer IntegerKind.Usize 1
                                             ]
                                           |);
                                           M.read (| Value.String "`Step` invariants not upheld" |)
@@ -10643,7 +10824,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -10808,7 +10989,7 @@ Module iter.
                                                 |)
                                               ]
                                             |);
-                                            Value.Integer 1
+                                            Value.Integer IntegerKind.Usize 1
                                           ]
                                         |);
                                         M.read (| Value.String "`Step` invariants not upheld" |)
@@ -11071,7 +11252,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11102,11 +11283,11 @@ Module iter.
               let is_iterating = self.start < self.end;
               Some(if is_iterating {
                   // SAFETY: just checked precondition
-                  let n = unsafe { Step::forward_unchecked(self.start.clone(), 1) };
+                  let n = unsafe { Step::forward_unchecked(self.start, 1) };
                   mem::replace(&mut self.start, n)
               } else {
                   self.exhausted = true;
-                  self.start.clone()
+                  self.start
               })
           }
       *)
@@ -11197,23 +11378,14 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::clone::Clone",
-                                              T,
-                                              [],
-                                              "clone",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::ops::range::RangeInclusive",
-                                                "start"
-                                              |)
-                                            ]
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::ops::range::RangeInclusive",
+                                              "start"
+                                            |)
                                           |);
-                                          Value.Integer 1
+                                          Value.Integer IntegerKind.Usize 1
                                         ]
                                       |)
                                     |) in
@@ -11241,23 +11413,10 @@ Module iter.
                                       |),
                                       Value.Bool true
                                     |) in
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::clone::Clone",
-                                        T,
-                                        [],
-                                        "clone",
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "start"
-                                        |)
-                                      ]
-                                    |)
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::ops::range::RangeInclusive",
+                                    "start"
                                   |)))
                             ]
                           |)
@@ -11266,7 +11425,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -11284,7 +11443,7 @@ Module iter.
       
               while self.start < self.end {
                   // SAFETY: just checked precondition
-                  let n = unsafe { Step::forward_unchecked(self.start.clone(), 1) };
+                  let n = unsafe { Step::forward_unchecked(self.start, 1) };
                   let n = mem::replace(&mut self.start, n);
                   accum = f(accum, n)?;
               }
@@ -11292,7 +11451,7 @@ Module iter.
               self.exhausted = true;
       
               if self.start == self.end {
-                  accum = f(accum, self.start.clone())?;
+                  accum = f(accum, self.start)?;
               }
       
               try { accum }
@@ -11408,23 +11567,14 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::clone::Clone",
-                                            T,
-                                            [],
-                                            "clone",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::ops::range::RangeInclusive",
-                                              "start"
-                                            |)
-                                          ]
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::ops::range::RangeInclusive",
+                                            "start"
+                                          |)
                                         |);
-                                        Value.Integer 1
+                                        Value.Integer IntegerKind.Usize 1
                                       ]
                                     |)
                                   |) in
@@ -11602,21 +11752,12 @@ Module iter.
                                               Value.Tuple
                                                 [
                                                   M.read (| accum |);
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::clone::Clone",
-                                                      T,
-                                                      [],
-                                                      "clone",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::ops::range::RangeInclusive",
-                                                        "start"
-                                                      |)
-                                                    ]
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::ops::range::RangeInclusive",
+                                                      "start"
+                                                    |)
                                                   |)
                                                 ]
                                             ]
@@ -11684,7 +11825,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -11695,11 +11836,11 @@ Module iter.
               let is_iterating = self.start < self.end;
               Some(if is_iterating {
                   // SAFETY: just checked precondition
-                  let n = unsafe { Step::backward_unchecked(self.end.clone(), 1) };
+                  let n = unsafe { Step::backward_unchecked(self.end, 1) };
                   mem::replace(&mut self.end, n)
               } else {
                   self.exhausted = true;
-                  self.end.clone()
+                  self.end
               })
           }
       *)
@@ -11795,23 +11936,14 @@ Module iter.
                                           []
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::clone::Clone",
-                                              T,
-                                              [],
-                                              "clone",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::ops::range::RangeInclusive",
-                                                "end"
-                                              |)
-                                            ]
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "core::ops::range::RangeInclusive",
+                                              "end"
+                                            |)
                                           |);
-                                          Value.Integer 1
+                                          Value.Integer IntegerKind.Usize 1
                                         ]
                                       |)
                                     |) in
@@ -11839,23 +11971,10 @@ Module iter.
                                       |),
                                       Value.Bool true
                                     |) in
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::clone::Clone",
-                                        T,
-                                        [],
-                                        "clone",
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "core::ops::range::RangeInclusive",
-                                          "end"
-                                        |)
-                                      ]
-                                    |)
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::ops::range::RangeInclusive",
+                                    "end"
                                   |)))
                             ]
                           |)
@@ -11864,7 +11983,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -11882,7 +12001,7 @@ Module iter.
       
               while self.start < self.end {
                   // SAFETY: just checked precondition
-                  let n = unsafe { Step::backward_unchecked(self.end.clone(), 1) };
+                  let n = unsafe { Step::backward_unchecked(self.end, 1) };
                   let n = mem::replace(&mut self.end, n);
                   accum = f(accum, n)?;
               }
@@ -11890,7 +12009,7 @@ Module iter.
               self.exhausted = true;
       
               if self.start == self.end {
-                  accum = f(accum, self.start.clone())?;
+                  accum = f(accum, self.start)?;
               }
       
               try { accum }
@@ -12006,23 +12125,14 @@ Module iter.
                                         []
                                       |),
                                       [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::clone::Clone",
-                                            T,
-                                            [],
-                                            "clone",
-                                            []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "core::ops::range::RangeInclusive",
-                                              "end"
-                                            |)
-                                          ]
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "core::ops::range::RangeInclusive",
+                                            "end"
+                                          |)
                                         |);
-                                        Value.Integer 1
+                                        Value.Integer IntegerKind.Usize 1
                                       ]
                                     |)
                                   |) in
@@ -12200,21 +12310,12 @@ Module iter.
                                               Value.Tuple
                                                 [
                                                   M.read (| accum |);
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::clone::Clone",
-                                                      T,
-                                                      [],
-                                                      "clone",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::ops::range::RangeInclusive",
-                                                        "start"
-                                                      |)
-                                                    ]
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "core::ops::range::RangeInclusive",
+                                                      "start"
+                                                    |)
                                                   |)
                                                 ]
                                             ]
@@ -12282,7 +12383,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12328,7 +12429,7 @@ Module iter.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12381,10 +12482,10 @@ Module iter.
                                   M.return_ (|
                                     Value.Tuple
                                       [
-                                        Value.Integer 0;
+                                        Value.Integer IntegerKind.Usize 0;
                                         Value.StructTuple
                                           "core::option::Option::Some"
-                                          [ Value.Integer 0 ]
+                                          [ Value.Integer IntegerKind.Usize 0 ]
                                       ]
                                   |)
                                 |)
@@ -12436,7 +12537,7 @@ Module iter.
                                     "saturating_add",
                                     []
                                   |),
-                                  [ M.read (| hint |); Value.Integer 1 ]
+                                  [ M.read (| hint |); Value.Integer IntegerKind.Usize 1 ]
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
@@ -12444,7 +12545,7 @@ Module iter.
                                     "checked_add",
                                     []
                                   |),
-                                  [ M.read (| hint |); Value.Integer 1 ]
+                                  [ M.read (| hint |); Value.Integer IntegerKind.Usize 1 ]
                                 |)
                               ]
                           |)));
@@ -12462,7 +12563,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12509,7 +12610,9 @@ Module iter.
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| Value.Integer 0 |) |) |)
+                              M.never_to_any (|
+                                M.read (| M.return_ (| Value.Integer IntegerKind.Usize 0 |) |)
+                              |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
@@ -12560,23 +12663,27 @@ Module iter.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let steps := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "usize",
-                                                "checked_add",
-                                                []
-                                              |),
-                                              [ M.read (| steps |); Value.Integer 1 ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let steps := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "usize",
+                                                  "checked_add",
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (| steps |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |);
@@ -12586,7 +12693,7 @@ Module iter.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12764,7 +12871,7 @@ Module iter.
                                                     |),
                                                     [ plus_n ]
                                                   |);
-                                                  Value.Integer 1
+                                                  Value.Integer IntegerKind.Usize 1
                                                 ]
                                               |)
                                             |) in
@@ -12860,7 +12967,7 @@ Module iter.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12891,7 +12998,7 @@ Module iter.
               |),
               [ M.read (| self |); M.read (| init |); M.read (| f |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12945,7 +13052,7 @@ Module iter.
                 0
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12969,7 +13076,7 @@ Module iter.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12996,7 +13103,7 @@ Module iter.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13023,7 +13130,7 @@ Module iter.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13038,7 +13145,7 @@ Module iter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Bool true))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13088,7 +13195,7 @@ Module iter.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13269,7 +13376,7 @@ Module iter.
                                                     |),
                                                     [ minus_n ]
                                                   |);
-                                                  Value.Integer 1
+                                                  Value.Integer IntegerKind.Usize 1
                                                 ]
                                               |)
                                             |) in
@@ -13365,7 +13472,7 @@ Module iter.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13396,7 +13503,7 @@ Module iter.
               |),
               [ M.read (| self |); M.read (| init |); M.read (| f |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13450,7 +13557,7 @@ Module iter.
                 0
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

@@ -41,7 +41,7 @@ Module inspector.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -72,18 +72,16 @@ Module inspector.
                 M.read (| f |);
                 M.read (| Value.String "CustomPrintTracer" |);
                 M.read (| Value.String "gas_inspector" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::inspector::customprinter::CustomPrintTracer",
-                      "gas_inspector"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm::inspector::customprinter::CustomPrintTracer",
+                    "gas_inspector"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -117,7 +115,7 @@ Module inspector.
                     []
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -174,7 +172,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -281,377 +279,374 @@ Module inspector.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "depth:" |);
-                                    M.read (| Value.String ", PC:" |);
-                                    M.read (| Value.String ", gas:" |);
-                                    M.read (| Value.String "(" |);
-                                    M.read (| Value.String "), OPCODE: " |);
-                                    M.read (| Value.String "(" |);
-                                    M.read (| Value.String ")  refund:" |);
-                                    M.read (| Value.String "(" |);
-                                    M.read (| Value.String ") Stack:" |);
-                                    M.read (| Value.String ", Data size:" |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "depth:" |);
+                                  M.read (| Value.String ", PC:" |);
+                                  M.read (| Value.String ", gas:" |);
+                                  M.read (| Value.String "(" |);
+                                  M.read (| Value.String "), OPCODE: " |);
+                                  M.read (| Value.String "(" |);
+                                  M.read (| Value.String ")  refund:" |);
+                                  M.read (| Value.String "(" |);
+                                  M.read (| Value.String ") Stack:" |);
+                                  M.read (| Value.String ", Data size:" |);
+                                  M.read (| Value.String "
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "u64" ]
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "revm::journaled_state::JournaledState",
-                                              "depth",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::ops::deref::Deref",
-                                                    Ty.apply
-                                                      (Ty.path
-                                                        "revm::context::evm_context::EvmContext")
-                                                      []
-                                                      [ DB ],
-                                                    [],
-                                                    "deref",
-                                                    []
-                                                  |),
-                                                  [ M.read (| context |) ]
-                                                |),
-                                                "revm::context::inner_evm_context::InnerEvmContext",
-                                                "journaled_state"
-                                              |)
-                                            ]
-                                          |)
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "revm_interpreter::interpreter::Interpreter",
-                                              "program_counter",
-                                              []
-                                            |),
-                                            [ M.read (| interp |) ]
-                                          |)
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_lower_hex",
-                                        [ Ty.path "u64" ]
-                                      |),
-                                      [ gas_remaining ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "u64" ]
-                                      |),
-                                      [ gas_remaining ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                      |),
-                                      [ name ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "u8" ]
-                                      |),
-                                      [ opcode ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_lower_hex",
-                                        [ Ty.path "i64" ]
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "revm_interpreter::gas::Gas",
-                                              "refunded",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| interp |),
-                                                "revm_interpreter::interpreter::Interpreter",
-                                                "gas"
-                                              |)
-                                            ]
-                                          |)
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "i64" ]
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "revm_interpreter::gas::Gas",
-                                              "refunded",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| interp |),
-                                                "revm_interpreter::interpreter::Interpreter",
-                                                "gas"
-                                              |)
-                                            ]
-                                          |)
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "&")
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u64" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm::journaled_state::JournaledState",
+                                            "depth",
                                             []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
-                                                []
-                                                [
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::deref::Deref",
                                                   Ty.apply
-                                                    (Ty.path "ruint::Uint")
-                                                    [ Value.Integer 256; Value.Integer 4 ]
-                                                    [];
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
-                                        ]
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "revm_interpreter::interpreter::stack::Stack",
-                                              "data",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| interp |),
-                                                "revm_interpreter::interpreter::Interpreter",
-                                                "stack"
-                                              |)
-                                            ]
-                                          |)
+                                                    (Ty.path
+                                                      "revm::context::evm_context::EvmContext")
+                                                    []
+                                                    [ DB ],
+                                                  [],
+                                                  "deref",
+                                                  []
+                                                |),
+                                                [ M.read (| context |) ]
+                                              |),
+                                              "revm::context::inner_evm_context::InnerEvmContext",
+                                              "journaled_state"
+                                            |)
+                                          ]
                                         |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [ memory_size ]
-                                    |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "usize" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_interpreter::interpreter::Interpreter",
+                                            "program_counter",
+                                            []
+                                          |),
+                                          [ M.read (| interp |) ]
+                                        |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_lower_hex",
+                                      [ Ty.path "u64" ]
+                                    |),
+                                    [ gas_remaining ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u64" ]
+                                    |),
+                                    [ gas_remaining ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    |),
+                                    [ name ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "u8" ]
+                                    |),
+                                    [ opcode ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_lower_hex",
+                                      [ Ty.path "i64" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_interpreter::gas::Gas",
+                                            "refunded",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| interp |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "gas"
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "i64" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_interpreter::gas::Gas",
+                                            "refunded",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| interp |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "gas"
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
                                       [
-                                        Value.Integer 0;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "ruint::Uint")
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
+                                                  [];
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
+                                          ]
                                       ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer 1;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer 2;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 4;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer 3;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer 4;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer 5;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer 6;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 4;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer 7;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer 8;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Placeholder",
-                                        "new",
-                                        []
-                                      |),
-                                      [
-                                        Value.Integer 9;
-                                        Value.UnicodeChar 32;
-                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                        Value.Integer 0;
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                      ]
-                                    |)
-                                  ]
-                              |));
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "revm_interpreter::interpreter::stack::Stack",
+                                            "data",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| interp |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "stack"
+                                            |)
+                                          ]
+                                        |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "usize" ]
+                                    |),
+                                    [ memory_size ]
+                                  |)
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 0;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 0;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 1;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 0;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 2;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 4;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 3;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 0;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 4;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 0;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 5;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 0;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 6;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 4;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 7;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 0;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 8;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 0;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Placeholder",
+                                      "new",
+                                      []
+                                    |),
+                                    [
+                                      Value.Integer IntegerKind.Usize 9;
+                                      Value.UnicodeChar 32;
+                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                      Value.Integer IntegerKind.U32 0;
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                    ]
+                                  |)
+                                ]
+                            |);
                             M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "core::fmt::rt::UnsafeArg",
@@ -689,7 +684,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -729,7 +724,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -770,7 +765,7 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -811,7 +806,7 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -854,137 +849,133 @@ Module inspector.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "SM Address: " |);
-                                    M.read (| Value.String ", caller:" |);
-                                    M.read (| Value.String ",target:" |);
-                                    M.read (| Value.String " is_static:" |);
-                                    M.read (| Value.String ", transfer:" |);
-                                    M.read (| Value.String ", input_size:" |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "SM Address: " |);
+                                  M.read (| Value.String ", caller:" |);
+                                  M.read (| Value.String ",target:" |);
+                                  M.read (| Value.String " is_static:" |);
+                                  M.read (| Value.String ", transfer:" |);
+                                  M.read (| Value.String ", input_size:" |);
+                                  M.read (| Value.String "
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "alloy_primitives::bits::address::Address" ]
-                                      |),
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| inputs |),
+                                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                        "bytecode_address"
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| inputs |),
+                                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                        "caller"
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| inputs |),
+                                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                        "target_address"
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "bool" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| inputs |),
+                                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                        "is_static"
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| inputs |),
-                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                          "bytecode_address"
-                                        |)
+                                        Ty.path
+                                          "revm_interpreter::interpreter_action::call_inputs::CallValue"
                                       ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "alloy_primitives::bits::address::Address" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| inputs |),
-                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                          "caller"
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| inputs |),
+                                        "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                        "value"
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "usize" ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "bytes::bytes::Bytes",
+                                            "len",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::deref::Deref",
+                                                Ty.path "alloy_primitives::bytes_::Bytes",
+                                                [],
+                                                "deref",
+                                                []
+                                              |),
+                                              [
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| inputs |),
+                                                  "revm_interpreter::interpreter_action::call_inputs::CallInputs",
+                                                  "input"
+                                                |)
+                                              ]
+                                            |)
+                                          ]
                                         |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "alloy_primitives::bits::address::Address" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| inputs |),
-                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                          "target_address"
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "bool" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| inputs |),
-                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                          "is_static"
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.path
-                                            "revm_interpreter::interpreter_action::call_inputs::CallValue"
-                                        ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| inputs |),
-                                          "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                          "value"
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "bytes::bytes::Bytes",
-                                              "len",
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::deref::Deref",
-                                                  Ty.path "alloy_primitives::bytes_::Bytes",
-                                                  [],
-                                                  "deref",
-                                                  []
-                                                |),
-                                                [
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| inputs |),
-                                                    "revm_interpreter::interpreter_action::call_inputs::CallInputs",
-                                                    "input"
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |)
-                                      ]
-                                    |)
-                                  ]
-                              |))
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -993,7 +984,7 @@ Module inspector.
                 M.alloc (| Value.Tuple [] |) in
               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1031,102 +1022,101 @@ Module inspector.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "CREATE CALL: caller:" |);
-                                    M.read (| Value.String ", scheme:" |);
-                                    M.read (| Value.String ", value:" |);
-                                    M.read (| Value.String ", init_code:" |);
-                                    M.read (| Value.String ", gas:" |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "CREATE CALL: caller:" |);
+                                  M.read (| Value.String ", scheme:" |);
+                                  M.read (| Value.String ", value:" |);
+                                  M.read (| Value.String ", init_code:" |);
+                                  M.read (| Value.String ", gas:" |);
+                                  M.read (| Value.String "
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "alloy_primitives::bits::address::Address" ]
-                                      |),
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| inputs |),
+                                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                                        "caller"
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "revm_primitives::env::CreateScheme" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| inputs |),
+                                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                                        "scheme"
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| inputs |),
-                                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                                          "caller"
-                                        |)
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
                                       ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "revm_primitives::env::CreateScheme" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| inputs |),
-                                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                                          "scheme"
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
-                                            []
-                                        ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| inputs |),
-                                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                                          "value"
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| inputs |),
-                                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                                          "init_code"
-                                        |)
-                                      ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "u64" ]
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| inputs |),
-                                          "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                                          "gas_limit"
-                                        |)
-                                      ]
-                                    |)
-                                  ]
-                              |))
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| inputs |),
+                                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                                        "value"
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| inputs |),
+                                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                                        "init_code"
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "u64" ]
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| inputs |),
+                                        "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                                        "gas_limit"
+                                      |)
+                                    ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -1135,7 +1125,7 @@ Module inspector.
                 M.alloc (| Value.Tuple [] |) in
               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1174,54 +1164,53 @@ Module inspector.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "SELFDESTRUCT: contract: " |);
-                                    M.read (| Value.String ", refund target: " |);
-                                    M.read (| Value.String ", value " |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "SELFDESTRUCT: contract: " |);
+                                  M.read (| Value.String ", refund target: " |);
+                                  M.read (| Value.String ", value " |);
+                                  M.read (| Value.String "
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "alloy_primitives::bits::address::Address" ]
-                                      |),
-                                      [ contract ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.path "alloy_primitives::bits::address::Address" ]
-                                      |),
-                                      [ target ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
-                                            []
-                                        ]
-                                      |),
-                                      [ value ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                    |),
+                                    [ contract ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                    |),
+                                    [ target ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      ]
+                                    |),
+                                    [ value ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -1230,7 +1219,7 @@ Module inspector.
                 M.alloc (| Value.Tuple [] |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

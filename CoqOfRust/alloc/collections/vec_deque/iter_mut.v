@@ -35,7 +35,7 @@ Module collections.
               Value.StructRecord
                 "alloc::collections::vec_deque::iter_mut::IterMut"
                 [ ("i1", M.read (| i1 |)); ("i2", M.read (| i2 |)) ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -90,49 +90,45 @@ Module collections.
                               [ M.read (| f |); M.read (| Value.String "IterMut" |) ]
                             |)
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                                  "as_slice",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::vec_deque::iter_mut::IterMut",
-                                    "i1"
-                                  |)
-                                ]
-                              |)
-                            |))
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                                "as_slice",
+                                []
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::iter_mut::IterMut",
+                                  "i1"
+                                |)
+                              ]
+                            |)
+                          |)
                         ]
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                              "as_slice",
-                              []
-                            |),
-                            [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "alloc::collections::vec_deque::iter_mut::IterMut",
-                                "i2"
-                              |)
-                            ]
-                          |)
-                        |))
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                            "as_slice",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::collections::vec_deque::iter_mut::IterMut",
+                              "i2"
+                            |)
+                          ]
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -143,6 +139,58 @@ Module collections.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
       End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
+      
+      Module Impl_core_default_Default_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
+        Definition Self (T : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "alloc::collections::vec_deque::iter_mut::IterMut") [] [ T ].
+        
+        (*
+            fn default() -> Self {
+                IterMut { i1: Default::default(), i2: Default::default() }
+            }
+        *)
+        Definition default (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self T in
+          match ε, τ, α with
+          | [], [], [] =>
+            ltac:(M.monadic
+              (Value.StructRecord
+                "alloc::collections::vec_deque::iter_mut::IterMut"
+                [
+                  ("i1",
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |));
+                  ("i2",
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::default::Default",
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                        [],
+                        "default",
+                        []
+                      |),
+                      []
+                    |))
+                ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom Implements :
+          forall (T : Ty.t),
+          M.IsTraitInstance
+            "core::default::Default"
+            (Self T)
+            (* Trait polymorphic types *) []
+            (* Instance *) [ ("default", InstanceField.Method (default T)) ].
+      End Impl_core_default_Default_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
       
       Module Impl_core_iter_traits_iterator_Iterator_for_alloc_collections_vec_deque_iter_mut_IterMut_T.
         Definition Self (T : Ty.t) : Ty.t :=
@@ -251,11 +299,11 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 match self.i1.advance_by(n) {
                     Ok(()) => return Ok(()),
                     Err(remaining) => {
@@ -365,7 +413,10 @@ Module collections.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ],
                                       "get",
                                       []
                                     |),
@@ -378,7 +429,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -418,7 +469,7 @@ Module collections.
                     ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -485,7 +536,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -606,7 +657,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -630,7 +681,7 @@ Module collections.
                 |),
                 [ self ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -689,7 +740,7 @@ Module collections.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt (M.read (| idx |)) (M.read (| i1_len |))
+                                  BinOp.lt (| M.read (| idx |), M.read (| i1_len |) |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -729,10 +780,7 @@ Module collections.
                                     "alloc::collections::vec_deque::iter_mut::IterMut",
                                     "i2"
                                   |);
-                                  BinOp.Wrap.sub
-                                    Integer.Usize
-                                    (M.read (| idx |))
-                                    (M.read (| i1_len |))
+                                  BinOp.Wrap.sub (| M.read (| idx |), M.read (| i1_len |) |)
                                 ]
                               |)
                             |)))
@@ -741,7 +789,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -867,11 +915,11 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 match self.i2.advance_back_by(n) {
                     Ok(()) => return Ok(()),
                     Err(remaining) => {
@@ -981,7 +1029,10 @@ Module collections.
                                   |);
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ],
                                       "get",
                                       []
                                     |),
@@ -994,7 +1045,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1061,7 +1112,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1182,7 +1233,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1215,9 +1266,8 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.add
-                Integer.Usize
-                (M.call_closure (|
+              BinOp.Wrap.add (|
+                M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1232,8 +1282,8 @@ Module collections.
                       "i1"
                     |)
                   ]
-                |))
-                (M.call_closure (|
+                |),
+                M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
                     Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
@@ -1248,8 +1298,9 @@ Module collections.
                       "i2"
                     |)
                   ]
-                |))))
-          | _, _, _ => M.impossible
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1298,7 +1349,7 @@ Module collections.
                     ]
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

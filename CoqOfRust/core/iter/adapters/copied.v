@@ -38,7 +38,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -72,18 +72,16 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "Copied" |);
                   M.read (| Value.String "it" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::copied::Copied",
-                        "it"
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::adapters::copied::Copied",
+                      "it"
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -113,7 +111,7 @@ Module iter.
               Value.StructRecord
                 "core::iter::adapters::copied::Copied"
                 [ ("it", M.read (| it |)) ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -136,36 +134,37 @@ Module iter.
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let acc := M.copy (| γ |) in
-                            M.match_operator (|
-                              M.alloc (| α1 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
-                                    let elt := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::FnMut",
-                                        impl_FnMut_Acc__T__arrow_Acc,
-                                        [ Ty.tuple [ Acc; T ] ],
-                                        "call_mut",
-                                        []
-                                      |),
-                                      [ f; Value.Tuple [ M.read (| acc |); M.read (| elt |) ] ]
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let acc := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ := M.read (| γ |) in
+                                      let elt := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::function::FnMut",
+                                          impl_FnMut_Acc__T__arrow_Acc,
+                                          [ Ty.tuple [ Acc; T ] ],
+                                          "call_mut",
+                                          []
+                                        |),
+                                        [ f; Value.Tuple [ M.read (| acc |); M.read (| elt |) ] ]
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_copy_fold : M.IsFunction "core::iter::adapters::copied::copy_fold" copy_fold.
@@ -189,36 +188,37 @@ Module iter.
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let acc := M.copy (| γ |) in
-                            M.match_operator (|
-                              M.alloc (| α1 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
-                                    let elt := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::FnMut",
-                                        impl_FnMut_Acc__T__arrow_R,
-                                        [ Ty.tuple [ Acc; T ] ],
-                                        "call_mut",
-                                        []
-                                      |),
-                                      [ f; Value.Tuple [ M.read (| acc |); M.read (| elt |) ] ]
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let acc := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ := M.read (| γ |) in
+                                      let elt := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::ops::function::FnMut",
+                                          impl_FnMut_Acc__T__arrow_R,
+                                          [ Ty.tuple [ Acc; T ] ],
+                                          "call_mut",
+                                          []
+                                        |),
+                                        [ f; Value.Tuple [ M.read (| acc |); M.read (| elt |) ] ]
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_copy_try_fold :
@@ -271,7 +271,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -311,7 +311,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -346,7 +346,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -396,7 +396,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -438,7 +438,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -479,7 +479,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -520,7 +520,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -552,11 +552,11 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 self.it.advance_by(n)
             }
         *)
@@ -589,7 +589,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -627,7 +627,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -697,7 +697,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -747,7 +747,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -789,11 +789,11 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 self.it.advance_back_by(n)
             }
         *)
@@ -826,7 +826,7 @@ Module iter.
                   M.read (| n |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -875,7 +875,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -910,7 +910,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1039,7 +1039,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1057,7 +1057,7 @@ Module iter.
         
         (*
             fn spec_next_chunk(&mut self) -> Result<[T; N], array::IntoIter<T, N>> {
-                let mut raw_array = MaybeUninit::uninit_array();
+                let mut raw_array = [const { MaybeUninit::uninit() }; N];
         
                 let len = self.len();
         
@@ -1113,13 +1113,13 @@ Module iter.
                   (M.read (|
                     let~ raw_array :=
                       M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                            "uninit_array",
-                            []
+                        repeat (|
+                          M.read (|
+                            M.get_constant (|
+                              "core::iter::adapters::copied::spec_next_chunk_discriminant"
+                            |)
                           |),
-                          []
+                          N
                         |)
                       |) in
                     let~ len :=
@@ -1164,13 +1164,14 @@ Module iter.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.lt
-                                                      (M.read (| len |))
-                                                      (M.read (|
+                                                    BinOp.lt (|
+                                                      M.read (| len |),
+                                                      M.read (|
                                                         M.get_constant (|
                                                           "core::iter::adapters::copied::N"
                                                         |)
-                                                      |))
+                                                      |)
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -1219,7 +1220,9 @@ Module iter.
                                                                         "core::ops::range::Range"
                                                                         [
                                                                           ("start",
-                                                                            Value.Integer 0);
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              0);
                                                                           ("end_", M.read (| len |))
                                                                         ]
                                                                     ]
@@ -1290,11 +1293,12 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt
-                                      (M.read (| len |))
-                                      (M.read (|
+                                    BinOp.lt (|
+                                      M.read (| len |),
+                                      M.read (|
                                         M.get_constant (| "core::iter::adapters::copied::N" |)
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1355,7 +1359,7 @@ Module iter.
                                                   "as_mut_ptr",
                                                   []
                                                 |),
-                                                [ (* Unsize *) M.pointer_coercion raw_array ]
+                                                [ raw_array ]
                                               |));
                                             M.read (| len |)
                                           ]
@@ -1395,7 +1399,8 @@ Module iter.
                                                       Value.StructRecord
                                                         "core::ops::range::Range"
                                                         [
-                                                          ("start", Value.Integer 0);
+                                                          ("start",
+                                                            Value.Integer IntegerKind.Usize 0);
                                                           ("end_", M.read (| len |))
                                                         ]
                                                     ]
@@ -1452,7 +1457,7 @@ Module iter.
                                   "as_mut_ptr",
                                   []
                                 |),
-                                [ (* Unsize *) M.pointer_coercion raw_array ]
+                                [ raw_array ]
                               |));
                             M.read (| M.get_constant (| "core::iter::adapters::copied::N" |) |)
                           ]
@@ -1498,7 +1503,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1537,7 +1542,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1548,6 +1553,90 @@ Module iter.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("default", InstanceField.Method (default I)) ].
       End Impl_core_default_Default_where_core_default_Default_I_for_core_iter_adapters_copied_Copied_I.
+      
+      Module Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_for_core_iter_adapters_copied_Copied_I.
+        Definition Self (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::copied::Copied") [] [ I ].
+        
+        (*     type Source = I::Source; *)
+        Definition _Source (I : Ty.t) : Ty.t := Ty.associated.
+        
+        (*
+            unsafe fn as_inner(&mut self) -> &mut I::Source {
+                // SAFETY: unsafe function forwarding to unsafe function with the same requirements
+                unsafe { SourceIter::as_inner(&mut self.it) }
+            }
+        *)
+        Definition as_inner (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self I in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.call_closure (|
+                M.get_trait_method (| "core::iter::adapters::SourceIter", I, [], "as_inner", [] |),
+                [
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::copied::Copied",
+                    "it"
+                  |)
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom Implements :
+          forall (I : Ty.t),
+          M.IsTraitInstance
+            "core::iter::adapters::SourceIter"
+            (Self I)
+            (* Trait polymorphic types *) []
+            (* Instance *)
+            [
+              ("Source", InstanceField.Ty (_Source I));
+              ("as_inner", InstanceField.Method (as_inner I))
+            ].
+      End Impl_core_iter_adapters_SourceIter_where_core_iter_adapters_SourceIter_I_for_core_iter_adapters_copied_Copied_I.
+      
+      Module Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_copied_Copied_I.
+        Definition Self (I : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::adapters::copied::Copied") [] [ I ].
+        
+        (*     const EXPAND_BY: Option<NonZero<usize>> = I::EXPAND_BY; *)
+        (* Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
+        Definition value_EXPAND_BY (I : Ty.t) : Value.t :=
+          let Self : Ty.t := Self I in
+          M.run
+            ltac:(M.monadic
+              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
+        
+        (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
+        (* Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
+        Definition value_MERGE_BY (I : Ty.t) : Value.t :=
+          let Self : Ty.t := Self I in
+          M.run
+            ltac:(M.monadic
+              (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::MERGE_BY" |))).
+        
+        Axiom Implements :
+          forall (I : Ty.t),
+          M.IsTraitInstance
+            "core::iter::traits::marker::InPlaceIterable"
+            (Self I)
+            (* Trait polymorphic types *) []
+            (* Instance *)
+            [
+              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I));
+              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I))
+            ].
+      End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_copied_Copied_I.
     End copied.
   End adapters.
 End iter.

@@ -56,7 +56,7 @@ Module cell.
       Definition new (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F in
         match ε, τ, α with
-        | [ host ], [], [ f ] =>
+        | [], [], [ f ] =>
           ltac:(M.monadic
             (let f := M.alloc (| f |) in
             Value.StructRecord
@@ -75,7 +75,7 @@ Module cell.
                     [ Value.StructTuple "core::cell::lazy::State::Uninit" [ M.read (| f |) ] ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -165,17 +165,15 @@ Module cell.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "LazyCell instance has previously been poisoned"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "LazyCell instance has previously been poisoned"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -185,7 +183,7 @@ Module cell.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -284,16 +282,14 @@ Module cell.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "LazyCell has previously been poisoned"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "LazyCell has previously been poisoned"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -303,7 +299,7 @@ Module cell.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_force :
@@ -479,7 +475,7 @@ Module cell.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_really_init :
@@ -547,7 +543,7 @@ Module cell.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get :
@@ -582,7 +578,7 @@ Module cell.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -622,7 +618,7 @@ Module cell.
                   (M.get_trait_method (| "core::default::Default", T, [], "default", [] |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -696,7 +692,7 @@ Module cell.
                               "field",
                               []
                             |),
-                            [ d; (* Unsize *) M.pointer_coercion (M.read (| data |)) ]
+                            [ d; M.read (| data |) ]
                           |)
                         |)));
                     fun γ =>
@@ -711,24 +707,20 @@ Module cell.
                             |),
                             [
                               d;
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::Arguments",
-                                      "new_const",
-                                      []
-                                    |),
-                                    [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array [ M.read (| Value.String "<uninit>" |) ]
-                                        |))
-                                    ]
-                                  |)
-                                |))
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::Arguments",
+                                    "new_const",
+                                    []
+                                  |),
+                                  [
+                                    M.alloc (|
+                                      Value.Array [ M.read (| Value.String "<uninit>" |) ]
+                                    |)
+                                  ]
+                                |)
+                              |)
                             ]
                           |)
                         |)))
@@ -745,7 +737,7 @@ Module cell.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

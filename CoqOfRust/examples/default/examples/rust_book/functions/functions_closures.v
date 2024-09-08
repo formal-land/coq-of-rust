@@ -35,7 +35,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ outer_var := M.alloc (| Value.Integer 42 |) in
+        let~ outer_var := M.alloc (| Value.Integer IntegerKind.I32 42 |) in
         let~ closure_annotated :=
           M.alloc (|
             M.closure
@@ -43,16 +43,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let i := M.copy (| γ |) in
-                            BinOp.Wrap.add Integer.I32 (M.read (| i |)) (M.read (| outer_var |))))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let i := M.copy (| γ |) in
+                              BinOp.Wrap.add (| M.read (| i |), M.read (| outer_var |) |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
         let~ closure_inferred :=
@@ -62,16 +63,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let i := M.copy (| γ |) in
-                            BinOp.Wrap.add Integer.I32 (M.read (| i |)) (M.read (| outer_var |))))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let i := M.copy (| γ |) in
+                              BinOp.Wrap.add (| M.read (| i |), M.read (| outer_var |) |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
         let~ _ :=
@@ -83,44 +85,43 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "closure_annotated: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "closure_annotated: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::Fn",
-                                        Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
-                                        [ Ty.tuple [ Ty.path "i32" ] ],
-                                        "call",
-                                        []
-                                      |),
-                                      [ closure_annotated; Value.Tuple [ Value.Integer 1 ] ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::function::Fn",
+                                      Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
+                                      [ Ty.tuple [ Ty.path "i32" ] ],
+                                      "call",
+                                      []
+                                    |),
+                                    [
+                                      closure_annotated;
+                                      Value.Tuple [ Value.Integer IntegerKind.I32 1 ]
+                                    ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -136,44 +137,43 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "closure_inferred: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "closure_inferred: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::Fn",
-                                        Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
-                                        [ Ty.tuple [ Ty.path "i32" ] ],
-                                        "call",
-                                        []
-                                      |),
-                                      [ closure_inferred; Value.Tuple [ Value.Integer 1 ] ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::function::Fn",
+                                      Ty.function [ Ty.tuple [ Ty.path "i32" ] ] (Ty.path "i32"),
+                                      [ Ty.tuple [ Ty.path "i32" ] ],
+                                      "call",
+                                      []
+                                    |),
+                                    [
+                                      closure_inferred;
+                                      Value.Tuple [ Value.Integer IntegerKind.I32 1 ]
+                                    ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -187,11 +187,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [ fun γ => ltac:(M.monadic (Value.Integer 1)) ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [ fun γ => ltac:(M.monadic (Value.Integer IntegerKind.I32 1)) ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           |) in
         let~ _ :=
@@ -203,44 +204,40 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "closure returning one: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "closure returning one: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::ops::function::Fn",
-                                        Ty.function [ Ty.tuple [] ] (Ty.path "i32"),
-                                        [ Ty.tuple [] ],
-                                        "call",
-                                        []
-                                      |),
-                                      [ one; Value.Tuple [] ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::function::Fn",
+                                      Ty.function [ Ty.tuple [] ] (Ty.path "i32"),
+                                      [ Ty.tuple [] ],
+                                      "call",
+                                      []
+                                    |),
+                                    [ one; Value.Tuple [] ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -249,7 +246,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures::main" main.

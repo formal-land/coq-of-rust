@@ -74,22 +74,23 @@ impl CoqType {
     }
 }
 
-pub(crate) fn compile_type(
-    env: &Env,
+pub(crate) fn compile_type<'a>(
+    env: &Env<'a>,
     local_def_id: &rustc_hir::def_id::LocalDefId,
-    ty: &Ty,
+    ty: &Ty<'a>,
 ) -> Rc<CoqType> {
     let generics = env.tcx.generics_of(*local_def_id);
     let item_ctxt = rustc_hir_analysis::collect::ItemCtxt::new(env.tcx, *local_def_id);
-    let ty = &item_ctxt.to_ty(ty);
+    let span = &ty.span;
+    let ty = &item_ctxt.lower_ty(ty);
 
-    crate::thir_ty::compile_type(env, generics, ty)
+    crate::thir_ty::compile_type(env, span, generics, ty)
 }
 
-pub(crate) fn compile_fn_ret_ty(
-    env: &Env,
+pub(crate) fn compile_fn_ret_ty<'a>(
+    env: &Env<'a>,
     local_def_id: &rustc_hir::def_id::LocalDefId,
-    fn_ret_ty: &FnRetTy,
+    fn_ret_ty: &FnRetTy<'a>,
 ) -> Rc<CoqType> {
     match fn_ret_ty {
         FnRetTy::DefaultReturn(_) => CoqType::unit(),
@@ -98,10 +99,10 @@ pub(crate) fn compile_fn_ret_ty(
 }
 
 // The type of a function declaration
-pub(crate) fn compile_fn_decl(
-    env: &Env,
+pub(crate) fn compile_fn_decl<'a>(
+    env: &Env<'a>,
     local_def_id: &rustc_hir::def_id::LocalDefId,
-    fn_decl: &FnDecl,
+    fn_decl: &FnDecl<'a>,
 ) -> Rc<CoqType> {
     let ret = compile_fn_ret_ty(env, local_def_id, &fn_decl.output);
 
@@ -116,10 +117,10 @@ pub(crate) fn compile_fn_decl(
 }
 
 /// Return the type parameters on a path
-pub(crate) fn compile_path_ty_params(
-    env: &Env,
+pub(crate) fn compile_path_ty_params<'a>(
+    env: &Env<'a>,
     local_def_id: &rustc_hir::def_id::LocalDefId,
-    path: &rustc_hir::Path,
+    path: &rustc_hir::Path<'a>,
 ) -> Vec<Rc<CoqType>> {
     match path.segments.last().unwrap().args {
         Some(args) => args
@@ -131,34 +132,6 @@ pub(crate) fn compile_path_ty_params(
             })
             .collect(),
         None => vec![],
-    }
-}
-
-pub(crate) fn get_integer_ty_name(ty: &rustc_middle::ty::Ty) -> Option<String> {
-    match ty.kind() {
-        rustc_middle::ty::Int(int_ty) => Some(
-            match int_ty {
-                rustc_middle::ty::IntTy::Isize => "Integer.Isize",
-                rustc_middle::ty::IntTy::I8 => "Integer.I8",
-                rustc_middle::ty::IntTy::I16 => "Integer.I16",
-                rustc_middle::ty::IntTy::I32 => "Integer.I32",
-                rustc_middle::ty::IntTy::I64 => "Integer.I64",
-                rustc_middle::ty::IntTy::I128 => "Integer.I128",
-            }
-            .to_string(),
-        ),
-        rustc_middle::ty::Uint(uint_ty) => Some(
-            match uint_ty {
-                rustc_middle::ty::UintTy::Usize => "Integer.Usize",
-                rustc_middle::ty::UintTy::U8 => "Integer.U8",
-                rustc_middle::ty::UintTy::U16 => "Integer.U16",
-                rustc_middle::ty::UintTy::U32 => "Integer.U32",
-                rustc_middle::ty::UintTy::U64 => "Integer.U64",
-                rustc_middle::ty::UintTy::U128 => "Integer.U128",
-            }
-            .to_string(),
-        ),
-        _ => None,
     }
 }
 

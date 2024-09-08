@@ -94,7 +94,7 @@ Module collections.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_append_from_sorted_iters :
@@ -301,8 +301,8 @@ Module collections.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.Pure.lt
-                                                            (M.call_closure (|
+                                                          BinOp.lt (|
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -320,12 +320,13 @@ Module collections.
                                                                 []
                                                               |),
                                                               [ cur_node ]
-                                                            |))
-                                                            (M.read (|
+                                                            |),
+                                                            M.read (|
                                                               M.get_constant (|
                                                                 "alloc::collections::btree::node::CAPACITY"
                                                               |)
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -458,8 +459,8 @@ Module collections.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.Pure.lt
-                                                                                  (M.call_closure (|
+                                                                                BinOp.lt (|
+                                                                                  M.call_closure (|
                                                                                     M.get_associated_function (|
                                                                                       Ty.apply
                                                                                         (Ty.path
@@ -477,12 +478,13 @@ Module collections.
                                                                                       []
                                                                                     |),
                                                                                     [ parent ]
-                                                                                  |))
-                                                                                  (M.read (|
+                                                                                  |),
+                                                                                  M.read (|
                                                                                     M.get_constant (|
                                                                                       "alloc::collections::btree::node::CAPACITY"
                                                                                     |)
-                                                                                  |))
+                                                                                  |)
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -592,9 +594,8 @@ Module collections.
                                                       |) in
                                                     let~ tree_height :=
                                                       M.alloc (|
-                                                        BinOp.Wrap.sub
-                                                          Integer.Usize
-                                                          (M.call_closure (|
+                                                        BinOp.Wrap.sub (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -612,8 +613,9 @@ Module collections.
                                                               []
                                                             |),
                                                             [ open_node ]
-                                                          |))
-                                                          (Value.Integer 1)
+                                                          |),
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        |)
                                                       |) in
                                                     let~ right_tree :=
                                                       M.alloc (|
@@ -668,7 +670,10 @@ Module collections.
                                                                 Value.StructRecord
                                                                   "core::ops::range::Range"
                                                                   [
-                                                                    ("start", Value.Integer 0);
+                                                                    ("start",
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        0);
                                                                     ("end_",
                                                                       M.read (| tree_height |))
                                                                   ]
@@ -870,10 +875,10 @@ Module collections.
                                             let β := M.read (| length |) in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| β |))
-                                                (Value.Integer 1)
+                                              BinOp.Wrap.add (|
+                                                M.read (| β |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)))
                                     ]
@@ -903,7 +908,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_bulk_push :
@@ -972,42 +977,43 @@ Module collections.
                             ltac:(M.monadic
                               match γ with
                               | [ α0; α1 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let a := M.copy (| γ |) in
-                                        M.match_operator (|
-                                          M.alloc (| α1 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let b := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_trait_method (|
-                                                    "core::cmp::Ord",
-                                                    K,
-                                                    [],
-                                                    "cmp",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.SubPointer.get_tuple_field (|
-                                                      M.read (| a |),
-                                                      0
-                                                    |);
-                                                    M.SubPointer.get_tuple_field (|
-                                                      M.read (| b |),
-                                                      0
-                                                    |)
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let a := M.copy (| γ |) in
+                                          M.match_operator (|
+                                            M.alloc (| α1 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let b := M.copy (| γ |) in
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::cmp::Ord",
+                                                      K,
+                                                      [],
+                                                      "cmp",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.SubPointer.get_tuple_field (|
+                                                        M.read (| a |),
+                                                        0
+                                                      |);
+                                                      M.SubPointer.get_tuple_field (|
+                                                        M.read (| b |),
+                                                        0
+                                                      |)
+                                                    ]
+                                                  |)))
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -1032,7 +1038,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

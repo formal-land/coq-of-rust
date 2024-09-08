@@ -65,7 +65,7 @@ Module db.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (| M.read (| self |) |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -98,7 +98,7 @@ Module db.
               (Value.StructTuple
                 "revm::db::states::account_status::AccountStatus::LoadedNotExisting"
                 []))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -204,7 +204,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -237,7 +237,7 @@ Module db.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -247,7 +247,7 @@ Module db.
                       [ M.read (| self |) ]
                     |)
                   |) in
-                let~ __arg1_tag :=
+                let~ __arg1_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -257,9 +257,9 @@ Module db.
                       [ M.read (| other |) ]
                     |)
                   |) in
-                M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+                M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -269,17 +269,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_account_status_AccountStatus.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_account_status_AccountStatus.
-        Definition Self : Ty.t := Ty.path "revm::db::states::account_status::AccountStatus".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_account_status_AccountStatus.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_account_status_AccountStatus.
         Definition Self : Ty.t := Ty.path "revm::db::states::account_status::AccountStatus".
@@ -295,7 +284,7 @@ Module db.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.Tuple []))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -318,7 +307,7 @@ Module db.
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
               M.read (|
-                let~ __self_tag :=
+                let~ __self_discr :=
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (|
@@ -337,11 +326,11 @@ Module db.
                       "hash",
                       [ __H ]
                     |),
-                    [ __self_tag; M.read (| state |) ]
+                    [ __self_discr; M.read (| state |) ]
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -411,15 +400,15 @@ Module db.
                             (fun γ =>
                               ltac:(M.monadic
                                 match γ with
-                                | [] => M.alloc (| Value.Bool true |)
-                                | _ => M.impossible (||)
+                                | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_not_modified :
@@ -481,15 +470,15 @@ Module db.
                             (fun γ =>
                               ltac:(M.monadic
                                 match γ with
-                                | [] => M.alloc (| Value.Bool true |)
-                                | _ => M.impossible (||)
+                                | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_was_destroyed :
@@ -571,15 +560,15 @@ Module db.
                             (fun γ =>
                               ltac:(M.monadic
                                 match γ with
-                                | [] => M.alloc (| Value.Bool true |)
-                                | _ => M.impossible (||)
+                                | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_storage_known :
@@ -631,15 +620,15 @@ Module db.
                             (fun γ =>
                               ltac:(M.monadic
                                 match γ with
-                                | [] => M.alloc (| Value.Bool true |)
-                                | _ => M.impossible (||)
+                                | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_modified_and_not_destroyed :
@@ -714,12 +703,13 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm::db::states::account_status::AccountStatus::DestroyedChanged"
-                                      []
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "revm::db::states::account_status::AccountStatus::DestroyedChanged"
+                                        []
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -778,18 +768,19 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm::db::states::account_status::AccountStatus::InMemoryChange"
-                                      []
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "revm::db::states::account_status::AccountStatus::InMemoryChange"
+                                        []
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_on_created : M.IsAssociatedFunction Self "on_created" on_created.
@@ -878,12 +869,13 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm::db::states::account_status::AccountStatus::Destroyed"
-                                      []
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "revm::db::states::account_status::AccountStatus::Destroyed"
+                                        []
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -915,12 +907,13 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm::db::states::account_status::AccountStatus::DestroyedAgain"
-                                      []
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "revm::db::states::account_status::AccountStatus::DestroyedAgain"
+                                        []
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -952,21 +945,20 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::Arguments",
-                                              "new_v1",
-                                              []
-                                            |),
-                                            [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.call_closure (|
+                                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
+                                              [
+                                                M.alloc (|
                                                   Value.Array
                                                     [
                                                       M.read (|
@@ -974,10 +966,8 @@ Module db.
                                                           "internal error: entered unreachable code: Wrong state transition, touch empty is not possible from "
                                                       |)
                                                     ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
+                                                |);
+                                                M.alloc (|
                                                   Value.Array
                                                     [
                                                       M.call_closure (|
@@ -997,20 +987,20 @@ Module db.
                                                         [ self ]
                                                       |)
                                                     ]
-                                                |))
-                                            ]
-                                          |)
-                                        ]
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                        |)
                                       |)
-                                    |)
-                                  |)
-                                | _ => M.impossible (||)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_on_touched_empty_post_eip161 :
@@ -1124,16 +1114,17 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [
-                                        Value.StructTuple
-                                          "revm::db::states::account_status::AccountStatus::DestroyedChanged"
-                                          []
-                                      ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [
+                                          Value.StructTuple
+                                            "revm::db::states::account_status::AccountStatus::DestroyedChanged"
+                                            []
+                                        ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -1165,16 +1156,17 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "core::option::Option::Some"
-                                      [
-                                        Value.StructTuple
-                                          "revm::db::states::account_status::AccountStatus::InMemoryChange"
-                                          []
-                                      ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [
+                                          Value.StructTuple
+                                            "revm::db::states::account_status::AccountStatus::InMemoryChange"
+                                            []
+                                        ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -1206,21 +1198,20 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        M.get_function (| "core::panicking::panic_fmt", [] |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::Arguments",
-                                              "new_v1",
-                                              []
-                                            |),
-                                            [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.call_closure (|
+                                          M.get_function (| "core::panicking::panic_fmt", [] |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::fmt::Arguments",
+                                                "new_v1",
+                                                []
+                                              |),
+                                              [
+                                                M.alloc (|
                                                   Value.Array
                                                     [
                                                       M.read (|
@@ -1228,10 +1219,8 @@ Module db.
                                                           "internal error: entered unreachable code: Wrong state transition, touch crate is not possible from "
                                                       |)
                                                     ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
+                                                |);
+                                                M.alloc (|
                                                   Value.Array
                                                     [
                                                       M.call_closure (|
@@ -1251,20 +1240,20 @@ Module db.
                                                         [ self ]
                                                       |)
                                                     ]
-                                                |))
-                                            ]
-                                          |)
-                                        ]
+                                                |)
+                                              ]
+                                            |)
+                                          ]
+                                        |)
                                       |)
-                                    |)
-                                  |)
-                                | _ => M.impossible (||)
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_on_touched_created_pre_eip161 :
@@ -1442,18 +1431,19 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm::db::states::account_status::AccountStatus::DestroyedChanged"
-                                      []
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "revm::db::states::account_status::AccountStatus::DestroyedChanged"
+                                        []
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_on_changed : M.IsAssociatedFunction Self "on_changed" on_changed.
@@ -1535,12 +1525,13 @@ Module db.
                               ltac:(M.monadic
                                 match γ with
                                 | [] =>
-                                  M.alloc (|
-                                    Value.StructTuple
-                                      "revm::db::states::account_status::AccountStatus::DestroyedAgain"
-                                      []
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple
+                                        "revm::db::states::account_status::AccountStatus::DestroyedAgain"
+                                        []
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         |)));
                     fun γ =>
@@ -1553,7 +1544,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_on_selfdestructed :
@@ -1672,7 +1663,7 @@ Module db.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_transition : M.IsAssociatedFunction Self "transition" transition.

@@ -44,28 +44,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
+                M.read (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
                         []
-                      |),
-                      [
-                        M.alloc (|
-                          Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ]
-                        |)
-                      ]
-                    |)
-                  |))
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "i32" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      "new",
+                      []
+                    |),
+                    [
+                      M.alloc (|
+                        Value.Array
+                          [
+                            Value.Integer IntegerKind.I32 1;
+                            Value.Integer IntegerKind.I32 2;
+                            Value.Integer IntegerKind.I32 3
+                          ]
+                      |)
+                    ]
+                  |)
+                |)
               ]
             |)
           |) in
@@ -78,28 +84,34 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "alloc::alloc::Global" ]
               |),
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.read (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ Ty.path "i32" ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "new",
+                M.read (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::boxed::Box")
                         []
-                      |),
-                      [
-                        M.alloc (|
-                          Value.Array [ Value.Integer 4; Value.Integer 5; Value.Integer 6 ]
-                        |)
-                      ]
-                    |)
-                  |))
+                        [
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.path "i32" ];
+                          Ty.path "alloc::alloc::Global"
+                        ],
+                      "new",
+                      []
+                    |),
+                    [
+                      M.alloc (|
+                        Value.Array
+                          [
+                            Value.Integer IntegerKind.I32 4;
+                            Value.Integer IntegerKind.I32 5;
+                            Value.Integer IntegerKind.I32 6
+                          ]
+                      |)
+                    ]
+                  |)
+                |)
               ]
             |)
           |) in
@@ -153,65 +165,62 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Find 2 in vec1: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "Find 2 in vec1: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                  ]
-                                |),
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
-                                        Ty.apply
-                                          (Ty.path "core::slice::iter::Iter")
-                                          []
-                                          [ Ty.path "i32" ],
-                                        [],
-                                        "find",
-                                        [
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                                ]
-                                            ]
-                                            (Ty.path "bool")
-                                        ]
-                                      |),
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "i32" ],
+                                      [],
+                                      "find",
                                       [
-                                        iter;
-                                        M.closure
-                                          (fun γ =>
-                                            ltac:(M.monadic
-                                              match γ with
-                                              | [ α0 ] =>
-                                                M.match_operator (|
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                              ]
+                                          ]
+                                          (Ty.path "bool")
+                                      ]
+                                    |),
+                                    [
+                                      iter;
+                                      M.closure
+                                        (fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -219,20 +228,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         (let γ := M.read (| γ |) in
                                                         let γ := M.read (| γ |) in
                                                         let x := M.copy (| γ |) in
-                                                        BinOp.Pure.eq
-                                                          (M.read (| x |))
-                                                          (Value.Integer 2)))
+                                                        BinOp.eq (|
+                                                          M.read (| x |),
+                                                          Value.Integer IntegerKind.I32 2
+                                                        |)))
                                                   ]
-                                                |)
-                                              | _ => M.impossible (||)
-                                              end))
-                                      ]
-                                    |)
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -248,75 +258,71 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Find 2 in vec2: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "Find 2 in vec2: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::into_iter::IntoIter")
-                                          []
-                                          [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-                                        [],
-                                        "find",
-                                        [
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                            ]
-                                            (Ty.path "bool")
-                                        ]
-                                      |),
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i32" ] ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        []
+                                        [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+                                      [],
+                                      "find",
                                       [
-                                        into_iter;
-                                        M.closure
-                                          (fun γ =>
-                                            ltac:(M.monadic
-                                              match γ with
-                                              | [ α0 ] =>
-                                                M.match_operator (|
+                                        Ty.function
+                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                          ]
+                                          (Ty.path "bool")
+                                      ]
+                                    |),
+                                    [
+                                      into_iter;
+                                      M.closure
+                                        (fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ := M.read (| γ |) in
                                                         let x := M.copy (| γ |) in
-                                                        BinOp.Pure.eq
-                                                          (M.read (| x |))
-                                                          (Value.Integer 2)))
+                                                        BinOp.eq (|
+                                                          M.read (| x |),
+                                                          Value.Integer IntegerKind.I32 2
+                                                        |)))
                                                   ]
-                                                |)
-                                              | _ => M.impossible (||)
-                                              end))
-                                      ]
-                                    |)
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -324,9 +330,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ array1 :=
-          M.alloc (| Value.Array [ Value.Integer 1; Value.Integer 2; Value.Integer 3 ] |) in
+          M.alloc (|
+            Value.Array
+              [
+                Value.Integer IntegerKind.I32 1;
+                Value.Integer IntegerKind.I32 2;
+                Value.Integer IntegerKind.I32 3
+              ]
+          |) in
         let~ array2 :=
-          M.alloc (| Value.Array [ Value.Integer 4; Value.Integer 5; Value.Integer 6 ] |) in
+          M.alloc (|
+            Value.Array
+              [
+                Value.Integer IntegerKind.I32 4;
+                Value.Integer IntegerKind.I32 5;
+                Value.Integer IntegerKind.I32 6
+              ]
+          |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -336,74 +356,71 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Find 2 in array1: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "Find 2 in array1: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                  ]
-                                |),
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
-                                        Ty.apply
-                                          (Ty.path "core::slice::iter::Iter")
-                                          []
-                                          [ Ty.path "i32" ],
-                                        [],
-                                        "find",
-                                        [
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                                ]
-                                            ]
-                                            (Ty.path "bool")
-                                        ]
-                                      |),
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "i32" ],
+                                      [],
+                                      "find",
                                       [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
-                                              "iter",
-                                              []
-                                            |),
-                                            [ (* Unsize *) M.pointer_coercion array1 ]
-                                          |)
-                                        |);
-                                        M.closure
-                                          (fun γ =>
-                                            ltac:(M.monadic
-                                              match γ with
-                                              | [ α0 ] =>
-                                                M.match_operator (|
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                              ]
+                                          ]
+                                          (Ty.path "bool")
+                                      ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
+                                            "iter",
+                                            []
+                                          |),
+                                          [ array1 ]
+                                        |)
+                                      |);
+                                      M.closure
+                                        (fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
@@ -411,20 +428,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         (let γ := M.read (| γ |) in
                                                         let γ := M.read (| γ |) in
                                                         let x := M.copy (| γ |) in
-                                                        BinOp.Pure.eq
-                                                          (M.read (| x |))
-                                                          (Value.Integer 2)))
+                                                        BinOp.eq (|
+                                                          M.read (| x |),
+                                                          Value.Integer IntegerKind.I32 2
+                                                        |)))
                                                   ]
-                                                |)
-                                              | _ => M.impossible (||)
-                                              end))
-                                      ]
-                                    |)
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -440,104 +458,102 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "Find 2 in array2: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "Find 2 in array2: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                  ]
-                                |),
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
                                 [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_trait_method (|
-                                        "core::iter::traits::iterator::Iterator",
-                                        Ty.apply
-                                          (Ty.path "core::slice::iter::Iter")
-                                          []
-                                          [ Ty.path "i32" ],
-                                        [],
-                                        "find",
-                                        [
-                                          Ty.function
-                                            [
-                                              Ty.tuple
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "&")
-                                                    []
-                                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                                ]
-                                            ]
-                                            (Ty.path "bool")
-                                        ]
-                                      |),
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "i32" ],
+                                      [],
+                                      "find",
                                       [
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::iter::traits::collect::IntoIterator",
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path "array")
-                                                    [ Value.Integer 3 ]
-                                                    [ Ty.path "i32" ]
-                                                ],
-                                              [],
-                                              "into_iter",
+                                        Ty.function
+                                          [
+                                            Ty.tuple
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                              ]
+                                          ]
+                                          (Ty.path "bool")
+                                      ]
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::iter::traits::collect::IntoIterator",
+                                            Ty.apply
+                                              (Ty.path "&")
                                               []
-                                            |),
-                                            [ array2 ]
-                                          |)
-                                        |);
-                                        M.closure
-                                          (fun γ =>
-                                            ltac:(M.monadic
-                                              match γ with
-                                              | [ α0 ] =>
-                                                M.match_operator (|
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 3 ]
+                                                  [ Ty.path "i32" ]
+                                              ],
+                                            [],
+                                            "into_iter",
+                                            []
+                                          |),
+                                          [ array2 ]
+                                        |)
+                                      |);
+                                      M.closure
+                                        (fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
                                                   M.alloc (| α0 |),
                                                   [
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ := M.read (| γ |) in
                                                         let x := M.copy (| γ |) in
-                                                        BinOp.Pure.eq
-                                                          (M.read (| M.read (| x |) |))
-                                                          (Value.Integer 2)))
+                                                        BinOp.eq (|
+                                                          M.read (| M.read (| x |) |),
+                                                          Value.Integer IntegerKind.I32 2
+                                                        |)))
                                                   ]
-                                                |)
-                                              | _ => M.impossible (||)
-                                              end))
-                                      ]
-                                    |)
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -546,7 +562,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main :

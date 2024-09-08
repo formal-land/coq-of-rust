@@ -23,14 +23,13 @@ Module ptr.
                   }
               }
       
-              // SAFETY: The two versions are equivalent at runtime.
-              unsafe { const_eval_select((self as *mut u8,), const_impl, runtime_impl) }
+              const_eval_select((self as *mut u8,), const_impl, runtime_impl)
           }
       *)
       Definition is_null (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -49,7 +48,7 @@ Module ptr.
                 M.get_associated_function (| Self, "runtime_impl.is_null", [] |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_null :
@@ -64,11 +63,11 @@ Module ptr.
       Definition cast (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [ U ], [ self ] =>
+        | [], [ U ], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| self |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_cast :
@@ -91,12 +90,12 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [ U ], [ self; meta ] =>
+        | [], [ U ], [ self; meta ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let meta := M.alloc (| meta |) in
             M.call_closure (|
-              M.get_function (| "core::ptr::metadata::from_raw_parts_mut", [ U ] |),
+              M.get_function (| "core::ptr::metadata::from_raw_parts_mut", [ U; Ty.tuple [] ] |),
               [
                 M.rust_cast (M.read (| self |));
                 M.call_closure (|
@@ -105,7 +104,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_with_metadata_of :
@@ -120,60 +119,16 @@ Module ptr.
       Definition cast_const (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (* MutToConstPointer *) (M.pointer_coercion (M.read (| self |)))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_cast_const :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "cast_const" (cast_const T).
-      
-      (*
-          pub fn to_bits(self) -> usize
-          where
-              T: Sized,
-          {
-              self as usize
-          }
-      *)
-      Definition to_bits (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T in
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.rust_cast (M.read (| self |))))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_to_bits :
-        forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "to_bits" (to_bits T).
-      
-      (*
-          pub fn from_bits(bits: usize) -> Self
-          where
-              T: Sized,
-          {
-              bits as Self
-          }
-      *)
-      Definition from_bits (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T in
-        match ε, τ, α with
-        | [], [], [ bits ] =>
-          ltac:(M.monadic
-            (let bits := M.alloc (| bits |) in
-            M.rust_cast (M.read (| bits |))))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_from_bits :
-        forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "from_bits" (from_bits T).
       
       (*
           pub fn addr(self) -> usize {
@@ -205,7 +160,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_addr :
@@ -213,12 +168,17 @@ Module ptr.
         M.IsAssociatedFunction (Self T) "addr" (addr T).
       
       (*
-          pub fn expose_addr(self) -> usize {
+          pub fn expose_provenance(self) -> usize {
               // FIXME(strict_provenance_magic): I am magic and should be a compiler intrinsic.
               self.cast::<()>() as usize
           }
       *)
-      Definition expose_addr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition expose_provenance
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
         | [], [], [ self ] =>
@@ -233,12 +193,12 @@ Module ptr.
                 |),
                 [ M.read (| self |) ]
               |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_expose_addr :
+      Axiom AssociatedFunction_expose_provenance :
         forall (T : Ty.t),
-        M.IsAssociatedFunction (Self T) "expose_addr" (expose_addr T).
+        M.IsAssociatedFunction (Self T) "expose_provenance" (expose_provenance T).
       
       (*
           pub fn with_addr(self, addr: usize) -> Self {
@@ -294,7 +254,7 @@ Module ptr.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_with_addr :
@@ -342,7 +302,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_map_addr :
@@ -362,7 +322,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple
@@ -380,7 +340,7 @@ Module ptr.
                   [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_raw_parts :
@@ -397,7 +357,7 @@ Module ptr.
       Definition as_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -428,12 +388,37 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ref :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_ref" (as_ref T).
+      
+      (*
+          pub const unsafe fn as_ref_unchecked<'a>(self) -> &'a T {
+              // SAFETY: the caller must guarantee that `self` is valid for a reference
+              unsafe { &*self }
+          }
+      *)
+      Definition as_ref_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (| self |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_as_ref_unchecked :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "as_ref_unchecked" (as_ref_unchecked T).
       
       (*
           pub const unsafe fn as_uninit_ref<'a>(self) -> Option<&'a MaybeUninit<T>>
@@ -453,7 +438,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -486,7 +471,7 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_uninit_ref :
@@ -507,7 +492,7 @@ Module ptr.
       Definition offset (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -518,7 +503,7 @@ Module ptr.
               |),
               [ M.read (| self |); M.read (| count |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_offset :
@@ -534,7 +519,7 @@ Module ptr.
       Definition byte_offset (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -566,7 +551,7 @@ Module ptr.
                 (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_byte_offset :
@@ -590,7 +575,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -600,7 +585,7 @@ Module ptr.
                 [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)); M.read (| count |)
                 ]
               |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_offset :
@@ -620,7 +605,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -652,7 +637,7 @@ Module ptr.
                 (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_byte_offset :
@@ -706,7 +691,7 @@ Module ptr.
                 (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_mask :
@@ -723,7 +708,7 @@ Module ptr.
       Definition as_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -754,12 +739,37 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_mut" (as_mut T).
+      
+      (*
+          pub const unsafe fn as_mut_unchecked<'a>(self) -> &'a mut T {
+              // SAFETY: the caller must guarantee that `self` is valid for a reference
+              unsafe { &mut *self }
+          }
+      *)
+      Definition as_mut_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (| self |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_as_mut_unchecked :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "as_mut_unchecked" (as_mut_unchecked T).
       
       (*
           pub const unsafe fn as_uninit_mut<'a>(self) -> Option<&'a mut MaybeUninit<T>>
@@ -779,7 +789,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -812,7 +822,7 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_uninit_mut :
@@ -835,7 +845,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; other ] =>
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -850,7 +860,7 @@ Module ptr.
                 M.rust_cast (* MutToConstPointer *) (M.pointer_coercion (M.read (| other |)))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_guaranteed_eq :
@@ -873,7 +883,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; other ] =>
+        | [], [], [ self; other ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
@@ -888,7 +898,7 @@ Module ptr.
                 M.rust_cast (* MutToConstPointer *) (M.pointer_coercion (M.read (| other |)))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_guaranteed_ne :
@@ -907,7 +917,7 @@ Module ptr.
       Definition offset_from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; origin ] =>
+        | [], [], [ self; origin ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
@@ -922,7 +932,7 @@ Module ptr.
                 M.read (| origin |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_offset_from :
@@ -943,7 +953,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [ U ], [ self; origin ] =>
+        | [], [ U ], [ self; origin ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
@@ -972,7 +982,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_byte_offset_from :
@@ -991,7 +1001,7 @@ Module ptr.
       Definition sub_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; origin ] =>
+        | [], [], [ self; origin ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let origin := M.alloc (| origin |) in
@@ -1002,7 +1012,7 @@ Module ptr.
                 M.read (| origin |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_sub_ptr :
@@ -1021,7 +1031,7 @@ Module ptr.
       Definition add (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1032,7 +1042,7 @@ Module ptr.
               |),
               [ M.read (| self |); M.read (| count |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_add :
@@ -1048,7 +1058,7 @@ Module ptr.
       Definition byte_add (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1080,7 +1090,7 @@ Module ptr.
                 (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_byte_add :
@@ -1099,14 +1109,14 @@ Module ptr.
                   // SAFETY: the caller must uphold the safety contract for `offset`.
                   // Because the pointee is *not* a ZST, that means that `count` is
                   // at most `isize::MAX`, and thus the negation cannot overflow.
-                  unsafe { self.offset(intrinsics::unchecked_sub(0, count as isize)) }
+                  unsafe { self.offset((count as isize).unchecked_neg()) }
               }
           }
       *)
       Definition sub (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1132,11 +1142,8 @@ Module ptr.
                           [
                             M.read (| self |);
                             M.call_closure (|
-                              M.get_function (|
-                                "core::intrinsics::unchecked_sub",
-                                [ Ty.path "isize" ]
-                              |),
-                              [ Value.Integer 0; M.rust_cast (M.read (| count |)) ]
+                              M.get_associated_function (| Ty.path "isize", "unchecked_neg", [] |),
+                              [ M.rust_cast (M.read (| count |)) ]
                             |)
                           ]
                         |)
@@ -1144,7 +1151,7 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_sub :
@@ -1160,7 +1167,7 @@ Module ptr.
       Definition byte_sub (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1192,7 +1199,7 @@ Module ptr.
                 (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_byte_sub :
@@ -1215,7 +1222,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1227,7 +1234,7 @@ Module ptr.
               |),
               [ M.read (| self |); M.rust_cast (M.read (| count |)) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_add :
@@ -1247,7 +1254,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1279,7 +1286,7 @@ Module ptr.
                 (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_byte_add :
@@ -1302,7 +1309,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1320,7 +1327,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_sub :
@@ -1340,7 +1347,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; count ] =>
+        | [], [], [ self; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
@@ -1372,7 +1379,7 @@ Module ptr.
                 (* MutToConstPointer *) M.pointer_coercion (M.read (| self |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_wrapping_byte_sub :
@@ -1391,14 +1398,14 @@ Module ptr.
       Definition read (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::ptr::read", [ T ] |),
               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read :
@@ -1429,7 +1436,7 @@ Module ptr.
               M.get_function (| "core::ptr::read_volatile", [ T ] |),
               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_volatile :
@@ -1453,14 +1460,14 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::ptr::read_unaligned", [ T ] |),
               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_read_unaligned :
@@ -1479,7 +1486,7 @@ Module ptr.
       Definition copy_to (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; dest; count ] =>
+        | [], [], [ self; dest; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dest := M.alloc (| dest |) in
@@ -1492,7 +1499,7 @@ Module ptr.
                 M.read (| count |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_copy_to :
@@ -1516,7 +1523,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; dest; count ] =>
+        | [], [], [ self; dest; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let dest := M.alloc (| dest |) in
@@ -1529,7 +1536,7 @@ Module ptr.
                 M.read (| count |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_copy_to_nonoverlapping :
@@ -1548,7 +1555,7 @@ Module ptr.
       Definition copy_from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; src; count ] =>
+        | [], [], [ self; src; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let src := M.alloc (| src |) in
@@ -1557,7 +1564,7 @@ Module ptr.
               M.get_function (| "core::intrinsics::copy", [ T ] |),
               [ M.read (| src |); M.read (| self |); M.read (| count |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_copy_from :
@@ -1581,7 +1588,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; src; count ] =>
+        | [], [], [ self; src; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let src := M.alloc (| src |) in
@@ -1590,7 +1597,7 @@ Module ptr.
               M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
               [ M.read (| src |); M.read (| self |); M.read (| count |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_copy_from_nonoverlapping :
@@ -1618,7 +1625,7 @@ Module ptr.
               M.get_function (| "core::ptr::drop_in_place", [ T ] |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_drop_in_place :
@@ -1637,7 +1644,7 @@ Module ptr.
       Definition write (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; val ] =>
+        | [], [], [ self; val ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -1645,7 +1652,7 @@ Module ptr.
               M.get_function (| "core::ptr::write", [ T ] |),
               [ M.read (| self |); M.read (| val |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_write :
@@ -1664,7 +1671,7 @@ Module ptr.
       Definition write_bytes (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; val; count ] =>
+        | [], [], [ self; val; count ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -1673,7 +1680,7 @@ Module ptr.
               M.get_function (| "core::intrinsics::write_bytes", [ T ] |),
               [ M.read (| self |); M.read (| val |); M.read (| count |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_write_bytes :
@@ -1705,7 +1712,7 @@ Module ptr.
               M.get_function (| "core::ptr::write_volatile", [ T ] |),
               [ M.read (| self |); M.read (| val |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_write_volatile :
@@ -1729,7 +1736,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; val ] =>
+        | [], [], [ self; val ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
@@ -1737,7 +1744,7 @@ Module ptr.
               M.get_function (| "core::ptr::write_unaligned", [ T ] |),
               [ M.read (| self |); M.read (| val |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_write_unaligned :
@@ -1764,7 +1771,7 @@ Module ptr.
               M.get_function (| "core::ptr::replace", [ T ] |),
               [ M.read (| self |); M.read (| src |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_replace :
@@ -1783,7 +1790,7 @@ Module ptr.
       Definition swap (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; with_ ] =>
+        | [], [], [ self; with_ ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let with_ := M.alloc (| with_ |) in
@@ -1791,7 +1798,7 @@ Module ptr.
               M.get_function (| "core::ptr::swap", [ T ] |),
               [ M.read (| self |); M.read (| with_ |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_swap :
@@ -1830,7 +1837,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; align ] =>
+        | [], [], [ self; align ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
@@ -1844,15 +1851,16 @@ Module ptr.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "is_power_of_two",
                                     []
                                   |),
                                   [ M.read (| align |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1868,17 +1876,14 @@ Module ptr.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "align_offset: align is not a power-of-two"
-                                            |)
-                                          ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String "align_offset: align is not a power-of-two"
+                                          |)
+                                        ]
+                                    |)
                                   ]
                                 |)
                               ]
@@ -1900,7 +1905,7 @@ Module ptr.
                 |) in
               ret
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_align_offset :
@@ -1918,7 +1923,7 @@ Module ptr.
       Definition is_aligned (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -1932,7 +1937,7 @@ Module ptr.
                 M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_aligned :
@@ -1953,14 +1958,13 @@ Module ptr.
               #[inline]
               const fn const_impl(ptr: *mut (), align: usize) -> bool {
                   // We can't use the address of `self` in a `const fn`, so we use `align_offset` instead.
-                  // The cast to `()` is used to
-                  //   1. deal with fat pointers; and
-                  //   2. ensure that `align_offset` doesn't actually try to compute an offset.
                   ptr.align_offset(align) == 0
               }
       
-              // SAFETY: The two versions are equivalent at runtime.
-              unsafe { const_eval_select((self.cast::<()>(), align), const_impl, runtime_impl) }
+              // The cast to `()` is used to
+              //   1. deal with fat pointers; and
+              //   2. ensure that `align_offset` (in `const_impl`) doesn't actually try to compute an offset.
+              const_eval_select((self.cast::<()>(), align), const_impl, runtime_impl)
           }
       *)
       Definition is_aligned_to
@@ -1971,7 +1975,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self; align ] =>
+        | [], [], [ self; align ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
@@ -1985,15 +1989,16 @@ Module ptr.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "usize",
                                     "is_power_of_two",
                                     []
                                   |),
                                   [ M.read (| align |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2009,17 +2014,15 @@ Module ptr.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "is_aligned_to: align is not a power-of-two"
-                                            |)
-                                          ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String
+                                              "is_aligned_to: align is not a power-of-two"
+                                          |)
+                                        ]
+                                    |)
                                   ]
                                 |)
                               ]
@@ -2063,7 +2066,7 @@ Module ptr.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_aligned_to :
@@ -2083,7 +2086,7 @@ Module ptr.
       Definition len (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -2093,7 +2096,7 @@ Module ptr.
               |),
               [ (* MutToConstPointer *) M.pointer_coercion (M.read (| self |)) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len :
@@ -2108,20 +2111,21 @@ Module ptr.
       Definition is_empty (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (M.call_closure (|
+            BinOp.eq (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                   "len",
                   []
                 |),
                 [ M.read (| self |) ]
-              |))
-              (Value.Integer 0)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.Usize 0
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_empty :
@@ -2158,10 +2162,10 @@ Module ptr.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.le
-                                  (M.read (| mid |))
-                                  (M.call_closure (|
+                              UnOp.not (|
+                                BinOp.le (|
+                                  M.read (| mid |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "*mut")
@@ -2171,7 +2175,9 @@ Module ptr.
                                       []
                                     |),
                                     [ M.read (| self |) ]
-                                  |)))
+                                  |)
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2197,7 +2203,7 @@ Module ptr.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_split_at_mut :
@@ -2268,15 +2274,12 @@ Module ptr.
                     |);
                     M.call_closure (|
                       M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
-                      [
-                        M.read (| tail |);
-                        BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| mid |))
-                      ]
+                      [ M.read (| tail |); BinOp.Wrap.sub (| M.read (| len |), M.read (| mid |) |) ]
                     |)
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_split_at_mut_unchecked :
@@ -2291,11 +2294,11 @@ Module ptr.
       Definition as_mut_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast (M.read (| self |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut_ptr :
@@ -2333,7 +2336,7 @@ Module ptr.
               |),
               [ M.read (| index |); M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_get_unchecked_mut :
@@ -2358,7 +2361,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2416,7 +2419,7 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_uninit_slice :
@@ -2441,7 +2444,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -2499,13 +2502,68 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_uninit_slice_mut :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_uninit_slice_mut" (as_uninit_slice_mut T).
     End Impl_pointer_mut_slice_T.
+    
+    Module Impl_pointer_mut_array_N_T.
+      Definition Self (N : Value.t) (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ].
+      
+      (*
+          pub const fn as_mut_ptr(self) -> *mut T {
+              self as *mut T
+          }
+      *)
+      Definition as_mut_ptr
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.rust_cast (M.read (| self |))))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_as_mut_ptr :
+        forall (N : Value.t) (T : Ty.t),
+        M.IsAssociatedFunction (Self N T) "as_mut_ptr" (as_mut_ptr N T).
+      
+      (*
+          pub const fn as_mut_slice(self) -> *mut [T] {
+              self
+          }
+      *)
+      Definition as_mut_slice
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self N T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (| self |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_as_mut_slice :
+        forall (N : Value.t) (T : Ty.t),
+        M.IsAssociatedFunction (Self N T) "as_mut_slice" (as_mut_slice N T).
+    End Impl_pointer_mut_array_N_T.
     
     Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_pointer_mut_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
@@ -2522,8 +2580,8 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.eq (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _, _ => M.impossible
+            BinOp.eq (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2634,7 +2692,7 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2675,7 +2733,7 @@ Module ptr.
                   [ M.read (| self |); M.read (| other |) ]
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2690,8 +2748,8 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.lt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _, _ => M.impossible
+            BinOp.lt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2706,8 +2764,8 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.le (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _, _ => M.impossible
+            BinOp.le (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2722,8 +2780,8 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.gt (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _, _ => M.impossible
+            BinOp.gt (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2738,8 +2796,8 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.Pure.ge (M.read (| M.read (| self |) |)) (M.read (| M.read (| other |) |))))
-        | _, _, _ => M.impossible
+            BinOp.ge (| M.read (| M.read (| self |) |), M.read (| M.read (| other |) |) |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

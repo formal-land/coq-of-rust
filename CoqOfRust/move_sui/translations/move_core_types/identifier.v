@@ -37,15 +37,15 @@ Module identifier.
                       (fun γ =>
                         ltac:(M.monadic
                           match γ with
-                          | [] => M.alloc (| Value.Bool true |)
-                          | _ => M.impossible (||)
+                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |)));
               fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_is_valid_identifier_char :
@@ -85,16 +85,17 @@ Module identifier.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt
-                                    (M.read (| i |))
-                                    (M.call_closure (|
+                                  BinOp.lt (|
+                                    M.read (| i |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| b |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -107,8 +108,8 @@ Module identifier.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            UnOp.Pure.not
-                                              (M.call_closure (|
+                                            UnOp.not (|
+                                              M.call_closure (|
                                                 M.get_function (|
                                                   "move_core_types::identifier::is_valid_identifier_char",
                                                   []
@@ -122,7 +123,8 @@ Module identifier.
                                                       |)
                                                     |))
                                                 ]
-                                              |))
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -141,7 +143,10 @@ Module identifier.
                               let β := i in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                BinOp.Wrap.add (|
+                                  M.read (| β |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
@@ -161,7 +166,7 @@ Module identifier.
               M.alloc (| Value.Bool true |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_all_bytes_valid :
@@ -206,12 +211,36 @@ Module identifier.
                   let γ1_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                   let γ1_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
                   let γ1_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 60 |) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ1_1 |), Value.Integer 83 |) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ1_2 |), Value.Integer 69 |) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ1_3 |), Value.Integer 76 |) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ1_4 |), Value.Integer 70 |) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ1_5 |), Value.Integer 62 |) in
+                  let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ1_0 |),
+                      Value.Integer IntegerKind.U8 60
+                    |) in
+                  let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ1_1 |),
+                      Value.Integer IntegerKind.U8 83
+                    |) in
+                  let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ1_2 |),
+                      Value.Integer IntegerKind.U8 69
+                    |) in
+                  let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ1_3 |),
+                      Value.Integer IntegerKind.U8 76
+                    |) in
+                  let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ1_4 |),
+                      Value.Integer IntegerKind.U8 70
+                    |) in
+                  let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ1_5 |),
+                      Value.Integer IntegerKind.U8 62
+                    |) in
                   M.alloc (| Value.Bool true |)));
               fun γ =>
                 ltac:(M.monadic
@@ -236,16 +265,17 @@ Module identifier.
                         ltac:(M.monadic
                           match γ with
                           | [] =>
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_function (|
-                                  "move_core_types::identifier::all_bytes_valid",
-                                  []
-                                |),
-                                [ M.read (| b |); Value.Integer 1 ]
-                              |)
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                M.call_closure (|
+                                  M.get_function (|
+                                    "move_core_types::identifier::all_bytes_valid",
+                                    []
+                                  |),
+                                  [ M.read (| b |); Value.Integer IntegerKind.Usize 1 ]
+                                |)
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   |)));
               fun γ =>
@@ -253,32 +283,37 @@ Module identifier.
                   (let γ := M.read (| γ |) in
                   let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                   let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 95 |) in
+                  let _ :=
+                    M.is_constant_or_break_match (|
+                      M.read (| γ1_0 |),
+                      Value.Integer IntegerKind.U8 95
+                    |) in
                   let γ :=
                     M.alloc (|
-                      BinOp.Pure.gt
-                        (M.call_closure (|
+                      BinOp.gt (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
                             []
                           |),
                           [ M.read (| b |) ]
-                        |))
-                        (Value.Integer 1)
+                        |),
+                        Value.Integer IntegerKind.Usize 1
+                      |)
                     |) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.call_closure (|
                       M.get_function (| "move_core_types::identifier::all_bytes_valid", [] |),
-                      [ M.read (| b |); Value.Integer 1 ]
+                      [ M.read (| b |); Value.Integer IntegerKind.Usize 1 ]
                     |)
                   |)));
               fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_is_valid : M.IsFunction "move_core_types::identifier::is_valid" is_valid.
@@ -329,7 +364,7 @@ Module identifier.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -359,18 +394,16 @@ Module identifier.
             [
               M.read (| f |);
               M.read (| Value.String "Identifier" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::identifier::Identifier",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "move_core_types::identifier::Identifier",
+                  0
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -380,17 +413,6 @@ Module identifier.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_identifier_Identifier.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_identifier_Identifier.
-    Definition Self : Ty.t := Ty.path "move_core_types::identifier::Identifier".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_identifier_Identifier.
   
   Module Impl_core_cmp_Eq_for_move_core_types_identifier_Identifier.
     Definition Self : Ty.t := Ty.path "move_core_types::identifier::Identifier".
@@ -411,7 +433,7 @@ Module identifier.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -453,7 +475,7 @@ Module identifier.
               M.read (| state |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -498,7 +520,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -559,7 +581,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -609,7 +631,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -654,7 +676,7 @@ Module identifier.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -692,7 +714,7 @@ Module identifier.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -798,60 +820,67 @@ Module identifier.
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [
-                                        M.read (|
-                                          let~ res :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_function (| "alloc::fmt::format", [] |),
-                                                [
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "core::hint::must_use",
+                                            [ Ty.path "alloc::string::String" ]
+                                          |),
+                                          [
+                                            M.read (|
+                                              let~ res :=
+                                                M.alloc (|
                                                   M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::Arguments",
-                                                      "new_v1",
-                                                      []
-                                                    |),
+                                                    M.get_function (| "alloc::fmt::format", [] |),
                                                     [
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.read (|
-                                                                Value.String "Invalid identifier '"
-                                                              |);
-                                                              M.read (| Value.String "'" |)
-                                                            ]
-                                                        |));
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "alloc::boxed::Box")
-                                                                      []
-                                                                      [
-                                                                        Ty.path "str";
-                                                                        Ty.path
-                                                                          "alloc::alloc::Global"
-                                                                      ]
-                                                                  ]
-                                                                |),
-                                                                [ s ]
-                                                              |)
-                                                            ]
-                                                        |))
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::Arguments",
+                                                          "new_v1",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "Invalid identifier '"
+                                                                |);
+                                                                M.read (| Value.String "'" |)
+                                                              ]
+                                                          |);
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "new_display",
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "alloc::boxed::Box")
+                                                                        []
+                                                                        [
+                                                                          Ty.path "str";
+                                                                          Ty.path
+                                                                            "alloc::alloc::Global"
+                                                                        ]
+                                                                    ]
+                                                                  |),
+                                                                  [ s ]
+                                                                |)
+                                                              ]
+                                                          |)
+                                                        ]
+                                                      |)
                                                     ]
                                                   |)
-                                                ]
-                                              |)
-                                            |) in
-                                          res
+                                                |) in
+                                              res
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -864,7 +893,7 @@ Module identifier.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -894,7 +923,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_valid : M.IsAssociatedFunction Self "is_valid" is_valid.
@@ -930,7 +959,7 @@ Module identifier.
               Value.String "<SELF>"
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_self : M.IsAssociatedFunction Self "is_self" is_self.
@@ -1046,7 +1075,7 @@ Module identifier.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_utf8 : M.IsAssociatedFunction Self "from_utf8" from_utf8.
@@ -1071,7 +1100,7 @@ Module identifier.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_ident_str : M.IsAssociatedFunction Self "as_ident_str" as_ident_str.
@@ -1107,7 +1136,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_string : M.IsAssociatedFunction Self "into_string" into_string.
@@ -1135,7 +1164,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
@@ -1165,7 +1194,7 @@ Module identifier.
             |),
             [ M.read (| data |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1200,7 +1229,7 @@ Module identifier.
             |),
             [ M.read (| ident_str |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1235,7 +1264,7 @@ Module identifier.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1282,7 +1311,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1315,46 +1344,43 @@ Module identifier.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
-                                  ]
-                              ]
-                            |),
+                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
                             [
-                              M.alloc (|
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.read (| self |),
-                                  "move_core_types::identifier::Identifier",
-                                  0
-                                |)
-                              |)
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
+                                    []
+                                    [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
+                                ]
                             ]
-                          |)
-                        ]
-                    |))
+                          |),
+                          [
+                            M.alloc (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.read (| self |),
+                                "move_core_types::identifier::Identifier",
+                                0
+                              |)
+                            |)
+                          ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1392,18 +1418,16 @@ Module identifier.
             [
               M.read (| f |);
               M.read (| Value.String "IdentStr" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::identifier::IdentStr",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "move_core_types::identifier::IdentStr",
+                  0
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1413,17 +1437,6 @@ Module identifier.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_identifier_IdentStr.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_identifier_IdentStr.
-    Definition Self : Ty.t := Ty.path "move_core_types::identifier::IdentStr".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_identifier_IdentStr.
   
   Module Impl_core_cmp_Eq_for_move_core_types_identifier_IdentStr.
     Definition Self : Ty.t := Ty.path "move_core_types::identifier::IdentStr".
@@ -1444,7 +1457,7 @@ Module identifier.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1477,7 +1490,7 @@ Module identifier.
               M.read (| state |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1513,7 +1526,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1566,7 +1579,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1608,7 +1621,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1652,7 +1665,7 @@ Module identifier.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| _from |) |)) |)) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (* RefCast *)
@@ -1682,7 +1695,7 @@ Module identifier.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| _from |) |)) |)) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1769,56 +1782,62 @@ Module identifier.
                                         [ Ty.path "alloc::string::String" ]
                                       |),
                                       [
-                                        M.read (|
-                                          let~ res :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_function (| "alloc::fmt::format", [] |),
-                                                [
+                                        M.call_closure (|
+                                          M.get_function (|
+                                            "core::hint::must_use",
+                                            [ Ty.path "alloc::string::String" ]
+                                          |),
+                                          [
+                                            M.read (|
+                                              let~ res :=
+                                                M.alloc (|
                                                   M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::Arguments",
-                                                      "new_v1",
-                                                      []
-                                                    |),
+                                                    M.get_function (| "alloc::fmt::format", [] |),
                                                     [
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.read (|
-                                                                Value.String "Invalid identifier '"
-                                                              |);
-                                                              M.read (| Value.String "'" |)
-                                                            ]
-                                                        |));
-                                                      (* Unsize *)
-                                                      M.pointer_coercion
-                                                        (M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path "core::fmt::rt::Argument",
-                                                                  "new_display",
-                                                                  [
-                                                                    Ty.apply
-                                                                      (Ty.path "&")
-                                                                      []
-                                                                      [ Ty.path "str" ]
-                                                                  ]
-                                                                |),
-                                                                [ s ]
-                                                              |)
-                                                            ]
-                                                        |))
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "core::fmt::Arguments",
+                                                          "new_v1",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "Invalid identifier '"
+                                                                |);
+                                                                M.read (| Value.String "'" |)
+                                                              ]
+                                                          |);
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "core::fmt::rt::Argument",
+                                                                    "new_display",
+                                                                    [
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Ty.path "str" ]
+                                                                    ]
+                                                                  |),
+                                                                  [ s ]
+                                                                |)
+                                                              ]
+                                                          |)
+                                                        ]
+                                                      |)
                                                     ]
                                                   |)
-                                                ]
-                                              |)
-                                            |) in
-                                          res
+                                                |) in
+                                              res
+                                            |)
+                                          ]
                                         |)
                                       ]
                                     |)
@@ -1831,7 +1850,7 @@ Module identifier.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1861,7 +1880,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_valid : M.IsAssociatedFunction Self "is_valid" is_valid.
@@ -1886,7 +1905,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -1911,7 +1930,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -1931,7 +1950,7 @@ Module identifier.
             "move_core_types::identifier::IdentStr",
             0
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
@@ -1956,7 +1975,7 @@ Module identifier.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
@@ -1996,7 +2015,7 @@ Module identifier.
                 |))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_abstract_size_for_gas_metering :
@@ -2026,7 +2045,7 @@ Module identifier.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2079,7 +2098,7 @@ Module identifier.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2112,36 +2131,33 @@ Module identifier.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                            |),
-                            [
-                              M.alloc (|
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.read (| self |),
-                                  "move_core_types::identifier::IdentStr",
-                                  0
-                                |)
+                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          |),
+                          [
+                            M.alloc (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.read (| self |),
+                                "move_core_types::identifier::IdentStr",
+                                0
                               |)
-                            ]
-                          |)
-                        ]
-                    |))
+                            |)
+                          ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

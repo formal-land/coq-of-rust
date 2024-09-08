@@ -21,31 +21,27 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "`print_one`: x is " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "`print_one`: x is " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                |),
-                                [ x ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                              |),
+                              [ x ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -54,7 +50,7 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_print_one : M.IsFunction "scoping_rules_lifetimes_functions::print_one" print_one.
@@ -72,10 +68,10 @@ Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
       M.read (|
         let~ _ :=
           let β := M.read (| x |) in
-          M.write (| β, BinOp.Wrap.add Integer.I32 (M.read (| β |)) (Value.Integer 1) |) in
+          M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.I32 1 |) |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_add_one : M.IsFunction "scoping_rules_lifetimes_functions::add_one" add_one.
@@ -101,40 +97,36 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "`print_multi`: x is " |);
-                              M.read (| Value.String ", y is " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "`print_multi`: x is " |);
+                            M.read (| Value.String ", y is " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                |),
-                                [ x ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                |),
-                                [ y ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                              |),
+                              [ x ]
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                              |),
+                              [ y ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -143,7 +135,7 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_print_multi :
@@ -161,7 +153,7 @@ Definition pass_x (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
       (let x := M.alloc (| x |) in
       let β1 := M.alloc (| β1 |) in
       M.match_operator (| β1, [ fun γ => ltac:(M.monadic (M.read (| x |))) ] |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_pass_x : M.IsFunction "scoping_rules_lifetimes_functions::pass_x" pass_x.
@@ -187,8 +179,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x := M.alloc (| Value.Integer 7 |) in
-        let~ y := M.alloc (| Value.Integer 9 |) in
+        let~ x := M.alloc (| Value.Integer IntegerKind.I32 7 |) in
+        let~ y := M.alloc (| Value.Integer IntegerKind.I32 9 |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
@@ -217,7 +209,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               [ M.read (| z |) ]
             |)
           |) in
-        let~ t := M.alloc (| Value.Integer 3 |) in
+        let~ t := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
@@ -234,7 +226,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_functions::main" main.

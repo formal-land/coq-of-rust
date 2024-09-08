@@ -13,14 +13,14 @@ Module slice.
       *)
       Definition is_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
               M.get_function (| "core::slice::ascii::is_ascii", [] |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_ascii : M.IsAssociatedFunction Self "is_ascii" is_ascii.
@@ -37,7 +37,7 @@ Module slice.
       *)
       Definition as_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -79,7 +79,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ascii : M.IsAssociatedFunction Self "as_ascii" as_ascii.
@@ -94,7 +94,7 @@ Module slice.
       *)
       Definition as_ascii_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -102,7 +102,7 @@ Module slice.
               let~ ascii_ptr := M.alloc (| M.rust_cast (M.read (| byte_ptr |)) |) in
               M.alloc (| M.read (| ascii_ptr |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ascii_unchecked :
@@ -120,23 +120,24 @@ Module slice.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.call_closure (|
+              BinOp.eq (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "len",
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                (M.call_closure (|
+                |),
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                     "len",
                     []
                   |),
                   [ M.read (| other |) ]
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -189,31 +190,32 @@ Module slice.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let a := M.copy (| γ0_0 |) in
-                                    let b := M.copy (| γ0_1 |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "u8",
-                                        "eq_ignore_ascii_case",
-                                        []
-                                      |),
-                                      [ M.read (| a |); M.read (| b |) ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                      let a := M.copy (| γ0_0 |) in
+                                      let b := M.copy (| γ0_1 |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "u8",
+                                          "eq_ignore_ascii_case",
+                                          []
+                                        |),
+                                        [ M.read (| a |); M.read (| b |) ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_eq_ignore_ascii_case :
@@ -308,7 +310,7 @@ Module slice.
                   ]
                 |))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_make_ascii_uppercase :
@@ -403,7 +405,7 @@ Module slice.
                   ]
                 |))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_make_ascii_lowercase :
@@ -447,7 +449,7 @@ Module slice.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_escape_ascii :
@@ -470,7 +472,7 @@ Module slice.
       *)
       Definition trim_ascii_start (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -534,7 +536,7 @@ Module slice.
                 |) in
               M.alloc (| M.read (| bytes |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trim_ascii_start :
@@ -557,7 +559,7 @@ Module slice.
       *)
       Definition trim_ascii_end (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -621,7 +623,7 @@ Module slice.
                 |) in
               M.alloc (| M.read (| bytes |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trim_ascii_end :
@@ -634,7 +636,7 @@ Module slice.
       *)
       Definition trim_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -654,7 +656,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_trim_ascii : M.IsAssociatedFunction Self "trim_ascii" trim_ascii.
@@ -670,7 +672,7 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::slice::ascii::EscapeByte" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -737,7 +739,7 @@ Module slice.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -787,7 +789,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -823,7 +825,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -867,7 +869,7 @@ Module slice.
                 M.read (| fold |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -912,7 +914,7 @@ Module slice.
                 M.read (| fold |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -935,7 +937,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -990,7 +992,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1017,8 +1019,47 @@ Module slice.
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-              self.clone().try_for_each(|b| f.write_char(b as char))
+              // disassemble iterator, including front/back parts of flatmap in case it has been partially consumed
+              let (front, slice, back) = self.clone().inner.into_parts();
+              let front = front.unwrap_or(EscapeDefault::empty());
+              let mut bytes = slice.unwrap_or_default().as_slice();
+              let back = back.unwrap_or(EscapeDefault::empty());
+      
+              // usually empty, so the formatter won't have to do any work
+              for byte in front {
+                  f.write_char(byte as char)?;
+              }
+      
+              fn needs_escape(b: u8) -> bool {
+                  b > 0x7E || b < 0x20 || b == b'\\' || b == b'\'' || b == b'"'
+              }
+      
+              while bytes.len() > 0 {
+                  // fast path for the printable, non-escaped subset of ascii
+                  let prefix = bytes.iter().take_while(|&&b| !needs_escape(b)).count();
+                  // SAFETY: prefix length was derived by counting bytes in the same splice, so it's in-bounds
+                  let (prefix, remainder) = unsafe { bytes.split_at_unchecked(prefix) };
+                  // SAFETY: prefix is a valid utf8 sequence, as it's a subset of ASCII
+                  let prefix = unsafe { crate::str::from_utf8_unchecked(prefix) };
+      
+                  f.write_str(prefix)?; // the fast part
+      
+                  bytes = remainder;
+      
+                  if let Some(&b) = bytes.first() {
+                      // guaranteed to be non-empty, better to write it as a str
+                      f.write_str(ascii::escape_default(b).as_str())?;
+                      bytes = &bytes[1..];
+                  }
+              }
+      
+              // also usually empty
+              for byte in back {
+                  f.write_char(byte as char)?;
+              }
+              Ok(())
           }
+      "
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
@@ -1026,66 +1067,904 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
-            M.call_closure (|
-              M.get_trait_method (|
-                "core::iter::traits::iterator::Iterator",
-                Ty.path "core::slice::ascii::EscapeAscii",
-                [],
-                "try_for_each",
-                [
-                  Ty.function
-                    [ Ty.tuple [ Ty.path "u8" ] ]
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "core::fmt::Error" ]);
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]
-                ]
-              |),
-              [
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "core::slice::ascii::EscapeAscii",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |);
-                M.closure
-                  (fun γ =>
-                    ltac:(M.monadic
-                      match γ with
-                      | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let b := M.copy (| γ |) in
+            M.catch_return (|
+              ltac:(M.monadic
+                (M.read (|
+                  M.match_operator (|
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::iter::adapters::flatten::FlatMap")
+                            []
+                            [
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ];
+                              Ty.path "core::ascii::EscapeDefault";
+                              Ty.path "core::slice::ascii::EscapeByte"
+                            ],
+                          "into_parts",
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.alloc (|
                                 M.call_closure (|
                                   M.get_trait_method (|
-                                    "core::fmt::Write",
-                                    Ty.path "core::fmt::Formatter",
+                                    "core::clone::Clone",
+                                    Ty.path "core::slice::ascii::EscapeAscii",
                                     [],
-                                    "write_char",
+                                    "clone",
                                     []
                                   |),
-                                  [ M.read (| f |); M.rust_cast (M.read (| b |)) ]
+                                  [ M.read (| self |) ]
+                                |)
+                              |),
+                              "core::slice::ascii::EscapeAscii",
+                              "inner"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                          let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                          let front := M.copy (| γ0_0 |) in
+                          let slice := M.copy (| γ0_1 |) in
+                          let back := M.copy (| γ0_2 |) in
+                          let~ front :=
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::ascii::EscapeDefault" ],
+                                  "unwrap_or",
+                                  []
+                                |),
+                                [
+                                  M.read (| front |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::ascii::EscapeDefault",
+                                      "empty",
+                                      []
+                                    |),
+                                    []
+                                  |)
+                                ]
+                              |)
+                            |) in
+                          let~ bytes :=
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ Ty.path "u8" ],
+                                  "as_slice",
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::slice::iter::Iter")
+                                              []
+                                              [ Ty.path "u8" ]
+                                          ],
+                                        "unwrap_or_default",
+                                        []
+                                      |),
+                                      [ M.read (| slice |) ]
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |) in
+                          let~ back :=
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.path "core::ascii::EscapeDefault" ],
+                                  "unwrap_or",
+                                  []
+                                |),
+                                [
+                                  M.read (| back |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::ascii::EscapeDefault",
+                                      "empty",
+                                      []
+                                    |),
+                                    []
+                                  |)
+                                ]
+                              |)
+                            |) in
+                          let~ _ :=
+                            M.use
+                              (M.match_operator (|
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::collect::IntoIterator",
+                                      Ty.path "core::ascii::EscapeDefault",
+                                      [],
+                                      "into_iter",
+                                      []
+                                    |),
+                                    [ M.read (| front |) ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let iter := M.copy (| γ |) in
+                                      M.loop (|
+                                        ltac:(M.monadic
+                                          (let~ _ :=
+                                            M.match_operator (|
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::iter::traits::iterator::Iterator",
+                                                    Ty.path "core::ascii::EscapeDefault",
+                                                    [],
+                                                    "next",
+                                                    []
+                                                  |),
+                                                  [ iter ]
+                                                |)
+                                              |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "core::option::Option::None"
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (| M.read (| M.break (||) |) |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ0_0 :=
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        γ,
+                                                        "core::option::Option::Some",
+                                                        0
+                                                      |) in
+                                                    let byte := M.copy (| γ0_0 |) in
+                                                    let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::try_trait::Try",
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
+                                                                ],
+                                                              [],
+                                                              "branch",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::fmt::Write",
+                                                                  Ty.path "core::fmt::Formatter",
+                                                                  [],
+                                                                  "write_char",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (| f |);
+                                                                  M.rust_cast (M.read (| byte |))
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                  0
+                                                                |) in
+                                                              let residual := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::FromResidual",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "core::fmt::Error"
+                                                                              ]
+                                                                          ],
+                                                                          "from_residual",
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| residual |) ]
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                  0
+                                                                |) in
+                                                              let val := M.copy (| γ0_0 |) in
+                                                              val))
+                                                        ]
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)))
+                                      |)))
+                                ]
+                              |)) in
+                          let~ _ :=
+                            M.loop (|
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              BinOp.gt (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                    "len",
+                                                    []
+                                                  |),
+                                                  [ M.read (| bytes |) ]
+                                                |),
+                                                Value.Integer IntegerKind.Usize 0
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ prefix :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::iter::traits::iterator::Iterator",
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "core::iter::adapters::take_while::TakeWhile")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::slice::iter::Iter")
+                                                      []
+                                                      [ Ty.path "u8" ];
+                                                    Ty.function
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "u8" ]
+                                                              ]
+                                                          ]
+                                                      ]
+                                                      (Ty.path "bool")
+                                                  ],
+                                                [],
+                                                "count",
+                                                []
+                                              |),
+                                              [
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::iter::traits::iterator::Iterator",
+                                                    Ty.apply
+                                                      (Ty.path "core::slice::iter::Iter")
+                                                      []
+                                                      [ Ty.path "u8" ],
+                                                    [],
+                                                    "take_while",
+                                                    [
+                                                      Ty.function
+                                                        [
+                                                          Ty.tuple
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "&")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [ Ty.path "u8" ]
+                                                                ]
+                                                            ]
+                                                        ]
+                                                        (Ty.path "bool")
+                                                    ]
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ],
+                                                        "iter",
+                                                        []
+                                                      |),
+                                                      [ M.read (| bytes |) ]
+                                                    |);
+                                                    M.closure
+                                                      (fun γ =>
+                                                        ltac:(M.monadic
+                                                          match γ with
+                                                          | [ α0 ] =>
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| α0 |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ := M.read (| γ |) in
+                                                                      let γ := M.read (| γ |) in
+                                                                      let b := M.copy (| γ |) in
+                                                                      UnOp.not (|
+                                                                        M.call_closure (|
+                                                                          M.get_associated_function (|
+                                                                            Self,
+                                                                            "needs_escape.fmt",
+                                                                            []
+                                                                          |),
+                                                                          [ M.read (| b |) ]
+                                                                        |)
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
+                                                          end))
+                                                  ]
+                                                |)
+                                              ]
+                                            |)
+                                          |) in
+                                        M.match_operator (|
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                "split_at_unchecked",
+                                                []
+                                              |),
+                                              [ M.read (| bytes |); M.read (| prefix |) ]
+                                            |)
+                                          |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ0_0 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                let γ0_1 :=
+                                                  M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                let prefix := M.copy (| γ0_0 |) in
+                                                let remainder := M.copy (| γ0_1 |) in
+                                                let~ prefix :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_function (|
+                                                        "core::str::converts::from_utf8_unchecked",
+                                                        []
+                                                      |),
+                                                      [ M.read (| prefix |) ]
+                                                    |)
+                                                  |) in
+                                                let~ _ :=
+                                                  M.match_operator (|
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::try_trait::Try",
+                                                          Ty.apply
+                                                            (Ty.path "core::result::Result")
+                                                            []
+                                                            [
+                                                              Ty.tuple [];
+                                                              Ty.path "core::fmt::Error"
+                                                            ],
+                                                          [],
+                                                          "branch",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::Formatter",
+                                                              "write_str",
+                                                              []
+                                                            |),
+                                                            [ M.read (| f |); M.read (| prefix |) ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Break",
+                                                              0
+                                                            |) in
+                                                          let residual := M.copy (| γ0_0 |) in
+                                                          M.alloc (|
+                                                            M.never_to_any (|
+                                                              M.read (|
+                                                                M.return_ (|
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::try_trait::FromResidual",
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "core::result::Result")
+                                                                        []
+                                                                        [
+                                                                          Ty.tuple [];
+                                                                          Ty.path "core::fmt::Error"
+                                                                        ],
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::result::Result")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::convert::Infallible";
+                                                                            Ty.path
+                                                                              "core::fmt::Error"
+                                                                          ]
+                                                                      ],
+                                                                      "from_residual",
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| residual |) ]
+                                                                  |)
+                                                                |)
+                                                              |)
+                                                            |)
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Continue",
+                                                              0
+                                                            |) in
+                                                          let val := M.copy (| γ0_0 |) in
+                                                          val))
+                                                    ]
+                                                  |) in
+                                                let~ _ :=
+                                                  M.write (| bytes, M.read (| remainder |) |) in
+                                                M.match_operator (|
+                                                  M.alloc (| Value.Tuple [] |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ :=
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ],
+                                                                "first",
+                                                                []
+                                                              |),
+                                                              [ M.read (| bytes |) ]
+                                                            |)
+                                                          |) in
+                                                        let γ0_0 :=
+                                                          M.SubPointer.get_struct_tuple_field (|
+                                                            γ,
+                                                            "core::option::Option::Some",
+                                                            0
+                                                          |) in
+                                                        let γ0_0 := M.read (| γ0_0 |) in
+                                                        let b := M.copy (| γ0_0 |) in
+                                                        let~ _ :=
+                                                          M.match_operator (|
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::try_trait::Try",
+                                                                  Ty.apply
+                                                                    (Ty.path "core::result::Result")
+                                                                    []
+                                                                    [
+                                                                      Ty.tuple [];
+                                                                      Ty.path "core::fmt::Error"
+                                                                    ],
+                                                                  [],
+                                                                  "branch",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "core::fmt::Formatter",
+                                                                      "write_str",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.read (| f |);
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.path
+                                                                            "core::ascii::EscapeDefault",
+                                                                          "as_str",
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.alloc (|
+                                                                            M.call_closure (|
+                                                                              M.get_function (|
+                                                                                "core::ascii::escape_default",
+                                                                                []
+                                                                              |),
+                                                                              [ M.read (| b |) ]
+                                                                            |)
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let γ0_0 :=
+                                                                    M.SubPointer.get_struct_tuple_field (|
+                                                                      γ,
+                                                                      "core::ops::control_flow::ControlFlow::Break",
+                                                                      0
+                                                                    |) in
+                                                                  let residual :=
+                                                                    M.copy (| γ0_0 |) in
+                                                                  M.alloc (|
+                                                                    M.never_to_any (|
+                                                                      M.read (|
+                                                                        M.return_ (|
+                                                                          M.call_closure (|
+                                                                            M.get_trait_method (|
+                                                                              "core::ops::try_trait::FromResidual",
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::result::Result")
+                                                                                []
+                                                                                [
+                                                                                  Ty.tuple [];
+                                                                                  Ty.path
+                                                                                    "core::fmt::Error"
+                                                                                ],
+                                                                              [
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path
+                                                                                      "core::convert::Infallible";
+                                                                                    Ty.path
+                                                                                      "core::fmt::Error"
+                                                                                  ]
+                                                                              ],
+                                                                              "from_residual",
+                                                                              []
+                                                                            |),
+                                                                            [ M.read (| residual |)
+                                                                            ]
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)
+                                                                  |)));
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let γ0_0 :=
+                                                                    M.SubPointer.get_struct_tuple_field (|
+                                                                      γ,
+                                                                      "core::ops::control_flow::ControlFlow::Continue",
+                                                                      0
+                                                                    |) in
+                                                                  let val := M.copy (| γ0_0 |) in
+                                                                  val))
+                                                            ]
+                                                          |) in
+                                                        let~ _ :=
+                                                          M.write (|
+                                                            bytes,
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::ops::index::Index",
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
+                                                                  []
+                                                                  [ Ty.path "u8" ],
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::ops::range::RangeFrom")
+                                                                    []
+                                                                    [ Ty.path "usize" ]
+                                                                ],
+                                                                "index",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (| bytes |);
+                                                                Value.StructRecord
+                                                                  "core::ops::range::RangeFrom"
+                                                                  [
+                                                                    ("start",
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1)
+                                                                  ]
+                                                              ]
+                                                            |)
+                                                          |) in
+                                                        M.alloc (| Value.Tuple [] |)));
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.alloc (| Value.Tuple [] |)))
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              let~ _ :=
+                                                M.alloc (|
+                                                  M.never_to_any (| M.read (| M.break (||) |) |)
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)
+                                            |)
+                                          |)
+                                        |)))
+                                  ]
                                 |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
-                      end))
-              ]
+                            |) in
+                          let~ _ :=
+                            M.use
+                              (M.match_operator (|
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::collect::IntoIterator",
+                                      Ty.path "core::ascii::EscapeDefault",
+                                      [],
+                                      "into_iter",
+                                      []
+                                    |),
+                                    [ M.read (| back |) ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let iter := M.copy (| γ |) in
+                                      M.loop (|
+                                        ltac:(M.monadic
+                                          (let~ _ :=
+                                            M.match_operator (|
+                                              M.alloc (|
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::iter::traits::iterator::Iterator",
+                                                    Ty.path "core::ascii::EscapeDefault",
+                                                    [],
+                                                    "next",
+                                                    []
+                                                  |),
+                                                  [ iter ]
+                                                |)
+                                              |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let _ :=
+                                                      M.is_struct_tuple (|
+                                                        γ,
+                                                        "core::option::Option::None"
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (| M.read (| M.break (||) |) |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ0_0 :=
+                                                      M.SubPointer.get_struct_tuple_field (|
+                                                        γ,
+                                                        "core::option::Option::Some",
+                                                        0
+                                                      |) in
+                                                    let byte := M.copy (| γ0_0 |) in
+                                                    let~ _ :=
+                                                      M.match_operator (|
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::try_trait::Try",
+                                                              Ty.apply
+                                                                (Ty.path "core::result::Result")
+                                                                []
+                                                                [
+                                                                  Ty.tuple [];
+                                                                  Ty.path "core::fmt::Error"
+                                                                ],
+                                                              [],
+                                                              "branch",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::fmt::Write",
+                                                                  Ty.path "core::fmt::Formatter",
+                                                                  [],
+                                                                  "write_char",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (| f |);
+                                                                  M.rust_cast (M.read (| byte |))
+                                                                ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Break",
+                                                                  0
+                                                                |) in
+                                                              let residual := M.copy (| γ0_0 |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::try_trait::FromResidual",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.tuple [];
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ],
+                                                                          [
+                                                                            Ty.apply
+                                                                              (Ty.path
+                                                                                "core::result::Result")
+                                                                              []
+                                                                              [
+                                                                                Ty.path
+                                                                                  "core::convert::Infallible";
+                                                                                Ty.path
+                                                                                  "core::fmt::Error"
+                                                                              ]
+                                                                          ],
+                                                                          "from_residual",
+                                                                          []
+                                                                        |),
+                                                                        [ M.read (| residual |) ]
+                                                                      |)
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_struct_tuple_field (|
+                                                                  γ,
+                                                                  "core::ops::control_flow::ControlFlow::Continue",
+                                                                  0
+                                                                |) in
+                                                              let val := M.copy (| γ0_0 |) in
+                                                              val))
+                                                        ]
+                                                      |) in
+                                                    M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)))
+                                      |)))
+                                ]
+                              |)) in
+                          M.alloc (|
+                            Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                          |)))
+                    ]
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1129,7 +2008,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1148,17 +2027,18 @@ Module slice.
     *)
     Definition contains_nonascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ v ] =>
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
+          BinOp.ne (|
+            BinOp.bit_and
               (M.read (|
                 M.get_constant (| "core::slice::ascii::contains_nonascii::NONASCII_MASK" |)
               |))
-              (M.read (| v |)))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+              (M.read (| v |)),
+            Value.Integer IntegerKind.Usize 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_contains_nonascii :
@@ -1171,7 +2051,7 @@ Module slice.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
-                [ Value.Integer 128 ]
+                [ Value.Integer IntegerKind.U8 128 ]
               |)
             |))).
     End contains_nonascii.
@@ -1189,7 +2069,7 @@ Module slice.
     *)
     Definition is_ascii_simple (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ bytes ] =>
+      | [], [], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.read (|
@@ -1216,15 +2096,16 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.path "u8",
                                                 "is_ascii",
                                                 []
                                               |),
                                               [ M.read (| last |) ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1262,7 +2143,7 @@ Module slice.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_is_ascii_simple :
@@ -1356,7 +2237,7 @@ Module slice.
     *)
     Definition is_ascii (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ s ] =>
+      | [], [], [ s ] =>
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           M.catch_return (|
@@ -1405,32 +2286,32 @@ Module slice.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   LogicalOp.or (|
-                                    BinOp.Pure.lt
-                                      (M.read (| len |))
-                                      (M.read (|
+                                    BinOp.lt (|
+                                      M.read (| len |),
+                                      M.read (|
                                         M.get_constant (|
                                           "core::slice::ascii::is_ascii::USIZE_SIZE"
                                         |)
-                                      |)),
+                                      |)
+                                    |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.lt
-                                        (M.read (| len |))
-                                        (M.read (| align_offset |))))
+                                      (BinOp.lt (| M.read (| len |), M.read (| align_offset |) |)))
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.lt
-                                      (M.read (|
+                                    (BinOp.lt (|
+                                      M.read (|
                                         M.get_constant (|
                                           "core::slice::ascii::is_ascii::USIZE_SIZE"
                                         |)
-                                      |))
-                                      (M.call_closure (|
+                                      |),
+                                      M.call_closure (|
                                         M.get_function (|
                                           "core::mem::align_of",
                                           [ Ty.path "usize" ]
                                         |),
                                         []
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -1460,7 +2341,10 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| align_offset |)) (Value.Integer 0)
+                                  BinOp.eq (|
+                                    M.read (| align_offset |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1531,10 +2415,12 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (BinOp.Pure.le
-                                              (M.read (| offset_to_aligned |))
-                                              (M.read (| len |)))
+                                          UnOp.not (|
+                                            BinOp.le (|
+                                              M.read (| offset_to_aligned |),
+                                              M.read (| len |)
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1592,8 +2478,8 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "*const") [] [ Ty.path "usize" ],
                                                 "is_aligned_to",
@@ -1609,7 +2495,8 @@ Module slice.
                                                   []
                                                 |)
                                               ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1647,16 +2534,17 @@ Module slice.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt
-                                      (M.read (| byte_pos |))
-                                      (BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| len |))
-                                        (M.read (|
+                                    BinOp.lt (|
+                                      M.read (| byte_pos |),
+                                      BinOp.Wrap.sub (|
+                                        M.read (| len |),
+                                        M.read (|
                                           M.get_constant (|
                                             "core::slice::ascii::is_ascii::USIZE_SIZE"
                                           |)
-                                        |)))
+                                        |)
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1684,17 +2572,19 @@ Module slice.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (BinOp.Pure.le
-                                                            (BinOp.Wrap.add
-                                                              Integer.Usize
-                                                              (M.read (| byte_pos |))
-                                                              (M.read (|
+                                                        UnOp.not (|
+                                                          BinOp.le (|
+                                                            BinOp.Wrap.add (|
+                                                              M.read (| byte_pos |),
+                                                              M.read (|
                                                                 M.get_constant (|
                                                                   "core::slice::ascii::is_ascii::USIZE_SIZE"
                                                                 |)
-                                                              |)))
-                                                            (M.read (| len |)))
+                                                              |)
+                                                            |),
+                                                            M.read (| len |)
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -1746,8 +2636,8 @@ Module slice.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (M.read (|
+                                                        UnOp.not (|
+                                                          M.read (|
                                                             M.match_operator (|
                                                               M.alloc (|
                                                                 M.call_closure (|
@@ -1822,10 +2712,13 @@ Module slice.
                                                                           ltac:(M.monadic
                                                                             match γ with
                                                                             | [] =>
-                                                                              M.alloc (|
-                                                                                Value.Bool true
-                                                                              |)
-                                                                            | _ => M.impossible (||)
+                                                                              ltac:(M.monadic
+                                                                                (M.alloc (|
+                                                                                  Value.Bool true
+                                                                                |)))
+                                                                            | _ =>
+                                                                              M.impossible
+                                                                                "wrong number of arguments"
                                                                             end))
                                                                     |)));
                                                                 fun γ =>
@@ -1835,7 +2728,8 @@ Module slice.
                                                                     |)))
                                                               ]
                                                             |)
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -1912,14 +2806,14 @@ Module slice.
                                 let β := byte_pos in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| β |))
-                                    (M.read (|
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    M.read (|
                                       M.get_constant (|
                                         "core::slice::ascii::is_ascii::USIZE_SIZE"
                                       |)
-                                    |))
+                                    |)
+                                  |)
                                 |) in
                               let~ _ :=
                                 M.write (|
@@ -1930,7 +2824,7 @@ Module slice.
                                       "add",
                                       []
                                     |),
-                                    [ M.read (| word_ptr |); Value.Integer 1 ]
+                                    [ M.read (| word_ptr |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
@@ -1968,23 +2862,26 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (LogicalOp.and (|
-                                              BinOp.Pure.le
-                                                (M.read (| byte_pos |))
-                                                (M.read (| len |)),
+                                          UnOp.not (|
+                                            LogicalOp.and (|
+                                              BinOp.le (|
+                                                M.read (| byte_pos |),
+                                                M.read (| len |)
+                                              |),
                                               ltac:(M.monadic
-                                                (BinOp.Pure.le
-                                                  (BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| len |))
-                                                    (M.read (| byte_pos |)))
-                                                  (M.read (|
+                                                (BinOp.le (|
+                                                  BinOp.Wrap.sub (|
+                                                    M.read (| len |),
+                                                    M.read (| byte_pos |)
+                                                  |),
+                                                  M.read (|
                                                     M.get_constant (|
                                                       "core::slice::ascii::is_ascii::USIZE_SIZE"
                                                     |)
-                                                  |))))
-                                            |))
+                                                  |)
+                                                |)))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -2029,27 +2926,28 @@ Module slice.
                             |),
                             [
                               M.read (| start |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.read (| len |))
-                                (M.read (|
+                              BinOp.Wrap.sub (|
+                                M.read (| len |),
+                                M.read (|
                                   M.get_constant (| "core::slice::ascii::is_ascii::USIZE_SIZE" |)
-                                |))
+                                |)
+                              |)
                             ]
                           |))
                       ]
                     |)
                   |) in
                 M.alloc (|
-                  UnOp.Pure.not
-                    (M.call_closure (|
+                  UnOp.not (|
+                    M.call_closure (|
                       M.get_function (| "core::slice::ascii::contains_nonascii", [] |),
                       [ M.read (| last_word |) ]
-                    |))
+                    |)
+                  |)
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_is_ascii : M.IsFunction "core::slice::ascii::is_ascii" is_ascii.

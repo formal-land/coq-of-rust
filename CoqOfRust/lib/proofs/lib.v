@@ -29,16 +29,27 @@ Ltac step :=
 
 Module Integer.
   Module Valid.
-    Definition t (kind : Integer.t) (z : Z) : Prop :=
+    Definition t (kind : IntegerKind.t) (z : Z) : Prop :=
       Integer.min kind <= z <= Integer.max kind.
   End Valid.
 
-  Lemma normalize_with_error_eq (kind : Integer.t) (z z' : Z) :
-    Integer.normalize_with_error kind z = inl z' ->
+  Lemma normalize_wrap_is_valid (kind : IntegerKind.t) (z : Z) :
+    Integer.Valid.t kind (Integer.normalize_wrap kind z).
+  Proof.
+    unfold
+      Integer.normalize_wrap,
+      Integer.Valid.t,
+      Integer.min,
+      Integer.max.
+    destruct kind; cbn; lia.
+  Qed.
+
+  Lemma normalize_with_error_eq (kind : IntegerKind.t) (z z' : Z) :
+    Integer.normalize_option kind z = Some z' ->
     Valid.t kind z /\
     z' = z.
   Proof.
-    unfold Integer.normalize_with_error, Valid.t.
+    unfold Integer.normalize_option, Valid.t.
     repeat destruct (_ <? _) eqn:? in |- *; try congruence.
     split; [lia | congruence].
   Qed.
@@ -46,34 +57,24 @@ End Integer.
 
 Module BinOp.
   Module Error.
-    Lemma add_eq (kind : Integer.t) (z1 z2 z : Z) :
-      BinOp.Error.add kind (Value.Integer z1) (Value.Integer z2) = inl (Value.Integer z) ->
-      z = (z1 + z2)%Z.
-    Proof.
-      unfold
-        BinOp.Error.add,
-        BinOp.Error.make_arithmetic,
-        Integer.normalize_with_error.
-      sauto.
-    Qed.
-
-    Lemma add_is_valid (kind : Integer.t) (z1 z2 : Z) (v : Value.t)
+    Lemma add_is_valid (kind : IntegerKind.t) (z1 z2 z : Z)
       (H_z1 : Integer.Valid.t kind z1)
       (H_z2 : Integer.Valid.t kind z2)
-      (H_v : BinOp.Error.add kind (Value.Integer z1) (Value.Integer z2) = inl v) :
-      match v with
-      | Value.Integer z => Integer.Valid.t kind z
-      | _ => False
-      end.
+      (H_v :
+        BinOp.Wrap.add (Value.Integer kind z1) (Value.Integer kind z2) =
+        M.pure (Value.Integer kind z)
+      ) :
+      Integer.Valid.t kind z.
     Proof.
       unfold
         Integer.Valid.t,
-        BinOp.Error.add,
-        BinOp.Error.make_arithmetic,
-        Integer.normalize_with_error
+        BinOp.Wrap.add,
+        BinOp.Wrap.make_arithmetic
         in *.
-      repeat destruct (_ <? _) eqn:? in H_v; try congruence.
-      sauto lq: on solve: lia.
+      rewrite IntegerKind.eqb_refl in H_v.
+      simpl in H_v.
+      injection H_v; clear H_v; intro H_v; rewrite <- H_v.
+      apply Integer.normalize_wrap_is_valid.
     Qed.
   End Error.
 End BinOp.

@@ -28,7 +28,10 @@ Definition is_divisible_by (ε : list Value.t) (τ : list Ty.t) (α : list Value
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.eq (M.read (| rhs |)) (Value.Integer 0) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.U32 0 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
@@ -37,13 +40,14 @@ Definition is_divisible_by (ε : list Value.t) (τ : list Ty.t) (α : list Value
                 ]
               |) in
             M.alloc (|
-              BinOp.Pure.eq
-                (BinOp.Wrap.rem Integer.U32 (M.read (| lhs |)) (M.read (| rhs |)))
-                (Value.Integer 0)
+              BinOp.eq (|
+                BinOp.Wrap.rem (| M.read (| lhs |), M.read (| rhs |) |),
+                Value.Integer IntegerKind.U32 0
+              |)
             |)
           |)))
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_is_divisible_by : M.IsFunction "functions::is_divisible_by" is_divisible_by.
@@ -77,7 +81,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                     (M.alloc (|
                       M.call_closure (|
                         M.get_function (| "functions::is_divisible_by", [] |),
-                        [ M.read (| n |); Value.Integer 15 ]
+                        [ M.read (| n |); Value.Integer IntegerKind.U32 15 ]
                       |)
                     |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -93,14 +97,8 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "fizzbuzz
-" |) ]
-                                |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "fizzbuzz
+" |) ] |) ]
                           |)
                         ]
                       |)
@@ -119,7 +117,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                             (M.alloc (|
                               M.call_closure (|
                                 M.get_function (| "functions::is_divisible_by", [] |),
-                                [ M.read (| n |); Value.Integer 3 ]
+                                [ M.read (| n |); Value.Integer IntegerKind.U32 3 ]
                               |)
                             |)) in
                         let _ :=
@@ -137,12 +135,10 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array [ M.read (| Value.String "fizz
+                                      M.alloc (|
+                                        Value.Array [ M.read (| Value.String "fizz
 " |) ]
-                                        |))
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -162,7 +158,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                     (M.alloc (|
                                       M.call_closure (|
                                         M.get_function (| "functions::is_divisible_by", [] |),
-                                        [ M.read (| n |); Value.Integer 5 ]
+                                        [ M.read (| n |); Value.Integer IntegerKind.U32 5 ]
                                       |)
                                     |)) in
                                 let _ :=
@@ -183,12 +179,10 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array [ M.read (| Value.String "buzz
+                                              M.alloc (|
+                                                Value.Array [ M.read (| Value.String "buzz
 " |) ]
-                                                |))
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -211,31 +205,27 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                               []
                                             |),
                                             [
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.read (| Value.String "" |);
-                                                      M.read (| Value.String "
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.read (| Value.String "" |);
+                                                    M.read (| Value.String "
 " |)
-                                                    ]
-                                                |));
-                                              (* Unsize *)
-                                              M.pointer_coercion
-                                                (M.alloc (|
-                                                  Value.Array
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path "core::fmt::rt::Argument",
-                                                          "new_display",
-                                                          [ Ty.path "u32" ]
-                                                        |),
-                                                        [ n ]
-                                                      |)
-                                                    ]
-                                                |))
+                                                  ]
+                                              |);
+                                              M.alloc (|
+                                                Value.Array
+                                                  [
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "core::fmt::rt::Argument",
+                                                        "new_display",
+                                                        [ Ty.path "u32" ]
+                                                      |),
+                                                      [ n ]
+                                                    |)
+                                                  ]
+                                              |)
                                             ]
                                           |)
                                         ]
@@ -250,7 +240,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_fizzbuzz : M.IsFunction "functions::fizzbuzz" fizzbuzz.
@@ -286,7 +276,7 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                       "new",
                       []
                     |),
-                    [ Value.Integer 1; M.read (| n |) ]
+                    [ Value.Integer IntegerKind.U32 1; M.read (| n |) ]
                   |)
                 ]
               |)
@@ -343,7 +333,7 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
             ]
           |))
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_fizzbuzz_to : M.IsFunction "functions::fizzbuzz_to" fizzbuzz_to.
@@ -363,12 +353,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "functions::fizzbuzz_to", [] |),
-              [ Value.Integer 100 ]
+              [ Value.Integer IntegerKind.U32 100 ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "functions::main" main.

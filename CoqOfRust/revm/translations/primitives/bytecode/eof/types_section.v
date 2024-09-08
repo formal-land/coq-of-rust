@@ -35,34 +35,28 @@ Module bytecode.
                   M.read (| f |);
                   M.read (| Value.String "TypesSection" |);
                   M.read (| Value.String "inputs" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::bytecode::eof::types_section::TypesSection",
-                      "inputs"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_primitives::bytecode::eof::types_section::TypesSection",
+                    "inputs"
+                  |);
                   M.read (| Value.String "outputs" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_primitives::bytecode::eof::types_section::TypesSection",
+                    "outputs"
+                  |);
+                  M.read (| Value.String "max_stack_size" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_primitives::bytecode::eof::types_section::TypesSection",
-                      "outputs"
-                    |));
-                  M.read (| Value.String "max_stack_size" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_primitives::bytecode::eof::types_section::TypesSection",
-                        "max_stack_size"
-                      |)
-                    |))
+                      "max_stack_size"
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -96,7 +90,7 @@ Module bytecode.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -153,7 +147,7 @@ Module bytecode.
                       []
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -230,7 +224,7 @@ Module bytecode.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -266,56 +260,59 @@ Module bytecode.
               let other := M.alloc (| other |) in
               LogicalOp.and (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq
-                    (M.read (|
+                  BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm_primitives::bytecode::eof::types_section::TypesSection",
                         "inputs"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm_primitives::bytecode::eof::types_section::TypesSection",
                         "inputs"
                       |)
-                    |)),
+                    |)
+                  |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "revm_primitives::bytecode::eof::types_section::TypesSection",
                           "outputs"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "revm_primitives::bytecode::eof::types_section::TypesSection",
                           "outputs"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm_primitives::bytecode::eof::types_section::TypesSection",
                         "max_stack_size"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm_primitives::bytecode::eof::types_section::TypesSection",
                         "max_stack_size"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -325,18 +322,6 @@ Module bytecode.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_primitives_bytecode_eof_types_section_TypesSection.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_types_section_TypesSection.
-        Definition Self : Ty.t :=
-          Ty.path "revm_primitives::bytecode::eof::types_section::TypesSection".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_types_section_TypesSection.
       
       Module Impl_core_cmp_Eq_for_revm_primitives_bytecode_eof_types_section_TypesSection.
         Definition Self : Ty.t :=
@@ -365,7 +350,7 @@ Module bytecode.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -403,25 +388,25 @@ Module bytecode.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.sub
-                Integer.I32
-                (M.rust_cast
+              BinOp.Wrap.sub (|
+                M.rust_cast
                   (M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_primitives::bytecode::eof::types_section::TypesSection",
                       "outputs"
                     |)
-                  |)))
-                (M.rust_cast
+                  |)),
+                M.rust_cast
                   (M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_primitives::bytecode::eof::types_section::TypesSection",
                       "inputs"
                     |)
-                  |)))))
-          | _, _, _ => M.impossible
+                  |))
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_io_diff : M.IsAssociatedFunction Self "io_diff" io_diff.
@@ -499,28 +484,26 @@ Module bytecode.
                       |),
                       [
                         M.read (| buffer |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "revm_primitives::bytecode::eof::types_section::TypesSection",
-                                    "max_stack_size"
-                                  |)
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "u16", "to_be_bytes", [] |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "revm_primitives::bytecode::eof::types_section::TypesSection",
+                                  "max_stack_size"
                                 |)
-                              ]
-                            |)
-                          |))
+                              |)
+                            ]
+                          |)
+                        |)
                       ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_encode : M.IsAssociatedFunction Self "encode" encode.
@@ -1010,7 +993,7 @@ Module bytecode.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.
@@ -1045,36 +1028,39 @@ Module bytecode.
                                   (M.alloc (|
                                     LogicalOp.or (|
                                       LogicalOp.or (|
-                                        BinOp.Pure.gt
-                                          (M.read (|
+                                        BinOp.gt (|
+                                          M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "revm_primitives::bytecode::eof::types_section::TypesSection",
                                               "inputs"
                                             |)
-                                          |))
-                                          (Value.Integer 127),
+                                          |),
+                                          Value.Integer IntegerKind.U8 127
+                                        |),
                                         ltac:(M.monadic
-                                          (BinOp.Pure.gt
-                                            (M.read (|
+                                          (BinOp.gt (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                 "outputs"
                                               |)
-                                            |))
-                                            (Value.Integer 128)))
+                                            |),
+                                            Value.Integer IntegerKind.U8 128
+                                          |)))
                                       |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.gt
-                                          (M.read (|
+                                        (BinOp.gt (|
+                                          M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "revm_primitives::bytecode::eof::types_section::TypesSection",
                                               "max_stack_size"
                                             |)
-                                          |))
-                                          (Value.Integer 1023)))
+                                          |),
+                                          Value.Integer IntegerKind.U16 1023
+                                        |)))
                                     |)
                                   |)) in
                               let _ :=
@@ -1109,22 +1095,23 @@ Module bytecode.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.gt
-                                      (M.rust_cast
+                                    BinOp.gt (|
+                                      M.rust_cast
                                         (M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.read (| self |),
                                             "revm_primitives::bytecode::eof::types_section::TypesSection",
                                             "inputs"
                                           |)
-                                        |)))
-                                      (M.read (|
+                                        |)),
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "revm_primitives::bytecode::eof::types_section::TypesSection",
                                           "max_stack_size"
                                         |)
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1152,7 +1139,7 @@ Module bytecode.
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_validate : M.IsAssociatedFunction Self "validate" validate.

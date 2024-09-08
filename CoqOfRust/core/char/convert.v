@@ -14,7 +14,7 @@ Module char.
     *)
     Definition from_u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ i ] =>
+      | [], [], [ i ] =>
         ltac:(M.monadic
           (let i := M.alloc (| i |) in
           M.read (|
@@ -42,7 +42,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_u32 : M.IsFunction "core::char::convert::from_u32" from_u32.
@@ -50,52 +50,62 @@ Module char.
     (*
     pub(super) const unsafe fn from_u32_unchecked(i: u32) -> char {
         // SAFETY: the caller must guarantee that `i` is a valid char value.
-        if cfg!(debug_assertions) { char::from_u32(i).unwrap() } else { unsafe { transmute(i) } }
+        unsafe {
+            assert_unsafe_precondition!(
+                check_language_ub,
+                "invalid value for `char`",
+                (i: u32 = i) => char_try_from_u32(i).is_ok()
+            );
+            transmute(i)
+        }
     }
     *)
     Definition from_u32_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ i ] =>
+      | [], [], [ i ] =>
         ltac:(M.monadic
           (let i := M.alloc (| i |) in
           M.read (|
-            M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ],
-                          "unwrap",
-                          []
-                        |),
-                        [
+            let~ _ :=
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                              []
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ _ :=
+                        M.alloc (|
                           M.call_closure (|
-                            M.get_associated_function (| Ty.path "char", "from_u32", [] |),
+                            M.get_function (|
+                              "core::char::convert::from_u32_unchecked.precondition_check",
+                              []
+                            |),
                             [ M.read (| i |) ]
                           |)
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_function (|
-                          "core::intrinsics::transmute",
-                          [ Ty.path "u32"; Ty.path "char" ]
-                        |),
-                        [ M.read (| i |) ]
-                      |)
-                    |)))
-              ]
+                        |) in
+                      M.alloc (| Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |) in
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (|
+                  "core::intrinsics::transmute",
+                  [ Ty.path "u32"; Ty.path "char" ]
+                |),
+                [ M.read (| i |) ]
+              |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_u32_unchecked :
@@ -115,7 +125,7 @@ Module char.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.rust_cast (M.read (| c |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -142,7 +152,7 @@ Module char.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.rust_cast (M.read (| c |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -169,7 +179,7 @@ Module char.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             M.rust_cast (M.read (| c |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -237,21 +247,22 @@ Module char.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (Value.StructTuple
-                                  "core::char::TryFromCharError"
-                                  [ Value.Tuple [] ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (Value.StructTuple
+                                    "core::char::TryFromCharError"
+                                    [ Value.Tuple [] ]))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -320,21 +331,22 @@ Module char.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (Value.StructTuple
-                                  "core::char::TryFromCharError"
-                                  [ Value.Tuple [] ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (Value.StructTuple
+                                    "core::char::TryFromCharError"
+                                    [ Value.Tuple [] ]))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -360,7 +372,7 @@ Module char.
           ltac:(M.monadic
             (let i := M.alloc (| i |) in
             M.rust_cast (M.read (| i |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -409,7 +421,7 @@ Module char.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -440,18 +452,16 @@ Module char.
                 M.read (| f |);
                 M.read (| Value.String "ParseCharError" |);
                 M.read (| Value.String "kind" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::char::convert::ParseCharError",
-                      "kind"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::char::convert::ParseCharError",
+                    "kind"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -504,7 +514,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -514,17 +524,6 @@ Module char.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_char_convert_ParseCharError.
-    
-    Module Impl_core_marker_StructuralEq_for_core_char_convert_ParseCharError.
-      Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_char_convert_ParseCharError.
     
     Module Impl_core_cmp_Eq_for_core_char_convert_ParseCharError.
       Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
@@ -545,7 +544,7 @@ Module char.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -599,7 +598,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -651,7 +650,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -684,7 +683,7 @@ Module char.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -694,7 +693,7 @@ Module char.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -704,9 +703,9 @@ Module char.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -716,17 +715,6 @@ Module char.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_char_convert_CharErrorKind.
-    
-    Module Impl_core_marker_StructuralEq_for_core_char_convert_CharErrorKind.
-      Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_char_convert_CharErrorKind.
     
     Module Impl_core_cmp_Eq_for_core_char_convert_CharErrorKind.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
@@ -742,7 +730,7 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -799,7 +787,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -841,7 +829,7 @@ Module char.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -961,7 +949,7 @@ Module char.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -998,7 +986,7 @@ Module char.
     *)
     Definition char_try_from_u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ i ] =>
+      | [], [], [ i ] =>
         ltac:(M.monadic
           (let i := M.alloc (| i |) in
           M.read (|
@@ -1010,18 +998,21 @@ Module char.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.ge
-                            (M.call_closure (|
+                          BinOp.ge (|
+                            M.call_closure (|
                               M.get_associated_function (| Ty.path "u32", "wrapping_sub", [] |),
                               [
-                                BinOp.Pure.bit_xor (M.read (| i |)) (Value.Integer 55296);
-                                Value.Integer 2048
+                                BinOp.bit_xor
+                                  (M.read (| i |))
+                                  (Value.Integer IntegerKind.U32 55296);
+                                Value.Integer IntegerKind.U32 2048
                               ]
-                            |))
-                            (BinOp.Wrap.sub
-                              Integer.U32
-                              (Value.Integer 1114112)
-                              (Value.Integer 2048))
+                            |),
+                            BinOp.Wrap.sub (|
+                              Value.Integer IntegerKind.U32 1114112,
+                              Value.Integer IntegerKind.U32 2048
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -1051,7 +1042,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_char_try_from_u32 :
@@ -1077,7 +1068,7 @@ Module char.
               M.get_function (| "core::char::convert::char_try_from_u32", [] |),
               [ M.read (| i |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1123,7 +1114,7 @@ Module char.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1153,18 +1144,16 @@ Module char.
               [
                 M.read (| f |);
                 M.read (| Value.String "CharTryFromError" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::char::convert::CharTryFromError",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::char::convert::CharTryFromError",
+                    0
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1217,7 +1206,7 @@ Module char.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1227,17 +1216,6 @@ Module char.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_char_convert_CharTryFromError.
-    
-    Module Impl_core_marker_StructuralEq_for_core_char_convert_CharTryFromError.
-      Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_char_convert_CharTryFromError.
     
     Module Impl_core_cmp_Eq_for_core_char_convert_CharTryFromError.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
@@ -1258,7 +1236,7 @@ Module char.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1291,7 +1269,7 @@ Module char.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1317,7 +1295,7 @@ Module char.
     *)
     Definition from_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ num; radix ] =>
+      | [], [], [ num; radix ] =>
         ltac:(M.monadic
           (let num := M.alloc (| num |) in
           let radix := M.alloc (| radix |) in
@@ -1330,7 +1308,9 @@ Module char.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.Pure.gt (M.read (| radix |)) (Value.Integer 36) |)) in
+                          (M.alloc (|
+                            BinOp.gt (| M.read (| radix |), Value.Integer IntegerKind.U32 36 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -1344,17 +1324,14 @@ Module char.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "from_digit: radix is too high (maximum 36)"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "from_digit: radix is too high (maximum 36)"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -1370,7 +1347,7 @@ Module char.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use (M.alloc (| BinOp.Pure.lt (M.read (| num |)) (M.read (| radix |)) |)) in
+                      M.use (M.alloc (| BinOp.lt (| M.read (| num |), M.read (| radix |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ num := M.alloc (| M.rust_cast (M.read (| num |)) |) in
                     M.match_operator (|
@@ -1381,7 +1358,7 @@ Module char.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt (M.read (| num |)) (Value.Integer 10)
+                                  BinOp.lt (| M.read (| num |), Value.Integer IntegerKind.U8 10 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1390,10 +1367,10 @@ Module char.
                                 "core::option::Option::Some"
                                 [
                                   M.rust_cast
-                                    (BinOp.Wrap.add
-                                      Integer.U8
-                                      (M.read (| UnsupportedLiteral |))
-                                      (M.read (| num |)))
+                                    (BinOp.Wrap.add (|
+                                      M.read (| UnsupportedLiteral |),
+                                      M.read (| num |)
+                                    |))
                                 ]
                             |)));
                         fun γ =>
@@ -1403,13 +1380,13 @@ Module char.
                                 "core::option::Option::Some"
                                 [
                                   M.rust_cast
-                                    (BinOp.Wrap.sub
-                                      Integer.U8
-                                      (BinOp.Wrap.add
-                                        Integer.U8
-                                        (M.read (| UnsupportedLiteral |))
-                                        (M.read (| num |)))
-                                      (Value.Integer 10))
+                                    (BinOp.Wrap.sub (|
+                                      BinOp.Wrap.add (|
+                                        M.read (| UnsupportedLiteral |),
+                                        M.read (| num |)
+                                      |),
+                                      Value.Integer IntegerKind.U8 10
+                                    |))
                                 ]
                             |)))
                       ]
@@ -1419,7 +1396,7 @@ Module char.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_digit : M.IsFunction "core::char::convert::from_digit" from_digit.

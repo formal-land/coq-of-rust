@@ -78,7 +78,7 @@ Module checked.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -120,7 +120,7 @@ Module checked.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.eq (M.read (| y |)) (M.read (| UnsupportedLiteral |))
+                        BinOp.eq (| M.read (| y |), M.read (| UnsupportedLiteral |) |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -137,12 +137,12 @@ Module checked.
                   (M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
-                      [ BinOp.Wrap.div Integer.Usize (M.read (| x |)) (M.read (| y |)) ]
+                      [ BinOp.Wrap.div (| M.read (| x |), M.read (| y |) |) ]
                   |)))
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_div : M.IsFunction "result_chaining_with_question_mark::checked::div" div.
@@ -170,7 +170,7 @@ Module checked.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.lt (M.read (| x |)) (M.read (| UnsupportedLiteral |))
+                        BinOp.lt (| M.read (| x |), M.read (| UnsupportedLiteral |) |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -197,7 +197,7 @@ Module checked.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_sqrt : M.IsFunction "result_chaining_with_question_mark::checked::sqrt" sqrt.
@@ -225,7 +225,7 @@ Module checked.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.le (M.read (| x |)) (M.read (| UnsupportedLiteral |))
+                        BinOp.le (| M.read (| x |), M.read (| UnsupportedLiteral |) |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -252,7 +252,7 @@ Module checked.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_ln : M.IsFunction "result_chaining_with_question_mark::checked::ln" ln.
@@ -457,7 +457,7 @@ Module checked.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_op_ : M.IsFunction "result_chaining_with_question_mark::checked::op_" op_.
@@ -557,28 +557,24 @@ Module checked.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "f64" ]
-                                        |),
-                                        [ value ]
-                                      |)
-                                    ]
-                                |))
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "f64" ]
+                                      |),
+                                      [ value ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -588,7 +584,7 @@ Module checked.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_op : M.IsFunction "result_chaining_with_question_mark::checked::op" op.
@@ -613,7 +609,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "result_chaining_with_question_mark::main" main.

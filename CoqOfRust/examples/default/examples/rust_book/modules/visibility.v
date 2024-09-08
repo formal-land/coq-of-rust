@@ -25,13 +25,11 @@ Module my_mod.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "called `my_mod::private_function()`
+                        M.alloc (|
+                          Value.Array
+                            [ M.read (| Value.String "called `my_mod::private_function()`
 " |) ]
-                          |))
+                        |)
                       ]
                     |)
                   ]
@@ -40,7 +38,7 @@ Module my_mod.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_private_function :
@@ -69,12 +67,10 @@ Module my_mod.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array [ M.read (| Value.String "called `my_mod::function()`
+                        M.alloc (|
+                          Value.Array [ M.read (| Value.String "called `my_mod::function()`
 " |) ]
-                          |))
+                        |)
                       ]
                     |)
                   ]
@@ -83,7 +79,7 @@ Module my_mod.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_function : M.IsFunction "visibility::my_mod::function" function.
@@ -112,17 +108,15 @@ Module my_mod.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String "called `my_mod::indirect_access()`, that
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (|
+                                Value.String "called `my_mod::indirect_access()`, that
 > "
-                                |)
-                              ]
-                          |))
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -138,7 +132,7 @@ Module my_mod.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_indirect_access :
@@ -168,13 +162,11 @@ Module my_mod.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "called `my_mod::nested::function()`
+                          M.alloc (|
+                            Value.Array
+                              [ M.read (| Value.String "called `my_mod::nested::function()`
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -183,7 +175,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_function : M.IsFunction "visibility::my_mod::nested::function" function.
@@ -211,17 +203,15 @@ Module my_mod.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String "called `my_mod::nested::private_function()`
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (|
+                                  Value.String "called `my_mod::nested::private_function()`
 "
-                                  |)
-                                ]
-                            |))
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -230,7 +220,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_private_function :
@@ -264,18 +254,16 @@ Module my_mod.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "called `my_mod::nested::public_function_in_my_mod()`, that
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (|
+                                  Value.String
+                                    "called `my_mod::nested::public_function_in_my_mod()`, that
 > "
-                                  |)
-                                ]
-                            |))
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -291,7 +279,7 @@ Module my_mod.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_public_function_in_my_mod :
@@ -326,18 +314,16 @@ Module my_mod.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "called `my_mod::nested::public_function_in_nested()`
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (|
+                                  Value.String
+                                    "called `my_mod::nested::public_function_in_nested()`
 "
-                                  |)
-                                ]
-                            |))
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -346,7 +332,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_public_function_in_nested :
@@ -381,18 +367,16 @@ Module my_mod.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "called `my_mod::nested::public_function_in_super_mod()`
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (|
+                                  Value.String
+                                    "called `my_mod::nested::public_function_in_super_mod()`
 "
-                                  |)
-                                ]
-                            |))
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -401,7 +385,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_public_function_in_super_mod :
@@ -440,18 +424,16 @@ Module my_mod.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String
-                                    "called `my_mod::call_public_function_in_my_mod()`, that
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (|
+                                Value.String
+                                  "called `my_mod::call_public_function_in_my_mod()`, that
 > "
-                                |)
-                              ]
-                          |))
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -477,11 +459,7 @@ Module my_mod.
                         "new_const",
                         []
                       |),
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (| Value.Array [ M.read (| Value.String "> " |) ] |))
-                      ]
+                      [ M.alloc (| Value.Array [ M.read (| Value.String "> " |) ] |) ]
                     |)
                   ]
                 |)
@@ -496,7 +474,7 @@ Module my_mod.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_call_public_function_in_my_mod :
@@ -527,17 +505,15 @@ Module my_mod.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String "called `my_mod::public_function_in_crate()`
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (|
+                                Value.String "called `my_mod::public_function_in_crate()`
 "
-                                |)
-                              ]
-                          |))
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -546,7 +522,7 @@ Module my_mod.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_public_function_in_crate :
@@ -576,17 +552,15 @@ Module my_mod.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String "called `my_mod::private_nested::function()`
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (|
+                                  Value.String "called `my_mod::private_nested::function()`
 "
-                                  |)
-                                ]
-                            |))
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -595,7 +569,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_function : M.IsFunction "visibility::my_mod::private_nested::function" function.
@@ -623,18 +597,16 @@ Module my_mod.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "called `my_mod::private_nested::restricted_function()`
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (|
+                                  Value.String
+                                    "called `my_mod::private_nested::restricted_function()`
 "
-                                  |)
-                                ]
-                            |))
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -643,7 +615,7 @@ Module my_mod.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_restricted_function :
@@ -669,13 +641,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "called `function()`
-" |) ]
-                        |))
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "called `function()`
+" |) ] |)
                     ]
                   |)
                 ]
@@ -684,7 +651,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_function : M.IsFunction "visibility::function" function.
@@ -764,7 +731,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "visibility::main" main.

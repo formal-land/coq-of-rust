@@ -37,7 +37,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "match_destructuring_structs::Foo"
-              [ ("x", Value.Tuple [ Value.Integer 1; Value.Integer 2 ]); ("y", Value.Integer 3) ]
+              [
+                ("x",
+                  Value.Tuple [ Value.Integer IntegerKind.U32 1; Value.Integer IntegerKind.U32 2 ]);
+                ("y", Value.Integer IntegerKind.U32 3)
+              ]
           |) in
         M.match_operator (|
           foo,
@@ -58,7 +62,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |) in
                 let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                 let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 1 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ1_0 |),
+                    Value.Integer IntegerKind.U32 1
+                  |) in
                 let b := M.copy (| γ1_1 |) in
                 let y := M.copy (| γ0_1 |) in
                 let~ _ :=
@@ -73,40 +81,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "First of x is 1, b = " |);
-                                    M.read (| Value.String ",  y = " |);
-                                    M.read (| Value.String " 
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "First of x is 1, b = " |);
+                                  M.read (| Value.String ",  y = " |);
+                                  M.read (| Value.String " 
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "u32" ]
-                                      |),
-                                      [ b ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "u32" ]
-                                      |),
-                                      [ y ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [ b ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [ y ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -127,7 +131,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "match_destructuring_structs::Foo",
                     "x"
                   |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 2 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer IntegerKind.U32 2
+                  |) in
                 let i := M.copy (| γ0_1 |) in
                 let~ _ :=
                   M.alloc (|
@@ -141,31 +149,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "y is 2, i = " |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "y is 2, i = " |);
+                                  M.read (| Value.String "
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_debug",
-                                        [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ]
-                                      |),
-                                      [ i ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_debug",
+                                      [ Ty.tuple [ Ty.path "u32"; Ty.path "u32" ] ]
+                                    |),
+                                    [ i ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -193,31 +197,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "y = " |);
-                                    M.read (| Value.String ", we don't care about x
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "y = " |);
+                                  M.read (| Value.String ", we don't care about x
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "u32" ]
-                                      |),
-                                      [ y ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [ y ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -227,7 +227,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "match_destructuring_structs::main" main.

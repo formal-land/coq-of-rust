@@ -15,7 +15,7 @@ fn main() {
 Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [] => ltac:(M.monadic (Value.Tuple []))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "inline_assembly_memory_address_operands::main" main.
@@ -37,7 +37,7 @@ Module main.
           let~ _ := InlineAssembly in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_load_fpu_control_word :

@@ -48,7 +48,7 @@ Module Impl_core_default_Default_where_core_default_Default_K_where_core_default
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -110,7 +110,7 @@ Module Impl_core_default_Default_for_trait_erc20_AccountId.
               []
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -136,7 +136,7 @@ Module Impl_core_clone_Clone_for_trait_erc20_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -220,7 +220,7 @@ Module Impl_core_fmt_Debug_for_trait_erc20_Error.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -253,7 +253,7 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -263,7 +263,7 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -273,9 +273,9 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -285,17 +285,6 @@ Module Impl_core_cmp_PartialEq_for_trait_erc20_Error.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_trait_erc20_Error.
-
-Module Impl_core_marker_StructuralEq_for_trait_erc20_Error.
-  Definition Self : Ty.t := Ty.path "trait_erc20::Error".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_trait_erc20_Error.
 
 Module Impl_core_cmp_Eq_for_trait_erc20_Error.
   Definition Self : Ty.t := Ty.path "trait_erc20::Error".
@@ -311,7 +300,7 @@ Module Impl_core_cmp_Eq_for_trait_erc20_Error.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -410,7 +399,7 @@ Module Impl_core_default_Default_for_trait_erc20_Erc20.
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -484,7 +473,7 @@ Module Impl_trait_erc20_Env.
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "trait_erc20::Env", "caller" |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -525,7 +514,7 @@ Module Impl_trait_erc20_Erc20.
           M.get_associated_function (| Ty.path "trait_erc20::Erc20", "init_env", [] |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -650,7 +639,7 @@ Module Impl_trait_erc20_Erc20.
               ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -693,7 +682,7 @@ Module Impl_trait_erc20_Erc20.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_balance_of_impl :
@@ -743,7 +732,7 @@ Module Impl_trait_erc20_Erc20.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_allowance_impl :
@@ -798,7 +787,7 @@ Module Impl_trait_erc20_Erc20.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt (M.read (| from_balance |)) (M.read (| value |))
+                              BinOp.lt (| M.read (| from_balance |), M.read (| value |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -834,7 +823,7 @@ Module Impl_trait_erc20_Erc20.
                         "balances"
                       |);
                       M.read (| M.read (| from |) |);
-                      BinOp.Wrap.sub Integer.U128 (M.read (| from_balance |)) (M.read (| value |))
+                      BinOp.Wrap.sub (| M.read (| from_balance |), M.read (| value |) |)
                     ]
                   |)
                 |) in
@@ -867,7 +856,7 @@ Module Impl_trait_erc20_Erc20.
                         "balances"
                       |);
                       M.read (| M.read (| to |) |);
-                      BinOp.Wrap.add Integer.U128 (M.read (| to_balance |)) (M.read (| value |))
+                      BinOp.Wrap.add (| M.read (| to_balance |), M.read (| value |) |)
                     ]
                   |)
                 |) in
@@ -905,7 +894,7 @@ Module Impl_trait_erc20_Erc20.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_transfer_from_to :
@@ -932,7 +921,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
             "total_supply"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -950,7 +939,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
           M.get_associated_function (| Ty.path "trait_erc20::Erc20", "balance_of_impl", [] |),
           [ M.read (| self |); owner ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -969,7 +958,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
           M.get_associated_function (| Ty.path "trait_erc20::Erc20", "allowance_impl", [] |),
           [ M.read (| self |); owner; spender ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -1007,7 +996,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -1097,7 +1086,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
             |) in
           M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -1157,7 +1146,7 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt (M.read (| allowance |)) (M.read (| value |))
+                              BinOp.lt (| M.read (| allowance |), M.read (| value |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1275,14 +1264,14 @@ Module Impl_trait_erc20_BaseErc20_for_trait_erc20_Erc20.
                         "allowances"
                       |);
                       Value.Tuple [ M.read (| from |); M.read (| caller |) ];
-                      BinOp.Wrap.sub Integer.U128 (M.read (| allowance |)) (M.read (| value |))
+                      BinOp.Wrap.sub (| M.read (| allowance |), M.read (| value |) |)
                     ]
                   |)
                 |) in
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :

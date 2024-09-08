@@ -39,7 +39,7 @@ impl Pattern {
                     name: to_valid_coq_name(IsValue::Yes, ident.as_str()),
                     is_with_ref: matches!(
                         binding_annotation,
-                        rustc_hir::BindingAnnotation(rustc_hir::ByRef::Yes, _)
+                        rustc_hir::BindingMode(rustc_hir::ByRef::Yes(_), _)
                     ),
                     pattern: sub_pattern.map(|sub_pattern| Pattern::compile(env, sub_pattern)),
                 })
@@ -82,8 +82,10 @@ impl Pattern {
                 Rc::new(Pattern::Deref(Pattern::compile(env, sub_pattern)))
             }
             rustc_hir::PatKind::Lit(_)
+            | rustc_hir::PatKind::Deref(_)
             | rustc_hir::PatKind::Range(_, _, _)
-            | rustc_hir::PatKind::Slice(_, _, _) => {
+            | rustc_hir::PatKind::Slice(_, _, _)
+            | rustc_hir::PatKind::Err(_) => {
                 emit_warning_with_note(
                     env,
                     &pattern.span,

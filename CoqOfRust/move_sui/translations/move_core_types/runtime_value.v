@@ -41,18 +41,16 @@ Module runtime_value.
             [
               M.read (| f |);
               M.read (| Value.String "MoveStruct" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::runtime_value::MoveStruct",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "move_core_types::runtime_value::MoveStruct",
+                  0
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -119,7 +117,7 @@ Module runtime_value.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -129,17 +127,6 @@ Module runtime_value.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_runtime_value_MoveStruct.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_runtime_value_MoveStruct.
-    Definition Self : Ty.t := Ty.path "move_core_types::runtime_value::MoveStruct".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_runtime_value_MoveStruct.
   
   Module Impl_core_cmp_Eq_for_move_core_types_runtime_value_MoveStruct.
     Definition Self : Ty.t := Ty.path "move_core_types::runtime_value::MoveStruct".
@@ -160,7 +147,7 @@ Module runtime_value.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -207,7 +194,7 @@ Module runtime_value.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -325,11 +312,7 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "U8" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "U8" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -349,11 +332,7 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "U64" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "U64" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -373,11 +352,7 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "U128" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "U128" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -397,11 +372,7 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Bool" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Bool" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -421,11 +392,7 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Address" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Address" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -445,11 +412,7 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Vector" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -469,11 +432,7 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Struct" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -493,11 +452,7 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Signer" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Signer" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -517,11 +472,7 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "U16" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "U16" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -541,11 +492,7 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "U32" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "U32" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -565,17 +512,13 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "U256" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "U256" |); __self_0 ]
                       |)
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -608,7 +551,7 @@ Module runtime_value.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -618,7 +561,7 @@ Module runtime_value.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -630,7 +573,7 @@ Module runtime_value.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -657,9 +600,16 @@ Module runtime_value.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -682,9 +632,16 @@ Module runtime_value.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -707,9 +664,16 @@ Module runtime_value.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -732,9 +696,16 @@ Module runtime_value.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "bool" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "bool" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -760,12 +731,20 @@ Module runtime_value.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::account_address::AccountAddress",
-                                  [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::account_address::AccountAddress" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -793,25 +772,35 @@ Module runtime_value.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "alloc::vec::Vec")
+                                    (Ty.path "&")
                                     []
                                     [
-                                      Ty.path "move_core_types::runtime_value::MoveValue";
-                                      Ty.path "alloc::alloc::Global"
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [
+                                          Ty.path "move_core_types::runtime_value::MoveValue";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ],
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::vec::Vec")
+                                      (Ty.path "&")
                                       []
                                       [
-                                        Ty.path "move_core_types::runtime_value::MoveValue";
-                                        Ty.path "alloc::alloc::Global"
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [
+                                            Ty.path "move_core_types::runtime_value::MoveValue";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -838,12 +827,20 @@ Module runtime_value.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::runtime_value::MoveStruct",
-                                  [ Ty.path "move_core_types::runtime_value::MoveStruct" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::runtime_value::MoveStruct" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::runtime_value::MoveStruct" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -870,12 +867,20 @@ Module runtime_value.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::account_address::AccountAddress",
-                                  [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::account_address::AccountAddress" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::account_address::AccountAddress" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -899,9 +904,16 @@ Module runtime_value.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -924,9 +936,16 @@ Module runtime_value.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -952,12 +971,20 @@ Module runtime_value.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::u256::U256",
-                                  [ Ty.path "move_core_types::u256::U256" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::u256::U256" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::u256::U256" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -976,7 +1003,7 @@ Module runtime_value.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -986,17 +1013,6 @@ Module runtime_value.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_runtime_value_MoveValue.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_runtime_value_MoveValue.
-    Definition Self : Ty.t := Ty.path "move_core_types::runtime_value::MoveValue".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_runtime_value_MoveValue.
   
   Module Impl_core_cmp_Eq_for_move_core_types_runtime_value_MoveValue.
     Definition Self : Ty.t := Ty.path "move_core_types::runtime_value::MoveValue".
@@ -1087,7 +1103,7 @@ Module runtime_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1407,7 +1423,7 @@ Module runtime_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1454,18 +1470,16 @@ Module runtime_value.
             [
               M.read (| f |);
               M.read (| Value.String "MoveStructLayout" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::runtime_value::MoveStructLayout",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "move_core_types::runtime_value::MoveStructLayout",
+                  0
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1511,7 +1525,7 @@ Module runtime_value.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1559,7 +1573,7 @@ Module runtime_value.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1597,7 +1611,7 @@ Module runtime_value.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1640,7 +1654,7 @@ Module runtime_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 0;
+                            Value.Integer IntegerKind.U32 0;
                             M.read (| Value.String "bool" |)
                           ]
                         |)
@@ -1664,7 +1678,7 @@ Module runtime_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 1;
+                            Value.Integer IntegerKind.U32 1;
                             M.read (| Value.String "u8" |)
                           ]
                         |)
@@ -1688,7 +1702,7 @@ Module runtime_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 2;
+                            Value.Integer IntegerKind.U32 2;
                             M.read (| Value.String "u64" |)
                           ]
                         |)
@@ -1712,7 +1726,7 @@ Module runtime_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 3;
+                            Value.Integer IntegerKind.U32 3;
                             M.read (| Value.String "u128" |)
                           ]
                         |)
@@ -1736,7 +1750,7 @@ Module runtime_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 4;
+                            Value.Integer IntegerKind.U32 4;
                             M.read (| Value.String "address" |)
                           ]
                         |)
@@ -1770,7 +1784,7 @@ Module runtime_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 5;
+                            Value.Integer IntegerKind.U32 5;
                             M.read (| Value.String "vector" |);
                             M.read (| __field0 |)
                           ]
@@ -1797,7 +1811,7 @@ Module runtime_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 6;
+                            Value.Integer IntegerKind.U32 6;
                             M.read (| Value.String "struct" |);
                             M.read (| __field0 |)
                           ]
@@ -1822,7 +1836,7 @@ Module runtime_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 7;
+                            Value.Integer IntegerKind.U32 7;
                             M.read (| Value.String "signer" |)
                           ]
                         |)
@@ -1846,7 +1860,7 @@ Module runtime_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 8;
+                            Value.Integer IntegerKind.U32 8;
                             M.read (| Value.String "u16" |)
                           ]
                         |)
@@ -1870,7 +1884,7 @@ Module runtime_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 9;
+                            Value.Integer IntegerKind.U32 9;
                             M.read (| Value.String "u32" |)
                           ]
                         |)
@@ -1894,7 +1908,7 @@ Module runtime_value.
                           [
                             M.read (| __serializer |);
                             M.read (| Value.String "MoveTypeLayout" |);
-                            Value.Integer 10;
+                            Value.Integer IntegerKind.U32 10;
                             M.read (| Value.String "u256" |)
                           ]
                         |)
@@ -1902,7 +1916,7 @@ Module runtime_value.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1943,7 +1957,7 @@ Module runtime_value.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2153,11 +2167,7 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Vector" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -2177,11 +2187,7 @@ Module runtime_value.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Struct" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Struct" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -2259,7 +2265,7 @@ Module runtime_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2443,7 +2449,7 @@ Module runtime_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2565,7 +2571,7 @@ Module runtime_value.
                   |)
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_simple_deserialize :
@@ -2606,7 +2612,7 @@ Module runtime_value.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_simple_serialize :
@@ -2689,7 +2695,7 @@ Module runtime_value.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_vector_u8 : M.IsAssociatedFunction Self "vector_u8" vector_u8.
@@ -2951,7 +2957,7 @@ Module runtime_value.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| vec_u8 |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_vec_to_vec_u8 :
@@ -3043,7 +3049,7 @@ Module runtime_value.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_vector_address :
@@ -3215,24 +3221,26 @@ Module runtime_value.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let v := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "move_core_types::runtime_value::MoveValue",
-                                                      "decorate",
-                                                      []
-                                                    |),
-                                                    [ M.read (| v |); M.read (| M.read (| t |) |) ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let v := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_core_types::runtime_value::MoveValue",
+                                                        "decorate",
+                                                        []
+                                                      |),
+                                                      [ M.read (| v |); M.read (| M.read (| t |) |)
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -3398,11 +3406,9 @@ Module runtime_value.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "Invalid decoration" |) ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "Invalid decoration" |) ]
+                                |)
                               ]
                             |)
                           ]
@@ -3412,7 +3418,7 @@ Module runtime_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_decorate : M.IsAssociatedFunction Self "decorate" decorate.
@@ -3518,47 +3524,48 @@ Module runtime_value.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let val := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::option::Option")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                      ],
-                                    "expect",
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_core_types::runtime_value::MoveValue",
-                                        "simple_serialize",
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let val := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
                                         []
-                                      |),
-                                      [ M.read (| val |) ]
-                                    |);
-                                    M.read (| Value.String "serialization should succeed" |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                        ],
+                                      "expect",
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_core_types::runtime_value::MoveValue",
+                                          "simple_serialize",
+                                          []
+                                        |),
+                                        [ M.read (| val |) ]
+                                      |);
+                                      M.read (| Value.String "serialization should succeed" |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_serialize_values :
@@ -3578,7 +3585,7 @@ Module runtime_value.
         ltac:(M.monadic
           (let value := M.alloc (| value |) in
           Value.StructTuple "move_core_types::runtime_value::MoveStruct" [ M.read (| value |) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -3689,7 +3696,7 @@ Module runtime_value.
                   |)
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_simple_deserialize :
@@ -3949,62 +3956,63 @@ Module runtime_value.
                                                 ltac:(M.monadic
                                                   match γ with
                                                   | [ α0 ] =>
-                                                    M.match_operator (|
-                                                      M.alloc (| α0 |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_tuple_field (|
-                                                                γ,
-                                                                0
-                                                              |) in
-                                                            let γ0_1 :=
-                                                              M.SubPointer.get_tuple_field (|
-                                                                γ,
-                                                                1
-                                                              |) in
-                                                            let v := M.copy (| γ0_0 |) in
-                                                            let l := M.copy (| γ0_1 |) in
-                                                            Value.Tuple
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_trait_method (|
-                                                                    "core::clone::Clone",
-                                                                    Ty.path
-                                                                      "move_core_types::identifier::Identifier",
-                                                                    [],
-                                                                    "clone",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| l |),
-                                                                      "move_core_types::annotated_value::MoveFieldLayout",
-                                                                      "name"
-                                                                    |)
-                                                                  ]
-                                                                |);
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "move_core_types::runtime_value::MoveValue",
-                                                                    "decorate",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.read (| v |);
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| l |),
-                                                                      "move_core_types::annotated_value::MoveFieldLayout",
-                                                                      "layout"
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              ]))
-                                                      ]
-                                                    |)
-                                                  | _ => M.impossible (||)
+                                                    ltac:(M.monadic
+                                                      (M.match_operator (|
+                                                        M.alloc (| α0 |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let γ0_0 :=
+                                                                M.SubPointer.get_tuple_field (|
+                                                                  γ,
+                                                                  0
+                                                                |) in
+                                                              let γ0_1 :=
+                                                                M.SubPointer.get_tuple_field (|
+                                                                  γ,
+                                                                  1
+                                                                |) in
+                                                              let v := M.copy (| γ0_0 |) in
+                                                              let l := M.copy (| γ0_1 |) in
+                                                              Value.Tuple
+                                                                [
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::clone::Clone",
+                                                                      Ty.path
+                                                                        "move_core_types::identifier::Identifier",
+                                                                      [],
+                                                                      "clone",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.read (| l |),
+                                                                        "move_core_types::annotated_value::MoveFieldLayout",
+                                                                        "name"
+                                                                      |)
+                                                                    ]
+                                                                  |);
+                                                                  M.call_closure (|
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "move_core_types::runtime_value::MoveValue",
+                                                                      "decorate",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.read (| v |);
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        M.read (| l |),
+                                                                        "move_core_types::annotated_value::MoveFieldLayout",
+                                                                        "layout"
+                                                                      |)
+                                                                    ]
+                                                                  |)
+                                                                ]))
+                                                        ]
+                                                      |)))
+                                                  | _ => M.impossible "wrong number of arguments"
                                                   end))
                                           ]
                                         |)
@@ -4017,7 +4025,7 @@ Module runtime_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_decorate : M.IsAssociatedFunction Self "decorate" decorate.
@@ -4054,7 +4062,7 @@ Module runtime_value.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_fields : M.IsAssociatedFunction Self "fields" fields.
@@ -4076,7 +4084,7 @@ Module runtime_value.
               0
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_fields : M.IsAssociatedFunction Self "into_fields" into_fields.
@@ -4098,7 +4106,7 @@ Module runtime_value.
           Value.StructTuple
             "move_core_types::runtime_value::MoveStructLayout"
             [ M.read (| types |) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -4135,7 +4143,7 @@ Module runtime_value.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_fields : M.IsAssociatedFunction Self "fields" fields.
@@ -4157,7 +4165,7 @@ Module runtime_value.
               0
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_fields : M.IsAssociatedFunction Self "into_fields" into_fields.
@@ -4805,7 +4813,7 @@ Module runtime_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4851,7 +4859,7 @@ Module runtime_value.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| formatter |); M.read (| Value.String "Vector" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5055,7 +5063,7 @@ Module runtime_value.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| vals |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5115,7 +5123,7 @@ Module runtime_value.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| formatter |); M.read (| Value.String "Struct" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5427,11 +5435,7 @@ Module runtime_value.
                                                                   "invalid_length",
                                                                   []
                                                                 |),
-                                                                [
-                                                                  M.read (| i |);
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion self
-                                                                ]
+                                                                [ M.read (| i |); self ]
                                                               |)
                                                             ]
                                                         |)
@@ -5449,7 +5453,7 @@ Module runtime_value.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| val |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -5641,7 +5645,7 @@ Module runtime_value.
                     ]
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6206,7 +6210,7 @@ Module runtime_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6538,7 +6542,7 @@ Module runtime_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6605,11 +6609,7 @@ Module runtime_value.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6637,11 +6637,7 @@ Module runtime_value.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6669,11 +6665,7 @@ Module runtime_value.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6701,11 +6693,7 @@ Module runtime_value.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6733,11 +6721,7 @@ Module runtime_value.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6765,11 +6749,7 @@ Module runtime_value.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6797,11 +6777,7 @@ Module runtime_value.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6829,11 +6805,7 @@ Module runtime_value.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6861,11 +6833,7 @@ Module runtime_value.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |) ]
                           |)
                         ]
                       |)
@@ -6908,66 +6876,60 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "vector<" |);
-                                      M.read (| Value.String ">" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::runtime_value::MoveTypeLayout";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ]
-                                          ]
-                                        |),
-                                        [ typ ]
-                                      |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Placeholder",
-                                          "new",
-                                          []
-                                        |),
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "vector<" |);
+                                    M.read (| Value.String ">" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
                                         [
-                                          Value.Integer 0;
-                                          Value.UnicodeChar 32;
-                                          Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                          Value.Integer 4;
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::runtime_value::MoveTypeLayout";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ]
                                         ]
-                                      |)
-                                    ]
-                                |));
+                                      |),
+                                      [ typ ]
+                                    |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Placeholder",
+                                        "new",
+                                        []
+                                      |),
+                                      [
+                                        Value.Integer IntegerKind.Usize 0;
+                                        Value.UnicodeChar 32;
+                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.Integer IntegerKind.U32 4;
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                      ]
+                                    |)
+                                  ]
+                              |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
@@ -7007,44 +6969,40 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "vector<" |);
-                                      M.read (| Value.String ">" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_core_types::runtime_value::MoveTypeLayout";
-                                                    Ty.path "alloc::alloc::Global"
-                                                  ]
-                                              ]
-                                          ]
-                                        |),
-                                        [ typ ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "vector<" |);
+                                    M.read (| Value.String ">" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [
+                                                  Ty.path
+                                                    "move_core_types::runtime_value::MoveTypeLayout";
+                                                  Ty.path "alloc::alloc::Global"
+                                                ]
+                                            ]
+                                        ]
+                                      |),
+                                      [ typ ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7088,54 +7046,48 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_core_types::runtime_value::MoveStructLayout"
-                                              ]
-                                          ]
-                                        |),
-                                        [ s ]
-                                      |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Placeholder",
-                                          "new",
-                                          []
-                                        |),
+                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
                                         [
-                                          Value.Integer 0;
-                                          Value.UnicodeChar 32;
-                                          Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                          Value.Integer 4;
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::runtime_value::MoveStructLayout"
+                                            ]
                                         ]
-                                      |)
-                                    ]
-                                |));
+                                      |),
+                                      [ s ]
+                                    |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Placeholder",
+                                        "new",
+                                        []
+                                      |),
+                                      [
+                                        Value.Integer IntegerKind.Usize 0;
+                                        Value.UnicodeChar 32;
+                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.Integer IntegerKind.U32 4;
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                      ]
+                                    |)
+                                  ]
+                              |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
@@ -7175,32 +7127,28 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.path
-                                                  "move_core_types::runtime_value::MoveStructLayout"
-                                              ]
-                                          ]
-                                        |),
-                                        [ s ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::runtime_value::MoveStructLayout"
+                                            ]
+                                        ]
+                                      |),
+                                      [ s ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7209,7 +7157,7 @@ Module runtime_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7283,52 +7231,46 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            M.read (| self |),
-                                            "move_core_types::runtime_value::DebugAsDisplay",
-                                            0
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Placeholder",
-                                          "new",
-                                          []
-                                        |),
-                                        [
-                                          Value.Integer 0;
-                                          Value.UnicodeChar 32;
-                                          Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                          Value.Integer 4;
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                          Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                        ]
-                                      |)
-                                    ]
-                                |));
+                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.read (| self |),
+                                          "move_core_types::runtime_value::DebugAsDisplay",
+                                          0
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Placeholder",
+                                        "new",
+                                        []
+                                      |),
+                                      [
+                                        Value.Integer IntegerKind.Usize 0;
+                                        Value.UnicodeChar 32;
+                                        Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                        Value.Integer IntegerKind.U32 4;
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                        Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                      ]
+                                    |)
+                                  ]
+                              |);
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::fmt::rt::UnsafeArg",
@@ -7360,30 +7302,26 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                        |),
-                                        [
-                                          M.SubPointer.get_struct_tuple_field (|
-                                            M.read (| self |),
-                                            "move_core_types::runtime_value::DebugAsDisplay",
-                                            0
-                                          |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          M.read (| self |),
+                                          "move_core_types::runtime_value::DebugAsDisplay",
+                                          0
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7392,7 +7330,7 @@ Module runtime_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7458,12 +7396,7 @@ Module runtime_value.
                                   "new_const",
                                   []
                                 |),
-                                [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array [ M.read (| Value.String "struct " |) ]
-                                    |))
+                                [ M.alloc (| Value.Array [ M.read (| Value.String "struct " |) ] |)
                                 ]
                               |)
                             ]
@@ -7670,14 +7603,12 @@ Module runtime_value.
                                                 |),
                                                 [
                                                   map;
-                                                  (* Unsize *) M.pointer_coercion i;
-                                                  (* Unsize *)
-                                                  M.pointer_coercion
-                                                    (M.alloc (|
-                                                      Value.StructTuple
-                                                        "move_core_types::runtime_value::DebugAsDisplay"
-                                                        [ l ]
-                                                    |))
+                                                  i;
+                                                  M.alloc (|
+                                                    Value.StructTuple
+                                                      "move_core_types::runtime_value::DebugAsDisplay"
+                                                      [ l ]
+                                                  |)
                                                 ]
                                               |)
                                             |) in
@@ -7700,7 +7631,7 @@ Module runtime_value.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7768,27 +7699,23 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "u8" |) ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
-                                        |),
-                                        [ u ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "" |); M.read (| Value.String "u8" |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                      |),
+                                      [ u ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7820,28 +7747,23 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "u16" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                        |),
-                                        [ u ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "" |); M.read (| Value.String "u16" |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
+                                      |),
+                                      [ u ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7873,28 +7795,23 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "u32" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
-                                        |),
-                                        [ u ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "" |); M.read (| Value.String "u32" |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ]
+                                      |),
+                                      [ u ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7926,28 +7843,23 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "u64" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
-                                        |),
-                                        [ u ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "" |); M.read (| Value.String "u64" |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ]
+                                      |),
+                                      [ u ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -7979,28 +7891,23 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "u128" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
-                                        |),
-                                        [ u ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "" |); M.read (| Value.String "u128" |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ]
+                                      |),
+                                      [ u ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8032,33 +7939,28 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "u256" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [ Ty.path "move_core_types::u256::U256" ]
-                                          ]
-                                        |),
-                                        [ u ]
-                                      |)
-                                    ]
-                                |))
+                              M.alloc (|
+                                Value.Array
+                                  [ M.read (| Value.String "" |); M.read (| Value.String "u256" |) ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "move_core_types::u256::U256" ]
+                                        ]
+                                      |),
+                                      [ u ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8090,11 +7992,7 @@ Module runtime_value.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "false" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "false" |) ] |) ]
                           |)
                         ]
                       |)
@@ -8125,11 +8023,7 @@ Module runtime_value.
                               "new_const",
                               []
                             |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "true" |) ] |))
-                            ]
+                            [ M.alloc (| Value.Array [ M.read (| Value.String "true" |) ] |) ]
                           |)
                         ]
                       |)
@@ -8160,36 +8054,32 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "alloc::string::String" ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_core_types::account_address::AccountAddress",
-                                                "to_hex_literal",
-                                                []
-                                              |),
-                                              [ M.read (| a |) ]
-                                            |)
+                              M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "alloc::string::String" ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path
+                                                "move_core_types::account_address::AccountAddress",
+                                              "to_hex_literal",
+                                              []
+                                            |),
+                                            [ M.read (| a |) ]
                                           |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8221,42 +8111,38 @@ Module runtime_value.
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "signer(" |);
-                                      M.read (| Value.String ")" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "alloc::string::String" ]
-                                        |),
-                                        [
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_core_types::account_address::AccountAddress",
-                                                "to_hex_literal",
-                                                []
-                                              |),
-                                              [ M.read (| a |) ]
-                                            |)
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "signer(" |);
+                                    M.read (| Value.String ")" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "alloc::string::String" ]
+                                      |),
+                                      [
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path
+                                                "move_core_types::account_address::AccountAddress",
+                                              "to_hex_literal",
+                                              []
+                                            |),
+                                            [ M.read (| a |) ]
                                           |)
-                                        ]
-                                      |)
-                                    ]
-                                |))
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -8328,7 +8214,7 @@ Module runtime_value.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8383,7 +8269,7 @@ Module runtime_value.
               M.read (| Value.String "]" |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

@@ -22,22 +22,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "1
-" |) ] |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "none",
-                              []
-                            |),
+                      M.alloc (| Value.Array [ M.read (| Value.String "1
+" |) ] |);
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "none",
                             []
-                          |)
-                        |))
+                          |),
+                          []
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -53,41 +49,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
-                                      [
-                                        BinOp.Wrap.add
-                                          Integer.I32
-                                          (Value.Integer 1)
-                                          (Value.Integer 2);
-                                        Value.Integer 2
-                                      ]
-                                    |)
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
+                                    [
+                                      BinOp.Wrap.add (|
+                                        Value.Integer IntegerKind.I32 1,
+                                        Value.Integer IntegerKind.I32 2
+                                      |);
+                                      Value.Integer IntegerKind.I32 2
+                                    ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -103,47 +94,42 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "" |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
-                                      [
-                                        Value.Integer 5;
-                                        M.call_closure (|
-                                          M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
-                                          [
-                                            BinOp.Wrap.mul
-                                              Integer.I32
-                                              (Value.Integer 2)
-                                              (Value.Integer 3);
-                                            Value.Integer 4
-                                          ]
-                                        |)
-                                      ]
-                                    |)
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
+                                    [
+                                      Value.Integer IntegerKind.I32 5;
+                                      M.call_closure (|
+                                        M.get_function (| "core::cmp::min", [ Ty.path "i32" ] |),
+                                        [
+                                          BinOp.Wrap.mul (|
+                                            Value.Integer IntegerKind.I32 2,
+                                            Value.Integer IntegerKind.I32 3
+                                          |);
+                                          Value.Integer IntegerKind.I32 4
+                                        ]
+                                      |)
+                                    ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -152,7 +138,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "macro_rules_repeat::main" main.

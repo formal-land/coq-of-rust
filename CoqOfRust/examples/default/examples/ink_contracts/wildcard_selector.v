@@ -29,7 +29,7 @@ Module Impl_wildcard_selector_WildcardSelector.
   Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [], [] => ltac:(M.monadic (Value.StructTuple "wildcard_selector::WildcardSelector" []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -56,7 +56,10 @@ Module Impl_wildcard_selector_WildcardSelector.
                     [
                       Ty.tuple
                         [
-                          Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ];
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 4 ]
+                            [ Ty.path "u8" ];
                           Ty.path "alloc::string::String"
                         ];
                       Ty.tuple []
@@ -71,7 +74,10 @@ Module Impl_wildcard_selector_WildcardSelector.
                       [
                         Ty.tuple
                           [
-                            Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ];
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 4 ]
+                              [ Ty.path "u8" ];
                             Ty.path "alloc::string::String"
                           ]
                       ]
@@ -101,45 +107,41 @@ Module Impl_wildcard_selector_WildcardSelector.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "Wildcard selector: " |);
-                                        M.read (| Value.String ", message: " |);
-                                        M.read (| Value.String "
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "Wildcard selector: " |);
+                                      M.read (| Value.String ", message: " |);
+                                      M.read (| Value.String "
 " |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer 4 ]
-                                                [ Ty.path "u8" ]
-                                            ]
-                                          |),
-                                          [ _selector ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "alloc::string::String" ]
-                                          |),
-                                          [ _message ]
-                                        |)
-                                      ]
-                                  |))
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_debug",
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 4 ]
+                                              [ Ty.path "u8" ]
+                                          ]
+                                        |),
+                                        [ _selector ]
+                                      |);
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "alloc::string::String" ]
+                                        |),
+                                        [ _message ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -150,7 +152,7 @@ Module Impl_wildcard_selector_WildcardSelector.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_wildcard : M.IsAssociatedFunction Self "wildcard" wildcard.
@@ -176,31 +178,27 @@ Module Impl_wildcard_selector_WildcardSelector.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "Wildcard complement message: " |);
-                                M.read (| Value.String "
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "Wildcard complement message: " |);
+                              M.read (| Value.String "
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "alloc::string::String" ]
-                                  |),
-                                  [ _message ]
-                                |)
-                              ]
-                          |))
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [ _message ]
+                              |)
+                            ]
+                        |)
                       ]
                     |)
                   ]
@@ -209,7 +207,7 @@ Module Impl_wildcard_selector_WildcardSelector.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_wildcard_complement :

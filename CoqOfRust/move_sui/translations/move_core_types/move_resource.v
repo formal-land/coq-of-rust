@@ -27,7 +27,7 @@ Module move_resource.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_module_identifier :
@@ -58,7 +58,7 @@ Module move_resource.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_struct_identifier :
@@ -89,7 +89,7 @@ Module move_resource.
             |),
             []
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_type_params :
@@ -139,7 +139,7 @@ Module move_resource.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_struct_tag :
@@ -178,7 +178,7 @@ Module move_resource.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_resource_path :

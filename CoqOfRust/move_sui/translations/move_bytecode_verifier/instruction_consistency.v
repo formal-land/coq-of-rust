@@ -64,41 +64,43 @@ Module instruction_consistency.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let e := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::errors::PartialVMError",
-                                  "finish",
-                                  []
-                                |),
-                                [
-                                  M.read (| e |);
-                                  Value.StructTuple
-                                    "move_binary_format::errors::Location::Module"
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "move_binary_format::file_format::CompiledModule",
-                                          "self_id",
-                                          []
-                                        |),
-                                        [ M.read (| module |) ]
-                                      |)
-                                    ]
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let e := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
+                                    "finish",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| e |);
+                                    Value.StructTuple
+                                      "move_binary_format::errors::Location::Module"
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "self_id",
+                                            []
+                                          |),
+                                          [ M.read (| module |) ]
+                                        |)
+                                      ]
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_module :
@@ -388,7 +390,7 @@ Module instruction_consistency.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_module_impl :
@@ -3069,114 +3071,119 @@ Module instruction_consistency.
                                                         ltac:(M.monadic
                                                           match γ with
                                                           | [ num ] =>
-                                                            M.match_operator (|
-                                                              M.alloc (| Value.Tuple [] |),
-                                                              [
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (let γ :=
-                                                                      M.use
-                                                                        (M.alloc (|
-                                                                          BinOp.Pure.gt
-                                                                            (M.read (|
-                                                                              M.read (| num |)
-                                                                            |))
-                                                                            (M.rust_cast
-                                                                              (M.read (|
-                                                                                M.get_constant (|
-                                                                                  "core::num::MAX"
-                                                                                |)
-                                                                              |)))
-                                                                        |)) in
-                                                                    let _ :=
-                                                                      M.is_constant_or_break_match (|
-                                                                        M.read (| γ |),
-                                                                        Value.Bool true
-                                                                      |) in
-                                                                    M.alloc (|
-                                                                      M.never_to_any (|
-                                                                        M.read (|
-                                                                          M.return_ (|
-                                                                            Value.StructTuple
-                                                                              "core::result::Result::Err"
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "move_binary_format::errors::PartialVMError",
-                                                                                    "with_message",
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.call_closure (|
-                                                                                      M.get_associated_function (|
-                                                                                        Ty.path
-                                                                                          "move_binary_format::errors::PartialVMError",
-                                                                                        "at_code_offset",
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "move_binary_format::errors::PartialVMError",
-                                                                                            "new",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            Value.StructTuple
-                                                                                              "move_core_types::vm_status::StatusCode::CONSTRAINT_NOT_SATISFIED"
+                                                            ltac:(M.monadic
+                                                              (M.match_operator (|
+                                                                M.alloc (| Value.Tuple [] |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ :=
+                                                                        M.use
+                                                                          (M.alloc (|
+                                                                            BinOp.gt (|
+                                                                              M.read (|
+                                                                                M.read (| num |)
+                                                                              |),
+                                                                              M.rust_cast
+                                                                                (M.read (|
+                                                                                  M.get_constant (|
+                                                                                    "core::num::MAX"
+                                                                                  |)
+                                                                                |))
+                                                                            |)
+                                                                          |)) in
+                                                                      let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.Bool true
+                                                                        |) in
+                                                                      M.alloc (|
+                                                                        M.never_to_any (|
+                                                                          M.read (|
+                                                                            M.return_ (|
+                                                                              Value.StructTuple
+                                                                                "core::result::Result::Err"
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "move_binary_format::errors::PartialVMError",
+                                                                                      "with_message",
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        M.get_associated_function (|
+                                                                                          Ty.path
+                                                                                            "move_binary_format::errors::PartialVMError",
+                                                                                          "at_code_offset",
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "move_binary_format::errors::PartialVMError",
+                                                                                              "new",
                                                                                               []
-                                                                                          ]
-                                                                                        |);
-                                                                                        M.call_closure (|
-                                                                                          M.get_associated_function (|
-                                                                                            Ty.path
-                                                                                              "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
-                                                                                            "current_function",
-                                                                                            []
-                                                                                          |),
-                                                                                          [
-                                                                                            M.read (|
-                                                                                              self
-                                                                                            |)
-                                                                                          ]
-                                                                                        |);
-                                                                                        M.rust_cast
-                                                                                          (M.read (|
-                                                                                            offset
-                                                                                          |))
-                                                                                      ]
-                                                                                    |);
-                                                                                    M.call_closure (|
-                                                                                      M.get_trait_method (|
-                                                                                        "alloc::string::ToString",
-                                                                                        Ty.path
-                                                                                          "str",
-                                                                                        [],
-                                                                                        "to_string",
-                                                                                        []
-                                                                                      |),
-                                                                                      [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "VecPack/VecUnpack argument out of range"
-                                                                                        |)
-                                                                                      ]
-                                                                                    |)
-                                                                                  ]
-                                                                                |)
-                                                                              ]
+                                                                                            |),
+                                                                                            [
+                                                                                              Value.StructTuple
+                                                                                                "move_core_types::vm_status::StatusCode::CONSTRAINT_NOT_SATISFIED"
+                                                                                                []
+                                                                                            ]
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            M.get_associated_function (|
+                                                                                              Ty.path
+                                                                                                "move_bytecode_verifier::instruction_consistency::InstructionConsistency",
+                                                                                              "current_function",
+                                                                                              []
+                                                                                            |),
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                self
+                                                                                              |)
+                                                                                            ]
+                                                                                          |);
+                                                                                          M.rust_cast
+                                                                                            (M.read (|
+                                                                                              offset
+                                                                                            |))
+                                                                                        ]
+                                                                                      |);
+                                                                                      M.call_closure (|
+                                                                                        M.get_trait_method (|
+                                                                                          "alloc::string::ToString",
+                                                                                          Ty.path
+                                                                                            "str",
+                                                                                          [],
+                                                                                          "to_string",
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            Value.String
+                                                                                              "VecPack/VecUnpack argument out of range"
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
+                                                                                ]
+                                                                            |)
                                                                           |)
                                                                         |)
-                                                                      |)
-                                                                    |)));
-                                                                fun γ =>
-                                                                  ltac:(M.monadic
-                                                                    (M.alloc (| Value.Tuple [] |)))
-                                                              ]
-                                                            |)
-                                                          | _ => M.impossible (||)
+                                                                      |)));
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (M.alloc (|
+                                                                        Value.Tuple []
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   |)));
                                               fun γ =>
@@ -3705,8 +3712,11 @@ Module instruction_consistency.
                                                       (fun γ =>
                                                         ltac:(M.monadic
                                                           match γ with
-                                                          | [] => M.alloc (| Value.Tuple [] |)
-                                                          | _ => M.impossible (||)
+                                                          | [] =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (| Value.Tuple [] |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
                                                           end))
                                                   |)))
                                             ]
@@ -3720,7 +3730,7 @@ Module instruction_consistency.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_instructions :
@@ -3788,7 +3798,7 @@ Module instruction_consistency.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_field_op :
@@ -3823,10 +3833,10 @@ Module instruction_consistency.
               |);
               Value.StructTuple
                 "move_binary_format::file_format::FunctionDefinitionIndex"
-                [ Value.Integer 0 ]
+                [ Value.Integer IntegerKind.U16 0 ]
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_current_function :
@@ -3916,8 +3926,8 @@ Module instruction_consistency.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.call_closure (|
+                                BinOp.eq (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -3937,8 +3947,9 @@ Module instruction_consistency.
                                         "type_parameters"
                                       |)
                                     ]
-                                  |))
-                                  (M.read (| generic |))
+                                  |),
+                                  M.read (| generic |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3991,7 +4002,7 @@ Module instruction_consistency.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_type_op :
@@ -4054,8 +4065,8 @@ Module instruction_consistency.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.call_closure (|
+                                BinOp.eq (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -4074,8 +4085,9 @@ Module instruction_consistency.
                                         "type_parameters"
                                       |)
                                     ]
-                                  |))
-                                  (M.read (| generic |))
+                                  |),
+                                  M.read (| generic |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4128,7 +4140,7 @@ Module instruction_consistency.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check_function_op :

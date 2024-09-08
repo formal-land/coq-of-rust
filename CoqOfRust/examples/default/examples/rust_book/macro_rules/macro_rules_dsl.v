@@ -19,7 +19,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _ :=
           let~ val :=
-            M.alloc (| BinOp.Wrap.add Integer.Usize (Value.Integer 1) (Value.Integer 2) |) in
+            M.alloc (|
+              BinOp.Wrap.add (|
+                Value.Integer IntegerKind.Usize 1,
+                Value.Integer IntegerKind.Usize 2
+              |)
+            |) in
           let~ _ :=
             let~ _ :=
               M.alloc (|
@@ -29,65 +34,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "1 + 2 = " |); M.read (| Value.String "
-" |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "usize" ]
-                                  |),
-                                  [ val ]
-                                |)
-                              ]
-                          |))
-                      ]
-                    |)
-                  ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ val :=
-          M.alloc (|
-            BinOp.Wrap.mul
-              Integer.Usize
-              (BinOp.Wrap.add Integer.Usize (Value.Integer 1) (Value.Integer 2))
-              (BinOp.Wrap.div Integer.Usize (Value.Integer 3) (Value.Integer 4))
-          |) in
-        let~ _ :=
-          let~ _ :=
-            M.alloc (|
-              M.call_closure (|
-                M.get_function (| "std::io::stdio::_print", [] |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
+                        M.alloc (|
                           Value.Array
-                            [
-                              M.read (| Value.String "(1 + 2) * (3 / 4) = " |);
-                              M.read (| Value.String "
-" |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
+                            [ M.read (| Value.String "1 + 2 = " |); M.read (| Value.String "
+" |) ]
+                        |);
+                        M.alloc (|
                           Value.Array
                             [
                               M.call_closure (|
@@ -99,7 +51,57 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 [ val ]
                               |)
                             ]
-                        |))
+                        |)
+                      ]
+                    |)
+                  ]
+                |)
+              |) in
+            M.alloc (| Value.Tuple [] |) in
+          M.alloc (| Value.Tuple [] |) in
+        let~ val :=
+          M.alloc (|
+            BinOp.Wrap.mul (|
+              BinOp.Wrap.add (|
+                Value.Integer IntegerKind.Usize 1,
+                Value.Integer IntegerKind.Usize 2
+              |),
+              BinOp.Wrap.div (|
+                Value.Integer IntegerKind.Usize 3,
+                Value.Integer IntegerKind.Usize 4
+              |)
+            |)
+          |) in
+        let~ _ :=
+          let~ _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "std::io::stdio::_print", [] |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
+                    [
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "(1 + 2) * (3 / 4) = " |);
+                            M.read (| Value.String "
+" |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [ val ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -108,7 +110,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "macro_rules_dsl::main" main.

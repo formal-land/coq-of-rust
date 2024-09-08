@@ -42,7 +42,7 @@ Module Impl_core_clone_Clone_for_move_bytecode_verifier_meter_Scope.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -113,7 +113,7 @@ Module Impl_core_fmt_Debug_for_move_bytecode_verifier_meter_Scope.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -146,7 +146,7 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -156,7 +156,7 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -166,9 +166,9 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -178,17 +178,6 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
-
-Module Impl_core_marker_StructuralEq_for_move_bytecode_verifier_meter_Scope.
-  Definition Self : Ty.t := Ty.path "move_bytecode_verifier_meter::Scope".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_move_bytecode_verifier_meter_Scope.
 
 Module Impl_core_cmp_Eq_for_move_bytecode_verifier_meter_Scope.
   Definition Self : Ty.t := Ty.path "move_bytecode_verifier_meter::Scope".
@@ -204,7 +193,7 @@ Module Impl_core_cmp_Eq_for_move_bytecode_verifier_meter_Scope.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -227,7 +216,7 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -237,7 +226,7 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -256,11 +245,11 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
                 "partial_cmp",
                 []
               |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -282,7 +271,7 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -292,7 +281,7 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -305,11 +294,11 @@ Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -341,7 +330,9 @@ Module Meter.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.eq (M.read (| items |)) (Value.Integer 0) |)) in
+                            (M.alloc (|
+                              BinOp.eq (| M.read (| items |), Value.Integer IntegerKind.Usize 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -377,7 +368,7 @@ Module Meter.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom ProvidedMethod_add_items :
@@ -407,7 +398,9 @@ Module Meter.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (| BinOp.Pure.eq (M.read (| items |)) (Value.Integer 0) |)) in
+                            (M.alloc (|
+                              BinOp.eq (| M.read (| items |), Value.Integer IntegerKind.Usize 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -437,7 +430,10 @@ Module Meter.
                         [
                           Value.StructRecord
                             "core::ops::range::Range"
-                            [ ("start", Value.Integer 0); ("end_", M.read (| items |)) ]
+                            [
+                              ("start", Value.Integer IntegerKind.Usize 0);
+                              ("end_", M.read (| items |))
+                            ]
                         ]
                       |)
                     |),
@@ -601,7 +597,7 @@ Module Meter.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom ProvidedMethod_add_items_with_growth :
@@ -637,7 +633,7 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
           |),
           [ M.read (| M.read (| self |) |); M.read (| name |); M.read (| scope |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -664,7 +660,7 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
           [ M.read (| M.read (| self |) |); M.read (| from |); M.read (| to |); M.read (| factor |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -689,7 +685,7 @@ Module Impl_move_bytecode_verifier_meter_Meter_for_ref_mut_Dyn_move_bytecode_ver
           |),
           [ M.read (| M.read (| self |) |); M.read (| scope |); M.read (| units |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :

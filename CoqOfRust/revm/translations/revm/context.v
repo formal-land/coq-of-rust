@@ -64,7 +64,7 @@ Module context.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -115,7 +115,7 @@ Module context.
             |),
             []
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -185,7 +185,7 @@ Module context.
                 |));
               ("external", Value.Tuple [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_empty : M.IsAssociatedFunction Self "new_empty" new_empty.
@@ -238,7 +238,7 @@ Module context.
                 |));
               ("external", Value.Tuple [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_with_db :
@@ -265,7 +265,7 @@ Module context.
           Value.StructRecord
             "revm::context::Context"
             [ ("evm", M.read (| evm |)); ("external", M.read (| external |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new :
@@ -304,7 +304,7 @@ Module context.
           Value.StructRecord
             "revm::context::ContextWithHandlerCfg"
             [ ("cfg", M.read (| cfg |)); ("context", M.read (| context |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new :
@@ -359,7 +359,7 @@ Module context.
                   |)
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

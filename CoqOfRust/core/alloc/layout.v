@@ -10,14 +10,14 @@ Module alloc.
     *)
     Definition size_align (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [ T ], [] =>
+      | [], [ T ], [] =>
         ltac:(M.monadic
           (Value.Tuple
             [
               M.call_closure (| M.get_function (| "core::mem::size_of", [ T ] |), [] |);
               M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_size_align : M.IsFunction "core::alloc::layout::size_align" size_align.
@@ -64,7 +64,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -95,26 +95,22 @@ Module alloc.
                 M.read (| f |);
                 M.read (| Value.String "Layout" |);
                 M.read (| Value.String "size" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::alloc::layout::Layout",
+                  "size"
+                |);
+                M.read (| Value.String "align" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::alloc::layout::Layout",
-                    "size"
-                  |));
-                M.read (| Value.String "align" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::alloc::layout::Layout",
-                      "align"
-                    |)
-                  |))
+                    "align"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -147,21 +143,22 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::alloc::layout::Layout",
                     "size"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "core::alloc::layout::Layout",
                     "size"
                   |)
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -185,7 +182,7 @@ Module alloc.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -195,17 +192,6 @@ Module alloc.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_alloc_layout_Layout.
-    
-    Module Impl_core_marker_StructuralEq_for_core_alloc_layout_Layout.
-      Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_alloc_layout_Layout.
     
     Module Impl_core_cmp_Eq_for_core_alloc_layout_Layout.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
@@ -233,7 +219,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -296,7 +282,7 @@ Module alloc.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -312,85 +298,157 @@ Module alloc.
       
       (*
           pub const fn from_size_align(size: usize, align: usize) -> Result<Self, LayoutError> {
-              if !align.is_power_of_two() {
-                  return Err(LayoutError);
+              if Layout::is_size_align_valid(size, align) {
+                  // SAFETY: Layout::is_size_align_valid checks the preconditions for this call.
+                  unsafe { Ok(Layout { size, align: mem::transmute(align) }) }
+              } else {
+                  Err(LayoutError)
               }
-      
-              // SAFETY: just checked that align is a power of two.
-              Layout::from_size_alignment(size, unsafe { Alignment::new_unchecked(align) })
           }
       *)
       Definition from_size_align (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ size; align ] =>
+        | [], [], [ size; align ] =>
+          ltac:(M.monadic
+            (let size := M.alloc (| size |) in
+            let align := M.alloc (| align |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::alloc::layout::Layout",
+                                "is_size_align_valid",
+                                []
+                              |),
+                              [ M.read (| size |); M.read (| align |) ]
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Ok"
+                          [
+                            Value.StructRecord
+                              "core::alloc::layout::Layout"
+                              [
+                                ("size", M.read (| size |));
+                                ("align",
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::intrinsics::transmute",
+                                      [ Ty.path "usize"; Ty.path "core::ptr::alignment::Alignment" ]
+                                    |),
+                                    [ M.read (| align |) ]
+                                  |))
+                              ]
+                          ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        Value.StructTuple
+                          "core::result::Result::Err"
+                          [ Value.StructTuple "core::alloc::layout::LayoutError" [] ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_from_size_align :
+        M.IsAssociatedFunction Self "from_size_align" from_size_align.
+      
+      (*
+          const fn is_size_align_valid(size: usize, align: usize) -> bool {
+              let Some(align) = Alignment::new(align) else { return false };
+              if size > Self::max_size_for_align(align) {
+                  return false;
+              }
+              true
+          }
+      *)
+      Definition is_size_align_valid (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ size; align ] =>
           ltac:(M.monadic
             (let size := M.alloc (| size |) in
             let align := M.alloc (| align |) in
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
-                    M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "usize",
-                                        "is_power_of_two",
-                                        []
-                                      |),
-                                      [ M.read (| align |) ]
-                                    |))
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [ Value.StructTuple "core::alloc::layout::LayoutError" [] ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.path "core::alloc::layout::Layout",
-                        "from_size_alignment",
-                        []
-                      |),
-                      [
-                        M.read (| size |);
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::ptr::alignment::Alignment",
-                            "new_unchecked",
-                            []
-                          |),
-                          [ M.read (| align |) ]
-                        |)
-                      ]
-                    |)
+                  M.match_operator (|
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::ptr::alignment::Alignment",
+                          "new",
+                          []
+                        |),
+                        [ M.read (| align |) ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::option::Option::Some",
+                              0
+                            |) in
+                          let align := M.copy (| γ0_0 |) in
+                          let~ _ :=
+                            M.match_operator (|
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          BinOp.gt (|
+                                            M.read (| size |),
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "core::alloc::layout::Layout",
+                                                "max_size_for_align",
+                                                []
+                                              |),
+                                              [ M.read (| align |) ]
+                                            |)
+                                          |)
+                                        |)) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (| M.return_ (| Value.Bool false |) |)
+                                      |)
+                                    |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              ]
+                            |) in
+                          M.alloc (| Value.Bool true |)))
+                    ]
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_from_size_align :
-        M.IsAssociatedFunction Self "from_size_align" from_size_align.
+      Axiom AssociatedFunction_is_size_align_valid :
+        M.IsAssociatedFunction Self "is_size_align_valid" is_size_align_valid.
       
       (*
           const fn max_size_for_align(align: Alignment) -> usize {
@@ -413,24 +471,24 @@ Module alloc.
       *)
       Definition max_size_for_align (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ align ] =>
+        | [], [], [ align ] =>
           ltac:(M.monadic
             (let align := M.alloc (| align |) in
-            BinOp.Wrap.sub
-              Integer.Usize
-              (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
-              (BinOp.Wrap.sub
-                Integer.Usize
-                (M.call_closure (|
+            BinOp.Wrap.sub (|
+              M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)),
+              BinOp.Wrap.sub (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "core::ptr::alignment::Alignment",
                     "as_usize",
                     []
                   |),
                   [ M.read (| align |) ]
-                |))
-                (Value.Integer 1))))
-        | _, _, _ => M.impossible
+                |),
+                Value.Integer IntegerKind.Usize 1
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_max_size_for_align :
@@ -448,7 +506,7 @@ Module alloc.
       *)
       Definition from_size_alignment (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ size; align ] =>
+        | [], [], [ size; align ] =>
           ltac:(M.monadic
             (let size := M.alloc (| size |) in
             let align := M.alloc (| align |) in
@@ -464,16 +522,17 @@ Module alloc.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt
-                                    (M.read (| size |))
-                                    (M.call_closure (|
+                                  BinOp.gt (|
+                                    M.read (| size |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "core::alloc::layout::Layout",
                                         "max_size_for_align",
                                         []
                                       |),
                                       [ M.read (| align |) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -502,7 +561,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_size_alignment :
@@ -510,8 +569,17 @@ Module alloc.
       
       (*
           pub const unsafe fn from_size_align_unchecked(size: usize, align: usize) -> Self {
+              assert_unsafe_precondition!(
+                  check_library_ub,
+                  "Layout::from_size_align_unchecked requires that align is a power of 2 \
+                  and the rounded-up allocation size does not exceed isize::MAX",
+                  (
+                      size: usize = size,
+                      align: usize = align,
+                  ) => Layout::is_size_align_valid(size, align)
+              );
               // SAFETY: the caller is required to uphold the preconditions.
-              unsafe { Layout { size, align: Alignment::new_unchecked(align) } }
+              unsafe { Layout { size, align: mem::transmute(align) } }
           }
       *)
       Definition from_size_align_unchecked
@@ -520,25 +588,59 @@ Module alloc.
           (α : list Value.t)
           : M :=
         match ε, τ, α with
-        | [ host ], [], [ size; align ] =>
+        | [], [], [ size; align ] =>
           ltac:(M.monadic
             (let size := M.alloc (| size |) in
             let align := M.alloc (| align |) in
-            Value.StructRecord
-              "core::alloc::layout::Layout"
-              [
-                ("size", M.read (| size |));
-                ("align",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "core::ptr::alignment::Alignment",
-                      "new_unchecked",
-                      []
-                    |),
-                    [ M.read (| align |) ]
-                  |))
-              ]))
-        | _, _, _ => M.impossible
+            M.read (|
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                []
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.from_size_align_unchecked",
+                                []
+                              |),
+                              [ M.read (| size |); M.read (| align |) ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              M.alloc (|
+                Value.StructRecord
+                  "core::alloc::layout::Layout"
+                  [
+                    ("size", M.read (| size |));
+                    ("align",
+                      M.call_closure (|
+                        M.get_function (|
+                          "core::intrinsics::transmute",
+                          [ Ty.path "usize"; Ty.path "core::ptr::alignment::Alignment" ]
+                        |),
+                        [ M.read (| align |) ]
+                      |))
+                  ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_size_align_unchecked :
@@ -551,7 +653,7 @@ Module alloc.
       *)
       Definition size (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -561,7 +663,7 @@ Module alloc.
                 "size"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_size : M.IsAssociatedFunction Self "size" size.
@@ -573,7 +675,7 @@ Module alloc.
       *)
       Definition align (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -592,7 +694,7 @@ Module alloc.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_align : M.IsAssociatedFunction Self "align" align.
@@ -608,7 +710,7 @@ Module alloc.
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [ T ], [] =>
+        | [], [ T ], [] =>
           ltac:(M.monadic
             (M.read (|
               M.match_operator (|
@@ -638,7 +740,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -652,7 +754,7 @@ Module alloc.
       *)
       Definition for_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [ T ], [ t ] =>
+        | [], [ T ], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             M.read (|
@@ -690,7 +792,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_for_value : M.IsAssociatedFunction Self "for_value" for_value.
@@ -705,7 +807,7 @@ Module alloc.
       *)
       Definition for_value_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [ T ], [ t ] =>
+        | [], [ T ], [ t ] =>
           ltac:(M.monadic
             (let t := M.alloc (| t |) in
             M.read (|
@@ -743,7 +845,7 @@ Module alloc.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_for_value_raw :
@@ -752,12 +854,12 @@ Module alloc.
       (*
           pub const fn dangling(&self) -> NonNull<u8> {
               // SAFETY: align is guaranteed to be non-zero
-              unsafe { NonNull::new_unchecked(crate::ptr::invalid_mut::<u8>(self.align())) }
+              unsafe { NonNull::new_unchecked(crate::ptr::without_provenance_mut::<u8>(self.align())) }
           }
       *)
       Definition dangling (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -768,7 +870,7 @@ Module alloc.
               |),
               [
                 M.call_closure (|
-                  M.get_function (| "core::ptr::invalid_mut", [ Ty.path "u8" ] |),
+                  M.get_function (| "core::ptr::without_provenance_mut", [ Ty.path "u8" ] |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
@@ -782,7 +884,7 @@ Module alloc.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_dangling : M.IsAssociatedFunction Self "dangling" dangling.
@@ -825,7 +927,7 @@ Module alloc.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_align_to : M.IsAssociatedFunction Self "align_to" align_to.
@@ -859,7 +961,7 @@ Module alloc.
       *)
       Definition padding_needed_for (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; align ] =>
+        | [], [], [ self; align ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let align := M.alloc (| align |) in
@@ -877,7 +979,7 @@ Module alloc.
                 |) in
               let~ len_rounded_up :=
                 M.alloc (|
-                  BinOp.Pure.bit_and
+                  BinOp.bit_and
                     (M.call_closure (|
                       M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
                       [
@@ -885,14 +987,15 @@ Module alloc.
                           M.get_associated_function (| Ty.path "usize", "wrapping_add", [] |),
                           [ M.read (| len |); M.read (| align |) ]
                         |);
-                        Value.Integer 1
+                        Value.Integer IntegerKind.Usize 1
                       ]
                     |))
-                    (UnOp.Pure.not
-                      (M.call_closure (|
+                    (UnOp.not (|
+                      M.call_closure (|
                         M.get_associated_function (| Ty.path "usize", "wrapping_sub", [] |),
-                        [ M.read (| align |); Value.Integer 1 ]
-                      |)))
+                        [ M.read (| align |); Value.Integer IntegerKind.Usize 1 ]
+                      |)
+                    |))
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -901,7 +1004,7 @@ Module alloc.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_padding_needed_for :
@@ -922,7 +1025,7 @@ Module alloc.
       *)
       Definition pad_to_align (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -949,17 +1052,17 @@ Module alloc.
                 |) in
               let~ new_size :=
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.add (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::alloc::layout::Layout",
                         "size",
                         []
                       |),
                       [ M.read (| self |) ]
-                    |))
-                    (M.read (| pad |))
+                    |),
+                    M.read (| pad |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -982,7 +1085,7 @@ Module alloc.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_pad_to_align :
@@ -1013,17 +1116,16 @@ Module alloc.
                 (M.read (|
                   let~ padded_size :=
                     M.alloc (|
-                      BinOp.Wrap.add
-                        Integer.Usize
-                        (M.call_closure (|
+                      BinOp.Wrap.add (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "size",
                             []
                           |),
                           [ M.read (| self |) ]
-                        |))
-                        (M.call_closure (|
+                        |),
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::alloc::layout::Layout",
                             "padding_needed_for",
@@ -1040,7 +1142,8 @@ Module alloc.
                               [ M.read (| self |) ]
                             |)
                           ]
-                        |))
+                        |)
+                      |)
                     |) in
                   let~ alloc_size :=
                     M.copy (|
@@ -1243,7 +1346,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_repeat : M.IsAssociatedFunction Self "repeat" repeat.
@@ -1624,7 +1727,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_extend : M.IsAssociatedFunction Self "extend" extend.
@@ -1768,7 +1871,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_repeat_packed :
@@ -1920,7 +2023,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_extend_packed :
@@ -1962,7 +2065,7 @@ Module alloc.
       *)
       Definition array (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [ T ], [ n ] =>
+        | [], [ T ], [ n ] =>
           ltac:(M.monadic
             (let n := M.alloc (| n |) in
             M.catch_return (|
@@ -1989,7 +2092,7 @@ Module alloc.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_array : M.IsAssociatedFunction Self "array" array.
@@ -2016,7 +2119,7 @@ Module alloc.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "core::alloc::layout::LayoutError" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2049,7 +2152,7 @@ Module alloc.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             Value.Bool true))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2059,17 +2162,6 @@ Module alloc.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_alloc_layout_LayoutError.
-    
-    Module Impl_core_marker_StructuralEq_for_core_alloc_layout_LayoutError.
-      Definition Self : Ty.t := Ty.path "core::alloc::layout::LayoutError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_alloc_layout_LayoutError.
     
     Module Impl_core_cmp_Eq_for_core_alloc_layout_LayoutError.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::LayoutError".
@@ -2085,7 +2177,7 @@ Module alloc.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2111,7 +2203,7 @@ Module alloc.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
               [ M.read (| f |); M.read (| Value.String "LayoutError" |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2154,7 +2246,7 @@ Module alloc.
                 M.read (| Value.String "invalid parameters to Layout::from_size_align" |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

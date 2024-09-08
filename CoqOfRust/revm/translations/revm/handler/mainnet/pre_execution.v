@@ -63,7 +63,7 @@ Module handler.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_load_precompiles :
@@ -231,8 +231,7 @@ Module handler.
                                               "coinbase"
                                             |)
                                           |);
-                                          (* Unsize *)
-                                          M.pointer_coercion (M.alloc (| Value.Array [] |));
+                                          M.alloc (| Value.Array [] |);
                                           M.SubPointer.get_struct_record_field (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.SubPointer.get_struct_record_field (|
@@ -435,7 +434,7 @@ Module handler.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_load_accounts :
@@ -477,7 +476,10 @@ Module handler.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       "saturating_mul",
                       []
                     |),
@@ -486,7 +488,8 @@ Module handler.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [],
                           "from",
                           [ Ty.path "u64" ]
@@ -552,7 +555,10 @@ Module handler.
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       []
                                   ],
                                 "expect",
@@ -578,7 +584,10 @@ Module handler.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [],
                                 "saturating_add",
                                 []
@@ -603,7 +612,10 @@ Module handler.
                   |),
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       "saturating_sub",
                       []
                     |),
@@ -681,7 +693,7 @@ Module handler.
                                     "nonce"
                                   |)
                                 |);
-                                Value.Integer 1
+                                Value.Integer IntegerKind.U64 1
                               ]
                             |)
                           |) in
@@ -702,7 +714,7 @@ Module handler.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_deduct_caller_inner :
@@ -926,7 +938,7 @@ Module handler.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_deduct_caller :

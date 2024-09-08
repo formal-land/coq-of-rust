@@ -193,7 +193,7 @@ Module instruction_result.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -544,7 +544,7 @@ Module instruction_result.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -566,7 +566,7 @@ Module instruction_result.
           (Value.StructTuple
             "revm_interpreter::instruction_result::InstructionResult::Continue"
             []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -599,7 +599,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -609,7 +609,7 @@ Module instruction_result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -619,9 +619,9 @@ Module instruction_result.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -631,17 +631,6 @@ Module instruction_result.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_InstructionResult.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_instruction_result_InstructionResult.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InstructionResult".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_instruction_result_InstructionResult.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_instruction_result_InstructionResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InstructionResult".
@@ -657,7 +646,7 @@ Module instruction_result.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -680,7 +669,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -693,11 +682,11 @@ Module instruction_result.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -762,7 +751,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1111,7 +1100,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1189,15 +1178,15 @@ Module instruction_result.
                         (fun γ =>
                           ltac:(M.monadic
                             match γ with
-                            | [] => M.alloc (| Value.Bool true |)
-                            | _ => M.impossible (||)
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_ok : M.IsAssociatedFunction Self "is_ok" is_ok.
@@ -1250,15 +1239,15 @@ Module instruction_result.
                         (fun γ =>
                           ltac:(M.monadic
                             match γ with
-                            | [] => M.alloc (| Value.Bool true |)
-                            | _ => M.impossible (||)
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_revert : M.IsAssociatedFunction Self "is_revert" is_revert.
@@ -1487,15 +1476,15 @@ Module instruction_result.
                         (fun γ =>
                           ltac:(M.monadic
                             match γ with
-                            | [] => M.alloc (| Value.Bool true |)
-                            | _ => M.impossible (||)
+                            | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_error : M.IsAssociatedFunction Self "is_error" is_error.
@@ -1573,11 +1562,7 @@ Module instruction_result.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Success" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Success" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -1615,11 +1600,7 @@ Module instruction_result.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Halt" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Halt" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -1679,7 +1660,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1723,7 +1704,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1756,7 +1737,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1766,7 +1747,7 @@ Module instruction_result.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1778,7 +1759,7 @@ Module instruction_result.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -1808,12 +1789,20 @@ Module instruction_result.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "revm_primitives::result::SuccessReason",
-                                  [ Ty.path "revm_primitives::result::SuccessReason" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_primitives::result::SuccessReason" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "revm_primitives::result::SuccessReason" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -1840,12 +1829,20 @@ Module instruction_result.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "revm_primitives::result::HaltReason",
-                                  [ Ty.path "revm_primitives::result::HaltReason" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "revm_primitives::result::HaltReason" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "revm_primitives::result::HaltReason" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -1855,7 +1852,7 @@ Module instruction_result.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1865,17 +1862,6 @@ Module instruction_result.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_SuccessOrHalt.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_instruction_result_SuccessOrHalt.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::SuccessOrHalt".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_instruction_result_SuccessOrHalt.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_instruction_result_SuccessOrHalt.
     Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::SuccessOrHalt".
@@ -1903,7 +1889,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1926,7 +1912,7 @@ Module instruction_result.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1940,7 +1926,7 @@ Module instruction_result.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |) in
             M.match_operator (|
@@ -1994,7 +1980,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2035,7 +2021,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_success : M.IsAssociatedFunction Self "is_success" is_success.
@@ -2074,7 +2060,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_success : M.IsAssociatedFunction Self "to_success" to_success.
@@ -2105,7 +2091,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_revert : M.IsAssociatedFunction Self "is_revert" is_revert.
@@ -2137,7 +2123,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_halt : M.IsAssociatedFunction Self "is_halt" is_halt.
@@ -2176,7 +2162,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_halt : M.IsAssociatedFunction Self "to_halt" to_halt.
@@ -2471,16 +2457,17 @@ Module instruction_result.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                Value.StructTuple
-                                  "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                                  [
-                                    Value.StructTuple
-                                      "revm_primitives::result::HaltReason::OpcodeNotFound"
-                                      []
-                                  ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  Value.StructTuple
+                                    "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                                    [
+                                      Value.StructTuple
+                                        "revm_primitives::result::HaltReason::OpcodeNotFound"
+                                        []
+                                    ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -2681,16 +2668,17 @@ Module instruction_result.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                Value.StructTuple
-                                  "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
-                                  [
-                                    Value.StructTuple
-                                      "revm_primitives::result::HaltReason::CreateContractSizeLimit"
-                                      []
-                                  ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  Value.StructTuple
+                                    "revm_interpreter::instruction_result::SuccessOrHalt::Halt"
+                                    [
+                                      Value.StructTuple
+                                        "revm_primitives::result::HaltReason::CreateContractSizeLimit"
+                                        []
+                                    ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -2765,16 +2753,14 @@ Module instruction_result.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "Unexpected EOF internal Return Contract"
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String "Unexpected EOF internal Return Contract"
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -2784,7 +2770,7 @@ Module instruction_result.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

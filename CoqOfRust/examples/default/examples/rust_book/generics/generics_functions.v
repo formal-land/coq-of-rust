@@ -32,7 +32,7 @@ Definition reg_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
     ltac:(M.monadic
       (let _s := M.alloc (| _s |) in
       Value.Tuple []))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_reg_fn : M.IsFunction "generics_functions::reg_fn" reg_fn.
@@ -44,7 +44,7 @@ Definition gen_spec_t (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
     ltac:(M.monadic
       (let _s := M.alloc (| _s |) in
       Value.Tuple []))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_gen_spec_t : M.IsFunction "generics_functions::gen_spec_t" gen_spec_t.
@@ -56,7 +56,7 @@ Definition gen_spec_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
     ltac:(M.monadic
       (let _s := M.alloc (| _s |) in
       Value.Tuple []))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_gen_spec_i32 : M.IsFunction "generics_functions::gen_spec_i32" gen_spec_i32.
@@ -68,7 +68,7 @@ Definition generic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
     ltac:(M.monadic
       (let _s := M.alloc (| _s |) in
       Value.Tuple []))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_generic : M.IsFunction "generics_functions::generic" generic.
@@ -118,7 +118,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "generics_functions::gen_spec_i32", [] |),
-              [ Value.StructTuple "generics_functions::SGen" [ Value.Integer 6 ] ]
+              [ Value.StructTuple "generics_functions::SGen" [ Value.Integer IntegerKind.I32 6 ] ]
             |)
           |) in
         let~ _ :=
@@ -137,7 +137,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "generics_functions::main" main.

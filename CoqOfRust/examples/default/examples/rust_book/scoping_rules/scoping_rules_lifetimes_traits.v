@@ -29,18 +29,16 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_traits_Borrowed.
             M.read (| f |);
             M.read (| Value.String "Borrowed" |);
             M.read (| Value.String "x" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "scoping_rules_lifetimes_traits::Borrowed",
-                  "x"
-                |)
-              |))
+            M.alloc (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "scoping_rules_lifetimes_traits::Borrowed",
+                "x"
+              |)
+            |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -65,8 +63,8 @@ Module Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
       ltac:(M.monadic
         (Value.StructRecord
           "scoping_rules_lifetimes_traits::Borrowed"
-          [ ("x", M.alloc (| Value.Integer 10 |)) ]))
-    | _, _, _ => M.impossible
+          [ ("x", M.alloc (| Value.Integer IntegerKind.I32 10 |)) ]))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -110,28 +108,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "b is " |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "b is " |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ]
-                                |),
-                                [ b ]
-                              |)
-                            ]
-                        |))
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "scoping_rules_lifetimes_traits::Borrowed" ]
+                              |),
+                              [ b ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -140,7 +134,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_lifetimes_traits::main" main.

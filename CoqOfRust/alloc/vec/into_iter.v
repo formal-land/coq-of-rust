@@ -14,7 +14,7 @@ Module vec.
             ("phantom", Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ]);
             ("cap", Ty.path "usize");
             ("alloc", Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ]);
-            ("ptr", Ty.apply (Ty.path "*const") [] [ T ]);
+            ("ptr", Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ]);
             ("end_", Ty.apply (Ty.path "*const") [] [ T ])
           ];
       } *)
@@ -59,23 +59,21 @@ Module vec.
                         [ M.read (| f |); M.read (| Value.String "IntoIter" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
-                            "as_slice",
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ],
+                          "as_slice",
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |)
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -93,7 +91,7 @@ Module vec.
       
       (*
           pub fn as_slice(&self) -> &[T] {
-              unsafe { slice::from_raw_parts(self.ptr, self.len()) }
+              unsafe { slice::from_raw_parts(self.ptr.as_ptr(), self.len()) }
           }
       *)
       Definition as_slice (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -105,13 +103,24 @@ Module vec.
             M.call_closure (|
               M.get_function (| "core::slice::raw::from_raw_parts", [ T ] |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::vec::into_iter::IntoIter",
-                    "ptr"
-                  |)
-                |);
+                (* MutToConstPointer *)
+                M.pointer_coercion
+                  (M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                      "as_ptr",
+                      []
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::vec::into_iter::IntoIter",
+                          "ptr"
+                        |)
+                      |)
+                    ]
+                  |));
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
@@ -124,7 +133,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_slice :
@@ -155,7 +164,7 @@ Module vec.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut_slice :
@@ -189,7 +198,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_allocator :
@@ -198,7 +207,7 @@ Module vec.
       
       (*
           fn as_raw_mut_slice(&mut self) -> *mut [T] {
-              ptr::slice_from_raw_parts_mut(self.ptr as *mut T, self.len())
+              ptr::slice_from_raw_parts_mut(self.ptr.as_ptr(), self.len())
           }
       *)
       Definition as_raw_mut_slice
@@ -215,14 +224,22 @@ Module vec.
             M.call_closure (|
               M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
               [
-                M.rust_cast
-                  (M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::vec::into_iter::IntoIter",
-                      "ptr"
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    "as_ptr",
+                    []
+                  |),
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::into_iter::IntoIter",
+                        "ptr"
+                      |)
                     |)
-                  |));
+                  ]
+                |);
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::iter::traits::exact_size::ExactSizeIterator",
@@ -238,7 +255,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_raw_mut_slice :
@@ -253,8 +270,8 @@ Module vec.
               // struct and then overwriting &mut self.
               // this creates less assembly
               self.cap = 0;
-              self.buf = unsafe { NonNull::new_unchecked(RawVec::NEW.ptr()) };
-              self.ptr = self.buf.as_ptr();
+              self.buf = RawVec::NEW.non_null();
+              self.ptr = self.buf;
               self.end = self.buf.as_ptr();
       
               // Dropping the remaining elements can panic, so this needs to be
@@ -294,7 +311,7 @@ Module vec.
                     "alloc::vec::into_iter::IntoIter",
                     "cap"
                   |),
-                  Value.Integer 0
+                  Value.Integer IntegerKind.Usize 0
                 |) in
               let~ _ :=
                 M.write (|
@@ -305,23 +322,14 @@ Module vec.
                   |),
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                      "new_unchecked",
+                      Ty.apply
+                        (Ty.path "alloc::raw_vec::RawVec")
+                        []
+                        [ T; Ty.path "alloc::alloc::Global" ],
+                      "non_null",
                       []
                     |),
-                    [
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::raw_vec::RawVec")
-                            []
-                            [ T; Ty.path "alloc::alloc::Global" ],
-                          "ptr",
-                          []
-                        |),
-                        [ M.get_constant (| "alloc::raw_vec::NEW" |) ]
-                      |)
-                    ]
+                    [ M.get_constant (| "alloc::raw_vec::NEW" |) ]
                   |)
                 |) in
               let~ _ :=
@@ -331,24 +339,13 @@ Module vec.
                     "alloc::vec::into_iter::IntoIter",
                     "ptr"
                   |),
-                  (* MutToConstPointer *)
-                  M.pointer_coercion
-                    (M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                        "as_ptr",
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::vec::into_iter::IntoIter",
-                            "buf"
-                          |)
-                        |)
-                      ]
-                    |))
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::vec::into_iter::IntoIter",
+                      "buf"
+                    |)
+                  |)
                 |) in
               let~ _ :=
                 M.write (|
@@ -388,7 +385,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_forget_allocation_drop_remaining :
@@ -400,9 +397,9 @@ Module vec.
       
       (*
           pub(crate) fn forget_remaining_elements(&mut self) {
-              // For th ZST case, it is crucial that we mutate `end` here, not `ptr`.
+              // For the ZST case, it is crucial that we mutate `end` here, not `ptr`.
               // `ptr` must stay aligned, while `end` may be unaligned.
-              self.end = self.ptr;
+              self.end = self.ptr.as_ptr();
           }
       *)
       Definition forget_remaining_elements
@@ -424,17 +421,28 @@ Module vec.
                     "alloc::vec::into_iter::IntoIter",
                     "end"
                   |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::vec::into_iter::IntoIter",
-                      "ptr"
-                    |)
-                  |)
+                  (* MutToConstPointer *)
+                  M.pointer_coercion
+                    (M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                        "as_ptr",
+                        []
+                      |),
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::into_iter::IntoIter",
+                            "ptr"
+                          |)
+                        |)
+                      ]
+                    |))
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_forget_remaining_elements :
@@ -462,7 +470,7 @@ Module vec.
                       // say that they're all at the beginning of the "allocation".
                       0..this.len()
                   } else {
-                      this.ptr.sub_ptr(buf)..this.end.sub_ptr(buf)
+                      this.ptr.sub_ptr(this.buf)..this.end.sub_ptr(buf)
                   };
                   let cap = this.cap;
                   let alloc = ManuallyDrop::take(&mut this.alloc);
@@ -543,7 +551,7 @@ Module vec.
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer 0);
+                                ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_",
                                   M.call_closure (|
                                     M.get_trait_method (|
@@ -588,7 +596,7 @@ Module vec.
                                 ("start",
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*const") [] [ T ],
+                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                       "sub_ptr",
                                       []
                                     |),
@@ -617,7 +625,30 @@ Module vec.
                                           "ptr"
                                         |)
                                       |);
-                                      (* MutToConstPointer *) M.pointer_coercion (M.read (| buf |))
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.apply
+                                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                    []
+                                                    [ T; A ]
+                                                ],
+                                              [],
+                                              "deref",
+                                              []
+                                            |),
+                                            [ this ]
+                                          |),
+                                          "alloc::vec::into_iter::IntoIter",
+                                          "buf"
+                                        |)
+                                      |)
                                     ]
                                   |));
                                 ("end_",
@@ -721,7 +752,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_vecdeque :
@@ -752,7 +783,7 @@ Module vec.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -799,21 +830,23 @@ Module vec.
       
       (*
           fn next(&mut self) -> Option<T> {
-              if self.ptr == self.end {
-                  None
-              } else if T::IS_ZST {
+              let ptr = if T::IS_ZST {
+                  if self.ptr.as_ptr() == self.end as *mut T {
+                      return None;
+                  }
                   // `ptr` has to stay where it is to remain aligned, so we reduce the length by 1 by
                   // reducing the `end`.
                   self.end = self.end.wrapping_byte_sub(1);
-      
-                  // Make up a value of this ZST.
-                  Some(unsafe { mem::zeroed() })
+                  self.ptr
               } else {
+                  if self.ptr == non_null!(self.end, T) {
+                      return None;
+                  }
                   let old = self.ptr;
-                  self.ptr = unsafe { self.ptr.add(1) };
-      
-                  Some(unsafe { ptr::read(old) })
-              }
+                  self.ptr = unsafe { old.add(1) };
+                  old
+              };
+              Some(unsafe { ptr.read() })
           }
       *)
       Definition next (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -822,36 +855,12 @@ Module vec.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::vec::into_iter::IntoIter",
-                                  "ptr"
-                                |)
-                              |))
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::vec::into_iter::IntoIter",
-                                  "end"
-                                |)
-                              |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
+            M.catch_return (|
+              ltac:(M.monadic
+                (M.read (|
+                  let~ ptr :=
+                    M.copy (|
+                      M.match_operator (|
                         M.alloc (| Value.Tuple [] |),
                         [
                           fun γ =>
@@ -863,6 +872,62 @@ Module vec.
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Bool true
+                                |) in
+                              let~ _ :=
+                                M.match_operator (|
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              BinOp.eq (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "core::ptr::non_null::NonNull")
+                                                      []
+                                                      [ T ],
+                                                    "as_ptr",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "alloc::vec::into_iter::IntoIter",
+                                                        "ptr"
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |),
+                                                M.rust_cast
+                                                  (M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::vec::into_iter::IntoIter",
+                                                      "end"
+                                                    |)
+                                                  |))
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)
+                                            |)
+                                          |)
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
                                 |) in
                               let~ _ :=
                                 M.write (|
@@ -885,23 +950,75 @@ Module vec.
                                           "end"
                                         |)
                                       |);
-                                      Value.Integer 1
+                                      Value.Integer IntegerKind.Usize 1
                                     ]
                                   |)
                                 |) in
-                              M.alloc (|
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [
-                                    M.call_closure (|
-                                      M.get_function (| "core::mem::zeroed", [ T ] |),
-                                      []
-                                    |)
-                                  ]
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::vec::into_iter::IntoIter",
+                                "ptr"
                               |)));
                           fun γ =>
                             ltac:(M.monadic
-                              (let~ old :=
+                              (let~ _ :=
+                                M.match_operator (|
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::cmp::PartialEq",
+                                                  Ty.apply
+                                                    (Ty.path "core::ptr::non_null::NonNull")
+                                                    []
+                                                    [ T ],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::ptr::non_null::NonNull")
+                                                      []
+                                                      [ T ]
+                                                  ],
+                                                  "eq",
+                                                  []
+                                                |),
+                                                [
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::vec::into_iter::IntoIter",
+                                                    "ptr"
+                                                  |);
+                                                  M.rust_cast
+                                                    (M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::vec::into_iter::IntoIter",
+                                                      "end"
+                                                    |))
+                                                ]
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              M.return_ (|
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)
+                                            |)
+                                          |)
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |) in
+                              let~ old :=
                                 M.copy (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
@@ -918,46 +1035,42 @@ Module vec.
                                   |),
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "*const") [] [ T ],
+                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                       "add",
                                       []
                                     |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "alloc::vec::into_iter::IntoIter",
-                                          "ptr"
-                                        |)
-                                      |);
-                                      Value.Integer 1
-                                    ]
+                                    [ M.read (| old |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 |) in
-                              M.alloc (|
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [
-                                    M.call_closure (|
-                                      M.get_function (| "core::ptr::read", [ T ] |),
-                                      [ M.read (| old |) ]
-                                    |)
-                                  ]
-                              |)))
+                              old))
                         ]
-                      |)))
-                ]
-              |)
+                      |)
+                    |) in
+                  M.alloc (|
+                    Value.StructTuple
+                      "core::option::Option::Some"
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "read",
+                            []
+                          |),
+                          [ M.read (| ptr |) ]
+                        |)
+                      ]
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           fn size_hint(&self) -> (usize, Option<usize>) {
               let exact = if T::IS_ZST {
-                  self.end.addr().wrapping_sub(self.ptr.addr())
+                  self.end.addr().wrapping_sub(self.ptr.as_ptr().addr())
               } else {
-                  unsafe { self.end.sub_ptr(self.ptr) }
+                  unsafe { non_null!(self.end, T).sub_ptr(self.ptr) }
               };
               (exact, Some(exact))
           }
@@ -1002,17 +1115,26 @@ Module vec.
                                 |);
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "*const") [] [ T ],
+                                    Ty.apply (Ty.path "*mut") [] [ T ],
                                     "addr",
                                     []
                                   |),
                                   [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::vec::into_iter::IntoIter",
-                                        "ptr"
-                                      |)
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                        "as_ptr",
+                                        []
+                                      |),
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::vec::into_iter::IntoIter",
+                                            "ptr"
+                                          |)
+                                        |)
+                                      ]
                                     |)
                                   ]
                                 |)
@@ -1024,17 +1146,18 @@ Module vec.
                           (M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*const") [] [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "sub_ptr",
                                 []
                               |),
                               [
                                 M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::vec::into_iter::IntoIter",
-                                    "end"
-                                  |)
+                                  M.rust_cast
+                                    (M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::vec::into_iter::IntoIter",
+                                      "end"
+                                    |))
                                 |);
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
@@ -1057,13 +1180,13 @@ Module vec.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               let step_size = self.len().min(n);
-              let to_drop = ptr::slice_from_raw_parts_mut(self.ptr as *mut T, step_size);
+              let to_drop = ptr::slice_from_raw_parts_mut(self.ptr.as_ptr(), step_size);
               if T::IS_ZST {
                   // See `next` for why we sub `end` here.
                   self.end = self.end.wrapping_byte_sub(step_size);
@@ -1075,7 +1198,7 @@ Module vec.
               unsafe {
                   ptr::drop_in_place(to_drop);
               }
-              NonZeroUsize::new(n - step_size).map_or(Ok(()), Err)
+              NonZero::new(n - step_size).map_or(Ok(()), Err)
           }
       *)
       Definition advance_by
@@ -1118,14 +1241,22 @@ Module vec.
                   M.call_closure (|
                     M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
                     [
-                      M.rust_cast
-                        (M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::vec::into_iter::IntoIter",
-                            "ptr"
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                          "as_ptr",
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::vec::into_iter::IntoIter",
+                              "ptr"
+                            |)
                           |)
-                        |));
+                        ]
+                      |);
                       M.read (| step_size |)
                     ]
                   |)
@@ -1177,7 +1308,7 @@ Module vec.
                             |),
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*const") [] [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "add",
                                 []
                               |),
@@ -1214,29 +1345,35 @@ Module vec.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
-                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| step_size |)) ]
+                      [ BinOp.Wrap.sub (| M.read (| n |), M.read (| step_size |) |) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -1244,7 +1381,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1268,12 +1405,12 @@ Module vec.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           fn next_chunk<const N: usize>(&mut self) -> Result<[T; N], core::array::IntoIter<T, N>> {
-              let mut raw_ary = MaybeUninit::uninit_array();
+              let mut raw_ary = [const { MaybeUninit::uninit() }; N];
       
               let len = self.len();
       
@@ -1293,7 +1430,7 @@ Module vec.
                   // Safety: `len` indicates that this many elements are available and we just checked that
                   // it fits into the array.
                   unsafe {
-                      ptr::copy_nonoverlapping(self.ptr, raw_ary.as_mut_ptr() as *mut T, len);
+                      ptr::copy_nonoverlapping(self.ptr.as_ptr(), raw_ary.as_mut_ptr() as *mut T, len);
                       self.forget_remaining_elements();
                       return Err(array::IntoIter::new_unchecked(raw_ary, 0..len));
                   }
@@ -1302,7 +1439,7 @@ Module vec.
               // Safety: `len` is larger than the array size. Copy a fixed amount here to fully initialize
               // the array.
               return unsafe {
-                  ptr::copy_nonoverlapping(self.ptr, raw_ary.as_mut_ptr() as *mut T, N);
+                  ptr::copy_nonoverlapping(self.ptr.as_ptr(), raw_ary.as_mut_ptr() as *mut T, N);
                   self.ptr = self.ptr.add(N);
                   Ok(raw_ary.transpose().assume_init())
               };
@@ -1325,13 +1462,11 @@ Module vec.
                   M.read (|
                     let~ raw_ary :=
                       M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                            "uninit_array",
-                            []
+                        repeat (|
+                          M.read (|
+                            M.get_constant (| "alloc::vec::into_iter::next_chunk_discriminant" |)
                           |),
-                          []
+                          N
                         |)
                       |) in
                     let~ len :=
@@ -1376,13 +1511,14 @@ Module vec.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.Pure.lt
-                                                      (M.read (| len |))
-                                                      (M.read (|
+                                                    BinOp.lt (|
+                                                      M.read (| len |),
+                                                      M.read (|
                                                         M.get_constant (|
                                                           "alloc::vec::into_iter::next_chunk::N"
                                                         |)
-                                                      |))
+                                                      |)
+                                                    |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -1426,7 +1562,10 @@ Module vec.
                                                               Value.StructRecord
                                                                 "core::ops::range::Range"
                                                                 [
-                                                                  ("start", Value.Integer 0);
+                                                                  ("start",
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      0);
                                                                   ("end_", M.read (| len |))
                                                                 ]
                                                             ]
@@ -1518,11 +1657,12 @@ Module vec.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt
-                                      (M.read (| len |))
-                                      (M.read (|
+                                    BinOp.lt (|
+                                      M.read (| len |),
+                                      M.read (|
                                         M.get_constant (| "alloc::vec::into_iter::next_chunk::N" |)
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1540,13 +1680,27 @@ Module vec.
                                             [ T ]
                                           |),
                                           [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "alloc::vec::into_iter::IntoIter",
-                                                "ptr"
-                                              |)
-                                            |);
+                                            (* MutToConstPointer *)
+                                            M.pointer_coercion
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::ptr::non_null::NonNull")
+                                                    []
+                                                    [ T ],
+                                                  "as_ptr",
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::vec::into_iter::IntoIter",
+                                                      "ptr"
+                                                    |)
+                                                  |)
+                                                ]
+                                              |));
                                             M.rust_cast
                                               (M.call_closure (|
                                                 M.get_associated_function (|
@@ -1563,7 +1717,7 @@ Module vec.
                                                   "as_mut_ptr",
                                                   []
                                                 |),
-                                                [ (* Unsize *) M.pointer_coercion raw_ary ]
+                                                [ raw_ary ]
                                               |));
                                             M.read (| len |)
                                           ]
@@ -1601,7 +1755,7 @@ Module vec.
                                               Value.StructRecord
                                                 "core::ops::range::Range"
                                                 [
-                                                  ("start", Value.Integer 0);
+                                                  ("start", Value.Integer IntegerKind.Usize 0);
                                                   ("end_", M.read (| len |))
                                                 ]
                                             ]
@@ -1621,13 +1775,24 @@ Module vec.
                             M.call_closure (|
                               M.get_function (| "core::intrinsics::copy_nonoverlapping", [ T ] |),
                               [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::vec::into_iter::IntoIter",
-                                    "ptr"
-                                  |)
-                                |);
+                                (* MutToConstPointer *)
+                                M.pointer_coercion
+                                  (M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                      "as_ptr",
+                                      []
+                                    |),
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::vec::into_iter::IntoIter",
+                                          "ptr"
+                                        |)
+                                      |)
+                                    ]
+                                  |));
                                 M.rust_cast
                                   (M.call_closure (|
                                     M.get_associated_function (|
@@ -1643,7 +1808,7 @@ Module vec.
                                       "as_mut_ptr",
                                       []
                                     |),
-                                    [ (* Unsize *) M.pointer_coercion raw_ary ]
+                                    [ raw_ary ]
                                   |));
                                 M.read (|
                                   M.get_constant (| "alloc::vec::into_iter::next_chunk::N" |)
@@ -1660,7 +1825,7 @@ Module vec.
                             |),
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "*const") [] [ T ],
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
                                 "add",
                                 []
                               |),
@@ -1717,7 +1882,772 @@ Module vec.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn fold<B, F>(mut self, mut accum: B, mut f: F) -> B
+          where
+              F: FnMut(B, Self::Item) -> B,
+          {
+              if T::IS_ZST {
+                  while self.ptr.as_ptr() != self.end.cast_mut() {
+                      // SAFETY: we just checked that `self.ptr` is in bounds.
+                      let tmp = unsafe { self.ptr.read() };
+                      // See `next` for why we subtract from `end` here.
+                      self.end = self.end.wrapping_byte_sub(1);
+                      accum = f(accum, tmp);
+                  }
+              } else {
+                  // SAFETY: `self.end` can only be null if `T` is a ZST.
+                  while self.ptr != non_null!(self.end, T) {
+                      // SAFETY: we just checked that `self.ptr` is in bounds.
+                      let tmp = unsafe { self.ptr.read() };
+                      // SAFETY: the maximum this can be is `self.end`.
+                      // Increment `self.ptr` first to avoid double dropping in the event of a panic.
+                      self.ptr = unsafe { self.ptr.add(1) };
+                      accum = f(accum, tmp);
+                  }
+              }
+              accum
+          }
+      *)
+      Definition fold (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T A in
+        match ε, τ, α with
+        | [], [ B; F ], [ self; accum; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let accum := M.alloc (| accum |) in
+            let f := M.alloc (| f |) in
+            M.read (|
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.loop (|
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          BinOp.ne (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ T ],
+                                                "as_ptr",
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    self,
+                                                    "alloc::vec::into_iter::IntoIter",
+                                                    "ptr"
+                                                  |)
+                                                |)
+                                              ]
+                                            |),
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "*const") [] [ T ],
+                                                "cast_mut",
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    self,
+                                                    "alloc::vec::into_iter::IntoIter",
+                                                    "end"
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          |)
+                                        |)) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    let~ tmp :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ T ],
+                                            "read",
+                                            []
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "alloc::vec::into_iter::IntoIter",
+                                                "ptr"
+                                              |)
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "alloc::vec::into_iter::IntoIter",
+                                          "end"
+                                        |),
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "*const") [] [ T ],
+                                            "wrapping_byte_sub",
+                                            []
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "alloc::vec::into_iter::IntoIter",
+                                                "end"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.Usize 1
+                                          ]
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.write (|
+                                        accum,
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::function::FnMut",
+                                            F,
+                                            [ Ty.tuple [ B; T ] ],
+                                            "call_mut",
+                                            []
+                                          |),
+                                          [ f; Value.Tuple [ M.read (| accum |); M.read (| tmp |) ]
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          let~ _ :=
+                                            M.alloc (|
+                                              M.never_to_any (| M.read (| M.break (||) |) |)
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |)
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.loop (|
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::cmp::PartialEq",
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [ T ],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ T ]
+                                              ],
+                                              "ne",
+                                              []
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "alloc::vec::into_iter::IntoIter",
+                                                "ptr"
+                                              |);
+                                              M.rust_cast
+                                                (M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "alloc::vec::into_iter::IntoIter",
+                                                  "end"
+                                                |))
+                                            ]
+                                          |)
+                                        |)) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    let~ tmp :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ T ],
+                                            "read",
+                                            []
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "alloc::vec::into_iter::IntoIter",
+                                                "ptr"
+                                              |)
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "alloc::vec::into_iter::IntoIter",
+                                          "ptr"
+                                        |),
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ T ],
+                                            "add",
+                                            []
+                                          |),
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "alloc::vec::into_iter::IntoIter",
+                                                "ptr"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.Usize 1
+                                          ]
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.write (|
+                                        accum,
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::function::FnMut",
+                                            F,
+                                            [ Ty.tuple [ B; T ] ],
+                                            "call_mut",
+                                            []
+                                          |),
+                                          [ f; Value.Tuple [ M.read (| accum |); M.read (| tmp |) ]
+                                          ]
+                                        |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          let~ _ :=
+                                            M.alloc (|
+                                              M.never_to_any (| M.read (| M.break (||) |) |)
+                                            |) in
+                                          M.alloc (| Value.Tuple [] |)
+                                        |)
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        |)))
+                  ]
+                |) in
+              accum
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn try_fold<B, F, R>(&mut self, mut accum: B, mut f: F) -> R
+          where
+              Self: Sized,
+              F: FnMut(B, Self::Item) -> R,
+              R: core::ops::Try<Output = B>,
+          {
+              if T::IS_ZST {
+                  while self.ptr.as_ptr() != self.end.cast_mut() {
+                      // SAFETY: we just checked that `self.ptr` is in bounds.
+                      let tmp = unsafe { self.ptr.read() };
+                      // See `next` for why we subtract from `end` here.
+                      self.end = self.end.wrapping_byte_sub(1);
+                      accum = f(accum, tmp)?;
+                  }
+              } else {
+                  // SAFETY: `self.end` can only be null if `T` is a ZST.
+                  while self.ptr != non_null!(self.end, T) {
+                      // SAFETY: we just checked that `self.ptr` is in bounds.
+                      let tmp = unsafe { self.ptr.read() };
+                      // SAFETY: the maximum this can be is `self.end`.
+                      // Increment `self.ptr` first to avoid double dropping in the event of a panic.
+                      self.ptr = unsafe { self.ptr.add(1) };
+                      accum = f(accum, tmp)?;
+                  }
+              }
+              R::from_output(accum)
+          }
+      *)
+      Definition try_fold (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T A in
+        match ε, τ, α with
+        | [], [ B; F; R ], [ self; accum; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let accum := M.alloc (| accum |) in
+            let f := M.alloc (| f |) in
+            M.catch_return (|
+              ltac:(M.monadic
+                (M.read (|
+                  let~ _ :=
+                    M.match_operator (|
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.loop (|
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              BinOp.ne (|
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "core::ptr::non_null::NonNull")
+                                                      []
+                                                      [ T ],
+                                                    "as_ptr",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "alloc::vec::into_iter::IntoIter",
+                                                        "ptr"
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |),
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "*const") [] [ T ],
+                                                    "cast_mut",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "alloc::vec::into_iter::IntoIter",
+                                                        "end"
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ tmp :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ T ],
+                                                "read",
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::vec::into_iter::IntoIter",
+                                                    "ptr"
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          |) in
+                                        let~ _ :=
+                                          M.write (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "alloc::vec::into_iter::IntoIter",
+                                              "end"
+                                            |),
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "*const") [] [ T ],
+                                                "wrapping_byte_sub",
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::vec::into_iter::IntoIter",
+                                                    "end"
+                                                  |)
+                                                |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
+                                            |)
+                                          |) in
+                                        let~ _ :=
+                                          M.write (|
+                                            accum,
+                                            M.read (|
+                                              M.match_operator (|
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::try_trait::Try",
+                                                      R,
+                                                      [],
+                                                      "branch",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::function::FnMut",
+                                                          F,
+                                                          [ Ty.tuple [ B; T ] ],
+                                                          "call_mut",
+                                                          []
+                                                        |),
+                                                        [
+                                                          f;
+                                                          Value.Tuple
+                                                            [ M.read (| accum |); M.read (| tmp |) ]
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::ops::control_flow::ControlFlow::Break",
+                                                          0
+                                                        |) in
+                                                      let residual := M.copy (| γ0_0 |) in
+                                                      M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.read (|
+                                                            M.return_ (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::try_trait::FromResidual",
+                                                                  R,
+                                                                  [ Ty.associated ],
+                                                                  "from_residual",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| residual |) ]
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::ops::control_flow::ControlFlow::Continue",
+                                                          0
+                                                        |) in
+                                                      let val := M.copy (| γ0_0 |) in
+                                                      val))
+                                                ]
+                                              |)
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              let~ _ :=
+                                                M.alloc (|
+                                                  M.never_to_any (| M.read (| M.break (||) |) |)
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)
+                                            |)
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.loop (|
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::cmp::PartialEq",
+                                                  Ty.apply
+                                                    (Ty.path "core::ptr::non_null::NonNull")
+                                                    []
+                                                    [ T ],
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::ptr::non_null::NonNull")
+                                                      []
+                                                      [ T ]
+                                                  ],
+                                                  "ne",
+                                                  []
+                                                |),
+                                                [
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::vec::into_iter::IntoIter",
+                                                    "ptr"
+                                                  |);
+                                                  M.rust_cast
+                                                    (M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::vec::into_iter::IntoIter",
+                                                      "end"
+                                                    |))
+                                                ]
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ tmp :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ T ],
+                                                "read",
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::vec::into_iter::IntoIter",
+                                                    "ptr"
+                                                  |)
+                                                |)
+                                              ]
+                                            |)
+                                          |) in
+                                        let~ _ :=
+                                          M.write (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "alloc::vec::into_iter::IntoIter",
+                                              "ptr"
+                                            |),
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ T ],
+                                                "add",
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::vec::into_iter::IntoIter",
+                                                    "ptr"
+                                                  |)
+                                                |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
+                                            |)
+                                          |) in
+                                        let~ _ :=
+                                          M.write (|
+                                            accum,
+                                            M.read (|
+                                              M.match_operator (|
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "core::ops::try_trait::Try",
+                                                      R,
+                                                      [],
+                                                      "branch",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::function::FnMut",
+                                                          F,
+                                                          [ Ty.tuple [ B; T ] ],
+                                                          "call_mut",
+                                                          []
+                                                        |),
+                                                        [
+                                                          f;
+                                                          Value.Tuple
+                                                            [ M.read (| accum |); M.read (| tmp |) ]
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::ops::control_flow::ControlFlow::Break",
+                                                          0
+                                                        |) in
+                                                      let residual := M.copy (| γ0_0 |) in
+                                                      M.alloc (|
+                                                        M.never_to_any (|
+                                                          M.read (|
+                                                            M.return_ (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "core::ops::try_trait::FromResidual",
+                                                                  R,
+                                                                  [ Ty.associated ],
+                                                                  "from_residual",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| residual |) ]
+                                                              |)
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::ops::control_flow::ControlFlow::Continue",
+                                                          0
+                                                        |) in
+                                                      let val := M.copy (| γ0_0 |) in
+                                                      val))
+                                                ]
+                                              |)
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              let~ _ :=
+                                                M.alloc (|
+                                                  M.never_to_any (| M.read (| M.break (||) |) |)
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)
+                                            |)
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            |)))
+                      ]
+                    |) in
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::try_trait::Try",
+                        R,
+                        [],
+                        "from_output",
+                        []
+                      |),
+                      [ M.read (| accum |) ]
+                    |)
+                  |)
+                |)))
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1733,7 +2663,7 @@ Module vec.
               // Also note the implementation of `Self: TrustedRandomAccess` requires
               // that `T: Copy` so reading elements from the buffer doesn't invalidate
               // them for `Drop`.
-              unsafe { if T::IS_ZST { mem::zeroed() } else { ptr::read(self.ptr.add(i)) } }
+              unsafe { self.ptr.add(i).read() }
           }
       *)
       Definition __iterator_get_unchecked
@@ -1748,48 +2678,33 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let i := M.alloc (| i |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        M.call_closure (| M.get_function (| "core::mem::zeroed", [ T ] |), [] |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_function (| "core::ptr::read", [ T ] |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "*const") [] [ T ],
-                                "add",
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::vec::into_iter::IntoIter",
-                                    "ptr"
-                                  |)
-                                |);
-                                M.read (| i |)
-                              ]
-                            |)
-                          ]
-                        |)
-                      |)))
-                ]
-              |)
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                "read",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    "add",
+                    []
+                  |),
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::vec::into_iter::IntoIter",
+                        "ptr"
+                      |)
+                    |);
+                    M.read (| i |)
+                  ]
+                |)
+              ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1806,6 +2721,8 @@ Module vec.
             ("advance_by", InstanceField.Method (advance_by T A));
             ("count", InstanceField.Method (count T A));
             ("next_chunk", InstanceField.Method (next_chunk T A));
+            ("fold", InstanceField.Method (fold T A));
+            ("try_fold", InstanceField.Method (try_fold T A));
             ("__iterator_get_unchecked", InstanceField.Method (__iterator_get_unchecked T A))
           ].
     End Impl_core_iter_traits_iterator_Iterator_where_core_alloc_Allocator_A_for_alloc_vec_into_iter_IntoIter_T_A.
@@ -1816,18 +2733,24 @@ Module vec.
       
       (*
           fn next_back(&mut self) -> Option<T> {
-              if self.end == self.ptr {
-                  None
-              } else if T::IS_ZST {
+              if T::IS_ZST {
+                  if self.ptr.as_ptr() == self.end as *mut _ {
+                      return None;
+                  }
                   // See above for why 'ptr.offset' isn't used
                   self.end = self.end.wrapping_byte_sub(1);
-      
-                  // Make up a value of this ZST.
-                  Some(unsafe { mem::zeroed() })
+                  // Note that even though this is next_back() we're reading from `self.ptr`, not
+                  // `self.end`. We track our length using the byte offset from `self.ptr` to `self.end`,
+                  // so the end pointer may not be suitably aligned for T.
+                  Some(unsafe { ptr::read(self.ptr.as_ptr()) })
               } else {
-                  self.end = unsafe { self.end.sub(1) };
-      
-                  Some(unsafe { ptr::read(self.end) })
+                  if self.ptr == non_null!(self.end, T) {
+                      return None;
+                  }
+                  unsafe {
+                      self.end = self.end.sub(1);
+                      Some(ptr::read(self.end))
+                  }
               }
           }
       *)
@@ -1837,138 +2760,242 @@ Module vec.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::vec::into_iter::IntoIter",
-                                  "end"
-                                |)
-                              |))
-                              (M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::vec::into_iter::IntoIter",
-                                  "ptr"
-                                |)
-                              |))
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.match_operator (|
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              let~ _ :=
-                                M.write (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::vec::into_iter::IntoIter",
-                                    "end"
-                                  |),
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "*const") [] [ T ],
-                                      "wrapping_byte_sub",
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "alloc::vec::into_iter::IntoIter",
-                                          "end"
-                                        |)
-                                      |);
-                                      Value.Integer 1
-                                    ]
-                                  |)
-                                |) in
-                              M.alloc (|
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [
-                                    M.call_closure (|
-                                      M.get_function (| "core::mem::zeroed", [ T ] |),
-                                      []
-                                    |)
-                                  ]
-                              |)));
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let~ _ :=
-                                M.write (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::vec::into_iter::IntoIter",
-                                    "end"
-                                  |),
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "*const") [] [ T ],
-                                      "sub",
-                                      []
-                                    |),
-                                    [
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "alloc::vec::into_iter::IntoIter",
-                                          "end"
-                                        |)
-                                      |);
-                                      Value.Integer 1
-                                    ]
-                                  |)
-                                |) in
-                              M.alloc (|
-                                Value.StructTuple
-                                  "core::option::Option::Some"
-                                  [
-                                    M.call_closure (|
-                                      M.get_function (| "core::ptr::read", [ T ] |),
-                                      [
+            M.catch_return (|
+              ltac:(M.monadic
+                (M.read (|
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ :=
+                            M.match_operator (|
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          BinOp.eq (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ T ],
+                                                "as_ptr",
+                                                []
+                                              |),
+                                              [
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| self |),
+                                                    "alloc::vec::into_iter::IntoIter",
+                                                    "ptr"
+                                                  |)
+                                                |)
+                                              ]
+                                            |),
+                                            M.rust_cast
+                                              (M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::vec::into_iter::IntoIter",
+                                                  "end"
+                                                |)
+                                              |))
+                                          |)
+                                        |)) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
                                         M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "alloc::vec::into_iter::IntoIter",
-                                            "end"
+                                          M.return_ (|
+                                            Value.StructTuple "core::option::Option::None" []
                                           |)
                                         |)
-                                      ]
+                                      |)
+                                    |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              ]
+                            |) in
+                          let~ _ :=
+                            M.write (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::vec::into_iter::IntoIter",
+                                "end"
+                              |),
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                  "wrapping_byte_sub",
+                                  []
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::vec::into_iter::IntoIter",
+                                      "end"
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.Usize 1
+                                ]
+                              |)
+                            |) in
+                          M.alloc (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [
+                                M.call_closure (|
+                                  M.get_function (| "core::ptr::read", [ T ] |),
+                                  [
+                                    (* MutToConstPointer *)
+                                    M.pointer_coercion
+                                      (M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::ptr::non_null::NonNull")
+                                            []
+                                            [ T ],
+                                          "as_ptr",
+                                          []
+                                        |),
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "alloc::vec::into_iter::IntoIter",
+                                              "ptr"
+                                            |)
+                                          |)
+                                        ]
+                                      |))
+                                  ]
+                                |)
+                              ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let~ _ :=
+                            M.match_operator (|
+                              M.alloc (| Value.Tuple [] |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ :=
+                                      M.use
+                                        (M.alloc (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::cmp::PartialEq",
+                                              Ty.apply
+                                                (Ty.path "core::ptr::non_null::NonNull")
+                                                []
+                                                [ T ],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [ T ]
+                                              ],
+                                              "eq",
+                                              []
+                                            |),
+                                            [
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.read (| self |),
+                                                "alloc::vec::into_iter::IntoIter",
+                                                "ptr"
+                                              |);
+                                              M.rust_cast
+                                                (M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::vec::into_iter::IntoIter",
+                                                  "end"
+                                                |))
+                                            ]
+                                          |)
+                                        |)) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                        M.read (| γ |),
+                                        Value.Bool true
+                                      |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            Value.StructTuple "core::option::Option::None" []
+                                          |)
+                                        |)
+                                      |)
+                                    |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                              ]
+                            |) in
+                          let~ _ :=
+                            M.write (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::vec::into_iter::IntoIter",
+                                "end"
+                              |),
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "*const") [] [ T ],
+                                  "sub",
+                                  []
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "alloc::vec::into_iter::IntoIter",
+                                      "end"
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.Usize 1
+                                ]
+                              |)
+                            |) in
+                          M.alloc (|
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [
+                                M.call_closure (|
+                                  M.get_function (| "core::ptr::read", [ T ] |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "alloc::vec::into_iter::IntoIter",
+                                        "end"
+                                      |)
                                     |)
                                   ]
-                              |)))
-                        ]
-                      |)))
-                ]
-              |)
+                                |)
+                              ]
+                          |)))
+                    ]
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               let step_size = self.len().min(n);
               if T::IS_ZST {
                   // SAFETY: same as for advance_by()
@@ -1982,7 +3009,7 @@ Module vec.
               unsafe {
                   ptr::drop_in_place(to_drop);
               }
-              NonZeroUsize::new(n - step_size).map_or(Ok(()), Err)
+              NonZero::new(n - step_size).map_or(Ok(()), Err)
           }
       *)
       Definition advance_back_by
@@ -2121,29 +3148,35 @@ Module vec.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
-                      [ BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| step_size |)) ]
+                      [ BinOp.Wrap.sub (| M.read (| n |), M.read (| step_size |) |) ]
                     |);
                     Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                     M.constructor_as_closure "core::result::Result::Err"
@@ -2151,7 +3184,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2173,7 +3206,11 @@ Module vec.
       
       (*
           fn is_empty(&self) -> bool {
-              self.ptr == self.end
+              if T::IS_ZST {
+                  self.ptr.as_ptr() == self.end as *mut _
+              } else {
+                  self.ptr == non_null!(self.end, T)
+              }
           }
       *)
       Definition is_empty (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2182,22 +3219,73 @@ Module vec.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::into_iter::IntoIter",
-                  "ptr"
-                |)
-              |))
-              (M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "alloc::vec::into_iter::IntoIter",
-                  "end"
-                |)
-              |))))
-        | _, _, _ => M.impossible
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use (M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        BinOp.eq (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              "as_ptr",
+                              []
+                            |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::vec::into_iter::IntoIter",
+                                  "ptr"
+                                |)
+                              |)
+                            ]
+                          |),
+                          M.rust_cast
+                            (M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::vec::into_iter::IntoIter",
+                                "end"
+                              |)
+                            |))
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::cmp::PartialEq",
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
+                            "eq",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "alloc::vec::into_iter::IntoIter",
+                              "ptr"
+                            |);
+                            M.rust_cast
+                              (M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::vec::into_iter::IntoIter",
+                                "end"
+                              |))
+                          ]
+                        |)
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2286,7 +3374,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2398,7 +3486,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2424,7 +3512,7 @@ Module vec.
                           // `IntoIter::alloc` is not used anymore after this and will be dropped by RawVec
                           let alloc = ManuallyDrop::take(&mut self.0.alloc);
                           // RawVec handles deallocation
-                          let _ = RawVec::from_raw_parts_in(self.0.buf.as_ptr(), self.0.cap, alloc);
+                          let _ = RawVec::from_nonnull_in(self.0.buf, self.0.cap, alloc);
                       }
                   }
               }
@@ -2477,7 +3565,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2493,11 +3581,11 @@ Module vec.
       Definition Self (T A : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "alloc::vec::into_iter::IntoIter") [] [ T; A ].
       
-      (*     const EXPAND_BY: Option<NonZeroUsize> = NonZeroUsize::new(1); *)
+      (*     const EXPAND_BY: Option<NonZero<usize>> = NonZero::new(1); *)
       (* Ty.apply
         (Ty.path "core::option::Option")
         []
-        [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
       Definition value_EXPAND_BY (T A : Ty.t) : Value.t :=
         let Self : Ty.t := Self T A in
         M.run
@@ -2505,19 +3593,19 @@ Module vec.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.path "core::num::nonzero::NonZeroUsize",
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   "new",
                   []
                 |),
-                [ Value.Integer 1 ]
+                [ Value.Integer IntegerKind.Usize 1 ]
               |)
             |))).
       
-      (*     const MERGE_BY: Option<NonZeroUsize> = NonZeroUsize::new(1); *)
+      (*     const MERGE_BY: Option<NonZero<usize>> = NonZero::new(1); *)
       (* Ty.apply
         (Ty.path "core::option::Option")
         []
-        [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
       Definition value_MERGE_BY (T A : Ty.t) : Value.t :=
         let Self : Ty.t := Self T A in
         M.run
@@ -2525,11 +3613,11 @@ Module vec.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.path "core::num::nonzero::NonZeroUsize",
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                   "new",
                   []
                 |),
-                [ Value.Integer 1 ]
+                [ Value.Integer IntegerKind.Usize 1 ]
               |)
             |))).
       
@@ -2566,7 +3654,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| self |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2609,7 +3697,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| self |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

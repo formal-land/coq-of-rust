@@ -24,7 +24,10 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
             fun γ =>
               ltac:(M.monadic
                 (let γ :=
-                  M.use (M.alloc (| BinOp.Pure.eq (M.read (| divisor |)) (Value.Integer 0) |)) in
+                  M.use
+                    (M.alloc (|
+                      BinOp.eq (| M.read (| divisor |), Value.Integer IntegerKind.I32 0 |)
+                    |)) in
                 let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (|
                   M.never_to_any (|
@@ -39,13 +42,11 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 |)));
             fun γ =>
               ltac:(M.monadic
-                (M.alloc (|
-                  BinOp.Wrap.div Integer.I32 (M.read (| dividend |)) (M.read (| divisor |))
-                |)))
+                (M.alloc (| BinOp.Wrap.div (| M.read (| dividend |), M.read (| divisor |) |) |)))
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_division : M.IsFunction "panic::division" division.
@@ -79,14 +80,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 "new",
                 []
               |),
-              [ Value.Integer 0 ]
+              [ Value.Integer IntegerKind.I32 0 ]
             |)
           |) in
         let~ _ :=
           M.alloc (|
             M.call_closure (|
               M.get_function (| "panic::division", [] |),
-              [ Value.Integer 3; Value.Integer 0 ]
+              [ Value.Integer IntegerKind.I32 3; Value.Integer IntegerKind.I32 0 ]
             |)
           |) in
         let~ _ :=
@@ -98,12 +99,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "This point won't be reached!
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "This point won't be reached!
 " |) ]
-                        |))
+                      |)
                     ]
                   |)
                 ]
@@ -112,7 +111,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "panic::main" main.

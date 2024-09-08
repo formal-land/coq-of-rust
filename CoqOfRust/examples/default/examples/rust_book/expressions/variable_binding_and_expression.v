@@ -17,13 +17,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x := M.alloc (| Value.Integer 5 |) in
+        let~ x := M.alloc (| Value.Integer IntegerKind.I32 5 |) in
         let~ _ := x in
-        let~ _ := M.alloc (| BinOp.Wrap.add Integer.I32 (M.read (| x |)) (Value.Integer 1) |) in
-        let~ _ := M.alloc (| Value.Integer 15 |) in
+        let~ _ :=
+          M.alloc (| BinOp.Wrap.add (| M.read (| x |), Value.Integer IntegerKind.I32 1 |) |) in
+        let~ _ := M.alloc (| Value.Integer IntegerKind.I32 15 |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "variable_binding_and_expression::main" main.

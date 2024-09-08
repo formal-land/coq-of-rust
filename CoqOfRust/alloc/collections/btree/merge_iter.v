@@ -112,7 +112,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -157,11 +157,7 @@ Module collections.
                               "debug_tuple_field1_finish",
                               []
                             |),
-                            [
-                              M.read (| f |);
-                              M.read (| Value.String "A" |);
-                              (* Unsize *) M.pointer_coercion __self_0
-                            ]
+                            [ M.read (| f |); M.read (| Value.String "A" |); __self_0 ]
                           |)
                         |)));
                     fun γ =>
@@ -181,17 +177,13 @@ Module collections.
                               "debug_tuple_field1_finish",
                               []
                             |),
-                            [
-                              M.read (| f |);
-                              M.read (| Value.String "B" |);
-                              (* Unsize *) M.pointer_coercion __self_0
-                            ]
+                            [ M.read (| f |); M.read (| Value.String "B" |); __self_0 ]
                           |)
                         |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -269,7 +261,7 @@ Module collections.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -335,36 +327,30 @@ Module collections.
                                   [ M.read (| f |); M.read (| Value.String "MergeIterInner" |) ]
                                 |)
                               |);
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "alloc::collections::btree::merge_iter::MergeIterInner",
-                                  "a"
-                                |))
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::btree::merge_iter::MergeIterInner",
+                                "a"
+                              |)
                             ]
                           |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::btree::merge_iter::MergeIterInner",
-                              "b"
-                            |))
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::collections::btree::merge_iter::MergeIterInner",
+                            "b"
+                          |)
                         ]
                       |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::collections::btree::merge_iter::MergeIterInner",
-                          "peeked"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "alloc::collections::btree::merge_iter::MergeIterInner",
+                        "peeked"
+                      |)
                     ]
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -399,7 +385,7 @@ Module collections.
                   ("b", M.read (| b |));
                   ("peeked", Value.StructTuple "core::option::Option::None" [])
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -760,7 +746,7 @@ Module collections.
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| a_next |); M.read (| b_next |) ] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_nexts :
@@ -810,10 +796,9 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (Value.Integer 1)
-                                (M.call_closure (|
+                              BinOp.Wrap.add (|
+                                Value.Integer IntegerKind.Usize 1,
+                                M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     I,
@@ -828,7 +813,8 @@ Module collections.
                                       "a"
                                     |)
                                   ]
-                                |));
+                                |)
+                              |);
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
@@ -880,10 +866,9 @@ Module collections.
                                   |)
                                 ]
                               |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (Value.Integer 1)
-                                (M.call_closure (|
+                              BinOp.Wrap.add (|
+                                Value.Integer IntegerKind.Usize 1,
+                                M.call_closure (|
                                   M.get_trait_method (|
                                     "core::iter::traits::exact_size::ExactSizeIterator",
                                     I,
@@ -898,7 +883,8 @@ Module collections.
                                       "b"
                                     |)
                                   ]
-                                |))
+                                |)
+                              |)
                             ]
                         |)));
                     fun γ =>
@@ -943,7 +929,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_lens :

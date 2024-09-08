@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Module interpreter.
   Module analysis.
     Definition value_EOF_NON_RETURNING_FUNCTION : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 128 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 128 |))).
     
     (*
     pub fn to_analysed(bytecode: Bytecode) -> Bytecode {
@@ -77,7 +77,11 @@ Module interpreter.
                                   "with_capacity",
                                   []
                                 |),
-                                [ BinOp.Wrap.add Integer.Usize (M.read (| len |)) (Value.Integer 33)
+                                [
+                                  BinOp.Wrap.add (|
+                                    M.read (| len |),
+                                    Value.Integer IntegerKind.Usize 33
+                                  |)
                                 ]
                               |)
                             |) in
@@ -131,11 +135,11 @@ Module interpreter.
                                 |),
                                 [
                                   padded_bytecode;
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| len |))
-                                    (Value.Integer 33);
-                                  Value.Integer 0
+                                  BinOp.Wrap.add (|
+                                    M.read (| len |),
+                                    Value.Integer IntegerKind.Usize 33
+                                  |);
+                                  Value.Integer IntegerKind.U8 0
                                 ]
                               |)
                             |) in
@@ -215,7 +219,7 @@ Module interpreter.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_to_analysed :
@@ -268,7 +272,7 @@ Module interpreter.
                     []
                   |),
                   [
-                    BinOp.Pure.ne (Value.Integer 0) (Value.Integer 0);
+                    BinOp.ne (| Value.Integer IntegerKind.I32 0, Value.Integer IntegerKind.I32 0 |);
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -311,7 +315,7 @@ Module interpreter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt (M.read (| iterator |)) (M.read (| end_ |))
+                                BinOp.lt (| M.read (| iterator |), M.read (| end_ |) |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -324,13 +328,14 @@ Module interpreter.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.eq
-                                          (M.read (|
+                                        BinOp.eq (|
+                                          M.read (|
                                             M.get_constant (|
                                               "revm_interpreter::opcode::JUMPDEST"
                                             |)
-                                          |))
-                                          (M.read (| opcode |))
+                                          |),
+                                          M.read (| opcode |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -384,7 +389,7 @@ Module interpreter.
                                           "offset",
                                           []
                                         |),
-                                        [ M.read (| iterator |); Value.Integer 1 ]
+                                        [ M.read (| iterator |); Value.Integer IntegerKind.Isize 1 ]
                                       |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
@@ -414,9 +419,10 @@ Module interpreter.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.lt
-                                                  (M.read (| push_offset |))
-                                                  (Value.Integer 32)
+                                                BinOp.lt (|
+                                                  M.read (| push_offset |),
+                                                  Value.Integer IntegerKind.U8 32
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -435,10 +441,10 @@ Module interpreter.
                                                 [
                                                   M.read (| iterator |);
                                                   M.rust_cast
-                                                    (BinOp.Wrap.add
-                                                      Integer.U8
-                                                      (M.read (| push_offset |))
-                                                      (Value.Integer 2))
+                                                    (BinOp.Wrap.add (|
+                                                      M.read (| push_offset |),
+                                                      Value.Integer IntegerKind.U8 2
+                                                    |))
                                                 ]
                                               |)
                                             |) in
@@ -454,7 +460,10 @@ Module interpreter.
                                                   "offset",
                                                   []
                                                 |),
-                                                [ M.read (| iterator |); Value.Integer 1 ]
+                                                [
+                                                  M.read (| iterator |);
+                                                  Value.Integer IntegerKind.Isize 1
+                                                ]
                                               |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)))
@@ -500,7 +509,7 @@ Module interpreter.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_analyze :
@@ -695,7 +704,7 @@ Module interpreter.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| eof |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_validate_raw_eof :
@@ -739,43 +748,41 @@ Module interpreter.
                         [ Ty.path "alloc::alloc::Global" ]
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.read (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer 1 ]
-                                      [ Ty.path "revm_primitives::bytecode::eof::Eof" ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                "new",
+                        M.read (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
                                 []
-                              |),
-                              [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::clone::Clone",
-                                          Ty.path "revm_primitives::bytecode::eof::Eof",
-                                          [],
-                                          "clone",
-                                          []
-                                        |),
-                                        [ M.read (| eof |) ]
-                                      |)
-                                    ]
-                                |)
-                              ]
-                            |)
-                          |))
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "revm_primitives::bytecode::eof::Eof" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "new",
+                              []
+                            |),
+                            [
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::clone::Clone",
+                                        Ty.path "revm_primitives::bytecode::eof::Eof",
+                                        [],
+                                        "clone",
+                                        []
+                                      |),
+                                      [ M.read (| eof |) ]
+                                    |)
+                                  ]
+                              |)
+                            ]
+                          |)
+                        |)
                       ]
                     |)
                   |) in
@@ -1121,7 +1128,7 @@ Module interpreter.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_validate_eof :
@@ -1226,8 +1233,8 @@ Module interpreter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ne
-                                  (M.call_closure (|
+                                BinOp.ne (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -1250,8 +1257,8 @@ Module interpreter.
                                         "code_section"
                                       |)
                                     ]
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -1275,7 +1282,8 @@ Module interpreter.
                                         "types_section"
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1364,7 +1372,7 @@ Module interpreter.
                         "index_mut",
                         []
                       |),
-                      [ queued_codes; Value.Integer 0 ]
+                      [ queued_codes; Value.Integer IntegerKind.Usize 0 ]
                     |),
                     Value.Bool true
                   |) in
@@ -1394,7 +1402,7 @@ Module interpreter.
                           "revm_primitives::bytecode::eof::body::EofBody",
                           "types_section"
                         |);
-                        Value.Integer 0
+                        Value.Integer IntegerKind.Usize 0
                       ]
                     |)
                   |) in
@@ -1408,29 +1416,31 @@ Module interpreter.
                             M.use
                               (M.alloc (|
                                 LogicalOp.or (|
-                                  BinOp.Pure.ne
-                                    (M.read (|
+                                  BinOp.ne (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| first_types |),
                                         "revm_primitives::bytecode::eof::types_section::TypesSection",
                                         "inputs"
                                       |)
-                                    |))
-                                    (Value.Integer 0),
+                                    |),
+                                    Value.Integer IntegerKind.U8 0
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.ne
-                                      (M.read (|
+                                    (BinOp.ne (|
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| first_types |),
                                           "revm_primitives::bytecode::eof::types_section::TypesSection",
                                           "outputs"
                                         |)
-                                      |))
-                                      (M.read (|
+                                      |),
+                                      M.read (|
                                         M.get_constant (|
                                           "revm_interpreter::interpreter::analysis::EOF_NON_RETURNING_FUNCTION"
                                         |)
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -1462,27 +1472,25 @@ Module interpreter.
                         [ Ty.path "alloc::alloc::Global" ]
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.read (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer 1 ]
-                                      [ Ty.path "usize" ];
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                "new",
+                        M.read (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
                                 []
-                              |),
-                              [ M.alloc (| Value.Array [ Value.Integer 0 ] |) ]
-                            |)
-                          |))
+                                [
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 1 ]
+                                    [ Ty.path "usize" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              "new",
+                              []
+                            |),
+                            [ M.alloc (| Value.Array [ Value.Integer IntegerKind.Usize 0 ] |) ]
+                          |)
+                        |)
                       ]
                     |)
                   |) in
@@ -1759,103 +1767,107 @@ Module interpreter.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let i := M.copy (| γ |) in
-                                                      M.read (|
-                                                        M.match_operator (|
-                                                          M.alloc (| Value.Tuple [] |),
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (let γ :=
-                                                                  M.use
-                                                                    (M.alloc (|
-                                                                      UnOp.Pure.not
-                                                                        (M.read (|
-                                                                          M.call_closure (|
-                                                                            M.get_trait_method (|
-                                                                              "core::ops::index::Index",
-                                                                              Ty.apply
-                                                                                (Ty.path
-                                                                                  "alloc::vec::Vec")
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let i := M.copy (| γ |) in
+                                                        M.read (|
+                                                          M.match_operator (|
+                                                            M.alloc (| Value.Tuple [] |),
+                                                            [
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (let γ :=
+                                                                    M.use
+                                                                      (M.alloc (|
+                                                                        UnOp.not (|
+                                                                          M.read (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::index::Index",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "alloc::vec::Vec")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.path "bool";
+                                                                                    Ty.path
+                                                                                      "alloc::alloc::Global"
+                                                                                  ],
+                                                                                [ Ty.path "usize" ],
+                                                                                "index",
                                                                                 []
-                                                                                [
-                                                                                  Ty.path "bool";
-                                                                                  Ty.path
-                                                                                    "alloc::alloc::Global"
-                                                                                ],
-                                                                              [ Ty.path "usize" ],
-                                                                              "index",
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              queued_codes;
-                                                                              M.read (| i |)
-                                                                            ]
+                                                                              |),
+                                                                              [
+                                                                                queued_codes;
+                                                                                M.read (| i |)
+                                                                              ]
+                                                                            |)
                                                                           |)
-                                                                        |))
-                                                                    |)) in
-                                                                let _ :=
-                                                                  M.is_constant_or_break_match (|
-                                                                    M.read (| γ |),
-                                                                    Value.Bool true
-                                                                  |) in
-                                                                let~ _ :=
-                                                                  M.write (|
-                                                                    M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::index::IndexMut",
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "alloc::vec::Vec")
+                                                                        |)
+                                                                      |)) in
+                                                                  let _ :=
+                                                                    M.is_constant_or_break_match (|
+                                                                      M.read (| γ |),
+                                                                      Value.Bool true
+                                                                    |) in
+                                                                  let~ _ :=
+                                                                    M.write (|
+                                                                      M.call_closure (|
+                                                                        M.get_trait_method (|
+                                                                          "core::ops::index::IndexMut",
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path "bool";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          [ Ty.path "usize" ],
+                                                                          "index_mut",
                                                                           []
-                                                                          [
-                                                                            Ty.path "bool";
-                                                                            Ty.path
-                                                                              "alloc::alloc::Global"
-                                                                          ],
-                                                                        [ Ty.path "usize" ],
-                                                                        "index_mut",
-                                                                        []
+                                                                        |),
+                                                                        [
+                                                                          queued_codes;
+                                                                          M.read (| i |)
+                                                                        ]
                                                                       |),
-                                                                      [ queued_codes; M.read (| i |)
-                                                                      ]
-                                                                    |),
-                                                                    Value.Bool true
-                                                                  |) in
-                                                                let~ _ :=
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "alloc::vec::Vec")
+                                                                      Value.Bool true
+                                                                    |) in
+                                                                  let~ _ :=
+                                                                    M.alloc (|
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "alloc::vec::Vec")
+                                                                            []
+                                                                            [
+                                                                              Ty.path "usize";
+                                                                              Ty.path
+                                                                                "alloc::alloc::Global"
+                                                                            ],
+                                                                          "push",
                                                                           []
-                                                                          [
-                                                                            Ty.path "usize";
-                                                                            Ty.path
-                                                                              "alloc::alloc::Global"
-                                                                          ],
-                                                                        "push",
-                                                                        []
-                                                                      |),
-                                                                      [ queue; M.read (| i |) ]
-                                                                    |)
-                                                                  |) in
-                                                                M.alloc (| Value.Tuple [] |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (| Value.Tuple [] |)))
-                                                          ]
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                                                        |),
+                                                                        [ queue; M.read (| i |) ]
+                                                                      |)
+                                                                    |) in
+                                                                  M.alloc (| Value.Tuple [] |)));
+                                                              fun γ =>
+                                                                ltac:(M.monadic
+                                                                  (M.alloc (| Value.Tuple [] |)))
+                                                            ]
+                                                          |)
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |)
@@ -1918,16 +1930,17 @@ Module interpreter.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let x := M.copy (| γ |) in
-                                                    UnOp.Pure.not (M.read (| x |))))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let x := M.copy (| γ |) in
+                                                      UnOp.not (| M.read (| x |) |)))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |)
@@ -1955,7 +1968,7 @@ Module interpreter.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_validate_eof_codes :
@@ -2014,11 +2027,7 @@ Module interpreter.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Decode" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Decode" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -2038,17 +2047,13 @@ Module interpreter.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "Validation" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "Validation" |); __self_0 ]
                         |)
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2070,7 +2075,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2090,7 +2095,7 @@ Module interpreter.
                       "hash",
                       [ __H ]
                     |),
-                    [ __self_tag; M.read (| state |) ]
+                    [ __self_discr; M.read (| state |) ]
                   |)
                 |) in
               M.match_operator (|
@@ -2143,7 +2148,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2176,7 +2181,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2186,7 +2191,7 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2198,7 +2203,7 @@ Module interpreter.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -2228,12 +2233,20 @@ Module interpreter.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "revm_primitives::bytecode::eof::EofDecodeError",
-                                    [ Ty.path "revm_primitives::bytecode::eof::EofDecodeError" ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "revm_primitives::bytecode::eof::EofDecodeError" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "revm_primitives::bytecode::eof::EofDecodeError" ]
+                                    ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -2260,16 +2273,26 @@ Module interpreter.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path
-                                      "revm_interpreter::interpreter::analysis::EofValidationError",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.path
+                                          "revm_interpreter::interpreter::analysis::EofValidationError"
+                                      ],
                                     [
-                                      Ty.path
-                                        "revm_interpreter::interpreter::analysis::EofValidationError"
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.path
+                                            "revm_interpreter::interpreter::analysis::EofValidationError"
+                                        ]
                                     ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |)
                               |)));
                           fun γ =>
@@ -2288,7 +2311,7 @@ Module interpreter.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2298,17 +2321,6 @@ Module interpreter.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_analysis_EofError.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_analysis_EofError.
-      Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::analysis::EofError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_analysis_EofError.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_analysis_EofError.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::analysis::EofError".
@@ -2336,7 +2348,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2359,7 +2371,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2369,7 +2381,7 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2458,13 +2470,13 @@ Module interpreter.
                             "partial_cmp",
                             []
                           |),
-                          [ __self_tag; __arg1_tag ]
+                          [ __self_discr; __arg1_discr ]
                         |)
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2486,7 +2498,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2496,7 +2508,7 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -2510,7 +2522,7 @@ Module interpreter.
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                    [ __self_tag; __arg1_tag ]
+                    [ __self_discr; __arg1_discr ]
                   |)
                 |),
                 [
@@ -2604,7 +2616,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2637,7 +2649,7 @@ Module interpreter.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2675,7 +2687,7 @@ Module interpreter.
             Value.StructTuple
               "revm_interpreter::interpreter::analysis::EofError::Decode"
               [ M.read (| err |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2703,7 +2715,7 @@ Module interpreter.
             Value.StructTuple
               "revm_interpreter::interpreter::analysis::EofError::Validation"
               [ M.read (| err |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3176,7 +3188,7 @@ Module interpreter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3199,7 +3211,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3212,11 +3224,11 @@ Module interpreter.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3251,7 +3263,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3261,7 +3273,7 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3271,9 +3283,9 @@ Module interpreter.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3283,18 +3295,6 @@ Module interpreter.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_analysis_EofValidationError.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_analysis_EofValidationError.
-      Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter::analysis::EofValidationError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_analysis_EofValidationError.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_analysis_EofValidationError.
       Definition Self : Ty.t :=
@@ -3311,7 +3311,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3335,7 +3335,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3345,7 +3345,7 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3364,11 +3364,11 @@ Module interpreter.
                     "partial_cmp",
                     []
                   |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3391,7 +3391,7 @@ Module interpreter.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3401,7 +3401,7 @@ Module interpreter.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -3414,11 +3414,11 @@ Module interpreter.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3440,7 +3440,7 @@ Module interpreter.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3866,7 +3866,7 @@ Module interpreter.
                         |)
                       |))
                   |) in
-                let~ i := M.alloc (| Value.Integer 0 |) in
+                let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ _ :=
                   M.loop (|
                     ltac:(M.monadic
@@ -3878,16 +3878,17 @@ Module interpreter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt
-                                      (M.read (| i |))
-                                      (M.call_closure (|
+                                    BinOp.lt (|
+                                      M.read (| i |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| code |) ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3991,8 +3992,9 @@ Module interpreter.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      UnOp.Pure.not
-                                                        (M.read (| is_after_termination |))
+                                                      UnOp.not (|
+                                                        M.read (| is_after_termination |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -4065,14 +4067,15 @@ Module interpreter.
                                                       LogicalOp.and (|
                                                         M.read (| is_after_termination |),
                                                         ltac:(M.monadic
-                                                          (UnOp.Pure.not
-                                                            (M.read (|
+                                                          (UnOp.not (|
+                                                            M.read (|
                                                               M.SubPointer.get_struct_record_field (|
                                                                 this_instruction,
                                                                 "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                                 "is_jumpdest"
                                                               |)
-                                                            |))))
+                                                            |)
+                                                          |)))
                                                       |)
                                                     |)) in
                                                 let _ :=
@@ -4119,8 +4122,8 @@ Module interpreter.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.Pure.ne
-                                                        (M.call_closure (|
+                                                      BinOp.ne (|
+                                                        M.call_closure (|
                                                           M.get_associated_function (|
                                                             Ty.path
                                                               "revm_interpreter::opcode::OpCodeInfo",
@@ -4128,8 +4131,9 @@ Module interpreter.
                                                             []
                                                           |),
                                                           [ M.read (| opcode |) ]
-                                                        |))
-                                                        (Value.Integer 0)
+                                                        |),
+                                                        Value.Integer IntegerKind.U8 0
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -4145,11 +4149,10 @@ Module interpreter.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.Pure.ge
-                                                                  (BinOp.Wrap.add
-                                                                    Integer.Usize
-                                                                    (M.read (| i |))
-                                                                    (M.rust_cast
+                                                                BinOp.ge (|
+                                                                  BinOp.Wrap.add (|
+                                                                    M.read (| i |),
+                                                                    M.rust_cast
                                                                       (M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Ty.path
@@ -4158,8 +4161,9 @@ Module interpreter.
                                                                           []
                                                                         |),
                                                                         [ M.read (| opcode |) ]
-                                                                      |))))
-                                                                  (M.call_closure (|
+                                                                      |))
+                                                                  |),
+                                                                  M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "slice")
@@ -4169,7 +4173,8 @@ Module interpreter.
                                                                       []
                                                                     |),
                                                                     [ M.read (| code |) ]
-                                                                  |))
+                                                                  |)
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -4214,11 +4219,11 @@ Module interpreter.
                                                           Value.StructRecord
                                                             "core::ops::range::Range"
                                                             [
-                                                              ("start", Value.Integer 1);
+                                                              ("start",
+                                                                Value.Integer IntegerKind.Usize 1);
                                                               ("end_",
-                                                                BinOp.Wrap.add
-                                                                  Integer.Usize
-                                                                  (M.rust_cast
+                                                                BinOp.Wrap.add (|
+                                                                  M.rust_cast
                                                                     (M.call_closure (|
                                                                       M.get_associated_function (|
                                                                         Ty.path
@@ -4227,8 +4232,9 @@ Module interpreter.
                                                                         []
                                                                       |),
                                                                       [ M.read (| opcode |) ]
-                                                                    |)))
-                                                                  (Value.Integer 1))
+                                                                    |)),
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                |))
                                                             ]
                                                         ]
                                                       |)
@@ -4332,14 +4338,14 @@ Module interpreter.
                                                                                         |),
                                                                                         [
                                                                                           jumps;
-                                                                                          BinOp.Wrap.add
-                                                                                            Integer.Usize
-                                                                                            (M.read (|
+                                                                                          BinOp.Wrap.add (|
+                                                                                            M.read (|
                                                                                               i
-                                                                                            |))
-                                                                                            (M.read (|
+                                                                                            |),
+                                                                                            M.read (|
                                                                                               imm
-                                                                                            |))
+                                                                                            |)
+                                                                                          |)
                                                                                         ]
                                                                                       |)
                                                                                     ]
@@ -4462,7 +4468,7 @@ Module interpreter.
                                             |))
                                         |) in
                                       let~ rjumpv_additional_immediates :=
-                                        M.alloc (| Value.Integer 0 |) in
+                                        M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                                       let~ absolute_jumpdest :=
                                         M.alloc (|
                                           M.call_closure (|
@@ -4491,7 +4497,7 @@ Module interpreter.
                                                         (let _ :=
                                                           M.is_constant_or_break_match (|
                                                             M.read (| γ |),
-                                                            Value.Integer 224
+                                                            Value.Integer IntegerKind.U8 224
                                                           |) in
                                                         Value.Tuple []));
                                                     fun γ =>
@@ -4499,7 +4505,7 @@ Module interpreter.
                                                         (let _ :=
                                                           M.is_constant_or_break_match (|
                                                             M.read (| γ |),
-                                                            Value.Integer 225
+                                                            Value.Integer IntegerKind.U8 225
                                                           |) in
                                                         Value.Tuple []))
                                                   ],
@@ -4508,61 +4514,63 @@ Module interpreter.
                                                       ltac:(M.monadic
                                                         match γ with
                                                         | [] =>
-                                                          let~ offset :=
-                                                            M.alloc (|
-                                                              M.rust_cast
-                                                                (M.call_closure (|
-                                                                  M.get_function (|
-                                                                    "revm_interpreter::instructions::utility::read_i16",
-                                                                    []
+                                                          ltac:(M.monadic
+                                                            (let~ offset :=
+                                                              M.alloc (|
+                                                                M.rust_cast
+                                                                  (M.call_closure (|
+                                                                    M.get_function (|
+                                                                      "revm_interpreter::instructions::utility::read_i16",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.call_closure (|
+                                                                        M.get_associated_function (|
+                                                                          Ty.apply
+                                                                            (Ty.path "*const")
+                                                                            []
+                                                                            [ Ty.path "u8" ],
+                                                                          "add",
+                                                                          []
+                                                                        |),
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path "slice")
+                                                                                []
+                                                                                [ Ty.path "u8" ],
+                                                                              "as_ptr",
+                                                                              []
+                                                                            |),
+                                                                            [ M.read (| code |) ]
+                                                                          |);
+                                                                          BinOp.Wrap.add (|
+                                                                            M.read (| i |),
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          |)
+                                                                        ]
+                                                                      |)
+                                                                    ]
+                                                                  |))
+                                                              |) in
+                                                            let~ _ :=
+                                                              M.write (|
+                                                                absolute_jumpdest,
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path "slice")
+                                                                      []
+                                                                      [ Ty.path "isize" ],
+                                                                    "into_vec",
+                                                                    [ Ty.path "alloc::alloc::Global"
+                                                                    ]
                                                                   |),
                                                                   [
-                                                                    M.call_closure (|
-                                                                      M.get_associated_function (|
-                                                                        Ty.apply
-                                                                          (Ty.path "*const")
-                                                                          []
-                                                                          [ Ty.path "u8" ],
-                                                                        "add",
-                                                                        []
-                                                                      |),
-                                                                      [
-                                                                        M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path "slice")
-                                                                              []
-                                                                              [ Ty.path "u8" ],
-                                                                            "as_ptr",
-                                                                            []
-                                                                          |),
-                                                                          [ M.read (| code |) ]
-                                                                        |);
-                                                                        BinOp.Wrap.add
-                                                                          Integer.Usize
-                                                                          (M.read (| i |))
-                                                                          (Value.Integer 1)
-                                                                      ]
-                                                                    |)
-                                                                  ]
-                                                                |))
-                                                            |) in
-                                                          let~ _ :=
-                                                            M.write (|
-                                                              absolute_jumpdest,
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "slice")
-                                                                    []
-                                                                    [ Ty.path "isize" ],
-                                                                  "into_vec",
-                                                                  [ Ty.path "alloc::alloc::Global" ]
-                                                                |),
-                                                                [
-                                                                  (* Unsize *)
-                                                                  M.pointer_coercion
-                                                                    (M.read (|
+                                                                    M.read (|
                                                                       M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Ty.apply
@@ -4572,7 +4580,11 @@ Module interpreter.
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "array")
-                                                                                [ Value.Integer 1 ]
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                ]
                                                                                 [ Ty.path "isize" ];
                                                                               Ty.path
                                                                                 "alloc::alloc::Global"
@@ -4584,29 +4596,29 @@ Module interpreter.
                                                                           M.alloc (|
                                                                             Value.Array
                                                                               [
-                                                                                BinOp.Wrap.add
-                                                                                  Integer.Isize
-                                                                                  (BinOp.Wrap.add
-                                                                                    Integer.Isize
-                                                                                    (M.read (|
+                                                                                BinOp.Wrap.add (|
+                                                                                  BinOp.Wrap.add (|
+                                                                                    M.read (|
                                                                                       offset
-                                                                                    |))
-                                                                                    (Value.Integer
-                                                                                      3))
-                                                                                  (M.rust_cast
-                                                                                    (M.read (|
-                                                                                      i
-                                                                                    |)))
+                                                                                    |),
+                                                                                    Value.Integer
+                                                                                      IntegerKind.Isize
+                                                                                      3
+                                                                                  |),
+                                                                                  M.rust_cast
+                                                                                    (M.read (| i |))
+                                                                                |)
                                                                               ]
                                                                           |)
                                                                         ]
                                                                       |)
-                                                                    |))
-                                                                ]
-                                                              |)
-                                                            |) in
-                                                          M.alloc (| Value.Tuple [] |)
-                                                        | _ => M.impossible (||)
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |) in
+                                                            M.alloc (| Value.Tuple [] |)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
                                                         end))
                                                 |)));
                                             fun γ =>
@@ -4614,7 +4626,7 @@ Module interpreter.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer 226
+                                                    Value.Integer IntegerKind.U8 226
                                                   |) in
                                                 let~ max_index :=
                                                   M.alloc (|
@@ -4623,28 +4635,28 @@ Module interpreter.
                                                         M.SubPointer.get_array_field (|
                                                           M.read (| code |),
                                                           M.alloc (|
-                                                            BinOp.Wrap.add
-                                                              Integer.Usize
-                                                              (M.read (| i |))
-                                                              (Value.Integer 1)
+                                                            BinOp.Wrap.add (|
+                                                              M.read (| i |),
+                                                              Value.Integer IntegerKind.Usize 1
+                                                            |)
                                                           |)
                                                         |)
                                                       |))
                                                   |) in
                                                 let~ len :=
                                                   M.alloc (|
-                                                    BinOp.Wrap.add
-                                                      Integer.Usize
-                                                      (M.read (| max_index |))
-                                                      (Value.Integer 1)
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| max_index |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
                                                   |) in
                                                 let~ _ :=
                                                   M.write (|
                                                     rjumpv_additional_immediates,
-                                                    BinOp.Wrap.mul
-                                                      Integer.Usize
-                                                      (M.read (| len |))
-                                                      (Value.Integer 2)
+                                                    BinOp.Wrap.mul (|
+                                                      M.read (| len |),
+                                                      Value.Integer IntegerKind.Usize 2
+                                                    |)
                                                   |) in
                                                 let~ _ :=
                                                   M.match_operator (|
@@ -4655,17 +4667,19 @@ Module interpreter.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.Pure.ge
-                                                                  (BinOp.Wrap.add
-                                                                    Integer.Usize
-                                                                    (BinOp.Wrap.add
-                                                                      Integer.Usize
-                                                                      (M.read (| i |))
-                                                                      (Value.Integer 1))
-                                                                    (M.read (|
+                                                                BinOp.ge (|
+                                                                  BinOp.Wrap.add (|
+                                                                    BinOp.Wrap.add (|
+                                                                      M.read (| i |),
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
+                                                                    |),
+                                                                    M.read (|
                                                                       rjumpv_additional_immediates
-                                                                    |)))
-                                                                  (M.call_closure (|
+                                                                    |)
+                                                                  |),
+                                                                  M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path "slice")
@@ -4675,7 +4689,8 @@ Module interpreter.
                                                                       []
                                                                     |),
                                                                     [ M.read (| code |) ]
-                                                                  |))
+                                                                  |)
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -4721,7 +4736,10 @@ Module interpreter.
                                                             Value.StructRecord
                                                               "core::ops::range::Range"
                                                               [
-                                                                ("start", Value.Integer 0);
+                                                                ("start",
+                                                                  Value.Integer
+                                                                    IntegerKind.Usize
+                                                                    0);
                                                                 ("end_",
                                                                   M.read (|
                                                                     rjumpv_additional_immediates
@@ -4829,18 +4847,19 @@ Module interpreter.
                                                                                           |),
                                                                                           [
                                                                                             jumps;
-                                                                                            BinOp.Wrap.add
-                                                                                              Integer.Usize
-                                                                                              (BinOp.Wrap.add
-                                                                                                Integer.Usize
-                                                                                                (M.read (|
+                                                                                            BinOp.Wrap.add (|
+                                                                                              BinOp.Wrap.add (|
+                                                                                                M.read (|
                                                                                                   i
-                                                                                                |))
-                                                                                                (Value.Integer
-                                                                                                  2))
-                                                                                              (M.read (|
+                                                                                                |),
+                                                                                                Value.Integer
+                                                                                                  IntegerKind.Usize
+                                                                                                  2
+                                                                                              |),
+                                                                                              M.read (|
                                                                                                 imm
-                                                                                              |))
+                                                                                              |)
+                                                                                            |)
                                                                                           ]
                                                                                         |)
                                                                                       ]
@@ -4971,7 +4990,10 @@ Module interpreter.
                                                             Value.StructRecord
                                                               "core::ops::range::Range"
                                                               [
-                                                                ("start", Value.Integer 0);
+                                                                ("start",
+                                                                  Value.Integer
+                                                                    IntegerKind.Usize
+                                                                    0);
                                                                 ("end_", M.read (| len |))
                                                               ]
                                                           ]
@@ -5068,22 +5090,24 @@ Module interpreter.
                                                                                             |)
                                                                                           ]
                                                                                         |);
-                                                                                        BinOp.Wrap.add
-                                                                                          Integer.Usize
-                                                                                          (BinOp.Wrap.add
-                                                                                            Integer.Usize
-                                                                                            (M.read (|
+                                                                                        BinOp.Wrap.add (|
+                                                                                          BinOp.Wrap.add (|
+                                                                                            M.read (|
                                                                                               i
-                                                                                            |))
-                                                                                            (Value.Integer
-                                                                                              2))
-                                                                                          (BinOp.Wrap.mul
-                                                                                            Integer.Usize
-                                                                                            (Value.Integer
-                                                                                              2)
-                                                                                            (M.read (|
+                                                                                            |),
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              2
+                                                                                          |),
+                                                                                          BinOp.Wrap.mul (|
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              2,
+                                                                                            M.read (|
                                                                                               vtablei
-                                                                                            |)))
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
                                                                                       ]
                                                                                     |)
                                                                                   ]
@@ -5108,25 +5132,26 @@ Module interpreter.
                                                                                 |),
                                                                                 [
                                                                                   jumps;
-                                                                                  BinOp.Wrap.add
-                                                                                    Integer.Isize
-                                                                                    (BinOp.Wrap.add
-                                                                                      Integer.Isize
-                                                                                      (BinOp.Wrap.add
-                                                                                        Integer.Isize
-                                                                                        (M.read (|
+                                                                                  BinOp.Wrap.add (|
+                                                                                    BinOp.Wrap.add (|
+                                                                                      BinOp.Wrap.add (|
+                                                                                        M.read (|
                                                                                           offset
-                                                                                        |))
-                                                                                        (M.rust_cast
+                                                                                        |),
+                                                                                        M.rust_cast
                                                                                           (M.read (|
                                                                                             i
-                                                                                          |))))
-                                                                                      (Value.Integer
-                                                                                        2))
-                                                                                    (M.rust_cast
+                                                                                          |))
+                                                                                      |),
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Isize
+                                                                                        2
+                                                                                    |),
+                                                                                    M.rust_cast
                                                                                       (M.read (|
                                                                                         rjumpv_additional_immediates
-                                                                                      |)))
+                                                                                      |))
+                                                                                  |)
                                                                                 ]
                                                                               |)
                                                                             |) in
@@ -5148,7 +5173,7 @@ Module interpreter.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer 227
+                                                    Value.Integer IntegerKind.U8 227
                                                   |) in
                                                 let~ section_i :=
                                                   M.alloc (|
@@ -5180,10 +5205,10 @@ Module interpreter.
                                                                 |),
                                                                 [ M.read (| code |) ]
                                                               |);
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| i |))
-                                                                (Value.Integer 1)
+                                                              BinOp.Wrap.add (|
+                                                                M.read (| i |),
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -5225,8 +5250,8 @@ Module interpreter.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.Pure.eq
-                                                                          (M.read (|
+                                                                        BinOp.eq (|
+                                                                          M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (|
                                                                                 target_types
@@ -5234,12 +5259,13 @@ Module interpreter.
                                                                               "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                               "outputs"
                                                                             |)
-                                                                          |))
-                                                                          (M.read (|
+                                                                          |),
+                                                                          M.read (|
                                                                             M.get_constant (|
                                                                               "revm_interpreter::interpreter::analysis::EOF_NON_RETURNING_FUNCTION"
                                                                             |)
-                                                                          |))
+                                                                          |)
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -5321,22 +5347,21 @@ Module interpreter.
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      BinOp.Pure.gt
-                                                                        (BinOp.Wrap.add
-                                                                          Integer.I32
-                                                                          (BinOp.Wrap.sub
-                                                                            Integer.I32
-                                                                            (M.read (|
+                                                                      BinOp.gt (|
+                                                                        BinOp.Wrap.add (|
+                                                                          BinOp.Wrap.sub (|
+                                                                            M.read (|
                                                                               M.SubPointer.get_struct_record_field (|
                                                                                 this_instruction,
                                                                                 "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                                                 "biggest"
                                                                               |)
-                                                                            |))
-                                                                            (M.read (|
+                                                                            |),
+                                                                            M.read (|
                                                                               stack_requirement
-                                                                            |)))
-                                                                          (M.rust_cast
+                                                                            |)
+                                                                          |),
+                                                                          M.rust_cast
                                                                             (M.read (|
                                                                               M.SubPointer.get_struct_record_field (|
                                                                                 M.read (|
@@ -5345,13 +5370,15 @@ Module interpreter.
                                                                                 "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                                 "max_stack_size"
                                                                               |)
-                                                                            |))))
-                                                                        (M.rust_cast
+                                                                            |))
+                                                                        |),
+                                                                        M.rust_cast
                                                                           (M.read (|
                                                                             M.get_constant (|
                                                                               "revm_interpreter::interpreter::stack::STACK_LIMIT"
                                                                             |)
-                                                                          |)))
+                                                                          |))
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -5385,7 +5412,7 @@ Module interpreter.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer 229
+                                                    Value.Integer IntegerKind.U8 229
                                                   |) in
                                                 let~ target_index :=
                                                   M.alloc (|
@@ -5417,10 +5444,10 @@ Module interpreter.
                                                                 |),
                                                                 [ M.read (| code |) ]
                                                               |);
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| i |))
-                                                                (Value.Integer 1)
+                                                              BinOp.Wrap.add (|
+                                                                M.read (| i |),
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -5465,19 +5492,17 @@ Module interpreter.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.Pure.gt
-                                                                          (BinOp.Wrap.add
-                                                                            Integer.I32
-                                                                            (BinOp.Wrap.sub
-                                                                              Integer.I32
-                                                                              (M.read (|
+                                                                        BinOp.gt (|
+                                                                          BinOp.Wrap.add (|
+                                                                            BinOp.Wrap.sub (|
+                                                                              M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
                                                                                   this_instruction,
                                                                                   "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                                                   "biggest"
                                                                                 |)
-                                                                              |))
-                                                                              (M.rust_cast
+                                                                              |),
+                                                                              M.rust_cast
                                                                                 (M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
                                                                                     M.read (|
@@ -5486,8 +5511,9 @@ Module interpreter.
                                                                                     "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                                     "inputs"
                                                                                   |)
-                                                                                |))))
-                                                                            (M.rust_cast
+                                                                                |))
+                                                                            |),
+                                                                            M.rust_cast
                                                                               (M.read (|
                                                                                 M.SubPointer.get_struct_record_field (|
                                                                                   M.read (|
@@ -5496,13 +5522,15 @@ Module interpreter.
                                                                                   "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                                   "max_stack_size"
                                                                                 |)
-                                                                              |))))
-                                                                          (M.rust_cast
+                                                                              |))
+                                                                          |),
+                                                                          M.rust_cast
                                                                             (M.read (|
                                                                               M.get_constant (|
                                                                                 "revm_interpreter::interpreter::stack::STACK_LIMIT"
                                                                               |)
-                                                                            |)))
+                                                                            |))
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -5559,8 +5587,8 @@ Module interpreter.
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      BinOp.Pure.eq
-                                                                        (M.read (|
+                                                                      BinOp.eq (|
+                                                                        M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
                                                                             M.read (|
                                                                               target_types
@@ -5568,12 +5596,13 @@ Module interpreter.
                                                                             "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                             "outputs"
                                                                           |)
-                                                                        |))
-                                                                        (M.read (|
+                                                                        |),
+                                                                        M.read (|
                                                                           M.get_constant (|
                                                                             "revm_interpreter::interpreter::analysis::EOF_NON_RETURNING_FUNCTION"
                                                                           |)
-                                                                        |))
+                                                                        |)
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -5604,8 +5633,8 @@ Module interpreter.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.Pure.lt
-                                                                                  (M.read (|
+                                                                                BinOp.lt (|
+                                                                                  M.read (|
                                                                                     M.SubPointer.get_struct_record_field (|
                                                                                       M.read (|
                                                                                         this_types
@@ -5613,8 +5642,8 @@ Module interpreter.
                                                                                       "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                                       "outputs"
                                                                                     |)
-                                                                                  |))
-                                                                                  (M.read (|
+                                                                                  |),
+                                                                                  M.read (|
                                                                                     M.SubPointer.get_struct_record_field (|
                                                                                       M.read (|
                                                                                         target_types
@@ -5622,7 +5651,8 @@ Module interpreter.
                                                                                       "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                                       "outputs"
                                                                                     |)
-                                                                                  |))
+                                                                                  |)
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -5654,11 +5684,9 @@ Module interpreter.
                                                                 let~ _ :=
                                                                   M.write (|
                                                                     stack_requirement,
-                                                                    BinOp.Wrap.sub
-                                                                      Integer.I32
-                                                                      (BinOp.Wrap.add
-                                                                        Integer.I32
-                                                                        (M.rust_cast
+                                                                    BinOp.Wrap.sub (|
+                                                                      BinOp.Wrap.add (|
+                                                                        M.rust_cast
                                                                           (M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (|
@@ -5667,8 +5695,8 @@ Module interpreter.
                                                                               "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                               "outputs"
                                                                             |)
-                                                                          |)))
-                                                                        (M.rust_cast
+                                                                          |)),
+                                                                        M.rust_cast
                                                                           (M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (|
@@ -5677,8 +5705,9 @@ Module interpreter.
                                                                               "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                               "inputs"
                                                                             |)
-                                                                          |))))
-                                                                      (M.rust_cast
+                                                                          |))
+                                                                      |),
+                                                                      M.rust_cast
                                                                         (M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
                                                                             M.read (|
@@ -5687,7 +5716,8 @@ Module interpreter.
                                                                             "revm_primitives::bytecode::eof::types_section::TypesSection",
                                                                             "outputs"
                                                                           |)
-                                                                        |)))
+                                                                        |))
+                                                                    |)
                                                                   |) in
                                                                 let~ _ :=
                                                                   M.match_operator (|
@@ -5698,17 +5728,18 @@ Module interpreter.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.Pure.gt
-                                                                                  (M.read (|
+                                                                                BinOp.gt (|
+                                                                                  M.read (|
                                                                                     M.SubPointer.get_struct_record_field (|
                                                                                       this_instruction,
                                                                                       "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                                                       "biggest"
                                                                                     |)
-                                                                                  |))
-                                                                                  (M.read (|
+                                                                                  |),
+                                                                                  M.read (|
                                                                                     stack_requirement
-                                                                                  |))
+                                                                                  |)
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -5745,25 +5776,26 @@ Module interpreter.
                                                                         (let γ :=
                                                                           M.use
                                                                             (M.alloc (|
-                                                                              BinOp.Pure.gt
-                                                                                (BinOp.Wrap.add
-                                                                                  Integer.I32
-                                                                                  (M.read (|
+                                                                              BinOp.gt (|
+                                                                                BinOp.Wrap.add (|
+                                                                                  M.read (|
                                                                                     M.SubPointer.get_struct_record_field (|
                                                                                       this_instruction,
                                                                                       "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                                                       "biggest"
                                                                                     |)
-                                                                                  |))
-                                                                                  (M.read (|
+                                                                                  |),
+                                                                                  M.read (|
                                                                                     stack_requirement
-                                                                                  |)))
-                                                                                (M.rust_cast
+                                                                                  |)
+                                                                                |),
+                                                                                M.rust_cast
                                                                                   (M.read (|
                                                                                     M.get_constant (|
                                                                                       "revm_interpreter::interpreter::stack::STACK_LIMIT"
                                                                                     |)
-                                                                                  |)))
+                                                                                  |))
+                                                                              |)
                                                                             |)) in
                                                                         let _ :=
                                                                           M.is_constant_or_break_match (|
@@ -5801,7 +5833,7 @@ Module interpreter.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer 236
+                                                    Value.Integer IntegerKind.U8 236
                                                   |) in
                                                 let~ index :=
                                                   M.alloc (|
@@ -5810,10 +5842,10 @@ Module interpreter.
                                                         M.SubPointer.get_array_field (|
                                                           M.read (| code |),
                                                           M.alloc (|
-                                                            BinOp.Wrap.add
-                                                              Integer.Usize
-                                                              (M.read (| i |))
-                                                              (Value.Integer 1)
+                                                            BinOp.Wrap.add (|
+                                                              M.read (| i |),
+                                                              Value.Integer IntegerKind.Usize 1
+                                                            |)
                                                           |)
                                                         |)
                                                       |))
@@ -5826,9 +5858,10 @@ Module interpreter.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.Pure.ge
-                                                                (M.read (| index |))
-                                                                (M.read (| num_of_containers |))
+                                                              BinOp.ge (|
+                                                                M.read (| index |),
+                                                                M.read (| num_of_containers |)
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
@@ -5860,7 +5893,7 @@ Module interpreter.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer 209
+                                                    Value.Integer IntegerKind.U8 209
                                                   |) in
                                                 let~ index :=
                                                   M.alloc (|
@@ -5892,10 +5925,10 @@ Module interpreter.
                                                                 |),
                                                                 [ M.read (| code |) ]
                                                               |);
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| i |))
-                                                                (Value.Integer 1)
+                                                              BinOp.Wrap.add (|
+                                                                M.read (| i |),
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              |)
                                                             ]
                                                           |)
                                                         ]
@@ -5910,17 +5943,21 @@ Module interpreter.
                                                           M.use
                                                             (M.alloc (|
                                                               LogicalOp.or (|
-                                                                BinOp.Pure.lt
-                                                                  (M.read (| data_size |))
-                                                                  (Value.Integer 32),
+                                                                BinOp.lt (|
+                                                                  M.read (| data_size |),
+                                                                  Value.Integer IntegerKind.Usize 32
+                                                                |),
                                                                 ltac:(M.monadic
-                                                                  (BinOp.Pure.gt
-                                                                    (M.read (| index |))
-                                                                    (BinOp.Wrap.sub
-                                                                      Integer.Isize
-                                                                      (M.rust_cast
-                                                                        (M.read (| data_size |)))
-                                                                      (Value.Integer 32))))
+                                                                  (BinOp.gt (|
+                                                                    M.read (| index |),
+                                                                    BinOp.Wrap.sub (|
+                                                                      M.rust_cast
+                                                                        (M.read (| data_size |)),
+                                                                      Value.Integer
+                                                                        IntegerKind.Isize
+                                                                        32
+                                                                    |)
+                                                                  |)))
                                                               |)
                                                             |)) in
                                                         let _ :=
@@ -5953,7 +5990,7 @@ Module interpreter.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer 228
+                                                    Value.Integer IntegerKind.U8 228
                                                   |) in
                                                 let~ _ :=
                                                   M.write (|
@@ -5975,15 +6012,16 @@ Module interpreter.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.Pure.gt
-                                                                (M.read (|
+                                                              BinOp.gt (|
+                                                                M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
                                                                     this_instruction,
                                                                     "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                                     "biggest"
                                                                   |)
-                                                                |))
-                                                                (M.read (| stack_requirement |))
+                                                                |),
+                                                                M.read (| stack_requirement |)
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
@@ -6015,26 +6053,26 @@ Module interpreter.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer 230
+                                                    Value.Integer IntegerKind.U8 230
                                                   |) in
                                                 let~ _ :=
                                                   M.write (|
                                                     stack_requirement,
-                                                    BinOp.Wrap.add
-                                                      Integer.I32
-                                                      (M.rust_cast
+                                                    BinOp.Wrap.add (|
+                                                      M.rust_cast
                                                         (M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.read (| code |),
                                                             M.alloc (|
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| i |))
-                                                                (Value.Integer 1)
+                                                              BinOp.Wrap.add (|
+                                                                M.read (| i |),
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              |)
                                                             |)
                                                           |)
-                                                        |)))
-                                                      (Value.Integer 1)
+                                                        |)),
+                                                      Value.Integer IntegerKind.I32 1
+                                                    |)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)));
                                             fun γ =>
@@ -6042,26 +6080,26 @@ Module interpreter.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer 231
+                                                    Value.Integer IntegerKind.U8 231
                                                   |) in
                                                 let~ _ :=
                                                   M.write (|
                                                     stack_requirement,
-                                                    BinOp.Wrap.add
-                                                      Integer.I32
-                                                      (M.rust_cast
+                                                    BinOp.Wrap.add (|
+                                                      M.rust_cast
                                                         (M.read (|
                                                           M.SubPointer.get_array_field (|
                                                             M.read (| code |),
                                                             M.alloc (|
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| i |))
-                                                                (Value.Integer 1)
+                                                              BinOp.Wrap.add (|
+                                                                M.read (| i |),
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              |)
                                                             |)
                                                           |)
-                                                        |)))
-                                                      (Value.Integer 2)
+                                                        |)),
+                                                      Value.Integer IntegerKind.I32 2
+                                                    |)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)));
                                             fun γ =>
@@ -6069,48 +6107,49 @@ Module interpreter.
                                                 (let _ :=
                                                   M.is_constant_or_break_match (|
                                                     M.read (| γ |),
-                                                    Value.Integer 232
+                                                    Value.Integer IntegerKind.U8 232
                                                   |) in
                                                 let~ imm :=
                                                   M.copy (|
                                                     M.SubPointer.get_array_field (|
                                                       M.read (| code |),
                                                       M.alloc (|
-                                                        BinOp.Wrap.add
-                                                          Integer.Usize
-                                                          (M.read (| i |))
-                                                          (Value.Integer 1)
+                                                        BinOp.Wrap.add (|
+                                                          M.read (| i |),
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        |)
                                                       |)
                                                     |)
                                                   |) in
                                                 let~ n :=
                                                   M.alloc (|
-                                                    BinOp.Wrap.add
-                                                      Integer.U8
-                                                      (BinOp.Wrap.shr
-                                                        (M.read (| imm |))
-                                                        (Value.Integer 4))
-                                                      (Value.Integer 1)
+                                                    BinOp.Wrap.add (|
+                                                      BinOp.Wrap.shr (|
+                                                        M.read (| imm |),
+                                                        Value.Integer IntegerKind.I32 4
+                                                      |),
+                                                      Value.Integer IntegerKind.U8 1
+                                                    |)
                                                   |) in
                                                 let~ m :=
                                                   M.alloc (|
-                                                    BinOp.Wrap.add
-                                                      Integer.U8
-                                                      (BinOp.Pure.bit_and
+                                                    BinOp.Wrap.add (|
+                                                      BinOp.bit_and
                                                         (M.read (| imm |))
-                                                        (Value.Integer 15))
-                                                      (Value.Integer 1)
+                                                        (Value.Integer IntegerKind.U8 15),
+                                                      Value.Integer IntegerKind.U8 1
+                                                    |)
                                                   |) in
                                                 let~ _ :=
                                                   M.write (|
                                                     stack_requirement,
-                                                    BinOp.Wrap.add
-                                                      Integer.I32
-                                                      (BinOp.Wrap.add
-                                                        Integer.I32
-                                                        (M.rust_cast (M.read (| n |)))
-                                                        (M.rust_cast (M.read (| m |))))
-                                                      (Value.Integer 1)
+                                                    BinOp.Wrap.add (|
+                                                      BinOp.Wrap.add (|
+                                                        M.rust_cast (M.read (| n |)),
+                                                        M.rust_cast (M.read (| m |))
+                                                      |),
+                                                      Value.Integer IntegerKind.I32 1
+                                                    |)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)));
                                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -6125,15 +6164,16 @@ Module interpreter.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.Pure.gt
-                                                        (M.read (| stack_requirement |))
-                                                        (M.read (|
+                                                      BinOp.gt (|
+                                                        M.read (| stack_requirement |),
+                                                        M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             this_instruction,
                                                             "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                             "smallest"
                                                           |)
-                                                        |))
+                                                        |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -6161,30 +6201,30 @@ Module interpreter.
                                       let~ _ :=
                                         M.write (|
                                           next_smallest,
-                                          BinOp.Wrap.add
-                                            Integer.I32
-                                            (M.read (|
+                                          BinOp.Wrap.add (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 this_instruction,
                                                 "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                 "smallest"
                                               |)
-                                            |))
-                                            (M.read (| stack_io_diff |))
+                                            |),
+                                            M.read (| stack_io_diff |)
+                                          |)
                                         |) in
                                       let~ _ :=
                                         M.write (|
                                           next_biggest,
-                                          BinOp.Wrap.add
-                                            Integer.I32
-                                            (M.read (|
+                                          BinOp.Wrap.add (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 this_instruction,
                                                 "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                 "biggest"
                                               |)
-                                            |))
-                                            (M.read (| stack_io_diff |))
+                                            |),
+                                            M.read (| stack_io_diff |)
+                                          |)
                                         |) in
                                       let~ _ :=
                                         M.use
@@ -6266,11 +6306,14 @@ Module interpreter.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.Pure.lt
-                                                                                  (M.read (|
+                                                                                BinOp.lt (|
+                                                                                  M.read (|
                                                                                     absolute_jump
-                                                                                  |))
-                                                                                  (Value.Integer 0)
+                                                                                  |),
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Isize
+                                                                                    0
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -6308,11 +6351,11 @@ Module interpreter.
                                                                           (let γ :=
                                                                             M.use
                                                                               (M.alloc (|
-                                                                                BinOp.Pure.ge
-                                                                                  (M.read (|
+                                                                                BinOp.ge (|
+                                                                                  M.read (|
                                                                                     absolute_jump
-                                                                                  |))
-                                                                                  (M.rust_cast
+                                                                                  |),
+                                                                                  M.rust_cast
                                                                                     (M.call_closure (|
                                                                                       M.get_associated_function (|
                                                                                         Ty.apply
@@ -6331,7 +6374,8 @@ Module interpreter.
                                                                                           code
                                                                                         |)
                                                                                       ]
-                                                                                    |)))
+                                                                                    |))
+                                                                                |)
                                                                               |)) in
                                                                           let _ :=
                                                                             M.is_constant_or_break_match (|
@@ -6449,11 +6493,12 @@ Module interpreter.
                                                                         (let γ :=
                                                                           M.use
                                                                             (M.alloc (|
-                                                                              BinOp.Pure.le
-                                                                                (M.read (|
+                                                                              BinOp.le (|
+                                                                                M.read (|
                                                                                   absolute_jump
-                                                                                |))
-                                                                                (M.read (| i |))
+                                                                                |),
+                                                                                M.read (| i |)
+                                                                              |)
                                                                             |)) in
                                                                         let _ :=
                                                                           M.is_constant_or_break_match (|
@@ -6471,8 +6516,8 @@ Module interpreter.
                                                                                   (let γ :=
                                                                                     M.use
                                                                                       (M.alloc (|
-                                                                                        BinOp.Pure.ne
-                                                                                          (M.read (|
+                                                                                        BinOp.ne (|
+                                                                                          M.read (|
                                                                                             M.SubPointer.get_struct_record_field (|
                                                                                               M.read (|
                                                                                                 target_jump
@@ -6480,10 +6525,11 @@ Module interpreter.
                                                                                               "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                                                               "biggest"
                                                                                             |)
-                                                                                          |))
-                                                                                          (M.read (|
+                                                                                          |),
+                                                                                          M.read (|
                                                                                             next_biggest
-                                                                                          |))
+                                                                                          |)
+                                                                                        |)
                                                                                       |)) in
                                                                                   let _ :=
                                                                                     M.is_constant_or_break_match (|
@@ -6525,8 +6571,8 @@ Module interpreter.
                                                                                 (let γ :=
                                                                                   M.use
                                                                                     (M.alloc (|
-                                                                                      BinOp.Pure.ne
-                                                                                        (M.read (|
+                                                                                      BinOp.ne (|
+                                                                                        M.read (|
                                                                                           M.SubPointer.get_struct_record_field (|
                                                                                             M.read (|
                                                                                               target_jump
@@ -6534,10 +6580,11 @@ Module interpreter.
                                                                                             "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
                                                                                             "smallest"
                                                                                           |)
-                                                                                        |))
-                                                                                        (M.read (|
+                                                                                        |),
+                                                                                        M.read (|
                                                                                           next_smallest
-                                                                                        |))
+                                                                                        |)
+                                                                                      |)
                                                                                     |)) in
                                                                                 let _ :=
                                                                                   M.is_constant_or_break_match (|
@@ -6643,15 +6690,12 @@ Module interpreter.
                                         let β := i in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| β |))
-                                            (BinOp.Wrap.add
-                                              Integer.Usize
-                                              (BinOp.Wrap.add
-                                                Integer.Usize
-                                                (Value.Integer 1)
-                                                (M.rust_cast
+                                          BinOp.Wrap.add (|
+                                            M.read (| β |),
+                                            BinOp.Wrap.add (|
+                                              BinOp.Wrap.add (|
+                                                Value.Integer IntegerKind.Usize 1,
+                                                M.rust_cast
                                                   (M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.path
@@ -6660,8 +6704,11 @@ Module interpreter.
                                                       []
                                                     |),
                                                     [ M.read (| opcode |) ]
-                                                  |))))
-                                              (M.read (| rjumpv_additional_immediates |)))
+                                                  |))
+                                              |),
+                                              M.read (| rjumpv_additional_immediates |)
+                                            |)
+                                          |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -6690,7 +6737,7 @@ Module interpreter.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (| UnOp.Pure.not (M.read (| is_after_termination |)) |)) in
+                              (M.alloc (| UnOp.not (| M.read (| is_after_termination |) |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -6711,7 +6758,7 @@ Module interpreter.
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
-                let~ max_stack_requirement := M.alloc (| Value.Integer 0 |) in
+                let~ max_stack_requirement := M.alloc (| Value.Integer IntegerKind.I32 0 |) in
                 let~ _ :=
                   M.use
                     (M.match_operator (|
@@ -6817,9 +6864,9 @@ Module interpreter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ne
-                                  (M.read (| max_stack_requirement |))
-                                  (M.rust_cast
+                                BinOp.ne (|
+                                  M.read (| max_stack_requirement |),
+                                  M.rust_cast
                                     (M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.SubPointer.get_array_field (|
@@ -6829,7 +6876,8 @@ Module interpreter.
                                         "revm_primitives::bytecode::eof::types_section::TypesSection",
                                         "max_stack_size"
                                       |)
-                                    |)))
+                                    |))
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6856,7 +6904,7 @@ Module interpreter.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_validate_eof_code :
@@ -6898,42 +6946,34 @@ Module interpreter.
                   M.read (| f |);
                   M.read (| Value.String "InstructionInfo" |);
                   M.read (| Value.String "is_immediate" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
-                      "is_immediate"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
+                    "is_immediate"
+                  |);
                   M.read (| Value.String "is_jumpdest" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
-                      "is_jumpdest"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
+                    "is_jumpdest"
+                  |);
                   M.read (| Value.String "smallest" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
+                    "smallest"
+                  |);
+                  M.read (| Value.String "biggest" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
-                      "smallest"
-                    |));
-                  M.read (| Value.String "biggest" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter::analysis::validate_eof_code::InstructionInfo",
-                        "biggest"
-                      |)
-                    |))
+                      "biggest"
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -6979,7 +7019,7 @@ Module interpreter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -7060,7 +7100,7 @@ Module interpreter.
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_mark_as_immediate :
@@ -7093,7 +7133,7 @@ Module interpreter.
                   ("smallest", M.read (| M.get_constant (| "core::num::MAX" |) |));
                   ("biggest", M.read (| M.get_constant (| "core::num::MIN" |) |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

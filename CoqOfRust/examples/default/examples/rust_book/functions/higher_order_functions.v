@@ -11,10 +11,11 @@ Definition is_odd (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   | [], [], [ n ] =>
     ltac:(M.monadic
       (let n := M.alloc (| n |) in
-      BinOp.Pure.eq
-        (BinOp.Wrap.rem Integer.U32 (M.read (| n |)) (Value.Integer 2))
-        (Value.Integer 1)))
-  | _, _, _ => M.impossible
+      BinOp.eq (|
+        BinOp.Wrap.rem (| M.read (| n |), Value.Integer IntegerKind.U32 2 |),
+        Value.Integer IntegerKind.U32 1
+      |)))
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_is_odd : M.IsFunction "higher_order_functions::is_odd" is_odd.
@@ -65,26 +66,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (|
-                                Value.String
-                                  "Find the sum of all the squared odd numbers under 1000
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (|
+                              Value.String "Find the sum of all the squared odd numbers under 1000
 "
-                              |)
-                            ]
-                        |))
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
               |)
             |) in
           M.alloc (| Value.Tuple [] |) in
-        let~ upper := M.alloc (| Value.Integer 1000 |) in
-        let~ acc := M.alloc (| Value.Integer 0 |) in
+        let~ upper := M.alloc (| Value.Integer IntegerKind.U32 1000 |) in
+        let~ acc := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
         let~ _ :=
           M.use
             (M.match_operator (|
@@ -97,7 +95,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     "into_iter",
                     []
                   |),
-                  [ Value.StructRecord "core::ops::range::RangeFrom" [ ("start", Value.Integer 0) ]
+                  [
+                    Value.StructRecord
+                      "core::ops::range::RangeFrom"
+                      [ ("start", Value.Integer IntegerKind.U32 0) ]
                   ]
                 |)
               |),
@@ -141,7 +142,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   let n := M.copy (| γ0_0 |) in
                                   let~ n_squared :=
                                     M.alloc (|
-                                      BinOp.Wrap.mul Integer.U32 (M.read (| n |)) (M.read (| n |))
+                                      BinOp.Wrap.mul (| M.read (| n |), M.read (| n |) |)
                                     |) in
                                   M.match_operator (|
                                     M.alloc (| Value.Tuple [] |),
@@ -151,9 +152,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.ge
-                                                  (M.read (| n_squared |))
-                                                  (M.read (| upper |))
+                                                BinOp.ge (|
+                                                  M.read (| n_squared |),
+                                                  M.read (| upper |)
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -190,10 +192,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     let β := acc in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.add
-                                                        Integer.U32
-                                                        (M.read (| β |))
-                                                        (M.read (| n_squared |))
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| β |),
+                                                        M.read (| n_squared |)
+                                                      |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
                                               fun γ =>
@@ -217,31 +219,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "imperative style: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "imperative style: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u32" ]
-                                |),
-                                [ acc ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "u32" ]
+                              |),
+                              [ acc ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -341,25 +339,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [
                             Value.StructRecord
                               "core::ops::range::RangeFrom"
-                              [ ("start", Value.Integer 0) ];
+                              [ ("start", Value.Integer IntegerKind.U32 0) ];
                             M.closure
                               (fun γ =>
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let n := M.copy (| γ |) in
-                                            BinOp.Wrap.mul
-                                              Integer.U32
-                                              (M.read (| n |))
-                                              (M.read (| n |))))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let n := M.copy (| γ |) in
+                                              BinOp.Wrap.mul (| M.read (| n |), M.read (| n |) |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |);
@@ -368,19 +364,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let γ := M.read (| γ |) in
-                                        let n_squared := M.copy (| γ |) in
-                                        BinOp.Pure.lt
-                                          (M.read (| n_squared |))
-                                          (M.read (| upper |))))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ := M.read (| γ |) in
+                                          let n_squared := M.copy (| γ |) in
+                                          BinOp.lt (|
+                                            M.read (| n_squared |),
+                                            M.read (| upper |)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |);
@@ -389,20 +387,21 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ := M.read (| γ |) in
-                                    let n_squared := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_function (| "higher_order_functions::is_odd", [] |),
-                                      [ M.read (| n_squared |) ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ := M.read (| γ |) in
+                                      let n_squared := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_function (| "higher_order_functions::is_odd", [] |),
+                                        [ M.read (| n_squared |) ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
@@ -418,31 +417,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "functional style: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "functional style: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u32" ]
-                                |),
-                                [ sum_of_squared_odd_numbers ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "u32" ]
+                              |),
+                              [ sum_of_squared_odd_numbers ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -451,7 +446,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "higher_order_functions::main" main.

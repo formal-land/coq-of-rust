@@ -35,17 +35,17 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ logical := M.alloc (| Value.Bool true |) in
         let~ a_float := M.copy (| UnsupportedLiteral |) in
-        let~ an_integer := M.alloc (| Value.Integer 5 |) in
+        let~ an_integer := M.alloc (| Value.Integer IntegerKind.I32 5 |) in
         let~ default_float := M.copy (| UnsupportedLiteral |) in
-        let~ default_integer := M.alloc (| Value.Integer 7 |) in
-        let~ inferred_type := M.alloc (| Value.Integer 12 |) in
-        let~ _ := M.write (| inferred_type, Value.Integer 4294967296 |) in
-        let~ mutable := M.alloc (| Value.Integer 12 |) in
-        let~ _ := M.write (| mutable, Value.Integer 21 |) in
+        let~ default_integer := M.alloc (| Value.Integer IntegerKind.I32 7 |) in
+        let~ inferred_type := M.alloc (| Value.Integer IntegerKind.I64 12 |) in
+        let~ _ := M.write (| inferred_type, Value.Integer IntegerKind.I64 4294967296 |) in
+        let~ mutable := M.alloc (| Value.Integer IntegerKind.I32 12 |) in
+        let~ _ := M.write (| mutable, Value.Integer IntegerKind.I32 21 |) in
         let~ mutable := M.alloc (| Value.Bool true |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "compound_types::main" main.

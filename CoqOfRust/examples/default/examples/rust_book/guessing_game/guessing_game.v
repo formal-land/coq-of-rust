@@ -16,7 +16,7 @@ Definition gen_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
           [ M.read (| Value.String "not yet implemented" |) ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_gen_range : M.IsFunction "guessing_game::gen_range" gen_range.
@@ -68,14 +68,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "Guess the number!
-" |) ]
-                        |))
-                    ]
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "Guess the number!
+" |) ] |) ]
                   |)
                 ]
               |)
@@ -100,12 +94,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "Please input your guess.
+                          M.alloc (|
+                            Value.Array [ M.read (| Value.String "Please input your guess.
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -209,31 +201,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "You guessed: " |);
-                                  M.read (| Value.String "
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (| Value.String "You guessed: " |);
+                                M.read (| Value.String "
 " |)
-                                ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "u32" ]
-                                    |),
-                                    [ guess ]
-                                  |)
-                                ]
-                            |))
+                              ]
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "u32" ]
+                                  |),
+                                  [ guess ]
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -263,12 +251,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "Too small!
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "Too small!
 " |) ]
-                                  |))
+                                |)
                               ]
                             |)
                           ]
@@ -289,13 +275,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 "new_const",
                                 []
                               |),
-                              [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "Too big!
-" |) ]
-                                  |))
+                              [ M.alloc (| Value.Array [ M.read (| Value.String "Too big!
+" |) ] |)
                               ]
                             |)
                           ]
@@ -321,12 +302,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array [ M.read (| Value.String "You win!
+                                        M.alloc (|
+                                          Value.Array [ M.read (| Value.String "You win!
 " |) ]
-                                          |))
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -341,7 +320,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)))
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "guessing_game::main" main.

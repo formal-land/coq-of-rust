@@ -3,6 +3,18 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module slice.
   Module iter.
+    Module Impl_core_iter_traits_iterator_Iterator_for_slice_T.
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::iter::traits::iterator::Iterator"
+          (Self T)
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_iter_traits_iterator_Iterator_for_slice_T.
+    
     Module Impl_core_iter_traits_collect_IntoIterator_for_ref__slice_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ].
@@ -29,7 +41,7 @@ Module slice.
               M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [] |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -72,7 +84,7 @@ Module slice.
               M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter_mut", [] |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -142,23 +154,21 @@ Module slice.
                         [ M.read (| f |); M.read (| Value.String "Iter" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                            "as_slice",
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                          "as_slice",
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |)
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -199,12 +209,14 @@ Module slice.
       
       (*
           pub(super) fn new(slice: &'a [T]) -> Self {
-              let ptr = slice.as_ptr();
+              let len = slice.len();
+              let ptr: NonNull<T> = NonNull::from(slice).cast();
               // SAFETY: Similar to `IterMut::new`.
               unsafe {
-                  let end_or_len = if T::IS_ZST { invalid(slice.len()) } else { ptr.add(slice.len()) };
+                  let end_or_len =
+                      if T::IS_ZST { without_provenance(len) } else { ptr.as_ptr().add(len) };
       
-                  Self { ptr: NonNull::new_unchecked(ptr as *mut T), end_or_len, _marker: PhantomData }
+                  Self { ptr, end_or_len, _marker: PhantomData }
               }
           }
       *)
@@ -215,15 +227,39 @@ Module slice.
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             M.read (|
+              let~ len :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
+                    [ M.read (| slice |) ]
+                  |)
+                |) in
               let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [] [ T ],
-                      "as_ptr",
-                      []
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                      "cast",
+                      [ T ]
                     |),
-                    [ M.read (| slice |) ]
+                    [
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::convert::From",
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                          [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                          "from",
+                          []
+                        |),
+                        [ M.read (| slice |) ]
+                      |)
+                    ]
                   |)
                 |) in
               let~ end_or_len :=
@@ -239,40 +275,33 @@ Module slice.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ptr::invalid", [ T ] |),
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
-                                    []
-                                  |),
-                                  [ M.read (| slice |) ]
-                                |)
-                              ]
+                              M.get_function (| "core::ptr::without_provenance", [ T ] |),
+                              [ M.read (| len |) ]
                             |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "*const") [] [ T ],
-                                "add",
-                                []
-                              |),
-                              [
-                                M.read (| ptr |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
-                                    []
-                                  |),
-                                  [ M.read (| slice |) ]
-                                |)
-                              ]
-                            |)
+                            (* MutToConstPointer *)
+                            M.pointer_coercion
+                              (M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "*mut") [] [ T ],
+                                  "add",
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                      "as_ptr",
+                                      []
+                                    |),
+                                    [ M.read (| ptr |) ]
+                                  |);
+                                  M.read (| len |)
+                                ]
+                              |))
                           |)))
                     ]
                   |)
@@ -281,21 +310,13 @@ Module slice.
                 Value.StructRecord
                   "core::slice::iter::Iter"
                   [
-                    ("ptr",
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                          "new_unchecked",
-                          []
-                        |),
-                        [ M.rust_cast (M.read (| ptr |)) ]
-                      |));
+                    ("ptr", M.read (| ptr |));
                     ("end_or_len", M.read (| end_or_len |));
                     ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -321,7 +342,7 @@ Module slice.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_slice :
@@ -371,7 +392,7 @@ Module slice.
                     |)
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -405,7 +426,7 @@ Module slice.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -473,23 +494,21 @@ Module slice.
                         [ M.read (| f |); M.read (| Value.String "IterMut" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                            "make_slice",
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                          "make_slice",
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |)
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -530,7 +549,8 @@ Module slice.
       
       (*
           pub(super) fn new(slice: &'a mut [T]) -> Self {
-              let ptr = slice.as_mut_ptr();
+              let len = slice.len();
+              let ptr: NonNull<T> = NonNull::from(slice).cast();
               // SAFETY: There are several things here:
               //
               // `ptr` has been obtained by `slice.as_ptr()` where `slice` is a valid
@@ -549,9 +569,9 @@ Module slice.
               // `post_inc_start` method for more information.
               unsafe {
                   let end_or_len =
-                      if T::IS_ZST { invalid_mut(slice.len()) } else { ptr.add(slice.len()) };
+                      if T::IS_ZST { without_provenance_mut(len) } else { ptr.as_ptr().add(len) };
       
-                  Self { ptr: NonNull::new_unchecked(ptr), end_or_len, _marker: PhantomData }
+                  Self { ptr, end_or_len, _marker: PhantomData }
               }
           }
       *)
@@ -562,15 +582,39 @@ Module slice.
           ltac:(M.monadic
             (let slice := M.alloc (| slice |) in
             M.read (|
+              let~ len :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "len", [] |),
+                    [ M.read (| slice |) ]
+                  |)
+                |) in
               let~ ptr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "slice") [] [ T ],
-                      "as_mut_ptr",
-                      []
+                      Ty.apply
+                        (Ty.path "core::ptr::non_null::NonNull")
+                        []
+                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                      "cast",
+                      [ T ]
                     |),
-                    [ M.read (| slice |) ]
+                    [
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::convert::From",
+                          Ty.apply
+                            (Ty.path "core::ptr::non_null::NonNull")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                          [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] ],
+                          "from",
+                          []
+                        |),
+                        [ M.read (| slice |) ]
+                      |)
+                    ]
                   |)
                 |) in
               let~ end_or_len :=
@@ -586,17 +630,8 @@ Module slice.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
-                              M.get_function (| "core::ptr::invalid_mut", [ T ] |),
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
-                                    []
-                                  |),
-                                  [ M.read (| slice |) ]
-                                |)
-                              ]
+                              M.get_function (| "core::ptr::without_provenance_mut", [ T ] |),
+                              [ M.read (| len |) ]
                             |)
                           |)));
                       fun γ =>
@@ -609,15 +644,15 @@ Module slice.
                                 []
                               |),
                               [
-                                M.read (| ptr |);
                                 M.call_closure (|
                                   M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
+                                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                                    "as_ptr",
                                     []
                                   |),
-                                  [ M.read (| slice |) ]
-                                |)
+                                  [ M.read (| ptr |) ]
+                                |);
+                                M.read (| len |)
                               ]
                             |)
                           |)))
@@ -628,21 +663,13 @@ Module slice.
                 Value.StructRecord
                   "core::slice::iter::IterMut"
                   [
-                    ("ptr",
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                          "new_unchecked",
-                          []
-                        |),
-                        [ M.read (| ptr |) ]
-                      |));
+                    ("ptr", M.read (| ptr |));
                     ("end_or_len", M.read (| end_or_len |));
                     ("_marker", Value.StructTuple "core::marker::PhantomData" [])
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -758,7 +785,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_slice :
@@ -784,7 +811,7 @@ Module slice.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_slice :
@@ -905,7 +932,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut_slice :
@@ -935,7 +962,7 @@ Module slice.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -986,7 +1013,7 @@ Module slice.
                 ("pred", M.read (| pred |));
                 ("finished", Value.Bool false)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -1018,9 +1045,7 @@ Module slice.
                             "finished"
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
-                      |)));
+                      M.alloc (| M.alloc (| Value.Array [] |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
@@ -1035,7 +1060,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_slice :
@@ -1091,28 +1116,24 @@ Module slice.
                           |)
                         |);
                         M.read (| Value.String "v" |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::slice::iter::Split",
-                            "v"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::Split",
+                          "v"
+                        |)
                       ]
                     |);
                     M.read (| Value.String "finished" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::iter::Split",
-                        "finished"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::Split",
+                      "finished"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1170,7 +1191,7 @@ Module slice.
                     |)
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1199,8 +1220,12 @@ Module slice.
               match self.v.iter().position(|x| (self.pred)(x)) {
                   None => self.finish(),
                   Some(idx) => {
-                      let ret = Some(&self.v[..idx]);
-                      self.v = &self.v[idx + 1..];
+                      let (left, right) =
+                          // SAFETY: if v.iter().position returns Some(idx), that
+                          // idx is definitely a valid index for v
+                          unsafe { (self.v.get_unchecked(..idx), self.v.get_unchecked(idx + 1..)) };
+                      let ret = Some(left);
+                      self.v = right;
                       ret
                   }
               }
@@ -1278,32 +1303,33 @@ Module slice.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::function::FnMut",
-                                              P,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                              "call_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::slice::iter::Split",
-                                                "pred"
-                                              |);
-                                              Value.Tuple [ M.read (| x |) ]
-                                            ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let x := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnMut",
+                                                P,
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                                "call_mut",
+                                                []
+                                              |),
+                                              [
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::slice::iter::Split",
+                                                  "pred"
+                                                |);
+                                                Value.Tuple [ M.read (| x |) ]
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
@@ -1333,23 +1359,20 @@ Module slice.
                               0
                             |) in
                           let idx := M.copy (| γ0_0 |) in
-                          let~ ret :=
+                          M.match_operator (|
                             M.alloc (|
-                              Value.StructTuple
-                                "core::option::Option::Some"
+                              Value.Tuple
                                 [
                                   M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::index::Index",
+                                    M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
+                                      "get_unchecked",
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeTo")
                                           []
                                           [ Ty.path "usize" ]
-                                      ],
-                                      "index",
-                                      []
+                                      ]
                                     |),
                                     [
                                       M.read (|
@@ -1363,55 +1386,69 @@ Module slice.
                                         "core::ops::range::RangeTo"
                                         [ ("end_", M.read (| idx |)) ]
                                     ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "get_unchecked",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::RangeFrom")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ]
+                                    |),
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Split",
+                                          "v"
+                                        |)
+                                      |);
+                                      Value.StructRecord
+                                        "core::ops::range::RangeFrom"
+                                        [
+                                          ("start",
+                                            BinOp.Wrap.add (|
+                                              M.read (| idx |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |))
+                                        ]
+                                    ]
                                   |)
                                 ]
-                            |) in
-                          let~ _ :=
-                            M.write (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::slice::iter::Split",
-                                "v"
-                              |),
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::RangeFrom")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::slice::iter::Split",
-                                      "v"
-                                    |)
-                                  |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeFrom"
-                                    [
-                                      ("start",
-                                        BinOp.Wrap.add
-                                          Integer.Usize
-                                          (M.read (| idx |))
-                                          (Value.Integer 1))
-                                    ]
-                                ]
-                              |)
-                            |) in
-                          ret))
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let left := M.copy (| γ0_0 |) in
+                                  let right := M.copy (| γ0_1 |) in
+                                  let~ ret :=
+                                    M.alloc (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [ M.read (| left |) ]
+                                    |) in
+                                  let~ _ :=
+                                    M.write (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::Split",
+                                        "v"
+                                      |),
+                                      M.read (| right |)
+                                    |) in
+                                  ret))
+                            ]
+                          |)))
                     ]
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1448,8 +1485,10 @@ Module slice.
                       M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
                   fun γ =>
@@ -1457,13 +1496,12 @@ Module slice.
                       (M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 1;
+                            Value.Integer IntegerKind.Usize 1;
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
-                                BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.call_closure (|
+                                BinOp.Wrap.add (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
@@ -1478,15 +1516,16 @@ Module slice.
                                         |)
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 1)
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
                               ]
                           ]
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1516,8 +1555,12 @@ Module slice.
               match self.v.iter().rposition(|x| (self.pred)(x)) {
                   None => self.finish(),
                   Some(idx) => {
-                      let ret = Some(&self.v[idx + 1..]);
-                      self.v = &self.v[..idx];
+                      let (left, right) =
+                          // SAFETY: if v.iter().rposition returns Some(idx), then
+                          // idx is definitely a valid index for v
+                          unsafe { (self.v.get_unchecked(..idx), self.v.get_unchecked(idx + 1..)) };
+                      let ret = Some(right);
+                      self.v = left;
                       ret
                   }
               }
@@ -1595,32 +1638,33 @@ Module slice.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::function::FnMut",
-                                              P,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                              "call_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::slice::iter::Split",
-                                                "pred"
-                                              |);
-                                              Value.Tuple [ M.read (| x |) ]
-                                            ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let x := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnMut",
+                                                P,
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                                "call_mut",
+                                                []
+                                              |),
+                                              [
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::slice::iter::Split",
+                                                  "pred"
+                                                |);
+                                                Value.Tuple [ M.read (| x |) ]
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
@@ -1650,23 +1694,44 @@ Module slice.
                               0
                             |) in
                           let idx := M.copy (| γ0_0 |) in
-                          let~ ret :=
+                          M.match_operator (|
                             M.alloc (|
-                              Value.StructTuple
-                                "core::option::Option::Some"
+                              Value.Tuple
                                 [
                                   M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::index::Index",
+                                    M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
+                                      "get_unchecked",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::ops::range::RangeTo")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ]
+                                    |),
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::slice::iter::Split",
+                                          "v"
+                                        |)
+                                      |);
+                                      Value.StructRecord
+                                        "core::ops::range::RangeTo"
+                                        [ ("end_", M.read (| idx |)) ]
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "get_unchecked",
                                       [
                                         Ty.apply
                                           (Ty.path "core::ops::range::RangeFrom")
                                           []
                                           [ Ty.path "usize" ]
-                                      ],
-                                      "index",
-                                      []
+                                      ]
                                     |),
                                     [
                                       M.read (|
@@ -1680,55 +1745,45 @@ Module slice.
                                         "core::ops::range::RangeFrom"
                                         [
                                           ("start",
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| idx |))
-                                              (Value.Integer 1))
+                                            BinOp.Wrap.add (|
+                                              M.read (| idx |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |))
                                         ]
                                     ]
                                   |)
                                 ]
-                            |) in
-                          let~ _ :=
-                            M.write (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::slice::iter::Split",
-                                "v"
-                              |),
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::index::Index",
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::ops::range::RangeTo")
-                                      []
-                                      [ Ty.path "usize" ]
-                                  ],
-                                  "index",
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "core::slice::iter::Split",
-                                      "v"
-                                    |)
-                                  |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeTo"
-                                    [ ("end_", M.read (| idx |)) ]
-                                ]
-                              |)
-                            |) in
-                          ret))
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let left := M.copy (| γ0_0 |) in
+                                  let right := M.copy (| γ0_1 |) in
+                                  let~ ret :=
+                                    M.alloc (|
+                                      Value.StructTuple
+                                        "core::option::Option::Some"
+                                        [ M.read (| right |) ]
+                                    |) in
+                                  let~ _ :=
+                                    M.write (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.read (| self |),
+                                        "core::slice::iter::Split",
+                                        "v"
+                                      |),
+                                      M.read (| left |)
+                                    |) in
+                                  ret))
+                            ]
+                          |)))
                     ]
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1802,7 +1857,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1879,7 +1934,7 @@ Module slice.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -1938,28 +1993,24 @@ Module slice.
                           |)
                         |);
                         M.read (| Value.String "v" |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::slice::iter::SplitInclusive",
-                            "v"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::SplitInclusive",
+                          "v"
+                        |)
                       ]
                     |);
                     M.read (| Value.String "finished" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::iter::SplitInclusive",
-                        "finished"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::SplitInclusive",
+                      "finished"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2017,7 +2068,7 @@ Module slice.
                     |)
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2142,33 +2193,36 @@ Module slice.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      P,
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                      ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::slice::iter::SplitInclusive",
-                                                        "pred"
-                                                      |);
-                                                      Value.Tuple [ M.read (| x |) ]
-                                                    ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        P,
+                                                        [
+                                                          Ty.tuple
+                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                        ],
+                                                        "call_mut",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::slice::iter::SplitInclusive",
+                                                          "pred"
+                                                        |);
+                                                        Value.Tuple [ M.read (| x |) ]
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |);
@@ -2177,19 +2231,20 @@ Module slice.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let idx := M.copy (| γ |) in
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| idx |))
-                                                (Value.Integer 1)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let idx := M.copy (| γ |) in
+                                                BinOp.Wrap.add (|
+                                                  M.read (| idx |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |);
@@ -2221,9 +2276,9 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (| idx |))
-                                    (M.call_closure (|
+                                  BinOp.eq (|
+                                    M.read (| idx |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ T ],
                                         "len",
@@ -2238,7 +2293,8 @@ Module slice.
                                           |)
                                         |)
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2321,7 +2377,7 @@ Module slice.
                   ret
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2359,8 +2415,10 @@ Module slice.
                       M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
                   fun γ =>
@@ -2368,14 +2426,14 @@ Module slice.
                       (M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 1;
+                            Value.Integer IntegerKind.Usize 1;
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
                                 M.call_closure (|
                                   M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                                   [
-                                    Value.Integer 1;
+                                    Value.Integer IntegerKind.Usize 1;
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -2400,7 +2458,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2506,9 +2564,7 @@ Module slice.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              M.alloc (|
-                                (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
-                              |)));
+                              M.alloc (| M.alloc (| Value.Array [] |) |)));
                           fun γ =>
                             ltac:(M.monadic
                               (M.alloc (|
@@ -2537,9 +2593,8 @@ Module slice.
                                       "core::ops::range::RangeTo"
                                       [
                                         ("end_",
-                                          BinOp.Wrap.sub
-                                            Integer.Usize
-                                            (M.call_closure (|
+                                          BinOp.Wrap.sub (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply (Ty.path "slice") [] [ T ],
                                                 "len",
@@ -2554,8 +2609,9 @@ Module slice.
                                                   |)
                                                 |)
                                               ]
-                                            |))
-                                            (Value.Integer 1))
+                                            |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |))
                                       ]
                                   ]
                                 |)
@@ -2610,33 +2666,36 @@ Module slice.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::ops::function::FnMut",
-                                                      P,
-                                                      [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                      ],
-                                                      "call_mut",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| self |),
-                                                        "core::slice::iter::SplitInclusive",
-                                                        "pred"
-                                                      |);
-                                                      Value.Tuple [ M.read (| x |) ]
-                                                    ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::ops::function::FnMut",
+                                                        P,
+                                                        [
+                                                          Ty.tuple
+                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                        ],
+                                                        "call_mut",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.read (| self |),
+                                                          "core::slice::iter::SplitInclusive",
+                                                          "pred"
+                                                        |);
+                                                        Value.Tuple [ M.read (| x |) ]
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |);
@@ -2645,23 +2704,24 @@ Module slice.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let idx := M.copy (| γ |) in
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| idx |))
-                                                (Value.Integer 1)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let idx := M.copy (| γ |) in
+                                                BinOp.Wrap.add (|
+                                                  M.read (| idx |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |);
-                          Value.Integer 0
+                          Value.Integer IntegerKind.Usize 0
                         ]
                       |)
                     |) in
@@ -2674,7 +2734,7 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| idx |)) (Value.Integer 0)
+                                  BinOp.eq (| M.read (| idx |), Value.Integer IntegerKind.Usize 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2756,7 +2816,7 @@ Module slice.
                   ret
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2817,7 +2877,7 @@ Module slice.
                 ("pred", M.read (| pred |));
                 ("finished", Value.Bool false)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -2873,28 +2933,24 @@ Module slice.
                           |)
                         |);
                         M.read (| Value.String "v" |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::slice::iter::SplitMut",
-                            "v"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::SplitMut",
+                          "v"
+                        |)
                       ]
                     |);
                     M.read (| Value.String "finished" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::iter::SplitMut",
-                        "finished"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::SplitMut",
+                      "finished"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2979,7 +3035,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3092,32 +3148,33 @@ Module slice.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let x := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::ops::function::FnMut",
-                                              P,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                              "call_mut",
-                                              []
-                                            |),
-                                            [
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "core::slice::iter::SplitMut",
-                                                "pred"
-                                              |);
-                                              Value.Tuple [ M.read (| x |) ]
-                                            ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let x := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnMut",
+                                                P,
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                                "call_mut",
+                                                []
+                                              |),
+                                              [
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "core::slice::iter::SplitMut",
+                                                  "pred"
+                                                |);
+                                                Value.Tuple [ M.read (| x |) ]
+                                              ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
@@ -3178,7 +3235,10 @@ Module slice.
                                 |),
                                 [
                                   M.read (| tmp |);
-                                  BinOp.Wrap.add Integer.Usize (M.read (| idx |)) (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    M.read (| idx |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 ]
                               |)
                             |),
@@ -3230,7 +3290,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3267,8 +3327,10 @@ Module slice.
                       M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
                   fun γ =>
@@ -3276,13 +3338,12 @@ Module slice.
                       (M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 1;
+                            Value.Integer IntegerKind.Usize 1;
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
-                                BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.call_closure (|
+                                BinOp.Wrap.add (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ T ],
                                       "len",
@@ -3297,15 +3358,16 @@ Module slice.
                                         |)
                                       |)
                                     ]
-                                  |))
-                                  (Value.Integer 1)
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
                               ]
                           ]
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3429,25 +3491,27 @@ Module slice.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let x := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                P,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ M.read (| pred |); Value.Tuple [ M.read (| x |) ] ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  P,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ M.read (| pred |); Value.Tuple [ M.read (| x |) ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -3549,7 +3613,7 @@ Module slice.
                                             M.read (| tail |);
                                             Value.StructRecord
                                               "core::ops::range::RangeFrom"
-                                              [ ("start", Value.Integer 1) ]
+                                              [ ("start", Value.Integer IntegerKind.Usize 1) ]
                                           ]
                                         |)
                                       ]
@@ -3560,7 +3624,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3637,7 +3701,7 @@ Module slice.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -3696,28 +3760,24 @@ Module slice.
                           |)
                         |);
                         M.read (| Value.String "v" |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::slice::iter::SplitInclusiveMut",
-                            "v"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::slice::iter::SplitInclusiveMut",
+                          "v"
+                        |)
                       ]
                     |);
                     M.read (| Value.String "finished" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::iter::SplitInclusiveMut",
-                        "finished"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::SplitInclusiveMut",
+                      "finished"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3839,25 +3899,27 @@ Module slice.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let x := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                P,
-                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [ M.read (| pred |); Value.Tuple [ M.read (| x |) ] ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let x := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  P,
+                                                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [ M.read (| pred |); Value.Tuple [ M.read (| x |) ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -3888,19 +3950,20 @@ Module slice.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let idx := M.copy (| γ |) in
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| idx |))
-                                                (Value.Integer 1)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let idx := M.copy (| γ |) in
+                                                BinOp.Wrap.add (|
+                                                  M.read (| idx |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |);
@@ -3932,9 +3995,9 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (| idx |))
-                                    (M.call_closure (|
+                                  BinOp.eq (|
+                                    M.read (| idx |),
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ T ],
                                         "len",
@@ -3949,7 +4012,8 @@ Module slice.
                                           |)
                                         |)
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4016,7 +4080,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4054,8 +4118,10 @@ Module slice.
                       M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
                   fun γ =>
@@ -4063,14 +4129,14 @@ Module slice.
                       (M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 1;
+                            Value.Integer IntegerKind.Usize 1;
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
                                 M.call_closure (|
                                   M.get_function (| "core::cmp::max", [ Ty.path "usize" ] |),
                                   [
-                                    Value.Integer 1;
+                                    Value.Integer IntegerKind.Usize 1;
                                     M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ T ],
@@ -4095,7 +4161,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4248,9 +4314,8 @@ Module slice.
                                         "core::ops::range::RangeTo"
                                         [
                                           ("end_",
-                                            BinOp.Wrap.sub
-                                              Integer.Usize
-                                              (M.call_closure (|
+                                            BinOp.Wrap.sub (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply (Ty.path "slice") [] [ T ],
                                                   "len",
@@ -4265,8 +4330,9 @@ Module slice.
                                                     |)
                                                   |)
                                                 ]
-                                              |))
-                                              (Value.Integer 1))
+                                              |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -4300,31 +4366,32 @@ Module slice.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let x := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::function::FnMut",
-                                                        P,
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let x := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::function::FnMut",
+                                                          P,
+                                                          [
+                                                            Ty.tuple
+                                                              [ Ty.apply (Ty.path "&") [] [ T ] ]
+                                                          ],
+                                                          "call_mut",
+                                                          []
+                                                        |),
                                                         [
-                                                          Ty.tuple
-                                                            [ Ty.apply (Ty.path "&") [] [ T ] ]
-                                                        ],
-                                                        "call_mut",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| pred |);
-                                                        Value.Tuple [ M.read (| x |) ]
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                                          M.read (| pred |);
+                                                          Value.Tuple [ M.read (| x |) ]
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |)
@@ -4357,23 +4424,24 @@ Module slice.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let idx := M.copy (| γ |) in
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| idx |))
-                                                (Value.Integer 1)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let idx := M.copy (| γ |) in
+                                                BinOp.Wrap.add (|
+                                                  M.read (| idx |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |);
-                          Value.Integer 0
+                          Value.Integer IntegerKind.Usize 0
                         ]
                       |)
                     |) in
@@ -4386,7 +4454,7 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| idx |)) (Value.Integer 0)
+                                  BinOp.eq (| M.read (| idx |), Value.Integer IntegerKind.Usize 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4453,7 +4521,7 @@ Module slice.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4515,7 +4583,7 @@ Module slice.
                     [ M.read (| slice |); M.read (| pred |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -4574,36 +4642,32 @@ Module slice.
                           |)
                         |);
                         M.read (| Value.String "v" |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::slice::iter::RSplit",
-                              "inner"
-                            |),
-                            "core::slice::iter::Split",
-                            "v"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RSplit",
+                            "inner"
+                          |),
+                          "core::slice::iter::Split",
+                          "v"
+                        |)
                       ]
                     |);
                     M.read (| Value.String "finished" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::slice::iter::RSplit",
-                          "inner"
-                        |),
-                        "core::slice::iter::Split",
-                        "finished"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::RSplit",
+                        "inner"
+                      |),
+                      "core::slice::iter::Split",
+                      "finished"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4651,7 +4715,7 @@ Module slice.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4698,7 +4762,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4728,7 +4792,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4776,7 +4840,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4819,7 +4883,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4881,7 +4945,7 @@ Module slice.
                     [ M.read (| slice |); M.read (| pred |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -4940,36 +5004,32 @@ Module slice.
                           |)
                         |);
                         M.read (| Value.String "v" |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::slice::iter::RSplitMut",
-                              "inner"
-                            |),
-                            "core::slice::iter::SplitMut",
-                            "v"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::slice::iter::RSplitMut",
+                            "inner"
+                          |),
+                          "core::slice::iter::SplitMut",
+                          "v"
+                        |)
                       ]
                     |);
                     M.read (| Value.String "finished" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::slice::iter::RSplitMut",
-                          "inner"
-                        |),
-                        "core::slice::iter::SplitMut",
-                        "finished"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::slice::iter::RSplitMut",
+                        "inner"
+                      |),
+                      "core::slice::iter::SplitMut",
+                      "finished"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5012,7 +5072,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5059,7 +5119,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5089,7 +5149,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5137,7 +5197,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5192,26 +5252,22 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "GenericSplitN" |);
                 M.read (| Value.String "iter" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::GenericSplitN",
+                  "iter"
+                |);
+                M.read (| Value.String "count" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::GenericSplitN",
-                    "iter"
-                  |));
-                M.read (| Value.String "count" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::GenericSplitN",
-                      "count"
-                    |)
-                  |))
+                    "count"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5262,12 +5318,18 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
+                        M.is_constant_or_break_match (|
+                          M.read (| γ |),
+                          Value.Integer IntegerKind.Usize 0
+                        |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
+                        M.is_constant_or_break_match (|
+                          M.read (| γ |),
+                          Value.Integer IntegerKind.Usize 1
+                        |) in
                       let~ _ :=
                         let β :=
                           M.SubPointer.get_struct_record_field (|
@@ -5277,7 +5339,7 @@ Module slice.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                          BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -5308,7 +5370,7 @@ Module slice.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                          BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                         |) in
                       M.alloc (|
                         M.call_closure (|
@@ -5331,7 +5393,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5421,31 +5483,32 @@ Module slice.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let upper := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::cmp::min",
-                                                        [ Ty.path "usize" ]
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| self |),
-                                                            "core::slice::iter::GenericSplitN",
-                                                            "count"
-                                                          |)
-                                                        |);
-                                                        M.read (| upper |)
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let upper := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "core::cmp::min",
+                                                          [ Ty.path "usize" ]
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| self |),
+                                                              "core::slice::iter::GenericSplitN",
+                                                              "count"
+                                                            |)
+                                                          |);
+                                                          M.read (| upper |)
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |)
@@ -5455,7 +5518,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5511,7 +5574,7 @@ Module slice.
                     "core::slice::iter::GenericSplitN"
                     [ ("iter", M.read (| s |)); ("count", M.read (| n |)) ])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -5560,18 +5623,16 @@ Module slice.
                       |)
                     |);
                     M.read (| Value.String "inner" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::iter::SplitN",
-                        "inner"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::SplitN",
+                      "inner"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5622,7 +5683,7 @@ Module slice.
                     "core::slice::iter::GenericSplitN"
                     [ ("iter", M.read (| s |)); ("count", M.read (| n |)) ])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -5671,18 +5732,16 @@ Module slice.
                       |)
                     |);
                     M.read (| Value.String "inner" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::iter::RSplitN",
-                        "inner"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::RSplitN",
+                      "inner"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5733,7 +5792,7 @@ Module slice.
                     "core::slice::iter::GenericSplitN"
                     [ ("iter", M.read (| s |)); ("count", M.read (| n |)) ])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -5782,18 +5841,16 @@ Module slice.
                       |)
                     |);
                     M.read (| Value.String "inner" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::iter::SplitNMut",
-                        "inner"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::SplitNMut",
+                      "inner"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5844,7 +5901,7 @@ Module slice.
                     "core::slice::iter::GenericSplitN"
                     [ ("iter", M.read (| s |)); ("count", M.read (| n |)) ])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -5893,18 +5950,16 @@ Module slice.
                       |)
                     |);
                     M.read (| Value.String "inner" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::iter::RSplitNMut",
-                        "inner"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::RSplitNMut",
+                      "inner"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5924,7 +5979,7 @@ Module slice.
         fields :=
           [
             ("v", Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ]);
-            ("size", Ty.path "core::num::nonzero::NonZeroUsize")
+            ("size", Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ])
           ];
       } *)
     
@@ -5949,26 +6004,22 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "Windows" |);
                 M.read (| Value.String "v" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::Windows",
+                  "v"
+                |);
+                M.read (| Value.String "size" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::Windows",
-                    "v"
-                  |));
-                M.read (| Value.String "size" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::Windows",
-                      "size"
-                    |)
-                  |))
+                    "size"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5984,7 +6035,7 @@ Module slice.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::slice::iter::Windows") [] [ T ].
       
       (*
-          pub(super) fn new(slice: &'a [T], size: NonZeroUsize) -> Self {
+          pub(super) fn new(slice: &'a [T], size: NonZero<usize>) -> Self {
               Self { v: slice, size }
           }
       *)
@@ -5998,7 +6049,7 @@ Module slice.
             Value.StructRecord
               "core::slice::iter::Windows"
               [ ("v", M.read (| slice |)); ("size", M.read (| size |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -6040,7 +6091,7 @@ Module slice.
                     |)
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6085,10 +6136,13 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.call_closure (|
+                            BinOp.gt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::num::nonzero::NonZeroUsize",
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ],
                                   "get",
                                   []
                                 |),
@@ -6101,8 +6155,8 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
@@ -6117,7 +6171,8 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -6155,7 +6210,10 @@ Module slice.
                                       ("end_",
                                         M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.path "core::num::nonzero::NonZeroUsize",
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "usize" ],
                                             "get",
                                             []
                                           |),
@@ -6204,7 +6262,7 @@ Module slice.
                               |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
-                                [ ("start", Value.Integer 1) ]
+                                [ ("start", Value.Integer IntegerKind.Usize 1) ]
                             ]
                           |)
                         |) in
@@ -6212,7 +6270,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6240,10 +6298,13 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.call_closure (|
+                            BinOp.gt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::num::nonzero::NonZeroUsize",
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ],
                                   "get",
                                   []
                                 |),
@@ -6256,8 +6317,8 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
@@ -6272,25 +6333,26 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ size :=
                         M.alloc (|
-                          BinOp.Wrap.add
-                            Integer.Usize
-                            (BinOp.Wrap.sub
-                              Integer.Usize
-                              (M.call_closure (|
+                          BinOp.Wrap.add (|
+                            BinOp.Wrap.sub (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
@@ -6305,10 +6367,13 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::num::nonzero::NonZeroUsize",
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ],
                                   "get",
                                   []
                                 |),
@@ -6321,8 +6386,10 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |)))
-                            (Value.Integer 1)
+                              |)
+                            |),
+                            Value.Integer IntegerKind.Usize 1
+                          |)
                         |) in
                       M.alloc (|
                         Value.Tuple
@@ -6334,7 +6401,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6358,7 +6425,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6389,7 +6456,7 @@ Module slice.
                     [
                       M.call_closure (|
                         M.get_associated_function (|
-                          Ty.path "core::num::nonzero::NonZeroUsize",
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                           "get",
                           []
                         |),
@@ -6423,9 +6490,9 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.gt
-                                        (M.read (| end_ |))
-                                        (M.call_closure (|
+                                      BinOp.gt (|
+                                        M.read (| end_ |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
@@ -6440,7 +6507,8 @@ Module slice.
                                               |)
                                             |)
                                           ]
-                                        |)),
+                                        |)
+                                      |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
@@ -6456,7 +6524,7 @@ Module slice.
                                     "core::slice::iter::Windows",
                                     "v"
                                   |),
-                                  (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                                  M.alloc (| Value.Array [] |)
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                           fun γ =>
@@ -6522,10 +6590,10 @@ Module slice.
                                         "core::ops::range::RangeFrom"
                                         [
                                           ("start",
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| n |))
-                                              (Value.Integer 1))
+                                            BinOp.Wrap.add (|
+                                              M.read (| n |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -6538,7 +6606,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6566,10 +6634,13 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.call_closure (|
+                            BinOp.gt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::num::nonzero::NonZeroUsize",
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ],
                                   "get",
                                   []
                                 |),
@@ -6582,8 +6653,8 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
@@ -6598,7 +6669,8 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -6606,9 +6678,8 @@ Module slice.
                     ltac:(M.monadic
                       (let~ start :=
                         M.alloc (|
-                          BinOp.Wrap.sub
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.sub (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
@@ -6623,10 +6694,13 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.call_closure (|
+                            |),
+                            M.call_closure (|
                               M.get_associated_function (|
-                                Ty.path "core::num::nonzero::NonZeroUsize",
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ],
                                 "get",
                                 []
                               |),
@@ -6639,7 +6713,8 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
+                            |)
+                          |)
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -6676,7 +6751,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6727,7 +6802,7 @@ Module slice.
                 |);
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.path "core::num::nonzero::NonZeroUsize",
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                     "get",
                     []
                   |),
@@ -6743,7 +6818,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6793,10 +6868,13 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.call_closure (|
+                            BinOp.gt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::num::nonzero::NonZeroUsize",
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ],
                                   "get",
                                   []
                                 |),
@@ -6809,8 +6887,8 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
@@ -6825,7 +6903,8 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -6861,9 +6940,8 @@ Module slice.
                                     "core::ops::range::RangeFrom"
                                     [
                                       ("start",
-                                        BinOp.Wrap.sub
-                                          Integer.Usize
-                                          (M.call_closure (|
+                                        BinOp.Wrap.sub (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "slice") [] [ T ],
                                               "len",
@@ -6878,10 +6956,13 @@ Module slice.
                                                 |)
                                               |)
                                             ]
-                                          |))
-                                          (M.call_closure (|
+                                          |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
-                                              Ty.path "core::num::nonzero::NonZeroUsize",
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "usize" ],
                                               "get",
                                               []
                                             |),
@@ -6894,7 +6975,8 @@ Module slice.
                                                 |)
                                               |)
                                             ]
-                                          |)))
+                                          |)
+                                        |))
                                     ]
                                 ]
                               |)
@@ -6932,9 +7014,8 @@ Module slice.
                                 "core::ops::range::RangeTo"
                                 [
                                   ("end_",
-                                    BinOp.Wrap.sub
-                                      Integer.Usize
-                                      (M.call_closure (|
+                                    BinOp.Wrap.sub (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ T ],
                                           "len",
@@ -6949,8 +7030,9 @@ Module slice.
                                             |)
                                           |)
                                         ]
-                                      |))
-                                      (Value.Integer 1))
+                                      |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |))
                                 ]
                             ]
                           |)
@@ -6959,7 +7041,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -7024,11 +7106,14 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.lt
-                                        (M.read (| end_ |))
-                                        (M.call_closure (|
+                                      BinOp.lt (|
+                                        M.read (| end_ |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.path "core::num::nonzero::NonZeroUsize",
+                                            Ty.apply
+                                              (Ty.path "core::num::nonzero::NonZero")
+                                              []
+                                              [ Ty.path "usize" ],
                                             "get",
                                             []
                                           |),
@@ -7041,7 +7126,8 @@ Module slice.
                                               |)
                                             |)
                                           ]
-                                        |)),
+                                        |)
+                                      |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
@@ -7057,7 +7143,7 @@ Module slice.
                                     "core::slice::iter::Windows",
                                     "v"
                                   |),
-                                  (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                                  M.alloc (| Value.Array [] |)
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                           fun γ =>
@@ -7089,12 +7175,14 @@ Module slice.
                                         "core::ops::range::Range"
                                         [
                                           ("start",
-                                            BinOp.Wrap.sub
-                                              Integer.Usize
-                                              (M.read (| end_ |))
-                                              (M.call_closure (|
+                                            BinOp.Wrap.sub (|
+                                              M.read (| end_ |),
+                                              M.call_closure (|
                                                 M.get_associated_function (|
-                                                  Ty.path "core::num::nonzero::NonZeroUsize",
+                                                  Ty.apply
+                                                    (Ty.path "core::num::nonzero::NonZero")
+                                                    []
+                                                    [ Ty.path "usize" ],
                                                   "get",
                                                   []
                                                 |),
@@ -7107,7 +7195,8 @@ Module slice.
                                                     |)
                                                   |)
                                                 ]
-                                              |)));
+                                              |)
+                                            |));
                                           ("end_", M.read (| end_ |))
                                         ]
                                     ]
@@ -7145,10 +7234,10 @@ Module slice.
                                         "core::ops::range::RangeTo"
                                         [
                                           ("end_",
-                                            BinOp.Wrap.sub
-                                              Integer.Usize
-                                              (M.read (| end_ |))
-                                              (Value.Integer 1))
+                                            BinOp.Wrap.sub (|
+                                              M.read (| end_ |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |))
                                         ]
                                     ]
                                   |)
@@ -7161,7 +7250,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7277,26 +7366,22 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "Chunks" |);
                 M.read (| Value.String "v" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::Chunks",
+                  "v"
+                |);
+                M.read (| Value.String "chunk_size" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::Chunks",
-                    "v"
-                  |));
-                M.read (| Value.String "chunk_size" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::Chunks",
-                      "chunk_size"
-                    |)
-                  |))
+                    "chunk_size"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7326,7 +7411,7 @@ Module slice.
             Value.StructRecord
               "core::slice::iter::Chunks"
               [ ("v", M.read (| slice |)); ("chunk_size", M.read (| size |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -7368,7 +7453,7 @@ Module slice.
                     |)
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7510,7 +7595,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -7561,17 +7646,18 @@ Module slice.
                       M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ n :=
                         M.alloc (|
-                          BinOp.Wrap.div
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.div (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
@@ -7586,20 +7672,20 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::Chunks",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ rem :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.rem (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
@@ -7614,14 +7700,15 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::Chunks",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ n :=
                         M.copy (|
@@ -7633,7 +7720,10 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt (M.read (| rem |)) (Value.Integer 0)
+                                        BinOp.gt (|
+                                          M.read (| rem |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -7641,7 +7731,10 @@ Module slice.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
-                                    BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
+                                    BinOp.Wrap.add (|
+                                      M.read (| n |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |)));
                               fun γ => ltac:(M.monadic n)
                             ]
@@ -7657,7 +7750,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -7681,7 +7774,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -7741,9 +7834,9 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.ge
-                                        (M.read (| start |))
-                                        (M.call_closure (|
+                                      BinOp.ge (|
+                                        M.read (| start |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
@@ -7758,7 +7851,8 @@ Module slice.
                                               |)
                                             |)
                                           ]
-                                        |)),
+                                        |)
+                                      |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
@@ -7774,7 +7868,7 @@ Module slice.
                                     "core::slice::iter::Chunks",
                                     "v"
                                   |),
-                                  (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                                  M.alloc (| Value.Array [] |)
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                           fun γ =>
@@ -7938,7 +8032,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -7989,13 +8083,10 @@ Module slice.
                     ltac:(M.monadic
                       (let~ start :=
                         M.alloc (|
-                          BinOp.Wrap.mul
-                            Integer.Usize
-                            (BinOp.Wrap.div
-                              Integer.Usize
-                              (BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.call_closure (|
+                          BinOp.Wrap.mul (|
+                            BinOp.Wrap.div (|
+                              BinOp.Wrap.sub (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
@@ -8010,22 +8101,25 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |))
-                                (Value.Integer 1))
-                              (M.read (|
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
                                   "core::slice::iter::Chunks",
                                   "chunk_size"
                                 |)
-                              |)))
-                            (M.read (|
+                              |)
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
                                 "core::slice::iter::Chunks",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -8062,7 +8156,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8096,16 +8190,16 @@ Module slice.
             M.read (|
               let~ start :=
                 M.alloc (|
-                  BinOp.Wrap.mul
-                    Integer.Usize
-                    (M.read (| idx |))
-                    (M.read (|
+                  BinOp.Wrap.mul (|
+                    M.read (| idx |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::Chunks",
                         "chunk_size"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               let~ len :=
                 M.alloc (|
@@ -8179,7 +8273,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8268,9 +8362,8 @@ Module slice.
                     ltac:(M.monadic
                       (let~ remainder :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.rem (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
@@ -8285,14 +8378,15 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::Chunks",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ chunksz :=
                         M.copy (|
@@ -8304,7 +8398,10 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.ne (M.read (| remainder |)) (Value.Integer 0)
+                                        BinOp.ne (|
+                                          M.read (| remainder |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -8338,9 +8435,8 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.call_closure (|
+                              BinOp.Wrap.sub (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
@@ -8355,8 +8451,9 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |))
-                                (M.read (| chunksz |))
+                                |),
+                                M.read (| chunksz |)
+                              |)
                             ]
                           |)
                         |),
@@ -8384,7 +8481,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8435,7 +8532,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| n |)) (M.read (| len |)) |)) in
+                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.write (|
@@ -8444,26 +8541,29 @@ Module slice.
                             "core::slice::iter::Chunks",
                             "v"
                           |),
-                          (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                          M.alloc (| Value.Array [] |)
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ start :=
                         M.alloc (|
-                          BinOp.Wrap.mul
-                            Integer.Usize
-                            (BinOp.Wrap.sub
-                              Integer.Usize
-                              (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1))
-                              (M.read (| n |)))
-                            (M.read (|
+                          BinOp.Wrap.mul (|
+                            BinOp.Wrap.sub (|
+                              BinOp.Wrap.sub (|
+                                M.read (| len |),
+                                Value.Integer IntegerKind.Usize 1
+                              |),
+                              M.read (| n |)
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::Chunks",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ end_ :=
                         M.copy (|
@@ -8607,7 +8707,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8729,34 +8829,28 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "ChunksMut" |);
                 M.read (| Value.String "v" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::slice::iter::ChunksMut",
-                    "v"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ChunksMut",
+                  "v"
+                |);
                 M.read (| Value.String "chunk_size" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ChunksMut",
+                  "chunk_size"
+                |);
+                M.read (| Value.String "_marker" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::ChunksMut",
-                    "chunk_size"
-                  |));
-                M.read (| Value.String "_marker" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::ChunksMut",
-                      "_marker"
-                    |)
-                  |))
+                    "_marker"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -8791,7 +8885,7 @@ Module slice.
                 ("chunk_size", M.read (| size |));
                 ("_marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -8938,7 +9032,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -8992,17 +9086,18 @@ Module slice.
                       M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ n :=
                         M.alloc (|
-                          BinOp.Wrap.div
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.div (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "*mut")
@@ -9020,20 +9115,20 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ rem :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.rem (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "*mut")
@@ -9051,14 +9146,15 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ n :=
                         M.copy (|
@@ -9070,7 +9166,10 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt (M.read (| rem |)) (Value.Integer 0)
+                                        BinOp.gt (|
+                                          M.read (| rem |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -9078,7 +9177,10 @@ Module slice.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
-                                    BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
+                                    BinOp.Wrap.add (|
+                                      M.read (| n |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |)));
                               fun γ => ltac:(M.monadic n)
                             ]
@@ -9094,7 +9196,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -9118,7 +9220,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -9182,9 +9284,9 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.ge
-                                        (M.read (| start |))
-                                        (M.call_closure (|
+                                      BinOp.ge (|
+                                        M.read (| start |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "*mut")
@@ -9202,7 +9304,8 @@ Module slice.
                                               |)
                                             |)
                                           ]
-                                        |)),
+                                        |)
+                                      |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
@@ -9218,7 +9321,7 @@ Module slice.
                                     "core::slice::iter::ChunksMut",
                                     "v"
                                   |),
-                                  (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                                  M.alloc (| Value.Array [] |)
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                           fun γ =>
@@ -9390,7 +9493,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -9445,13 +9548,10 @@ Module slice.
                     ltac:(M.monadic
                       (let~ start :=
                         M.alloc (|
-                          BinOp.Wrap.mul
-                            Integer.Usize
-                            (BinOp.Wrap.div
-                              Integer.Usize
-                              (BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.call_closure (|
+                          BinOp.Wrap.mul (|
+                            BinOp.Wrap.div (|
+                              BinOp.Wrap.sub (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "*mut")
@@ -9469,22 +9569,25 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |))
-                                (Value.Integer 1))
-                              (M.read (|
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
                                   "core::slice::iter::ChunksMut",
                                   "chunk_size"
                                 |)
-                              |)))
-                            (M.read (|
+                              |)
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
                                 "core::slice::iter::ChunksMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       M.alloc (|
                         Value.StructTuple
@@ -9522,7 +9625,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -9555,16 +9658,16 @@ Module slice.
             M.read (|
               let~ start :=
                 M.alloc (|
-                  BinOp.Wrap.mul
-                    Integer.Usize
-                    (M.read (| idx |))
-                    (M.read (|
+                  BinOp.Wrap.mul (|
+                    M.read (| idx |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::ChunksMut",
                         "chunk_size"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.read (|
@@ -9648,7 +9751,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -9730,9 +9833,8 @@ Module slice.
                     ltac:(M.monadic
                       (let~ remainder :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.rem (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "*mut")
@@ -9750,14 +9852,15 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ sz :=
                         M.copy (|
@@ -9769,7 +9872,10 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.ne (M.read (| remainder |)) (Value.Integer 0)
+                                        BinOp.ne (|
+                                          M.read (| remainder |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -9822,7 +9928,7 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| sz |))
+                              BinOp.Wrap.sub (| M.read (| len |), M.read (| sz |) |)
                             ]
                           |)
                         |),
@@ -9850,7 +9956,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -9905,7 +10011,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| n |)) (M.read (| len |)) |)) in
+                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.write (|
@@ -9914,26 +10020,29 @@ Module slice.
                             "core::slice::iter::ChunksMut",
                             "v"
                           |),
-                          (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                          M.alloc (| Value.Array [] |)
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ start :=
                         M.alloc (|
-                          BinOp.Wrap.mul
-                            Integer.Usize
-                            (BinOp.Wrap.sub
-                              Integer.Usize
-                              (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1))
-                              (M.read (| n |)))
-                            (M.read (|
+                          BinOp.Wrap.mul (|
+                            BinOp.Wrap.sub (|
+                              BinOp.Wrap.sub (|
+                                M.read (| len |),
+                                Value.Integer IntegerKind.Usize 1
+                              |),
+                              M.read (| n |)
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ end_ :=
                         M.copy (|
@@ -10087,7 +10196,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10236,34 +10345,28 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "ChunksExact" |);
                 M.read (| Value.String "v" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::slice::iter::ChunksExact",
-                    "v"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ChunksExact",
+                  "v"
+                |);
                 M.read (| Value.String "rem" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ChunksExact",
+                  "rem"
+                |);
+                M.read (| Value.String "chunk_size" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::ChunksExact",
-                    "rem"
-                  |));
-                M.read (| Value.String "chunk_size" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::ChunksExact",
-                      "chunk_size"
-                    |)
-                  |))
+                    "chunk_size"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10298,31 +10401,31 @@ Module slice.
             M.read (|
               let~ rem :=
                 M.alloc (|
-                  BinOp.Wrap.rem
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.rem (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
                         []
                       |),
                       [ M.read (| slice |) ]
-                    |))
-                    (M.read (| chunk_size |))
+                    |),
+                    M.read (| chunk_size |)
+                  |)
                 |) in
               let~ fst_len :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.sub (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
                         []
                       |),
                       [ M.read (| slice |) ]
-                    |))
-                    (M.read (| rem |))
+                    |),
+                    M.read (| rem |)
+                  |)
                 |) in
               M.match_operator (|
                 M.alloc (|
@@ -10354,7 +10457,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -10379,7 +10482,7 @@ Module slice.
                 "rem"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_remainder :
@@ -10430,7 +10533,7 @@ Module slice.
                     |)
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10476,8 +10579,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
@@ -10492,14 +10595,15 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::slice::iter::ChunksExact",
                                   "chunk_size"
                                 |)
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -10555,7 +10659,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -10573,9 +10677,8 @@ Module slice.
             M.read (|
               let~ n :=
                 M.alloc (|
-                  BinOp.Wrap.div
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.div (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
@@ -10590,14 +10693,15 @@ Module slice.
                           |)
                         |)
                       ]
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::ChunksExact",
                         "chunk_size"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -10607,7 +10711,7 @@ Module slice.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -10631,7 +10735,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -10687,9 +10791,9 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.ge
-                                        (M.read (| start |))
-                                        (M.call_closure (|
+                                      BinOp.ge (|
+                                        M.read (| start |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
@@ -10704,7 +10808,8 @@ Module slice.
                                               |)
                                             |)
                                           ]
-                                        |)),
+                                        |)
+                                      |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
@@ -10720,7 +10825,7 @@ Module slice.
                                     "core::slice::iter::ChunksExact",
                                     "v"
                                   |),
-                                  (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                                  M.alloc (| Value.Array [] |)
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                           fun γ =>
@@ -10782,7 +10887,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -10806,7 +10911,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -10831,16 +10936,16 @@ Module slice.
             M.read (|
               let~ start :=
                 M.alloc (|
-                  BinOp.Wrap.mul
-                    Integer.Usize
-                    (M.read (| idx |))
-                    (M.read (|
+                  BinOp.Wrap.mul (|
+                    M.read (| idx |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::ChunksExact",
                         "chunk_size"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -10883,7 +10988,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -10934,8 +11039,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
@@ -10950,14 +11055,15 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::slice::iter::ChunksExact",
                                   "chunk_size"
                                 |)
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -10979,9 +11085,8 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.call_closure (|
+                              BinOp.Wrap.sub (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
@@ -10996,14 +11101,15 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::slice::iter::ChunksExact",
                                     "chunk_size"
                                   |)
-                                |))
+                                |)
+                              |)
                             ]
                           |)
                         |),
@@ -11031,7 +11137,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -11079,7 +11185,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| n |)) (M.read (| len |)) |)) in
+                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.write (|
@@ -11088,39 +11194,42 @@ Module slice.
                             "core::slice::iter::ChunksExact",
                             "v"
                           |),
-                          (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                          M.alloc (| Value.Array [] |)
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ start :=
                         M.alloc (|
-                          BinOp.Wrap.mul
-                            Integer.Usize
-                            (BinOp.Wrap.sub
-                              Integer.Usize
-                              (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1))
-                              (M.read (| n |)))
-                            (M.read (|
+                          BinOp.Wrap.mul (|
+                            BinOp.Wrap.sub (|
+                              BinOp.Wrap.sub (|
+                                M.read (| len |),
+                                Value.Integer IntegerKind.Usize 1
+                              |),
+                              M.read (| n |)
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksExact",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ end_ :=
                         M.alloc (|
-                          BinOp.Wrap.add
-                            Integer.Usize
-                            (M.read (| start |))
-                            (M.read (|
+                          BinOp.Wrap.add (|
+                            M.read (| start |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksExact",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ nth_back :=
                         M.alloc (|
@@ -11187,7 +11296,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11230,7 +11339,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11341,42 +11450,34 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "ChunksExactMut" |);
                 M.read (| Value.String "v" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::slice::iter::ChunksExactMut",
-                    "v"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ChunksExactMut",
+                  "v"
+                |);
                 M.read (| Value.String "rem" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::slice::iter::ChunksExactMut",
-                    "rem"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ChunksExactMut",
+                  "rem"
+                |);
                 M.read (| Value.String "chunk_size" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ChunksExactMut",
+                  "chunk_size"
+                |);
+                M.read (| Value.String "_marker" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::ChunksExactMut",
-                    "chunk_size"
-                  |));
-                M.read (| Value.String "_marker" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::ChunksExactMut",
-                      "_marker"
-                    |)
-                  |))
+                    "_marker"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11411,31 +11512,31 @@ Module slice.
             M.read (|
               let~ rem :=
                 M.alloc (|
-                  BinOp.Wrap.rem
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.rem (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
                         []
                       |),
                       [ M.read (| slice |) ]
-                    |))
-                    (M.read (| chunk_size |))
+                    |),
+                    M.read (| chunk_size |)
+                  |)
                 |) in
               let~ fst_len :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.sub (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
                         []
                       |),
                       [ M.read (| slice |) ]
-                    |))
-                    (M.read (| rem |))
+                    |),
+                    M.read (| rem |)
+                  |)
                 |) in
               M.match_operator (|
                 M.alloc (|
@@ -11468,7 +11569,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -11498,7 +11599,7 @@ Module slice.
                 "rem"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_remainder :
@@ -11542,8 +11643,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "*mut")
@@ -11561,14 +11662,15 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::slice::iter::ChunksExactMut",
                                   "chunk_size"
                                 |)
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -11624,7 +11726,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -11642,9 +11744,8 @@ Module slice.
             M.read (|
               let~ n :=
                 M.alloc (|
-                  BinOp.Wrap.div
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.div (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         "len",
@@ -11659,14 +11760,15 @@ Module slice.
                           |)
                         |)
                       ]
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::ChunksExactMut",
                         "chunk_size"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -11676,7 +11778,7 @@ Module slice.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -11700,7 +11802,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -11757,9 +11859,9 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.ge
-                                        (M.read (| start |))
-                                        (M.call_closure (|
+                                      BinOp.ge (|
+                                        M.read (| start |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "*mut")
@@ -11777,7 +11879,8 @@ Module slice.
                                               |)
                                             |)
                                           ]
-                                        |)),
+                                        |)
+                                      |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
@@ -11793,7 +11896,7 @@ Module slice.
                                     "core::slice::iter::ChunksExactMut",
                                     "v"
                                   |),
-                                  (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                                  M.alloc (| Value.Array [] |)
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                           fun γ =>
@@ -11858,7 +11961,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -11882,7 +11985,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -11907,16 +12010,16 @@ Module slice.
             M.read (|
               let~ start :=
                 M.alloc (|
-                  BinOp.Wrap.mul
-                    Integer.Usize
-                    (M.read (| idx |))
-                    (M.read (|
+                  BinOp.Wrap.mul (|
+                    M.read (| idx |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::ChunksExactMut",
                         "chunk_size"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -11955,7 +12058,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12008,8 +12111,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "*mut")
@@ -12027,14 +12130,15 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::slice::iter::ChunksExactMut",
                                   "chunk_size"
                                 |)
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -12056,9 +12160,8 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.call_closure (|
+                              BinOp.Wrap.sub (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "*mut")
@@ -12076,14 +12179,15 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::slice::iter::ChunksExactMut",
                                     "chunk_size"
                                   |)
-                                |))
+                                |)
+                              |)
                             ]
                           |)
                         |),
@@ -12111,7 +12215,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12163,7 +12267,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| n |)) (M.read (| len |)) |)) in
+                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.write (|
@@ -12172,39 +12276,42 @@ Module slice.
                             "core::slice::iter::ChunksExactMut",
                             "v"
                           |),
-                          (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                          M.alloc (| Value.Array [] |)
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ start :=
                         M.alloc (|
-                          BinOp.Wrap.mul
-                            Integer.Usize
-                            (BinOp.Wrap.sub
-                              Integer.Usize
-                              (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1))
-                              (M.read (| n |)))
-                            (M.read (|
+                          BinOp.Wrap.mul (|
+                            BinOp.Wrap.sub (|
+                              BinOp.Wrap.sub (|
+                                M.read (| len |),
+                                Value.Integer IntegerKind.Usize 1
+                              |),
+                              M.read (| n |)
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksExactMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ end_ :=
                         M.alloc (|
-                          BinOp.Wrap.add
-                            Integer.Usize
-                            (M.read (| start |))
-                            (M.read (|
+                          BinOp.Wrap.add (|
+                            M.read (| start |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::ChunksExactMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       M.match_operator (|
                         M.alloc (|
@@ -12231,7 +12338,7 @@ Module slice.
                                     "core::slice::iter::ChunksExactMut",
                                     "v"
                                   |);
-                                  (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                                  M.alloc (| Value.Array [] |)
                                 ]
                               |);
                               M.read (| end_ |)
@@ -12287,7 +12394,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12334,7 +12441,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12476,34 +12583,28 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "ArrayWindows" |);
                 M.read (| Value.String "slice_head" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::slice::iter::ArrayWindows",
-                    "slice_head"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayWindows",
+                  "slice_head"
+                |);
                 M.read (| Value.String "num" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayWindows",
+                  "num"
+                |);
+                M.read (| Value.String "marker" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::ArrayWindows",
-                    "num"
-                  |));
-                M.read (| Value.String "marker" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::ArrayWindows",
-                      "marker"
-                    |)
-                  |))
+                    "marker"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12584,7 +12685,7 @@ Module slice.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12645,10 +12746,10 @@ Module slice.
                         |),
                         [ M.read (| slice |) ]
                       |);
-                      BinOp.Wrap.sub
-                        Integer.Usize
-                        (M.read (| M.get_constant (| "core::slice::iter::N" |) |))
-                        (Value.Integer 1)
+                      BinOp.Wrap.sub (|
+                        M.read (| M.get_constant (| "core::slice::iter::N" |) |),
+                        Value.Integer IntegerKind.Usize 1
+                      |)
                     ]
                   |)
                 |) in
@@ -12670,7 +12771,7 @@ Module slice.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -12726,15 +12827,16 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (|
+                                  BinOp.eq (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "core::slice::iter::ArrayWindows",
                                         "num"
                                       |)
-                                    |))
-                                    (Value.Integer 0)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -12788,7 +12890,7 @@ Module slice.
                               "slice_head"
                             |)
                           |);
-                          Value.Integer 1
+                          Value.Integer IntegerKind.Usize 1
                         ]
                       |)
                     |) in
@@ -12801,12 +12903,12 @@ Module slice.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                      BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ret |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12847,7 +12949,7 @@ Module slice.
                     |)
                   ]
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12874,7 +12976,7 @@ Module slice.
                 "num"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12918,15 +13020,16 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.le
-                                    (M.read (|
+                                  BinOp.le (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "core::slice::iter::ArrayWindows",
                                         "num"
                                       |)
-                                    |))
-                                    (M.read (| n |))
+                                    |),
+                                    M.read (| n |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -12940,7 +13043,7 @@ Module slice.
                                         "core::slice::iter::ArrayWindows",
                                         "num"
                                       |),
-                                      Value.Integer 0
+                                      Value.Integer IntegerKind.Usize 0
                                     |) in
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
                                 |)
@@ -12999,7 +13102,7 @@ Module slice.
                               "slice_head"
                             |)
                           |);
-                          BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
+                          BinOp.Wrap.add (| M.read (| n |), Value.Integer IntegerKind.Usize 1 |)
                         ]
                       |)
                     |) in
@@ -13012,15 +13115,15 @@ Module slice.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Wrap.sub
-                        Integer.Usize
-                        (M.read (| β |))
-                        (BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1))
+                      BinOp.Wrap.sub (|
+                        M.read (| β |),
+                        BinOp.Wrap.add (| M.read (| n |), Value.Integer IntegerKind.Usize 1 |)
+                      |)
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ret |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13074,7 +13177,7 @@ Module slice.
                                       "num"
                                     |)
                                   |);
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.Usize 1
                                 ]
                               |)
                             ]
@@ -13137,7 +13240,7 @@ Module slice.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13196,15 +13299,16 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq
-                                    (M.read (|
+                                  BinOp.eq (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "core::slice::iter::ArrayWindows",
                                         "num"
                                       |)
-                                    |))
-                                    (Value.Integer 0)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -13241,16 +13345,16 @@ Module slice.
                                   "slice_head"
                                 |)
                               |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.read (|
+                              BinOp.Wrap.sub (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::slice::iter::ArrayWindows",
                                     "num"
                                   |)
-                                |))
-                                (Value.Integer 1)
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         ]
@@ -13265,12 +13369,12 @@ Module slice.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                      BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ret |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13310,15 +13414,16 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.le
-                                    (M.read (|
+                                  BinOp.le (|
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "core::slice::iter::ArrayWindows",
                                         "num"
                                       |)
-                                    |))
-                                    (M.read (| n |))
+                                    |),
+                                    M.read (| n |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -13332,7 +13437,7 @@ Module slice.
                                         "core::slice::iter::ArrayWindows",
                                         "num"
                                       |),
-                                      Value.Integer 0
+                                      Value.Integer IntegerKind.Usize 0
                                     |) in
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
                                 |)
@@ -13364,16 +13469,19 @@ Module slice.
                                   "slice_head"
                                 |)
                               |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.read (|
+                              BinOp.Wrap.sub (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::slice::iter::ArrayWindows",
                                     "num"
                                   |)
-                                |))
-                                (BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1))
+                                |),
+                                BinOp.Wrap.add (|
+                                  M.read (| n |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
+                              |)
                             ]
                           |)
                         ]
@@ -13388,15 +13496,15 @@ Module slice.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Wrap.sub
-                        Integer.Usize
-                        (M.read (| β |))
-                        (BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1))
+                      BinOp.Wrap.sub (|
+                        M.read (| β |),
+                        BinOp.Wrap.add (| M.read (| n |), Value.Integer IntegerKind.Usize 1 |)
+                      |)
                     |) in
                   M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ret |) ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13433,16 +13541,17 @@ Module slice.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Pure.eq
-              (M.read (|
+            BinOp.eq (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "core::slice::iter::ArrayWindows",
                   "num"
                 |)
-              |))
-              (Value.Integer 0)))
-        | _, _, _ => M.impossible
+              |),
+              Value.Integer IntegerKind.Usize 0
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13498,26 +13607,22 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "ArrayChunks" |);
                 M.read (| Value.String "iter" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunks",
+                  "iter"
+                |);
+                M.read (| Value.String "rem" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::ArrayChunks",
-                    "iter"
-                  |));
-                M.read (| Value.String "rem" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::ArrayChunks",
-                      "rem"
-                    |)
-                  |))
+                    "rem"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13592,7 +13697,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -13623,7 +13728,7 @@ Module slice.
                 "rem"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_remainder :
@@ -13684,7 +13789,7 @@ Module slice.
                     |)
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13740,7 +13845,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13779,7 +13884,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13820,7 +13925,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13861,7 +13966,7 @@ Module slice.
                 M.read (| n |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13902,7 +14007,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -13945,7 +14050,7 @@ Module slice.
                 M.read (| i |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14006,7 +14111,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -14047,7 +14152,7 @@ Module slice.
                 M.read (| n |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14103,7 +14208,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14219,26 +14324,22 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "ArrayChunksMut" |);
                 M.read (| Value.String "iter" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::ArrayChunksMut",
+                  "iter"
+                |);
+                M.read (| Value.String "rem" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::ArrayChunksMut",
-                    "iter"
-                  |));
-                M.read (| Value.String "rem" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::ArrayChunksMut",
-                      "rem"
-                    |)
-                  |))
+                    "rem"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14313,7 +14414,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -14344,7 +14445,7 @@ Module slice.
                 "rem"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_remainder :
@@ -14396,7 +14497,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -14435,7 +14536,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -14476,7 +14577,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -14517,7 +14618,7 @@ Module slice.
                 M.read (| n |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -14558,7 +14659,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -14601,7 +14702,7 @@ Module slice.
                 M.read (| i |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14662,7 +14763,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -14703,7 +14804,7 @@ Module slice.
                 M.read (| n |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14759,7 +14860,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14864,26 +14965,22 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "RChunks" |);
                 M.read (| Value.String "v" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RChunks",
+                  "v"
+                |);
+                M.read (| Value.String "chunk_size" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::RChunks",
-                    "v"
-                  |));
-                M.read (| Value.String "chunk_size" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::RChunks",
-                      "chunk_size"
-                    |)
-                  |))
+                    "chunk_size"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -14913,7 +15010,7 @@ Module slice.
             Value.StructRecord
               "core::slice::iter::RChunks"
               [ ("v", M.read (| slice |)); ("chunk_size", M.read (| size |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -14955,7 +15052,7 @@ Module slice.
                     |)
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15079,7 +15176,7 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| chunksz |))
+                              BinOp.Wrap.sub (| M.read (| len |), M.read (| chunksz |) |)
                             ]
                           |)
                         |),
@@ -15107,7 +15204,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -15158,17 +15255,18 @@ Module slice.
                       M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ n :=
                         M.alloc (|
-                          BinOp.Wrap.div
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.div (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
@@ -15183,20 +15281,20 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunks",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ rem :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.rem (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
@@ -15211,14 +15309,15 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunks",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ n :=
                         M.copy (|
@@ -15230,7 +15329,10 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt (M.read (| rem |)) (Value.Integer 0)
+                                        BinOp.gt (|
+                                          M.read (| rem |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -15238,7 +15340,10 @@ Module slice.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
-                                    BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
+                                    BinOp.Wrap.add (|
+                                      M.read (| n |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |)));
                               fun γ => ltac:(M.monadic n)
                             ]
@@ -15254,7 +15359,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -15278,7 +15383,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -15340,9 +15445,9 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.ge
-                                        (M.read (| end_ |))
-                                        (M.call_closure (|
+                                      BinOp.ge (|
+                                        M.read (| end_ |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
@@ -15357,7 +15462,8 @@ Module slice.
                                               |)
                                             |)
                                           ]
-                                        |)),
+                                        |)
+                                      |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
@@ -15373,16 +15479,15 @@ Module slice.
                                     "core::slice::iter::RChunks",
                                     "v"
                                   |),
-                                  (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                                  M.alloc (| Value.Array [] |)
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let~ end_ :=
                                 M.alloc (|
-                                  BinOp.Wrap.sub
-                                    Integer.Usize
-                                    (M.call_closure (|
+                                  BinOp.Wrap.sub (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ T ],
                                         "len",
@@ -15397,8 +15502,9 @@ Module slice.
                                           |)
                                         |)
                                       ]
-                                    |))
-                                    (M.read (| end_ |))
+                                    |),
+                                    M.read (| end_ |)
+                                  |)
                                 |) in
                               let~ start :=
                                 M.copy (|
@@ -15440,7 +15546,7 @@ Module slice.
                                               γ,
                                               "core::option::Option::None"
                                             |) in
-                                          M.alloc (| Value.Integer 0 |)))
+                                          M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                                     ]
                                   |)
                                 |) in
@@ -15504,7 +15610,10 @@ Module slice.
                                       |);
                                       Value.StructRecord
                                         "core::ops::range::Range"
-                                        [ ("start", Value.Integer 0); ("end_", M.read (| start |)) ]
+                                        [
+                                          ("start", Value.Integer IntegerKind.Usize 0);
+                                          ("end_", M.read (| start |))
+                                        ]
                                     ]
                                   |)
                                 |) in
@@ -15516,7 +15625,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -15568,9 +15677,8 @@ Module slice.
                     ltac:(M.monadic
                       (let~ rem :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.rem (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
@@ -15585,14 +15693,15 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
                                 "core::slice::iter::RChunks",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ end_ :=
                         M.copy (|
@@ -15604,7 +15713,10 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.eq (M.read (| rem |)) (Value.Integer 0)
+                                        BinOp.eq (|
+                                          M.read (| rem |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -15647,7 +15759,10 @@ Module slice.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
-                                  [ ("start", Value.Integer 0); ("end_", M.read (| end_ |)) ]
+                                  [
+                                    ("start", Value.Integer IntegerKind.Usize 0);
+                                    ("end_", M.read (| end_ |))
+                                  ]
                               ]
                             |)
                           ]
@@ -15655,7 +15770,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -15684,9 +15799,8 @@ Module slice.
             M.read (|
               let~ end_ :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.sub (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
@@ -15701,17 +15815,18 @@ Module slice.
                           |)
                         |)
                       ]
-                    |))
-                    (BinOp.Wrap.mul
-                      Integer.Usize
-                      (M.read (| idx |))
-                      (M.read (|
+                    |),
+                    BinOp.Wrap.mul (|
+                      M.read (| idx |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::slice::iter::RChunks",
                           "chunk_size"
                         |)
-                      |)))
+                      |)
+                    |)
+                  |)
                 |) in
               let~ start :=
                 M.copy (|
@@ -15735,7 +15850,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                          M.alloc (| Value.Integer 0 |)));
+                          M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
@@ -15779,12 +15894,12 @@ Module slice.
                         M.read (| start |)
                       ]
                     |);
-                    BinOp.Wrap.sub Integer.Usize (M.read (| end_ |)) (M.read (| start |))
+                    BinOp.Wrap.sub (| M.read (| end_ |), M.read (| start |) |)
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -15860,9 +15975,8 @@ Module slice.
                     ltac:(M.monadic
                       (let~ remainder :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.rem (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
@@ -15877,14 +15991,15 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunks",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ chunksz :=
                         M.copy (|
@@ -15896,7 +16011,10 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.ne (M.read (| remainder |)) (Value.Integer 0)
+                                        BinOp.ne (|
+                                          M.read (| remainder |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -15958,7 +16076,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -16008,7 +16126,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| n |)) (M.read (| len |)) |)) in
+                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.write (|
@@ -16017,32 +16135,34 @@ Module slice.
                             "core::slice::iter::RChunks",
                             "v"
                           |),
-                          (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                          M.alloc (| Value.Array [] |)
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ offset_from_end :=
                         M.alloc (|
-                          BinOp.Wrap.mul
-                            Integer.Usize
-                            (BinOp.Wrap.sub
-                              Integer.Usize
-                              (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1))
-                              (M.read (| n |)))
-                            (M.read (|
+                          BinOp.Wrap.mul (|
+                            BinOp.Wrap.sub (|
+                              BinOp.Wrap.sub (|
+                                M.read (| len |),
+                                Value.Integer IntegerKind.Usize 1
+                              |),
+                              M.read (| n |)
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunks",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ end_ :=
                         M.alloc (|
-                          BinOp.Wrap.sub
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.sub (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
@@ -16057,8 +16177,9 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (| offset_from_end |))
+                            |),
+                            M.read (| offset_from_end |)
+                          |)
                         |) in
                       let~ start :=
                         M.alloc (|
@@ -16141,7 +16262,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16263,34 +16384,28 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "RChunksMut" |);
                 M.read (| Value.String "v" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::slice::iter::RChunksMut",
-                    "v"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RChunksMut",
+                  "v"
+                |);
                 M.read (| Value.String "chunk_size" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RChunksMut",
+                  "chunk_size"
+                |);
+                M.read (| Value.String "_marker" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::RChunksMut",
-                    "chunk_size"
-                  |));
-                M.read (| Value.String "_marker" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::RChunksMut",
-                      "_marker"
-                    |)
-                  |))
+                    "_marker"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -16325,7 +16440,7 @@ Module slice.
                 ("chunk_size", M.read (| size |));
                 ("_marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -16468,7 +16583,7 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| sz |))
+                              BinOp.Wrap.sub (| M.read (| len |), M.read (| sz |) |)
                             ]
                           |)
                         |),
@@ -16496,7 +16611,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -16550,17 +16665,18 @@ Module slice.
                       M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ n :=
                         M.alloc (|
-                          BinOp.Wrap.div
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.div (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "*mut")
@@ -16578,20 +16694,20 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ rem :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.rem (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "*mut")
@@ -16609,14 +16725,15 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ n :=
                         M.copy (|
@@ -16628,7 +16745,10 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt (M.read (| rem |)) (Value.Integer 0)
+                                        BinOp.gt (|
+                                          M.read (| rem |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -16636,7 +16756,10 @@ Module slice.
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
-                                    BinOp.Wrap.add Integer.Usize (M.read (| n |)) (Value.Integer 1)
+                                    BinOp.Wrap.add (|
+                                      M.read (| n |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |)));
                               fun γ => ltac:(M.monadic n)
                             ]
@@ -16652,7 +16775,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -16676,7 +16799,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -16744,9 +16867,9 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.ge
-                                        (M.read (| end_ |))
-                                        (M.call_closure (|
+                                      BinOp.ge (|
+                                        M.read (| end_ |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "*mut")
@@ -16764,7 +16887,8 @@ Module slice.
                                               |)
                                             |)
                                           ]
-                                        |)),
+                                        |)
+                                      |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
@@ -16780,16 +16904,15 @@ Module slice.
                                     "core::slice::iter::RChunksMut",
                                     "v"
                                   |),
-                                  (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                                  M.alloc (| Value.Array [] |)
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let~ end_ :=
                                 M.alloc (|
-                                  BinOp.Wrap.sub
-                                    Integer.Usize
-                                    (M.call_closure (|
+                                  BinOp.Wrap.sub (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "*mut")
@@ -16807,8 +16930,9 @@ Module slice.
                                           |)
                                         |)
                                       ]
-                                    |))
-                                    (M.read (| end_ |))
+                                    |),
+                                    M.read (| end_ |)
+                                  |)
                                 |) in
                               let~ start :=
                                 M.copy (|
@@ -16850,7 +16974,7 @@ Module slice.
                                               γ,
                                               "core::option::Option::None"
                                             |) in
-                                          M.alloc (| Value.Integer 0 |)))
+                                          M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                                     ]
                                   |)
                                 |) in
@@ -16897,10 +17021,10 @@ Module slice.
                                             |),
                                             [
                                               M.read (| tail |);
-                                              BinOp.Wrap.sub
-                                                Integer.Usize
-                                                (M.read (| end_ |))
-                                                (M.read (| start |))
+                                              BinOp.Wrap.sub (|
+                                                M.read (| end_ |),
+                                                M.read (| start |)
+                                              |)
                                             ]
                                           |)
                                         |),
@@ -16934,7 +17058,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -16990,9 +17114,8 @@ Module slice.
                     ltac:(M.monadic
                       (let~ rem :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.rem (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "*mut")
@@ -17010,14 +17133,15 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 self,
                                 "core::slice::iter::RChunksMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ end_ :=
                         M.copy (|
@@ -17029,7 +17153,10 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.eq (M.read (| rem |)) (Value.Integer 0)
+                                        BinOp.eq (|
+                                          M.read (| rem |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -17073,7 +17200,10 @@ Module slice.
                                 |);
                                 Value.StructRecord
                                   "core::ops::range::Range"
-                                  [ ("start", Value.Integer 0); ("end_", M.read (| end_ |)) ]
+                                  [
+                                    ("start", Value.Integer IntegerKind.Usize 0);
+                                    ("end_", M.read (| end_ |))
+                                  ]
                               ]
                             |)
                           ]
@@ -17081,7 +17211,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -17111,9 +17241,8 @@ Module slice.
             M.read (|
               let~ end_ :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.sub (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         "len",
@@ -17128,17 +17257,18 @@ Module slice.
                           |)
                         |)
                       ]
-                    |))
-                    (BinOp.Wrap.mul
-                      Integer.Usize
-                      (M.read (| idx |))
-                      (M.read (|
+                    |),
+                    BinOp.Wrap.mul (|
+                      M.read (| idx |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::slice::iter::RChunksMut",
                           "chunk_size"
                         |)
-                      |)))
+                      |)
+                    |)
+                  |)
                 |) in
               let~ start :=
                 M.copy (|
@@ -17162,7 +17292,7 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                          M.alloc (| Value.Integer 0 |)));
+                          M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ0_0 :=
@@ -17202,12 +17332,12 @@ Module slice.
                         M.read (| start |)
                       ]
                     |);
-                    BinOp.Wrap.sub Integer.Usize (M.read (| end_ |)) (M.read (| start |))
+                    BinOp.Wrap.sub (| M.read (| end_ |), M.read (| start |) |)
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17288,9 +17418,8 @@ Module slice.
                     ltac:(M.monadic
                       (let~ remainder :=
                         M.alloc (|
-                          BinOp.Wrap.rem
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.rem (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "*mut")
@@ -17308,14 +17437,15 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ sz :=
                         M.copy (|
@@ -17327,7 +17457,10 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.ne (M.read (| remainder |)) (Value.Integer 0)
+                                        BinOp.ne (|
+                                          M.read (| remainder |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -17389,7 +17522,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -17443,7 +17576,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| n |)) (M.read (| len |)) |)) in
+                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.write (|
@@ -17452,32 +17585,34 @@ Module slice.
                             "core::slice::iter::RChunksMut",
                             "v"
                           |),
-                          (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                          M.alloc (| Value.Array [] |)
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ offset_from_end :=
                         M.alloc (|
-                          BinOp.Wrap.mul
-                            Integer.Usize
-                            (BinOp.Wrap.sub
-                              Integer.Usize
-                              (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (Value.Integer 1))
-                              (M.read (| n |)))
-                            (M.read (|
+                          BinOp.Wrap.mul (|
+                            BinOp.Wrap.sub (|
+                              BinOp.Wrap.sub (|
+                                M.read (| len |),
+                                Value.Integer IntegerKind.Usize 1
+                              |),
+                              M.read (| n |)
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ end_ :=
                         M.alloc (|
-                          BinOp.Wrap.sub
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.sub (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "*mut")
@@ -17495,8 +17630,9 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (| offset_from_end |))
+                            |),
+                            M.read (| offset_from_end |)
+                          |)
                         |) in
                       let~ start :=
                         M.alloc (|
@@ -17582,7 +17718,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17731,34 +17867,28 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "RChunksExact" |);
                 M.read (| Value.String "v" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::slice::iter::RChunksExact",
-                    "v"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RChunksExact",
+                  "v"
+                |);
                 M.read (| Value.String "rem" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RChunksExact",
+                  "rem"
+                |);
+                M.read (| Value.String "chunk_size" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::RChunksExact",
-                    "rem"
-                  |));
-                M.read (| Value.String "chunk_size" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::RChunksExact",
-                      "chunk_size"
-                    |)
-                  |))
+                    "chunk_size"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17792,17 +17922,17 @@ Module slice.
             M.read (|
               let~ rem :=
                 M.alloc (|
-                  BinOp.Wrap.rem
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.rem (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
                         []
                       |),
                       [ M.read (| slice |) ]
-                    |))
-                    (M.read (| chunk_size |))
+                    |),
+                    M.read (| chunk_size |)
+                  |)
                 |) in
               M.match_operator (|
                 M.alloc (|
@@ -17834,7 +17964,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -17859,7 +17989,7 @@ Module slice.
                 "rem"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_remainder :
@@ -17910,7 +18040,7 @@ Module slice.
                     |)
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -17956,8 +18086,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
@@ -17972,14 +18102,15 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::slice::iter::RChunksExact",
                                   "chunk_size"
                                 |)
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -18001,9 +18132,8 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.call_closure (|
+                              BinOp.Wrap.sub (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
@@ -18018,14 +18148,15 @@ Module slice.
                                       |)
                                     |)
                                   ]
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::slice::iter::RChunksExact",
                                     "chunk_size"
                                   |)
-                                |))
+                                |)
+                              |)
                             ]
                           |)
                         |),
@@ -18053,7 +18184,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -18071,9 +18202,8 @@ Module slice.
             M.read (|
               let~ n :=
                 M.alloc (|
-                  BinOp.Wrap.div
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.div (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
@@ -18088,14 +18218,15 @@ Module slice.
                           |)
                         |)
                       ]
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::RChunksExact",
                         "chunk_size"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -18105,7 +18236,7 @@ Module slice.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -18129,7 +18260,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -18185,9 +18316,9 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.ge
-                                        (M.read (| end_ |))
-                                        (M.call_closure (|
+                                      BinOp.ge (|
+                                        M.read (| end_ |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
@@ -18202,7 +18333,8 @@ Module slice.
                                               |)
                                             |)
                                           ]
-                                        |)),
+                                        |)
+                                      |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
@@ -18218,7 +18350,7 @@ Module slice.
                                     "core::slice::iter::RChunksExact",
                                     "v"
                                   |),
-                                  (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                                  M.alloc (| Value.Array [] |)
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                           fun γ =>
@@ -18239,9 +18371,8 @@ Module slice.
                                           "v"
                                         |)
                                       |);
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.call_closure (|
+                                      BinOp.Wrap.sub (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
@@ -18256,8 +18387,9 @@ Module slice.
                                               |)
                                             |)
                                           ]
-                                        |))
-                                        (M.read (| end_ |))
+                                        |),
+                                        M.read (| end_ |)
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -18298,7 +18430,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -18322,7 +18454,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -18348,9 +18480,8 @@ Module slice.
             M.read (|
               let~ end_ :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.sub (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
@@ -18365,30 +18496,31 @@ Module slice.
                           |)
                         |)
                       ]
-                    |))
-                    (BinOp.Wrap.mul
-                      Integer.Usize
-                      (M.read (| idx |))
-                      (M.read (|
+                    |),
+                    BinOp.Wrap.mul (|
+                      M.read (| idx |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::slice::iter::RChunksExact",
                           "chunk_size"
                         |)
-                      |)))
+                      |)
+                    |)
+                  |)
                 |) in
               let~ start :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.read (| end_ |))
-                    (M.read (|
+                  BinOp.Wrap.sub (|
+                    M.read (| end_ |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::RChunksExact",
                         "chunk_size"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -18431,7 +18563,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18482,8 +18614,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
@@ -18498,14 +18630,15 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::slice::iter::RChunksExact",
                                   "chunk_size"
                                 |)
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -18561,7 +18694,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -18612,7 +18745,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| n |)) (M.read (| len |)) |)) in
+                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.write (|
@@ -18621,29 +18754,28 @@ Module slice.
                             "core::slice::iter::RChunksExact",
                             "v"
                           |),
-                          (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                          M.alloc (| Value.Array [] |)
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ offset :=
                         M.alloc (|
-                          BinOp.Wrap.mul
-                            Integer.Usize
-                            (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| n |)))
-                            (M.read (|
+                          BinOp.Wrap.mul (|
+                            BinOp.Wrap.sub (| M.read (| len |), M.read (| n |) |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksExact",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ start :=
                         M.alloc (|
-                          BinOp.Wrap.sub
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.sub (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ T ],
                                 "len",
@@ -18658,21 +18790,22 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (| offset |))
+                            |),
+                            M.read (| offset |)
+                          |)
                         |) in
                       let~ end_ :=
                         M.alloc (|
-                          BinOp.Wrap.add
-                            Integer.Usize
-                            (M.read (| start |))
-                            (M.read (|
+                          BinOp.Wrap.add (|
+                            M.read (| start |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksExact",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ nth_back :=
                         M.alloc (|
@@ -18739,7 +18872,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18782,7 +18915,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18888,34 +19021,28 @@ Module slice.
                 M.read (| f |);
                 M.read (| Value.String "RChunksExactMut" |);
                 M.read (| Value.String "v" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::slice::iter::RChunksExactMut",
-                    "v"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RChunksExactMut",
+                  "v"
+                |);
                 M.read (| Value.String "rem" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::slice::iter::RChunksExactMut",
+                  "rem"
+                |);
+                M.read (| Value.String "chunk_size" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::slice::iter::RChunksExactMut",
-                    "rem"
-                  |));
-                M.read (| Value.String "chunk_size" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::slice::iter::RChunksExactMut",
-                      "chunk_size"
-                    |)
-                  |))
+                    "chunk_size"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -18949,17 +19076,17 @@ Module slice.
             M.read (|
               let~ rem :=
                 M.alloc (|
-                  BinOp.Wrap.rem
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.rem (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ T ],
                         "len",
                         []
                       |),
                       [ M.read (| slice |) ]
-                    |))
-                    (M.read (| chunk_size |))
+                    |),
+                    M.read (| chunk_size |)
+                  |)
                 |) in
               M.match_operator (|
                 M.alloc (|
@@ -18991,7 +19118,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -19021,7 +19148,7 @@ Module slice.
                 "rem"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_remainder :
@@ -19066,8 +19193,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "*mut")
@@ -19085,14 +19212,15 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::slice::iter::RChunksExactMut",
                                   "chunk_size"
                                 |)
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -19133,16 +19261,16 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.read (| len |))
-                                (M.read (|
+                              BinOp.Wrap.sub (|
+                                M.read (| len |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::slice::iter::RChunksExactMut",
                                     "chunk_size"
                                   |)
-                                |))
+                                |)
+                              |)
                             ]
                           |)
                         |),
@@ -19170,7 +19298,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -19188,9 +19316,8 @@ Module slice.
             M.read (|
               let~ n :=
                 M.alloc (|
-                  BinOp.Wrap.div
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.div (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         "len",
@@ -19205,14 +19332,15 @@ Module slice.
                           |)
                         |)
                       ]
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::RChunksExactMut",
                         "chunk_size"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -19222,7 +19350,7 @@ Module slice.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -19246,7 +19374,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -19304,9 +19432,9 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.Pure.ge
-                                        (M.read (| end_ |))
-                                        (M.call_closure (|
+                                      BinOp.ge (|
+                                        M.read (| end_ |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "*mut")
@@ -19324,7 +19452,8 @@ Module slice.
                                               |)
                                             |)
                                           ]
-                                        |)),
+                                        |)
+                                      |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
@@ -19340,7 +19469,7 @@ Module slice.
                                     "core::slice::iter::RChunksExactMut",
                                     "v"
                                   |),
-                                  (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                                  M.alloc (| Value.Array [] |)
                                 |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                           fun γ =>
@@ -19386,10 +19515,7 @@ Module slice.
                                           "v"
                                         |)
                                       |);
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| len |))
-                                        (M.read (| end_ |))
+                                      BinOp.Wrap.sub (| M.read (| len |), M.read (| end_ |) |)
                                     ]
                                   |)
                                 |),
@@ -19430,7 +19556,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -19454,7 +19580,7 @@ Module slice.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -19480,9 +19606,8 @@ Module slice.
             M.read (|
               let~ end_ :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.sub (|
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                         "len",
@@ -19497,30 +19622,31 @@ Module slice.
                           |)
                         |)
                       ]
-                    |))
-                    (BinOp.Wrap.mul
-                      Integer.Usize
-                      (M.read (| idx |))
-                      (M.read (|
+                    |),
+                    BinOp.Wrap.mul (|
+                      M.read (| idx |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::slice::iter::RChunksExactMut",
                           "chunk_size"
                         |)
-                      |)))
+                      |)
+                    |)
+                  |)
                 |) in
               let~ start :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.read (| end_ |))
-                    (M.read (|
+                  BinOp.Wrap.sub (|
+                    M.read (| end_ |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::slice::iter::RChunksExactMut",
                         "chunk_size"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -19559,7 +19685,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -19612,8 +19738,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "*mut")
@@ -19631,14 +19757,15 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "core::slice::iter::RChunksExactMut",
                                   "chunk_size"
                                 |)
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -19694,7 +19821,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -19749,7 +19876,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| n |)) (M.read (| len |)) |)) in
+                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.write (|
@@ -19758,29 +19885,28 @@ Module slice.
                             "core::slice::iter::RChunksExactMut",
                             "v"
                           |),
-                          (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                          M.alloc (| Value.Array [] |)
                         |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ offset :=
                         M.alloc (|
-                          BinOp.Wrap.mul
-                            Integer.Usize
-                            (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| n |)))
-                            (M.read (|
+                          BinOp.Wrap.mul (|
+                            BinOp.Wrap.sub (| M.read (| len |), M.read (| n |) |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksExactMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       let~ start :=
                         M.alloc (|
-                          BinOp.Wrap.sub
-                            Integer.Usize
-                            (M.call_closure (|
+                          BinOp.Wrap.sub (|
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "*mut")
@@ -19798,21 +19924,22 @@ Module slice.
                                   |)
                                 |)
                               ]
-                            |))
-                            (M.read (| offset |))
+                            |),
+                            M.read (| offset |)
+                          |)
                         |) in
                       let~ end_ :=
                         M.alloc (|
-                          BinOp.Wrap.add
-                            Integer.Usize
-                            (M.read (| start |))
-                            (M.read (|
+                          BinOp.Wrap.add (|
+                            M.read (| start |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "core::slice::iter::RChunksExactMut",
                                 "chunk_size"
                               |)
-                            |))
+                            |)
+                          |)
                         |) in
                       M.match_operator (|
                         M.alloc (|
@@ -19882,7 +20009,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -19929,7 +20056,7 @@ Module slice.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -20090,7 +20217,7 @@ Module slice.
     
     (* StructRecord
       {
-        name := "GroupBy";
+        name := "ChunkBy";
         const_params := [];
         ty_params := [ "T"; "P" ];
         fields :=
@@ -20100,13 +20227,13 @@ Module slice.
           ];
       } *)
     
-    Module Impl_core_slice_iter_GroupBy_T_P.
+    Module Impl_core_slice_iter_ChunkBy_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::GroupBy") [] [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::ChunkBy") [] [ T; P ].
       
       (*
           pub(super) fn new(slice: &'a [T], predicate: P) -> Self {
-              GroupBy { slice, predicate }
+              ChunkBy { slice, predicate }
           }
       *)
       Definition new (T P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -20117,19 +20244,19 @@ Module slice.
             (let slice := M.alloc (| slice |) in
             let predicate := M.alloc (| predicate |) in
             Value.StructRecord
-              "core::slice::iter::GroupBy"
+              "core::slice::iter::ChunkBy"
               [ ("slice", M.read (| slice |)); ("predicate", M.read (| predicate |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
         forall (T P : Ty.t),
         M.IsAssociatedFunction (Self T P) "new" (new T P).
-    End Impl_core_slice_iter_GroupBy_T_P.
+    End Impl_core_slice_iter_ChunkBy_T_P.
     
-    Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_GroupBy_T_P.
+    Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkBy_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::GroupBy") [] [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::ChunkBy") [] [ T; P ].
       
       (*     type Item = &'a [T]; *)
       Definition _Item (T P : Ty.t) : Ty.t :=
@@ -20176,7 +20303,7 @@ Module slice.
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
-                                    "core::slice::iter::GroupBy",
+                                    "core::slice::iter::ChunkBy",
                                     "slice"
                                   |)
                                 |)
@@ -20187,7 +20314,7 @@ Module slice.
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ len := M.alloc (| Value.Integer 1 |) in
+                      (let~ len := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
                       let~ iter :=
                         M.alloc (|
                           M.call_closure (|
@@ -20200,11 +20327,11 @@ Module slice.
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
-                                  "core::slice::iter::GroupBy",
+                                  "core::slice::iter::ChunkBy",
                                   "slice"
                                 |)
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -20268,7 +20395,7 @@ Module slice.
                                                     [
                                                       M.SubPointer.get_struct_record_field (|
                                                         M.read (| self |),
-                                                        "core::slice::iter::GroupBy",
+                                                        "core::slice::iter::ChunkBy",
                                                         "predicate"
                                                       |);
                                                       Value.Tuple [ M.read (| l |); M.read (| r |) ]
@@ -20283,10 +20410,10 @@ Module slice.
                                             let β := len in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| β |))
-                                                (Value.Integer 1)
+                                              BinOp.Wrap.add (|
+                                                M.read (| β |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -20323,7 +20450,7 @@ Module slice.
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
-                                  "core::slice::iter::GroupBy",
+                                  "core::slice::iter::ChunkBy",
                                   "slice"
                                 |)
                               |);
@@ -20342,7 +20469,7 @@ Module slice.
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
-                                    "core::slice::iter::GroupBy",
+                                    "core::slice::iter::ChunkBy",
                                     "slice"
                                   |),
                                   M.read (| tail |)
@@ -20355,7 +20482,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -20388,7 +20515,7 @@ Module slice.
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
-                                    "core::slice::iter::GroupBy",
+                                    "core::slice::iter::ChunkBy",
                                     "slice"
                                   |)
                                 |)
@@ -20399,8 +20526,10 @@ Module slice.
                       M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
                   fun γ =>
@@ -20408,7 +20537,7 @@ Module slice.
                       (M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 1;
+                            Value.Integer IntegerKind.Usize 1;
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
@@ -20422,7 +20551,7 @@ Module slice.
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
-                                        "core::slice::iter::GroupBy",
+                                        "core::slice::iter::ChunkBy",
                                         "slice"
                                       |)
                                     |)
@@ -20434,7 +20563,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -20451,14 +20580,14 @@ Module slice.
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
-                Ty.apply (Ty.path "core::slice::iter::GroupBy") [] [ T; P ],
+                Ty.apply (Ty.path "core::slice::iter::ChunkBy") [] [ T; P ],
                 [],
                 "next_back",
                 []
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -20474,11 +20603,11 @@ Module slice.
             ("size_hint", InstanceField.Method (size_hint T P));
             ("last", InstanceField.Method (last T P))
           ].
-    End Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_GroupBy_T_P.
+    End Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkBy_T_P.
     
-    Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_GroupBy_T_P.
+    Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkBy_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::GroupBy") [] [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::ChunkBy") [] [ T; P ].
       
       (*
           fn next_back(&mut self) -> Option<Self::Item> {
@@ -20521,7 +20650,7 @@ Module slice.
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
-                                    "core::slice::iter::GroupBy",
+                                    "core::slice::iter::ChunkBy",
                                     "slice"
                                   |)
                                 |)
@@ -20532,7 +20661,7 @@ Module slice.
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ len := M.alloc (| Value.Integer 1 |) in
+                      (let~ len := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
                       let~ iter :=
                         M.alloc (|
                           M.call_closure (|
@@ -20545,11 +20674,11 @@ Module slice.
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
-                                  "core::slice::iter::GroupBy",
+                                  "core::slice::iter::ChunkBy",
                                   "slice"
                                 |)
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -20613,7 +20742,7 @@ Module slice.
                                                     [
                                                       M.SubPointer.get_struct_record_field (|
                                                         M.read (| self |),
-                                                        "core::slice::iter::GroupBy",
+                                                        "core::slice::iter::ChunkBy",
                                                         "predicate"
                                                       |);
                                                       Value.Tuple [ M.read (| l |); M.read (| r |) ]
@@ -20628,10 +20757,10 @@ Module slice.
                                             let β := len in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| β |))
-                                                (Value.Integer 1)
+                                              BinOp.Wrap.add (|
+                                                M.read (| β |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -20668,13 +20797,12 @@ Module slice.
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
-                                  "core::slice::iter::GroupBy",
+                                  "core::slice::iter::ChunkBy",
                                   "slice"
                                 |)
                               |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.call_closure (|
+                              BinOp.Wrap.sub (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
@@ -20684,13 +20812,14 @@ Module slice.
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
-                                        "core::slice::iter::GroupBy",
+                                        "core::slice::iter::ChunkBy",
                                         "slice"
                                       |)
                                     |)
                                   ]
-                                |))
-                                (M.read (| len |))
+                                |),
+                                M.read (| len |)
+                              |)
                             ]
                           |)
                         |),
@@ -20705,7 +20834,7 @@ Module slice.
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
-                                    "core::slice::iter::GroupBy",
+                                    "core::slice::iter::ChunkBy",
                                     "slice"
                                   |),
                                   M.read (| head |)
@@ -20718,7 +20847,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -20728,11 +20857,11 @@ Module slice.
           (Self T P)
           (* Trait polymorphic types *) []
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T P)) ].
-    End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_GroupBy_T_P.
+    End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkBy_T_P.
     
-    Module Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_GroupBy_T_P.
+    Module Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkBy_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::GroupBy") [] [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::ChunkBy") [] [ T; P ].
       
       Axiom Implements :
         forall (T P : Ty.t),
@@ -20741,15 +20870,15 @@ Module slice.
           (Self T P)
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_GroupBy_T_P.
+    End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkBy_T_P.
     
-    Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_GroupBy_T_P.
+    Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_ChunkBy_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::GroupBy") [] [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::ChunkBy") [] [ T; P ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-              f.debug_struct("GroupBy").field("slice", &self.slice).finish()
+              f.debug_struct("ChunkBy").field("slice", &self.slice).finish()
           }
       *)
       Definition fmt (T P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -20780,22 +20909,20 @@ Module slice.
                           "debug_struct",
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "GroupBy" |) ]
+                        [ M.read (| f |); M.read (| Value.String "ChunkBy" |) ]
                       |)
                     |);
                     M.read (| Value.String "slice" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::iter::GroupBy",
-                        "slice"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::ChunkBy",
+                      "slice"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -20805,11 +20932,11 @@ Module slice.
           (Self T P)
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
-    End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_GroupBy_T_P.
+    End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_ChunkBy_T_P.
     
     (* StructRecord
       {
-        name := "GroupByMut";
+        name := "ChunkByMut";
         const_params := [];
         ty_params := [ "T"; "P" ];
         fields :=
@@ -20819,13 +20946,13 @@ Module slice.
           ];
       } *)
     
-    Module Impl_core_slice_iter_GroupByMut_T_P.
+    Module Impl_core_slice_iter_ChunkByMut_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::GroupByMut") [] [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::ChunkByMut") [] [ T; P ].
       
       (*
           pub(super) fn new(slice: &'a mut [T], predicate: P) -> Self {
-              GroupByMut { slice, predicate }
+              ChunkByMut { slice, predicate }
           }
       *)
       Definition new (T P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -20836,19 +20963,19 @@ Module slice.
             (let slice := M.alloc (| slice |) in
             let predicate := M.alloc (| predicate |) in
             Value.StructRecord
-              "core::slice::iter::GroupByMut"
+              "core::slice::iter::ChunkByMut"
               [ ("slice", M.read (| slice |)); ("predicate", M.read (| predicate |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
         forall (T P : Ty.t),
         M.IsAssociatedFunction (Self T P) "new" (new T P).
-    End Impl_core_slice_iter_GroupByMut_T_P.
+    End Impl_core_slice_iter_ChunkByMut_T_P.
     
-    Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_GroupByMut_T_P.
+    Module Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkByMut_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::GroupByMut") [] [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::ChunkByMut") [] [ T; P ].
       
       (*     type Item = &'a mut [T]; *)
       Definition _Item (T P : Ty.t) : Ty.t :=
@@ -20896,7 +21023,7 @@ Module slice.
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
-                                    "core::slice::iter::GroupByMut",
+                                    "core::slice::iter::ChunkByMut",
                                     "slice"
                                   |)
                                 |)
@@ -20907,7 +21034,7 @@ Module slice.
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ len := M.alloc (| Value.Integer 1 |) in
+                      (let~ len := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
                       let~ iter :=
                         M.alloc (|
                           M.call_closure (|
@@ -20920,11 +21047,11 @@ Module slice.
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
-                                  "core::slice::iter::GroupByMut",
+                                  "core::slice::iter::ChunkByMut",
                                   "slice"
                                 |)
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -20988,7 +21115,7 @@ Module slice.
                                                     [
                                                       M.SubPointer.get_struct_record_field (|
                                                         M.read (| self |),
-                                                        "core::slice::iter::GroupByMut",
+                                                        "core::slice::iter::ChunkByMut",
                                                         "predicate"
                                                       |);
                                                       Value.Tuple [ M.read (| l |); M.read (| r |) ]
@@ -21003,10 +21130,10 @@ Module slice.
                                             let β := len in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| β |))
-                                                (Value.Integer 1)
+                                              BinOp.Wrap.add (|
+                                                M.read (| β |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -21042,7 +21169,7 @@ Module slice.
                             [
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
-                                "core::slice::iter::GroupByMut",
+                                "core::slice::iter::ChunkByMut",
                                 "slice"
                               |)
                             ]
@@ -21070,7 +21197,7 @@ Module slice.
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
-                                    "core::slice::iter::GroupByMut",
+                                    "core::slice::iter::ChunkByMut",
                                     "slice"
                                   |),
                                   M.read (| tail |)
@@ -21083,7 +21210,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -21116,7 +21243,7 @@ Module slice.
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
-                                    "core::slice::iter::GroupByMut",
+                                    "core::slice::iter::ChunkByMut",
                                     "slice"
                                   |)
                                 |)
@@ -21127,8 +21254,10 @@ Module slice.
                       M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 0;
-                            Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple
+                              "core::option::Option::Some"
+                              [ Value.Integer IntegerKind.Usize 0 ]
                           ]
                       |)));
                   fun γ =>
@@ -21136,7 +21265,7 @@ Module slice.
                       (M.alloc (|
                         Value.Tuple
                           [
-                            Value.Integer 1;
+                            Value.Integer IntegerKind.Usize 1;
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
@@ -21150,7 +21279,7 @@ Module slice.
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
-                                        "core::slice::iter::GroupByMut",
+                                        "core::slice::iter::ChunkByMut",
                                         "slice"
                                       |)
                                     |)
@@ -21162,7 +21291,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -21179,14 +21308,14 @@ Module slice.
             M.call_closure (|
               M.get_trait_method (|
                 "core::iter::traits::double_ended::DoubleEndedIterator",
-                Ty.apply (Ty.path "core::slice::iter::GroupByMut") [] [ T; P ],
+                Ty.apply (Ty.path "core::slice::iter::ChunkByMut") [] [ T; P ],
                 [],
                 "next_back",
                 []
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -21202,11 +21331,11 @@ Module slice.
             ("size_hint", InstanceField.Method (size_hint T P));
             ("last", InstanceField.Method (last T P))
           ].
-    End Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_GroupByMut_T_P.
+    End Impl_core_iter_traits_iterator_Iterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkByMut_T_P.
     
-    Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_GroupByMut_T_P.
+    Module Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkByMut_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::GroupByMut") [] [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::ChunkByMut") [] [ T; P ].
       
       (*
           fn next_back(&mut self) -> Option<Self::Item> {
@@ -21250,7 +21379,7 @@ Module slice.
                                 M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
-                                    "core::slice::iter::GroupByMut",
+                                    "core::slice::iter::ChunkByMut",
                                     "slice"
                                   |)
                                 |)
@@ -21261,7 +21390,7 @@ Module slice.
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (let~ len := M.alloc (| Value.Integer 1 |) in
+                      (let~ len := M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
                       let~ iter :=
                         M.alloc (|
                           M.call_closure (|
@@ -21274,11 +21403,11 @@ Module slice.
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
-                                  "core::slice::iter::GroupByMut",
+                                  "core::slice::iter::ChunkByMut",
                                   "slice"
                                 |)
                               |);
-                              Value.Integer 2
+                              Value.Integer IntegerKind.Usize 2
                             ]
                           |)
                         |) in
@@ -21342,7 +21471,7 @@ Module slice.
                                                     [
                                                       M.SubPointer.get_struct_record_field (|
                                                         M.read (| self |),
-                                                        "core::slice::iter::GroupByMut",
+                                                        "core::slice::iter::ChunkByMut",
                                                         "predicate"
                                                       |);
                                                       Value.Tuple [ M.read (| l |); M.read (| r |) ]
@@ -21357,10 +21486,10 @@ Module slice.
                                             let β := len in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| β |))
-                                                (Value.Integer 1)
+                                              BinOp.Wrap.add (|
+                                                M.read (| β |),
+                                                Value.Integer IntegerKind.Usize 1
+                                              |)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -21396,7 +21525,7 @@ Module slice.
                             [
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
-                                "core::slice::iter::GroupByMut",
+                                "core::slice::iter::ChunkByMut",
                                 "slice"
                               |)
                             ]
@@ -21412,17 +21541,17 @@ Module slice.
                             |),
                             [
                               M.read (| slice |);
-                              BinOp.Wrap.sub
-                                Integer.Usize
-                                (M.call_closure (|
+                              BinOp.Wrap.sub (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| slice |) ]
-                                |))
-                                (M.read (| len |))
+                                |),
+                                M.read (| len |)
+                              |)
                             ]
                           |)
                         |),
@@ -21437,7 +21566,7 @@ Module slice.
                                 M.write (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
-                                    "core::slice::iter::GroupByMut",
+                                    "core::slice::iter::ChunkByMut",
                                     "slice"
                                   |),
                                   M.read (| head |)
@@ -21450,7 +21579,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -21460,11 +21589,11 @@ Module slice.
           (Self T P)
           (* Trait polymorphic types *) []
           (* Instance *) [ ("next_back", InstanceField.Method (next_back T P)) ].
-    End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_GroupByMut_T_P.
+    End Impl_core_iter_traits_double_ended_DoubleEndedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkByMut_T_P.
     
-    Module Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_GroupByMut_T_P.
+    Module Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkByMut_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::GroupByMut") [] [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::ChunkByMut") [] [ T; P ].
       
       Axiom Implements :
         forall (T P : Ty.t),
@@ -21473,15 +21602,15 @@ Module slice.
           (Self T P)
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_GroupByMut_T_P.
+    End Impl_core_iter_traits_marker_FusedIterator_where_core_ops_function_FnMut_P_Tuple_ref__T_ref__T__for_core_slice_iter_ChunkByMut_T_P.
     
-    Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_GroupByMut_T_P.
+    Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_ChunkByMut_T_P.
       Definition Self (T P : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::slice::iter::GroupByMut") [] [ T; P ].
+        Ty.apply (Ty.path "core::slice::iter::ChunkByMut") [] [ T; P ].
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-              f.debug_struct("GroupByMut").field("slice", &self.slice).finish()
+              f.debug_struct("ChunkByMut").field("slice", &self.slice).finish()
           }
       *)
       Definition fmt (T P : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -21512,22 +21641,20 @@ Module slice.
                           "debug_struct",
                           []
                         |),
-                        [ M.read (| f |); M.read (| Value.String "GroupByMut" |) ]
+                        [ M.read (| f |); M.read (| Value.String "ChunkByMut" |) ]
                       |)
                     |);
                     M.read (| Value.String "slice" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::slice::iter::GroupByMut",
-                        "slice"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::slice::iter::ChunkByMut",
+                      "slice"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -21537,6 +21664,6 @@ Module slice.
           (Self T P)
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T P)) ].
-    End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_GroupByMut_T_P.
+    End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_slice_iter_ChunkByMut_T_P.
   End iter.
 End slice.

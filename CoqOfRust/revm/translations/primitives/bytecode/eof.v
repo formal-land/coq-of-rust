@@ -80,7 +80,7 @@ Module bytecode.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -111,34 +111,28 @@ Module bytecode.
                 M.read (| f |);
                 M.read (| Value.String "Eof" |);
                 M.read (| Value.String "header" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_primitives::bytecode::eof::Eof",
-                    "header"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_primitives::bytecode::eof::Eof",
+                  "header"
+                |);
                 M.read (| Value.String "body" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_primitives::bytecode::eof::Eof",
+                  "body"
+                |);
+                M.read (| Value.String "raw" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_primitives::bytecode::eof::Eof",
-                    "body"
-                  |));
-                M.read (| Value.String "raw" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::bytecode::eof::Eof",
-                      "raw"
-                    |)
-                  |))
+                    "raw"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -239,7 +233,7 @@ Module bytecode.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -249,17 +243,6 @@ Module bytecode.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_primitives_bytecode_eof_Eof.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_Eof.
-      Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::Eof".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_Eof.
     
     Module Impl_core_cmp_Eq_for_revm_primitives_bytecode_eof_Eof.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::Eof".
@@ -294,7 +277,7 @@ Module bytecode.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -377,7 +360,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -429,47 +412,45 @@ Module bytecode.
                             [ Ty.path "alloc::alloc::Global" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.read (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer 1 ]
-                                          [
-                                            Ty.path
-                                              "revm_primitives::bytecode::eof::types_section::TypesSection"
-                                          ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
+                            M.read (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
                                     []
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      Value.Array
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
                                         [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::default::Default",
-                                              Ty.path
-                                                "revm_primitives::bytecode::eof::types_section::TypesSection",
-                                              [],
-                                              "default",
-                                              []
-                                            |),
+                                          Ty.path
+                                            "revm_primitives::bytecode::eof::types_section::TypesSection"
+                                        ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::default::Default",
+                                            Ty.path
+                                              "revm_primitives::bytecode::eof::types_section::TypesSection",
+                                            [],
+                                            "default",
                                             []
-                                          |)
-                                        ]
-                                    |)
-                                  ]
-                                |)
-                              |))
+                                          |),
+                                          []
+                                        |)
+                                      ]
+                                  |)
+                                ]
+                              |)
+                            |)
                           ]
                         |));
                       ("code_section",
@@ -483,46 +464,44 @@ Module bytecode.
                             [ Ty.path "alloc::alloc::Global" ]
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.read (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer 1 ]
-                                          [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                                        Ty.path "alloc::alloc::Global"
-                                      ],
-                                    "new",
+                            M.read (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::boxed::Box")
                                     []
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_trait_method (|
-                                              "core::convert::Into",
-                                              Ty.apply
-                                                (Ty.path "array")
-                                                [ Value.Integer 1 ]
-                                                [ Ty.path "u8" ],
-                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ],
-                                              "into",
-                                              []
-                                            |),
-                                            [ Value.Array [ Value.Integer 0 ] ]
-                                          |)
-                                        ]
-                                    |)
-                                  ]
-                                |)
-                              |))
+                                    [
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 1 ]
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::convert::Into",
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 1 ]
+                                              [ Ty.path "u8" ],
+                                            [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                            "into",
+                                            []
+                                          |),
+                                          [ Value.Array [ Value.Integer IntegerKind.U8 0 ] ]
+                                        |)
+                                      ]
+                                  |)
+                                ]
+                              |)
+                            |)
                           ]
                         |));
                       ("container_section",
@@ -563,7 +542,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -587,9 +566,8 @@ Module bytecode.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.add
-              Integer.Usize
-              (M.call_closure (|
+            BinOp.Wrap.add (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "revm_primitives::bytecode::eof::header::EofHeader",
                   "size",
@@ -602,8 +580,8 @@ Module bytecode.
                     "header"
                   |)
                 ]
-              |))
-              (M.call_closure (|
+              |),
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "revm_primitives::bytecode::eof::header::EofHeader",
                   "body_size",
@@ -616,8 +594,9 @@ Module bytecode.
                     "header"
                   |)
                 ]
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_size : M.IsAssociatedFunction Self "size" size.
@@ -637,7 +616,7 @@ Module bytecode.
               "revm_primitives::bytecode::eof::Eof",
               "raw"
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_raw : M.IsAssociatedFunction Self "raw" raw.
@@ -748,62 +727,63 @@ Module bytecode.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let bytes := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        "get",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::ops::range::RangeTo")
-                                            []
-                                            [ Ty.path "usize" ]
-                                        ]
-                                      |),
-                                      [
-                                        M.read (| bytes |);
-                                        Value.StructRecord
-                                          "core::ops::range::RangeTo"
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let bytes := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                          "get",
                                           [
-                                            ("end_",
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "core::cmp::min",
-                                                  [ Ty.path "usize" ]
-                                                |),
-                                                [
-                                                  M.read (| len |);
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
-                                                        []
-                                                        [ Ty.path "u8" ],
-                                                      "len",
-                                                      []
-                                                    |),
-                                                    [ M.read (| bytes |) ]
-                                                  |)
-                                                ]
-                                              |))
+                                            Ty.apply
+                                              (Ty.path "core::ops::range::RangeTo")
+                                              []
+                                              [ Ty.path "usize" ]
                                           ]
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                        |),
+                                        [
+                                          M.read (| bytes |);
+                                          Value.StructRecord
+                                            "core::ops::range::RangeTo"
+                                            [
+                                              ("end_",
+                                                M.call_closure (|
+                                                  M.get_function (|
+                                                    "core::cmp::min",
+                                                    [ Ty.path "usize" ]
+                                                  |),
+                                                  [
+                                                    M.read (| len |);
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "slice")
+                                                          []
+                                                          [ Ty.path "u8" ],
+                                                        "len",
+                                                        []
+                                                      |),
+                                                      [ M.read (| bytes |) ]
+                                                    |)
+                                                  ]
+                                                |))
+                                            ]
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |);
-                (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |))
+                M.alloc (| Value.Array [] |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_data_slice : M.IsAssociatedFunction Self "data_slice" data_slice.
@@ -849,7 +829,7 @@ Module bytecode.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
@@ -943,7 +923,7 @@ Module bytecode.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_encode_slow : M.IsAssociatedFunction Self "encode_slow" encode_slow.
@@ -1186,7 +1166,7 @@ Module bytecode.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.
@@ -1492,7 +1472,7 @@ Module bytecode.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1514,7 +1494,7 @@ Module bytecode.
             (let self := M.alloc (| self |) in
             let state := M.alloc (| state |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1527,11 +1507,11 @@ Module bytecode.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                  [ __self_tag; M.read (| state |) ]
+                  [ __self_discr; M.read (| state |) ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1564,7 +1544,7 @@ Module bytecode.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1574,7 +1554,7 @@ Module bytecode.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1584,9 +1564,9 @@ Module bytecode.
                     [ M.read (| other |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1596,17 +1576,6 @@ Module bytecode.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_primitives_bytecode_eof_EofDecodeError.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_EofDecodeError.
-      Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::EofDecodeError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_EofDecodeError.
     
     Module Impl_core_cmp_Eq_for_revm_primitives_bytecode_eof_EofDecodeError.
       Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::EofDecodeError".
@@ -1622,7 +1591,7 @@ Module bytecode.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.Tuple []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1645,7 +1614,7 @@ Module bytecode.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1655,7 +1624,7 @@ Module bytecode.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1674,11 +1643,11 @@ Module bytecode.
                     "partial_cmp",
                     []
                   |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1700,7 +1669,7 @@ Module bytecode.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1710,7 +1679,7 @@ Module bytecode.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -1723,11 +1692,11 @@ Module bytecode.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1748,7 +1717,7 @@ Module bytecode.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

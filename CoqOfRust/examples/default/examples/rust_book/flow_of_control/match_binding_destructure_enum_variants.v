@@ -9,8 +9,9 @@ fn some_number() -> Option<u32> {
 Definition some_number (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   match ε, τ, α with
   | [], [], [] =>
-    ltac:(M.monadic (Value.StructTuple "core::option::Option::Some" [ Value.Integer 42 ]))
-  | _, _, _ => M.impossible
+    ltac:(M.monadic
+      (Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.U32 42 ]))
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_some_number :
@@ -47,7 +48,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let n := M.copy (| γ0_0 |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 42 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer IntegerKind.U32 42
+                  |) in
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
@@ -60,31 +65,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "The Answer: " |);
-                                    M.read (| Value.String "!
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "The Answer: " |);
+                                  M.read (| Value.String "!
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "u32" ]
-                                      |),
-                                      [ n ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [ n ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -108,31 +109,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Not interesting... " |);
-                                    M.read (| Value.String "
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (| Value.String "Not interesting... " |);
+                                  M.read (| Value.String "
 " |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "u32" ]
-                                      |),
-                                      [ n ]
-                                    |)
-                                  ]
-                              |))
+                                ]
+                            |);
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::rt::Argument",
+                                      "new_display",
+                                      [ Ty.path "u32" ]
+                                    |),
+                                    [ n ]
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -143,7 +140,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "match_binding_destructure_enum_variants::main" main.

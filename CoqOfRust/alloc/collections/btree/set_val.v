@@ -26,7 +26,7 @@ Module collections.
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
                 [ M.read (| f |); M.read (| Value.String "SetValZST" |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -36,17 +36,6 @@ Module collections.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
       End Impl_core_fmt_Debug_for_alloc_collections_btree_set_val_SetValZST.
-      
-      Module Impl_core_marker_StructuralEq_for_alloc_collections_btree_set_val_SetValZST.
-        Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_alloc_collections_btree_set_val_SetValZST.
       
       Module Impl_core_cmp_Eq_for_alloc_collections_btree_set_val_SetValZST.
         Definition Self : Ty.t := Ty.path "alloc::collections::btree::set_val::SetValZST".
@@ -62,7 +51,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.Tuple []))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -96,7 +85,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               Value.Bool true))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -118,7 +107,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               Value.StructTuple "core::cmp::Ordering::Equal" []))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -142,7 +131,7 @@ Module collections.
               Value.StructTuple
                 "core::option::Option::Some"
                 [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -164,7 +153,7 @@ Module collections.
               (let self := M.alloc (| self |) in
               let state := M.alloc (| state |) in
               Value.Tuple []))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -185,7 +174,7 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -204,7 +193,7 @@ Module collections.
           match ε, τ, α with
           | [], [], [] =>
             ltac:(M.monadic (Value.StructTuple "alloc::collections::btree::set_val::SetValZST" []))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -235,7 +224,7 @@ Module collections.
           let Self : Ty.t := Self V in
           match ε, τ, α with
           | [], [], [] => ltac:(M.monadic (Value.Bool false))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -258,7 +247,7 @@ Module collections.
         Definition is_set_val (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           match ε, τ, α with
           | [], [], [] => ltac:(M.monadic (Value.Bool true))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

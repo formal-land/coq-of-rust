@@ -49,7 +49,7 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -98,7 +98,7 @@ Module fmt.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -131,7 +131,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -141,7 +141,7 @@ Module fmt.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -151,9 +151,9 @@ Module fmt.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -163,17 +163,6 @@ Module fmt.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_core_fmt_Alignment.
-  
-  Module Impl_core_marker_StructuralEq_for_core_fmt_Alignment.
-    Definition Self : Ty.t := Ty.path "core::fmt::Alignment".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_core_fmt_Alignment.
   
   Module Impl_core_cmp_Eq_for_core_fmt_Alignment.
     Definition Self : Ty.t := Ty.path "core::fmt::Alignment".
@@ -189,7 +178,7 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -234,7 +223,7 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -259,7 +248,7 @@ Module fmt.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "Error" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -277,7 +266,7 @@ Module fmt.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::fmt::Error" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -287,17 +276,6 @@ Module fmt.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("default", InstanceField.Method default) ].
   End Impl_core_default_Default_for_core_fmt_Error.
-  
-  Module Impl_core_marker_StructuralEq_for_core_fmt_Error.
-    Definition Self : Ty.t := Ty.path "core::fmt::Error".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_core_fmt_Error.
   
   Module Impl_core_cmp_Eq_for_core_fmt_Error.
     Definition Self : Ty.t := Ty.path "core::fmt::Error".
@@ -313,7 +291,7 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -336,7 +314,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -358,7 +336,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -391,7 +369,7 @@ Module fmt.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -415,7 +393,7 @@ Module fmt.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -442,13 +420,14 @@ Module fmt.
                 M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                 [
                   M.read (| c |);
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
+                  M.alloc (|
+                    repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |)
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_char : M.IsProvidedMethod "core::fmt::Write" "write_char" write_char.
@@ -468,7 +447,7 @@ Module fmt.
             |),
             [ M.read (| self |); M.read (| args |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_write_fmt : M.IsProvidedMethod "core::fmt::Write" "write_fmt" write_fmt.
@@ -493,7 +472,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::Write", W, [], "write_str", [] |),
             [ M.read (| M.read (| self |) |); M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -512,7 +491,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::Write", W, [], "write_char", [] |),
             [ M.read (| M.read (| self |) |); M.read (| c |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -531,7 +510,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::Write", W, [], "write_fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| args |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -587,14 +566,14 @@ Module fmt.
           Value.StructRecord
             "core::fmt::Formatter"
             [
-              ("flags", Value.Integer 0);
+              ("flags", Value.Integer IntegerKind.U32 0);
               ("fill", Value.UnicodeChar 32);
               ("align", Value.StructTuple "core::fmt::rt::Alignment::Unknown" []);
               ("width", Value.StructTuple "core::option::Option::None" []);
               ("precision", Value.StructTuple "core::option::Option::None" []);
-              ("buf", (* Unsize *) M.pointer_coercion (M.read (| buf |)))
+              ("buf", M.read (| buf |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -627,40 +606,36 @@ Module fmt.
             "core::fmt::Formatter"
             [
               ("buf",
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.call_closure (|
-                    M.get_trait_method (|
-                      "core::ops::function::FnOnce",
-                      F,
-                      [
-                        Ty.tuple
-                          [
-                            Ty.apply
-                              (Ty.path "&mut")
-                              []
-                              [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]
-                          ]
-                      ],
-                      "call_once",
-                      []
-                    |),
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::ops::function::FnOnce",
+                    F,
                     [
-                      M.read (| wrap |);
-                      Value.Tuple
+                      Ty.tuple
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::fmt::Formatter",
-                                "buf"
-                              |)
-                            |))
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.dyn [ ("core::fmt::Write::Trait", []) ] ]
                         ]
-                    ]
-                  |)));
+                    ],
+                    "call_once",
+                    []
+                  |),
+                  [
+                    M.read (| wrap |);
+                    Value.Tuple
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::fmt::Formatter",
+                            "buf"
+                          |)
+                        |)
+                      ]
+                  ]
+                |));
               ("flags",
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
@@ -702,7 +677,7 @@ Module fmt.
                   |)
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_wrap_buf : M.IsAssociatedFunction Self "wrap_buf" wrap_buf.
@@ -799,7 +774,7 @@ Module fmt.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.alloc (| UnOp.Pure.not (M.read (| is_nonnegative |)) |)) in
+                            M.use (M.alloc (| UnOp.not (| M.read (| is_nonnegative |) |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ :=
@@ -813,7 +788,7 @@ Module fmt.
                             let β := width in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
@@ -851,10 +826,10 @@ Module fmt.
                                     let β := width in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| β |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.add (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -887,10 +862,9 @@ Module fmt.
                               let β := width in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.read (| β |))
-                                  (M.call_closure (|
+                                BinOp.Wrap.add (|
+                                  M.read (| β |),
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::iter::traits::iterator::Iterator",
                                       Ty.path "core::str::iter::Chars",
@@ -904,7 +878,8 @@ Module fmt.
                                         [ M.read (| prefix |) ]
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |) in
                             M.alloc (|
                               Value.StructTuple "core::option::Option::Some" [ M.read (| prefix |) ]
@@ -1033,7 +1008,7 @@ Module fmt.
                           |) in
                         let min := M.copy (| γ0_0 |) in
                         let γ :=
-                          M.alloc (| BinOp.Pure.ge (M.read (| width |)) (M.read (| min |)) |) in
+                          M.alloc (| BinOp.ge (| M.read (| width |), M.read (| min |) |) |) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :=
@@ -1289,10 +1264,7 @@ Module fmt.
                                       |),
                                       [
                                         M.read (| self |);
-                                        BinOp.Wrap.sub
-                                          Integer.Usize
-                                          (M.read (| min |))
-                                          (M.read (| width |));
+                                        BinOp.Wrap.sub (| M.read (| min |), M.read (| width |) |);
                                         Value.StructTuple "core::fmt::Alignment::Right" []
                                       ]
                                     |)
@@ -1571,10 +1543,7 @@ Module fmt.
                                       |),
                                       [
                                         M.read (| self |);
-                                        BinOp.Wrap.sub
-                                          Integer.Usize
-                                          (M.read (| min |))
-                                          (M.read (| width |));
+                                        BinOp.Wrap.sub (| M.read (| min |), M.read (| width |) |);
                                         Value.StructTuple "core::fmt::Alignment::Right" []
                                       ]
                                     |)
@@ -1812,7 +1781,7 @@ Module fmt.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_pad_integral : M.IsAssociatedFunction Self "pad_integral" pad_integral.
@@ -2118,7 +2087,7 @@ Module fmt.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.ge (M.read (| chars_count |)) (M.read (| width |))
+                                      BinOp.ge (| M.read (| chars_count |), M.read (| width |) |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2177,10 +2146,10 @@ Module fmt.
                                               |),
                                               [
                                                 M.read (| self |);
-                                                BinOp.Wrap.sub
-                                                  Integer.Usize
-                                                  (M.read (| width |))
-                                                  (M.read (| chars_count |));
+                                                BinOp.Wrap.sub (|
+                                                  M.read (| width |),
+                                                  M.read (| chars_count |)
+                                                |);
                                                 M.read (| align |)
                                               ]
                                             |)
@@ -2344,7 +2313,7 @@ Module fmt.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_pad : M.IsAssociatedFunction Self "pad" pad.
@@ -2423,28 +2392,32 @@ Module fmt.
                       fun γ =>
                         ltac:(M.monadic
                           (let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Left" |) in
-                          M.alloc (| Value.Tuple [ Value.Integer 0; M.read (| padding |) ] |)));
+                          M.alloc (|
+                            Value.Tuple [ Value.Integer IntegerKind.Usize 0; M.read (| padding |) ]
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Right" |) in
-                          M.alloc (| Value.Tuple [ M.read (| padding |); Value.Integer 0 ] |)));
+                          M.alloc (|
+                            Value.Tuple [ M.read (| padding |); Value.Integer IntegerKind.Usize 0 ]
+                          |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Center" |) in
                           M.alloc (|
                             Value.Tuple
                               [
-                                BinOp.Wrap.div
-                                  Integer.Usize
-                                  (M.read (| padding |))
-                                  (Value.Integer 2);
-                                BinOp.Wrap.div
-                                  Integer.Usize
-                                  (BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| padding |))
-                                    (Value.Integer 1))
-                                  (Value.Integer 2)
+                                BinOp.Wrap.div (|
+                                  M.read (| padding |),
+                                  Value.Integer IntegerKind.Usize 2
+                                |);
+                                BinOp.Wrap.div (|
+                                  BinOp.Wrap.add (|
+                                    M.read (| padding |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |),
+                                  Value.Integer IntegerKind.Usize 2
+                                |)
                               ]
                           |)))
                     ]
@@ -2474,7 +2447,10 @@ Module fmt.
                                   [
                                     Value.StructRecord
                                       "core::ops::range::Range"
-                                      [ ("start", Value.Integer 0); ("end_", M.read (| pre_pad |)) ]
+                                      [
+                                        ("start", Value.Integer IntegerKind.Usize 0);
+                                        ("end_", M.read (| pre_pad |))
+                                      ]
                                   ]
                                 |)
                               |),
@@ -2662,7 +2638,7 @@ Module fmt.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_padding : M.IsAssociatedFunction Self "padding" padding.
@@ -2961,7 +2937,7 @@ Module fmt.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.le (M.read (| width |)) (M.read (| len |))
+                                          BinOp.le (| M.read (| width |), M.read (| len |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -3007,10 +2983,10 @@ Module fmt.
                                                   |),
                                                   [
                                                     M.read (| self |);
-                                                    BinOp.Wrap.sub
-                                                      Integer.Usize
-                                                      (M.read (| width |))
-                                                      (M.read (| len |));
+                                                    BinOp.Wrap.sub (|
+                                                      M.read (| width |),
+                                                      M.read (| len |)
+                                                    |);
                                                     Value.StructTuple
                                                       "core::fmt::Alignment::Right"
                                                       []
@@ -3206,7 +3182,7 @@ Module fmt.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_pad_formatted_parts :
@@ -3277,8 +3253,8 @@ Module fmt.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (| Ty.path "str", "is_empty", [] |),
                                     [
                                       M.read (|
@@ -3289,7 +3265,8 @@ Module fmt.
                                         |)
                                       |)
                                     ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3483,9 +3460,9 @@ Module fmt.
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      BinOp.Pure.gt
-                                                                        (M.read (| nzeroes |))
-                                                                        (M.call_closure (|
+                                                                      BinOp.gt (|
+                                                                        M.read (| nzeroes |),
+                                                                        M.call_closure (|
                                                                           M.get_associated_function (|
                                                                             Ty.path "str",
                                                                             "len",
@@ -3498,7 +3475,8 @@ Module fmt.
                                                                               |)
                                                                             |)
                                                                           ]
-                                                                        |))
+                                                                        |)
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -3625,10 +3603,9 @@ Module fmt.
                                                                   let β := nzeroes in
                                                                   M.write (|
                                                                     β,
-                                                                    BinOp.Wrap.sub
-                                                                      Integer.Usize
-                                                                      (M.read (| β |))
-                                                                      (M.call_closure (|
+                                                                    BinOp.Wrap.sub (|
+                                                                      M.read (| β |),
+                                                                      M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Ty.path "str",
                                                                           "len",
@@ -3641,7 +3618,8 @@ Module fmt.
                                                                             |)
                                                                           |)
                                                                         ]
-                                                                      |))
+                                                                      |)
+                                                                    |)
                                                                   |) in
                                                                 M.alloc (| Value.Tuple [] |)));
                                                             fun γ =>
@@ -3672,9 +3650,10 @@ Module fmt.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                BinOp.Pure.gt
-                                                                  (M.read (| nzeroes |))
-                                                                  (Value.Integer 0)
+                                                                BinOp.gt (|
+                                                                  M.read (| nzeroes |),
+                                                                  Value.Integer IntegerKind.Usize 0
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -3836,7 +3815,10 @@ Module fmt.
                                                   let v := M.copy (| γ0_0 |) in
                                                   let~ s :=
                                                     M.alloc (|
-                                                      repeat (| Value.Integer 0, Value.Integer 5 |)
+                                                      repeat (|
+                                                        Value.Integer IntegerKind.U8 0,
+                                                        Value.Integer IntegerKind.Usize 5
+                                                      |)
                                                     |) in
                                                   let~ len :=
                                                     M.alloc (|
@@ -3900,7 +3882,11 @@ Module fmt.
                                                                           "core::ops::index::IndexMut",
                                                                           Ty.apply
                                                                             (Ty.path "array")
-                                                                            [ Value.Integer 5 ]
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                5
+                                                                            ]
                                                                             [ Ty.path "u8" ],
                                                                           [
                                                                             Ty.apply
@@ -3987,28 +3973,31 @@ Module fmt.
                                                                             let~ _ :=
                                                                               M.write (|
                                                                                 M.read (| c |),
-                                                                                BinOp.Wrap.add
-                                                                                  Integer.U8
-                                                                                  (M.read (|
+                                                                                BinOp.Wrap.add (|
+                                                                                  M.read (|
                                                                                     UnsupportedLiteral
-                                                                                  |))
-                                                                                  (M.rust_cast
-                                                                                    (BinOp.Wrap.rem
-                                                                                      Integer.U16
-                                                                                      (M.read (|
+                                                                                  |),
+                                                                                  M.rust_cast
+                                                                                    (BinOp.Wrap.rem (|
+                                                                                      M.read (|
                                                                                         v
-                                                                                      |))
-                                                                                      (Value.Integer
-                                                                                        10)))
+                                                                                      |),
+                                                                                      Value.Integer
+                                                                                        IntegerKind.U16
+                                                                                        10
+                                                                                    |))
+                                                                                |)
                                                                               |) in
                                                                             let~ _ :=
                                                                               let β := v in
                                                                               M.write (|
                                                                                 β,
-                                                                                BinOp.Wrap.div
-                                                                                  Integer.U16
-                                                                                  (M.read (| β |))
-                                                                                  (Value.Integer 10)
+                                                                                BinOp.Wrap.div (|
+                                                                                  M.read (| β |),
+                                                                                  Value.Integer
+                                                                                    IntegerKind.U16
+                                                                                    10
+                                                                                |)
                                                                               |) in
                                                                             M.alloc (|
                                                                               Value.Tuple []
@@ -4044,21 +4033,23 @@ Module fmt.
                                                                 []
                                                               |),
                                                               [
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| self |),
-                                                                      "core::fmt::Formatter",
-                                                                      "buf"
-                                                                    |)
-                                                                  |));
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::Formatter",
+                                                                    "buf"
+                                                                  |)
+                                                                |);
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
                                                                     "core::ops::index::Index",
                                                                     Ty.apply
                                                                       (Ty.path "array")
-                                                                      [ Value.Integer 5 ]
+                                                                      [
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          5
+                                                                      ]
                                                                       [ Ty.path "u8" ],
                                                                     [
                                                                       Ty.apply
@@ -4176,15 +4167,13 @@ Module fmt.
                                                                 []
                                                               |),
                                                               [
-                                                                (* Unsize *)
-                                                                M.pointer_coercion
-                                                                  (M.read (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      M.read (| self |),
-                                                                      "core::fmt::Formatter",
-                                                                      "buf"
-                                                                    |)
-                                                                  |));
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| self |),
+                                                                    "core::fmt::Formatter",
+                                                                    "buf"
+                                                                  |)
+                                                                |);
                                                                 M.read (| buf |)
                                                               ]
                                                             |)
@@ -4262,7 +4251,7 @@ Module fmt.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_write_formatted_parts :
@@ -4298,14 +4287,18 @@ Module fmt.
               M.read (| data |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_write_str : M.IsAssociatedFunction Self "write_str" write_str.
     
     (*
         pub fn write_fmt(&mut self, fmt: Arguments<'_>) -> Result {
-            write(self.buf, fmt)
+            if let Some(s) = fmt.as_statically_known_str() {
+                self.buf.write_str(s)
+            } else {
+                write(self.buf, fmt)
+            }
         }
     *)
     Definition write_fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4314,22 +4307,72 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let fmt := M.alloc (| fmt |) in
-          M.call_closure (|
-            M.get_function (| "core::fmt::write", [] |),
-            [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::fmt::Formatter",
-                    "buf"
-                  |)
-                |));
-              M.read (| fmt |)
-            ]
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "as_statically_known_str",
+                            []
+                          |),
+                          [ fmt ]
+                        |)
+                      |) in
+                    let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let s := M.copy (| γ0_0 |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::fmt::Write",
+                          Ty.dyn [ ("core::fmt::Write::Trait", []) ],
+                          [],
+                          "write_str",
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::fmt::Formatter",
+                              "buf"
+                            |)
+                          |);
+                          M.read (| s |)
+                        ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "core::fmt::write", [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::fmt::Formatter",
+                              "buf"
+                            |)
+                          |);
+                          M.read (| fmt |)
+                        ]
+                      |)
+                    |)))
+              ]
+            |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_write_fmt : M.IsAssociatedFunction Self "write_fmt" write_fmt.
@@ -4351,7 +4394,7 @@ Module fmt.
               "flags"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_flags : M.IsAssociatedFunction Self "flags" flags.
@@ -4373,7 +4416,7 @@ Module fmt.
               "fill"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_fill : M.IsAssociatedFunction Self "fill" fill.
@@ -4432,7 +4475,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_align : M.IsAssociatedFunction Self "align" align.
@@ -4454,7 +4497,7 @@ Module fmt.
               "width"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_width : M.IsAssociatedFunction Self "width" width.
@@ -4476,7 +4519,7 @@ Module fmt.
               "precision"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_precision : M.IsAssociatedFunction Self "precision" precision.
@@ -4491,8 +4534,8 @@ Module fmt.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
+          BinOp.ne (|
+            BinOp.bit_and
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -4500,9 +4543,13 @@ Module fmt.
                   "flags"
                 |)
               |))
-              (BinOp.Wrap.shl (Value.Integer 1) (M.rust_cast (Value.Integer 0))))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+              (BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U32 1,
+                M.rust_cast (Value.Integer IntegerKind.Isize 0)
+              |)),
+            Value.Integer IntegerKind.U32 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sign_plus : M.IsAssociatedFunction Self "sign_plus" sign_plus.
@@ -4517,8 +4564,8 @@ Module fmt.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
+          BinOp.ne (|
+            BinOp.bit_and
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -4526,9 +4573,13 @@ Module fmt.
                   "flags"
                 |)
               |))
-              (BinOp.Wrap.shl (Value.Integer 1) (M.rust_cast (Value.Integer 1))))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+              (BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U32 1,
+                M.rust_cast (Value.Integer IntegerKind.Isize 1)
+              |)),
+            Value.Integer IntegerKind.U32 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sign_minus : M.IsAssociatedFunction Self "sign_minus" sign_minus.
@@ -4543,8 +4594,8 @@ Module fmt.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
+          BinOp.ne (|
+            BinOp.bit_and
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -4552,9 +4603,13 @@ Module fmt.
                   "flags"
                 |)
               |))
-              (BinOp.Wrap.shl (Value.Integer 1) (M.rust_cast (Value.Integer 2))))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+              (BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U32 1,
+                M.rust_cast (Value.Integer IntegerKind.Isize 2)
+              |)),
+            Value.Integer IntegerKind.U32 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_alternate : M.IsAssociatedFunction Self "alternate" alternate.
@@ -4569,8 +4624,8 @@ Module fmt.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
+          BinOp.ne (|
+            BinOp.bit_and
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -4578,9 +4633,13 @@ Module fmt.
                   "flags"
                 |)
               |))
-              (BinOp.Wrap.shl (Value.Integer 1) (M.rust_cast (Value.Integer 3))))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+              (BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U32 1,
+                M.rust_cast (Value.Integer IntegerKind.Isize 3)
+              |)),
+            Value.Integer IntegerKind.U32 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sign_aware_zero_pad :
@@ -4596,8 +4655,8 @@ Module fmt.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
+          BinOp.ne (|
+            BinOp.bit_and
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -4605,9 +4664,13 @@ Module fmt.
                   "flags"
                 |)
               |))
-              (BinOp.Wrap.shl (Value.Integer 1) (M.rust_cast (Value.Integer 4))))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+              (BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U32 1,
+                M.rust_cast (Value.Integer IntegerKind.Isize 4)
+              |)),
+            Value.Integer IntegerKind.U32 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_lower_hex :
@@ -4623,8 +4686,8 @@ Module fmt.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
+          BinOp.ne (|
+            BinOp.bit_and
               (M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
@@ -4632,9 +4695,13 @@ Module fmt.
                   "flags"
                 |)
               |))
-              (BinOp.Wrap.shl (Value.Integer 1) (M.rust_cast (Value.Integer 5))))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+              (BinOp.Wrap.shl (|
+                Value.Integer IntegerKind.U32 1,
+                M.rust_cast (Value.Integer IntegerKind.Isize 5)
+              |)),
+            Value.Integer IntegerKind.U32 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_upper_hex :
@@ -4655,7 +4722,7 @@ Module fmt.
             M.get_function (| "core::fmt::builders::debug_struct_new", [] |),
             [ M.read (| self |); M.read (| name |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_struct : M.IsAssociatedFunction Self "debug_struct" debug_struct.
@@ -4700,11 +4767,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name1 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value1 |))
-                  ]
+                  [ builder; M.read (| name1 |); M.read (| value1 |) ]
                 |)
               |) in
             M.alloc (|
@@ -4718,7 +4781,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_struct_field1_finish :
@@ -4769,11 +4832,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name1 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value1 |))
-                  ]
+                  [ builder; M.read (| name1 |); M.read (| value1 |) ]
                 |)
               |) in
             let~ _ :=
@@ -4784,11 +4843,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name2 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value2 |))
-                  ]
+                  [ builder; M.read (| name2 |); M.read (| value2 |) ]
                 |)
               |) in
             M.alloc (|
@@ -4802,7 +4857,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_struct_field2_finish :
@@ -4858,11 +4913,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name1 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value1 |))
-                  ]
+                  [ builder; M.read (| name1 |); M.read (| value1 |) ]
                 |)
               |) in
             let~ _ :=
@@ -4873,11 +4924,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name2 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value2 |))
-                  ]
+                  [ builder; M.read (| name2 |); M.read (| value2 |) ]
                 |)
               |) in
             let~ _ :=
@@ -4888,11 +4935,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name3 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value3 |))
-                  ]
+                  [ builder; M.read (| name3 |); M.read (| value3 |) ]
                 |)
               |) in
             M.alloc (|
@@ -4906,7 +4949,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_struct_field3_finish :
@@ -4967,11 +5010,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name1 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value1 |))
-                  ]
+                  [ builder; M.read (| name1 |); M.read (| value1 |) ]
                 |)
               |) in
             let~ _ :=
@@ -4982,11 +5021,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name2 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value2 |))
-                  ]
+                  [ builder; M.read (| name2 |); M.read (| value2 |) ]
                 |)
               |) in
             let~ _ :=
@@ -4997,11 +5032,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name3 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value3 |))
-                  ]
+                  [ builder; M.read (| name3 |); M.read (| value3 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5012,11 +5043,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name4 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value4 |))
-                  ]
+                  [ builder; M.read (| name4 |); M.read (| value4 |) ]
                 |)
               |) in
             M.alloc (|
@@ -5030,7 +5057,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_struct_field4_finish :
@@ -5099,11 +5126,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name1 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value1 |))
-                  ]
+                  [ builder; M.read (| name1 |); M.read (| value1 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5114,11 +5137,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name2 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value2 |))
-                  ]
+                  [ builder; M.read (| name2 |); M.read (| value2 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5129,11 +5148,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name3 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value3 |))
-                  ]
+                  [ builder; M.read (| name3 |); M.read (| value3 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5144,11 +5159,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name4 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value4 |))
-                  ]
+                  [ builder; M.read (| name4 |); M.read (| value4 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5159,11 +5170,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [
-                    builder;
-                    M.read (| name5 |);
-                    (* Unsize *) M.pointer_coercion (M.read (| value5 |))
-                  ]
+                  [ builder; M.read (| name5 |); M.read (| value5 |) ]
                 |)
               |) in
             M.alloc (|
@@ -5177,7 +5184,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_struct_field5_finish :
@@ -5264,10 +5271,12 @@ Module fmt.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (BinOp.Pure.eq
-                                        (M.read (| M.read (| left_val |) |))
-                                        (M.read (| M.read (| right_val |) |)))
+                                    UnOp.not (|
+                                      BinOp.eq (|
+                                        M.read (| M.read (| left_val |) |),
+                                        M.read (| M.read (| right_val |) |)
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -5442,7 +5451,7 @@ Module fmt.
                                             [
                                               builder;
                                               M.read (| M.read (| name |) |);
-                                              (* Unsize *) M.pointer_coercion (M.read (| value |))
+                                              M.read (| value |)
                                             ]
                                           |)
                                         |) in
@@ -5464,7 +5473,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_struct_fields_finish :
@@ -5485,7 +5494,7 @@ Module fmt.
             M.get_function (| "core::fmt::builders::debug_tuple_new", [] |),
             [ M.read (| self |); M.read (| name |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_tuple : M.IsAssociatedFunction Self "debug_tuple" debug_tuple.
@@ -5524,7 +5533,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value1 |)) ]
+                  [ builder; M.read (| value1 |) ]
                 |)
               |) in
             M.alloc (|
@@ -5538,7 +5547,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_tuple_field1_finish :
@@ -5585,7 +5594,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value1 |)) ]
+                  [ builder; M.read (| value1 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5596,7 +5605,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value2 |)) ]
+                  [ builder; M.read (| value2 |) ]
                 |)
               |) in
             M.alloc (|
@@ -5610,7 +5619,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_tuple_field2_finish :
@@ -5660,7 +5669,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value1 |)) ]
+                  [ builder; M.read (| value1 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5671,7 +5680,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value2 |)) ]
+                  [ builder; M.read (| value2 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5682,7 +5691,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value3 |)) ]
+                  [ builder; M.read (| value3 |) ]
                 |)
               |) in
             M.alloc (|
@@ -5696,7 +5705,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_tuple_field3_finish :
@@ -5749,7 +5758,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value1 |)) ]
+                  [ builder; M.read (| value1 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5760,7 +5769,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value2 |)) ]
+                  [ builder; M.read (| value2 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5771,7 +5780,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value3 |)) ]
+                  [ builder; M.read (| value3 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5782,7 +5791,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value4 |)) ]
+                  [ builder; M.read (| value4 |) ]
                 |)
               |) in
             M.alloc (|
@@ -5796,7 +5805,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_tuple_field4_finish :
@@ -5852,7 +5861,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value1 |)) ]
+                  [ builder; M.read (| value1 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5863,7 +5872,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value2 |)) ]
+                  [ builder; M.read (| value2 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5874,7 +5883,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value3 |)) ]
+                  [ builder; M.read (| value3 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5885,7 +5894,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value4 |)) ]
+                  [ builder; M.read (| value4 |) ]
                 |)
               |) in
             let~ _ :=
@@ -5896,7 +5905,7 @@ Module fmt.
                     "field",
                     []
                   |),
-                  [ builder; (* Unsize *) M.pointer_coercion (M.read (| value5 |)) ]
+                  [ builder; M.read (| value5 |) ]
                 |)
               |) in
             M.alloc (|
@@ -5910,7 +5919,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_tuple_field5_finish :
@@ -6029,10 +6038,7 @@ Module fmt.
                                               "field",
                                               []
                                             |),
-                                            [
-                                              builder;
-                                              (* Unsize *) M.pointer_coercion (M.read (| value |))
-                                            ]
+                                            [ builder; M.read (| value |) ]
                                           |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
@@ -6053,7 +6059,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_tuple_fields_finish :
@@ -6073,7 +6079,7 @@ Module fmt.
             M.get_function (| "core::fmt::builders::debug_list_new", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_list : M.IsAssociatedFunction Self "debug_list" debug_list.
@@ -6092,7 +6098,7 @@ Module fmt.
             M.get_function (| "core::fmt::builders::debug_set_new", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_set : M.IsAssociatedFunction Self "debug_set" debug_set.
@@ -6111,7 +6117,7 @@ Module fmt.
             M.get_function (| "core::fmt::builders::debug_map_new", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_debug_map : M.IsAssociatedFunction Self "debug_map" debug_map.
@@ -6187,7 +6193,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6202,188 +6208,50 @@ Module fmt.
     Definition Self : Ty.t := Ty.path "core::fmt::Arguments".
     
     (*
-        pub const fn new_const(pieces: &'a [&'static str]) -> Self {
-            if pieces.len() > 1 {
-                panic!("invalid args");
-            }
+        pub const fn new_const<const N: usize>(pieces: &'a [&'static str; N]) -> Self {
+            const { assert!(N <= 1) };
             Arguments { pieces, fmt: None, args: &[] }
         }
     *)
     Definition new_const (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ pieces ] =>
+      | [ N ], [], [ pieces ] =>
         ltac:(M.monadic
           (let pieces := M.alloc (| pieces |) in
           M.read (|
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            BinOp.Pure.gt
-                              (M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "slice")
-                                    []
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                  "len",
-                                  []
-                                |),
-                                [ M.read (| pieces |) ]
-                              |))
-                              (Value.Integer 1)
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        M.never_to_any (|
-                          M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  []
-                                |),
-                                [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array [ M.read (| Value.String "invalid args" |) ]
-                                    |))
-                                ]
-                              |)
-                            ]
-                          |)
-                        |)
-                      |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
+            let~ _ := M.get_constant (| "core::fmt::new_const_discriminant" |) in
             M.alloc (|
               Value.StructRecord
                 "core::fmt::Arguments"
                 [
                   ("pieces", M.read (| pieces |));
                   ("fmt", Value.StructTuple "core::option::Option::None" []);
-                  ("args", (* Unsize *) M.pointer_coercion (M.alloc (| Value.Array [] |)))
+                  ("args", M.alloc (| Value.Array [] |))
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_const : M.IsAssociatedFunction Self "new_const" new_const.
     
     (*
-        pub fn new_v1(pieces: &'a [&'static str], args: &'a [rt::Argument<'a>]) -> Arguments<'a> {
-            if pieces.len() < args.len() || pieces.len() > args.len() + 1 {
-                panic!("invalid args");
-            }
+        pub fn new_v1<const P: usize, const A: usize>(
+            pieces: &'a [&'static str; P],
+            args: &'a [rt::Argument<'a>; A],
+        ) -> Arguments<'a> {
+            const { assert!(P >= A && P <= A + 1, "invalid args") }
             Arguments { pieces, fmt: None, args }
         }
     *)
     Definition new_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [ pieces; args ] =>
+      | [ P; A ], [], [ pieces; args ] =>
         ltac:(M.monadic
           (let pieces := M.alloc (| pieces |) in
           let args := M.alloc (| args |) in
           M.read (|
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ :=
-                        M.use
-                          (M.alloc (|
-                            LogicalOp.or (|
-                              BinOp.Pure.lt
-                                (M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "slice")
-                                      []
-                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                    "len",
-                                    []
-                                  |),
-                                  [ M.read (| pieces |) ]
-                                |))
-                                (M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "slice")
-                                      []
-                                      [ Ty.path "core::fmt::rt::Argument" ],
-                                    "len",
-                                    []
-                                  |),
-                                  [ M.read (| args |) ]
-                                |)),
-                              ltac:(M.monadic
-                                (BinOp.Pure.gt
-                                  (M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
-                                        []
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                                      "len",
-                                      []
-                                    |),
-                                    [ M.read (| pieces |) ]
-                                  |))
-                                  (BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [ Ty.path "core::fmt::rt::Argument" ],
-                                        "len",
-                                        []
-                                      |),
-                                      [ M.read (| args |) ]
-                                    |))
-                                    (Value.Integer 1))))
-                            |)
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        M.never_to_any (|
-                          M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  []
-                                |),
-                                [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array [ M.read (| Value.String "invalid args" |) ]
-                                    |))
-                                ]
-                              |)
-                            ]
-                          |)
-                        |)
-                      |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
+            let~ _ := M.get_constant (| "core::fmt::new_v1_discriminant" |) in
             M.alloc (|
               Value.StructRecord
                 "core::fmt::Arguments"
@@ -6394,7 +6262,7 @@ Module fmt.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_v1 : M.IsAssociatedFunction Self "new_v1" new_v1.
@@ -6424,7 +6292,7 @@ Module fmt.
               ("fmt", Value.StructTuple "core::option::Option::Some" [ M.read (| fmt |) ]);
               ("args", M.read (| args |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_v1_formatted :
@@ -6534,19 +6402,24 @@ Module fmt.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let x := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_associated_function (| Ty.path "str", "len", [] |),
-                                          [ M.read (| M.read (| x |) |) ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let x := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "str",
+                                              "len",
+                                              []
+                                            |),
+                                            [ M.read (| M.read (| x |) |) ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -6592,8 +6465,8 @@ Module fmt.
                                 (M.alloc (|
                                   LogicalOp.and (|
                                     LogicalOp.and (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "slice")
@@ -6611,7 +6484,8 @@ Module fmt.
                                               |)
                                             |)
                                           ]
-                                        |)),
+                                        |)
+                                      |),
                                       ltac:(M.monadic
                                         (M.call_closure (|
                                           M.get_associated_function (|
@@ -6629,21 +6503,22 @@ Module fmt.
                                                     "pieces"
                                                   |)
                                                 |),
-                                                M.alloc (| Value.Integer 0 |)
+                                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)
                                               |)
                                             |)
                                           ]
                                         |)))
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.lt
-                                        (M.read (| pieces_length |))
-                                        (Value.Integer 16)))
+                                      (BinOp.lt (|
+                                        M.read (| pieces_length |),
+                                        Value.Integer IntegerKind.Usize 16
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.Integer 0 |)));
+                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
@@ -6660,9 +6535,10 @@ Module fmt.
                                       "checked_mul",
                                       []
                                     |),
-                                    [ M.read (| pieces_length |); Value.Integer 2 ]
+                                    [ M.read (| pieces_length |); Value.Integer IntegerKind.Usize 2
+                                    ]
                                   |);
-                                  Value.Integer 0
+                                  Value.Integer IntegerKind.Usize 0
                                 ]
                               |)
                             |)))
@@ -6671,7 +6547,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_estimated_capacity :
@@ -6687,7 +6563,7 @@ Module fmt.
     *)
     Definition as_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -6739,12 +6615,94 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
+    
+    (*
+        fn as_statically_known_str(&self) -> Option<&'static str> {
+            let s = self.as_str();
+            if core::intrinsics::is_val_statically_known(s.is_some()) { s } else { None }
+        }
+    *)
+    Definition as_statically_known_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            let~ s :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [] |),
+                  [ M.read (| self |) ]
+                |)
+              |) in
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_function (|
+                              "core::intrinsics::is_val_statically_known",
+                              [ Ty.path "bool" ]
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::option::Option")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                                  "is_some",
+                                  []
+                                |),
+                                [ s ]
+                              |)
+                            ]
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    s));
+                fun γ =>
+                  ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_as_statically_known_str :
+      M.IsAssociatedFunction Self "as_statically_known_str" as_statically_known_str.
   End Impl_core_fmt_Arguments.
   
+  
+  Module Impl_core_marker_Send_for_core_fmt_Arguments.
+    Definition Self : Ty.t := Ty.path "core::fmt::Arguments".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::Send"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_Send_for_core_fmt_Arguments.
+  
+  Module Impl_core_marker_Sync_for_core_fmt_Arguments.
+    Definition Self : Ty.t := Ty.path "core::fmt::Arguments".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::Sync"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_Sync_for_core_fmt_Arguments.
   
   Module Impl_core_fmt_Debug_for_core_fmt_Arguments.
     Definition Self : Ty.t := Ty.path "core::fmt::Arguments".
@@ -6770,7 +6728,7 @@ Module fmt.
             |),
             [ M.read (| self |); M.read (| fmt |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6798,19 +6756,17 @@ Module fmt.
           M.call_closure (|
             M.get_function (| "core::fmt::write", [] |),
             [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| fmt |),
-                    "core::fmt::Formatter",
-                    "buf"
-                  |)
-                |));
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| fmt |),
+                  "core::fmt::Formatter",
+                  "buf"
+                |)
+              |);
               M.read (| M.read (| self |) |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6863,7 +6819,12 @@ Module fmt.
                   if !piece.is_empty() {
                       formatter.buf.write_str( *piece)?;
                   }
-                  arg.fmt(&mut formatter)?;
+  
+                  // SAFETY: There are no formatting parameters and hence no
+                  // count arguments.
+                  unsafe {
+                      arg.fmt(&mut formatter)?;
+                  }
                   idx += 1;
               }
           }
@@ -6906,10 +6867,10 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Formatter", "new", [] |),
-                    [ (* Unsize *) M.pointer_coercion (M.read (| output |)) ]
+                    [ M.read (| output |) ]
                   |)
                 |) in
-              let~ idx := M.alloc (| Value.Integer 0 |) in
+              let~ idx := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
               let~ _ :=
                 M.match_operator (|
                   M.SubPointer.get_struct_record_field (| args, "core::fmt::Arguments", "fmt" |),
@@ -7064,8 +7025,8 @@ Module fmt.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                UnOp.Pure.not
-                                                                  (M.call_closure (|
+                                                                UnOp.not (|
+                                                                  M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.path "str",
                                                                       "is_empty",
@@ -7076,7 +7037,8 @@ Module fmt.
                                                                         M.read (| piece |)
                                                                       |)
                                                                     ]
-                                                                  |))
+                                                                  |)
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -7201,100 +7163,103 @@ Module fmt.
                                                     ]
                                                   |) in
                                                 let~ _ :=
-                                                  M.match_operator (|
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::try_trait::Try",
-                                                          Ty.apply
-                                                            (Ty.path "core::result::Result")
-                                                            []
-                                                            [
-                                                              Ty.tuple [];
-                                                              Ty.path "core::fmt::Error"
-                                                            ],
-                                                          [],
-                                                          "branch",
-                                                          []
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::fmt::rt::Argument",
-                                                              "fmt",
+                                                  let~ _ :=
+                                                    M.match_operator (|
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::try_trait::Try",
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
                                                               []
-                                                            |),
-                                                            [ M.read (| arg |); formatter ]
-                                                          |)
-                                                        ]
-                                                      |)
-                                                    |),
-                                                    [
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Break",
-                                                              0
-                                                            |) in
-                                                          let residual := M.copy (| γ0_0 |) in
-                                                          M.alloc (|
-                                                            M.never_to_any (|
-                                                              M.read (|
-                                                                M.return_ (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::try_trait::FromResidual",
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [
-                                                                          Ty.tuple [];
-                                                                          Ty.path "core::fmt::Error"
-                                                                        ],
-                                                                      [
+                                                              [
+                                                                Ty.tuple [];
+                                                                Ty.path "core::fmt::Error"
+                                                              ],
+                                                            [],
+                                                            "branch",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path "core::fmt::rt::Argument",
+                                                                "fmt",
+                                                                []
+                                                              |),
+                                                              [ M.read (| arg |); formatter ]
+                                                            |)
+                                                          ]
+                                                        |)
+                                                      |),
+                                                      [
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Break",
+                                                                0
+                                                              |) in
+                                                            let residual := M.copy (| γ0_0 |) in
+                                                            M.alloc (|
+                                                              M.never_to_any (|
+                                                                M.read (|
+                                                                  M.return_ (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::try_trait::FromResidual",
                                                                         Ty.apply
                                                                           (Ty.path
                                                                             "core::result::Result")
                                                                           []
                                                                           [
-                                                                            Ty.path
-                                                                              "core::convert::Infallible";
+                                                                            Ty.tuple [];
                                                                             Ty.path
                                                                               "core::fmt::Error"
-                                                                          ]
-                                                                      ],
-                                                                      "from_residual",
-                                                                      []
-                                                                    |),
-                                                                    [ M.read (| residual |) ]
+                                                                          ],
+                                                                        [
+                                                                          Ty.apply
+                                                                            (Ty.path
+                                                                              "core::result::Result")
+                                                                            []
+                                                                            [
+                                                                              Ty.path
+                                                                                "core::convert::Infallible";
+                                                                              Ty.path
+                                                                                "core::fmt::Error"
+                                                                            ]
+                                                                        ],
+                                                                        "from_residual",
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| residual |) ]
+                                                                    |)
                                                                   |)
                                                                 |)
                                                               |)
-                                                            |)
-                                                          |)));
-                                                      fun γ =>
-                                                        ltac:(M.monadic
-                                                          (let γ0_0 :=
-                                                            M.SubPointer.get_struct_tuple_field (|
-                                                              γ,
-                                                              "core::ops::control_flow::ControlFlow::Continue",
-                                                              0
-                                                            |) in
-                                                          let val := M.copy (| γ0_0 |) in
-                                                          val))
-                                                    ]
-                                                  |) in
+                                                            |)));
+                                                        fun γ =>
+                                                          ltac:(M.monadic
+                                                            (let γ0_0 :=
+                                                              M.SubPointer.get_struct_tuple_field (|
+                                                                γ,
+                                                                "core::ops::control_flow::ControlFlow::Continue",
+                                                                0
+                                                              |) in
+                                                            let val := M.copy (| γ0_0 |) in
+                                                            val))
+                                                      ]
+                                                    |) in
+                                                  M.alloc (| Value.Tuple [] |) in
                                                 let~ _ :=
                                                   let β := idx in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.add
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (Value.Integer 1)
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)))
                                           ]
@@ -7451,8 +7416,8 @@ Module fmt.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                UnOp.Pure.not
-                                                                  (M.call_closure (|
+                                                                UnOp.not (|
+                                                                  M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.path "str",
                                                                       "is_empty",
@@ -7463,7 +7428,8 @@ Module fmt.
                                                                         M.read (| piece |)
                                                                       |)
                                                                     ]
-                                                                  |))
+                                                                  |)
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -7687,10 +7653,10 @@ Module fmt.
                                                   let β := idx in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.add
-                                                      Integer.Usize
-                                                      (M.read (| β |))
-                                                      (Value.Integer 1)
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
                                                   |) in
                                                 M.alloc (| Value.Tuple [] |)))
                                           ]
@@ -7832,7 +7798,7 @@ Module fmt.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_write : M.IsFunction "core::fmt::write" write.
@@ -7856,7 +7822,8 @@ Module fmt.
       let value = unsafe { args.get_unchecked(arg.position) };
   
       // Then actually do some printing
-      value.fmt(fmt)
+      // SAFETY: this is a placeholder argument.
+      unsafe { value.fmt(fmt) }
   }
   *)
   Definition run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -7969,16 +7936,16 @@ Module fmt.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (BinOp.Pure.lt
-                                        (M.read (|
+                                    UnOp.not (|
+                                      BinOp.lt (|
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             M.read (| arg |),
                                             "core::fmt::rt::Placeholder",
                                             "position"
                                           |)
-                                        |))
-                                        (M.call_closure (|
+                                        |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "slice")
@@ -7988,7 +7955,9 @@ Module fmt.
                                             []
                                           |),
                                           [ M.read (| args |) ]
-                                        |)))
+                                        |)
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -8041,7 +8010,7 @@ Module fmt.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_run : M.IsFunction "core::fmt::run" run.
@@ -8103,10 +8072,10 @@ Module fmt.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            UnOp.Pure.not
-                                              (BinOp.Pure.lt
-                                                (M.read (| i |))
-                                                (M.call_closure (|
+                                            UnOp.not (|
+                                              BinOp.lt (|
+                                                M.read (| i |),
+                                                M.call_closure (|
                                                   M.get_associated_function (|
                                                     Ty.apply
                                                       (Ty.path "slice")
@@ -8116,7 +8085,9 @@ Module fmt.
                                                     []
                                                   |),
                                                   [ M.read (| args |) ]
-                                                |)))
+                                                |)
+                                              |)
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -8164,7 +8135,7 @@ Module fmt.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_getcount : M.IsFunction "core::fmt::getcount" getcount.
@@ -8194,7 +8165,7 @@ Module fmt.
           Value.StructRecord
             "core::fmt::PostPadding"
             [ ("fill", M.read (| fill |)); ("padding", M.read (| padding |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -8232,7 +8203,7 @@ Module fmt.
                             Value.StructRecord
                               "core::ops::range::Range"
                               [
-                                ("start", Value.Integer 0);
+                                ("start", Value.Integer IntegerKind.Usize 0);
                                 ("end_",
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
@@ -8395,7 +8366,7 @@ Module fmt.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_write : M.IsAssociatedFunction Self "write" write.
@@ -8435,7 +8406,7 @@ Module fmt.
               M.read (| s |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8468,12 +8439,16 @@ Module fmt.
               M.read (| c |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
         fn write_fmt(&mut self, args: Arguments<'_>) -> Result {
-            write(self.buf, args)
+            if let Some(s) = args.as_statically_known_str() {
+                self.buf.write_str(s)
+            } else {
+                write(self.buf, args)
+            }
         }
     *)
     Definition write_fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -8482,22 +8457,72 @@ Module fmt.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let args := M.alloc (| args |) in
-          M.call_closure (|
-            M.get_function (| "core::fmt::write", [] |),
-            [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::fmt::Formatter",
-                    "buf"
-                  |)
-                |));
-              M.read (| args |)
-            ]
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Arguments",
+                            "as_statically_known_str",
+                            []
+                          |),
+                          [ args ]
+                        |)
+                      |) in
+                    let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "core::option::Option::Some",
+                        0
+                      |) in
+                    let s := M.copy (| γ0_0 |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::fmt::Write",
+                          Ty.dyn [ ("core::fmt::Write::Trait", []) ],
+                          [],
+                          "write_str",
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::fmt::Formatter",
+                              "buf"
+                            |)
+                          |);
+                          M.read (| s |)
+                        ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "core::fmt::write", [] |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::fmt::Formatter",
+                              "buf"
+                            |)
+                          |);
+                          M.read (| args |)
+                        ]
+                      |)
+                    |)))
+              ]
+            |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8534,7 +8559,7 @@ Module fmt.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8560,7 +8585,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8587,7 +8612,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::Debug", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8614,7 +8639,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8641,7 +8666,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::Display", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8668,7 +8693,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8695,7 +8720,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::Octal", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8722,7 +8747,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8749,7 +8774,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::Binary", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8776,7 +8801,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8803,7 +8828,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::LowerHex", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8830,7 +8855,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8857,7 +8882,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::UpperHex", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8884,7 +8909,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::LowerExp", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8911,7 +8936,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::LowerExp", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8938,7 +8963,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::UpperExp", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8965,7 +8990,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::UpperExp", T, [], "fmt", [] |),
             [ M.read (| M.read (| self |) |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8995,7 +9020,7 @@ Module fmt.
             β1,
             [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9024,7 +9049,7 @@ Module fmt.
             β1,
             [ fun γ => ltac:(M.monadic (M.never_to_any (| M.read (| M.read (| self |) |) |))) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9053,7 +9078,7 @@ Module fmt.
             M.get_trait_method (| "core::fmt::Display", Ty.path "bool", [], "fmt", [] |),
             [ M.read (| self |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9098,7 +9123,7 @@ Module fmt.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9115,25 +9140,50 @@ Module fmt.
     (*
         fn fmt(&self, f: &mut Formatter<'_>) -> Result {
             f.write_char('"')?;
-            let mut from = 0;
-            for (i, c) in self.char_indices() {
-                let esc = c.escape_debug_ext(EscapeDebugExtArgs {
-                    escape_grapheme_extended: true,
-                    escape_single_quote: false,
-                    escape_double_quote: true,
-                });
-                // If char needs escaping, flush backlog so far and write, else skip
-                if esc.len() != 1 {
-                    f.write_str(&self[from..i])?;
-                    for c in esc {
-                        f.write_char(c)?;
-                    }
-                    from = i + c.len_utf8();
-                }
+    
+            // substring we know is printable
+            let mut printable_range = 0..0;
+    
+            fn needs_escape(b: u8) -> bool {
+                b > 0x7E || b < 0x20 || b == b'\\' || b == b'"'
             }
-            f.write_str(&self[from..])?;
+    
+            // the loop here first skips over runs of printable ASCII as a fast path.
+            // other chars (unicode, or ASCII that needs escaping) are then handled per-`char`.
+            let mut rest = self;
+            while rest.len() > 0 {
+                let Some(non_printable_start) = rest.as_bytes().iter().position(|&b| needs_escape(b))
+                else {
+                    printable_range.end += rest.len();
+                    break;
+                };
+    
+                printable_range.end += non_printable_start;
+                // SAFETY: the position was derived from an iterator, so is known to be within bounds, and at a char boundary
+                rest = unsafe { rest.get_unchecked(non_printable_start..) };
+    
+                let mut chars = rest.chars();
+                if let Some(c) = chars.next() {
+                    let esc = c.escape_debug_ext(EscapeDebugExtArgs {
+                        escape_grapheme_extended: true,
+                        escape_single_quote: false,
+                        escape_double_quote: true,
+                    });
+                    if esc.len() != 1 {
+                        f.write_str(&self[printable_range.clone()])?;
+                        Display::fmt(&esc, f)?;
+                        printable_range.start = printable_range.end + c.len_utf8();
+                    }
+                    printable_range.end += c.len_utf8();
+                }
+                rest = chars.as_str();
+            }
+    
+            f.write_str(&self[printable_range])?;
+    
             f.write_char('"')
         }
+    "
     *)
     Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
@@ -9223,440 +9273,554 @@ Module fmt.
                           val))
                     ]
                   |) in
-                let~ from := M.alloc (| Value.Integer 0 |) in
-                let~ _ :=
-                  M.use
-                    (M.match_operator (|
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::iter::traits::collect::IntoIterator",
-                            Ty.path "core::str::iter::CharIndices",
-                            [],
-                            "into_iter",
-                            []
-                          |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "char_indices", [] |),
-                              [ M.read (| self |) ]
-                            |)
-                          ]
-                        |)
-                      |),
+                let~ printable_range :=
+                  M.alloc (|
+                    Value.StructRecord
+                      "core::ops::range::Range"
                       [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let iter := M.copy (| γ |) in
-                            M.loop (|
-                              ltac:(M.monadic
-                                (let~ _ :=
-                                  M.match_operator (|
-                                    M.alloc (|
+                        ("start", Value.Integer IntegerKind.Usize 0);
+                        ("end_", Value.Integer IntegerKind.Usize 0)
+                      ]
+                  |) in
+                let~ rest := M.copy (| self |) in
+                let~ _ :=
+                  M.loop (|
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.gt (|
                                       M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::iter::traits::iterator::Iterator",
-                                          Ty.path "core::str::iter::CharIndices",
-                                          [],
-                                          "next",
-                                          []
-                                        |),
-                                        [ iter ]
-                                      |)
+                                        M.get_associated_function (| Ty.path "str", "len", [] |),
+                                        [ M.read (| rest |) ]
+                                      |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              M.match_operator (|
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.apply
+                                        (Ty.path "core::slice::iter::Iter")
+                                        []
+                                        [ Ty.path "u8" ],
+                                      [],
+                                      "position",
+                                      [
+                                        Ty.function
+                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ]
+                                          ]
+                                          (Ty.path "bool")
+                                      ]
                                     |),
                                     [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let _ :=
-                                            M.is_struct_tuple (|
-                                              γ,
-                                              "core::option::Option::None"
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (| M.read (| M.break (||) |) |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::option::Option::Some",
-                                              0
-                                            |) in
-                                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
-                                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
-                                          let i := M.copy (| γ1_0 |) in
-                                          let c := M.copy (| γ1_1 |) in
-                                          let~ esc :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "char",
-                                                  "escape_debug_ext",
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (| c |);
-                                                  Value.StructRecord
-                                                    "core::char::methods::EscapeDebugExtArgs"
-                                                    [
-                                                      ("escape_grapheme_extended", Value.Bool true);
-                                                      ("escape_single_quote", Value.Bool false);
-                                                      ("escape_double_quote", Value.Bool true)
-                                                    ]
-                                                ]
-                                              |)
-                                            |) in
-                                          M.match_operator (|
-                                            M.alloc (| Value.Tuple [] |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ :=
-                                                    M.use
-                                                      (M.alloc (|
-                                                        BinOp.Pure.ne
-                                                          (M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::iter::traits::exact_size::ExactSizeIterator",
-                                                              Ty.path "core::char::EscapeDebug",
-                                                              [],
-                                                              "len",
-                                                              []
-                                                            |),
-                                                            [ esc ]
-                                                          |))
-                                                          (Value.Integer 1)
-                                                      |)) in
-                                                  let _ :=
-                                                    M.is_constant_or_break_match (|
-                                                      M.read (| γ |),
-                                                      Value.Bool true
-                                                    |) in
-                                                  let~ _ :=
-                                                    M.match_operator (|
-                                                      M.alloc (|
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                            "iter",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "str",
+                                                "as_bytes",
+                                                []
+                                              |),
+                                              [ M.read (| rest |) ]
+                                            |)
+                                          ]
+                                        |)
+                                      |);
+                                      M.closure
+                                        (fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [ α0 ] =>
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let γ := M.read (| γ |) in
+                                                        let b := M.copy (| γ |) in
                                                         M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::try_trait::Try",
-                                                            Ty.apply
-                                                              (Ty.path "core::result::Result")
-                                                              []
-                                                              [
-                                                                Ty.tuple [];
-                                                                Ty.path "core::fmt::Error"
-                                                              ],
-                                                            [],
-                                                            "branch",
+                                                          M.get_associated_function (|
+                                                            Self,
+                                                            "needs_escape.fmt",
                                                             []
                                                           |),
+                                                          [ M.read (| b |) ]
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end))
+                                    ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let non_printable_start := M.copy (| γ0_0 |) in
+                                      let~ _ :=
+                                        let β :=
+                                          M.SubPointer.get_struct_record_field (|
+                                            printable_range,
+                                            "core::ops::range::Range",
+                                            "end"
+                                          |) in
+                                        M.write (|
+                                          β,
+                                          BinOp.Wrap.add (|
+                                            M.read (| β |),
+                                            M.read (| non_printable_start |)
+                                          |)
+                                        |) in
+                                      let~ _ :=
+                                        M.write (|
+                                          rest,
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "str",
+                                              "get_unchecked",
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::ops::range::RangeFrom")
+                                                  []
+                                                  [ Ty.path "usize" ]
+                                              ]
+                                            |),
+                                            [
+                                              M.read (| rest |);
+                                              Value.StructRecord
+                                                "core::ops::range::RangeFrom"
+                                                [ ("start", M.read (| non_printable_start |)) ]
+                                            ]
+                                          |)
+                                        |) in
+                                      let~ chars :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "str",
+                                              "chars",
+                                              []
+                                            |),
+                                            [ M.read (| rest |) ]
+                                          |)
+                                        |) in
+                                      let~ _ :=
+                                        M.match_operator (|
+                                          M.alloc (| Value.Tuple [] |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_trait_method (|
+                                                        "core::iter::traits::iterator::Iterator",
+                                                        Ty.path "core::str::iter::Chars",
+                                                        [],
+                                                        "next",
+                                                        []
+                                                      |),
+                                                      [ chars ]
+                                                    |)
+                                                  |) in
+                                                let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::option::Option::Some",
+                                                    0
+                                                  |) in
+                                                let c := M.copy (| γ0_0 |) in
+                                                let~ esc :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "char",
+                                                        "escape_debug_ext",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.read (| c |);
+                                                        Value.StructRecord
+                                                          "core::char::methods::EscapeDebugExtArgs"
                                                           [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::Formatter",
-                                                                "write_str",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.read (| f |);
+                                                            ("escape_grapheme_extended",
+                                                              Value.Bool true);
+                                                            ("escape_single_quote",
+                                                              Value.Bool false);
+                                                            ("escape_double_quote", Value.Bool true)
+                                                          ]
+                                                      ]
+                                                    |)
+                                                  |) in
+                                                let~ _ :=
+                                                  M.match_operator (|
+                                                    M.alloc (| Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use
+                                                              (M.alloc (|
+                                                                BinOp.ne (|
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::iter::traits::exact_size::ExactSizeIterator",
+                                                                      Ty.path
+                                                                        "core::char::EscapeDebug",
+                                                                      [],
+                                                                      "len",
+                                                                      []
+                                                                    |),
+                                                                    [ esc ]
+                                                                  |),
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                |)
+                                                              |)) in
+                                                          let _ :=
+                                                            M.is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          let~ _ :=
+                                                            M.match_operator (|
+                                                              M.alloc (|
                                                                 M.call_closure (|
                                                                   M.get_trait_method (|
-                                                                    "core::ops::index::Index",
-                                                                    Ty.path "str",
-                                                                    [
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::ops::range::Range")
-                                                                        []
-                                                                        [ Ty.path "usize" ]
-                                                                    ],
-                                                                    "index",
+                                                                    "core::ops::try_trait::Try",
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path "core::fmt::Error"
+                                                                      ],
+                                                                    [],
+                                                                    "branch",
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.read (| self |);
-                                                                    Value.StructRecord
-                                                                      "core::ops::range::Range"
-                                                                      [
-                                                                        ("start",
-                                                                          M.read (| from |));
-                                                                        ("end_", M.read (| i |))
-                                                                      ]
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          ]
-                                                        |)
-                                                      |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Break",
-                                                                0
-                                                              |) in
-                                                            let residual := M.copy (| γ0_0 |) in
-                                                            M.alloc (|
-                                                              M.never_to_any (|
-                                                                M.read (|
-                                                                  M.return_ (|
                                                                     M.call_closure (|
-                                                                      M.get_trait_method (|
-                                                                        "core::ops::try_trait::FromResidual",
-                                                                        Ty.apply
-                                                                          (Ty.path
-                                                                            "core::result::Result")
-                                                                          []
-                                                                          [
-                                                                            Ty.tuple [];
-                                                                            Ty.path
-                                                                              "core::fmt::Error"
-                                                                          ],
-                                                                        [
-                                                                          Ty.apply
-                                                                            (Ty.path
-                                                                              "core::result::Result")
-                                                                            []
-                                                                            [
-                                                                              Ty.path
-                                                                                "core::convert::Infallible";
-                                                                              Ty.path
-                                                                                "core::fmt::Error"
-                                                                            ]
-                                                                        ],
-                                                                        "from_residual",
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Formatter",
+                                                                        "write_str",
                                                                         []
                                                                       |),
-                                                                      [ M.read (| residual |) ]
-                                                                    |)
-                                                                  |)
-                                                                |)
-                                                              |)
-                                                            |)));
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let γ0_0 :=
-                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                γ,
-                                                                "core::ops::control_flow::ControlFlow::Continue",
-                                                                0
-                                                              |) in
-                                                            let val := M.copy (| γ0_0 |) in
-                                                            val))
-                                                      ]
-                                                    |) in
-                                                  let~ _ :=
-                                                    M.use
-                                                      (M.match_operator (|
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::iter::traits::collect::IntoIterator",
-                                                              Ty.path "core::char::EscapeDebug",
-                                                              [],
-                                                              "into_iter",
-                                                              []
-                                                            |),
-                                                            [ M.read (| esc |) ]
-                                                          |)
-                                                        |),
-                                                        [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let iter := M.copy (| γ |) in
-                                                              M.loop (|
-                                                                ltac:(M.monadic
-                                                                  (let~ _ :=
-                                                                    M.match_operator (|
-                                                                      M.alloc (|
+                                                                      [
+                                                                        M.read (| f |);
                                                                         M.call_closure (|
                                                                           M.get_trait_method (|
-                                                                            "core::iter::traits::iterator::Iterator",
-                                                                            Ty.path
-                                                                              "core::char::EscapeDebug",
-                                                                            [],
-                                                                            "next",
+                                                                            "core::ops::index::Index",
+                                                                            Ty.path "str",
+                                                                            [
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::ops::range::Range")
+                                                                                []
+                                                                                [ Ty.path "usize" ]
+                                                                            ],
+                                                                            "index",
                                                                             []
                                                                           |),
-                                                                          [ iter ]
+                                                                          [
+                                                                            M.read (| self |);
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::clone::Clone",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::ops::range::Range")
+                                                                                  []
+                                                                                  [ Ty.path "usize"
+                                                                                  ],
+                                                                                [],
+                                                                                "clone",
+                                                                                []
+                                                                              |),
+                                                                              [ printable_range ]
+                                                                            |)
+                                                                          ]
                                                                         |)
-                                                                      |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let _ :=
-                                                                              M.is_struct_tuple (|
-                                                                                γ,
-                                                                                "core::option::Option::None"
-                                                                              |) in
-                                                                            M.alloc (|
-                                                                              M.never_to_any (|
-                                                                                M.read (|
-                                                                                  M.break (||)
-                                                                                |)
-                                                                              |)
-                                                                            |)));
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let γ0_0 :=
-                                                                              M.SubPointer.get_struct_tuple_field (|
-                                                                                γ,
-                                                                                "core::option::Option::Some",
-                                                                                0
-                                                                              |) in
-                                                                            let c :=
-                                                                              M.copy (| γ0_0 |) in
-                                                                            let~ _ :=
-                                                                              M.match_operator (|
-                                                                                M.alloc (|
-                                                                                  M.call_closure (|
-                                                                                    M.get_trait_method (|
-                                                                                      "core::ops::try_trait::Try",
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "core::result::Result")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.tuple
-                                                                                            [];
-                                                                                          Ty.path
-                                                                                            "core::fmt::Error"
-                                                                                        ],
-                                                                                      [],
-                                                                                      "branch",
-                                                                                      []
-                                                                                    |),
-                                                                                    [
-                                                                                      M.call_closure (|
-                                                                                        M.get_trait_method (|
-                                                                                          "core::fmt::Write",
-                                                                                          Ty.path
-                                                                                            "core::fmt::Formatter",
-                                                                                          [],
-                                                                                          "write_char",
-                                                                                          []
-                                                                                        |),
-                                                                                        [
-                                                                                          M.read (|
-                                                                                            f
-                                                                                          |);
-                                                                                          M.read (|
-                                                                                            c
-                                                                                          |)
-                                                                                        ]
-                                                                                      |)
-                                                                                    ]
-                                                                                  |)
-                                                                                |),
-                                                                                [
-                                                                                  fun γ =>
-                                                                                    ltac:(M.monadic
-                                                                                      (let γ0_0 :=
-                                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                                          γ,
-                                                                                          "core::ops::control_flow::ControlFlow::Break",
-                                                                                          0
-                                                                                        |) in
-                                                                                      let
-                                                                                            residual :=
-                                                                                        M.copy (|
-                                                                                          γ0_0
-                                                                                        |) in
-                                                                                      M.alloc (|
-                                                                                        M.never_to_any (|
-                                                                                          M.read (|
-                                                                                            M.return_ (|
-                                                                                              M.call_closure (|
-                                                                                                M.get_trait_method (|
-                                                                                                  "core::ops::try_trait::FromResidual",
-                                                                                                  Ty.apply
-                                                                                                    (Ty.path
-                                                                                                      "core::result::Result")
-                                                                                                    []
-                                                                                                    [
-                                                                                                      Ty.tuple
-                                                                                                        [];
-                                                                                                      Ty.path
-                                                                                                        "core::fmt::Error"
-                                                                                                    ],
-                                                                                                  [
-                                                                                                    Ty.apply
-                                                                                                      (Ty.path
-                                                                                                        "core::result::Result")
-                                                                                                      []
-                                                                                                      [
-                                                                                                        Ty.path
-                                                                                                          "core::convert::Infallible";
-                                                                                                        Ty.path
-                                                                                                          "core::fmt::Error"
-                                                                                                      ]
-                                                                                                  ],
-                                                                                                  "from_residual",
-                                                                                                  []
-                                                                                                |),
-                                                                                                [
-                                                                                                  M.read (|
-                                                                                                    residual
-                                                                                                  |)
-                                                                                                ]
-                                                                                              |)
-                                                                                            |)
-                                                                                          |)
-                                                                                        |)
-                                                                                      |)));
-                                                                                  fun γ =>
-                                                                                    ltac:(M.monadic
-                                                                                      (let γ0_0 :=
-                                                                                        M.SubPointer.get_struct_tuple_field (|
-                                                                                          γ,
-                                                                                          "core::ops::control_flow::ControlFlow::Continue",
-                                                                                          0
-                                                                                        |) in
-                                                                                      let val :=
-                                                                                        M.copy (|
-                                                                                          γ0_0
-                                                                                        |) in
-                                                                                      val))
-                                                                                ]
-                                                                              |) in
-                                                                            M.alloc (|
-                                                                              Value.Tuple []
-                                                                            |)))
                                                                       ]
-                                                                    |) in
-                                                                  M.alloc (| Value.Tuple [] |)))
-                                                              |)))
-                                                        ]
-                                                      |)) in
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      from,
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (| i |))
-                                                        (M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path "char",
-                                                            "len_utf8",
-                                                            []
-                                                          |),
-                                                          [ M.read (| c |) ]
-                                                        |))
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Break",
+                                                                        0
+                                                                      |) in
+                                                                    let residual :=
+                                                                      M.copy (| γ0_0 |) in
+                                                                    M.alloc (|
+                                                                      M.never_to_any (|
+                                                                        M.read (|
+                                                                          M.return_ (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::try_trait::FromResidual",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "core::fmt::Error"
+                                                                                  ],
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
+                                                                                      Ty.path
+                                                                                        "core::fmt::Error"
+                                                                                    ]
+                                                                                ],
+                                                                                "from_residual",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.read (|
+                                                                                  residual
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)));
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Continue",
+                                                                        0
+                                                                      |) in
+                                                                    let val := M.copy (| γ0_0 |) in
+                                                                    val))
+                                                              ]
+                                                            |) in
+                                                          let~ _ :=
+                                                            M.match_operator (|
+                                                              M.alloc (|
+                                                                M.call_closure (|
+                                                                  M.get_trait_method (|
+                                                                    "core::ops::try_trait::Try",
+                                                                    Ty.apply
+                                                                      (Ty.path
+                                                                        "core::result::Result")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple [];
+                                                                        Ty.path "core::fmt::Error"
+                                                                      ],
+                                                                    [],
+                                                                    "branch",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::fmt::Display",
+                                                                        Ty.path
+                                                                          "core::char::EscapeDebug",
+                                                                        [],
+                                                                        "fmt",
+                                                                        []
+                                                                      |),
+                                                                      [ esc; M.read (| f |) ]
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Break",
+                                                                        0
+                                                                      |) in
+                                                                    let residual :=
+                                                                      M.copy (| γ0_0 |) in
+                                                                    M.alloc (|
+                                                                      M.never_to_any (|
+                                                                        M.read (|
+                                                                          M.return_ (|
+                                                                            M.call_closure (|
+                                                                              M.get_trait_method (|
+                                                                                "core::ops::try_trait::FromResidual",
+                                                                                Ty.apply
+                                                                                  (Ty.path
+                                                                                    "core::result::Result")
+                                                                                  []
+                                                                                  [
+                                                                                    Ty.tuple [];
+                                                                                    Ty.path
+                                                                                      "core::fmt::Error"
+                                                                                  ],
+                                                                                [
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::result::Result")
+                                                                                    []
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "core::convert::Infallible";
+                                                                                      Ty.path
+                                                                                        "core::fmt::Error"
+                                                                                    ]
+                                                                                ],
+                                                                                "from_residual",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.read (|
+                                                                                  residual
+                                                                                |)
+                                                                              ]
+                                                                            |)
+                                                                          |)
+                                                                        |)
+                                                                      |)
+                                                                    |)));
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ0_0 :=
+                                                                      M.SubPointer.get_struct_tuple_field (|
+                                                                        γ,
+                                                                        "core::ops::control_flow::ControlFlow::Continue",
+                                                                        0
+                                                                      |) in
+                                                                    let val := M.copy (| γ0_0 |) in
+                                                                    val))
+                                                              ]
+                                                            |) in
+                                                          let~ _ :=
+                                                            M.write (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                printable_range,
+                                                                "core::ops::range::Range",
+                                                                "start"
+                                                              |),
+                                                              BinOp.Wrap.add (|
+                                                                M.read (|
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    printable_range,
+                                                                    "core::ops::range::Range",
+                                                                    "end"
+                                                                  |)
+                                                                |),
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path "char",
+                                                                    "len_utf8",
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| c |) ]
+                                                                |)
+                                                              |)
+                                                            |) in
+                                                          M.alloc (| Value.Tuple [] |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (| Value.Tuple [] |)))
+                                                    ]
+                                                  |) in
+                                                let~ _ :=
+                                                  let β :=
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      printable_range,
+                                                      "core::ops::range::Range",
+                                                      "end"
                                                     |) in
-                                                  M.alloc (| Value.Tuple [] |)));
-                                              fun γ =>
-                                                ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                            ]
-                                          |)))
-                                    ]
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                            |)))
-                      ]
-                    |)) in
+                                                  M.write (|
+                                                    β,
+                                                    BinOp.Wrap.add (|
+                                                      M.read (| β |),
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "char",
+                                                          "len_utf8",
+                                                          []
+                                                        |),
+                                                        [ M.read (| c |) ]
+                                                      |)
+                                                    |)
+                                                  |) in
+                                                M.alloc (| Value.Tuple [] |)));
+                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          ]
+                                        |) in
+                                      let~ _ :=
+                                        M.write (|
+                                          rest,
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "core::str::iter::Chars",
+                                              "as_str",
+                                              []
+                                            |),
+                                            [ chars ]
+                                          |)
+                                        |) in
+                                      M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    let~ _ :=
+                                      M.alloc (|
+                                        M.never_to_any (| M.read (| M.break (||) |) |)
+                                      |) in
+                                    M.alloc (| Value.Tuple [] |)
+                                  |)
+                                |)
+                              |)))
+                        ]
+                      |)))
+                  |) in
                 let~ _ :=
                   M.match_operator (|
                     M.alloc (|
@@ -9686,19 +9850,14 @@ Module fmt.
                                   Ty.path "str",
                                   [
                                     Ty.apply
-                                      (Ty.path "core::ops::range::RangeFrom")
+                                      (Ty.path "core::ops::range::Range")
                                       []
                                       [ Ty.path "usize" ]
                                   ],
                                   "index",
                                   []
                                 |),
-                                [
-                                  M.read (| self |);
-                                  Value.StructRecord
-                                    "core::ops::range::RangeFrom"
-                                    [ ("start", M.read (| from |)) ]
-                                ]
+                                [ M.read (| self |); M.read (| printable_range |) ]
                               |)
                             ]
                           |)
@@ -9770,7 +9929,7 @@ Module fmt.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9799,7 +9958,7 @@ Module fmt.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [] |),
             [ M.read (| f |); M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9816,13 +9975,12 @@ Module fmt.
     (*
         fn fmt(&self, f: &mut Formatter<'_>) -> Result {
             f.write_char('\'')?;
-            for c in self.escape_debug_ext(EscapeDebugExtArgs {
+            let esc = self.escape_debug_ext(EscapeDebugExtArgs {
                 escape_grapheme_extended: true,
                 escape_single_quote: true,
                 escape_double_quote: false,
-            }) {
-                f.write_char(c)?
-            }
+            });
+            Display::fmt(&esc, f)?;
             f.write_char('\'')
         }
     *)
@@ -9914,167 +10072,101 @@ Module fmt.
                           val))
                     ]
                   |) in
-                let~ _ :=
-                  M.use
-                    (M.match_operator (|
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::iter::traits::collect::IntoIterator",
-                            Ty.path "core::char::EscapeDebug",
-                            [],
-                            "into_iter",
-                            []
-                          |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "char",
-                                "escape_debug_ext",
-                                []
-                              |),
-                              [
-                                M.read (| M.read (| self |) |);
-                                Value.StructRecord
-                                  "core::char::methods::EscapeDebugExtArgs"
-                                  [
-                                    ("escape_grapheme_extended", Value.Bool true);
-                                    ("escape_single_quote", Value.Bool true);
-                                    ("escape_double_quote", Value.Bool false)
-                                  ]
-                              ]
-                            |)
-                          ]
-                        |)
-                      |),
+                let~ esc :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "char", "escape_debug_ext", [] |),
                       [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let iter := M.copy (| γ |) in
-                            M.loop (|
-                              ltac:(M.monadic
-                                (let~ _ :=
-                                  M.match_operator (|
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::iter::traits::iterator::Iterator",
-                                          Ty.path "core::char::EscapeDebug",
-                                          [],
-                                          "next",
-                                          []
-                                        |),
-                                        [ iter ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let _ :=
-                                            M.is_struct_tuple (|
-                                              γ,
-                                              "core::option::Option::None"
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (| M.read (| M.break (||) |) |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::option::Option::Some",
-                                              0
-                                            |) in
-                                          let c := M.copy (| γ0_0 |) in
-                                          M.match_operator (|
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::ops::try_trait::Try",
-                                                  Ty.apply
-                                                    (Ty.path "core::result::Result")
-                                                    []
-                                                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                                                  [],
-                                                  "branch",
-                                                  []
-                                                |),
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_trait_method (|
-                                                      "core::fmt::Write",
-                                                      Ty.path "core::fmt::Formatter",
-                                                      [],
-                                                      "write_char",
-                                                      []
-                                                    |),
-                                                    [ M.read (| f |); M.read (| c |) ]
-                                                  |)
-                                                ]
-                                              |)
-                                            |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      γ,
-                                                      "core::ops::control_flow::ControlFlow::Break",
-                                                      0
-                                                    |) in
-                                                  let residual := M.copy (| γ0_0 |) in
-                                                  M.alloc (|
-                                                    M.never_to_any (|
-                                                      M.read (|
-                                                        M.return_ (|
-                                                          M.call_closure (|
-                                                            M.get_trait_method (|
-                                                              "core::ops::try_trait::FromResidual",
-                                                              Ty.apply
-                                                                (Ty.path "core::result::Result")
-                                                                []
-                                                                [
-                                                                  Ty.tuple [];
-                                                                  Ty.path "core::fmt::Error"
-                                                                ],
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path "core::result::Result")
-                                                                  []
-                                                                  [
-                                                                    Ty.path
-                                                                      "core::convert::Infallible";
-                                                                    Ty.path "core::fmt::Error"
-                                                                  ]
-                                                              ],
-                                                              "from_residual",
-                                                              []
-                                                            |),
-                                                            [ M.read (| residual |) ]
-                                                          |)
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |)));
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let γ0_0 :=
-                                                    M.SubPointer.get_struct_tuple_field (|
-                                                      γ,
-                                                      "core::ops::control_flow::ControlFlow::Continue",
-                                                      0
-                                                    |) in
-                                                  let val := M.copy (| γ0_0 |) in
-                                                  val))
-                                            ]
-                                          |)))
-                                    ]
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                            |)))
+                        M.read (| M.read (| self |) |);
+                        Value.StructRecord
+                          "core::char::methods::EscapeDebugExtArgs"
+                          [
+                            ("escape_grapheme_extended", Value.Bool true);
+                            ("escape_single_quote", Value.Bool true);
+                            ("escape_double_quote", Value.Bool false)
+                          ]
                       ]
-                    |)) in
+                    |)
+                  |) in
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "core::ops::try_trait::Try",
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                          [],
+                          "branch",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::fmt::Display",
+                              Ty.path "core::char::EscapeDebug",
+                              [],
+                              "fmt",
+                              []
+                            |),
+                            [ esc; M.read (| f |) ]
+                          |)
+                        ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::ops::control_flow::ControlFlow::Break",
+                              0
+                            |) in
+                          let residual := M.copy (| γ0_0 |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                M.return_ (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::ops::try_trait::FromResidual",
+                                      Ty.apply
+                                        (Ty.path "core::result::Result")
+                                        []
+                                        [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "core::convert::Infallible";
+                                            Ty.path "core::fmt::Error"
+                                          ]
+                                      ],
+                                      "from_residual",
+                                      []
+                                    |),
+                                    [ M.read (| residual |) ]
+                                  |)
+                                |)
+                              |)
+                            |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::ops::control_flow::ControlFlow::Continue",
+                              0
+                            |) in
+                          let val := M.copy (| γ0_0 |) in
+                          val))
+                    ]
+                  |) in
                 M.alloc (|
                   M.call_closure (|
                     M.get_trait_method (|
@@ -10089,7 +10181,7 @@ Module fmt.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10183,9 +10275,12 @@ Module fmt.
                             M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                             [
                               M.read (| M.read (| self |) |);
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
+                              M.alloc (|
+                                repeat (|
+                                  Value.Integer IntegerKind.U8 0,
+                                  Value.Integer IntegerKind.Usize 4
+                                |)
+                              |)
                             ]
                           |)
                         ]
@@ -10194,7 +10289,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10210,8 +10305,7 @@ Module fmt.
     
     (*
         fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-            // Cast is needed here because `.expose_addr()` requires `T: Sized`.
-            pointer_fmt_inner(( *self as *const ()).expose_addr(), f)
+            pointer_fmt_inner(self.expose_provenance(), f)
         }
     *)
     Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -10226,16 +10320,16 @@ Module fmt.
             [
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ],
-                  "expose_addr",
+                  Ty.apply (Ty.path "*const") [] [ T ],
+                  "expose_provenance",
                   []
                 |),
-                [ M.rust_cast (M.read (| M.read (| self |) |)) ]
+                [ M.read (| M.read (| self |) |) ]
               |);
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10324,9 +10418,12 @@ Module fmt.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Pure.bit_or
+                        BinOp.bit_or
                           (M.read (| β |))
-                          (BinOp.Wrap.shl (Value.Integer 1) (M.rust_cast (Value.Integer 3)))
+                          (BinOp.Wrap.shl (|
+                            Value.Integer IntegerKind.U32 1,
+                            M.rust_cast (Value.Integer IntegerKind.Isize 3)
+                          |))
                       |) in
                     M.match_operator (|
                       M.alloc (| Value.Tuple [] |),
@@ -10366,14 +10463,14 @@ Module fmt.
                                 Value.StructTuple
                                   "core::option::Option::Some"
                                   [
-                                    BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.rust_cast
-                                        (BinOp.Wrap.div
-                                          Integer.U32
-                                          (M.read (| M.get_constant (| "core::num::BITS" |) |))
-                                          (Value.Integer 4)))
-                                      (Value.Integer 2)
+                                    BinOp.Wrap.add (|
+                                      M.rust_cast
+                                        (BinOp.Wrap.div (|
+                                          M.read (| M.get_constant (| "core::num::BITS" |) |),
+                                          Value.Integer IntegerKind.U32 4
+                                        |)),
+                                      Value.Integer IntegerKind.Usize 2
+                                    |)
                                   ]
                               |) in
                             M.alloc (| Value.Tuple [] |)));
@@ -10392,9 +10489,12 @@ Module fmt.
               |) in
             M.write (|
               β,
-              BinOp.Pure.bit_or
+              BinOp.bit_or
                 (M.read (| β |))
-                (BinOp.Wrap.shl (Value.Integer 1) (M.rust_cast (Value.Integer 2)))
+                (BinOp.Wrap.shl (|
+                  Value.Integer IntegerKind.U32 1,
+                  M.rust_cast (Value.Integer IntegerKind.Isize 2)
+                |))
             |) in
           let~ ret :=
             M.alloc (|
@@ -10423,7 +10523,7 @@ Module fmt.
             |) in
           ret
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_pointer_fmt_inner : M.IsFunction "core::fmt::pointer_fmt_inner" pointer_fmt_inner.
@@ -10459,7 +10559,7 @@ Module fmt.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10496,7 +10596,7 @@ Module fmt.
             |),
             [ M.use (M.alloc (| M.read (| M.read (| self |) |) |)); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10533,7 +10633,7 @@ Module fmt.
             |),
             [ M.use (M.alloc (| M.read (| M.read (| self |) |) |)); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10570,7 +10670,7 @@ Module fmt.
             |),
             [ M.read (| self |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10607,7 +10707,7 @@ Module fmt.
             |),
             [ M.read (| self |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10691,7 +10791,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_E ]
+                          [ builder; value_E ]
                         |)
                       |) in
                     let~ _ :=
@@ -10702,7 +10802,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_D ]
+                          [ builder; value_D ]
                         |)
                       |) in
                     let~ _ :=
@@ -10713,7 +10813,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_C ]
+                          [ builder; value_C ]
                         |)
                       |) in
                     let~ _ :=
@@ -10724,7 +10824,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_B ]
+                          [ builder; value_B ]
                         |)
                       |) in
                     let~ _ :=
@@ -10735,7 +10835,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_A ]
+                          [ builder; value_A ]
                         |)
                       |) in
                     let~ _ :=
@@ -10746,7 +10846,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Z ]
+                          [ builder; value_Z ]
                         |)
                       |) in
                     let~ _ :=
@@ -10757,7 +10857,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Y ]
+                          [ builder; value_Y ]
                         |)
                       |) in
                     let~ _ :=
@@ -10768,7 +10868,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_X ]
+                          [ builder; value_X ]
                         |)
                       |) in
                     let~ _ :=
@@ -10779,7 +10879,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_W ]
+                          [ builder; value_W ]
                         |)
                       |) in
                     let~ _ :=
@@ -10790,7 +10890,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_V ]
+                          [ builder; value_V ]
                         |)
                       |) in
                     let~ _ :=
@@ -10801,7 +10901,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_U ]
+                          [ builder; value_U ]
                         |)
                       |) in
                     let~ _ :=
@@ -10812,7 +10912,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_T ]
+                          [ builder; value_T ]
                         |)
                       |) in
                     M.alloc (|
@@ -10828,7 +10928,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10910,7 +11010,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_D ]
+                          [ builder; value_D ]
                         |)
                       |) in
                     let~ _ :=
@@ -10921,7 +11021,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_C ]
+                          [ builder; value_C ]
                         |)
                       |) in
                     let~ _ :=
@@ -10932,7 +11032,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_B ]
+                          [ builder; value_B ]
                         |)
                       |) in
                     let~ _ :=
@@ -10943,7 +11043,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_A ]
+                          [ builder; value_A ]
                         |)
                       |) in
                     let~ _ :=
@@ -10954,7 +11054,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Z ]
+                          [ builder; value_Z ]
                         |)
                       |) in
                     let~ _ :=
@@ -10965,7 +11065,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Y ]
+                          [ builder; value_Y ]
                         |)
                       |) in
                     let~ _ :=
@@ -10976,7 +11076,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_X ]
+                          [ builder; value_X ]
                         |)
                       |) in
                     let~ _ :=
@@ -10987,7 +11087,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_W ]
+                          [ builder; value_W ]
                         |)
                       |) in
                     let~ _ :=
@@ -10998,7 +11098,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_V ]
+                          [ builder; value_V ]
                         |)
                       |) in
                     let~ _ :=
@@ -11009,7 +11109,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_U ]
+                          [ builder; value_U ]
                         |)
                       |) in
                     let~ _ :=
@@ -11020,7 +11120,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_T ]
+                          [ builder; value_T ]
                         |)
                       |) in
                     M.alloc (|
@@ -11036,7 +11136,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11116,7 +11216,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_C ]
+                          [ builder; value_C ]
                         |)
                       |) in
                     let~ _ :=
@@ -11127,7 +11227,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_B ]
+                          [ builder; value_B ]
                         |)
                       |) in
                     let~ _ :=
@@ -11138,7 +11238,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_A ]
+                          [ builder; value_A ]
                         |)
                       |) in
                     let~ _ :=
@@ -11149,7 +11249,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Z ]
+                          [ builder; value_Z ]
                         |)
                       |) in
                     let~ _ :=
@@ -11160,7 +11260,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Y ]
+                          [ builder; value_Y ]
                         |)
                       |) in
                     let~ _ :=
@@ -11171,7 +11271,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_X ]
+                          [ builder; value_X ]
                         |)
                       |) in
                     let~ _ :=
@@ -11182,7 +11282,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_W ]
+                          [ builder; value_W ]
                         |)
                       |) in
                     let~ _ :=
@@ -11193,7 +11293,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_V ]
+                          [ builder; value_V ]
                         |)
                       |) in
                     let~ _ :=
@@ -11204,7 +11304,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_U ]
+                          [ builder; value_U ]
                         |)
                       |) in
                     let~ _ :=
@@ -11215,7 +11315,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_T ]
+                          [ builder; value_T ]
                         |)
                       |) in
                     M.alloc (|
@@ -11231,7 +11331,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11308,7 +11408,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_B ]
+                          [ builder; value_B ]
                         |)
                       |) in
                     let~ _ :=
@@ -11319,7 +11419,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_A ]
+                          [ builder; value_A ]
                         |)
                       |) in
                     let~ _ :=
@@ -11330,7 +11430,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Z ]
+                          [ builder; value_Z ]
                         |)
                       |) in
                     let~ _ :=
@@ -11341,7 +11441,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Y ]
+                          [ builder; value_Y ]
                         |)
                       |) in
                     let~ _ :=
@@ -11352,7 +11452,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_X ]
+                          [ builder; value_X ]
                         |)
                       |) in
                     let~ _ :=
@@ -11363,7 +11463,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_W ]
+                          [ builder; value_W ]
                         |)
                       |) in
                     let~ _ :=
@@ -11374,7 +11474,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_V ]
+                          [ builder; value_V ]
                         |)
                       |) in
                     let~ _ :=
@@ -11385,7 +11485,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_U ]
+                          [ builder; value_U ]
                         |)
                       |) in
                     let~ _ :=
@@ -11396,7 +11496,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_T ]
+                          [ builder; value_T ]
                         |)
                       |) in
                     M.alloc (|
@@ -11412,7 +11512,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11487,7 +11587,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_A ]
+                          [ builder; value_A ]
                         |)
                       |) in
                     let~ _ :=
@@ -11498,7 +11598,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Z ]
+                          [ builder; value_Z ]
                         |)
                       |) in
                     let~ _ :=
@@ -11509,7 +11609,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Y ]
+                          [ builder; value_Y ]
                         |)
                       |) in
                     let~ _ :=
@@ -11520,7 +11620,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_X ]
+                          [ builder; value_X ]
                         |)
                       |) in
                     let~ _ :=
@@ -11531,7 +11631,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_W ]
+                          [ builder; value_W ]
                         |)
                       |) in
                     let~ _ :=
@@ -11542,7 +11642,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_V ]
+                          [ builder; value_V ]
                         |)
                       |) in
                     let~ _ :=
@@ -11553,7 +11653,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_U ]
+                          [ builder; value_U ]
                         |)
                       |) in
                     let~ _ :=
@@ -11564,7 +11664,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_T ]
+                          [ builder; value_T ]
                         |)
                       |) in
                     M.alloc (|
@@ -11580,7 +11680,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11653,7 +11753,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Z ]
+                          [ builder; value_Z ]
                         |)
                       |) in
                     let~ _ :=
@@ -11664,7 +11764,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Y ]
+                          [ builder; value_Y ]
                         |)
                       |) in
                     let~ _ :=
@@ -11675,7 +11775,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_X ]
+                          [ builder; value_X ]
                         |)
                       |) in
                     let~ _ :=
@@ -11686,7 +11786,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_W ]
+                          [ builder; value_W ]
                         |)
                       |) in
                     let~ _ :=
@@ -11697,7 +11797,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_V ]
+                          [ builder; value_V ]
                         |)
                       |) in
                     let~ _ :=
@@ -11708,7 +11808,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_U ]
+                          [ builder; value_U ]
                         |)
                       |) in
                     let~ _ :=
@@ -11719,7 +11819,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_T ]
+                          [ builder; value_T ]
                         |)
                       |) in
                     M.alloc (|
@@ -11735,7 +11835,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11801,7 +11901,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_Y ]
+                          [ builder; value_Y ]
                         |)
                       |) in
                     let~ _ :=
@@ -11812,7 +11912,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_X ]
+                          [ builder; value_X ]
                         |)
                       |) in
                     let~ _ :=
@@ -11823,7 +11923,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_W ]
+                          [ builder; value_W ]
                         |)
                       |) in
                     let~ _ :=
@@ -11834,7 +11934,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_V ]
+                          [ builder; value_V ]
                         |)
                       |) in
                     let~ _ :=
@@ -11845,7 +11945,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_U ]
+                          [ builder; value_U ]
                         |)
                       |) in
                     let~ _ :=
@@ -11856,7 +11956,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_T ]
+                          [ builder; value_T ]
                         |)
                       |) in
                     M.alloc (|
@@ -11872,7 +11972,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11936,7 +12036,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_X ]
+                          [ builder; value_X ]
                         |)
                       |) in
                     let~ _ :=
@@ -11947,7 +12047,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_W ]
+                          [ builder; value_W ]
                         |)
                       |) in
                     let~ _ :=
@@ -11958,7 +12058,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_V ]
+                          [ builder; value_V ]
                         |)
                       |) in
                     let~ _ :=
@@ -11969,7 +12069,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_U ]
+                          [ builder; value_U ]
                         |)
                       |) in
                     let~ _ :=
@@ -11980,7 +12080,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_T ]
+                          [ builder; value_T ]
                         |)
                       |) in
                     M.alloc (|
@@ -11996,7 +12096,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12058,7 +12158,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_W ]
+                          [ builder; value_W ]
                         |)
                       |) in
                     let~ _ :=
@@ -12069,7 +12169,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_V ]
+                          [ builder; value_V ]
                         |)
                       |) in
                     let~ _ :=
@@ -12080,7 +12180,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_U ]
+                          [ builder; value_U ]
                         |)
                       |) in
                     let~ _ :=
@@ -12091,7 +12191,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_T ]
+                          [ builder; value_T ]
                         |)
                       |) in
                     M.alloc (|
@@ -12107,7 +12207,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12167,7 +12267,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_V ]
+                          [ builder; value_V ]
                         |)
                       |) in
                     let~ _ :=
@@ -12178,7 +12278,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_U ]
+                          [ builder; value_U ]
                         |)
                       |) in
                     let~ _ :=
@@ -12189,7 +12289,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_T ]
+                          [ builder; value_T ]
                         |)
                       |) in
                     M.alloc (|
@@ -12205,7 +12305,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12263,7 +12363,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_U ]
+                          [ builder; value_U ]
                         |)
                       |) in
                     let~ _ :=
@@ -12274,7 +12374,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_T ]
+                          [ builder; value_T ]
                         |)
                       |) in
                     M.alloc (|
@@ -12290,7 +12390,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12346,7 +12446,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [ builder; (* Unsize *) M.pointer_coercion value_T ]
+                          [ builder; value_T ]
                         |)
                       |) in
                     M.alloc (|
@@ -12362,7 +12462,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12420,7 +12520,7 @@ Module fmt.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12450,7 +12550,7 @@ Module fmt.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [] |),
             [ M.read (| f |); M.read (| Value.String "()" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12483,39 +12583,35 @@ Module fmt.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [ M.read (| Value.String "PhantomData<" |); M.read (| Value.String ">" |) ]
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                            |),
-                            [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (| "core::any::type_name", [ T ] |),
-                                  []
-                                |)
+                  M.alloc (|
+                    Value.Array
+                      [ M.read (| Value.String "PhantomData<" |); M.read (| Value.String ">" |) ]
+                  |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          |),
+                          [
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::any::type_name", [ T ] |),
+                                []
                               |)
-                            ]
-                          |)
-                        ]
-                    |))
+                            |)
+                          ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12567,23 +12663,21 @@ Module fmt.
                     |)
                   |);
                   M.read (| Value.String "value" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::cell::Cell") [] [ T ],
-                          "get",
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    |))
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::Cell") [] [ T ],
+                        "get",
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12656,11 +12750,7 @@ Module fmt.
                             "field",
                             []
                           |),
-                          [
-                            d;
-                            M.read (| Value.String "value" |);
-                            (* Unsize *) M.pointer_coercion borrow
-                          ]
+                          [ d; M.read (| Value.String "value" |); borrow ]
                         |)
                       |)));
                   fun γ =>
@@ -12681,24 +12771,20 @@ Module fmt.
                           [
                             d;
                             M.read (| Value.String "value" |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::Arguments",
-                                    "new_const",
-                                    []
-                                  |),
-                                  [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array [ M.read (| Value.String "<borrowed>" |) ]
-                                      |))
-                                  ]
-                                |)
-                              |))
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_const",
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    Value.Array [ M.read (| Value.String "<borrowed>" |) ]
+                                  |)
+                                ]
+                              |)
+                            |)
                           ]
                         |)
                       |)))
@@ -12715,7 +12801,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12758,7 +12844,7 @@ Module fmt.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12801,7 +12887,7 @@ Module fmt.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12847,7 +12933,7 @@ Module fmt.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12893,7 +12979,7 @@ Module fmt.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

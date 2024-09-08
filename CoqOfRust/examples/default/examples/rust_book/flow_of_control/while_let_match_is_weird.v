@@ -34,7 +34,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ optional :=
-          M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ] |) in
+          M.alloc (|
+            Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.I32 0 ]
+          |) in
         M.loop (|
           ltac:(M.monadic
             (M.match_operator (|
@@ -56,7 +58,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.alloc (| BinOp.Pure.gt (M.read (| i |)) (Value.Integer 9) |)) in
+                                (M.alloc (|
+                                  BinOp.gt (| M.read (| i |), Value.Integer IntegerKind.I32 9 |)
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ :=
@@ -72,14 +76,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [ M.read (| Value.String "Greater than 9, quit!
-" |)
-                                                ]
-                                            |))
+                                          M.alloc (|
+                                            Value.Array
+                                              [ M.read (| Value.String "Greater than 9, quit!
+" |) ]
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -107,31 +108,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "`i` is `" |);
-                                                  M.read (| Value.String "`. Try again.
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (| Value.String "`i` is `" |);
+                                                M.read (| Value.String "`. Try again.
 " |)
-                                                ]
-                                            |));
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_debug",
-                                                      [ Ty.path "i32" ]
-                                                    |),
-                                                    [ i ]
-                                                  |)
-                                                ]
-                                            |))
+                                              ]
+                                          |);
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_debug",
+                                                    [ Ty.path "i32" ]
+                                                  |),
+                                                  [ i ]
+                                                |)
+                                              ]
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -143,7 +140,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 optional,
                                 Value.StructTuple
                                   "core::option::Option::Some"
-                                  [ BinOp.Wrap.add Integer.I32 (M.read (| i |)) (Value.Integer 1) ]
+                                  [
+                                    BinOp.Wrap.add (|
+                                      M.read (| i |),
+                                      Value.Integer IntegerKind.I32 1
+                                    |)
+                                  ]
                               |) in
                             M.alloc (| Value.Tuple [] |)))
                       ]
@@ -154,7 +156,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)))
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "while_let_match_is_weird::main" main.

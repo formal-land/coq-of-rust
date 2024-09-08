@@ -61,29 +61,27 @@ Module vec.
                         [ M.read (| f |); M.read (| Value.String "Drain" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                            "as_slice",
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::vec::drain::Drain",
-                              "iter"
-                            |)
-                          ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                          "as_slice",
+                          []
+                        |),
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::drain::Drain",
+                            "iter"
+                          |)
+                        ]
+                      |)
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -124,7 +122,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_slice :
@@ -168,7 +166,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_allocator :
@@ -387,10 +385,11 @@ Module vec.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.read (|
+                              UnOp.not (|
+                                M.read (|
                                   M.get_constant (| "core::mem::SizedTypeProperties::IS_ZST" |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -424,10 +423,11 @@ Module vec.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.ne
-                                          (M.read (| unyielded_ptr |))
+                                        BinOp.ne (|
+                                          M.read (| unyielded_ptr |),
                                           (* MutToConstPointer *)
-                                          (M.pointer_coercion (M.read (| start_ptr |)))
+                                          M.pointer_coercion (M.read (| start_ptr |))
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -459,12 +459,13 @@ Module vec.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.ne
-                                        (M.read (| tail |))
-                                        (BinOp.Wrap.add
-                                          Integer.Usize
-                                          (M.read (| start |))
-                                          (M.read (| unyielded_len |)))
+                                      BinOp.ne (|
+                                        M.read (| tail |),
+                                        BinOp.Wrap.add (|
+                                          M.read (| start |),
+                                          M.read (| unyielded_len |)
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -554,13 +555,9 @@ Module vec.
                     |),
                     [
                       M.read (| source_vec |);
-                      BinOp.Wrap.add
-                        Integer.Usize
-                        (BinOp.Wrap.add
-                          Integer.Usize
-                          (M.read (| start |))
-                          (M.read (| unyielded_len |)))
-                        (M.read (|
+                      BinOp.Wrap.add (|
+                        BinOp.Wrap.add (| M.read (| start |), M.read (| unyielded_len |) |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.call_closure (|
                               M.get_trait_method (|
@@ -578,13 +575,14 @@ Module vec.
                             "alloc::vec::drain::Drain",
                             "tail_len"
                           |)
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_keep_rest :
@@ -615,7 +613,7 @@ Module vec.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -699,23 +697,24 @@ Module vec.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let elt := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_function (| "core::ptr::read", [ T ] |),
-                                  [ M.read (| M.use (M.alloc (| M.read (| elt |) |)) |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let elt := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_function (| "core::ptr::read", [ T ] |),
+                                    [ M.read (| M.use (M.alloc (| M.read (| elt |) |)) |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -745,7 +744,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -805,23 +804,24 @@ Module vec.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let elt := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_function (| "core::ptr::read", [ T ] |),
-                                  [ M.read (| M.use (M.alloc (| M.read (| elt |) |)) |) ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let elt := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_function (| "core::ptr::read", [ T ] |),
+                                    [ M.read (| M.use (M.alloc (| M.read (| elt |) |)) |) ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1000,19 +1000,19 @@ Module vec.
                                           |),
                                           [
                                             M.read (| vec |);
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| old_len |))
-                                                (M.read (| drop_len |)))
-                                              (M.read (|
+                                            BinOp.Wrap.add (|
+                                              BinOp.Wrap.add (|
+                                                M.read (| old_len |),
+                                                M.read (| drop_len |)
+                                              |),
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
                                                   "alloc::vec::drain::Drain",
                                                   "tail_len"
                                                 |)
-                                              |))
+                                              |)
+                                            |)
                                           ]
                                         |)
                                       |) in
@@ -1026,16 +1026,16 @@ Module vec.
                                           |),
                                           [
                                             M.read (| vec |);
-                                            BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.read (| old_len |))
-                                              (M.read (|
+                                            BinOp.Wrap.add (|
+                                              M.read (| old_len |),
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
                                                   "alloc::vec::drain::Drain",
                                                   "tail_len"
                                                 |)
-                                              |))
+                                              |)
+                                            |)
                                           ]
                                         |)
                                       |) in
@@ -1060,7 +1060,10 @@ Module vec.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| drop_len |)) (Value.Integer 0)
+                                  BinOp.eq (|
+                                    M.read (| drop_len |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1157,7 +1160,7 @@ Module vec.
                   M.alloc (| Value.Tuple [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1200,7 +1203,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

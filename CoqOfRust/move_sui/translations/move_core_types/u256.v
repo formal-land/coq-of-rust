@@ -3,19 +3,19 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module u256.
   Definition value_NUM_BITS_PER_BYTE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 8 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8 |))).
   
   Definition value_U256_NUM_BITS : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 256 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
   
   Definition value_U256_NUM_BYTES : Value.t :=
     M.run
       ltac:(M.monadic
         (M.alloc (|
-          BinOp.Wrap.div
-            Integer.Usize
-            (M.read (| M.get_constant (| "move_core_types::u256::U256_NUM_BITS" |) |))
-            (M.read (| M.get_constant (| "move_core_types::u256::NUM_BITS_PER_BYTE" |) |))
+          BinOp.Wrap.div (|
+            M.read (| M.get_constant (| "move_core_types::u256::U256_NUM_BITS" |) |),
+            M.read (| M.get_constant (| "move_core_types::u256::NUM_BITS_PER_BYTE" |) |)
+          |)
         |))).
   
   (* StructTuple
@@ -45,18 +45,16 @@ Module u256.
             [
               M.read (| f |);
               M.read (| Value.String "U256FromStrError" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::u256::U256FromStrError",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "move_core_types::u256::U256FromStrError",
+                  0
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -171,7 +169,7 @@ Module u256.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -204,7 +202,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -214,7 +212,7 @@ Module u256.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -224,9 +222,9 @@ Module u256.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -236,17 +234,6 @@ Module u256.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_u256_U256CastErrorKind.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_u256_U256CastErrorKind.
-    Definition Self : Ty.t := Ty.path "move_core_types::u256::U256CastErrorKind".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_u256_U256CastErrorKind.
   
   Module Impl_core_cmp_Eq_for_move_core_types_u256_U256CastErrorKind.
     Definition Self : Ty.t := Ty.path "move_core_types::u256::U256CastErrorKind".
@@ -262,7 +249,7 @@ Module u256.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -284,7 +271,7 @@ Module u256.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -317,7 +304,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -330,11 +317,11 @@ Module u256.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -377,26 +364,22 @@ Module u256.
               M.read (| f |);
               M.read (| Value.String "U256CastError" |);
               M.read (| Value.String "kind" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::u256::U256CastError",
+                "kind"
+              |);
+              M.read (| Value.String "val" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::u256::U256CastError",
-                  "kind"
-                |));
-              M.read (| Value.String "val" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::u256::U256CastError",
-                    "val"
-                  |)
-                |))
+                  "val"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -440,7 +423,7 @@ Module u256.
                   [ M.read (| val |) ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -533,64 +516,67 @@ Module u256.
                 |)
               |) in
             let~ err_str :=
-              M.copy (|
-                let~ res :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (| "alloc::fmt::format", [] |),
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_v1",
-                            []
-                          |),
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Cast failed. " |);
-                                    M.read (| Value.String " too large for " |);
-                                    M.read (| Value.String "." |)
-                                  ]
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.path "move_core_types::u256::U256" ]
-                                      |),
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+                  [
+                    M.read (|
+                      let~ res :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "alloc::fmt::format", [] |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                                [
+                                  M.alloc (|
+                                    Value.Array
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_core_types::u256::U256CastError",
-                                          "val"
+                                        M.read (| Value.String "Cast failed. " |);
+                                        M.read (| Value.String " too large for " |);
+                                        M.read (| Value.String "." |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.path "move_core_types::u256::U256" ]
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "move_core_types::u256::U256CastError",
+                                              "val"
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                          |),
+                                          [ type_str ]
                                         |)
                                       ]
-                                    |);
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                      |),
-                                      [ type_str ]
-                                    |)
-                                  ]
-                              |))
-                          ]
-                        |)
-                      ]
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |)
+                        |) in
+                      res
                     |)
-                  |) in
-                res
+                  ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -600,31 +586,27 @@ Module u256.
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "alloc::string::String" ]
-                                |),
-                                [ err_str ]
-                              |)
-                            ]
-                        |))
+                      M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "alloc::string::String" ]
+                              |),
+                              [ err_str ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -664,7 +646,7 @@ Module u256.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -696,34 +678,31 @@ Module u256.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "uint::uint::FromStrRadixErr" ]
-                            |),
-                            [
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.read (| self |),
-                                "move_core_types::u256::U256FromStrError",
-                                0
-                              |)
-                            ]
-                          |)
-                        ]
-                    |))
+                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "uint::uint::FromStrRadixErr" ]
+                          |),
+                          [
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.read (| self |),
+                              "move_core_types::u256::U256FromStrError",
+                              0
+                            |)
+                          ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -757,7 +736,7 @@ Module u256.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -787,18 +766,16 @@ Module u256.
             [
               M.read (| f |);
               M.read (| Value.String "U256" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "move_core_types::u256::U256",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "move_core_types::u256::U256",
+                  0
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -851,7 +828,7 @@ Module u256.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -861,17 +838,6 @@ Module u256.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_u256_U256.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_u256_U256.
-    Definition Self : Ty.t := Ty.path "move_core_types::u256::U256".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_u256_U256.
   
   Module Impl_core_cmp_Eq_for_move_core_types_u256_U256.
     Definition Self : Ty.t := Ty.path "move_core_types::u256::U256".
@@ -892,7 +858,7 @@ Module u256.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -931,7 +897,7 @@ Module u256.
               M.read (| state |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -984,7 +950,7 @@ Module u256.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1026,7 +992,7 @@ Module u256.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1059,7 +1025,7 @@ Module u256.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1101,7 +1067,7 @@ Module u256.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1143,7 +1109,7 @@ Module u256.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1185,7 +1151,7 @@ Module u256.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1218,9 +1184,9 @@ Module u256.
               "from_str_radix",
               []
             |),
-            [ M.read (| s |); Value.Integer 10 ]
+            [ M.read (| s |); Value.Integer IntegerKind.U32 10 ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1271,7 +1237,10 @@ Module u256.
                                 (Ty.path "core::result::Result")
                                 []
                                 [
-                                  Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                    [ Ty.path "u8" ];
                                   Ty.associated
                                 ],
                               [],
@@ -1282,7 +1251,10 @@ Module u256.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "serde::de::Deserialize",
-                                  Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                    [ Ty.path "u8" ],
                                   [],
                                   "deserialize",
                                   [ D ]
@@ -1345,7 +1317,7 @@ Module u256.
                   |)
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1376,7 +1348,7 @@ Module u256.
           M.call_closure (|
             M.get_trait_method (|
               "serde::ser::Serialize",
-              Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ],
               [],
               "serialize",
               [ S ]
@@ -1395,7 +1367,7 @@ Module u256.
               M.read (| serializer |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1456,7 +1428,7 @@ Module u256.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1517,7 +1489,7 @@ Module u256.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1578,7 +1550,7 @@ Module u256.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1654,7 +1626,7 @@ Module u256.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1731,7 +1703,7 @@ Module u256.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1808,7 +1780,7 @@ Module u256.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1851,7 +1823,7 @@ Module u256.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1887,7 +1859,7 @@ Module u256.
             |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1929,7 +1901,7 @@ Module u256.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1965,7 +1937,7 @@ Module u256.
             |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2007,7 +1979,7 @@ Module u256.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2043,7 +2015,7 @@ Module u256.
             |),
             [ M.read (| self |); M.read (| rhs |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2085,7 +2057,7 @@ Module u256.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2134,7 +2106,7 @@ Module u256.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2176,7 +2148,7 @@ Module u256.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2225,7 +2197,7 @@ Module u256.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2286,7 +2258,7 @@ Module u256.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2317,7 +2289,7 @@ Module u256.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_zero : M.IsAssociatedFunction Self "zero" zero.
@@ -2339,7 +2311,7 @@ Module u256.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_one : M.IsAssociatedFunction Self "one" one.
@@ -2361,7 +2333,7 @@ Module u256.
                 []
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_max_value : M.IsAssociatedFunction Self "max_value" max_value.
@@ -2433,7 +2405,7 @@ Module u256.
               M.constructor_as_closure "move_core_types::u256::U256FromStrError"
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_str_radix :
@@ -2458,10 +2430,10 @@ Module u256.
                   "from_little_endian",
                   []
                 |),
-                [ (* Unsize *) M.pointer_coercion (M.read (| slice |)) ]
+                [ M.read (| slice |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_le_bytes :
@@ -2480,7 +2452,10 @@ Module u256.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            let~ bytes := M.alloc (| repeat (| Value.Integer 0, Value.Integer 32 |) |) in
+            let~ bytes :=
+              M.alloc (|
+                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
+              |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
@@ -2495,13 +2470,13 @@ Module u256.
                       "move_core_types::u256::U256",
                       0
                     |);
-                    (* Unsize *) M.pointer_coercion bytes
+                    bytes
                   ]
                 |)
               |) in
             bytes
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
@@ -2526,7 +2501,7 @@ Module u256.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_leading_zeros :
@@ -2553,7 +2528,7 @@ Module u256.
                 |)
               ]
             |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unchecked_as_u8 :
@@ -2580,7 +2555,7 @@ Module u256.
                 |)
               ]
             |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unchecked_as_u16 :
@@ -2607,7 +2582,7 @@ Module u256.
                 |)
               ]
             |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unchecked_as_u32 :
@@ -2634,7 +2609,7 @@ Module u256.
                 |)
               ]
             |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unchecked_as_u64 :
@@ -2660,7 +2635,7 @@ Module u256.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_unchecked_as_u128 :
@@ -2703,7 +2678,7 @@ Module u256.
               M.constructor_as_closure "move_core_types::u256::U256"
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_checked_add : M.IsAssociatedFunction Self "checked_add" checked_add.
@@ -2745,7 +2720,7 @@ Module u256.
               M.constructor_as_closure "move_core_types::u256::U256"
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_checked_sub : M.IsAssociatedFunction Self "checked_sub" checked_sub.
@@ -2787,7 +2762,7 @@ Module u256.
               M.constructor_as_closure "move_core_types::u256::U256"
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_checked_mul : M.IsAssociatedFunction Self "checked_mul" checked_mul.
@@ -2829,7 +2804,7 @@ Module u256.
               M.constructor_as_closure "move_core_types::u256::U256"
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_checked_div : M.IsAssociatedFunction Self "checked_div" checked_div.
@@ -2871,7 +2846,7 @@ Module u256.
               M.constructor_as_closure "move_core_types::u256::U256"
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_checked_rem : M.IsAssociatedFunction Self "checked_rem" checked_rem.
@@ -2902,12 +2877,13 @@ Module u256.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ge
-                                  (M.read (| rhs |))
-                                  (M.rust_cast
+                                BinOp.ge (|
+                                  M.read (| rhs |),
+                                  M.rust_cast
                                     (M.read (|
                                       M.get_constant (| "move_core_types::u256::U256_NUM_BITS" |)
-                                    |)))
+                                    |))
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2952,7 +2928,7 @@ Module u256.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_checked_shl : M.IsAssociatedFunction Self "checked_shl" checked_shl.
@@ -2983,12 +2959,13 @@ Module u256.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ge
-                                  (M.read (| rhs |))
-                                  (M.rust_cast
+                                BinOp.ge (|
+                                  M.read (| rhs |),
+                                  M.rust_cast
                                     (M.read (|
                                       M.get_constant (| "move_core_types::u256::U256_NUM_BITS" |)
-                                    |)))
+                                    |))
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3033,7 +3010,7 @@ Module u256.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_checked_shr : M.IsAssociatedFunction Self "checked_shr" checked_shr.
@@ -3075,22 +3052,26 @@ Module u256.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt (M.read (| type_size |)) (Value.Integer 16)
+                              BinOp.lt (|
+                                M.read (| type_size |),
+                                Value.Integer IntegerKind.Usize 16
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          BinOp.Wrap.sub
-                            Integer.U128
-                            (BinOp.Wrap.shl
-                              (Value.Integer 1)
-                              (BinOp.Wrap.mul
-                                Integer.Usize
-                                (M.read (|
+                          BinOp.Wrap.sub (|
+                            BinOp.Wrap.shl (|
+                              Value.Integer IntegerKind.U128 1,
+                              BinOp.Wrap.mul (|
+                                M.read (|
                                   M.get_constant (| "move_core_types::u256::NUM_BITS_PER_BYTE" |)
-                                |))
-                                (M.read (| type_size |))))
-                            (Value.Integer 1)
+                                |),
+                                M.read (| type_size |)
+                              |)
+                            |),
+                            Value.Integer IntegerKind.U128 1
+                          |)
                         |)));
                     fun γ => ltac:(M.monadic (M.get_constant (| "core::num::MAX" |)))
                   ]
@@ -3107,7 +3088,7 @@ Module u256.
                     []
                   |),
                   [
-                    BinOp.Pure.bit_and
+                    BinOp.bit_and
                       (M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "primitive_types::U256",
@@ -3149,12 +3130,9 @@ Module u256.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "Fatal! Downcast failed" |) ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "Fatal! Downcast failed" |) ]
+                                |)
                               ]
                             |)
                           ]
@@ -3164,7 +3142,7 @@ Module u256.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_down_cast_lossy :
@@ -3215,7 +3193,7 @@ Module u256.
                 |)
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_wrapping_add : M.IsAssociatedFunction Self "wrapping_add" wrapping_add.
@@ -3265,7 +3243,7 @@ Module u256.
                 |)
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_wrapping_sub : M.IsAssociatedFunction Self "wrapping_sub" wrapping_sub.
@@ -3315,7 +3293,7 @@ Module u256.
                 |)
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_wrapping_mul : M.IsAssociatedFunction Self "wrapping_mul" wrapping_mul.
@@ -3349,7 +3327,7 @@ Module u256.
           (let self := M.alloc (| self |) in
           let b := M.alloc (| b |) in
           M.read (|
-            let~ half := M.alloc (| Value.Integer 128 |) in
+            let~ half := M.alloc (| Value.Integer IntegerKind.U8 128 |) in
             let~ value_LOWER_MASK :=
               M.alloc (|
                 M.call_closure (|
@@ -3704,7 +3682,7 @@ Module u256.
               |) in
             M.alloc (| Value.Tuple [ M.read (| high |); M.read (| low |) ] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_wmul : M.IsAssociatedFunction Self "wmul" wmul.
@@ -3737,7 +3715,7 @@ Module u256.
                 [ M.read (| n |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3775,7 +3753,7 @@ Module u256.
                 [ M.read (| n |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3813,7 +3791,7 @@ Module u256.
                 [ M.read (| n |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3851,7 +3829,7 @@ Module u256.
                 [ M.read (| n |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3889,7 +3867,7 @@ Module u256.
                 [ M.read (| n |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3921,21 +3899,19 @@ Module u256.
             |),
             [
               Value.StructTuple "num_bigint::bigint::Sign::Plus" [];
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "move_core_types::u256::U256",
-                      "to_le_bytes",
-                      []
-                    |),
-                    [ M.read (| M.read (| n |) |) ]
-                  |)
-                |))
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "move_core_types::u256::U256",
+                    "to_le_bytes",
+                    []
+                  |),
+                  [ M.read (| M.read (| n |) |) ]
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3966,49 +3942,52 @@ Module u256.
           (let n := M.alloc (| n |) in
           M.read (|
             let~ num_str :=
-              M.copy (|
-                let~ res :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (| "alloc::fmt::format", [] |),
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_v1",
-                            []
-                          |),
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::rt::Argument",
-                                        "new_upper_hex",
-                                        [ Ty.path "primitive_types::U256" ]
-                                      |),
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "core::hint::must_use", [ Ty.path "alloc::string::String" ] |),
+                  [
+                    M.read (|
+                      let~ res :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "alloc::fmt::format", [] |),
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_v1",
+                                  []
+                                |),
+                                [
+                                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                                  M.alloc (|
+                                    Value.Array
                                       [
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          M.read (| n |),
-                                          "move_core_types::u256::U256",
-                                          0
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_upper_hex",
+                                            [ Ty.path "primitive_types::U256" ]
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              M.read (| n |),
+                                              "move_core_types::u256::U256",
+                                              0
+                                            |)
+                                          ]
                                         |)
                                       ]
-                                    |)
-                                  ]
-                              |))
-                          ]
-                        |)
-                      ]
+                                  |)
+                                ]
+                              |)
+                            ]
+                          |)
+                        |) in
+                      res
                     |)
-                  |) in
-                res
+                  ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -4038,7 +4017,7 @@ Module u256.
                         |),
                         [ num_str ]
                       |);
-                      Value.Integer 16
+                      Value.Integer IntegerKind.U32 16
                     ]
                   |);
                   M.read (| Value.String "Cannot convert to U256" |)
@@ -4046,7 +4025,7 @@ Module u256.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4095,9 +4074,10 @@ Module u256.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.gt
-                            (M.read (| n |))
-                            (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                          BinOp.gt (|
+                            M.read (| n |),
+                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -4127,7 +4107,7 @@ Module u256.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4176,9 +4156,10 @@ Module u256.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.gt
-                            (M.read (| n |))
-                            (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                          BinOp.gt (|
+                            M.read (| n |),
+                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -4208,7 +4189,7 @@ Module u256.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4257,9 +4238,10 @@ Module u256.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.gt
-                            (M.read (| n |))
-                            (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                          BinOp.gt (|
+                            M.read (| n |),
+                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -4289,7 +4271,7 @@ Module u256.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4338,9 +4320,10 @@ Module u256.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.gt
-                            (M.read (| n |))
-                            (M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |)))
+                          BinOp.gt (|
+                            M.read (| n |),
+                            M.rust_cast (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -4370,7 +4353,7 @@ Module u256.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4481,7 +4464,7 @@ Module u256.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4510,12 +4493,15 @@ Module u256.
           (let self := M.alloc (| self |) in
           let rng := M.alloc (| rng |) in
           M.read (|
-            let~ dest := M.alloc (| repeat (| Value.Integer 0, Value.Integer 32 |) |) in
+            let~ dest :=
+              M.alloc (|
+                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
+              |) in
             let~ _ :=
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "rand_core::RngCore", R, [], "fill_bytes", [] |),
-                  [ M.read (| rng |); (* Unsize *) M.pointer_coercion dest ]
+                  [ M.read (| rng |); dest ]
                 |)
               |) in
             M.alloc (|
@@ -4529,7 +4515,7 @@ Module u256.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4568,7 +4554,7 @@ Module u256.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4610,34 +4596,28 @@ Module u256.
               M.read (| f |);
               M.read (| Value.String "UniformU256" |);
               M.read (| Value.String "low" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_core_types::u256::UniformU256",
-                  "low"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::u256::UniformU256",
+                "low"
+              |);
               M.read (| Value.String "range" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_core_types::u256::UniformU256",
+                "range"
+              |);
+              M.read (| Value.String "z" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_core_types::u256::UniformU256",
-                  "range"
-                |));
-              M.read (| Value.String "z" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_core_types::u256::UniformU256",
-                    "z"
-                  |)
-                |))
+                  "z"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4738,7 +4718,7 @@ Module u256.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4748,17 +4728,6 @@ Module u256.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_u256_UniformU256.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_u256_UniformU256.
-    Definition Self : Ty.t := Ty.path "move_core_types::u256::UniformU256".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_u256_UniformU256.
   
   Module Impl_core_cmp_Eq_for_move_core_types_u256_UniformU256.
     Definition Self : Ty.t := Ty.path "move_core_types::u256::UniformU256".
@@ -4779,7 +4748,7 @@ Module u256.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4865,8 +4834,8 @@ Module u256.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::u256::U256",
@@ -4875,7 +4844,8 @@ Module u256.
                                   []
                                 |),
                                 [ low; high ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4890,16 +4860,14 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "Uniform::new called with `low >= high`"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "Uniform::new called with `low >= high`"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -4944,7 +4912,7 @@ Module u256.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5018,8 +4986,8 @@ Module u256.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::u256::U256",
@@ -5028,7 +4996,8 @@ Module u256.
                                   []
                                 |),
                                 [ low; high ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -5043,17 +5012,15 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "Uniform::new_inclusive called with `low > high`"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String
+                                            "Uniform::new_inclusive called with `low > high`"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -5205,7 +5172,7 @@ Module u256.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5424,7 +5391,7 @@ Module u256.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5482,8 +5449,8 @@ Module u256.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialOrd",
                                   Ty.path "move_core_types::u256::U256",
@@ -5492,7 +5459,8 @@ Module u256.
                                   []
                                 |),
                                 [ low; high ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -5507,17 +5475,14 @@ Module u256.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "UniformSampler::sample_single: low >= high"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "UniformSampler::sample_single: low >= high"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -5564,7 +5529,7 @@ Module u256.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -5647,8 +5612,8 @@ Module u256.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialOrd",
                                       Ty.path "move_core_types::u256::U256",
@@ -5657,7 +5622,8 @@ Module u256.
                                       []
                                     |),
                                     [ low; high ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5673,17 +5639,15 @@ Module u256.
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String
-                                                  "UniformSampler::sample_single_inclusive: low > high"
-                                              |)
-                                            ]
-                                        |))
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "UniformSampler::sample_single_inclusive: low > high"
+                                            |)
+                                          ]
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -5903,7 +5867,7 @@ Module u256.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

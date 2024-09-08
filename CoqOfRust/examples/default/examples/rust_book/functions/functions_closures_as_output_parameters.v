@@ -26,37 +26,34 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.read (|
-                            let~ _ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (| "std::io::stdio::_print", [] |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (| "std::io::stdio::_print", [] |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_v1",
+                                          []
+                                        |),
+                                        [
+                                          M.alloc (|
                                             Value.Array
                                               [
                                                 M.read (| Value.String "This is a: " |);
                                                 M.read (| Value.String "
 " |)
                                               ]
-                                          |));
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
+                                          |);
+                                          M.alloc (|
                                             Value.Array
                                               [
                                                 M.call_closure (|
@@ -68,21 +65,21 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                                   [ text ]
                                                 |)
                                               ]
-                                          |))
-                                      ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_create_fn :
@@ -117,37 +114,34 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.read (|
-                            let~ _ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (| "std::io::stdio::_print", [] |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (| "std::io::stdio::_print", [] |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_v1",
+                                          []
+                                        |),
+                                        [
+                                          M.alloc (|
                                             Value.Array
                                               [
                                                 M.read (| Value.String "This is a: " |);
                                                 M.read (| Value.String "
 " |)
                                               ]
-                                          |));
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
+                                          |);
+                                          M.alloc (|
                                             Value.Array
                                               [
                                                 M.call_closure (|
@@ -159,21 +153,21 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                                   [ text ]
                                                 |)
                                               ]
-                                          |))
-                                      ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_create_fnmut :
@@ -208,37 +202,34 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
               ltac:(M.monadic
                 match γ with
                 | [ α0 ] =>
-                  M.match_operator (|
-                    M.alloc (| α0 |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.read (|
-                            let~ _ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (| "std::io::stdio::_print", [] |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_v1",
-                                        []
-                                      |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      M.alloc (| α0 |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.read (|
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (| "std::io::stdio::_print", [] |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::Arguments",
+                                          "new_v1",
+                                          []
+                                        |),
+                                        [
+                                          M.alloc (|
                                             Value.Array
                                               [
                                                 M.read (| Value.String "This is a: " |);
                                                 M.read (| Value.String "
 " |)
                                               ]
-                                          |));
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
+                                          |);
+                                          M.alloc (|
                                             Value.Array
                                               [
                                                 M.call_closure (|
@@ -250,21 +241,21 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                   [ text ]
                                                 |)
                                               ]
-                                          |))
-                                      ]
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)
-                          |)))
-                    ]
-                  |)
-                | _ => M.impossible (||)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |)
+                            |)))
+                      ]
+                    |)))
+                | _ => M.impossible "wrong number of arguments"
                 end))
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_create_fnonce :
@@ -352,7 +343,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "functions_closures_as_output_parameters::main" main.

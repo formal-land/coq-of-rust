@@ -21,7 +21,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -42,7 +42,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -80,7 +80,7 @@ Module Impl_core_fmt_Debug_for_generics_phantom_type_test_case_unit_clarificatio
         (let self := M.alloc (| self |) in
         let f := M.alloc (| f |) in
         M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -101,7 +101,7 @@ Module Impl_core_clone_Clone_for_generics_phantom_type_test_case_unit_clarificat
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -148,25 +148,21 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_t
           [
             M.read (| f |);
             M.read (| Value.String "Length" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_tuple_field (|
+            M.SubPointer.get_struct_tuple_field (|
+              M.read (| self |),
+              "generics_phantom_type_test_case_unit_clarification::Length",
+              0
+            |);
+            M.alloc (|
+              M.SubPointer.get_struct_tuple_field (|
                 M.read (| self |),
                 "generics_phantom_type_test_case_unit_clarification::Length",
-                0
-              |));
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.read (| self |),
-                  "generics_phantom_type_test_case_unit_clarification::Length",
-                  1
-                |)
-              |))
+                1
+              |)
+            |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -219,7 +215,7 @@ Module Impl_core_clone_Clone_where_core_clone_Clone_Unit_for_generics_phantom_ty
               ]
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -268,25 +264,25 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
         Value.StructTuple
           "generics_phantom_type_test_case_unit_clarification::Length"
           [
-            BinOp.Wrap.add
-              Integer.Usize
-              (M.read (|
+            BinOp.Wrap.add (|
+              M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   self,
                   "generics_phantom_type_test_case_unit_clarification::Length",
                   0
                 |)
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_tuple_field (|
                   rhs,
                   "generics_phantom_type_test_case_unit_clarification::Length",
                   0
                 |)
-              |));
+              |)
+            |);
             Value.StructTuple "core::marker::PhantomData" []
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -390,37 +386,33 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "one foot + one_foot = " |);
-                              M.read (| Value.String " in
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "one foot + one_foot = " |);
+                            M.read (| Value.String " in
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "f64" ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    two_feet,
-                                    "generics_phantom_type_test_case_unit_clarification::Length",
-                                    0
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "f64" ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_tuple_field (|
+                                  two_feet,
+                                  "generics_phantom_type_test_case_unit_clarification::Length",
+                                  0
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -436,37 +428,33 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "one meter + one_meter = " |);
-                              M.read (| Value.String " mm
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "one meter + one_meter = " |);
+                            M.read (| Value.String " mm
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "f64" ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    two_meters,
-                                    "generics_phantom_type_test_case_unit_clarification::Length",
-                                    0
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "f64" ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_tuple_field (|
+                                  two_meters,
+                                  "generics_phantom_type_test_case_unit_clarification::Length",
+                                  0
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -475,7 +463,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "generics_phantom_type_test_case_unit_clarification::main" main.

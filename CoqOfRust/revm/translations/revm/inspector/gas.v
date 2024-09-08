@@ -26,7 +26,7 @@ Module inspector.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -68,26 +68,22 @@ Module inspector.
                 M.read (| f |);
                 M.read (| Value.String "GasInspector" |);
                 M.read (| Value.String "gas_remaining" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::inspector::gas::GasInspector",
+                  "gas_remaining"
+                |);
+                M.read (| Value.String "last_gas_cost" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm::inspector::gas::GasInspector",
-                    "gas_remaining"
-                  |));
-                M.read (| Value.String "last_gas_cost" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::inspector::gas::GasInspector",
-                      "last_gas_cost"
-                    |)
-                  |))
+                    "last_gas_cost"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -132,7 +128,7 @@ Module inspector.
                     []
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -163,7 +159,7 @@ Module inspector.
                 "gas_remaining"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_gas_remaining :
@@ -186,7 +182,7 @@ Module inspector.
                 "last_gas_cost"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_last_gas_cost :
@@ -243,7 +239,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -288,7 +284,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -360,7 +356,7 @@ Module inspector.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -447,7 +443,7 @@ Module inspector.
                               "revm::inspector::gas::GasInspector",
                               "gas_remaining"
                             |),
-                            Value.Integer 0
+                            Value.Integer IntegerKind.U64 0
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -455,7 +451,7 @@ Module inspector.
                 |) in
               outcome
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -542,7 +538,7 @@ Module inspector.
                               "revm::inspector::gas::GasInspector",
                               "gas_remaining"
                             |),
-                            Value.Integer 0
+                            Value.Integer IntegerKind.U64 0
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -550,7 +546,7 @@ Module inspector.
                 |) in
               outcome
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

@@ -54,7 +54,7 @@ Module future.
                 M.read (| cx |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -96,15 +96,7 @@ Module future.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::pin::Pin")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [ Ty.apply (Ty.path "core::pin::Pin") [] [ P ] ]
-                      ],
+                    Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                     "as_deref_mut",
                     []
                   |),
@@ -113,7 +105,7 @@ Module future.
                 M.read (| cx |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

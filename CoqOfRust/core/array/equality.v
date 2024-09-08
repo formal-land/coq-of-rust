@@ -3,22 +3,22 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module array.
   Module equality.
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_array_N_B_for_array_N_A.
-      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ A ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_array_N_U_for_array_N_T.
+      Definition Self (N : Value.t) (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
       
       (*
-          fn eq(&self, other: &[B; N]) -> bool {
+          fn eq(&self, other: &[U; N]) -> bool {
               SpecArrayEq::spec_eq(self, other)
           }
       *)
       Definition eq
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -27,29 +27,29 @@ Module array.
             M.call_closure (|
               M.get_trait_method (|
                 "core::array::equality::SpecArrayEq",
-                A,
-                [ B ],
+                T,
+                [ U ],
                 "spec_eq",
                 []
               |),
               [ M.read (| self |); M.read (| other |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn ne(&self, other: &[B; N]) -> bool {
+          fn ne(&self, other: &[U; N]) -> bool {
               SpecArrayEq::spec_ne(self, other)
           }
       *)
       Definition ne
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -58,32 +58,32 @@ Module array.
             M.call_closure (|
               M.get_trait_method (|
                 "core::array::equality::SpecArrayEq",
-                A,
-                [ B ],
+                T,
+                [ U ],
                 "spec_ne",
                 []
               |),
               [ M.read (| self |); M.read (| other |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
-        forall (N : Value.t) (A B : Ty.t),
+        forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self N A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ B ] ]
+          (Self N T U)
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_array_N_B_for_array_N_A.
+          [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_array_N_U_for_array_N_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_slice_B_for_array_N_A.
-      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ A ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_slice_U_for_array_N_T.
+      Definition Self (N : Value.t) (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
       
       (*
-          fn eq(&self, other: &[B]) -> bool {
-              let b: Result<&[B; N], _> = other.try_into();
+          fn eq(&self, other: &[U]) -> bool {
+              let b: Result<&[U; N], _> = other.try_into();
               match b {
                   Ok(b) => *self == *b,
                   Err(_) => false,
@@ -92,12 +92,12 @@ Module array.
       *)
       Definition eq
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -109,8 +109,8 @@ Module array.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::TryInto",
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ],
-                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ B ] ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ] ],
                       "try_into",
                       []
                     |),
@@ -133,8 +133,8 @@ Module array.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "array") [ N ] [ A ],
-                            [ Ty.apply (Ty.path "array") [ N ] [ B ] ],
+                            Ty.apply (Ty.path "array") [ N ] [ T ],
+                            [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                             "eq",
                             []
                           |),
@@ -153,12 +153,12 @@ Module array.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn ne(&self, other: &[B]) -> bool {
-              let b: Result<&[B; N], _> = other.try_into();
+          fn ne(&self, other: &[U]) -> bool {
+              let b: Result<&[U; N], _> = other.try_into();
               match b {
                   Ok(b) => *self != *b,
                   Err(_) => true,
@@ -167,12 +167,12 @@ Module array.
       *)
       Definition ne
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -184,8 +184,8 @@ Module array.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::TryInto",
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ],
-                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ B ] ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ U ] ] ],
                       "try_into",
                       []
                     |),
@@ -208,8 +208,8 @@ Module array.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "array") [ N ] [ A ],
-                            [ Ty.apply (Ty.path "array") [ N ] [ B ] ],
+                            Ty.apply (Ty.path "array") [ N ] [ T ],
+                            [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                             "ne",
                             []
                           |),
@@ -228,25 +228,25 @@ Module array.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
-        forall (N : Value.t) (A B : Ty.t),
+        forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self N A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "slice") [] [ B ] ]
+          (Self N T U)
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "slice") [] [ U ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_slice_B_for_array_N_A.
+          [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_slice_U_for_array_N_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_N_A_for_slice_B.
-      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ B ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_array_N_U_for_slice_T.
+      Definition Self (N : Value.t) (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
       
       (*
-          fn eq(&self, other: &[A; N]) -> bool {
-              let b: Result<&[B; N], _> = self.try_into();
+          fn eq(&self, other: &[U; N]) -> bool {
+              let b: Result<&[T; N], _> = self.try_into();
               match b {
                   Ok(b) => *b == *other,
                   Err(_) => false,
@@ -255,12 +255,12 @@ Module array.
       *)
       Definition eq
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -272,8 +272,8 @@ Module array.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::TryInto",
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ],
-                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ B ] ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ],
                       "try_into",
                       []
                     |),
@@ -296,8 +296,8 @@ Module array.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "array") [ N ] [ B ],
-                            [ Ty.apply (Ty.path "array") [ N ] [ A ] ],
+                            Ty.apply (Ty.path "array") [ N ] [ T ],
+                            [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                             "eq",
                             []
                           |),
@@ -316,12 +316,12 @@ Module array.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn ne(&self, other: &[A; N]) -> bool {
-              let b: Result<&[B; N], _> = self.try_into();
+          fn ne(&self, other: &[U; N]) -> bool {
+              let b: Result<&[T; N], _> = self.try_into();
               match b {
                   Ok(b) => *b != *other,
                   Err(_) => true,
@@ -330,12 +330,12 @@ Module array.
       *)
       Definition ne
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -347,8 +347,8 @@ Module array.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::TryInto",
-                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ],
-                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ B ] ] ],
+                      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                      [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ],
                       "try_into",
                       []
                     |),
@@ -371,8 +371,8 @@ Module array.
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "array") [ N ] [ B ],
-                            [ Ty.apply (Ty.path "array") [ N ] [ A ] ],
+                            Ty.apply (Ty.path "array") [ N ] [ T ],
+                            [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                             "ne",
                             []
                           |),
@@ -391,35 +391,35 @@ Module array.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
-        forall (N : Value.t) (A B : Ty.t),
+        forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self N A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ A ] ]
+          (Self N T U)
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_N_A_for_slice_B.
+          [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_array_N_U_for_slice_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_ref__slice_B_for_array_N_A.
-      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ A ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_ref__slice_U_for_array_N_T.
+      Definition Self (N : Value.t) (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
       
       (*
-          fn eq(&self, other: &&[B]) -> bool {
+          fn eq(&self, other: &&[U]) -> bool {
               *self == **other
           }
       *)
       Definition eq
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -428,29 +428,29 @@ Module array.
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "array") [ N ] [ A ],
-                [ Ty.apply (Ty.path "slice") [] [ B ] ],
+                Ty.apply (Ty.path "array") [ N ] [ T ],
+                [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
                 []
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn ne(&self, other: &&[B]) -> bool {
+          fn ne(&self, other: &&[U]) -> bool {
               *self != **other
           }
       *)
       Definition ne
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -459,44 +459,44 @@ Module array.
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "array") [ N ] [ A ],
-                [ Ty.apply (Ty.path "slice") [] [ B ] ],
+                Ty.apply (Ty.path "array") [ N ] [ T ],
+                [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
                 []
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
-        forall (N : Value.t) (A B : Ty.t),
+        forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self N A B)
+          (Self N T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_ref__slice_B_for_array_N_A.
+          [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_ref__slice_U_for_array_N_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_N_A_for_ref__slice_B.
-      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ B ] ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_array_N_U_for_ref__slice_T.
+      Definition Self (N : Value.t) (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ].
       
       (*
-          fn eq(&self, other: &[A; N]) -> bool {
+          fn eq(&self, other: &[U; N]) -> bool {
               **self == *other
           }
       *)
       Definition eq
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -505,29 +505,29 @@ Module array.
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "slice") [] [ B ],
-                [ Ty.apply (Ty.path "array") [ N ] [ A ] ],
+                Ty.apply (Ty.path "slice") [] [ T ],
+                [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                 "eq",
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn ne(&self, other: &[A; N]) -> bool {
+          fn ne(&self, other: &[U; N]) -> bool {
               **self != *other
           }
       *)
       Definition ne
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -536,42 +536,42 @@ Module array.
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "slice") [] [ B ],
-                [ Ty.apply (Ty.path "array") [ N ] [ A ] ],
+                Ty.apply (Ty.path "slice") [] [ T ],
+                [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                 "ne",
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
-        forall (N : Value.t) (A B : Ty.t),
+        forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self N A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ A ] ]
+          (Self N T U)
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_N_A_for_ref__slice_B.
+          [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_array_N_U_for_ref__slice_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_ref_mut_slice_B_for_array_N_A.
-      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ A ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_ref_mut_slice_U_for_array_N_T.
+      Definition Self (N : Value.t) (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
       
       (*
-          fn eq(&self, other: &&mut [B]) -> bool {
+          fn eq(&self, other: &&mut [U]) -> bool {
               *self == **other
           }
       *)
       Definition eq
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -580,29 +580,29 @@ Module array.
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "array") [ N ] [ A ],
-                [ Ty.apply (Ty.path "slice") [] [ B ] ],
+                Ty.apply (Ty.path "array") [ N ] [ T ],
+                [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "eq",
                 []
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn ne(&self, other: &&mut [B]) -> bool {
+          fn ne(&self, other: &&mut [U]) -> bool {
               *self != **other
           }
       *)
       Definition ne
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -611,44 +611,44 @@ Module array.
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "array") [ N ] [ A ],
-                [ Ty.apply (Ty.path "slice") [] [ B ] ],
+                Ty.apply (Ty.path "array") [ N ] [ T ],
+                [ Ty.apply (Ty.path "slice") [] [ U ] ],
                 "ne",
                 []
               |),
               [ M.read (| self |); M.read (| M.read (| other |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
-        forall (N : Value.t) (A B : Ty.t),
+        forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self N A B)
+          (Self N T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ B ] ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ U ] ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_B_ref_mut_slice_B_for_array_N_A.
+          [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_ref_mut_slice_U_for_array_N_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_N_A_for_ref_mut_slice_B.
-      Definition Self (N : Value.t) (A B : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ B ] ].
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_array_N_U_for_ref_mut_slice_T.
+      Definition Self (N : Value.t) (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ].
       
       (*
-          fn eq(&self, other: &[A; N]) -> bool {
+          fn eq(&self, other: &[U; N]) -> bool {
               **self == *other
           }
       *)
       Definition eq
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -657,29 +657,29 @@ Module array.
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "slice") [] [ B ],
-                [ Ty.apply (Ty.path "array") [ N ] [ A ] ],
+                Ty.apply (Ty.path "slice") [] [ T ],
+                [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                 "eq",
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn ne(&self, other: &[A; N]) -> bool {
+          fn ne(&self, other: &[U; N]) -> bool {
               **self != *other
           }
       *)
       Definition ne
           (N : Value.t)
-          (A B : Ty.t)
+          (T U : Ty.t)
           (ε : list Value.t)
           (τ : list Ty.t)
           (α : list Value.t)
           : M :=
-        let Self : Ty.t := Self N A B in
+        let Self : Ty.t := Self N T U in
         match ε, τ, α with
         | [], [], [ self; other ] =>
           ltac:(M.monadic
@@ -688,25 +688,25 @@ Module array.
             M.call_closure (|
               M.get_trait_method (|
                 "core::cmp::PartialEq",
-                Ty.apply (Ty.path "slice") [] [ B ],
-                [ Ty.apply (Ty.path "array") [ N ] [ A ] ],
+                Ty.apply (Ty.path "slice") [] [ T ],
+                [ Ty.apply (Ty.path "array") [ N ] [ U ] ],
                 "ne",
                 []
               |),
               [ M.read (| M.read (| self |) |); M.read (| other |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
-        forall (N : Value.t) (A B : Ty.t),
+        forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialEq"
-          (Self N A B)
-          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ A ] ]
+          (Self N T U)
+          (* Trait polymorphic types *) [ (* Rhs *) Ty.apply (Ty.path "array") [ N ] [ U ] ]
           (* Instance *)
-          [ ("eq", InstanceField.Method (eq N A B)); ("ne", InstanceField.Method (ne N A B)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_A_array_N_A_for_ref_mut_slice_B.
+          [ ("eq", InstanceField.Method (eq N T U)); ("ne", InstanceField.Method (ne N T U)) ].
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_U_array_N_U_for_ref_mut_slice_T.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_array_N_T.
       Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
@@ -775,7 +775,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -827,7 +827,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -886,7 +886,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -907,8 +907,8 @@ Module array.
           ltac:(M.monadic
             (let a := M.alloc (| a |) in
             let b := M.alloc (| b |) in
-            UnOp.Pure.not
-              (M.call_closure (|
+            UnOp.not (|
+              M.call_closure (|
                 M.get_trait_method (|
                   "core::array::equality::SpecArrayEq",
                   T,
@@ -917,8 +917,9 @@ Module array.
                   []
                 |),
                 [ M.read (| a |); M.read (| b |) ]
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

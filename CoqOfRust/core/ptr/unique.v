@@ -51,7 +51,7 @@ Module ptr.
       Definition dangling (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [] =>
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::ptr::unique::Unique"
@@ -67,7 +67,7 @@ Module ptr.
                   |));
                 ("_marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_dangling :
@@ -87,7 +87,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             Value.StructRecord
@@ -104,7 +104,7 @@ Module ptr.
                   |));
                 ("_marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -123,7 +123,7 @@ Module ptr.
       Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ ptr ] =>
+        | [], [], [ ptr ] =>
           ltac:(M.monadic
             (let ptr := M.alloc (| ptr |) in
             M.read (|
@@ -168,7 +168,7 @@ Module ptr.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -183,7 +183,7 @@ Module ptr.
       Definition as_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -202,12 +202,42 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ptr :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "as_ptr" (as_ptr T).
+      
+      (*
+          pub const fn as_non_null_ptr(self) -> NonNull<T> {
+              self.pointer
+          }
+      *)
+      Definition as_non_null_ptr
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                self,
+                "core::ptr::unique::Unique",
+                "pointer"
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_as_non_null_ptr :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "as_non_null_ptr" (as_non_null_ptr T).
       
       (*
           pub const unsafe fn as_ref(&self) -> &T {
@@ -219,7 +249,7 @@ Module ptr.
       Definition as_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -236,7 +266,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ref :
@@ -253,7 +283,7 @@ Module ptr.
       Definition as_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
@@ -270,7 +300,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut :
@@ -281,50 +311,38 @@ Module ptr.
           pub const fn cast<U>(self) -> Unique<U> {
               // FIXME(const-hack): replace with `From`
               // SAFETY: is `NonNull`
-              unsafe { Unique::new_unchecked(self.pointer.cast().as_ptr()) }
+              Unique { pointer: self.pointer.cast(), _marker: PhantomData }
           }
       *)
       Definition cast (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [ U ], [ self ] =>
+        | [], [ U ], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ U ],
-                "new_unchecked",
-                []
-              |),
+            Value.StructRecord
+              "core::ptr::unique::Unique"
               [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ U ],
-                    "as_ptr",
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                        "cast",
-                        [ U ]
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            self,
-                            "core::ptr::unique::Unique",
-                            "pointer"
-                          |)
+                ("pointer",
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                      "cast",
+                      [ U ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ptr::unique::Unique",
+                          "pointer"
                         |)
-                      ]
-                    |)
-                  ]
-                |)
-              ]
-            |)))
-        | _, _, _ => M.impossible
+                      |)
+                    ]
+                  |));
+                ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_cast :
@@ -348,7 +366,7 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -400,6 +418,18 @@ Module ptr.
           (* Instance *) [].
     End Impl_core_ops_unsize_DispatchFromDyn_where_core_marker_Sized_T_where_core_marker_Sized_U_where_core_marker_Unsize_T_U_core_ptr_unique_Unique_U_for_core_ptr_unique_Unique_T.
     
+    Module Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::pin::PinCoerceUnsized"
+          (Self T)
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_pin_PinCoerceUnsized_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
+    
     Module Impl_core_fmt_Debug_where_core_marker_Sized_T_for_core_ptr_unique_Unique_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ].
       
@@ -437,7 +467,7 @@ Module ptr.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -486,7 +516,7 @@ Module ptr.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -533,7 +563,7 @@ Module ptr.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -565,7 +595,7 @@ Module ptr.
                 ("pointer", M.read (| pointer |));
                 ("_marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

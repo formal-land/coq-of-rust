@@ -43,7 +43,7 @@ Module state.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -115,7 +115,7 @@ Module state.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -148,7 +148,7 @@ Module state.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -158,7 +158,7 @@ Module state.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -168,9 +168,9 @@ Module state.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -180,17 +180,6 @@ Module state.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_state_VMState.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_state_VMState.
-    Definition Self : Ty.t := Ty.path "move_core_types::state::VMState".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_state_VMState.
   
   Module Impl_core_cmp_Eq_for_move_core_types_state_VMState.
     Definition Self : Ty.t := Ty.path "move_core_types::state::VMState".
@@ -206,7 +195,7 @@ Module state.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -267,30 +256,31 @@ Module state.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let s := M.copy (| γ |) in
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::cell::RefCell")
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let s := M.copy (| γ |) in
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::cell::RefCell")
+                                    []
+                                    [ Ty.path "move_core_types::state::VMState" ],
+                                  "replace",
                                   []
-                                  [ Ty.path "move_core_types::state::VMState" ],
-                                "replace",
-                                []
-                              |),
-                              [ M.read (| s |); M.read (| state |) ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                |),
+                                [ M.read (| s |); M.read (| state |) ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_set_state : M.IsFunction "move_core_types::state::set_state" set_state.
@@ -343,48 +333,49 @@ Module state.
                 ltac:(M.monadic
                   match γ with
                   | [ α0 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let s := M.copy (| γ |) in
-                            M.read (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "core::cell::Ref")
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let s := M.copy (| γ |) in
+                              M.read (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "core::cell::Ref")
+                                      []
+                                      [ Ty.path "move_core_types::state::VMState" ],
+                                    [],
+                                    "deref",
                                     []
-                                    [ Ty.path "move_core_types::state::VMState" ],
-                                  [],
-                                  "deref",
-                                  []
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "core::cell::RefCell")
+                                  |),
+                                  [
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::cell::RefCell")
+                                            []
+                                            [ Ty.path "move_core_types::state::VMState" ],
+                                          "borrow",
                                           []
-                                          [ Ty.path "move_core_types::state::VMState" ],
-                                        "borrow",
-                                        []
-                                      |),
-                                      [ M.read (| s |) ]
+                                        |),
+                                        [ M.read (| s |) ]
+                                      |)
                                     |)
-                                  |)
-                                ]
-                              |)
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                  ]
+                                |)
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_get_state : M.IsFunction "move_core_types::state::get_state" get_state.

@@ -66,17 +66,6 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
 
-Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
-  Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
-
 Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
@@ -91,7 +80,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
-Module Impl_core_convert_From_array_32_u8_for_payment_channel_AccountId.
+Module Impl_core_convert_From_array_Usize_32_u8_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -101,9 +90,9 @@ Module Impl_core_convert_From_array_32_u8_for_payment_channel_AccountId.
       "core::convert::From"
       Self
       (* Trait polymorphic types *)
-      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_32_u8_for_payment_channel_AccountId.
+End Impl_core_convert_From_array_Usize_32_u8_for_payment_channel_AccountId.
 
 Axiom Balance : (Ty.path "payment_channel::Balance") = (Ty.path "u128").
 
@@ -196,17 +185,6 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_Error.
-
-Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
-  Definition Self : Ty.t := Ty.path "payment_channel::Error".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_payment_channel_Error.
 
 Module Impl_core_cmp_Eq_for_payment_channel_Error.
   Definition Self : Ty.t := Ty.path "payment_channel::Error".
@@ -338,7 +316,8 @@ Enum Blake2x128
 Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Sha2x256".
   
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t :=
+    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -351,7 +330,8 @@ End Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
 Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
   Definition Self : Ty.t := Ty.path "payment_channel::Keccak256".
   
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t :=
+    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -364,7 +344,8 @@ End Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x256".
   
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t :=
+    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -377,7 +358,8 @@ End Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
 Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x128".
   
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t :=
+    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance

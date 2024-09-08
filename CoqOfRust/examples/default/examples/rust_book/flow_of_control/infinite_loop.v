@@ -34,7 +34,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ count := M.alloc (| Value.Integer 0 |) in
+        let~ count := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -44,12 +44,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "Let's count until infinity!
+                      M.alloc (|
+                        Value.Array [ M.read (| Value.String "Let's count until infinity!
 " |) ]
-                        |))
+                      |)
                     ]
                   |)
                 ]
@@ -60,7 +58,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ltac:(M.monadic
             (let~ _ :=
               let β := count in
-              M.write (| β, BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 1) |) in
+              M.write (|
+                β,
+                BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 1 |)
+              |) in
             let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -69,7 +70,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.Pure.eq (M.read (| count |)) (Value.Integer 3) |)) in
+                          (M.alloc (|
+                            BinOp.eq (| M.read (| count |), Value.Integer IntegerKind.U32 3 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -87,12 +90,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array [ M.read (| Value.String "three
+                                          M.alloc (|
+                                            Value.Array [ M.read (| Value.String "three
 " |) ]
-                                            |))
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -119,28 +120,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
+                          M.alloc (|
+                            Value.Array
+                              [ M.read (| Value.String "" |); M.read (| Value.String "
 " |) ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "u32" ]
-                                    |),
-                                    [ count ]
-                                  |)
-                                ]
-                            |))
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "u32" ]
+                                  |),
+                                  [ count ]
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -153,7 +150,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use (M.alloc (| BinOp.Pure.eq (M.read (| count |)) (Value.Integer 5) |)) in
+                      M.use
+                        (M.alloc (|
+                          BinOp.eq (| M.read (| count |), Value.Integer IntegerKind.U32 5 |)
+                        |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
@@ -171,13 +171,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "OK, that's enough
+                                        M.alloc (|
+                                          Value.Array
+                                            [ M.read (| Value.String "OK, that's enough
 " |) ]
-                                          |))
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -193,7 +191,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |)))
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "infinite_loop::main" main.

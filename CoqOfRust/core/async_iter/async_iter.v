@@ -15,8 +15,10 @@ Module async_iter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.Tuple [ Value.Integer 0; Value.StructTuple "core::option::Option::None" [] ]))
-        | _, _, _ => M.impossible
+            Value.Tuple
+              [ Value.Integer IntegerKind.Usize 0; Value.StructTuple "core::option::Option::None" []
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_size_hint :
@@ -77,7 +79,7 @@ Module async_iter.
                 M.read (| cx |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -101,7 +103,7 @@ Module async_iter.
               |),
               [ M.read (| M.read (| self |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -147,15 +149,7 @@ Module async_iter.
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::pin::Pin")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [ Ty.apply (Ty.path "core::pin::Pin") [] [ P ] ]
-                      ],
+                    Ty.apply (Ty.path "core::pin::Pin") [] [ P ],
                     "as_deref_mut",
                     []
                   |),
@@ -164,7 +158,7 @@ Module async_iter.
                 M.read (| cx |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -199,7 +193,7 @@ Module async_iter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -242,7 +236,7 @@ Module async_iter.
             Value.StructTuple
               "core::task::poll::Poll::Ready"
               [ Value.StructTuple "core::option::Option::Some" [ M.read (| t |) ] ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_async_gen_ready :
@@ -282,5 +276,51 @@ Module async_iter.
         forall (T : Ty.t),
         M.IsAssociatedConstant (Self T) "value_FINISHED" (value_FINISHED T).
     End Impl_core_task_poll_Poll_core_option_Option_T.
+    
+    (* Trait *)
+    (* Empty module 'IntoAsyncIterator' *)
+    
+    Module Impl_core_async_iter_async_iter_IntoAsyncIterator_where_core_async_iter_async_iter_AsyncIterator_I_for_I.
+      Definition Self (I : Ty.t) : Ty.t := I.
+      
+      (*     type Item = I::Item; *)
+      Definition _Item (I : Ty.t) : Ty.t := Ty.associated.
+      
+      (*     type IntoAsyncIter = I; *)
+      Definition _IntoAsyncIter (I : Ty.t) : Ty.t := I.
+      
+      (*
+          fn into_async_iter(self) -> Self::IntoAsyncIter {
+              self
+          }
+      *)
+      Definition into_async_iter
+          (I : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self I in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (| self |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        forall (I : Ty.t),
+        M.IsTraitInstance
+          "core::async_iter::async_iter::IntoAsyncIterator"
+          (Self I)
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [
+            ("Item", InstanceField.Ty (_Item I));
+            ("IntoAsyncIter", InstanceField.Ty (_IntoAsyncIter I));
+            ("into_async_iter", InstanceField.Method (into_async_iter I))
+          ].
+    End Impl_core_async_iter_async_iter_IntoAsyncIterator_where_core_async_iter_async_iter_AsyncIterator_I_for_I.
   End async_iter.
 End async_iter.

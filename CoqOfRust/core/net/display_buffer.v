@@ -25,29 +25,35 @@ Module net.
       
       (*
           pub const fn new() -> Self {
-              Self { buf: MaybeUninit::uninit_array(), len: 0 }
+              Self { buf: [MaybeUninit::uninit(); SIZE], len: 0 }
           }
       *)
       Definition new (SIZE : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self SIZE in
         match ε, τ, α with
-        | [ host ], [], [] =>
+        | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
               "core::net::display_buffer::DisplayBuffer"
               [
                 ("buf",
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                      "uninit_array",
+                  repeat (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                          []
+                          [ Ty.path "u8" ],
+                        "uninit",
+                        []
+                      |),
                       []
                     |),
-                    []
+                    SIZE
                   |));
-                ("len", Value.Integer 0)
+                ("len", Value.Integer IntegerKind.Usize 0)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -131,7 +137,7 @@ Module net.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_str :
@@ -148,7 +154,7 @@ Module net.
               let bytes = s.as_bytes();
       
               if let Some(buf) = self.buf.get_mut(self.len..(self.len + bytes.len())) {
-                  MaybeUninit::write_slice(buf, bytes);
+                  MaybeUninit::copy_from_slice(buf, bytes);
                   self.len += bytes.len();
                   Ok(())
               } else {
@@ -199,13 +205,11 @@ Module net.
                               ]
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::net::display_buffer::DisplayBuffer",
-                                  "buf"
-                                |));
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::net::display_buffer::DisplayBuffer",
+                                "buf"
+                              |);
                               Value.StructRecord
                                 "core::ops::range::Range"
                                 [
@@ -218,23 +222,23 @@ Module net.
                                       |)
                                     |));
                                   ("end_",
-                                    BinOp.Wrap.add
-                                      Integer.Usize
-                                      (M.read (|
+                                    BinOp.Wrap.add (|
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "core::net::display_buffer::DisplayBuffer",
                                           "len"
                                         |)
-                                      |))
-                                      (M.call_closure (|
+                                      |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                           "len",
                                           []
                                         |),
                                         [ M.read (| bytes |) ]
-                                      |)))
+                                      |)
+                                    |))
                                 ]
                             ]
                           |)
@@ -254,7 +258,7 @@ Module net.
                                 (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                 []
                                 [ Ty.path "u8" ],
-                              "write_slice",
+                              "copy_from_slice",
                               []
                             |),
                             [ M.read (| buf |); M.read (| bytes |) ]
@@ -269,17 +273,17 @@ Module net.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.add
-                            Integer.Usize
-                            (M.read (| β |))
-                            (M.call_closure (|
+                          BinOp.Wrap.add (|
+                            M.read (| β |),
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                 "len",
                                 []
                               |),
                               [ M.read (| bytes |) ]
-                            |))
+                            |)
+                          |)
                         |) in
                       M.alloc (|
                         Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
@@ -294,7 +298,7 @@ Module net.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

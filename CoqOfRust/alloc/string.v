@@ -67,7 +67,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -117,7 +117,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -127,17 +127,6 @@ Module string.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_alloc_string_String.
-  
-  Module Impl_core_marker_StructuralEq_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_alloc_string_String.
   
   Module Impl_core_cmp_Eq_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
@@ -158,7 +147,7 @@ Module string.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -204,7 +193,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -251,26 +240,22 @@ Module string.
               M.read (| f |);
               M.read (| Value.String "FromUtf8Error" |);
               M.read (| Value.String "bytes" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::string::FromUtf8Error",
+                "bytes"
+              |);
+              M.read (| Value.String "error" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "alloc::string::FromUtf8Error",
-                  "bytes"
-                |));
-              M.read (| Value.String "error" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::string::FromUtf8Error",
-                    "error"
-                  |)
-                |))
+                  "error"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -355,7 +340,7 @@ Module string.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -365,17 +350,6 @@ Module string.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_alloc_string_FromUtf8Error.
-  
-  Module Impl_core_marker_StructuralEq_for_alloc_string_FromUtf8Error.
-    Definition Self : Ty.t := Ty.path "alloc::string::FromUtf8Error".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_alloc_string_FromUtf8Error.
   
   Module Impl_core_cmp_Eq_for_alloc_string_FromUtf8Error.
     Definition Self : Ty.t := Ty.path "alloc::string::FromUtf8Error".
@@ -403,7 +377,7 @@ Module string.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -465,7 +439,7 @@ Module string.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -503,18 +477,16 @@ Module string.
             [
               M.read (| f |);
               M.read (| Value.String "FromUtf16Error" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.read (| self |),
-                    "alloc::string::FromUtf16Error",
-                    0
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "alloc::string::FromUtf16Error",
+                  0
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -553,7 +525,7 @@ Module string.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -584,11 +556,129 @@ Module string.
                   [ M.read (| capacity |) ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_capacity :
       M.IsAssociatedFunction Self "with_capacity" with_capacity.
+    
+    (*
+        pub fn try_with_capacity(capacity: usize) -> Result<String, TryReserveError> {
+            Ok(String { vec: Vec::try_with_capacity(capacity)? })
+        }
+    *)
+    Definition try_with_capacity (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ capacity ] =>
+        ltac:(M.monadic
+          (let capacity := M.alloc (| capacity |) in
+          M.catch_return (|
+            ltac:(M.monadic
+              (Value.StructTuple
+                "core::result::Result::Ok"
+                [
+                  Value.StructRecord
+                    "alloc::string::String"
+                    [
+                      ("vec",
+                        M.read (|
+                          M.match_operator (|
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::try_trait::Try",
+                                  Ty.apply
+                                    (Ty.path "core::result::Result")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
+                                      Ty.path "alloc::collections::TryReserveError"
+                                    ],
+                                  [],
+                                  "branch",
+                                  []
+                                |),
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                      "try_with_capacity",
+                                      []
+                                    |),
+                                    [ M.read (| capacity |) ]
+                                  |)
+                                ]
+                              |)
+                            |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Break",
+                                      0
+                                    |) in
+                                  let residual := M.copy (| γ0_0 |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.read (|
+                                        M.return_ (|
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::try_trait::FromResidual",
+                                              Ty.apply
+                                                (Ty.path "core::result::Result")
+                                                []
+                                                [
+                                                  Ty.path "alloc::string::String";
+                                                  Ty.path "alloc::collections::TryReserveError"
+                                                ],
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "core::result::Result")
+                                                  []
+                                                  [
+                                                    Ty.path "core::convert::Infallible";
+                                                    Ty.path "alloc::collections::TryReserveError"
+                                                  ]
+                                              ],
+                                              "from_residual",
+                                              []
+                                            |),
+                                            [ M.read (| residual |) ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 :=
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      γ,
+                                      "core::ops::control_flow::ControlFlow::Continue",
+                                      0
+                                    |) in
+                                  let val := M.copy (| γ0_0 |) in
+                                  val))
+                            ]
+                          |)
+                        |))
+                    ]
+                ]))
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_try_with_capacity :
+      M.IsAssociatedFunction Self "try_with_capacity" try_with_capacity.
     
     (*
         pub fn from_utf8(vec: Vec<u8>) -> Result<String, FromUtf8Error> {
@@ -651,14 +741,14 @@ Module string.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_utf8 : M.IsAssociatedFunction Self "from_utf8" from_utf8.
     
     (*
         pub fn from_utf8_lossy(v: &[u8]) -> Cow<'_, str> {
-            let mut iter = Utf8Chunks::new(v);
+            let mut iter = v.utf8_chunks();
     
             let first_valid = if let Some(chunk) = iter.next() {
                 let valid = chunk.valid();
@@ -699,8 +789,8 @@ Module string.
                   M.alloc (|
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::str::lossy::Utf8Chunks",
-                        "new",
+                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                        "utf8_chunks",
                         []
                       |),
                       [ M.read (| v |) ]
@@ -846,18 +936,20 @@ Module string.
                                                                         (let γ :=
                                                                           M.use
                                                                             (M.alloc (|
-                                                                              UnOp.Pure.not
-                                                                                (BinOp.Pure.eq
-                                                                                  (M.read (|
+                                                                              UnOp.not (|
+                                                                                BinOp.eq (|
+                                                                                  M.read (|
                                                                                     M.read (|
                                                                                       left_val
                                                                                     |)
-                                                                                  |))
-                                                                                  (M.read (|
+                                                                                  |),
+                                                                                  M.read (|
                                                                                     M.read (|
                                                                                       right_val
                                                                                     |)
-                                                                                  |)))
+                                                                                  |)
+                                                                                |)
+                                                                              |)
                                                                             |)) in
                                                                         let _ :=
                                                                           M.is_constant_or_break_match (|
@@ -1076,8 +1168,8 @@ Module string.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (M.call_closure (|
+                                                        UnOp.not (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path "slice")
@@ -1097,7 +1189,8 @@ Module string.
                                                                 [ chunk ]
                                                               |)
                                                             ]
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -1136,7 +1229,7 @@ Module string.
                 M.alloc (| Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| res |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_utf8_lossy :
@@ -1361,7 +1454,7 @@ Module string.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| ret |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_utf16 : M.IsAssociatedFunction Self "from_utf16" from_utf16.
@@ -1479,42 +1572,43 @@ Module string.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let r := M.copy (| γ |) in
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::result::Result")
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let r := M.copy (| γ |) in
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::result::Result")
+                                          []
+                                          [
+                                            Ty.path "char";
+                                            Ty.path "core::char::decode::DecodeUtf16Error"
+                                          ],
+                                        "unwrap_or",
                                         []
-                                        [
-                                          Ty.path "char";
-                                          Ty.path "core::char::decode::DecodeUtf16Error"
-                                        ],
-                                      "unwrap_or",
-                                      []
-                                    |),
-                                    [
-                                      M.read (| r |);
-                                      M.read (|
-                                        M.get_constant (|
-                                          "core::char::methods::REPLACEMENT_CHARACTER"
+                                      |),
+                                      [
+                                        M.read (| r |);
+                                        M.read (|
+                                          M.get_constant (|
+                                            "core::char::methods::REPLACEMENT_CHARACTER"
+                                          |)
                                         |)
-                                      |)
-                                    ]
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_utf16_lossy :
@@ -1550,19 +1644,20 @@ Module string.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ne
-                                  (BinOp.Wrap.rem
-                                    Integer.Usize
-                                    (M.call_closure (|
+                                BinOp.ne (|
+                                  BinOp.Wrap.rem (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| v |) ]
-                                    |))
-                                    (Value.Integer 2))
-                                  (Value.Integer 0)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 2
+                                  |),
+                                  Value.Integer IntegerKind.Usize 0
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1660,7 +1755,7 @@ Module string.
                                             [
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::ArrayChunks")
-                                                [ Value.Integer 2 ]
+                                                [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ]
                                             ];
                                           Ty.function
@@ -1706,7 +1801,7 @@ Module string.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ]
                                               ];
                                             Ty.function
@@ -1735,7 +1830,7 @@ Module string.
                                             [
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::ArrayChunks")
-                                                [ Value.Integer 2 ]
+                                                [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ]
                                             ],
                                           [],
@@ -1763,14 +1858,14 @@ Module string.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::ArrayChunks")
-                                                [ Value.Integer 2 ]
+                                                [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ],
                                               [],
                                               "copied",
                                               [
                                                 Ty.apply
                                                   (Ty.path "array")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ]
                                               ]
                                             |),
@@ -1801,17 +1896,18 @@ Module string.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (Value.StructTuple
-                                                "alloc::string::FromUtf16Error"
-                                                [ Value.Tuple [] ]))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (Value.StructTuple
+                                                  "alloc::string::FromUtf16Error"
+                                                  [ Value.Tuple [] ]))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -1820,7 +1916,7 @@ Module string.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_utf16le : M.IsAssociatedFunction Self "from_utf16le" from_utf16le.
@@ -1960,7 +2056,7 @@ Module string.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ]
                                               ]
                                           ];
@@ -2020,7 +2116,7 @@ Module string.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ]
                                               ]
                                           ];
@@ -2079,7 +2175,7 @@ Module string.
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::slice::iter::ArrayChunks")
-                                                    [ Value.Integer 2 ]
+                                                    [ Value.Integer IntegerKind.Usize 2 ]
                                                     [ Ty.path "u8" ]
                                                 ]
                                             ];
@@ -2113,7 +2209,7 @@ Module string.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ]
                                               ]
                                           ],
@@ -2146,7 +2242,7 @@ Module string.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ]
                                               ],
                                             [],
@@ -2154,7 +2250,7 @@ Module string.
                                             [
                                               Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer 2 ]
+                                                [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ]
                                             ]
                                           |),
@@ -2164,7 +2260,7 @@ Module string.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ],
                                                 [],
                                                 "by_ref",
@@ -2188,37 +2284,38 @@ Module string.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let r := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let r := M.copy (| γ |) in
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "char";
+                                                          Ty.path
+                                                            "core::char::decode::DecodeUtf16Error"
+                                                        ],
+                                                      "unwrap_or",
                                                       []
-                                                      [
-                                                        Ty.path "char";
-                                                        Ty.path
-                                                          "core::char::decode::DecodeUtf16Error"
-                                                      ],
-                                                    "unwrap_or",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| r |);
-                                                    M.read (|
-                                                      M.get_constant (|
-                                                        "core::char::methods::REPLACEMENT_CHARACTER"
+                                                    |),
+                                                    [
+                                                      M.read (| r |);
+                                                      M.read (|
+                                                        M.get_constant (|
+                                                          "core::char::methods::REPLACEMENT_CHARACTER"
+                                                        |)
                                                       |)
-                                                    |)
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                                    ]
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)
@@ -2244,7 +2341,7 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::slice::iter::ArrayChunks")
-                                            [ Value.Integer 2 ]
+                                            [ Value.Integer IntegerKind.Usize 2 ]
                                             [ Ty.path "u8" ],
                                           "remainder",
                                           []
@@ -2279,7 +2376,7 @@ Module string.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_utf16le_lossy :
@@ -2315,19 +2412,20 @@ Module string.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ne
-                                  (BinOp.Wrap.rem
-                                    Integer.Usize
-                                    (M.call_closure (|
+                                BinOp.ne (|
+                                  BinOp.Wrap.rem (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                         "len",
                                         []
                                       |),
                                       [ M.read (| v |) ]
-                                    |))
-                                    (Value.Integer 2))
-                                  (Value.Integer 0)
+                                    |),
+                                    Value.Integer IntegerKind.Usize 2
+                                  |),
+                                  Value.Integer IntegerKind.Usize 0
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2425,7 +2523,7 @@ Module string.
                                             [
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::ArrayChunks")
-                                                [ Value.Integer 2 ]
+                                                [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ]
                                             ];
                                           Ty.function
@@ -2471,7 +2569,7 @@ Module string.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ]
                                               ];
                                             Ty.function
@@ -2500,7 +2598,7 @@ Module string.
                                             [
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::ArrayChunks")
-                                                [ Value.Integer 2 ]
+                                                [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ]
                                             ],
                                           [],
@@ -2528,14 +2626,14 @@ Module string.
                                               "core::iter::traits::iterator::Iterator",
                                               Ty.apply
                                                 (Ty.path "core::slice::iter::ArrayChunks")
-                                                [ Value.Integer 2 ]
+                                                [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ],
                                               [],
                                               "copied",
                                               [
                                                 Ty.apply
                                                   (Ty.path "array")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ]
                                               ]
                                             |),
@@ -2566,17 +2664,18 @@ Module string.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (Value.StructTuple
-                                                "alloc::string::FromUtf16Error"
-                                                [ Value.Tuple [] ]))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (Value.StructTuple
+                                                  "alloc::string::FromUtf16Error"
+                                                  [ Value.Tuple [] ]))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -2585,7 +2684,7 @@ Module string.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_utf16be : M.IsAssociatedFunction Self "from_utf16be" from_utf16be.
@@ -2725,7 +2824,7 @@ Module string.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ]
                                               ]
                                           ];
@@ -2785,7 +2884,7 @@ Module string.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ]
                                               ]
                                           ];
@@ -2844,7 +2943,7 @@ Module string.
                                                 [
                                                   Ty.apply
                                                     (Ty.path "core::slice::iter::ArrayChunks")
-                                                    [ Value.Integer 2 ]
+                                                    [ Value.Integer IntegerKind.Usize 2 ]
                                                     [ Ty.path "u8" ]
                                                 ]
                                             ];
@@ -2878,7 +2977,7 @@ Module string.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ]
                                               ]
                                           ],
@@ -2911,7 +3010,7 @@ Module string.
                                               [
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ]
                                               ],
                                             [],
@@ -2919,7 +3018,7 @@ Module string.
                                             [
                                               Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer 2 ]
+                                                [ Value.Integer IntegerKind.Usize 2 ]
                                                 [ Ty.path "u8" ]
                                             ]
                                           |),
@@ -2929,7 +3028,7 @@ Module string.
                                                 "core::iter::traits::iterator::Iterator",
                                                 Ty.apply
                                                   (Ty.path "core::slice::iter::ArrayChunks")
-                                                  [ Value.Integer 2 ]
+                                                  [ Value.Integer IntegerKind.Usize 2 ]
                                                   [ Ty.path "u8" ],
                                                 [],
                                                 "by_ref",
@@ -2953,37 +3052,38 @@ Module string.
                                     ltac:(M.monadic
                                       match γ with
                                       | [ α0 ] =>
-                                        M.match_operator (|
-                                          M.alloc (| α0 |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let r := M.copy (| γ |) in
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
+                                        ltac:(M.monadic
+                                          (M.match_operator (|
+                                            M.alloc (| α0 |),
+                                            [
+                                              fun γ =>
+                                                ltac:(M.monadic
+                                                  (let r := M.copy (| γ |) in
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [
+                                                          Ty.path "char";
+                                                          Ty.path
+                                                            "core::char::decode::DecodeUtf16Error"
+                                                        ],
+                                                      "unwrap_or",
                                                       []
-                                                      [
-                                                        Ty.path "char";
-                                                        Ty.path
-                                                          "core::char::decode::DecodeUtf16Error"
-                                                      ],
-                                                    "unwrap_or",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.read (| r |);
-                                                    M.read (|
-                                                      M.get_constant (|
-                                                        "core::char::methods::REPLACEMENT_CHARACTER"
+                                                    |),
+                                                    [
+                                                      M.read (| r |);
+                                                      M.read (|
+                                                        M.get_constant (|
+                                                          "core::char::methods::REPLACEMENT_CHARACTER"
+                                                        |)
                                                       |)
-                                                    |)
-                                                  ]
-                                                |)))
-                                          ]
-                                        |)
-                                      | _ => M.impossible (||)
+                                                    ]
+                                                  |)))
+                                            ]
+                                          |)))
+                                      | _ => M.impossible "wrong number of arguments"
                                       end))
                               ]
                             |)
@@ -3009,7 +3109,7 @@ Module string.
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "core::slice::iter::ArrayChunks")
-                                            [ Value.Integer 2 ]
+                                            [ Value.Integer IntegerKind.Usize 2 ]
                                             [ Ty.path "u8" ],
                                           "remainder",
                                           []
@@ -3044,7 +3144,7 @@ Module string.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_utf16be_lossy :
@@ -3075,7 +3175,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_raw_parts :
@@ -3109,7 +3209,7 @@ Module string.
                   [ M.read (| buf |); M.read (| length |); M.read (| capacity |) ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_raw_parts :
@@ -3126,7 +3226,7 @@ Module string.
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           Value.StructRecord "alloc::string::String" [ ("vec", M.read (| bytes |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_utf8_unchecked :
@@ -3145,7 +3245,7 @@ Module string.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "alloc::string::String", "vec" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
@@ -3170,7 +3270,7 @@ Module string.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
@@ -3195,7 +3295,7 @@ Module string.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_mut_str : M.IsAssociatedFunction Self "as_mut_str" as_mut_str.
@@ -3232,7 +3332,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_push_str : M.IsAssociatedFunction Self "push_str" push_str.
@@ -3306,8 +3406,8 @@ Module string.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
@@ -3326,7 +3426,8 @@ Module string.
                                           |);
                                           M.read (| start |)
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3358,8 +3459,8 @@ Module string.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
@@ -3378,7 +3479,8 @@ Module string.
                                           |);
                                           M.read (| end_ |)
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3425,7 +3527,7 @@ Module string.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_extend_from_within :
@@ -3458,7 +3560,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_capacity : M.IsAssociatedFunction Self "capacity" capacity.
@@ -3492,7 +3594,7 @@ Module string.
               M.read (| additional |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_reserve : M.IsAssociatedFunction Self "reserve" reserve.
@@ -3526,7 +3628,7 @@ Module string.
               M.read (| additional |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_reserve_exact :
@@ -3561,7 +3663,7 @@ Module string.
               M.read (| additional |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_reserve : M.IsAssociatedFunction Self "try_reserve" try_reserve.
@@ -3595,7 +3697,7 @@ Module string.
               M.read (| additional |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_reserve_exact :
@@ -3628,7 +3730,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_shrink_to_fit :
@@ -3663,7 +3765,7 @@ Module string.
               M.read (| min_capacity |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_shrink_to : M.IsAssociatedFunction Self "shrink_to" shrink_to.
@@ -3693,7 +3795,11 @@ Module string.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.Usize 1
+                      |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
@@ -3739,9 +3845,12 @@ Module string.
                                 M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                                 [
                                   M.read (| ch |);
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
+                                  M.alloc (|
+                                    repeat (|
+                                      Value.Integer IntegerKind.U8 0,
+                                      Value.Integer IntegerKind.Usize 4
+                                    |)
+                                  |)
                                 ]
                               |)
                             ]
@@ -3752,7 +3861,7 @@ Module string.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
@@ -3786,7 +3895,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
@@ -3814,16 +3923,17 @@ Module string.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.le
-                            (M.read (| new_len |))
-                            (M.call_closure (|
+                          BinOp.le (|
+                            M.read (| new_len |),
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.path "alloc::string::String",
                                 "len",
                                 []
                               |),
                               [ M.read (| self |) ]
-                            |))
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
@@ -3835,8 +3945,8 @@ Module string.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
@@ -3855,7 +3965,8 @@ Module string.
                                           |);
                                           M.read (| new_len |)
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -3902,7 +4013,7 @@ Module string.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_truncate : M.IsAssociatedFunction Self "truncate" truncate.
@@ -4034,16 +4145,16 @@ Module string.
                   |) in
                 let~ newlen :=
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.call_closure (|
+                    BinOp.Wrap.sub (|
+                      M.call_closure (|
                         M.get_associated_function (| Ty.path "alloc::string::String", "len", [] |),
                         [ M.read (| self |) ]
-                      |))
-                      (M.call_closure (|
+                      |),
+                      M.call_closure (|
                         M.get_associated_function (| Ty.path "char", "len_utf8", [] |),
                         [ M.read (| ch |) ]
-                      |))
+                      |)
+                    |)
                   |) in
                 let~ _ :=
                   let~ _ :=
@@ -4071,7 +4182,7 @@ Module string.
                 M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| ch |) ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_pop : M.IsAssociatedFunction Self "pop" pop.
@@ -4168,17 +4279,15 @@ Module string.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "cannot remove a char from the end of a string"
-                                            |)
-                                          ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String
+                                              "cannot remove a char from the end of a string"
+                                          |)
+                                        ]
+                                    |)
                                   ]
                                 |)
                               ]
@@ -4190,13 +4299,13 @@ Module string.
               |) in
             let~ next :=
               M.alloc (|
-                BinOp.Wrap.add
-                  Integer.Usize
-                  (M.read (| idx |))
-                  (M.call_closure (|
+                BinOp.Wrap.add (|
+                  M.read (| idx |),
+                  M.call_closure (|
                     M.get_associated_function (| Ty.path "char", "len_utf8", [] |),
                     [ M.read (| ch |) ]
-                  |))
+                  |)
+                |)
               |) in
             let~ len :=
               M.alloc (|
@@ -4265,7 +4374,7 @@ Module string.
                           M.read (| idx |)
                         ]
                       |);
-                      BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| next |))
+                      BinOp.Wrap.sub (| M.read (| len |), M.read (| next |) |)
                     ]
                   |)
                 |) in
@@ -4286,26 +4395,23 @@ Module string.
                         "alloc::string::String",
                         "vec"
                       |);
-                      BinOp.Wrap.sub
-                        Integer.Usize
-                        (M.read (| len |))
-                        (BinOp.Wrap.sub Integer.Usize (M.read (| next |)) (M.read (| idx |)))
+                      BinOp.Wrap.sub (|
+                        M.read (| len |),
+                        BinOp.Wrap.sub (| M.read (| next |), M.read (| idx |) |)
+                      |)
                     ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |) in
             ch
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_remove : M.IsAssociatedFunction Self "remove" remove.
     
     (*
-        pub fn remove_matches<'a, P>(&'a mut self, pat: P)
-        where
-            P: for<'x> Pattern<'x>,
-        {
+        pub fn remove_matches<P: Pattern>(&mut self, pat: P) {
             use core::str::pattern::Searcher;
     
             let rejections = {
@@ -4388,7 +4494,7 @@ Module string.
                       ]
                     |)
                   |) in
-                let~ front := M.alloc (| Value.Integer 0 |) in
+                let~ front := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ rejections :=
                   M.alloc (|
                     M.call_closure (|
@@ -4437,131 +4543,132 @@ Module string.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.read (|
-                                              M.match_operator (|
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.read (|
                                                 M.match_operator (|
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::try_trait::Try",
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [
-                                                            Ty.tuple
-                                                              [ Ty.path "usize"; Ty.path "usize" ]
-                                                          ],
-                                                        [],
-                                                        "branch",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::str::pattern::Searcher",
-                                                            Ty.associated,
-                                                            [],
-                                                            "next_match",
+                                                  M.match_operator (|
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::try_trait::Try",
+                                                          Ty.apply
+                                                            (Ty.path "core::option::Option")
                                                             []
-                                                          |),
-                                                          [ searcher ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::control_flow::ControlFlow::Break",
-                                                            0
-                                                          |) in
-                                                        let residual := M.copy (| γ0_0 |) in
-                                                        M.alloc (|
-                                                          M.never_to_any (|
-                                                            M.read (|
-                                                              M.return_ (|
-                                                                M.call_closure (|
-                                                                  M.get_trait_method (|
-                                                                    "core::ops::try_trait::FromResidual",
-                                                                    Ty.apply
-                                                                      (Ty.path
-                                                                        "core::option::Option")
-                                                                      []
-                                                                      [
-                                                                        Ty.tuple
-                                                                          [
-                                                                            Ty.path "usize";
-                                                                            Ty.path "usize"
-                                                                          ]
-                                                                      ],
-                                                                    [
+                                                            [
+                                                              Ty.tuple
+                                                                [ Ty.path "usize"; Ty.path "usize" ]
+                                                            ],
+                                                          [],
+                                                          "branch",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::str::pattern::Searcher",
+                                                              Ty.associated,
+                                                              [],
+                                                              "next_match",
+                                                              []
+                                                            |),
+                                                            [ searcher ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Break",
+                                                              0
+                                                            |) in
+                                                          let residual := M.copy (| γ0_0 |) in
+                                                          M.alloc (|
+                                                            M.never_to_any (|
+                                                              M.read (|
+                                                                M.return_ (|
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::ops::try_trait::FromResidual",
                                                                       Ty.apply
                                                                         (Ty.path
                                                                           "core::option::Option")
                                                                         []
                                                                         [
-                                                                          Ty.path
-                                                                            "core::convert::Infallible"
-                                                                        ]
-                                                                    ],
-                                                                    "from_residual",
-                                                                    []
-                                                                  |),
-                                                                  [ M.read (| residual |) ]
+                                                                          Ty.tuple
+                                                                            [
+                                                                              Ty.path "usize";
+                                                                              Ty.path "usize"
+                                                                            ]
+                                                                        ],
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "core::option::Option")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "core::convert::Infallible"
+                                                                          ]
+                                                                      ],
+                                                                      "from_residual",
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| residual |) ]
+                                                                  |)
                                                                 |)
                                                               |)
                                                             |)
-                                                          |)
-                                                        |)));
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::control_flow::ControlFlow::Continue",
+                                                              0
+                                                            |) in
+                                                          let val := M.copy (| γ0_0 |) in
+                                                          val))
+                                                    ]
+                                                  |),
+                                                  [
                                                     fun γ =>
                                                       ltac:(M.monadic
                                                         (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::control_flow::ControlFlow::Continue",
-                                                            0
-                                                          |) in
-                                                        let val := M.copy (| γ0_0 |) in
-                                                        val))
+                                                          M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                                        let γ0_1 :=
+                                                          M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                                        let start := M.copy (| γ0_0 |) in
+                                                        let end_ := M.copy (| γ0_1 |) in
+                                                        let~ prev_front := M.copy (| front |) in
+                                                        let~ _ :=
+                                                          M.write (| front, M.read (| end_ |) |) in
+                                                        M.alloc (|
+                                                          Value.StructTuple
+                                                            "core::option::Option::Some"
+                                                            [
+                                                              Value.Tuple
+                                                                [
+                                                                  M.read (| prev_front |);
+                                                                  M.read (| start |)
+                                                                ]
+                                                            ]
+                                                        |)))
                                                   ]
-                                                |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let γ0_0 :=
-                                                        M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                                      let γ0_1 :=
-                                                        M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                                      let start := M.copy (| γ0_0 |) in
-                                                      let end_ := M.copy (| γ0_1 |) in
-                                                      let~ prev_front := M.copy (| front |) in
-                                                      let~ _ :=
-                                                        M.write (| front, M.read (| end_ |) |) in
-                                                      M.alloc (|
-                                                        Value.StructTuple
-                                                          "core::option::Option::Some"
-                                                          [
-                                                            Value.Tuple
-                                                              [
-                                                                M.read (| prev_front |);
-                                                                M.read (| start |)
-                                                              ]
-                                                          ]
-                                                      |)))
-                                                ]
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                |)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -4629,7 +4736,7 @@ Module string.
                   |)
                 |)
               |) in
-            let~ len := M.alloc (| Value.Integer 0 |) in
+            let~ len := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
             let~ ptr :=
               M.alloc (|
                 M.call_closure (|
@@ -4737,10 +4844,7 @@ Module string.
                                       let end_ := M.copy (| γ1_1 |) in
                                       let~ count :=
                                         M.alloc (|
-                                          BinOp.Wrap.sub
-                                            Integer.Usize
-                                            (M.read (| end_ |))
-                                            (M.read (| start |))
+                                          BinOp.Wrap.sub (| M.read (| end_ |), M.read (| start |) |)
                                         |) in
                                       let~ _ :=
                                         M.match_operator (|
@@ -4751,9 +4855,10 @@ Module string.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.Pure.ne
-                                                        (M.read (| start |))
-                                                        (M.read (| len |))
+                                                      BinOp.ne (|
+                                                        M.read (| start |),
+                                                        M.read (| len |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -4804,10 +4909,7 @@ Module string.
                                         let β := len in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| β |))
-                                            (M.read (| count |))
+                                          BinOp.Wrap.add (| M.read (| β |), M.read (| count |) |)
                                         |) in
                                       M.alloc (| Value.Tuple [] |)))
                                 ]
@@ -4839,7 +4941,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_remove_matches :
@@ -4919,8 +5021,8 @@ Module string.
                   "alloc::string::retain::SetLenOnDrop"
                   [
                     ("s", M.read (| self |));
-                    ("idx", Value.Integer 0);
-                    ("del_bytes", Value.Integer 0)
+                    ("idx", Value.Integer IntegerKind.Usize 0);
+                    ("del_bytes", Value.Integer IntegerKind.Usize 0)
                   ]
               |) in
             let~ _ :=
@@ -4934,15 +5036,16 @@ Module string.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.read (|
+                                BinOp.lt (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       guard,
                                       "alloc::string::retain::SetLenOnDrop",
                                       "idx"
                                     |)
-                                  |))
-                                  (M.read (| len |))
+                                  |),
+                                  M.read (| len |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5041,8 +5144,8 @@ Module string.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          UnOp.Pure.not
-                                            (M.call_closure (|
+                                          UnOp.not (|
+                                            M.call_closure (|
                                               M.get_trait_method (|
                                                 "core::ops::function::FnMut",
                                                 F,
@@ -5051,7 +5154,8 @@ Module string.
                                                 []
                                               |),
                                               [ f; Value.Tuple [ M.read (| ch |) ] ]
-                                            |))
+                                            |)
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -5067,10 +5171,7 @@ Module string.
                                         |) in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.add
-                                          Integer.Usize
-                                          (M.read (| β |))
-                                          (M.read (| ch_len |))
+                                        BinOp.Wrap.add (| M.read (| β |), M.read (| ch_len |) |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
@@ -5083,15 +5184,16 @@ Module string.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.Pure.gt
-                                                    (M.read (|
+                                                  BinOp.gt (|
+                                                    M.read (|
                                                       M.SubPointer.get_struct_record_field (|
                                                         guard,
                                                         "alloc::string::retain::SetLenOnDrop",
                                                         "del_bytes"
                                                       |)
-                                                    |))
-                                                    (Value.Integer 0)
+                                                    |),
+                                                    Value.Integer IntegerKind.Usize 0
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -5151,22 +5253,22 @@ Module string.
                                                                 |)
                                                               ]
                                                             |);
-                                                            BinOp.Wrap.sub
-                                                              Integer.Usize
-                                                              (M.read (|
+                                                            BinOp.Wrap.sub (|
+                                                              M.read (|
                                                                 M.SubPointer.get_struct_record_field (|
                                                                   guard,
                                                                   "alloc::string::retain::SetLenOnDrop",
                                                                   "idx"
                                                                 |)
-                                                              |))
-                                                              (M.read (|
+                                                              |),
+                                                              M.read (|
                                                                 M.SubPointer.get_struct_record_field (|
                                                                   guard,
                                                                   "alloc::string::retain::SetLenOnDrop",
                                                                   "del_bytes"
                                                                 |)
-                                                              |))
+                                                              |)
+                                                            |)
                                                           ]
                                                         |);
                                                         M.call_closure (|
@@ -5197,7 +5299,7 @@ Module string.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| ch_len |))
+                              BinOp.Wrap.add (| M.read (| β |), M.read (| ch_len |) |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ =>
@@ -5226,7 +5328,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_retain : M.IsAssociatedFunction Self "retain" retain.
@@ -5259,8 +5361,8 @@ Module string.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "is_char_boundary",
@@ -5279,7 +5381,8 @@ Module string.
                                   |);
                                   M.read (| idx |)
                                 ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -5297,7 +5400,10 @@ Module string.
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
-            let~ bits := M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |) in
+            let~ bits :=
+              M.alloc (|
+                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |)
+              |) in
             let~ bits :=
               M.alloc (|
                 M.call_closure (|
@@ -5305,7 +5411,7 @@ Module string.
                   [
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
-                      [ M.read (| ch |); (* Unsize *) M.pointer_coercion bits ]
+                      [ M.read (| ch |); bits ]
                     |)
                   ]
                 |)
@@ -5323,7 +5429,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_insert : M.IsAssociatedFunction Self "insert" insert.
@@ -5444,10 +5550,10 @@ Module string.
                             |)
                           ]
                         |);
-                        BinOp.Wrap.add Integer.Usize (M.read (| idx |)) (M.read (| amt |))
+                        BinOp.Wrap.add (| M.read (| idx |), M.read (| amt |) |)
                       ]
                     |);
-                    BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| idx |))
+                    BinOp.Wrap.sub (| M.read (| len |), M.read (| idx |) |)
                   ]
                 |)
               |) in
@@ -5512,13 +5618,13 @@ Module string.
                       "alloc::string::String",
                       "vec"
                     |);
-                    BinOp.Wrap.add Integer.Usize (M.read (| len |)) (M.read (| amt |))
+                    BinOp.Wrap.add (| M.read (| len |), M.read (| amt |) |)
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_insert_bytes : M.IsAssociatedFunction Self "insert_bytes" insert_bytes.
@@ -5549,8 +5655,8 @@ Module string.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "is_char_boundary",
@@ -5569,7 +5675,8 @@ Module string.
                                   |);
                                   M.read (| idx |)
                                 ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -5607,7 +5714,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_insert_str : M.IsAssociatedFunction Self "insert_str" insert_str.
@@ -5627,7 +5734,7 @@ Module string.
             "alloc::string::String",
             "vec"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_mut_vec : M.IsAssociatedFunction Self "as_mut_vec" as_mut_vec.
@@ -5659,7 +5766,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -5674,13 +5781,14 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (| Ty.path "alloc::string::String", "len", [] |),
               [ M.read (| self |) ]
-            |))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+            |),
+            Value.Integer IntegerKind.Usize 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
@@ -5708,8 +5816,8 @@ Module string.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "str",
                                   "is_char_boundary",
@@ -5728,7 +5836,8 @@ Module string.
                                   |);
                                   M.read (| at_ |)
                                 ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -5778,7 +5887,7 @@ Module string.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_split_off : M.IsAssociatedFunction Self "split_off" split_off.
@@ -5810,7 +5919,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -5894,8 +6003,8 @@ Module string.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
@@ -5914,7 +6023,8 @@ Module string.
                                           |);
                                           M.read (| start |)
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -5946,8 +6056,8 @@ Module string.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
@@ -5966,7 +6076,8 @@ Module string.
                                           |);
                                           M.read (| end_ |)
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -6037,7 +6148,7 @@ Module string.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_drain : M.IsAssociatedFunction Self "drain" drain.
@@ -6116,8 +6227,8 @@ Module string.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
@@ -6136,7 +6247,8 @@ Module string.
                                           |);
                                           M.read (| n |)
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -6176,8 +6288,8 @@ Module string.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
@@ -6194,12 +6306,13 @@ Module string.
                                             |),
                                             [ M.read (| self |) ]
                                           |);
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| n |))
-                                            (Value.Integer 1)
+                                          BinOp.Wrap.add (|
+                                            M.read (| n |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |)
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -6263,8 +6376,8 @@ Module string.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
@@ -6281,12 +6394,13 @@ Module string.
                                             |),
                                             [ M.read (| self |) ]
                                           |);
-                                          BinOp.Wrap.add
-                                            Integer.Usize
-                                            (M.read (| n |))
-                                            (Value.Integer 1)
+                                          BinOp.Wrap.add (|
+                                            M.read (| n |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |)
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -6327,8 +6441,8 @@ Module string.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "str",
                                           "is_char_boundary",
@@ -6347,7 +6461,8 @@ Module string.
                                           |);
                                           M.read (| n |)
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -6418,7 +6533,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_replace_range :
@@ -6465,7 +6580,7 @@ Module string.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_boxed_str :
@@ -6512,7 +6627,7 @@ Module string.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_leak : M.IsAssociatedFunction Self "leak" leak.
@@ -6551,7 +6666,7 @@ Module string.
               Value.StructTuple "core::ops::range::RangeFull" []
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
@@ -6569,7 +6684,7 @@ Module string.
           M.read (|
             M.SubPointer.get_struct_record_field (| self, "alloc::string::FromUtf8Error", "bytes" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
@@ -6591,7 +6706,7 @@ Module string.
               "error"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_utf8_error : M.IsAssociatedFunction Self "utf8_error" utf8_error.
@@ -6628,7 +6743,7 @@ Module string.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6657,7 +6772,7 @@ Module string.
             M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], "fmt", [] |),
             [ M.read (| Value.String "invalid utf-16: lone surrogate found" |); M.read (| f |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6682,7 +6797,7 @@ Module string.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "invalid utf-8" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6707,7 +6822,7 @@ Module string.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "invalid utf-16" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6755,7 +6870,7 @@ Module string.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -6799,7 +6914,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6849,7 +6964,7 @@ Module string.
               |) in
             buf
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6898,7 +7013,7 @@ Module string.
               |) in
             buf
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6947,7 +7062,7 @@ Module string.
               |) in
             buf
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7045,7 +7160,7 @@ Module string.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7056,17 +7171,18 @@ Module string.
         (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
   End Impl_core_iter_traits_collect_FromIterator_alloc_string_String_for_alloc_string_String.
   
-  Module Impl_core_iter_traits_collect_FromIterator_alloc_boxed_Box_str_alloc_alloc_Global_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
+  Module Impl_core_iter_traits_collect_FromIterator_where_core_alloc_Allocator_A_alloc_boxed_Box_str_A_for_alloc_string_String.
+    Definition Self (A : Ty.t) : Ty.t := Ty.path "alloc::string::String".
     
     (*
-        fn from_iter<I: IntoIterator<Item = Box<str>>>(iter: I) -> String {
+        fn from_iter<I: IntoIterator<Item = Box<str, A>>>(iter: I) -> String {
             let mut buf = String::new();
             buf.extend(iter);
             buf
         }
     *)
-    Definition from_iter (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_iter (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self A in
       match ε, τ, α with
       | [], [ _ as I ], [ iter ] =>
         ltac:(M.monadic
@@ -7085,12 +7201,7 @@ Module string.
                   M.get_trait_method (|
                     "core::iter::traits::collect::Extend",
                     Ty.path "alloc::string::String",
-                    [
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
-                    ],
+                    [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ],
                     "extend",
                     [ I ]
                   |),
@@ -7099,23 +7210,18 @@ Module string.
               |) in
             buf
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
+      forall (A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::FromIterator"
-        Self
+        (Self A)
         (* Trait polymorphic types *)
-        [
-          (* A *)
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            []
-            [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
-        ]
-        (* Instance *) [ ("from_iter", InstanceField.Method from_iter) ].
-  End Impl_core_iter_traits_collect_FromIterator_alloc_boxed_Box_str_alloc_alloc_Global_for_alloc_string_String.
+        [ (* A *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
+        (* Instance *) [ ("from_iter", InstanceField.Method (from_iter A)) ].
+  End Impl_core_iter_traits_collect_FromIterator_where_core_alloc_Allocator_A_alloc_boxed_Box_str_A_for_alloc_string_String.
   
   Module Impl_core_iter_traits_collect_FromIterator_alloc_borrow_Cow_str_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
@@ -7216,7 +7322,7 @@ Module string.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7306,23 +7412,24 @@ Module string.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let c := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "alloc::string::String",
-                                                "push",
-                                                []
-                                              |),
-                                              [ M.read (| self |); M.read (| c |) ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let c := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "alloc::string::String",
+                                                  "push",
+                                                  []
+                                                |),
+                                                [ M.read (| self |); M.read (| c |) ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -7331,7 +7438,7 @@ Module string.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7355,7 +7462,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7379,7 +7486,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7449,7 +7556,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7486,7 +7593,7 @@ Module string.
                   |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7510,7 +7617,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7571,30 +7678,31 @@ Module string.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let s := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "alloc::string::String",
-                                        "push_str",
-                                        []
-                                      |),
-                                      [ M.read (| self |); M.read (| s |) ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let s := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "alloc::string::String",
+                                          "push_str",
+                                          []
+                                        |),
+                                        [ M.read (| self |); M.read (| s |) ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7618,7 +7726,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7631,15 +7739,16 @@ Module string.
         ].
   End Impl_core_iter_traits_collect_Extend_ref__str_for_alloc_string_String.
   
-  Module Impl_core_iter_traits_collect_Extend_alloc_boxed_Box_str_alloc_alloc_Global_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
+  Module Impl_core_iter_traits_collect_Extend_where_core_alloc_Allocator_A_alloc_boxed_Box_str_A_for_alloc_string_String.
+    Definition Self (A : Ty.t) : Ty.t := Ty.path "alloc::string::String".
     
     (*
-        fn extend<I: IntoIterator<Item = Box<str>>>(&mut self, iter: I) {
+        fn extend<I: IntoIterator<Item = Box<str, A>>>(&mut self, iter: I) {
             iter.into_iter().for_each(move |s| self.push_str(&s));
         }
     *)
-    Definition extend (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition extend (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self A in
       match ε, τ, α with
       | [], [ _ as I ], [ self; iter ] =>
         ltac:(M.monadic
@@ -7658,12 +7767,7 @@ Module string.
                       Ty.function
                         [
                           Ty.tuple
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::boxed::Box")
-                                []
-                                [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
-                            ]
+                            [ Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
                         ]
                         (Ty.tuple [])
                     ]
@@ -7684,46 +7788,42 @@ Module string.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let s := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "alloc::string::String",
-                                        "push_str",
-                                        []
-                                      |),
-                                      [ M.read (| self |); M.read (| s |) ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let s := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "alloc::string::String",
+                                          "push_str",
+                                          []
+                                        |),
+                                        [ M.read (| self |); M.read (| s |) ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
+      forall (A : Ty.t),
       M.IsTraitInstance
         "core::iter::traits::collect::Extend"
-        Self
+        (Self A)
         (* Trait polymorphic types *)
-        [
-          (* A *)
-          Ty.apply
-            (Ty.path "alloc::boxed::Box")
-            []
-            [ Ty.path "str"; Ty.path "alloc::alloc::Global" ]
-        ]
-        (* Instance *) [ ("extend", InstanceField.Method extend) ].
-  End Impl_core_iter_traits_collect_Extend_alloc_boxed_Box_str_alloc_alloc_Global_for_alloc_string_String.
+        [ (* A *) Ty.apply (Ty.path "alloc::boxed::Box") [] [ Ty.path "str"; A ] ]
+        (* Instance *) [ ("extend", InstanceField.Method (extend A)) ].
+  End Impl_core_iter_traits_collect_Extend_where_core_alloc_Allocator_A_alloc_boxed_Box_str_A_for_alloc_string_String.
   
   Module Impl_core_iter_traits_collect_Extend_alloc_string_String_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
@@ -7766,42 +7866,43 @@ Module string.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let s := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "alloc::string::String",
-                                        "push_str",
-                                        []
-                                      |),
-                                      [
-                                        M.read (| self |);
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.path "alloc::string::String",
-                                            [],
-                                            "deref",
-                                            []
-                                          |),
-                                          [ s ]
-                                        |)
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let s := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "alloc::string::String",
+                                          "push_str",
+                                          []
+                                        |),
+                                        [
+                                          M.read (| self |);
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.path "alloc::string::String",
+                                              [],
+                                              "deref",
+                                              []
+                                            |),
+                                            [ s ]
+                                          |)
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7837,7 +7938,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7896,45 +7997,46 @@ Module string.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let s := M.copy (| γ |) in
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "alloc::string::String",
-                                        "push_str",
-                                        []
-                                      |),
-                                      [
-                                        M.read (| self |);
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::deref::Deref",
-                                            Ty.apply
-                                              (Ty.path "alloc::borrow::Cow")
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let s := M.copy (| γ |) in
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "alloc::string::String",
+                                          "push_str",
+                                          []
+                                        |),
+                                        [
+                                          M.read (| self |);
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::ops::deref::Deref",
+                                              Ty.apply
+                                                (Ty.path "alloc::borrow::Cow")
+                                                []
+                                                [ Ty.path "str" ],
+                                              [],
+                                              "deref",
                                               []
-                                              [ Ty.path "str" ],
-                                            [],
-                                            "deref",
-                                            []
-                                          |),
-                                          [ s ]
-                                        |)
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                            |),
+                                            [ s ]
+                                          |)
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -7970,7 +8072,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7987,11 +8089,11 @@ Module string.
   Module Impl_core_str_pattern_Pattern_for_ref__alloc_string_String.
     Definition Self : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "alloc::string::String" ].
     
-    (*     type Searcher = <&'b str as Pattern<'a>>::Searcher; *)
+    (*     type Searcher<'a> = <&'b str as Pattern>::Searcher<'a>; *)
     Definition _Searcher : Ty.t := Ty.associated.
     
     (*
-        fn into_searcher(self, haystack: &'a str) -> <&'b str as Pattern<'a>>::Searcher {
+        fn into_searcher(self, haystack: &str) -> <&'b str as Pattern>::Searcher<'_> {
             self[..].into_searcher(haystack)
         }
     *)
@@ -8023,11 +8125,11 @@ Module string.
               M.read (| haystack |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
-        fn is_contained_in(self, haystack: &'a str) -> bool {
+        fn is_contained_in(self, haystack: &str) -> bool {
             self[..].is_contained_in(haystack)
         }
     *)
@@ -8059,11 +8161,11 @@ Module string.
               M.read (| haystack |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
-        fn is_prefix_of(self, haystack: &'a str) -> bool {
+        fn is_prefix_of(self, haystack: &str) -> bool {
             self[..].is_prefix_of(haystack)
         }
     *)
@@ -8095,11 +8197,11 @@ Module string.
               M.read (| haystack |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
-        fn strip_prefix_of(self, haystack: &'a str) -> Option<&'a str> {
+        fn strip_prefix_of(self, haystack: &str) -> Option<&str> {
             self[..].strip_prefix_of(haystack)
         }
     *)
@@ -8131,11 +8233,14 @@ Module string.
               M.read (| haystack |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
-        fn is_suffix_of(self, haystack: &'a str) -> bool {
+        fn is_suffix_of<'a>(self, haystack: &'a str) -> bool
+        where
+            Self::Searcher<'a>: core::str::pattern::ReverseSearcher<'a>,
+        {
             self[..].is_suffix_of(haystack)
         }
     *)
@@ -8167,11 +8272,14 @@ Module string.
               M.read (| haystack |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
-        fn strip_suffix_of(self, haystack: &'a str) -> Option<&'a str> {
+        fn strip_suffix_of<'a>(self, haystack: &'a str) -> Option<&str>
+        where
+            Self::Searcher<'a>: core::str::pattern::ReverseSearcher<'a>,
+        {
             self[..].strip_suffix_of(haystack)
         }
     *)
@@ -8203,7 +8311,7 @@ Module string.
               M.read (| haystack |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8268,7 +8376,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8313,7 +8421,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8369,7 +8477,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8414,7 +8522,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8473,7 +8581,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8521,7 +8629,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8578,7 +8686,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8624,7 +8732,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8692,7 +8800,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8749,7 +8857,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8817,7 +8925,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -8874,7 +8982,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8946,7 +9054,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -9006,7 +9114,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9075,7 +9183,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -9133,7 +9241,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9202,7 +9310,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -9259,7 +9367,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9327,7 +9435,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -9384,7 +9492,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9412,7 +9520,7 @@ Module string.
             M.get_associated_function (| Ty.path "alloc::string::String", "new", [] |),
             []
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9453,7 +9561,7 @@ Module string.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9494,7 +9602,7 @@ Module string.
               M.read (| f |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9535,7 +9643,7 @@ Module string.
               M.read (| hasher |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9574,7 +9682,7 @@ Module string.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9609,7 +9717,7 @@ Module string.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9620,18 +9728,19 @@ Module string.
         (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
   End Impl_core_ops_arith_AddAssign_ref__str_for_alloc_string_String.
   
-  Module Impl_core_ops_index_Index_core_ops_range_Range_usize_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
+  Module Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_str_I_for_alloc_string_String.
+    Definition Self (I : Ty.t) : Ty.t := Ty.path "alloc::string::String".
     
-    (*     type Output = str; *)
-    Definition _Output : Ty.t := Ty.path "str".
+    (*     type Output = I::Output; *)
+    Definition _Output (I : Ty.t) : Ty.t := Ty.associated.
     
     (*
-        fn index(&self, index: ops::Range<usize>) -> &str {
-            &self[..][index]
+        fn index(&self, index: I) -> &I::Output {
+            index.index(self.as_str())
         }
     *)
-    Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition index (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self I in
       match ε, τ, α with
       | [], [], [ self; index ] =>
         ltac:(M.monadic
@@ -9639,208 +9748,43 @@ Module string.
           let index := M.alloc (| index |) in
           M.call_closure (|
             M.get_trait_method (|
-              "core::ops::index::Index",
-              Ty.path "str",
-              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
+              "core::slice::index::SliceIndex",
+              I,
+              [ Ty.path "str" ],
               "index",
               []
             |),
             [
+              M.read (| index |);
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
-              |);
-              M.read (| index |)
-            ]
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::ops::index::Index"
-        Self
-        (* Trait polymorphic types *)
-        [ (* Idx *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
-        (* Instance *)
-        [ ("Output", InstanceField.Ty _Output); ("index", InstanceField.Method index) ].
-  End Impl_core_ops_index_Index_core_ops_range_Range_usize_for_alloc_string_String.
-  
-  Module Impl_core_ops_index_Index_core_ops_range_RangeTo_usize_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
-    
-    (*     type Output = str; *)
-    Definition _Output : Ty.t := Ty.path "str".
-    
-    (*
-        fn index(&self, index: ops::RangeTo<usize>) -> &str {
-            &self[..][index]
-        }
-    *)
-    Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; index ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::Index",
-              Ty.path "str",
-              [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
-              "index",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
-              |);
-              M.read (| index |)
-            ]
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::ops::index::Index"
-        Self
-        (* Trait polymorphic types *)
-        [ (* Idx *) Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
-        (* Instance *)
-        [ ("Output", InstanceField.Ty _Output); ("index", InstanceField.Method index) ].
-  End Impl_core_ops_index_Index_core_ops_range_RangeTo_usize_for_alloc_string_String.
-  
-  Module Impl_core_ops_index_Index_core_ops_range_RangeFrom_usize_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
-    
-    (*     type Output = str; *)
-    Definition _Output : Ty.t := Ty.path "str".
-    
-    (*
-        fn index(&self, index: ops::RangeFrom<usize>) -> &str {
-            &self[..][index]
-        }
-    *)
-    Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; index ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::Index",
-              Ty.path "str",
-              [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ],
-              "index",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::Index",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
-              |);
-              M.read (| index |)
-            ]
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::ops::index::Index"
-        Self
-        (* Trait polymorphic types *)
-        [ (* Idx *) Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
-        (* Instance *)
-        [ ("Output", InstanceField.Ty _Output); ("index", InstanceField.Method index) ].
-  End Impl_core_ops_index_Index_core_ops_range_RangeFrom_usize_for_alloc_string_String.
-  
-  Module Impl_core_ops_index_Index_core_ops_range_RangeFull_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
-    
-    (*     type Output = str; *)
-    Definition _Output : Ty.t := Ty.path "str".
-    
-    (*
-        fn index(&self, _index: ops::RangeFull) -> &str {
-            unsafe { str::from_utf8_unchecked(&self.vec) }
-        }
-    *)
-    Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; _index ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let _index := M.alloc (| _index |) in
-          M.call_closure (|
-            M.get_function (| "core::str::converts::from_utf8_unchecked", [] |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  "deref",
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::string::String",
-                    "vec"
-                  |)
-                ]
+                M.get_associated_function (| Ty.path "alloc::string::String", "as_str", [] |),
+                [ M.read (| self |) ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
+      forall (I : Ty.t),
       M.IsTraitInstance
         "core::ops::index::Index"
-        Self
-        (* Trait polymorphic types *) [ (* Idx *) Ty.path "core::ops::range::RangeFull" ]
+        (Self I)
+        (* Trait polymorphic types *) [ (* Idx *) I ]
         (* Instance *)
-        [ ("Output", InstanceField.Ty _Output); ("index", InstanceField.Method index) ].
-  End Impl_core_ops_index_Index_core_ops_range_RangeFull_for_alloc_string_String.
+        [ ("Output", InstanceField.Ty (_Output I)); ("index", InstanceField.Method (index I)) ].
+  End Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_str_I_for_alloc_string_String.
   
-  Module Impl_core_ops_index_Index_core_ops_range_RangeInclusive_usize_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
-    
-    (*     type Output = str; *)
-    Definition _Output : Ty.t := Ty.path "str".
+  Module Impl_core_ops_index_IndexMut_where_core_slice_index_SliceIndex_I_str_I_for_alloc_string_String.
+    Definition Self (I : Ty.t) : Ty.t := Ty.path "alloc::string::String".
     
     (*
-        fn index(&self, index: ops::RangeInclusive<usize>) -> &str {
-            Index::index(&**self, index)
+        fn index_mut(&mut self, index: I) -> &mut I::Output {
+            index.index_mut(self.as_mut_str())
         }
     *)
-    Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition index_mut (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self I in
       match ε, τ, α with
       | [], [], [ self; index ] =>
         ltac:(M.monadic
@@ -9848,379 +9792,31 @@ Module string.
           let index := M.alloc (| index |) in
           M.call_closure (|
             M.get_trait_method (|
-              "core::ops::index::Index",
-              Ty.path "str",
-              [ Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ] ],
-              "index",
+              "core::slice::index::SliceIndex",
+              I,
+              [ Ty.path "str" ],
+              "index_mut",
               []
             |),
             [
+              M.read (| index |);
               M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.path "alloc::string::String",
-                  [],
-                  "deref",
-                  []
-                |),
+                M.get_associated_function (| Ty.path "alloc::string::String", "as_mut_str", [] |),
                 [ M.read (| self |) ]
-              |);
-              M.read (| index |)
-            ]
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::ops::index::Index"
-        Self
-        (* Trait polymorphic types *)
-        [ (* Idx *) Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ] ]
-        (* Instance *)
-        [ ("Output", InstanceField.Ty _Output); ("index", InstanceField.Method index) ].
-  End Impl_core_ops_index_Index_core_ops_range_RangeInclusive_usize_for_alloc_string_String.
-  
-  Module Impl_core_ops_index_Index_core_ops_range_RangeToInclusive_usize_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
-    
-    (*     type Output = str; *)
-    Definition _Output : Ty.t := Ty.path "str".
-    
-    (*
-        fn index(&self, index: ops::RangeToInclusive<usize>) -> &str {
-            Index::index(&**self, index)
-        }
-    *)
-    Definition index (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; index ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::Index",
-              Ty.path "str",
-              [ Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Ty.path "usize" ] ],
-              "index",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.path "alloc::string::String",
-                  [],
-                  "deref",
-                  []
-                |),
-                [ M.read (| self |) ]
-              |);
-              M.read (| index |)
-            ]
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::ops::index::Index"
-        Self
-        (* Trait polymorphic types *)
-        [ (* Idx *) Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Ty.path "usize" ] ]
-        (* Instance *)
-        [ ("Output", InstanceField.Ty _Output); ("index", InstanceField.Method index) ].
-  End Impl_core_ops_index_Index_core_ops_range_RangeToInclusive_usize_for_alloc_string_String.
-  
-  Module Impl_core_ops_index_IndexMut_core_ops_range_Range_usize_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
-    
-    (*
-        fn index_mut(&mut self, index: ops::Range<usize>) -> &mut str {
-            &mut self[..][index]
-        }
-    *)
-    Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; index ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::IndexMut",
-              Ty.path "str",
-              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-              "index_mut",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::IndexMut",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index_mut",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
-              |);
-              M.read (| index |)
-            ]
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::ops::index::IndexMut"
-        Self
-        (* Trait polymorphic types *)
-        [ (* Idx *) Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
-        (* Instance *) [ ("index_mut", InstanceField.Method index_mut) ].
-  End Impl_core_ops_index_IndexMut_core_ops_range_Range_usize_for_alloc_string_String.
-  
-  Module Impl_core_ops_index_IndexMut_core_ops_range_RangeTo_usize_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
-    
-    (*
-        fn index_mut(&mut self, index: ops::RangeTo<usize>) -> &mut str {
-            &mut self[..][index]
-        }
-    *)
-    Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; index ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::IndexMut",
-              Ty.path "str",
-              [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ],
-              "index_mut",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::IndexMut",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index_mut",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
-              |);
-              M.read (| index |)
-            ]
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::ops::index::IndexMut"
-        Self
-        (* Trait polymorphic types *)
-        [ (* Idx *) Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
-        (* Instance *) [ ("index_mut", InstanceField.Method index_mut) ].
-  End Impl_core_ops_index_IndexMut_core_ops_range_RangeTo_usize_for_alloc_string_String.
-  
-  Module Impl_core_ops_index_IndexMut_core_ops_range_RangeFrom_usize_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
-    
-    (*
-        fn index_mut(&mut self, index: ops::RangeFrom<usize>) -> &mut str {
-            &mut self[..][index]
-        }
-    *)
-    Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; index ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::IndexMut",
-              Ty.path "str",
-              [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ],
-              "index_mut",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::index::IndexMut",
-                  Ty.path "alloc::string::String",
-                  [ Ty.path "core::ops::range::RangeFull" ],
-                  "index_mut",
-                  []
-                |),
-                [ M.read (| self |); Value.StructTuple "core::ops::range::RangeFull" [] ]
-              |);
-              M.read (| index |)
-            ]
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::ops::index::IndexMut"
-        Self
-        (* Trait polymorphic types *)
-        [ (* Idx *) Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
-        (* Instance *) [ ("index_mut", InstanceField.Method index_mut) ].
-  End Impl_core_ops_index_IndexMut_core_ops_range_RangeFrom_usize_for_alloc_string_String.
-  
-  Module Impl_core_ops_index_IndexMut_core_ops_range_RangeFull_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
-    
-    (*
-        fn index_mut(&mut self, _index: ops::RangeFull) -> &mut str {
-            unsafe { str::from_utf8_unchecked_mut(&mut *self.vec) }
-        }
-    *)
-    Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; _index ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let _index := M.alloc (| _index |) in
-          M.call_closure (|
-            M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [] |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::DerefMut",
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
-                    []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  "deref_mut",
-                  []
-                |),
-                [
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::string::String",
-                    "vec"
-                  |)
-                ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
+      forall (I : Ty.t),
       M.IsTraitInstance
         "core::ops::index::IndexMut"
-        Self
-        (* Trait polymorphic types *) [ (* Idx *) Ty.path "core::ops::range::RangeFull" ]
-        (* Instance *) [ ("index_mut", InstanceField.Method index_mut) ].
-  End Impl_core_ops_index_IndexMut_core_ops_range_RangeFull_for_alloc_string_String.
-  
-  Module Impl_core_ops_index_IndexMut_core_ops_range_RangeInclusive_usize_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
-    
-    (*
-        fn index_mut(&mut self, index: ops::RangeInclusive<usize>) -> &mut str {
-            IndexMut::index_mut(&mut **self, index)
-        }
-    *)
-    Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; index ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::IndexMut",
-              Ty.path "str",
-              [ Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ] ],
-              "index_mut",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::DerefMut",
-                  Ty.path "alloc::string::String",
-                  [],
-                  "deref_mut",
-                  []
-                |),
-                [ M.read (| self |) ]
-              |);
-              M.read (| index |)
-            ]
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::ops::index::IndexMut"
-        Self
-        (* Trait polymorphic types *)
-        [ (* Idx *) Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ] ]
-        (* Instance *) [ ("index_mut", InstanceField.Method index_mut) ].
-  End Impl_core_ops_index_IndexMut_core_ops_range_RangeInclusive_usize_for_alloc_string_String.
-  
-  Module Impl_core_ops_index_IndexMut_core_ops_range_RangeToInclusive_usize_for_alloc_string_String.
-    Definition Self : Ty.t := Ty.path "alloc::string::String".
-    
-    (*
-        fn index_mut(&mut self, index: ops::RangeToInclusive<usize>) -> &mut str {
-            IndexMut::index_mut(&mut **self, index)
-        }
-    *)
-    Definition index_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self; index ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          let index := M.alloc (| index |) in
-          M.call_closure (|
-            M.get_trait_method (|
-              "core::ops::index::IndexMut",
-              Ty.path "str",
-              [ Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Ty.path "usize" ] ],
-              "index_mut",
-              []
-            |),
-            [
-              M.call_closure (|
-                M.get_trait_method (|
-                  "core::ops::deref::DerefMut",
-                  Ty.path "alloc::string::String",
-                  [],
-                  "deref_mut",
-                  []
-                |),
-                [ M.read (| self |) ]
-              |);
-              M.read (| index |)
-            ]
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::ops::index::IndexMut"
-        Self
-        (* Trait polymorphic types *)
-        [ (* Idx *) Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Ty.path "usize" ] ]
-        (* Instance *) [ ("index_mut", InstanceField.Method index_mut) ].
-  End Impl_core_ops_index_IndexMut_core_ops_range_RangeToInclusive_usize_for_alloc_string_String.
+        (Self I)
+        (* Trait polymorphic types *) [ (* Idx *) I ]
+        (* Instance *) [ ("index_mut", InstanceField.Method (index_mut I)) ].
+  End Impl_core_ops_index_IndexMut_where_core_slice_index_SliceIndex_I_str_I_for_alloc_string_String.
   
   Module Impl_core_ops_deref_Deref_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
@@ -10262,7 +9858,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10273,6 +9869,17 @@ Module string.
         (* Instance *)
         [ ("Target", InstanceField.Ty _Target); ("deref", InstanceField.Method deref) ].
   End Impl_core_ops_deref_Deref_for_alloc_string_String.
+  
+  Module Impl_core_ops_deref_DerefPure_for_alloc_string_String.
+    Definition Self : Ty.t := Ty.path "alloc::string::String".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::ops::deref::DerefPure"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_ops_deref_DerefPure_for_alloc_string_String.
   
   Module Impl_core_ops_deref_DerefMut_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
@@ -10311,7 +9918,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10354,7 +9961,7 @@ Module string.
                 [ M.read (| s |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10400,7 +10007,7 @@ Module string.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Formatter", "new", [] |),
-                  [ (* Unsize *) M.pointer_coercion buf ]
+                  [ buf ]
                 |)
               |) in
             let~ _ :=
@@ -10427,7 +10034,7 @@ Module string.
               |) in
             buf
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10465,7 +10072,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10502,13 +10109,14 @@ Module string.
                 M.get_associated_function (| Ty.path "char", "encode_utf8", [] |),
                 [
                   M.read (| M.read (| self |) |);
-                  (* Unsize *)
-                  M.pointer_coercion (M.alloc (| repeat (| Value.Integer 0, Value.Integer 4 |) |))
+                  M.alloc (|
+                    repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |)
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10557,7 +10165,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10601,7 +10209,7 @@ Module string.
                     "with_capacity",
                     []
                   |),
-                  [ Value.Integer 3 ]
+                  [ Value.Integer IntegerKind.Usize 3 ]
                 |)
               |) in
             let~ n := M.copy (| M.read (| self |) |) in
@@ -10612,7 +10220,10 @@ Module string.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| n |)) (Value.Integer 10) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| n |), Value.Integer IntegerKind.U8 10 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.match_operator (|
@@ -10623,7 +10234,10 @@ Module string.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.ge (M.read (| n |)) (Value.Integer 100)
+                                      BinOp.ge (|
+                                        M.read (| n |),
+                                        Value.Integer IntegerKind.U8 100
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -10641,13 +10255,13 @@ Module string.
                                       [
                                         buf;
                                         M.rust_cast
-                                          (BinOp.Wrap.add
-                                            Integer.U8
-                                            (M.read (| UnsupportedLiteral |))
-                                            (BinOp.Wrap.div
-                                              Integer.U8
-                                              (M.read (| n |))
-                                              (Value.Integer 100)))
+                                          (BinOp.Wrap.add (|
+                                            M.read (| UnsupportedLiteral |),
+                                            BinOp.Wrap.div (|
+                                              M.read (| n |),
+                                              Value.Integer IntegerKind.U8 100
+                                            |)
+                                          |))
                                       ]
                                     |)
                                   |) in
@@ -10655,7 +10269,10 @@ Module string.
                                   let β := n in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.rem Integer.U8 (M.read (| β |)) (Value.Integer 100)
+                                    BinOp.Wrap.rem (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.U8 100
+                                    |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -10672,10 +10289,13 @@ Module string.
                             [
                               buf;
                               M.rust_cast
-                                (BinOp.Wrap.add
-                                  Integer.U8
-                                  (M.read (| UnsupportedLiteral |))
-                                  (BinOp.Wrap.div Integer.U8 (M.read (| n |)) (Value.Integer 10)))
+                                (BinOp.Wrap.add (|
+                                  M.read (| UnsupportedLiteral |),
+                                  BinOp.Wrap.div (|
+                                    M.read (| n |),
+                                    Value.Integer IntegerKind.U8 10
+                                  |)
+                                |))
                             ]
                           |)
                         |) in
@@ -10683,7 +10303,7 @@ Module string.
                         let β := n in
                         M.write (|
                           β,
-                          BinOp.Wrap.rem Integer.U8 (M.read (| β |)) (Value.Integer 10)
+                          BinOp.Wrap.rem (| M.read (| β |), Value.Integer IntegerKind.U8 10 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -10696,13 +10316,13 @@ Module string.
                   [
                     buf;
                     M.rust_cast
-                      (BinOp.Wrap.add Integer.U8 (M.read (| UnsupportedLiteral |)) (M.read (| n |)))
+                      (BinOp.Wrap.add (| M.read (| UnsupportedLiteral |), M.read (| n |) |))
                   ]
                 |)
               |) in
             buf
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10749,7 +10369,7 @@ Module string.
                     "with_capacity",
                     []
                   |),
-                  [ Value.Integer 4 ]
+                  [ Value.Integer IntegerKind.Usize 4 ]
                 |)
               |) in
             let~ _ :=
@@ -10796,7 +10416,10 @@ Module string.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.Pure.ge (M.read (| n |)) (Value.Integer 10) |)) in
+                        M.use
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| n |), Value.Integer IntegerKind.U8 10 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         M.match_operator (|
@@ -10807,7 +10430,10 @@ Module string.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.ge (M.read (| n |)) (Value.Integer 100)
+                                      BinOp.ge (|
+                                        M.read (| n |),
+                                        Value.Integer IntegerKind.U8 100
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -10829,7 +10455,10 @@ Module string.
                                   let β := n in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.sub Integer.U8 (M.read (| β |)) (Value.Integer 100)
+                                    BinOp.Wrap.sub (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.U8 100
+                                    |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)));
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -10846,10 +10475,13 @@ Module string.
                             [
                               buf;
                               M.rust_cast
-                                (BinOp.Wrap.add
-                                  Integer.U8
-                                  (M.read (| UnsupportedLiteral |))
-                                  (BinOp.Wrap.div Integer.U8 (M.read (| n |)) (Value.Integer 10)))
+                                (BinOp.Wrap.add (|
+                                  M.read (| UnsupportedLiteral |),
+                                  BinOp.Wrap.div (|
+                                    M.read (| n |),
+                                    Value.Integer IntegerKind.U8 10
+                                  |)
+                                |))
                             ]
                           |)
                         |) in
@@ -10857,7 +10489,7 @@ Module string.
                         let β := n in
                         M.write (|
                           β,
-                          BinOp.Wrap.rem Integer.U8 (M.read (| β |)) (Value.Integer 10)
+                          BinOp.Wrap.rem (| M.read (| β |), Value.Integer IntegerKind.U8 10 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -10870,13 +10502,13 @@ Module string.
                   [
                     buf;
                     M.rust_cast
-                      (BinOp.Wrap.add Integer.U8 (M.read (| UnsupportedLiteral |)) (M.read (| n |)))
+                      (BinOp.Wrap.add (| M.read (| UnsupportedLiteral |), M.read (| n |) |))
                   ]
                 |)
               |) in
             buf
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10887,13 +10519,793 @@ Module string.
         (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
   End Impl_alloc_string_ToString_for_i8.
   
+  Module Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__str.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "&")
+        []
+        [
+          Ty.apply
+            (Ty.path "&")
+            []
+            [
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ].
+    
+    (*
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
+    *)
+    Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.path "alloc::string::String",
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              []
+            |),
+            [
+              M.read (|
+                M.read (|
+                  M.read (|
+                    M.read (|
+                      M.read (|
+                        M.read (|
+                          M.read (|
+                            M.read (|
+                              M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |)
+                            |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "alloc::string::ToString"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
+  End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__str.
+  
+  Module Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__str.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "&")
+        []
+        [
+          Ty.apply
+            (Ty.path "&")
+            []
+            [
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ].
+    
+    (*
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
+    *)
+    Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.path "alloc::string::String",
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              []
+            |),
+            [
+              M.read (|
+                M.read (|
+                  M.read (|
+                    M.read (|
+                      M.read (|
+                        M.read (|
+                          M.read (|
+                            M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |)
+                          |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "alloc::string::ToString"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
+  End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__str.
+  
+  Module Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__str.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "&")
+        []
+        [
+          Ty.apply
+            (Ty.path "&")
+            []
+            [
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ].
+    
+    (*
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
+    *)
+    Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.path "alloc::string::String",
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              []
+            |),
+            [
+              M.read (|
+                M.read (|
+                  M.read (|
+                    M.read (|
+                      M.read (|
+                        M.read (|
+                          M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |)
+                        |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "alloc::string::ToString"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
+  End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__ref__ref__str.
+  
+  Module Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__ref__str.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "&")
+        []
+        [
+          Ty.apply
+            (Ty.path "&")
+            []
+            [
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ].
+    
+    (*
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
+    *)
+    Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.path "alloc::string::String",
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              []
+            |),
+            [
+              M.read (|
+                M.read (|
+                  M.read (|
+                    M.read (|
+                      M.read (|
+                        M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |)
+                      |)
+                    |)
+                  |)
+                |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "alloc::string::ToString"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
+  End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__ref__str.
+  
+  Module Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__str.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "&")
+        []
+        [
+          Ty.apply
+            (Ty.path "&")
+            []
+            [
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ].
+    
+    (*
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
+    *)
+    Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.path "alloc::string::String",
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              []
+            |),
+            [
+              M.read (|
+                M.read (|
+                  M.read (|
+                    M.read (|
+                      M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |)
+                    |)
+                  |)
+                |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "alloc::string::ToString"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
+  End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__ref__str.
+  
+  Module Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__str.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "&")
+        []
+        [
+          Ty.apply
+            (Ty.path "&")
+            []
+            [
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "&")
+                        []
+                        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                        ]
+                    ]
+                ]
+            ]
+        ].
+    
+    (*
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
+    *)
+    Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.path "alloc::string::String",
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              []
+            |),
+            [
+              M.read (|
+                M.read (|
+                  M.read (| M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |) |)
+                |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "alloc::string::ToString"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
+  End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__ref__str.
+  
+  Module Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__str.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "&")
+        []
+        [
+          Ty.apply
+            (Ty.path "&")
+            []
+            [
+              Ty.apply
+                (Ty.path "&")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "&")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+                ]
+            ]
+        ].
+    
+    (*
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
+    *)
+    Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.path "alloc::string::String",
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              []
+            |),
+            [
+              M.read (|
+                M.read (| M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |) |)
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "alloc::string::ToString"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
+  End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__ref__str.
+  
+  Module Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__str.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "&")
+        []
+        [
+          Ty.apply
+            (Ty.path "&")
+            []
+            [
+              Ty.apply
+                (Ty.path "&")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+            ]
+        ].
+    
+    (*
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
+    *)
+    Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.path "alloc::string::String",
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              []
+            |),
+            [ M.read (| M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |) |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "alloc::string::ToString"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
+  End Impl_alloc_string_ToString_for_ref__ref__ref__ref__ref__str.
+  
+  Module Impl_alloc_string_ToString_for_ref__ref__ref__ref__str.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "&")
+        []
+        [
+          Ty.apply
+            (Ty.path "&")
+            []
+            [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ]
+        ].
+    
+    (*
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
+    *)
+    Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.path "alloc::string::String",
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              []
+            |),
+            [ M.read (| M.read (| M.read (| M.read (| M.read (| self |) |) |) |) |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "alloc::string::ToString"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
+  End Impl_alloc_string_ToString_for_ref__ref__ref__ref__str.
+  
+  Module Impl_alloc_string_ToString_for_ref__ref__ref__str.
+    Definition Self : Ty.t :=
+      Ty.apply
+        (Ty.path "&")
+        []
+        [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] ].
+    
+    (*
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
+    *)
+    Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.path "alloc::string::String",
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              []
+            |),
+            [ M.read (| M.read (| M.read (| M.read (| self |) |) |) |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "alloc::string::ToString"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
+  End Impl_alloc_string_ToString_for_ref__ref__ref__str.
+  
+  Module Impl_alloc_string_ToString_for_ref__ref__str.
+    Definition Self : Ty.t :=
+      Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ].
+    
+    (*
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
+    *)
+    Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.path "alloc::string::String",
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              []
+            |),
+            [ M.read (| M.read (| M.read (| self |) |) |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "alloc::string::ToString"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
+  End Impl_alloc_string_ToString_for_ref__ref__str.
+  
+  Module Impl_alloc_string_ToString_for_ref__str.
+    Definition Self : Ty.t := Ty.apply (Ty.path "&") [] [ Ty.path "str" ].
+    
+    (*
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
+    *)
+    Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::convert::From",
+              Ty.path "alloc::string::String",
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              []
+            |),
+            [ M.read (| M.read (| self |) |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "alloc::string::ToString"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("to_string", InstanceField.Method to_string) ].
+  End Impl_alloc_string_ToString_for_ref__str.
+  
   Module Impl_alloc_string_ToString_for_str.
     Definition Self : Ty.t := Ty.path "str".
     
     (*
-        fn to_string(&self) -> String {
-            String::from(self)
-        }
+                    fn to_string(&self) -> String {
+                        String::from(to_string_expr_wrap_in_deref!(self ; $($x)* ))
+                    }
     *)
     Definition to_string (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
@@ -10910,7 +11322,7 @@ Module string.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10961,7 +11373,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10995,7 +11407,7 @@ Module string.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11023,7 +11435,7 @@ Module string.
             M.get_function (| "alloc::fmt::format", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11057,7 +11469,7 @@ Module string.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11091,7 +11503,7 @@ Module string.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11119,7 +11531,7 @@ Module string.
             M.get_associated_function (| Ty.path "alloc::string::String", "as_bytes", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11147,7 +11559,7 @@ Module string.
             M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
             [ M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11175,7 +11587,7 @@ Module string.
             M.get_trait_method (| "alloc::borrow::ToOwned", Ty.path "str", [], "to_owned", [] |),
             [ M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11209,7 +11621,7 @@ Module string.
             |),
             [ M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11238,7 +11650,7 @@ Module string.
             M.get_associated_function (| Ty.path "str", "into_string", [] |),
             [ M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11274,7 +11686,7 @@ Module string.
             M.get_associated_function (| Ty.path "alloc::string::String", "into_boxed_str", [] |),
             [ M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11306,7 +11718,7 @@ Module string.
             |),
             [ M.read (| s |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11332,7 +11744,7 @@ Module string.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           Value.StructTuple "alloc::borrow::Cow::Borrowed" [ M.read (| s |) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11357,7 +11769,7 @@ Module string.
         ltac:(M.monadic
           (let s := M.alloc (| s |) in
           Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| s |) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11389,7 +11801,7 @@ Module string.
                 [ M.read (| s |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11428,7 +11840,7 @@ Module string.
                 [ M.read (| it |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11466,7 +11878,7 @@ Module string.
                 [ M.read (| it |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11504,7 +11916,7 @@ Module string.
                 [ M.read (| it |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11533,7 +11945,7 @@ Module string.
             M.get_associated_function (| Ty.path "alloc::string::String", "into_bytes", [] |),
             [ M.read (| string |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11569,7 +11981,7 @@ Module string.
               |) in
             M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -11594,7 +12006,7 @@ Module string.
               |) in
             M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11657,23 +12069,17 @@ Module string.
                       [ M.read (| f |); M.read (| Value.String "Drain" |) ]
                     |)
                   |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "alloc::string::Drain",
-                          "as_str",
-                          []
-                        |),
-                        [ M.read (| self |) ]
-                      |)
-                    |))
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "alloc::string::Drain", "as_str", [] |),
+                      [ M.read (| self |) ]
+                    |)
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11751,31 +12157,32 @@ Module string.
                       M.use
                         (M.alloc (|
                           LogicalOp.and (|
-                            BinOp.Pure.le
-                              (M.read (|
+                            BinOp.le (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::string::Drain",
                                   "start"
                                 |)
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::string::Drain",
                                   "end"
                                 |)
-                              |)),
+                              |)
+                            |),
                             ltac:(M.monadic
-                              (BinOp.Pure.le
-                                (M.read (|
+                              (BinOp.le (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "alloc::string::Drain",
                                     "end"
                                   |)
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::vec::Vec")
@@ -11785,7 +12192,8 @@ Module string.
                                     []
                                   |),
                                   [ M.read (| self_vec |) ]
-                                |))))
+                                |)
+                              |)))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -11830,7 +12238,7 @@ Module string.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11864,7 +12272,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
@@ -11887,7 +12295,7 @@ Module string.
             M.get_associated_function (| Ty.path "alloc::string::Drain", "as_str", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11920,7 +12328,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11963,7 +12371,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -11992,7 +12400,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -12015,7 +12423,7 @@ Module string.
             |),
             [ self ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12061,7 +12469,7 @@ Module string.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -12100,7 +12508,7 @@ Module string.
             M.get_trait_method (| "alloc::string::ToString", Ty.path "char", [], "to_string", [] |),
             [ c ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

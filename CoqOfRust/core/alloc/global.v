@@ -50,15 +50,16 @@ Module alloc.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "is_null",
                                     []
                                   |),
                                   [ M.read (| ptr |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -69,7 +70,8 @@ Module alloc.
                                 "core::intrinsics::write_bytes",
                                 [ Ty.path "u8" ]
                               |),
-                              [ M.read (| ptr |); Value.Integer 0; M.read (| size |) ]
+                              [ M.read (| ptr |); Value.Integer IntegerKind.U8 0; M.read (| size |)
+                              ]
                             |)
                           |) in
                         M.alloc (| Value.Tuple [] |)));
@@ -78,7 +80,7 @@ Module alloc.
                 |) in
               ptr
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_alloc_zeroed :
@@ -135,15 +137,16 @@ Module alloc.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
                                     "is_null",
                                     []
                                   |),
                                   [ M.read (| new_ptr |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -193,7 +196,7 @@ Module alloc.
                 |) in
               new_ptr
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom ProvidedMethod_realloc :

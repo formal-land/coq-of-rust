@@ -2,6 +2,7 @@ use crate::env::*;
 use crate::expression::*;
 use crate::path::*;
 use crate::pattern::*;
+use crate::render::*;
 use crate::thir_ty::*;
 use crate::ty::CoqType;
 use rustc_hir::def::DefKind;
@@ -11,48 +12,25 @@ use rustc_middle::thir::{AdtExpr, LogicalOp};
 use rustc_middle::ty::{Const, ConstKind, TyKind};
 use std::rc::Rc;
 
-fn path_of_bin_op(
-    env: &Env,
-    span: &rustc_span::Span,
-    bin_op: &BinOp,
-    lhs_ty: &rustc_middle::ty::Ty,
-) -> (&'static str, CallKind, Vec<Rc<Expr>>) {
-    let integer_ty_name = crate::ty::get_integer_ty_name(lhs_ty);
-    let additional_args = match bin_op {
-        BinOp::Add | BinOp::Sub | BinOp::Mul | BinOp::Div | BinOp::Rem => match integer_ty_name {
-            Some(integer_ty_name) => vec![Expr::local_var(integer_ty_name.as_str())],
-            None => {
-                emit_warning_with_note(
-                    env,
-                    span,
-                    "Expected an integer type for the parameters",
-                    Some("Please report 🙏"),
-                );
-
-                vec![Expr::local_var("Integer.Usize")]
-            }
-        },
-        _ => vec![],
-    };
-
+fn path_of_bin_op(bin_op: &BinOp) -> (&'static str, CallKind) {
     match bin_op {
-        BinOp::Add => ("BinOp.Wrap.add", CallKind::Pure, additional_args),
-        BinOp::Sub => ("BinOp.Wrap.sub", CallKind::Pure, additional_args),
-        BinOp::Mul => ("BinOp.Wrap.mul", CallKind::Pure, additional_args),
-        BinOp::Div => ("BinOp.Wrap.div", CallKind::Pure, additional_args),
-        BinOp::Rem => ("BinOp.Wrap.rem", CallKind::Pure, additional_args),
-        BinOp::BitXor => ("BinOp.Pure.bit_xor", CallKind::Pure, additional_args),
-        BinOp::BitAnd => ("BinOp.Pure.bit_and", CallKind::Pure, additional_args),
-        BinOp::BitOr => ("BinOp.Pure.bit_or", CallKind::Pure, additional_args),
-        BinOp::Shl => ("BinOp.Wrap.shl", CallKind::Pure, additional_args),
-        BinOp::Shr => ("BinOp.Wrap.shr", CallKind::Pure, additional_args),
-        BinOp::Eq => ("BinOp.Pure.eq", CallKind::Pure, additional_args),
-        BinOp::Ne => ("BinOp.Pure.ne", CallKind::Pure, additional_args),
-        BinOp::Lt => ("BinOp.Pure.lt", CallKind::Pure, additional_args),
-        BinOp::Le => ("BinOp.Pure.le", CallKind::Pure, additional_args),
-        BinOp::Ge => ("BinOp.Pure.ge", CallKind::Pure, additional_args),
-        BinOp::Gt => ("BinOp.Pure.gt", CallKind::Pure, additional_args),
-        BinOp::Offset => ("BinOp.Pure.offset", CallKind::Pure, additional_args),
+        BinOp::Add => ("BinOp.Wrap.add", CallKind::Effectful),
+        BinOp::Sub => ("BinOp.Wrap.sub", CallKind::Effectful),
+        BinOp::Mul => ("BinOp.Wrap.mul", CallKind::Effectful),
+        BinOp::Div => ("BinOp.Wrap.div", CallKind::Effectful),
+        BinOp::Rem => ("BinOp.Wrap.rem", CallKind::Effectful),
+        BinOp::BitXor => ("BinOp.bit_xor", CallKind::Pure),
+        BinOp::BitAnd => ("BinOp.bit_and", CallKind::Pure),
+        BinOp::BitOr => ("BinOp.bit_or", CallKind::Pure),
+        BinOp::Shl => ("BinOp.Wrap.shl", CallKind::Effectful),
+        BinOp::Shr => ("BinOp.Wrap.shr", CallKind::Effectful),
+        BinOp::Eq => ("BinOp.eq", CallKind::Effectful),
+        BinOp::Ne => ("BinOp.ne", CallKind::Effectful),
+        BinOp::Lt => ("BinOp.lt", CallKind::Effectful),
+        BinOp::Le => ("BinOp.le", CallKind::Effectful),
+        BinOp::Ge => ("BinOp.ge", CallKind::Effectful),
+        BinOp::Gt => ("BinOp.gt", CallKind::Effectful),
+        BinOp::Offset => ("BinOp.Pure.offset", CallKind::Pure),
         _ => todo!(),
     }
 }
@@ -438,6 +416,31 @@ fn get_if_conditions<'a>(
     }
 }
 
+fn compile_literal_integer(
+    env: &Env,
+    span: &rustc_span::Span,
+    ty: &rustc_middle::ty::Ty,
+    negative_sign: bool,
+    integer: u128,
+) -> LiteralInteger {
+    let uncapitalized_name = match ty.kind() {
+        TyKind::Int(int_ty) => format!("{int_ty:?}"),
+        TyKind::Uint(uint_ty) => format!("{uint_ty:?}"),
+        _ => {
+            emit_warning_with_note(env, span, "Unknown integer type", Some("Please report 🙏"));
+
+            "unknown_kind_of_integer".to_string()
+        }
+    };
+    let kind = capitalize(&uncapitalized_name);
+
+    LiteralInteger {
+        kind,
+        negative_sign,
+        value: integer,
+    }
+}
+
 pub(crate) fn compile_expr<'a>(
     env: &Env<'a>,
     generics: &'a rustc_middle::ty::Generics,
@@ -449,7 +452,12 @@ pub(crate) fn compile_expr<'a>(
     match &expr.kind {
         thir::ExprKind::Scope { value, .. } => compile_expr(env, generics, thir, value),
         thir::ExprKind::Box { value } => {
-            let value_ty = compile_type(env, generics, &thir.exprs.get(*value).unwrap().ty);
+            let value_ty = compile_type(
+                env,
+                &expr.span,
+                generics,
+                &thir.exprs.get(*value).unwrap().ty,
+            );
             let value = compile_expr(env, generics, thir, value);
 
             Rc::new(Expr::Call {
@@ -519,14 +527,13 @@ pub(crate) fn compile_expr<'a>(
         }
         thir::ExprKind::Deref { arg } => compile_expr(env, generics, thir, arg).read(),
         thir::ExprKind::Binary { op, lhs, rhs } => {
-            let lhs_ty = &thir.exprs.get(*lhs).unwrap().ty;
-            let (path, kind, additional_args) = path_of_bin_op(env, &expr.span, op, lhs_ty);
+            let (path, kind) = path_of_bin_op(op);
             let lhs = compile_expr(env, generics, thir, lhs);
             let rhs = compile_expr(env, generics, thir, rhs);
 
             Rc::new(Expr::Call {
                 func: Expr::local_var(path),
-                args: [additional_args, vec![lhs.read(), rhs.read()]].concat(),
+                args: vec![lhs.read(), rhs.read()],
                 kind,
             })
             .alloc()
@@ -547,33 +554,16 @@ pub(crate) fn compile_expr<'a>(
             .alloc()
         }
         thir::ExprKind::Unary { op, arg } => {
-            let (path, kind, additional_args) = match op {
-                UnOp::Not => ("UnOp.Pure.not", CallKind::Pure, vec![]),
-                UnOp::Neg => {
-                    let arg_ty = &thir.exprs.get(*arg).unwrap().ty;
-                    let integer_ty_name = crate::ty::get_integer_ty_name(arg_ty);
-                    let additional_args = match integer_ty_name {
-                        Some(integer_ty_name) => vec![Expr::local_var(integer_ty_name.as_str())],
-                        None => {
-                            emit_warning_with_note(
-                                env,
-                                &expr.span,
-                                "Expected an integer type for the parameters",
-                                Some("Please report 🙏"),
-                            );
-
-                            vec![Expr::local_var("Integer.Usize")]
-                        }
-                    };
-
-                    ("UnOp.Panic.neg", CallKind::Effectful, additional_args)
-                }
+            let (path, kind) = match op {
+                UnOp::Not => ("UnOp.not", CallKind::Effectful),
+                UnOp::Neg => ("UnOp.neg", CallKind::Effectful),
+                UnOp::PtrMetadata => ("UnOp.ptr_metadata", CallKind::Effectful),
             };
             let arg = compile_expr(env, generics, thir, arg);
 
             Rc::new(Expr::Call {
                 func: Expr::local_var(path),
-                args: [additional_args, vec![arg.read()]].concat(),
+                args: vec![arg.read()],
                 kind,
             })
             .alloc()
@@ -609,6 +599,10 @@ pub(crate) fn compile_expr<'a>(
             let func = Expr::local_var("M.pointer_coercion");
             let source = compile_expr(env, generics, thir, source).read();
 
+            if let rustc_middle::ty::adjustment::PointerCoercion::Unsize = cast {
+                return source.alloc();
+            }
+
             Rc::new(Expr::Comment(
                 format!("{cast:?}"),
                 Rc::new(Expr::Call {
@@ -632,7 +626,10 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Comment(error_message.to_string(), Expr::tt())).alloc()
         }
         thir::ExprKind::Match {
-            scrutinee, arms, ..
+            scrutinee,
+            scrutinee_hir_id: _,
+            arms,
+            match_source: _,
         } => {
             let scrutinee = compile_expr(env, generics, thir, scrutinee);
             let arms: Vec<MatchArm> = arms
@@ -641,15 +638,7 @@ pub(crate) fn compile_expr<'a>(
                     let arm = thir.arms.get(*arm_id).unwrap();
                     let pattern = crate::thir_pattern::compile_pattern(env, &arm.pattern);
                     let if_let_guard = match &arm.guard {
-                        Some(guard) => match guard {
-                            thir::Guard::If(expr_id) => {
-                                get_if_conditions(env, generics, thir, expr_id)
-                            }
-                            thir::Guard::IfLet(pattern, expr_id) => vec![(
-                                crate::thir_pattern::compile_pattern(env, pattern),
-                                compile_expr(env, generics, thir, expr_id),
-                            )],
-                        },
+                        Some(expr_id) => get_if_conditions(env, generics, thir, expr_id),
                         None => vec![],
                     };
                     let body = compile_expr(env, generics, thir, &arm.body);
@@ -679,8 +668,7 @@ pub(crate) fn compile_expr<'a>(
             })
         }
         thir::ExprKind::AssignOp { op, lhs, rhs } => {
-            let lhs_ty = &thir.exprs.get(*lhs).unwrap().ty;
-            let (path, kind, additional_args) = path_of_bin_op(env, &expr.span, op, lhs_ty);
+            let (path, kind) = path_of_bin_op(op);
             let lhs = compile_expr(env, generics, thir, lhs);
             let rhs = compile_expr(env, generics, thir, rhs);
 
@@ -694,11 +682,7 @@ pub(crate) fn compile_expr<'a>(
                         Expr::local_var("β"),
                         Rc::new(Expr::Call {
                             func: Expr::local_var(path),
-                            args: [
-                                additional_args,
-                                vec![Expr::local_var("β").read(), rhs.read()],
-                            ]
-                            .concat(),
+                            args: vec![Expr::local_var("β").read(), rhs.read()],
                             kind,
                         }),
                     ],
@@ -772,7 +756,7 @@ pub(crate) fn compile_expr<'a>(
             borrow_kind: _,
             arg,
         }
-        | thir::ExprKind::AddressOf { mutability: _, arg } => {
+        | thir::ExprKind::RawBorrow { mutability: _, arg } => {
             compile_expr(env, generics, thir, arg).alloc()
         }
         thir::ExprKind::Break { .. } => Rc::new(Expr::ControlFlow(LoopControlFlow::Break)),
@@ -797,7 +781,7 @@ pub(crate) fn compile_expr<'a>(
             let func = Expr::local_var("repeat");
             let args = vec![
                 compile_expr(env, generics, thir, value).read(),
-                compile_const(env, count),
+                compile_const(env, &expr.span, count),
             ];
 
             Rc::new(Expr::Call {
@@ -885,7 +869,7 @@ pub(crate) fn compile_expr<'a>(
                         Some(pattern) => {
                             let pattern =
                                 crate::thir_pattern::compile_pattern(env, pattern.as_ref());
-                            let ty = compile_type(env, generics, &param.ty);
+                            let ty = compile_type(env, &expr.span, generics, &param.ty);
                             Some((pattern, ty))
                         }
                         None => None,
@@ -937,23 +921,19 @@ pub(crate) fn compile_expr<'a>(
             rustc_ast::LitKind::Char(c) => {
                 Rc::new(Expr::Literal(Rc::new(Literal::Char(c)))).alloc()
             }
-            rustc_ast::LitKind::Int(i, _) => {
-                Rc::new(Expr::Literal(Rc::new(Literal::Integer(LiteralInteger {
-                    negative_sign: *neg,
-                    value: i,
-                }))))
-                .alloc()
-            }
+            rustc_ast::LitKind::Int(i, _) => Rc::new(Expr::Literal(Rc::new(Literal::Integer(
+                compile_literal_integer(env, &expr.span, &expr.ty, *neg, i.get()),
+            ))))
+            .alloc(),
             rustc_ast::LitKind::Bool(c) => {
                 Rc::new(Expr::Literal(Rc::new(Literal::Bool(c)))).alloc()
             }
             _ => Rc::new(Expr::Literal(Rc::new(Literal::Error))),
         },
         thir::ExprKind::NonHirLiteral { lit, .. } => {
-            Rc::new(Expr::Literal(Rc::new(Literal::Integer(LiteralInteger {
-                negative_sign: false,
-                value: lit.try_to_uint(lit.size()).unwrap(),
-            }))))
+            Rc::new(Expr::Literal(Rc::new(Literal::Integer(
+                compile_literal_integer(env, &expr.span, &expr.ty, false, lit.to_uint(lit.size())),
+            ))))
             .alloc()
         }
         thir::ExprKind::ZstLiteral { .. } => {
@@ -967,10 +947,10 @@ pub(crate) fn compile_expr<'a>(
                     match parent_kind {
                         DefKind::Impl { .. } => {
                             let parent_generics = env.tcx.generics_of(parent);
-                            let nb_parent_generics = parent_generics.params.len();
+                            let nb_parent_generics = parent_generics.own_params.len();
                             let parent_type =
                                 env.tcx.type_of(parent).instantiate(env.tcx, generic_args);
-                            let ty = compile_type(env, generics, &parent_type);
+                            let ty = compile_type(env, &expr.span, generics, &parent_type);
                             let func = symbol.unwrap().to_string();
                             // We remove [nb_parent_generics] elements from the start of [generic_args]
                             // as these are already inferred from the `Self` type.
@@ -981,7 +961,7 @@ pub(crate) fn compile_expr<'a>(
                                     generic_arg
                                         .as_type()
                                         .as_ref()
-                                        .map(|ty| compile_type(env, generics, ty))
+                                        .map(|ty| compile_type(env, &expr.span, generics, ty))
                                 })
                                 .collect();
 
@@ -994,7 +974,7 @@ pub(crate) fn compile_expr<'a>(
                         }
                         DefKind::Trait => {
                             let parent_generics = env.tcx.generics_of(parent);
-                            let nb_parent_generics = parent_generics.params.len();
+                            let nb_parent_generics = parent_generics.own_params.len();
                             let parent_path = compile_def_id(env, parent);
                             let self_ty_and_trait_tys = generic_args
                                 .iter()
@@ -1003,7 +983,7 @@ pub(crate) fn compile_expr<'a>(
                                     generic_arg
                                         .as_type()
                                         .as_ref()
-                                        .map(|ty| compile_type(env, generics, ty))
+                                        .map(|ty| compile_type(env, &expr.span, generics, ty))
                                 })
                                 .collect::<Vec<_>>();
                             let (self_ty, trait_tys) = match self_ty_and_trait_tys.as_slice() {
@@ -1018,7 +998,7 @@ pub(crate) fn compile_expr<'a>(
                                     generic_arg
                                         .as_type()
                                         .as_ref()
-                                        .map(|ty| compile_type(env, generics, ty))
+                                        .map(|ty| compile_type(env, &expr.span, generics, ty))
                                 })
                                 .collect::<Vec<_>>();
 
@@ -1038,7 +1018,7 @@ pub(crate) fn compile_expr<'a>(
                                     generic_arg
                                         .as_type()
                                         .as_ref()
-                                        .map(|ty| compile_type(env, generics, ty))
+                                        .map(|ty| compile_type(env, &expr.span, generics, ty))
                                 })
                                 .collect::<Vec<_>>();
 
@@ -1231,7 +1211,7 @@ fn compile_block<'a>(
     compile_stmts(env, generics, thir, &block.stmts, block.expr)
 }
 
-pub(crate) fn compile_const(env: &Env, const_: &Const) -> Rc<Expr> {
+pub(crate) fn compile_const(env: &Env, span: &rustc_span::Span, const_: &Const) -> Rc<Expr> {
     match &const_.kind() {
         ConstKind::Param(param) => Expr::local_var(param.name.as_str()),
         ConstKind::Infer(_) => Expr::local_var("InferConst"),
@@ -1248,15 +1228,14 @@ pub(crate) fn compile_const(env: &Env, const_: &Const) -> Rc<Expr> {
                 kind: CallKind::Pure,
             })
         }
-        ConstKind::Value(value) => {
-            // @TODO: for next version of the rustc API we will be able to make a translation
+        ConstKind::Value(ty, value) => {
+            // @TODO: use the value of [ty] to make a translation
             // according to the type of value, for booleans or negative integers.
             match value {
                 rustc_middle::ty::ValTree::Leaf(leaf) => {
-                    Rc::new(Expr::Literal(Rc::new(Literal::Integer(LiteralInteger {
-                        negative_sign: false,
-                        value: leaf.try_to_uint(leaf.size()).unwrap(),
-                    }))))
+                    Rc::new(Expr::Literal(Rc::new(Literal::Integer(
+                        compile_literal_integer(env, span, ty, false, leaf.to_uint(leaf.size())),
+                    ))))
                 }
                 rustc_middle::ty::ValTree::Branch(_) => Expr::local_var("ValueBranchConst"),
             }

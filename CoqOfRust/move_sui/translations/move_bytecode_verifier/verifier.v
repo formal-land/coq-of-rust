@@ -33,7 +33,7 @@ Module verifier.
             M.read (| module |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_unmetered :
@@ -154,256 +154,261 @@ Module verifier.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "--> " |);
-                                M.read (| Value.String ": verification time: " |);
-                                M.read (| Value.String "ms, result: " |);
-                                M.read (| Value.String ", size: " |);
-                                M.read (| Value.String "kb
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (| Value.String "--> " |);
+                              M.read (| Value.String ": verification time: " |);
+                              M.read (| Value.String "ms, result: " |);
+                              M.read (| Value.String ", size: " |);
+                              M.read (| Value.String "kb
 " |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                  |),
-                                  [ name ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "f64" ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      BinOp.Wrap.div
-                                        Integer.Usize
-                                        (M.rust_cast
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::time::Duration",
-                                              "as_micros",
-                                              []
-                                            |),
-                                            [
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path "std::time::Instant",
-                                                    "elapsed",
-                                                    []
-                                                  |),
-                                                  [ now ]
-                                                |)
-                                              |)
-                                            ]
-                                          |)))
-                                        (M.read (| UnsupportedLiteral |))
-                                    |)
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "alloc::string::String" ]
-                                  |),
-                                  [
-                                    M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ := M.alloc (| result |) in
-                                            let γ := M.read (| γ |) in
-                                            let γ1_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::result::Result::Err",
-                                                0
-                                              |) in
-                                            let e := M.alloc (| γ1_0 |) in
-                                            let~ res :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_function (| "alloc::fmt::format", [] |),
-                                                  [
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "core::fmt::Arguments",
-                                                        "new_v1",
-                                                        []
-                                                      |),
-                                                      [
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [ M.read (| Value.String "" |) ]
-                                                          |));
-                                                        (* Unsize *)
-                                                        M.pointer_coercion
-                                                          (M.alloc (|
-                                                            Value.Array
-                                                              [
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "core::fmt::rt::Argument",
-                                                                    "new_debug",
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_core_types::vm_status::StatusCode"
-                                                                    ]
-                                                                  |),
-                                                                  [
-                                                                    M.alloc (|
-                                                                      M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "move_binary_format::errors::VMError",
-                                                                          "major_status",
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| e |) ]
-                                                                      |)
-                                                                    |)
-                                                                  ]
-                                                                |)
-                                                              ]
-                                                          |))
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
-                                              |) in
-                                            res));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.alloc (|
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "alloc::string::ToString",
-                                                  Ty.path "str",
-                                                  [],
-                                                  "to_string",
-                                                  []
-                                                |),
-                                                [ M.read (| Value.String "Ok" |) ]
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    "new_display",
-                                    [ Ty.path "usize" ]
-                                  |),
-                                  [
-                                    M.alloc (|
-                                      BinOp.Wrap.div
-                                        Integer.Usize
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                |),
+                                [ name ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "f64" ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    BinOp.Wrap.div (|
+                                      M.rust_cast
                                         (M.call_closure (|
                                           M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              []
-                                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                            "len",
+                                            Ty.path "core::time::Duration",
+                                            "as_micros",
                                             []
                                           |),
-                                          [ bytes ]
-                                        |))
-                                        (Value.Integer 1000)
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "std::time::Instant",
+                                                  "elapsed",
+                                                  []
+                                                |),
+                                                [ now ]
+                                              |)
+                                            |)
+                                          ]
+                                        |)),
+                                      M.read (| UnsupportedLiteral |)
                                     |)
-                                  ]
-                                |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    "new",
-                                    []
-                                  |),
-                                  [
-                                    Value.Integer 0;
-                                    Value.UnicodeChar 32;
-                                    Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                    Value.Integer 0;
-                                    Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                    Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    "new",
-                                    []
-                                  |),
-                                  [
-                                    Value.Integer 1;
-                                    Value.UnicodeChar 32;
-                                    Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                    Value.Integer 0;
-                                    Value.StructTuple
-                                      "core::fmt::rt::Count::Is"
-                                      [ Value.Integer 3 ];
-                                    Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    "new",
-                                    []
-                                  |),
-                                  [
-                                    Value.Integer 2;
-                                    Value.UnicodeChar 32;
-                                    Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                    Value.Integer 0;
-                                    Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                    Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                  ]
-                                |);
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    "new",
-                                    []
-                                  |),
-                                  [
-                                    Value.Integer 3;
-                                    Value.UnicodeChar 32;
-                                    Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                    Value.Integer 0;
-                                    Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                    Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                  ]
-                                |)
-                              ]
-                          |));
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "alloc::string::String" ]
+                                |),
+                                [
+                                  M.match_operator (|
+                                    M.alloc (| Value.Tuple [] |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let γ := M.alloc (| result |) in
+                                          let γ := M.read (| γ |) in
+                                          let γ1_0 :=
+                                            M.SubPointer.get_struct_tuple_field (|
+                                              γ,
+                                              "core::result::Result::Err",
+                                              0
+                                            |) in
+                                          let e := M.alloc (| γ1_0 |) in
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_function (|
+                                                "core::hint::must_use",
+                                                [ Ty.path "alloc::string::String" ]
+                                              |),
+                                              [
+                                                M.read (|
+                                                  let~ res :=
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "alloc::fmt::format",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::Arguments",
+                                                              "new_v1",
+                                                              []
+                                                            |),
+                                                            [
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [ M.read (| Value.String "" |) ]
+                                                              |);
+                                                              M.alloc (|
+                                                                Value.Array
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::rt::Argument",
+                                                                        "new_debug",
+                                                                        [
+                                                                          Ty.path
+                                                                            "move_core_types::vm_status::StatusCode"
+                                                                        ]
+                                                                      |),
+                                                                      [
+                                                                        M.alloc (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "move_binary_format::errors::VMError",
+                                                                              "major_status",
+                                                                              []
+                                                                            |),
+                                                                            [ M.read (| e |) ]
+                                                                          |)
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |) in
+                                                  res
+                                                |)
+                                              ]
+                                            |)
+                                          |)));
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "alloc::string::ToString",
+                                                Ty.path "str",
+                                                [],
+                                                "to_string",
+                                                []
+                                              |),
+                                              [ M.read (| Value.String "Ok" |) ]
+                                            |)
+                                          |)))
+                                    ]
+                                  |)
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Argument",
+                                  "new_display",
+                                  [ Ty.path "usize" ]
+                                |),
+                                [
+                                  M.alloc (|
+                                    BinOp.Wrap.div (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                          "len",
+                                          []
+                                        |),
+                                        [ bytes ]
+                                      |),
+                                      Value.Integer IntegerKind.Usize 1000
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |);
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Placeholder",
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  Value.Integer IntegerKind.Usize 0;
+                                  Value.UnicodeChar 32;
+                                  Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                  Value.Integer IntegerKind.U32 0;
+                                  Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                  Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Placeholder",
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  Value.Integer IntegerKind.Usize 1;
+                                  Value.UnicodeChar 32;
+                                  Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                  Value.Integer IntegerKind.U32 0;
+                                  Value.StructTuple
+                                    "core::fmt::rt::Count::Is"
+                                    [ Value.Integer IntegerKind.Usize 3 ];
+                                  Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Placeholder",
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  Value.Integer IntegerKind.Usize 2;
+                                  Value.UnicodeChar 32;
+                                  Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                  Value.Integer IntegerKind.U32 0;
+                                  Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                  Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                ]
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::rt::Placeholder",
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  Value.Integer IntegerKind.Usize 3;
+                                  Value.UnicodeChar 32;
+                                  Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                  Value.Integer IntegerKind.U32 0;
+                                  Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                  Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                ]
+                              |)
+                            ]
+                        |);
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.path "core::fmt::rt::UnsafeArg",
@@ -427,9 +432,9 @@ Module verifier.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          UnOp.Pure.not
-                            (BinOp.Pure.le
-                              (M.call_closure (|
+                          UnOp.not (|
+                            BinOp.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "alloc::vec::Vec")
@@ -439,12 +444,14 @@ Module verifier.
                                   []
                                 |),
                                 [ bytes ]
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.get_constant (|
                                   "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE"
                                 |)
-                              |)))
+                              |)
+                            |)
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -459,58 +466,53 @@ Module verifier.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "test module exceeds size limit " |);
-                                        M.read (| Value.String " (given size " |);
-                                        M.read (| Value.String ")" |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [
-                                            M.get_constant (|
-                                              "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE"
-                                            |)
-                                          ]
-                                        |);
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::Vec")
-                                                    []
-                                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global"
-                                                    ],
-                                                  "len",
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "test module exceeds size limit " |);
+                                      M.read (| Value.String " (given size " |);
+                                      M.read (| Value.String ")" |)
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [
+                                          M.get_constant (|
+                                            "move_bytecode_verifier::verifier::verify_module_with_config_for_test::MAX_MODULE_SIZE"
+                                          |)
+                                        ]
+                                      |);
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
                                                   []
-                                                |),
-                                                [ bytes ]
-                                              |)
+                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                                "len",
+                                                []
+                                              |),
+                                              [ bytes ]
                                             |)
-                                          ]
-                                        |)
-                                      ]
-                                  |))
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -522,7 +524,7 @@ Module verifier.
             |) in
           result
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_with_config_for_test :
@@ -532,7 +534,7 @@ Module verifier.
   
   Module verify_module_with_config_for_test.
     Definition value_MAX_MODULE_SIZE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 65355 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 65355 |))).
   End verify_module_with_config_for_test.
   
   (*
@@ -618,29 +620,30 @@ Module verifier.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let e := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "move_binary_format::errors::PartialVMError",
-                                                "finish",
-                                                []
-                                              |),
-                                              [
-                                                M.read (| e |);
-                                                Value.StructTuple
-                                                  "move_binary_format::errors::Location::Undefined"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let e := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path
+                                                    "move_binary_format::errors::PartialVMError",
+                                                  "finish",
                                                   []
-                                              ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                |),
+                                                [
+                                                  M.read (| e |);
+                                                  Value.StructTuple
+                                                    "move_binary_format::errors::Location::Undefined"
+                                                    []
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -1495,7 +1498,7 @@ Module verifier.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_with_config_metered :
@@ -1532,7 +1535,7 @@ Module verifier.
             M.alloc (| Value.StructTuple "move_bytecode_verifier_meter::dummy::DummyMeter" [] |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_verify_module_with_config_unmetered :

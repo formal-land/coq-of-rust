@@ -150,7 +150,7 @@ Module bytecode.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -181,50 +181,40 @@ Module bytecode.
                   M.read (| f |);
                   M.read (| Value.String "EofBody" |);
                   M.read (| Value.String "types_section" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::bytecode::eof::body::EofBody",
-                      "types_section"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_primitives::bytecode::eof::body::EofBody",
+                    "types_section"
+                  |);
                   M.read (| Value.String "code_section" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::bytecode::eof::body::EofBody",
-                      "code_section"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_primitives::bytecode::eof::body::EofBody",
+                    "code_section"
+                  |);
                   M.read (| Value.String "container_section" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::bytecode::eof::body::EofBody",
-                      "container_section"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_primitives::bytecode::eof::body::EofBody",
+                    "container_section"
+                  |);
                   M.read (| Value.String "data_section" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_primitives::bytecode::eof::body::EofBody",
+                    "data_section"
+                  |);
+                  M.read (| Value.String "is_data_filled" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_primitives::bytecode::eof::body::EofBody",
-                      "data_section"
-                    |));
-                  M.read (| Value.String "is_data_filled" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_primitives::bytecode::eof::body::EofBody",
-                        "is_data_filled"
-                      |)
-                    |))
+                      "is_data_filled"
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -320,7 +310,7 @@ Module bytecode.
                       []
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -490,23 +480,24 @@ Module bytecode.
                     |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm_primitives::bytecode::eof::body::EofBody",
                         "is_data_filled"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm_primitives::bytecode::eof::body::EofBody",
                         "is_data_filled"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -516,17 +507,6 @@ Module bytecode.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_primitives_bytecode_eof_body_EofBody.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_body_EofBody.
-        Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::body::EofBody".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_eof_body_EofBody.
       
       Module Impl_core_cmp_Eq_for_revm_primitives_bytecode_eof_body_EofBody.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::eof::body::EofBody".
@@ -579,7 +559,7 @@ Module bytecode.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -720,7 +700,7 @@ Module bytecode.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -775,7 +755,7 @@ Module bytecode.
                   M.read (| index |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_code : M.IsAssociatedFunction Self "code" code.
@@ -817,9 +797,8 @@ Module bytecode.
                       "revm_primitives::bytecode::eof::header::EofHeader"
                       [
                         ("types_size",
-                          BinOp.Wrap.mul
-                            Integer.U16
-                            (M.rust_cast
+                          BinOp.Wrap.mul (|
+                            M.rust_cast
                               (M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
@@ -840,8 +819,9 @@ Module bytecode.
                                     "types_section"
                                   |)
                                 ]
-                              |)))
-                            (Value.Integer 4));
+                              |)),
+                            Value.Integer IntegerKind.U16 4
+                          |));
                         ("code_sizes",
                           M.call_closure (|
                             M.get_trait_method (|
@@ -940,36 +920,37 @@ Module bytecode.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.rust_cast
-                                                    (M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "bytes::bytes::Bytes",
-                                                        "len",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.path
-                                                              "alloy_primitives::bytes_::Bytes",
-                                                            [],
-                                                            "deref",
-                                                            []
-                                                          |),
-                                                          [ M.read (| x |) ]
-                                                        |)
-                                                      ]
-                                                    |))))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.rust_cast
+                                                      (M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "bytes::bytes::Bytes",
+                                                          "len",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.path
+                                                                "alloy_primitives::bytes_::Bytes",
+                                                              [],
+                                                              "deref",
+                                                              []
+                                                            |),
+                                                            [ M.read (| x |) ]
+                                                          |)
+                                                        ]
+                                                      |))))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -1073,36 +1054,37 @@ Module bytecode.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.rust_cast
-                                                    (M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "bytes::bytes::Bytes",
-                                                        "len",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_trait_method (|
-                                                            "core::ops::deref::Deref",
-                                                            Ty.path
-                                                              "alloy_primitives::bytes_::Bytes",
-                                                            [],
-                                                            "deref",
-                                                            []
-                                                          |),
-                                                          [ M.read (| x |) ]
-                                                        |)
-                                                      ]
-                                                    |))))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.rust_cast
+                                                      (M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "bytes::bytes::Bytes",
+                                                          "len",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_trait_method (|
+                                                              "core::ops::deref::Deref",
+                                                              Ty.path
+                                                                "alloy_primitives::bytes_::Bytes",
+                                                              [],
+                                                              "deref",
+                                                              []
+                                                            |),
+                                                            [ M.read (| x |) ]
+                                                          |)
+                                                        ]
+                                                      |))))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -1228,34 +1210,36 @@ Module bytecode.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "bytes::bytes::Bytes",
-                                                      "len",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.path "alloy_primitives::bytes_::Bytes",
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [ M.read (| x |) ]
-                                                      |)
-                                                    ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "bytes::bytes::Bytes",
+                                                        "len",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            "deref",
+                                                            []
+                                                          |),
+                                                          [ M.read (| x |) ]
+                                                        |)
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -1354,34 +1338,36 @@ Module bytecode.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let x := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "bytes::bytes::Bytes",
-                                                      "len",
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.call_closure (|
-                                                        M.get_trait_method (|
-                                                          "core::ops::deref::Deref",
-                                                          Ty.path "alloy_primitives::bytes_::Bytes",
-                                                          [],
-                                                          "deref",
-                                                          []
-                                                        |),
-                                                        [ M.read (| x |) ]
-                                                      |)
-                                                    ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let x := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path "bytes::bytes::Bytes",
+                                                        "len",
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.call_closure (|
+                                                          M.get_trait_method (|
+                                                            "core::ops::deref::Deref",
+                                                            Ty.path
+                                                              "alloy_primitives::bytes_::Bytes",
+                                                            [],
+                                                            "deref",
+                                                            []
+                                                          |),
+                                                          [ M.read (| x |) ]
+                                                        |)
+                                                      ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -1448,7 +1434,7 @@ Module bytecode.
                     ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_into_eof : M.IsAssociatedFunction Self "into_eof" into_eof.
@@ -1860,7 +1846,7 @@ Module bytecode.
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_encode : M.IsAssociatedFunction Self "encode" encode.
@@ -1931,46 +1917,46 @@ Module bytecode.
                       |) in
                     let~ partial_body_len :=
                       M.alloc (|
-                        BinOp.Wrap.add
-                          Integer.Usize
-                          (BinOp.Wrap.add
-                            Integer.Usize
-                            (M.read (|
+                        BinOp.Wrap.add (|
+                          BinOp.Wrap.add (|
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| header |),
                                 "revm_primitives::bytecode::eof::header::EofHeader",
                                 "sum_code_sizes"
                               |)
-                            |))
-                            (M.read (|
+                            |),
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| header |),
                                 "revm_primitives::bytecode::eof::header::EofHeader",
                                 "sum_container_sizes"
                               |)
-                            |)))
-                          (M.rust_cast
+                            |)
+                          |),
+                          M.rust_cast
                             (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| header |),
                                 "revm_primitives::bytecode::eof::header::EofHeader",
                                 "types_size"
                               |)
-                            |)))
+                            |))
+                        |)
                       |) in
                     let~ full_body_len :=
                       M.alloc (|
-                        BinOp.Wrap.add
-                          Integer.Usize
-                          (M.read (| partial_body_len |))
-                          (M.rust_cast
+                        BinOp.Wrap.add (|
+                          M.read (| partial_body_len |),
+                          M.rust_cast
                             (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| header |),
                                 "revm_primitives::bytecode::eof::header::EofHeader",
                                 "data_size"
                               |)
-                            |)))
+                            |))
+                        |)
                       |) in
                     let~ _ :=
                       M.match_operator (|
@@ -1981,8 +1967,8 @@ Module bytecode.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt
-                                      (M.call_closure (|
+                                    BinOp.lt (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "bytes::bytes::Bytes",
                                           "len",
@@ -2000,11 +1986,12 @@ Module bytecode.
                                             [ M.read (| input |) ]
                                           |)
                                         ]
-                                      |))
-                                      (BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| header_len |))
-                                        (M.read (| partial_body_len |)))
+                                      |),
+                                      BinOp.Wrap.add (|
+                                        M.read (| header_len |),
+                                        M.read (| partial_body_len |)
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -2038,8 +2025,8 @@ Module bytecode.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.gt
-                                      (M.call_closure (|
+                                    BinOp.gt (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "bytes::bytes::Bytes",
                                           "len",
@@ -2057,11 +2044,12 @@ Module bytecode.
                                             [ M.read (| input |) ]
                                           |)
                                         ]
-                                      |))
-                                      (BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| header_len |))
-                                        (M.read (| full_body_len |)))
+                                      |),
+                                      BinOp.Wrap.add (|
+                                        M.read (| header_len |),
+                                        M.read (| full_body_len |)
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -2158,7 +2146,7 @@ Module bytecode.
                                 Value.StructRecord
                                   "core::ops::range::Range"
                                   [
-                                    ("start", Value.Integer 0);
+                                    ("start", Value.Integer IntegerKind.Usize 0);
                                     ("end_",
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -2369,17 +2357,17 @@ Module bytecode.
                         |)) in
                     let~ start :=
                       M.alloc (|
-                        BinOp.Wrap.add
-                          Integer.Usize
-                          (M.read (| header_len |))
-                          (M.rust_cast
+                        BinOp.Wrap.add (|
+                          M.read (| header_len |),
+                          M.rust_cast
                             (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| header |),
                                 "revm_primitives::bytecode::eof::header::EofHeader",
                                 "types_size"
                               |)
-                            |)))
+                            |))
+                        |)
                       |) in
                     let~ _ :=
                       M.use
@@ -2455,16 +2443,17 @@ Module bytecode.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let x := M.copy (| γ |) in
-                                                    M.rust_cast (M.read (| M.read (| x |) |))))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let x := M.copy (| γ |) in
+                                                      M.rust_cast (M.read (| M.read (| x |) |))))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |)
@@ -2568,10 +2557,10 @@ Module bytecode.
                                                             [
                                                               ("start", M.read (| start |));
                                                               ("end_",
-                                                                BinOp.Wrap.add
-                                                                  Integer.Usize
-                                                                  (M.read (| start |))
-                                                                  (M.read (| size |)))
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| start |),
+                                                                  M.read (| size |)
+                                                                |))
                                                             ]
                                                         ]
                                                       |)
@@ -2582,10 +2571,10 @@ Module bytecode.
                                                 let β := start in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Wrap.add
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (M.read (| size |))
+                                                  BinOp.Wrap.add (|
+                                                    M.read (| β |),
+                                                    M.read (| size |)
+                                                  |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)))
                                         ]
@@ -2668,16 +2657,17 @@ Module bytecode.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let x := M.copy (| γ |) in
-                                                    M.rust_cast (M.read (| M.read (| x |) |))))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let x := M.copy (| γ |) in
+                                                      M.rust_cast (M.read (| M.read (| x |) |))))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |)
@@ -2781,10 +2771,10 @@ Module bytecode.
                                                             [
                                                               ("start", M.read (| start |));
                                                               ("end_",
-                                                                BinOp.Wrap.add
-                                                                  Integer.Usize
-                                                                  (M.read (| start |))
-                                                                  (M.read (| size |)))
+                                                                BinOp.Wrap.add (|
+                                                                  M.read (| start |),
+                                                                  M.read (| size |)
+                                                                |))
                                                             ]
                                                         ]
                                                       |)
@@ -2795,10 +2785,10 @@ Module bytecode.
                                                 let β := start in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Wrap.add
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (M.read (| size |))
+                                                  BinOp.Wrap.add (|
+                                                    M.read (| β |),
+                                                    M.read (| size |)
+                                                  |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)))
                                         ]
@@ -2840,8 +2830,8 @@ Module bytecode.
                           "revm_primitives::bytecode::eof::body::EofBody",
                           "is_data_filled"
                         |),
-                        BinOp.Pure.eq
-                          (M.call_closure (|
+                        BinOp.eq (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "bytes::bytes::Bytes",
                               "len",
@@ -2865,20 +2855,21 @@ Module bytecode.
                                 ]
                               |)
                             ]
-                          |))
-                          (M.rust_cast
+                          |),
+                          M.rust_cast
                             (M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| header |),
                                 "revm_primitives::bytecode::eof::header::EofHeader",
                                 "data_size"
                               |)
-                            |)))
+                            |))
+                        |)
                       |) in
                     M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| body |) ] |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_decode : M.IsAssociatedFunction Self "decode" decode.

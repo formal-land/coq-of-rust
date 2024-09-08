@@ -25,7 +25,7 @@ Module Impl_core_default_Default_for_payment_channel_AccountId.
               []
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -51,7 +51,7 @@ Module Impl_core_clone_Clone_for_payment_channel_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -90,22 +90,23 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.Pure.eq
-          (M.read (|
+        BinOp.eq (|
+          M.read (|
             M.SubPointer.get_struct_tuple_field (|
               M.read (| self |),
               "payment_channel::AccountId",
               0
             |)
-          |))
-          (M.read (|
+          |),
+          M.read (|
             M.SubPointer.get_struct_tuple_field (|
               M.read (| other |),
               "payment_channel::AccountId",
               0
             |)
-          |))))
-    | _, _, _ => M.impossible
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -115,17 +116,6 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
-
-Module Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
-  Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_payment_channel_AccountId.
 
 Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
@@ -146,7 +136,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
             [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -158,7 +148,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_payment_channel_AccountId.
 
-Module Impl_core_convert_From_array_32_u8_for_payment_channel_AccountId.
+Module Impl_core_convert_From_array_Usize_32_u8_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   (*
@@ -173,9 +163,9 @@ Module Impl_core_convert_From_array_32_u8_for_payment_channel_AccountId.
       "core::convert::From"
       Self
       (* Trait polymorphic types *)
-      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_32_u8_for_payment_channel_AccountId.
+End Impl_core_convert_From_array_Usize_32_u8_for_payment_channel_AccountId.
 
 Axiom Balance : (Ty.path "payment_channel::Balance") = (Ty.path "u128").
 
@@ -267,7 +257,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -277,7 +267,7 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -287,9 +277,9 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -299,17 +289,6 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_payment_channel_Error.
-
-Module Impl_core_marker_StructuralEq_for_payment_channel_Error.
-  Definition Self : Ty.t := Ty.path "payment_channel::Error".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_payment_channel_Error.
 
 Module Impl_core_cmp_Eq_for_payment_channel_Error.
   Definition Self : Ty.t := Ty.path "payment_channel::Error".
@@ -325,7 +304,7 @@ Module Impl_core_cmp_Eq_for_payment_channel_Error.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -386,7 +365,7 @@ Module Impl_payment_channel_Env.
             "caller"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_caller : M.IsAssociatedFunction Self "caller" caller.
@@ -519,7 +498,8 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Sha2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Sha2x256".
   
   (*     type Type = [u8; 32]; *)
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t :=
+    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -533,7 +513,8 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Keccak256.
   Definition Self : Ty.t := Ty.path "payment_channel::Keccak256".
   
   (*     type Type = [u8; 32]; *)
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t :=
+    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -547,7 +528,8 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x256.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x256".
   
   (*     type Type = [u8; 32]; *)
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t :=
+    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -561,7 +543,8 @@ Module Impl_payment_channel_HashOutput_for_payment_channel_Blake2x128.
   Definition Self : Ty.t := Ty.path "payment_channel::Blake2x128".
   
   (*     type Type = [u8; 16]; *)
-  Definition _Type_ : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ Ty.path "u8" ].
+  Definition _Type_ : Ty.t :=
+    Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ].
   
   Axiom Implements :
     M.IsTraitInstance
@@ -669,7 +652,7 @@ Module Impl_payment_channel_PaymentChannel.
           M.get_associated_function (| Ty.path "payment_channel::PaymentChannel", "init_env", [] |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -728,7 +711,10 @@ Module Impl_payment_channel_PaymentChannel.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::default::Default",
-                  Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 32 ]
+                    [ Ty.path "u8" ],
                   [],
                   "default",
                   []
@@ -749,7 +735,10 @@ Module Impl_payment_channel_PaymentChannel.
                 [ encodable; message ]
               |)
             |) in
-          let~ pub_key := M.alloc (| repeat (| Value.Integer 0, Value.Integer 33 |) |) in
+          let~ pub_key :=
+            M.alloc (|
+              repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 33 |)
+            |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
@@ -771,30 +760,33 @@ Module Impl_payment_channel_PaymentChannel.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let err := M.copy (| γ |) in
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "std::panicking::begin_panic",
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                      |),
-                                      [ M.read (| Value.String "recover failed: {err:?}" |) ]
-                                    |)
-                                  |)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let err := M.copy (| γ |) in
+                                    M.never_to_any (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "std::panicking::begin_panic",
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                        |),
+                                        [ M.read (| Value.String "recover failed: {err:?}" |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
             |) in
           let~ signature_account_id :=
-            M.alloc (| repeat (| Value.Integer 0, Value.Integer 32 |) |) in
+            M.alloc (|
+              repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |)
+            |) in
           let~ _ :=
             M.alloc (|
               M.call_closure (|
@@ -805,7 +797,7 @@ Module Impl_payment_channel_PaymentChannel.
                   "hash",
                   []
                 |),
-                [ (* Unsize *) M.pointer_coercion pub_key; signature_account_id ]
+                [ pub_key; signature_account_id ]
               |)
             |) in
           M.alloc (|
@@ -827,7 +819,10 @@ Module Impl_payment_channel_PaymentChannel.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::convert::Into",
-                      Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ],
                       [ Ty.path "payment_channel::AccountId" ],
                       "into",
                       []
@@ -839,7 +834,7 @@ Module Impl_payment_channel_PaymentChannel.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_is_signature_valid :
@@ -883,10 +878,10 @@ Module Impl_payment_channel_PaymentChannel.
               |));
             ("recipient", M.read (| recipient |));
             ("expiration", Value.StructTuple "core::option::Option::None" []);
-            ("withdrawn", Value.Integer 0);
+            ("withdrawn", Value.Integer IntegerKind.U128 0);
             ("close_duration", M.read (| close_duration |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -999,15 +994,16 @@ Module Impl_payment_channel_PaymentChannel.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (| amount |))
-                                (M.read (|
+                              BinOp.lt (|
+                                M.read (| amount |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "payment_channel::PaymentChannel",
                                     "withdrawn"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1038,15 +1034,16 @@ Module Impl_payment_channel_PaymentChannel.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "payment_channel::PaymentChannel",
                                     "is_signature_valid",
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| amount |); M.read (| signature |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1119,16 +1116,16 @@ Module Impl_payment_channel_PaymentChannel.
                                     "recipient"
                                   |)
                                 |);
-                                BinOp.Wrap.sub
-                                  Integer.U128
-                                  (M.read (| amount |))
-                                  (M.read (|
+                                BinOp.Wrap.sub (|
+                                  M.read (| amount |),
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "payment_channel::PaymentChannel",
                                       "withdrawn"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               ]
                             |);
                             M.closure
@@ -1136,17 +1133,18 @@ Module Impl_payment_channel_PaymentChannel.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (Value.StructTuple
-                                              "payment_channel::Error::TransferFailed"
-                                              []))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (Value.StructTuple
+                                                "payment_channel::Error::TransferFailed"
+                                                []))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -1207,7 +1205,7 @@ Module Impl_payment_channel_PaymentChannel.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_close_inner : M.IsAssociatedFunction Self "close_inner" close_inner.
@@ -1339,7 +1337,7 @@ Module Impl_payment_channel_PaymentChannel.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_close : M.IsAssociatedFunction Self "close" close.
@@ -1460,16 +1458,16 @@ Module Impl_payment_channel_PaymentChannel.
                 |) in
               let~ expiration :=
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.U64
-                    (M.read (| now |))
-                    (M.read (|
+                  BinOp.Wrap.add (|
+                    M.read (| now |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "payment_channel::PaymentChannel",
                         "close_duration"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               let~ _ :=
                 M.alloc (|
@@ -1522,7 +1520,7 @@ Module Impl_payment_channel_PaymentChannel.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_start_sender_close :
@@ -1603,7 +1601,7 @@ Module Impl_payment_channel_PaymentChannel.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.lt (M.read (| now |)) (M.read (| expiration |))
+                                      BinOp.lt (| M.read (| now |), M.read (| expiration |) |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1672,7 +1670,7 @@ Module Impl_payment_channel_PaymentChannel.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_claim_timeout :
@@ -1790,15 +1788,16 @@ Module Impl_payment_channel_PaymentChannel.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (M.call_closure (|
+                              UnOp.not (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.path "payment_channel::PaymentChannel",
                                     "is_signature_valid",
                                     []
                                   |),
                                   [ M.read (| self |); M.read (| amount |); M.read (| signature |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1826,15 +1825,16 @@ Module Impl_payment_channel_PaymentChannel.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (| amount |))
-                                (M.read (|
+                              BinOp.lt (|
+                                M.read (| amount |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "payment_channel::PaymentChannel",
                                     "withdrawn"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1858,16 +1858,16 @@ Module Impl_payment_channel_PaymentChannel.
                 |) in
               let~ amount_to_withdraw :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.U128
-                    (M.read (| amount |))
-                    (M.read (|
+                  BinOp.Wrap.sub (|
+                    M.read (| amount |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "payment_channel::PaymentChannel",
                         "withdrawn"
                       |)
-                    |))
+                    |)
+                  |)
                 |) in
               let~ _ :=
                 let β :=
@@ -1878,7 +1878,7 @@ Module Impl_payment_channel_PaymentChannel.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Wrap.add Integer.U128 (M.read (| β |)) (M.read (| amount_to_withdraw |))
+                  BinOp.Wrap.add (| M.read (| β |), M.read (| amount_to_withdraw |) |)
                 |) in
               let~ _ :=
                 M.match_operator (|
@@ -1942,17 +1942,18 @@ Module Impl_payment_channel_PaymentChannel.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (Value.StructTuple
-                                              "payment_channel::Error::TransferFailed"
-                                              []))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (Value.StructTuple
+                                                "payment_channel::Error::TransferFailed"
+                                                []))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -2013,7 +2014,7 @@ Module Impl_payment_channel_PaymentChannel.
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_withdraw : M.IsAssociatedFunction Self "withdraw" withdraw.
@@ -2035,7 +2036,7 @@ Module Impl_payment_channel_PaymentChannel.
             "sender"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_sender : M.IsAssociatedFunction Self "get_sender" get_sender.
@@ -2057,7 +2058,7 @@ Module Impl_payment_channel_PaymentChannel.
             "recipient"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_recipient :
@@ -2080,7 +2081,7 @@ Module Impl_payment_channel_PaymentChannel.
             "expiration"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_expiration :
@@ -2103,7 +2104,7 @@ Module Impl_payment_channel_PaymentChannel.
             "withdrawn"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_withdrawn :
@@ -2126,7 +2127,7 @@ Module Impl_payment_channel_PaymentChannel.
             "close_duration"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_close_duration :
@@ -2157,7 +2158,7 @@ Module Impl_payment_channel_PaymentChannel.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get_balance : M.IsAssociatedFunction Self "get_balance" get_balance.

@@ -13,10 +13,20 @@ Module host.
       fields :=
         [
           ("original_value",
-            Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []);
           ("present_value",
-            Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
-          ("new_value", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []);
+          ("new_value",
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              []);
           ("is_cold", Ty.path "bool")
         ];
     } *)
@@ -41,42 +51,34 @@ Module host.
               M.read (| f |);
               M.read (| Value.String "SStoreResult" |);
               M.read (| Value.String "original_value" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::host::SStoreResult",
-                  "original_value"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::SStoreResult",
+                "original_value"
+              |);
               M.read (| Value.String "present_value" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::host::SStoreResult",
-                  "present_value"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::SStoreResult",
+                "present_value"
+              |);
               M.read (| Value.String "new_value" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::SStoreResult",
+                "new_value"
+              |);
+              M.read (| Value.String "is_cold" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::SStoreResult",
-                  "new_value"
-                |));
-              M.read (| Value.String "is_cold" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::host::SStoreResult",
-                    "is_cold"
-                  |)
-                |))
+                  "is_cold"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -103,7 +105,10 @@ Module host.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -120,7 +125,10 @@ Module host.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -137,7 +145,10 @@ Module host.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::clone::Clone",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     [],
                     "clone",
                     []
@@ -162,7 +173,7 @@ Module host.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -200,8 +211,16 @@ Module host.
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ],
                     "eq",
                     []
                   |),
@@ -222,8 +241,15 @@ Module host.
                   (M.call_closure (|
                     M.get_trait_method (|
                       "core::cmp::PartialEq",
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
                       ],
                       "eq",
                       []
@@ -246,8 +272,16 @@ Module host.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                    [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
+                    [
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        []
+                    ],
                     "eq",
                     []
                   |),
@@ -266,23 +300,24 @@ Module host.
                 |)))
             |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::SStoreResult",
                     "is_cold"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::host::SStoreResult",
                     "is_cold"
                   |)
-                |))))
+                |)
+              |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -292,17 +327,6 @@ Module host.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_host_SStoreResult.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_host_SStoreResult.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::host::SStoreResult".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_host_SStoreResult.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_host_SStoreResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SStoreResult".
@@ -330,7 +354,7 @@ Module host.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -370,26 +394,22 @@ Module host.
               M.read (| f |);
               M.read (| Value.String "LoadAccountResult" |);
               M.read (| Value.String "is_cold" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::LoadAccountResult",
+                "is_cold"
+              |);
+              M.read (| Value.String "is_empty" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::LoadAccountResult",
-                  "is_cold"
-                |));
-              M.read (| Value.String "is_empty" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::host::LoadAccountResult",
-                    "is_empty"
-                  |)
-                |))
+                  "is_empty"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -435,7 +455,7 @@ Module host.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -480,7 +500,7 @@ Module host.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -513,39 +533,41 @@ Module host.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           LogicalOp.and (|
-            BinOp.Pure.eq
-              (M.read (|
+            BinOp.eq (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::LoadAccountResult",
                   "is_cold"
                 |)
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| other |),
                   "revm_interpreter::host::LoadAccountResult",
                   "is_cold"
                 |)
-              |)),
+              |)
+            |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::LoadAccountResult",
                     "is_empty"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::host::LoadAccountResult",
                     "is_empty"
                   |)
-                |))))
+                |)
+              |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -555,17 +577,6 @@ Module host.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_host_LoadAccountResult.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_host_LoadAccountResult.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_host_LoadAccountResult.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_host_LoadAccountResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::LoadAccountResult".
@@ -586,7 +597,7 @@ Module host.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -668,7 +679,7 @@ Module host.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -736,7 +747,7 @@ Module host.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -767,42 +778,34 @@ Module host.
               M.read (| f |);
               M.read (| Value.String "SelfDestructResult" |);
               M.read (| Value.String "had_value" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::host::SelfDestructResult",
-                  "had_value"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::SelfDestructResult",
+                "had_value"
+              |);
               M.read (| Value.String "target_exists" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm_interpreter::host::SelfDestructResult",
-                  "target_exists"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::SelfDestructResult",
+                "target_exists"
+              |);
               M.read (| Value.String "is_cold" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::host::SelfDestructResult",
+                "is_cold"
+              |);
+              M.read (| Value.String "previously_destroyed" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::host::SelfDestructResult",
-                  "is_cold"
-                |));
-              M.read (| Value.String "previously_destroyed" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::host::SelfDestructResult",
-                    "previously_destroyed"
-                  |)
-                |))
+                  "previously_destroyed"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -837,73 +840,77 @@ Module host.
           LogicalOp.and (|
             LogicalOp.and (|
               LogicalOp.and (|
-                BinOp.Pure.eq
-                  (M.read (|
+                BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::host::SelfDestructResult",
                       "had_value"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_interpreter::host::SelfDestructResult",
                       "had_value"
                     |)
-                  |)),
+                  |)
+                |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "revm_interpreter::host::SelfDestructResult",
                         "target_exists"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "revm_interpreter::host::SelfDestructResult",
                         "target_exists"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::host::SelfDestructResult",
                       "is_cold"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_interpreter::host::SelfDestructResult",
                       "is_cold"
                     |)
-                  |))))
+                  |)
+                |)))
             |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::host::SelfDestructResult",
                     "previously_destroyed"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::host::SelfDestructResult",
                     "previously_destroyed"
                   |)
-                |))))
+                |)
+              |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -913,17 +920,6 @@ Module host.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_host_SelfDestructResult.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_host_SelfDestructResult.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_host_SelfDestructResult.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_host_SelfDestructResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::host::SelfDestructResult".
@@ -944,7 +940,7 @@ Module host.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1023,7 +1019,7 @@ Module host.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

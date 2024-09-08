@@ -28,23 +28,23 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x := M.alloc (| Value.Integer 5 |) in
+        let~ x := M.alloc (| Value.Integer IntegerKind.U32 5 |) in
         let~ y :=
           M.copy (|
-            let~ x_squared :=
-              M.alloc (| BinOp.Wrap.mul Integer.U32 (M.read (| x |)) (M.read (| x |)) |) in
+            let~ x_squared := M.alloc (| BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |) |) in
             let~ x_cube :=
-              M.alloc (| BinOp.Wrap.mul Integer.U32 (M.read (| x_squared |)) (M.read (| x |)) |) in
+              M.alloc (| BinOp.Wrap.mul (| M.read (| x_squared |), M.read (| x |) |) |) in
             M.alloc (|
-              BinOp.Wrap.add
-                Integer.U32
-                (BinOp.Wrap.add Integer.U32 (M.read (| x_cube |)) (M.read (| x_squared |)))
-                (M.read (| x |))
+              BinOp.Wrap.add (|
+                BinOp.Wrap.add (| M.read (| x_cube |), M.read (| x_squared |) |),
+                M.read (| x |)
+              |)
             |)
           |) in
         let~ z :=
           M.copy (|
-            let~ _ := M.alloc (| BinOp.Wrap.mul Integer.U32 (Value.Integer 2) (M.read (| x |)) |) in
+            let~ _ :=
+              M.alloc (| BinOp.Wrap.mul (| Value.Integer IntegerKind.U32 2, M.read (| x |) |) |) in
             M.alloc (| Value.Tuple [] |)
           |) in
         let~ _ :=
@@ -56,28 +56,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "x is " |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "x is " |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "u32" ]
-                                |),
-                                [ x ]
-                              |)
-                            ]
-                        |))
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "u32" ]
+                              |),
+                              [ x ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -93,28 +89,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "y is " |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "y is " |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.path "u32" ]
-                                |),
-                                [ y ]
-                              |)
-                            ]
-                        |))
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.path "u32" ]
+                              |),
+                              [ y ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -130,28 +122,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "z is " |); M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "z is " |); M.read (| Value.String "
 " |) ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_debug",
-                                  [ Ty.tuple [] ]
-                                |),
-                                [ z ]
-                              |)
-                            ]
-                        |))
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_debug",
+                                [ Ty.tuple [] ]
+                              |),
+                              [ z ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -160,7 +148,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "blocks::main" main.

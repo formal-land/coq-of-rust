@@ -51,7 +51,7 @@ Module vec.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len :
@@ -110,7 +110,7 @@ Module vec.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -124,78 +124,130 @@ Module vec.
     
     (* StructRecord
       {
-        name := "InPlaceDstBufDrop";
+        name := "InPlaceDstDataSrcBufDrop";
         const_params := [];
-        ty_params := [ "T" ];
+        ty_params := [ "Src"; "Dest" ];
         fields :=
           [
-            ("ptr", Ty.apply (Ty.path "*mut") [] [ T ]);
+            ("ptr", Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Dest ]);
             ("len", Ty.path "usize");
-            ("cap", Ty.path "usize")
+            ("src_cap", Ty.path "usize");
+            ("src", Ty.apply (Ty.path "core::marker::PhantomData") [] [ Src ])
           ];
       } *)
     
-    Module Impl_core_ops_drop_Drop_for_alloc_vec_in_place_drop_InPlaceDstBufDrop_T.
-      Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDstBufDrop") [] [ T ].
+    Module Impl_core_ops_drop_Drop_for_alloc_vec_in_place_drop_InPlaceDstDataSrcBufDrop_Src_Dest.
+      Definition Self (Src Dest : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop") [] [ Src; Dest ].
       
       (*
           fn drop(&mut self) {
-              unsafe { super::Vec::from_raw_parts(self.ptr, self.len, self.cap) };
+              unsafe {
+                  let _drop_allocation =
+                      RawVec::<Src>::from_nonnull_in(self.ptr.cast::<Src>(), self.src_cap, Global);
+                  drop_in_place(core::ptr::slice_from_raw_parts_mut::<Dest>(self.ptr.as_ptr(), self.len));
+              };
           }
       *)
-      Definition drop (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        let Self : Ty.t := Self T in
+      Definition drop (Src Dest : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self Src Dest in
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
               let~ _ :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
-                      "from_raw_parts",
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::vec::in_place_drop::InPlaceDstBufDrop",
-                          "ptr"
+                let~ _drop_allocation :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::raw_vec::RawVec")
+                          []
+                          [ Src; Ty.path "alloc::alloc::Global" ],
+                        "from_nonnull_in",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Dest ],
+                            "cast",
+                            [ Src ]
+                          |),
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop",
+                                "ptr"
+                              |)
+                            |)
+                          ]
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop",
+                            "src_cap"
+                          |)
+                        |);
+                        Value.StructTuple "alloc::alloc::Global" []
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_function (|
+                        "core::ptr::drop_in_place",
+                        [ Ty.apply (Ty.path "slice") [] [ Dest ] ]
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ Dest ] |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Dest ],
+                                "as_ptr",
+                                []
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop",
+                                    "ptr"
+                                  |)
+                                |)
+                              ]
+                            |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::vec::in_place_drop::InPlaceDstDataSrcBufDrop",
+                                "len"
+                              |)
+                            |)
+                          ]
                         |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::vec::in_place_drop::InPlaceDstBufDrop",
-                          "len"
-                        |)
-                      |);
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "alloc::vec::in_place_drop::InPlaceDstBufDrop",
-                          "cap"
-                        |)
-                      |)
-                    ]
-                  |)
-                |) in
+                      ]
+                    |)
+                  |) in
+                M.alloc (| Value.Tuple [] |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
-        forall (T : Ty.t),
+        forall (Src Dest : Ty.t),
         M.IsTraitInstance
           "core::ops::drop::Drop"
-          (Self T)
+          (Self Src Dest)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("drop", InstanceField.Method (drop T)) ].
-    End Impl_core_ops_drop_Drop_for_alloc_vec_in_place_drop_InPlaceDstBufDrop_T.
+          (* Instance *) [ ("drop", InstanceField.Method (drop Src Dest)) ].
+    End Impl_core_ops_drop_Drop_for_alloc_vec_in_place_drop_InPlaceDstDataSrcBufDrop_Src_Dest.
   End in_place_drop.
 End vec.

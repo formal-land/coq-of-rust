@@ -23,7 +23,7 @@ Module Impl_flipper_Flipper.
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord "flipper::Flipper" [ ("value", M.read (| init_value |)) ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -46,7 +46,7 @@ Module Impl_flipper_Flipper.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
@@ -69,18 +69,19 @@ Module Impl_flipper_Flipper.
                 "flipper::Flipper",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "flipper::Flipper",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
@@ -98,7 +99,7 @@ Module Impl_flipper_Flipper.
         M.read (|
           M.SubPointer.get_struct_record_field (| M.read (| self |), "flipper::Flipper", "value" |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.

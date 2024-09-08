@@ -35,26 +35,22 @@ Module frame.
               M.read (| f |);
               M.read (| Value.String "CallFrame" |);
               M.read (| Value.String "return_memory_range" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm::frame::CallFrame",
+                "return_memory_range"
+              |);
+              M.read (| Value.String "frame_data" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm::frame::CallFrame",
-                  "return_memory_range"
-                |));
-              M.read (| Value.String "frame_data" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::frame::CallFrame",
-                    "frame_data"
-                  |)
-                |))
+                  "frame_data"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -97,26 +93,22 @@ Module frame.
               M.read (| f |);
               M.read (| Value.String "CreateFrame" |);
               M.read (| Value.String "created_address" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm::frame::CreateFrame",
+                "created_address"
+              |);
+              M.read (| Value.String "frame_data" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm::frame::CreateFrame",
-                  "created_address"
-                |));
-              M.read (| Value.String "frame_data" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::frame::CreateFrame",
-                    "frame_data"
-                  |)
-                |))
+                  "frame_data"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -161,34 +153,28 @@ Module frame.
               M.read (| f |);
               M.read (| Value.String "EOFCreateFrame" |);
               M.read (| Value.String "created_address" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "revm::frame::EOFCreateFrame",
-                  "created_address"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm::frame::EOFCreateFrame",
+                "created_address"
+              |);
               M.read (| Value.String "return_memory_range" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm::frame::EOFCreateFrame",
+                "return_memory_range"
+              |);
+              M.read (| Value.String "frame_data" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm::frame::EOFCreateFrame",
-                  "return_memory_range"
-                |));
-              M.read (| Value.String "frame_data" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::frame::EOFCreateFrame",
-                    "frame_data"
-                  |)
-                |))
+                  "frame_data"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -231,26 +217,22 @@ Module frame.
               M.read (| f |);
               M.read (| Value.String "FrameData" |);
               M.read (| Value.String "checkpoint" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm::frame::FrameData",
+                "checkpoint"
+              |);
+              M.read (| Value.String "interpreter" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm::frame::FrameData",
-                  "checkpoint"
-                |));
-              M.read (| Value.String "interpreter" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::frame::FrameData",
-                    "interpreter"
-                  |)
-                |))
+                  "interpreter"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -335,11 +317,7 @@ Module frame.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Call" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Call" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -359,11 +337,7 @@ Module frame.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Create" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Create" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -383,17 +357,13 @@ Module frame.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "EOFCreate" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "EOFCreate" |); __self_0 ]
                       |)
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -503,7 +473,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_interpreter_result :
@@ -631,17 +601,15 @@ Module frame.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "EOFCreate can't be called from external world."
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String
+                                          "EOFCreate can't be called from external world."
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -651,7 +619,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_output : M.IsAssociatedFunction Self "output" output.
@@ -740,7 +708,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_gas : M.IsAssociatedFunction Self "gas" gas.
@@ -829,7 +797,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_gas_mut : M.IsAssociatedFunction Self "gas_mut" gas_mut.
@@ -906,7 +874,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_interpreter_result :
@@ -984,7 +952,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_interpreter_result_mut :
@@ -1014,7 +982,7 @@ Module frame.
               "result"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_instruction_result :
@@ -1095,7 +1063,7 @@ Module frame.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_create : M.IsAssociatedFunction Self "new_create" new_create.
@@ -1150,7 +1118,7 @@ Module frame.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_call : M.IsAssociatedFunction Self "new_call" new_call.
@@ -1178,7 +1146,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_call : M.IsAssociatedFunction Self "is_call" is_call.
@@ -1206,7 +1174,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_create : M.IsAssociatedFunction Self "is_create" is_create.
@@ -1256,7 +1224,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_created_address :
@@ -1321,7 +1289,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_frame_data :
@@ -1395,7 +1363,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_frame_data : M.IsAssociatedFunction Self "frame_data" frame_data.
@@ -1468,7 +1436,7 @@ Module frame.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_frame_data_mut :
@@ -1492,7 +1460,7 @@ Module frame.
             "revm::frame::FrameData",
             "interpreter"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_interpreter : M.IsAssociatedFunction Self "interpreter" interpreter.
@@ -1515,7 +1483,7 @@ Module frame.
             "revm::frame::FrameData",
             "interpreter"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_interpreter_mut :
@@ -1549,7 +1517,7 @@ Module frame.
                 [ M.read (| created_address |); M.read (| checkpoint |); M.read (| interpreter |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_create_frame :
@@ -1613,7 +1581,7 @@ Module frame.
                   |)
                 ]
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_eofcreate_frame :
@@ -1651,7 +1619,7 @@ Module frame.
                 ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_call_frame :
@@ -1686,7 +1654,7 @@ Module frame.
                     ]
                 ]
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_create_result :
@@ -1727,7 +1695,7 @@ Module frame.
                     ]
                 ]
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_eofcreate_result :
@@ -1764,7 +1732,7 @@ Module frame.
                     ]
                 ]
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_call_result :

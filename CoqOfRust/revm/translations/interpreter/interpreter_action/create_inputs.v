@@ -12,7 +12,11 @@ Module interpreter_action.
           [
             ("caller", Ty.path "alloy_primitives::bits::address::Address");
             ("scheme", Ty.path "revm_primitives::env::CreateScheme");
-            ("value", Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []);
+            ("value",
+              Ty.apply
+                (Ty.path "ruint::Uint")
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                []);
             ("init_code", Ty.path "alloy_primitives::bytes_::Bytes");
             ("gas_limit", Ty.path "u64")
           ];
@@ -69,7 +73,10 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       [],
                       "clone",
                       []
@@ -111,7 +118,7 @@ Module interpreter_action.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -143,50 +150,40 @@ Module interpreter_action.
                 M.read (| f |);
                 M.read (| Value.String "CreateInputs" |);
                 M.read (| Value.String "caller" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                    "caller"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                  "caller"
+                |);
                 M.read (| Value.String "scheme" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                    "scheme"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                  "scheme"
+                |);
                 M.read (| Value.String "value" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                    "value"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                  "value"
+                |);
                 M.read (| Value.String "init_code" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
+                  "init_code"
+                |);
+                M.read (| Value.String "gas_limit" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                    "init_code"
-                  |));
-                M.read (| Value.String "gas_limit" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                      "gas_limit"
-                    |)
-                  |))
+                    "gas_limit"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -272,8 +269,16 @@ Module interpreter_action.
                     (M.call_closure (|
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            []
                         ],
                         "eq",
                         []
@@ -316,23 +321,24 @@ Module interpreter_action.
                   |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
                       "gas_limit"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
                       "gas_limit"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -342,18 +348,6 @@ Module interpreter_action.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_create_inputs_CreateInputs.
-    
-    Module Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_create_inputs_CreateInputs.
-      Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_revm_interpreter_interpreter_action_create_inputs_CreateInputs.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_create_inputs_CreateInputs.
       Definition Self : Ty.t :=
@@ -406,7 +400,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -475,7 +469,10 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::hash::Hash",
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       [],
                       "hash",
                       [ __H ]
@@ -524,7 +521,7 @@ Module interpreter_action.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -623,7 +620,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -687,7 +684,7 @@ Module interpreter_action.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_boxed : M.IsAssociatedFunction Self "new_boxed" new_boxed.
@@ -752,7 +749,10 @@ Module interpreter_action.
                             Ty.path "alloy_primitives::bits::address::Address",
                             "create2_from_code",
                             [
-                              Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                [ Ty.path "u8" ];
                               Ty.apply
                                 (Ty.path "&")
                                 []
@@ -769,7 +769,10 @@ Module interpreter_action.
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   [],
                                 "to_be_bytes",
                                 []
@@ -787,7 +790,7 @@ Module interpreter_action.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_created_address :

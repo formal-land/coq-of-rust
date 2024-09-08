@@ -15,7 +15,7 @@ Module resolver.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.get_constant (| "move_core_types::account_address::ZERO" |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_link_context :
@@ -40,7 +40,7 @@ Module resolver.
                 [ M.read (| module_id |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_relocate :
@@ -71,7 +71,7 @@ Module resolver.
                 [ M.read (| module_id |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_defining_module :
@@ -138,7 +138,7 @@ Module resolver.
             |),
             [ M.read (| M.read (| self |) |); M.read (| address |); M.read (| tag |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -182,7 +182,7 @@ Module resolver.
             |),
             [ M.read (| M.read (| self |) |); M.read (| module_id |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -239,7 +239,7 @@ Module resolver.
               M.read (| module_id |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -282,7 +282,7 @@ Module resolver.
             |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -307,7 +307,7 @@ Module resolver.
             |),
             [ M.read (| M.read (| self |) |); M.read (| module_id |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -342,7 +342,7 @@ Module resolver.
             |),
             [ M.read (| M.read (| self |) |); M.read (| module_id |); M.read (| struct_ |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

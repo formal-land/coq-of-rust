@@ -102,7 +102,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_from_range :
@@ -372,7 +372,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_search_tree :
@@ -578,17 +578,15 @@ Module collections.
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "range start and end are equal and excluded in BTreeSet"
-                                                                  |)
-                                                                ]
-                                                            |))
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "range start and end are equal and excluded in BTreeSet"
+                                                                |)
+                                                              ]
+                                                          |)
                                                         ]
                                                       |)
                                                     ]
@@ -612,17 +610,15 @@ Module collections.
                                                           []
                                                         |),
                                                         [
-                                                          (* Unsize *)
-                                                          M.pointer_coercion
-                                                            (M.alloc (|
-                                                              Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "range start and end are equal and excluded in BTreeMap"
-                                                                  |)
-                                                                ]
-                                                            |))
+                                                          M.alloc (|
+                                                            Value.Array
+                                                              [
+                                                                M.read (|
+                                                                  Value.String
+                                                                    "range start and end are equal and excluded in BTreeMap"
+                                                                |)
+                                                              ]
+                                                          |)
                                                         ]
                                                       |)
                                                     ]
@@ -664,139 +660,148 @@ Module collections.
                                             ltac:(M.monadic
                                               match γ with
                                               | [ s ] =>
-                                                M.find_or_pattern (|
-                                                  γ0_1,
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::range::Bound::Included",
-                                                            0
-                                                          |) in
-                                                        let e := M.copy (| γ0_0 |) in
-                                                        Value.Tuple [ e ]));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ0_0 :=
-                                                          M.SubPointer.get_struct_tuple_field (|
-                                                            γ,
-                                                            "core::ops::range::Bound::Excluded",
-                                                            0
-                                                          |) in
-                                                        let e := M.copy (| γ0_0 |) in
-                                                        Value.Tuple [ e ]))
-                                                  ],
-                                                  M.closure
-                                                    (fun γ =>
-                                                      ltac:(M.monadic
-                                                        match γ with
-                                                        | [ e ] =>
-                                                          let γ :=
-                                                            M.alloc (|
-                                                              M.call_closure (|
-                                                                M.get_trait_method (|
-                                                                  "core::cmp::PartialOrd",
-                                                                  Ty.apply (Ty.path "&") [] [ Q ],
-                                                                  [ Ty.apply (Ty.path "&") [] [ Q ]
-                                                                  ],
-                                                                  "gt",
-                                                                  []
-                                                                |),
-                                                                [ s; M.alloc (| M.read (| e |) |) ]
-                                                              |)
+                                                ltac:(M.monadic
+                                                  (M.find_or_pattern (|
+                                                    γ0_1,
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::range::Bound::Included",
+                                                              0
                                                             |) in
-                                                          let _ :=
-                                                            M.is_constant_or_break_match (|
-                                                              M.read (| γ |),
-                                                              Value.Bool true
+                                                          let e := M.copy (| γ0_0 |) in
+                                                          Value.Tuple [ e ]));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ0_0 :=
+                                                            M.SubPointer.get_struct_tuple_field (|
+                                                              γ,
+                                                              "core::ops::range::Bound::Excluded",
+                                                              0
                                                             |) in
-                                                          M.match_operator (|
-                                                            M.alloc (| Value.Tuple [] |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (let γ := M.use is_set in
-                                                                  let _ :=
-                                                                    M.is_constant_or_break_match (|
-                                                                      M.read (| γ |),
-                                                                      Value.Bool true
-                                                                    |) in
-                                                                  M.alloc (|
-                                                                    M.never_to_any (|
-                                                                      M.call_closure (|
-                                                                        M.get_function (|
-                                                                          "core::panicking::panic_fmt",
+                                                          let e := M.copy (| γ0_0 |) in
+                                                          Value.Tuple [ e ]))
+                                                    ],
+                                                    M.closure
+                                                      (fun γ =>
+                                                        ltac:(M.monadic
+                                                          match γ with
+                                                          | [ e ] =>
+                                                            ltac:(M.monadic
+                                                              (let γ :=
+                                                                M.alloc (|
+                                                                  M.call_closure (|
+                                                                    M.get_trait_method (|
+                                                                      "core::cmp::PartialOrd",
+                                                                      Ty.apply
+                                                                        (Ty.path "&")
+                                                                        []
+                                                                        [ Q ],
+                                                                      [
+                                                                        Ty.apply
+                                                                          (Ty.path "&")
                                                                           []
-                                                                        |),
-                                                                        [
+                                                                          [ Q ]
+                                                                      ],
+                                                                      "gt",
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      s;
+                                                                      M.alloc (| M.read (| e |) |)
+                                                                    ]
+                                                                  |)
+                                                                |) in
+                                                              let _ :=
+                                                                M.is_constant_or_break_match (|
+                                                                  M.read (| γ |),
+                                                                  Value.Bool true
+                                                                |) in
+                                                              M.match_operator (|
+                                                                M.alloc (| Value.Tuple [] |),
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let γ := M.use is_set in
+                                                                      let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.Bool true
+                                                                        |) in
+                                                                      M.alloc (|
+                                                                        M.never_to_any (|
                                                                           M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::Arguments",
-                                                                              "new_const",
+                                                                            M.get_function (|
+                                                                              "core::panicking::panic_fmt",
                                                                               []
                                                                             |),
                                                                             [
-                                                                              (* Unsize *)
-                                                                              M.pointer_coercion
-                                                                                (M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "range start is greater than range end in BTreeSet"
-                                                                                      |)
-                                                                                    ]
-                                                                                |))
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::Arguments",
+                                                                                  "new_const",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "range start is greater than range end in BTreeSet"
+                                                                                        |)
+                                                                                      ]
+                                                                                  |)
+                                                                                ]
+                                                                              |)
                                                                             ]
                                                                           |)
-                                                                        ]
-                                                                      |)
-                                                                    |)
-                                                                  |)));
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (M.alloc (|
-                                                                    M.never_to_any (|
-                                                                      M.call_closure (|
-                                                                        M.get_function (|
-                                                                          "core::panicking::panic_fmt",
-                                                                          []
-                                                                        |),
-                                                                        [
+                                                                        |)
+                                                                      |)));
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (M.alloc (|
+                                                                        M.never_to_any (|
                                                                           M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "core::fmt::Arguments",
-                                                                              "new_const",
+                                                                            M.get_function (|
+                                                                              "core::panicking::panic_fmt",
                                                                               []
                                                                             |),
                                                                             [
-                                                                              (* Unsize *)
-                                                                              M.pointer_coercion
-                                                                                (M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "range start is greater than range end in BTreeMap"
-                                                                                      |)
-                                                                                    ]
-                                                                                |))
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::Arguments",
+                                                                                  "new_const",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.alloc (|
+                                                                                    Value.Array
+                                                                                      [
+                                                                                        M.read (|
+                                                                                          Value.String
+                                                                                            "range start is greater than range end in BTreeMap"
+                                                                                        |)
+                                                                                      ]
+                                                                                  |)
+                                                                                ]
+                                                                              |)
                                                                             ]
                                                                           |)
-                                                                        ]
-                                                                      |)
-                                                                    |)
-                                                                  |)))
-                                                            ]
-                                                          |)
-                                                        | _ => M.impossible (||)
-                                                        end))
-                                                |)
-                                              | _ => M.impossible (||)
+                                                                        |)
+                                                                      |)))
+                                                                ]
+                                                              |)))
+                                                          | _ =>
+                                                            M.impossible "wrong number of arguments"
+                                                          end))
+                                                  |)))
+                                              | _ => M.impossible "wrong number of arguments"
                                               end))
                                       |)));
                                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -906,13 +911,10 @@ Module collections.
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      BinOp.Pure.lt
-                                                                        (M.read (|
-                                                                          lower_edge_idx
-                                                                        |))
-                                                                        (M.read (|
-                                                                          upper_edge_idx
-                                                                        |))
+                                                                      BinOp.lt (|
+                                                                        M.read (| lower_edge_idx |),
+                                                                        M.read (| upper_edge_idx |)
+                                                                      |)
                                                                     |)) in
                                                                 let _ :=
                                                                   M.is_constant_or_break_match (|
@@ -1004,18 +1006,20 @@ Module collections.
                                                                                   (let γ :=
                                                                                     M.use
                                                                                       (M.alloc (|
-                                                                                        UnOp.Pure.not
-                                                                                          (BinOp.Pure.eq
-                                                                                            (M.read (|
+                                                                                        UnOp.not (|
+                                                                                          BinOp.eq (|
+                                                                                            M.read (|
                                                                                               M.read (|
                                                                                                 left_val
                                                                                               |)
-                                                                                            |))
-                                                                                            (M.read (|
+                                                                                            |),
+                                                                                            M.read (|
                                                                                               M.read (|
                                                                                                 right_val
                                                                                               |)
-                                                                                            |)))
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
                                                                                       |)) in
                                                                                   let _ :=
                                                                                     M.is_constant_or_break_match (|
@@ -1227,7 +1231,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_search_tree_for_bifurcation :
@@ -1320,7 +1324,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_find_lower_bound_edge :
@@ -1373,7 +1377,7 @@ Module collections.
                         "find_upper_bound_index",
                         [ Q ]
                       |),
-                      [ self; M.read (| bound |); Value.Integer 0 ]
+                      [ self; M.read (| bound |); Value.Integer IntegerKind.Usize 0 ]
                     |)
                   |),
                   [
@@ -1413,7 +1417,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_find_upper_bound_edge :
@@ -1467,7 +1471,7 @@ Module collections.
                         "find_key_index",
                         [ Q ]
                       |),
-                      [ self; M.read (| key |); Value.Integer 0 ]
+                      [ self; M.read (| key |); Value.Integer IntegerKind.Usize 0 ]
                     |)
                   |),
                   [
@@ -1538,7 +1542,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_search_node :
@@ -1637,17 +1641,19 @@ Module collections.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              UnOp.Pure.not
-                                                (BinOp.Pure.le
-                                                  (M.read (| start_index |))
-                                                  (M.call_closure (|
+                                              UnOp.not (|
+                                                BinOp.le (|
+                                                  M.read (| start_index |),
+                                                  M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply (Ty.path "slice") [] [ K ],
                                                       "len",
                                                       []
                                                     |),
                                                     [ M.read (| keys |) ]
-                                                  |)))
+                                                  |)
+                                                |)
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -1833,10 +1839,10 @@ Module collections.
                                                               Value.StructTuple
                                                                 "alloc::collections::btree::search::IndexResult::KV"
                                                                 [
-                                                                  BinOp.Wrap.add
-                                                                    Integer.Usize
-                                                                    (M.read (| start_index |))
-                                                                    (M.read (| offset |))
+                                                                  BinOp.Wrap.add (|
+                                                                    M.read (| start_index |),
+                                                                    M.read (| offset |)
+                                                                  |)
                                                                 ]
                                                             |)
                                                           |)
@@ -1856,10 +1862,10 @@ Module collections.
                                                               Value.StructTuple
                                                                 "alloc::collections::btree::search::IndexResult::Edge"
                                                                 [
-                                                                  BinOp.Wrap.add
-                                                                    Integer.Usize
-                                                                    (M.read (| start_index |))
-                                                                    (M.read (| offset |))
+                                                                  BinOp.Wrap.add (|
+                                                                    M.read (| start_index |),
+                                                                    M.read (| offset |)
+                                                                  |)
                                                                 ]
                                                             |)
                                                           |)
@@ -1889,7 +1895,7 @@ Module collections.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_find_key_index :
@@ -1958,7 +1964,11 @@ Module collections.
                                 "find_key_index",
                                 [ Q ]
                               |),
-                              [ M.read (| self |); M.read (| key |); Value.Integer 0 ]
+                              [
+                                M.read (| self |);
+                                M.read (| key |);
+                                Value.Integer IntegerKind.Usize 0
+                              ]
                             |)
                           |),
                           [
@@ -2012,7 +2022,11 @@ Module collections.
                                 "find_key_index",
                                 [ Q ]
                               |),
-                              [ M.read (| self |); M.read (| key |); Value.Integer 0 ]
+                              [
+                                M.read (| self |);
+                                M.read (| key |);
+                                Value.Integer IntegerKind.Usize 0
+                              ]
                             |)
                           |),
                           [
@@ -2028,10 +2042,10 @@ Module collections.
                                 M.alloc (|
                                   Value.Tuple
                                     [
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| idx |))
-                                        (Value.Integer 1);
+                                      BinOp.Wrap.add (|
+                                        M.read (| idx |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |);
                                       Value.StructTuple
                                         "alloc::collections::btree::search::SearchBound::AllIncluded"
                                         []
@@ -2059,7 +2073,7 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 0;
+                              Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "alloc::collections::btree::search::SearchBound::AllIncluded"
                                 []
@@ -2094,7 +2108,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_find_lower_bound_index :
@@ -2181,10 +2195,10 @@ Module collections.
                                 M.alloc (|
                                   Value.Tuple
                                     [
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| idx |))
-                                        (Value.Integer 1);
+                                      BinOp.Wrap.add (|
+                                        M.read (| idx |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |);
                                       Value.StructTuple
                                         "alloc::collections::btree::search::SearchBound::AllExcluded"
                                         []
@@ -2301,7 +2315,7 @@ Module collections.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_find_upper_bound_index :

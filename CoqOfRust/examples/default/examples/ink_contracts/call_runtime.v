@@ -25,7 +25,7 @@ Module Impl_core_default_Default_for_call_runtime_AccountId.
               []
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -51,7 +51,7 @@ Module Impl_core_clone_Clone_for_call_runtime_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -166,7 +166,7 @@ Module Impl_core_default_Default_for_call_runtime_RuntimeCaller.
   Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
     | [], [], [] => ltac:(M.monadic (Value.StructTuple "call_runtime::RuntimeCaller" []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -207,7 +207,7 @@ Module Impl_core_fmt_Debug_for_call_runtime_RuntimeError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "CallRuntimeFailed" |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -240,7 +240,7 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         Value.Bool true))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -250,17 +250,6 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
-
-Module Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
-  Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_call_runtime_RuntimeError.
 
 Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
@@ -276,7 +265,7 @@ Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -352,7 +341,7 @@ Module Impl_core_convert_From_call_runtime_EnvError_for_call_runtime_RuntimeErro
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -402,7 +391,7 @@ Module Impl_call_runtime_RuntimeCaller.
           M.get_associated_function (| Ty.path "call_runtime::RuntimeCaller", "init_env", [] |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -426,7 +415,7 @@ Module Impl_call_runtime_RuntimeCaller.
           |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -522,7 +511,7 @@ Module Impl_call_runtime_RuntimeCaller.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_transfer_through_runtime :
@@ -582,7 +571,7 @@ Module Impl_call_runtime_RuntimeCaller.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_call_nonexistent_extrinsic :

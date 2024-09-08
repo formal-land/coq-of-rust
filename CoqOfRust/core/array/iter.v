@@ -94,7 +94,7 @@ Module array.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -142,7 +142,7 @@ Module array.
               |),
               [ M.read (| array |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -168,7 +168,7 @@ Module array.
           : M :=
         let Self : Ty.t := Self N T in
         match ε, τ, α with
-        | [ host ], [], [ buffer; initialized ] =>
+        | [], [], [ buffer; initialized ] =>
           ltac:(M.monadic
             (let buffer := M.alloc (| buffer |) in
             let initialized := M.alloc (| initialized |) in
@@ -205,7 +205,7 @@ Module array.
                   [ ("data", M.read (| buffer |)); ("alive", M.read (| alive |)) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_unchecked :
@@ -214,7 +214,7 @@ Module array.
       
       (*
           pub const fn empty() -> Self {
-              let buffer = MaybeUninit::uninit_array();
+              let buffer = [const { MaybeUninit::uninit() }; N];
               let initialized = 0..0;
       
               // SAFETY: We're telling it that none of the elements are initialized,
@@ -231,25 +231,24 @@ Module array.
           : M :=
         let Self : Ty.t := Self N T in
         match ε, τ, α with
-        | [ host ], [], [] =>
+        | [], [], [] =>
           ltac:(M.monadic
             (M.read (|
               let~ buffer :=
                 M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                      "uninit_array",
-                      []
-                    |),
-                    []
+                  repeat (|
+                    M.read (| M.get_constant (| "core::array::iter::empty_discriminant" |) |),
+                    N
                   |)
                 |) in
               let~ initialized :=
                 M.alloc (|
                   Value.StructRecord
                     "core::ops::range::Range"
-                    [ ("start", Value.Integer 0); ("end_", Value.Integer 0) ]
+                    [
+                      ("start", Value.Integer IntegerKind.Usize 0);
+                      ("end_", Value.Integer IntegerKind.Usize 0)
+                    ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -262,7 +261,7 @@ Module array.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_empty :
@@ -303,13 +302,11 @@ Module array.
                       [ Ty.path "core::ops::index_range::IndexRange" ]
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::array::iter::IntoIter",
-                          "data"
-                        |));
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::array::iter::IntoIter",
+                        "data"
+                      |);
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
@@ -340,7 +337,7 @@ Module array.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_slice :
@@ -381,13 +378,11 @@ Module array.
                       [ Ty.path "core::ops::index_range::IndexRange" ]
                     |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::array::iter::IntoIter",
-                          "data"
-                        |));
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::array::iter::IntoIter",
+                        "data"
+                      |);
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::clone::Clone",
@@ -418,7 +413,7 @@ Module array.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut_slice :
@@ -491,56 +486,55 @@ Module array.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let idx := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let idx := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ],
+                                      "assume_init_read",
                                       []
-                                      [ T ],
-                                    "assume_init_read",
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                              []
-                                              [ T ]
-                                          ],
-                                        "get_unchecked",
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.SubPointer.get_struct_record_field (|
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ T ]
+                                            ],
+                                          "get_unchecked",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [
+                                          M.SubPointer.get_struct_record_field (|
                                             M.read (| self |),
                                             "core::array::iter::IntoIter",
                                             "data"
-                                          |));
-                                        M.read (| idx |)
-                                      ]
-                                    |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                          |);
+                                          M.read (| idx |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -583,7 +577,7 @@ Module array.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -651,79 +645,76 @@ Module array.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let acc := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let idx := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                Fold,
-                                                [ Ty.tuple [ Acc; T ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [
-                                                fold;
-                                                Value.Tuple
-                                                  [
-                                                    M.read (| acc |);
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "core::mem::maybe_uninit::MaybeUninit")
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let acc := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let idx := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  Fold,
+                                                  [ Ty.tuple [ Acc; T ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [
+                                                  fold;
+                                                  Value.Tuple
+                                                    [
+                                                      M.read (| acc |);
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ],
+                                                          "assume_init_read",
                                                           []
-                                                          [ T ],
-                                                        "assume_init_read",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::mem::maybe_uninit::MaybeUninit")
-                                                                  []
-                                                                  [ T ]
-                                                              ],
-                                                            "get_unchecked",
-                                                            [ Ty.path "usize" ]
-                                                          |),
-                                                          [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion (M.read (| data |));
-                                                            M.read (| idx |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::mem::maybe_uninit::MaybeUninit")
+                                                                    []
+                                                                    [ T ]
+                                                                ],
+                                                              "get_unchecked",
+                                                              [ Ty.path "usize" ]
+                                                            |),
+                                                            [ M.read (| data |); M.read (| idx |) ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -753,7 +744,7 @@ Module array.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -783,11 +774,11 @@ Module array.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               // This also moves the start, which marks them as conceptually "dropped",
               // so if anything goes bad then our drop impl won't double-free them.
               let range_to_drop = self.alive.take_prefix(n);
@@ -799,7 +790,7 @@ Module array.
                   ptr::drop_in_place(MaybeUninit::slice_assume_init_mut(slice));
               }
       
-              NonZeroUsize::new(remaining).map_or(Ok(()), Err)
+              NonZero::new(remaining).map_or(Ok(()), Err)
           }
       *)
       Definition advance_by
@@ -836,17 +827,17 @@ Module array.
                 |) in
               let~ remaining :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.read (| n |))
-                    (M.call_closure (|
+                  BinOp.Wrap.sub (|
+                    M.read (| n |),
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
                         []
                       |),
                       [ range_to_drop ]
-                    |))
+                    |)
+                  |)
                 |) in
               let~ _ :=
                 let~ slice :=
@@ -861,13 +852,11 @@ Module array.
                         [ Ty.path "core::ops::index_range::IndexRange" ]
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::array::iter::IntoIter",
-                            "data"
-                          |));
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::array::iter::IntoIter",
+                          "data"
+                        |);
                         M.read (| range_to_drop |)
                       ]
                     |)
@@ -898,25 +887,31 @@ Module array.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -928,7 +923,7 @@ Module array.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -999,13 +994,11 @@ Module array.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::array::iter::IntoIter",
-                                    "data"
-                                  |))
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::array::iter::IntoIter",
+                                  "data"
+                                |)
                               ]
                             |);
                             M.call_closure (|
@@ -1031,7 +1024,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1115,56 +1108,55 @@ Module array.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let idx := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let idx := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ],
+                                      "assume_init_read",
                                       []
-                                      [ T ],
-                                    "assume_init_read",
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "slice")
-                                          []
-                                          [
-                                            Ty.apply
-                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                              []
-                                              [ T ]
-                                          ],
-                                        "get_unchecked",
-                                        [ Ty.path "usize" ]
-                                      |),
-                                      [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.SubPointer.get_struct_record_field (|
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "slice")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                                []
+                                                [ T ]
+                                            ],
+                                          "get_unchecked",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [
+                                          M.SubPointer.get_struct_record_field (|
                                             M.read (| self |),
                                             "core::array::iter::IntoIter",
                                             "data"
-                                          |));
-                                        M.read (| idx |)
-                                      ]
-                                    |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                          |);
+                                          M.read (| idx |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1232,83 +1224,80 @@ Module array.
                         ltac:(M.monadic
                           match γ with
                           | [ α0; α1 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let acc := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α1 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let idx := M.copy (| γ |) in
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::ops::function::FnMut",
-                                                Fold,
-                                                [ Ty.tuple [ Acc; T ] ],
-                                                "call_mut",
-                                                []
-                                              |),
-                                              [
-                                                rfold;
-                                                Value.Tuple
-                                                  [
-                                                    M.read (| acc |);
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "core::mem::maybe_uninit::MaybeUninit")
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let acc := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α1 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let idx := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::ops::function::FnMut",
+                                                  Fold,
+                                                  [ Ty.tuple [ Acc; T ] ],
+                                                  "call_mut",
+                                                  []
+                                                |),
+                                                [
+                                                  rfold;
+                                                  Value.Tuple
+                                                    [
+                                                      M.read (| acc |);
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::maybe_uninit::MaybeUninit")
+                                                            []
+                                                            [ T ],
+                                                          "assume_init_read",
                                                           []
-                                                          [ T ],
-                                                        "assume_init_read",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.apply
-                                                              (Ty.path "slice")
-                                                              []
-                                                              [
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "core::mem::maybe_uninit::MaybeUninit")
-                                                                  []
-                                                                  [ T ]
-                                                              ],
-                                                            "get_unchecked",
-                                                            [ Ty.path "usize" ]
-                                                          |),
-                                                          [
-                                                            (* Unsize *)
-                                                            M.pointer_coercion (M.read (| data |));
-                                                            M.read (| idx |)
-                                                          ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.apply
+                                                                (Ty.path "slice")
+                                                                []
+                                                                [
+                                                                  Ty.apply
+                                                                    (Ty.path
+                                                                      "core::mem::maybe_uninit::MaybeUninit")
+                                                                    []
+                                                                    [ T ]
+                                                                ],
+                                                              "get_unchecked",
+                                                              [ Ty.path "usize" ]
+                                                            |),
+                                                            [ M.read (| data |); M.read (| idx |) ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+          fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
               // This also moves the end, which marks them as conceptually "dropped",
               // so if anything goes bad then our drop impl won't double-free them.
               let range_to_drop = self.alive.take_suffix(n);
@@ -1320,7 +1309,7 @@ Module array.
                   ptr::drop_in_place(MaybeUninit::slice_assume_init_mut(slice));
               }
       
-              NonZeroUsize::new(remaining).map_or(Ok(()), Err)
+              NonZero::new(remaining).map_or(Ok(()), Err)
           }
       *)
       Definition advance_back_by
@@ -1357,17 +1346,17 @@ Module array.
                 |) in
               let~ remaining :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.read (| n |))
-                    (M.call_closure (|
+                  BinOp.Wrap.sub (|
+                    M.read (| n |),
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::ops::index_range::IndexRange",
                         "len",
                         []
                       |),
                       [ range_to_drop ]
-                    |))
+                    |)
+                  |)
                 |) in
               let~ _ :=
                 let~ slice :=
@@ -1382,13 +1371,11 @@ Module array.
                         [ Ty.path "core::ops::index_range::IndexRange" ]
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::array::iter::IntoIter",
-                            "data"
-                          |));
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::array::iter::IntoIter",
+                          "data"
+                        |);
                         M.read (| range_to_drop |)
                       ]
                     |)
@@ -1419,25 +1406,31 @@ Module array.
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
-                      [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                     "map_or",
                     [
                       Ty.apply
                         (Ty.path "core::result::Result")
                         []
-                        [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                        [
+                          Ty.tuple [];
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                        ];
                       Ty.function
-                        [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                        [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
                         (Ty.apply
                           (Ty.path "core::result::Result")
                           []
-                          [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                          [
+                            Ty.tuple [];
+                            Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ]
+                          ])
                     ]
                   |),
                   [
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.path "core::num::nonzero::NonZeroUsize",
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
                         "new",
                         []
                       |),
@@ -1449,7 +1442,7 @@ Module array.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1506,7 +1499,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1553,7 +1546,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1589,7 +1582,7 @@ Module array.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1675,7 +1668,8 @@ Module array.
           fn clone(&self) -> Self {
               // Note, we don't really need to match the exact same alive range, so
               // we can just clone into offset 0 regardless of where `self` is.
-              let mut new = Self { data: MaybeUninit::uninit_array(), alive: IndexRange::zero_to(0) };
+              let mut new =
+                  Self { data: [const { MaybeUninit::uninit() }; N], alive: IndexRange::zero_to(0) };
       
               // Clone all alive elements.
               for (src, dst) in iter::zip(self.as_slice(), &mut new.data) {
@@ -1708,13 +1702,9 @@ Module array.
                     "core::array::iter::IntoIter"
                     [
                       ("data",
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                            "uninit_array",
-                            []
-                          |),
-                          []
+                        repeat (|
+                          M.read (| M.get_constant (| "core::array::iter::clone_discriminant" |) |),
+                          N
                         |));
                       ("alive",
                         M.call_closure (|
@@ -1723,7 +1713,7 @@ Module array.
                             "zero_to",
                             []
                           |),
-                          [ Value.Integer 0 ]
+                          [ Value.Integer IntegerKind.Usize 0 ]
                         |))
                     ]
                 |) in
@@ -1884,9 +1874,8 @@ Module array.
                                                 []
                                               |),
                                               [
-                                                BinOp.Wrap.add
-                                                  Integer.Usize
-                                                  (M.call_closure (|
+                                                BinOp.Wrap.add (|
+                                                  M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.path "core::ops::index_range::IndexRange",
                                                       "end",
@@ -1899,8 +1888,9 @@ Module array.
                                                         "alive"
                                                       |)
                                                     ]
-                                                  |))
-                                                  (Value.Integer 1)
+                                                  |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |)
                                               ]
                                             |)
                                           |) in
@@ -1913,7 +1903,7 @@ Module array.
                   |)) in
               new
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1973,23 +1963,21 @@ Module array.
                         [ M.read (| f |); M.read (| Value.String "IntoIter" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
-                            "as_slice",
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::array::iter::IntoIter") [ N ] [ T ],
+                          "as_slice",
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |)
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

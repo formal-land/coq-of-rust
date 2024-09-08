@@ -35,16 +35,16 @@ Module fmt.
               M.alloc (|
                 LogicalOp.or (|
                   LogicalOp.and (|
-                    BinOp.Pure.ne (M.read (| abs |)) (M.read (| UnsupportedLiteral |)),
+                    BinOp.ne (| M.read (| abs |), M.read (| UnsupportedLiteral |) |),
                     ltac:(M.monadic
-                      (BinOp.Pure.lt (M.read (| abs |)) (M.read (| UnsupportedLiteral |))))
+                      (BinOp.lt (| M.read (| abs |), M.read (| UnsupportedLiteral |) |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.ge (M.read (| abs |)) (M.read (| UnsupportedLiteral |))))
+                    (BinOp.ge (| M.read (| abs |), M.read (| UnsupportedLiteral |) |)))
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -88,16 +88,16 @@ Module fmt.
               M.alloc (|
                 LogicalOp.or (|
                   LogicalOp.and (|
-                    BinOp.Pure.ne (M.read (| abs |)) (M.read (| UnsupportedLiteral |)),
+                    BinOp.ne (| M.read (| abs |), M.read (| UnsupportedLiteral |) |),
                     ltac:(M.monadic
-                      (BinOp.Pure.lt (M.read (| abs |)) (M.read (| UnsupportedLiteral |))))
+                      (BinOp.lt (| M.read (| abs |), M.read (| UnsupportedLiteral |) |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.ge (M.read (| abs |)) (M.read (| UnsupportedLiteral |))))
+                    (BinOp.ge (| M.read (| abs |), M.read (| UnsupportedLiteral |) |)))
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -122,8 +122,8 @@ Module fmt.
     where
         T: flt2dec::DecodableFloat,
     {
-        let mut buf: [MaybeUninit<u8>; 1024] = MaybeUninit::uninit_array(); // enough for f32 and f64
-        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 4] = MaybeUninit::uninit_array();
+        let mut buf: [MaybeUninit<u8>; 1024] = [MaybeUninit::uninit(); 1024]; // enough for f32 and f64
+        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 4] = [MaybeUninit::uninit(); 4];
         let formatted = flt2dec::to_exact_fixed_str(
             flt2dec::strategy::grisu::format_exact,
             *num,
@@ -151,27 +151,33 @@ Module fmt.
           M.read (|
             let~ buf :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                    "uninit_array",
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                      "uninit",
+                      []
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer IntegerKind.Usize 1024
                 |)
               |) in
             let~ parts :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        []
+                        [ Ty.path "core::num::fmt::Part" ],
+                      "uninit",
                       []
-                      [ Ty.path "core::num::fmt::Part" ],
-                    "uninit_array",
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer IntegerKind.Usize 4
                 |)
               |) in
             let~ formatted :=
@@ -218,8 +224,8 @@ Module fmt.
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
                     M.read (| precision |);
-                    (* Unsize *) M.pointer_coercion buf;
-                    (* Unsize *) M.pointer_coercion parts
+                    buf;
+                    parts
                   ]
                 |)
               |) in
@@ -234,7 +240,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_decimal_common_exact :
@@ -251,8 +257,9 @@ Module fmt.
         T: flt2dec::DecodableFloat,
     {
         // enough for f32 and f64
-        let mut buf: [MaybeUninit<u8>; flt2dec::MAX_SIG_DIGITS] = MaybeUninit::uninit_array();
-        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 4] = MaybeUninit::uninit_array();
+        let mut buf: [MaybeUninit<u8>; flt2dec::MAX_SIG_DIGITS] =
+            [MaybeUninit::uninit(); flt2dec::MAX_SIG_DIGITS];
+        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 4] = [MaybeUninit::uninit(); 4];
         let formatted = flt2dec::to_shortest_str(
             flt2dec::strategy::grisu::format_shortest,
             *num,
@@ -280,27 +287,33 @@ Module fmt.
           M.read (|
             let~ buf :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                    "uninit_array",
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                      "uninit",
+                      []
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer IntegerKind.Usize 17
                 |)
               |) in
             let~ parts :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        []
+                        [ Ty.path "core::num::fmt::Part" ],
+                      "uninit",
                       []
-                      [ Ty.path "core::num::fmt::Part" ],
-                    "uninit_array",
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer IntegerKind.Usize 4
                 |)
               |) in
             let~ formatted :=
@@ -346,8 +359,8 @@ Module fmt.
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
                     M.read (| precision |);
-                    (* Unsize *) M.pointer_coercion buf;
-                    (* Unsize *) M.pointer_coercion parts
+                    buf;
+                    parts
                   ]
                 |)
               |) in
@@ -362,7 +375,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_decimal_common_shortest :
@@ -455,7 +468,7 @@ Module fmt.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let~ min_precision := M.alloc (| Value.Integer 0 |) in
+                    (let~ min_precision := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_function (|
@@ -473,7 +486,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_decimal_display :
@@ -490,8 +503,8 @@ Module fmt.
     where
         T: flt2dec::DecodableFloat,
     {
-        let mut buf: [MaybeUninit<u8>; 1024] = MaybeUninit::uninit_array(); // enough for f32 and f64
-        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 6] = MaybeUninit::uninit_array();
+        let mut buf: [MaybeUninit<u8>; 1024] = [MaybeUninit::uninit(); 1024]; // enough for f32 and f64
+        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 6] = [MaybeUninit::uninit(); 6];
         let formatted = flt2dec::to_exact_exp_str(
             flt2dec::strategy::grisu::format_exact,
             *num,
@@ -521,27 +534,33 @@ Module fmt.
           M.read (|
             let~ buf :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                    "uninit_array",
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                      "uninit",
+                      []
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer IntegerKind.Usize 1024
                 |)
               |) in
             let~ parts :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        []
+                        [ Ty.path "core::num::fmt::Part" ],
+                      "uninit",
                       []
-                      [ Ty.path "core::num::fmt::Part" ],
-                    "uninit_array",
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer IntegerKind.Usize 6
                 |)
               |) in
             let~ formatted :=
@@ -589,8 +608,8 @@ Module fmt.
                     M.read (| sign |);
                     M.read (| precision |);
                     M.read (| upper |);
-                    (* Unsize *) M.pointer_coercion buf;
-                    (* Unsize *) M.pointer_coercion parts
+                    buf;
+                    parts
                   ]
                 |)
               |) in
@@ -605,7 +624,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_exponential_common_exact :
@@ -624,8 +643,9 @@ Module fmt.
         T: flt2dec::DecodableFloat,
     {
         // enough for f32 and f64
-        let mut buf: [MaybeUninit<u8>; flt2dec::MAX_SIG_DIGITS] = MaybeUninit::uninit_array();
-        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 6] = MaybeUninit::uninit_array();
+        let mut buf: [MaybeUninit<u8>; flt2dec::MAX_SIG_DIGITS] =
+            [MaybeUninit::uninit(); flt2dec::MAX_SIG_DIGITS];
+        let mut parts: [MaybeUninit<numfmt::Part<'_>>; 6] = [MaybeUninit::uninit(); 6];
         let formatted = flt2dec::to_shortest_exp_str(
             flt2dec::strategy::grisu::format_shortest,
             *num,
@@ -654,27 +674,33 @@ Module fmt.
           M.read (|
             let~ buf :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                    "uninit_array",
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                      "uninit",
+                      []
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer IntegerKind.Usize 17
                 |)
               |) in
             let~ parts :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                repeat (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                        []
+                        [ Ty.path "core::num::fmt::Part" ],
+                      "uninit",
                       []
-                      [ Ty.path "core::num::fmt::Part" ],
-                    "uninit_array",
+                    |),
                     []
                   |),
-                  []
+                  Value.Integer IntegerKind.Usize 6
                 |)
               |) in
             let~ formatted :=
@@ -719,10 +745,11 @@ Module fmt.
                     M.get_function (| "core::num::flt2dec::strategy::grisu::format_shortest", [] |);
                     M.read (| M.read (| num |) |);
                     M.read (| sign |);
-                    Value.Tuple [ Value.Integer 0; Value.Integer 0 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.I16 0; Value.Integer IntegerKind.I16 0 ];
                     M.read (| upper |);
-                    (* Unsize *) M.pointer_coercion buf;
-                    (* Unsize *) M.pointer_coercion parts
+                    buf;
+                    parts
                   ]
                 |)
               |) in
@@ -737,7 +764,7 @@ Module fmt.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_exponential_common_shortest :
@@ -829,7 +856,10 @@ Module fmt.
                           M.read (| fmt |);
                           M.read (| num |);
                           M.read (| sign |);
-                          BinOp.Wrap.add Integer.Usize (M.read (| precision |)) (Value.Integer 1);
+                          BinOp.Wrap.add (|
+                            M.read (| precision |),
+                            Value.Integer IntegerKind.Usize 1
+                          |);
                           M.read (| upper |)
                         ]
                       |)
@@ -849,7 +879,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_exponential_common :
@@ -985,7 +1015,8 @@ Module fmt.
                             |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (let~ min_precision := M.alloc (| Value.Integer 1 |) in
+                            (let~ min_precision :=
+                              M.alloc (| Value.Integer IntegerKind.Usize 1 |) in
                             M.alloc (|
                               M.call_closure (|
                                 M.get_function (|
@@ -1005,7 +1036,7 @@ Module fmt.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_float_to_general_debug :
@@ -1029,7 +1060,7 @@ Module fmt.
               M.get_function (| "core::fmt::float::float_to_general_debug", [ Ty.path "f32" ] |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1058,7 +1089,7 @@ Module fmt.
               M.get_function (| "core::fmt::float::float_to_decimal_display", [ Ty.path "f32" ] |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1090,7 +1121,7 @@ Module fmt.
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool false ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1122,7 +1153,7 @@ Module fmt.
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool true ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1151,7 +1182,7 @@ Module fmt.
               M.get_function (| "core::fmt::float::float_to_general_debug", [ Ty.path "f64" ] |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1180,7 +1211,7 @@ Module fmt.
               M.get_function (| "core::fmt::float::float_to_decimal_display", [ Ty.path "f64" ] |),
               [ M.read (| fmt |); M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1212,7 +1243,7 @@ Module fmt.
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool false ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1244,7 +1275,7 @@ Module fmt.
               |),
               [ M.read (| fmt |); M.read (| self |); Value.Bool true ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1254,5 +1285,179 @@ Module fmt.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_UpperExp_for_f64.
+    
+    Module Impl_core_fmt_Debug_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*
+          fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+              write!(f, "{:#06x}", self.to_bits())
+          }
+      *)
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              [
+                M.read (| f |);
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1_formatted",
+                    []
+                  |),
+                  [
+                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_lower_hex",
+                              [ Ty.path "u16" ]
+                            |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (| Ty.path "f16", "to_bits", [] |),
+                                  [ M.read (| M.read (| self |) |) ]
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Placeholder",
+                              "new",
+                              []
+                            |),
+                            [
+                              Value.Integer IntegerKind.Usize 0;
+                              Value.UnicodeChar 32;
+                              Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                              Value.Integer IntegerKind.U32 12;
+                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                              Value.StructTuple
+                                "core::fmt::rt::Count::Is"
+                                [ Value.Integer IntegerKind.Usize 6 ]
+                            ]
+                          |)
+                        ]
+                    |);
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "core::fmt::rt::UnsafeArg", "new", [] |),
+                      []
+                    |)
+                  ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::fmt::Debug"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+    End Impl_core_fmt_Debug_for_f16.
+    
+    Module Impl_core_fmt_Debug_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*
+          fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+              write!(f, "{:#034x}", self.to_bits())
+          }
+      *)
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_fmt", [] |),
+              [
+                M.read (| f |);
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "core::fmt::Arguments",
+                    "new_v1_formatted",
+                    []
+                  |),
+                  [
+                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_lower_hex",
+                              [ Ty.path "u128" ]
+                            |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (| Ty.path "f128", "to_bits", [] |),
+                                  [ M.read (| M.read (| self |) |) ]
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Placeholder",
+                              "new",
+                              []
+                            |),
+                            [
+                              Value.Integer IntegerKind.Usize 0;
+                              Value.UnicodeChar 32;
+                              Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                              Value.Integer IntegerKind.U32 12;
+                              Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                              Value.StructTuple
+                                "core::fmt::rt::Count::Is"
+                                [ Value.Integer IntegerKind.Usize 34 ]
+                            ]
+                          |)
+                        ]
+                    |);
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "core::fmt::rt::UnsafeArg", "new", [] |),
+                      []
+                    |)
+                  ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::fmt::Debug"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+    End Impl_core_fmt_Debug_for_f128.
   End float.
 End fmt.

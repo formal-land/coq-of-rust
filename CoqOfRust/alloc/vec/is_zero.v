@@ -34,22 +34,23 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.I8 0 |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -88,22 +89,23 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.I16 0 |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -142,22 +144,23 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.I32 0 |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -196,22 +199,23 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.I64 0 |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -250,22 +254,26 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (|
+                                      M.read (| x |),
+                                      Value.Integer IntegerKind.I128 0
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -304,22 +312,26 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (|
+                                      M.read (| x |),
+                                      Value.Integer IntegerKind.Isize 0
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -358,22 +370,23 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.U8 0 |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -412,22 +425,23 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.U16 0 |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -466,22 +480,23 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.U32 0 |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -520,22 +535,23 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (| M.read (| x |), Value.Integer IntegerKind.U64 0 |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -574,22 +590,26 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (|
+                                      M.read (| x |),
+                                      Value.Integer IntegerKind.U128 0
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -628,22 +648,26 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (|
+                                      M.read (| x |),
+                                      Value.Integer IntegerKind.Usize 0
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -682,22 +706,23 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.Bool false)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (| M.read (| x |), Value.Bool false |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -736,22 +761,23 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq (M.read (| x |)) (Value.UnicodeChar 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (| M.read (| x |), Value.UnicodeChar 0 |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -790,27 +816,33 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq
-                                    (M.call_closure (|
-                                      M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
-                                      [ M.read (| x |) ]
-                                    |))
-                                    (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "f32",
+                                          "to_bits",
+                                          []
+                                        |),
+                                        [ M.read (| x |) ]
+                                      |),
+                                      Value.Integer IntegerKind.U32 0
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -849,27 +881,33 @@ Module vec.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let x := M.copy (| γ |) in
-                                  BinOp.Pure.eq
-                                    (M.call_closure (|
-                                      M.get_associated_function (| Ty.path "f64", "to_bits", [] |),
-                                      [ M.read (| x |) ]
-                                    |))
-                                    (Value.Integer 0)))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let x := M.copy (| γ |) in
+                                    BinOp.eq (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "f64",
+                                          "to_bits",
+                                          []
+                                        |),
+                                        [ M.read (| x |) ]
+                                      |),
+                                      Value.Integer IntegerKind.U64 0
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 |);
                 Value.Tuple [ M.read (| M.read (| self |) |) ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -898,7 +936,7 @@ Module vec.
               M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "is_null", [] |),
               [ M.read (| M.read (| self |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -928,7 +966,7 @@ Module vec.
               M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "is_null", [] |),
               [ M.read (| M.read (| self |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -968,9 +1006,10 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.Pure.le
-                (M.read (| M.get_constant (| "alloc::vec::is_zero::N" |) |))
-                (Value.Integer 16),
+              BinOp.le (|
+                M.read (| M.get_constant (| "alloc::vec::is_zero::N" |) |),
+                Value.Integer IntegerKind.Usize 16
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -988,14 +1027,14 @@ Module vec.
                           "iter",
                           []
                         |),
-                        [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                        [ M.read (| self |) ]
                       |)
                     |);
                     M.get_trait_method (| "alloc::vec::is_zero::IsZero", T, [], "is_zero", [] |)
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1161,7 +1200,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1312,7 +1351,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1448,7 +1487,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1569,7 +1608,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1675,7 +1714,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1761,7 +1800,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1832,7 +1871,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1888,7 +1927,7 @@ Module vec.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1923,7 +1962,7 @@ Module vec.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1965,7 +2004,7 @@ Module vec.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1977,9 +2016,12 @@ Module vec.
           (* Instance *) [ ("is_zero", InstanceField.Method (is_zero T)) ].
     End Impl_alloc_vec_is_zero_IsZero_where_core_marker_Sized_T_for_core_option_Option_alloc_boxed_Box_T_alloc_alloc_Global.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU8.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU8" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -1996,13 +2038,13 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroU8" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2011,11 +2053,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU8.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u8.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU16.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU16" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2032,13 +2077,13 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroU16" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2047,11 +2092,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU16.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u16.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU32.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU32" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2068,13 +2116,13 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroU32" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2083,11 +2131,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU32.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u32.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU64.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU64" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2104,13 +2155,13 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroU64" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2119,11 +2170,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU64.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u64.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU128.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU128" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2140,13 +2194,13 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroU128" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2155,11 +2209,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroU128.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_u128.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI8.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI8" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2176,13 +2233,13 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroI8" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2191,11 +2248,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI8.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_usize.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI16.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI16" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2212,13 +2272,13 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroI16" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2227,11 +2287,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI16.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i8.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI32.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI32" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2248,13 +2311,13 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroI32" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2263,11 +2326,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI32.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i16.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI64.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI64" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2284,13 +2350,13 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroI64" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2299,11 +2365,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI64.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i32.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI128.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI128" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2320,13 +2389,13 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroI128" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2335,11 +2404,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroI128.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i64.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroUsize.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroUsize" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2356,13 +2428,13 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2371,11 +2443,14 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroUsize.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_i128.
     
-    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroIsize.
+    Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroIsize" ].
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ].
       
       (*
                   fn is_zero(&self) -> bool {
@@ -2392,13 +2467,13 @@ Module vec.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroIsize" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
                 "is_none",
                 []
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2407,7 +2482,7 @@ Module vec.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("is_zero", InstanceField.Method is_zero) ].
-    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZeroIsize.
+    End Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_core_num_nonzero_NonZero_isize.
     
     Module Impl_alloc_vec_is_zero_IsZero_for_core_option_Option_u8.
       Definition Self : Ty.t := Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u8" ].
@@ -2439,7 +2514,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2480,7 +2555,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2521,7 +2596,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2562,7 +2637,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2603,7 +2678,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2644,7 +2719,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2685,7 +2760,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2726,7 +2801,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2767,7 +2842,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2808,7 +2883,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2849,7 +2924,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2890,7 +2965,7 @@ Module vec.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2926,7 +3001,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2963,7 +3038,7 @@ Module vec.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3007,9 +3082,9 @@ Module vec.
                     [ M.read (| M.read (| self |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer 0) |)
+              M.alloc (| BinOp.eq (| M.read (| raw |), Value.Integer IntegerKind.U8 0 |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3059,9 +3134,9 @@ Module vec.
                     [ M.read (| M.read (| self |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer 0) |)
+              M.alloc (| BinOp.eq (| M.read (| raw |), Value.Integer IntegerKind.U8 0 |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3121,9 +3196,9 @@ Module vec.
                     [ M.read (| M.read (| self |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.Pure.eq (M.read (| raw |)) (Value.Integer 0) |)
+              M.alloc (| BinOp.eq (| M.read (| raw |), Value.Integer IntegerKind.U8 0 |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

@@ -33,7 +33,7 @@ Module db.
                     Ty.path "u64";
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       [];
                     Ty.path "alloc::alloc::Global"
                   ])
@@ -167,7 +167,7 @@ Module db.
                             Ty.path "u64";
                             Ty.apply
                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                              [ Value.Integer 32 ]
+                              [ Value.Integer IntegerKind.Usize 32 ]
                               [];
                             Ty.path "alloc::alloc::Global"
                           ],
@@ -184,7 +184,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -226,64 +226,48 @@ Module db.
                   |) in
                 let~ values :=
                   M.alloc (|
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::state_builder::StateBuilder",
-                                "database"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::state_builder::StateBuilder",
-                                "with_state_clear"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::state_builder::StateBuilder",
-                                "with_bundle_prestate"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::state_builder::StateBuilder",
-                                "with_cache_prestate"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::state_builder::StateBuilder",
-                                "with_bundle_update"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "revm::db::states::state_builder::StateBuilder",
-                                "with_background_transition_merge"
-                              |));
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "revm::db::states::state_builder::StateBuilder",
-                                  "with_block_hashes"
-                                |)
-                              |))
-                          ]
-                      |))
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::state_builder::StateBuilder",
+                            "database"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::state_builder::StateBuilder",
+                            "with_state_clear"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::state_builder::StateBuilder",
+                            "with_bundle_prestate"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::state_builder::StateBuilder",
+                            "with_cache_prestate"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::state_builder::StateBuilder",
+                            "with_bundle_update"
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "revm::db::states::state_builder::StateBuilder",
+                            "with_background_transition_merge"
+                          |);
+                          M.alloc (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "revm::db::states::state_builder::StateBuilder",
+                              "with_block_hashes"
+                            |)
+                          |)
+                        ]
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -295,13 +279,13 @@ Module db.
                     [
                       M.read (| f |);
                       M.read (| Value.String "StateBuilder" |);
-                      (* Unsize *) M.pointer_coercion (M.read (| names |));
+                      M.read (| names |);
                       M.read (| values |)
                     ]
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -360,21 +344,22 @@ Module db.
                             ]
                           |),
                           ltac:(M.monadic
-                            (BinOp.Pure.eq
-                              (M.read (|
+                            (BinOp.eq (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "revm::db::states::state_builder::StateBuilder",
                                   "with_state_clear"
                                 |)
-                              |))
-                              (M.read (|
+                              |),
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| other |),
                                   "revm::db::states::state_builder::StateBuilder",
                                   "with_state_clear"
                                 |)
-                              |))))
+                              |)
+                            |)))
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
@@ -439,38 +424,40 @@ Module db.
                         |)))
                     |),
                     ltac:(M.monadic
-                      (BinOp.Pure.eq
-                        (M.read (|
+                      (BinOp.eq (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "revm::db::states::state_builder::StateBuilder",
                             "with_bundle_update"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "revm::db::states::state_builder::StateBuilder",
                             "with_bundle_update"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "revm::db::states::state_builder::StateBuilder",
                           "with_background_transition_merge"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "revm::db::states::state_builder::StateBuilder",
                           "with_background_transition_merge"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
                   (M.call_closure (|
@@ -483,7 +470,7 @@ Module db.
                           Ty.path "u64";
                           Ty.apply
                             (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                            [ Value.Integer 32 ]
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             [];
                           Ty.path "alloc::alloc::Global"
                         ],
@@ -495,7 +482,7 @@ Module db.
                             Ty.path "u64";
                             Ty.apply
                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                              [ Value.Integer 32 ]
+                              [ Value.Integer IntegerKind.Usize 32 ]
                               [];
                             Ty.path "alloc::alloc::Global"
                           ]
@@ -517,7 +504,7 @@ Module db.
                     ]
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -528,19 +515,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method (eq DB)) ].
       End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_DB_for_revm_db_states_state_builder_StateBuilder_DB.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_state_builder_StateBuilder_DB.
-        Definition Self (DB : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "revm::db::states::state_builder::StateBuilder") [] [ DB ].
-        
-        Axiom Implements :
-          forall (DB : Ty.t),
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            (Self DB)
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_state_builder_StateBuilder_DB.
       
       Module Impl_core_cmp_Eq_where_core_cmp_Eq_DB_for_revm_db_states_state_builder_StateBuilder_DB.
         Definition Self (DB : Ty.t) : Ty.t :=
@@ -596,7 +570,7 @@ Module db.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -649,7 +623,7 @@ Module db.
                 |),
                 []
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -682,7 +656,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -741,7 +715,7 @@ Module db.
                             Ty.path "u64";
                             Ty.apply
                               (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                              [ Value.Integer 32 ]
+                              [ Value.Integer IntegerKind.Usize 32 ]
                               [];
                             Ty.path "alloc::alloc::Global"
                           ],
@@ -751,7 +725,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new_with_database :
@@ -838,7 +812,7 @@ Module db.
                       |)
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_database :
@@ -876,7 +850,7 @@ Module db.
                   Value.StructTuple "revm_primitives::db::WrapDatabaseRef" [ M.read (| database |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_database_ref :
@@ -921,9 +895,9 @@ Module db.
                       ]
                   ]
                 |),
-                [ M.read (| self |); (* Unsize *) M.pointer_coercion (M.read (| database |)) ]
+                [ M.read (| self |); M.read (| database |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_database_boxed :
@@ -952,7 +926,7 @@ Module db.
               M.struct_record_update
                 (M.read (| self |))
                 [ ("with_state_clear", Value.Bool false) ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_without_state_clear :
@@ -985,7 +959,7 @@ Module db.
                   ("with_bundle_prestate",
                     Value.StructTuple "core::option::Option::Some" [ M.read (| bundle |) ])
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_bundle_prestate :
@@ -1014,7 +988,7 @@ Module db.
               M.struct_record_update
                 (M.read (| self |))
                 [ ("with_bundle_update", Value.Bool true) ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_bundle_update :
@@ -1047,7 +1021,7 @@ Module db.
                   ("with_cache_prestate",
                     Value.StructTuple "core::option::Option::Some" [ M.read (| cache |) ])
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_cached_prestate :
@@ -1076,7 +1050,7 @@ Module db.
               M.struct_record_update
                 (M.read (| self |))
                 [ ("with_background_transition_merge", Value.Bool true) ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_background_transition_merge :
@@ -1109,7 +1083,7 @@ Module db.
               M.struct_record_update
                 (M.read (| self |))
                 [ ("with_block_hashes", M.read (| block_hashes |)) ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_with_block_hashes :
@@ -1238,30 +1212,31 @@ Module db.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path "revm::db::states::cache::CacheState",
-                                                "new",
-                                                []
-                                              |),
-                                              [
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    self,
-                                                    "revm::db::states::state_builder::StateBuilder",
-                                                    "with_state_clear"
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "revm::db::states::cache::CacheState",
+                                                  "new",
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      self,
+                                                      "revm::db::states::state_builder::StateBuilder",
+                                                      "with_state_clear"
+                                                    |)
                                                   |)
-                                                |)
-                                              ]
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |));
@@ -1334,7 +1309,7 @@ Module db.
                     ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_build :

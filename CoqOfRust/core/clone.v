@@ -19,7 +19,7 @@ Module clone.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_clone_from :
@@ -42,6 +42,174 @@ Module clone.
       fields := [ ("_field", Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ]) ];
     } *)
   
+  (* Trait *)
+  (* Empty module 'CloneToUninit' *)
+  
+  Module Impl_core_clone_CloneToUninit_where_core_clone_Clone_T_for_T.
+    Definition Self (T : Ty.t) : Ty.t := T.
+    
+    (*
+        unsafe fn clone_to_uninit(&self, dst: *mut Self) {
+            // SAFETY: we're calling a specialization with the same contract
+            unsafe { <T as self::uninit::CopySpec>::clone_one(self, dst) }
+        }
+    *)
+    Definition clone_to_uninit
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self T in
+      match ε, τ, α with
+      | [], [], [ self; dst ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let dst := M.alloc (| dst |) in
+          M.call_closure (|
+            M.get_trait_method (| "core::clone::uninit::CopySpec", T, [], "clone_one", [] |),
+            [ M.read (| self |); M.read (| dst |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      forall (T : Ty.t),
+      M.IsTraitInstance
+        "core::clone::CloneToUninit"
+        (Self T)
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("clone_to_uninit", InstanceField.Method (clone_to_uninit T)) ].
+  End Impl_core_clone_CloneToUninit_where_core_clone_Clone_T_for_T.
+  
+  Module Impl_core_clone_CloneToUninit_where_core_clone_Clone_T_for_slice_T.
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
+    
+    (*
+        unsafe fn clone_to_uninit(&self, dst: *mut Self) {
+            // SAFETY: we're calling a specialization with the same contract
+            unsafe { <T as self::uninit::CopySpec>::clone_slice(self, dst) }
+        }
+    *)
+    Definition clone_to_uninit
+        (T : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self T in
+      match ε, τ, α with
+      | [], [], [ self; dst ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let dst := M.alloc (| dst |) in
+          M.call_closure (|
+            M.get_trait_method (| "core::clone::uninit::CopySpec", T, [], "clone_slice", [] |),
+            [ M.read (| self |); M.read (| dst |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      forall (T : Ty.t),
+      M.IsTraitInstance
+        "core::clone::CloneToUninit"
+        (Self T)
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("clone_to_uninit", InstanceField.Method (clone_to_uninit T)) ].
+  End Impl_core_clone_CloneToUninit_where_core_clone_Clone_T_for_slice_T.
+  
+  Module Impl_core_clone_CloneToUninit_for_str.
+    Definition Self : Ty.t := Ty.path "str".
+    
+    (*
+        unsafe fn clone_to_uninit(&self, dst: *mut Self) {
+            // SAFETY: str is just a [u8] with UTF-8 invariant
+            unsafe { self.as_bytes().clone_to_uninit(dst as *mut [u8]) }
+        }
+    *)
+    Definition clone_to_uninit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; dst ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let dst := M.alloc (| dst |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::clone::CloneToUninit",
+              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+              [],
+              "clone_to_uninit",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "str", "as_bytes", [] |),
+                [ M.read (| self |) ]
+              |);
+              M.rust_cast (M.read (| dst |))
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::clone::CloneToUninit"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("clone_to_uninit", InstanceField.Method clone_to_uninit) ].
+  End Impl_core_clone_CloneToUninit_for_str.
+  
+  Module Impl_core_clone_CloneToUninit_for_core_ffi_c_str_CStr.
+    Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
+    
+    (*
+        unsafe fn clone_to_uninit(&self, dst: *mut Self) {
+            // SAFETY: For now, CStr is just a #[repr(trasnsparent)] [c_char] with some invariants.
+            // And we can cast [c_char] to [u8] on all supported platforms (see: to_bytes_with_nul).
+            // The pointer metadata properly preserves the length (NUL included).
+            // See: `cstr_metadata_is_length_with_nul` in tests.
+            unsafe { self.to_bytes_with_nul().clone_to_uninit(dst as *mut [u8]) }
+        }
+    *)
+    Definition clone_to_uninit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; dst ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let dst := M.alloc (| dst |) in
+          M.call_closure (|
+            M.get_trait_method (|
+              "core::clone::CloneToUninit",
+              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+              [],
+              "clone_to_uninit",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.path "core::ffi::c_str::CStr",
+                  "to_bytes_with_nul",
+                  []
+                |),
+                [ M.read (| self |) ]
+              |);
+              M.rust_cast (M.read (| dst |))
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::clone::CloneToUninit"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("clone_to_uninit", InstanceField.Method clone_to_uninit) ].
+  End Impl_core_clone_CloneToUninit_for_core_ffi_c_str_CStr.
+  
   Module impls.
     Module Impl_core_clone_Clone_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
@@ -57,7 +225,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -82,7 +250,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -107,7 +275,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -132,7 +300,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -157,7 +325,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -182,7 +350,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -207,7 +375,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -232,7 +400,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -257,7 +425,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -282,7 +450,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -307,7 +475,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -332,7 +500,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -342,6 +510,31 @@ Module clone.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_i128.
+    
+    Module Impl_core_clone_Clone_for_f16.
+      Definition Self : Ty.t := Ty.path "f16".
+      
+      (*
+                          fn clone(&self) -> Self {
+                              *self
+                          }
+      *)
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (| M.read (| self |) |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::clone::Clone"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("clone", InstanceField.Method clone) ].
+    End Impl_core_clone_Clone_for_f16.
     
     Module Impl_core_clone_Clone_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
@@ -357,7 +550,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -382,7 +575,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -392,6 +585,31 @@ Module clone.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
     End Impl_core_clone_Clone_for_f64.
+    
+    Module Impl_core_clone_Clone_for_f128.
+      Definition Self : Ty.t := Ty.path "f128".
+      
+      (*
+                          fn clone(&self) -> Self {
+                              *self
+                          }
+      *)
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (| M.read (| self |) |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::clone::Clone"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("clone", InstanceField.Method clone) ].
+    End Impl_core_clone_Clone_for_f128.
     
     Module Impl_core_clone_Clone_for_bool.
       Definition Self : Ty.t := Ty.path "bool".
@@ -407,7 +625,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -432,7 +650,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -457,7 +675,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -483,7 +701,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -510,7 +728,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -537,7 +755,7 @@ Module clone.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

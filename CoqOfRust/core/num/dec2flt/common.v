@@ -23,7 +23,10 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               M.read (|
-                let~ tmp := M.alloc (| repeat (| Value.Integer 0, Value.Integer 8 |) |) in
+                let~ tmp :=
+                  M.alloc (|
+                    repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 8 |)
+                  |) in
                 let~ _ :=
                   M.alloc (|
                     M.call_closure (|
@@ -33,7 +36,7 @@ Module num.
                         []
                       |),
                       [
-                        (* Unsize *) M.pointer_coercion tmp;
+                        tmp;
                         M.call_closure (|
                           M.get_trait_method (|
                             "core::ops::index::Index",
@@ -47,7 +50,7 @@ Module num.
                             M.read (| self |);
                             Value.StructRecord
                               "core::ops::range::RangeTo"
-                              [ ("end_", Value.Integer 8) ]
+                              [ ("end_", Value.Integer IntegerKind.Usize 8) ]
                           ]
                         |)
                       ]
@@ -60,7 +63,7 @@ Module num.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -91,20 +94,20 @@ Module num.
                     |),
                     [
                       M.read (| self |);
-                      Value.StructRecord "core::ops::range::RangeTo" [ ("end_", Value.Integer 8) ]
+                      Value.StructRecord
+                        "core::ops::range::RangeTo"
+                        [ ("end_", Value.Integer IntegerKind.Usize 8) ]
                     ]
                   |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (| Ty.path "u64", "to_le_bytes", [] |),
-                        [ M.read (| value |) ]
-                      |)
-                    |))
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "u64", "to_le_bytes", [] |),
+                      [ M.read (| value |) ]
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -118,9 +121,8 @@ Module num.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
-              BinOp.Wrap.sub
-                Integer.Isize
-                (M.rust_cast
+              BinOp.Wrap.sub (|
+                M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -128,8 +130,8 @@ Module num.
                       []
                     |),
                     [ M.read (| other |) ]
-                  |)))
-                (M.rust_cast
+                  |)),
+                M.rust_cast
                   (M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
@@ -137,17 +139,16 @@ Module num.
                       []
                     |),
                     [ M.read (| self |) ]
-                  |)))))
-          | _, _, _ => M.impossible
+                  |))
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
             fn parse_digits(&self, mut func: impl FnMut(u8)) -> &Self {
                 let mut s = self;
         
-                // FIXME: Can't use s.split_first() here yet,
-                // see https://github.com/rust-lang/rust/issues/109328
-                while let [c, s_next @ ..] = s {
+                while let Some((c, s_next)) = s.split_first() {
                     let c = c.wrapping_sub(b'0');
                     if c < 10 {
                         func(c);
@@ -176,12 +177,27 @@ Module num.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ := s in
-                              let γ := M.read (| γ |) in
-                              let γ1_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
-                              let γ1_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
-                              let c := M.alloc (| γ1_0 |) in
-                              let s_next := M.alloc (| γ1_rest |) in
+                              (let γ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      "split_first",
+                                      []
+                                    |),
+                                    [ M.read (| s |) ]
+                                  |)
+                                |) in
+                              let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::option::Option::Some",
+                                  0
+                                |) in
+                              let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                              let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                              let c := M.copy (| γ1_0 |) in
+                              let s_next := M.copy (| γ1_1 |) in
                               let~ c :=
                                 M.alloc (|
                                   M.call_closure (|
@@ -201,7 +217,10 @@ Module num.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.Pure.lt (M.read (| c |)) (Value.Integer 10)
+                                            BinOp.lt (|
+                                              M.read (| c |),
+                                              Value.Integer IntegerKind.U8 10
+                                            |)
                                           |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
@@ -248,7 +267,7 @@ Module num.
                   |) in
                 M.alloc (| M.read (| s |) |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -282,25 +301,26 @@ Module num.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "wrapping_add", [] |),
-                    [ M.read (| v |); Value.Integer 5063812098665367110 ]
+                    [ M.read (| v |); Value.Integer IntegerKind.U64 5063812098665367110 ]
                   |)
                 |) in
               let~ b :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "u64", "wrapping_sub", [] |),
-                    [ M.read (| v |); Value.Integer 3472328296227680304 ]
+                    [ M.read (| v |); Value.Integer IntegerKind.U64 3472328296227680304 ]
                   |)
                 |) in
               M.alloc (|
-                BinOp.Pure.eq
-                  (BinOp.Pure.bit_and
-                    (BinOp.Pure.bit_or (M.read (| a |)) (M.read (| b |)))
-                    (Value.Integer 9259542123273814144))
-                  (Value.Integer 0)
+                BinOp.eq (|
+                  BinOp.bit_and
+                    (BinOp.bit_or (M.read (| a |)) (M.read (| b |)))
+                    (Value.Integer IntegerKind.U64 9259542123273814144),
+                  Value.Integer IntegerKind.U64 0
+                |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_is_8digits : M.IsFunction "core::num::dec2flt::common::is_8digits" is_8digits.
@@ -333,26 +353,22 @@ Module num.
                   M.read (| f |);
                   M.read (| Value.String "BiasedFp" |);
                   M.read (| Value.String "f" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::dec2flt::common::BiasedFp",
+                    "f"
+                  |);
+                  M.read (| Value.String "e" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::dec2flt::common::BiasedFp",
-                      "f"
-                    |));
-                  M.read (| Value.String "e" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::num::dec2flt::common::BiasedFp",
-                        "e"
-                      |)
-                    |))
+                      "e"
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -396,7 +412,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -429,39 +445,41 @@ Module num.
               (let self := M.alloc (| self |) in
               let other := M.alloc (| other |) in
               LogicalOp.and (|
-                BinOp.Pure.eq
-                  (M.read (|
+                BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::dec2flt::common::BiasedFp",
                       "f"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::num::dec2flt::common::BiasedFp",
                       "f"
                     |)
-                  |)),
+                  |)
+                |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::dec2flt::common::BiasedFp",
                         "e"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::num::dec2flt::common::BiasedFp",
                         "e"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -471,17 +489,6 @@ Module num.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_dec2flt_common_BiasedFp.
-      
-      Module Impl_core_marker_StructuralEq_for_core_num_dec2flt_common_BiasedFp.
-        Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_core_num_dec2flt_common_BiasedFp.
       
       Module Impl_core_cmp_Eq_for_core_num_dec2flt_common_BiasedFp.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::common::BiasedFp".
@@ -509,7 +516,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -555,7 +562,7 @@ Module num.
                       []
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -576,13 +583,13 @@ Module num.
         *)
         Definition zero_pow2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           match ε, τ, α with
-          | [ host ], [], [ e ] =>
+          | [], [], [ e ] =>
             ltac:(M.monadic
               (let e := M.alloc (| e |) in
               Value.StructRecord
                 "core::num::dec2flt::common::BiasedFp"
-                [ ("f", Value.Integer 0); ("e", M.read (| e |)) ]))
-          | _, _, _ => M.impossible
+                [ ("f", Value.Integer IntegerKind.U64 0); ("e", M.read (| e |)) ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_zero_pow2 : M.IsAssociatedFunction Self "zero_pow2" zero_pow2.

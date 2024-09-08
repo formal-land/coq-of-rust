@@ -59,7 +59,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       "new",
                       []
                     |),
-                    [ Value.Integer 20 ]
+                    [ Value.Integer IntegerKind.U8 20 ]
                   |))
               ]
           |) in
@@ -95,142 +95,130 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "The person's age is " |);
-                                      M.read (| Value.String "
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "The person's age is " |);
+                                    M.read (| Value.String "
 " |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "&")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "alloc::boxed::Box")
-                                                  []
-                                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                              ]
-                                          ]
-                                        |),
-                                        [ age ]
-                                      |)
-                                    ]
-                                |))
-                            ]
-                          |)
-                        ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
-                let~ _ :=
-                  let~ _ :=
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              []
-                            |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "The person's name is " |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [ Ty.path "alloc::string::String" ]
-                                        |),
-                                        [ name ]
-                                      |)
-                                    ]
-                                |))
-                            ]
-                          |)
-                        ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
-                let~ _ :=
-                  let~ _ :=
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_function (| "std::io::stdio::_print", [] |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::Arguments",
-                              "new_v1",
-                              []
-                            |),
-                            [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "The person's age from person struct is "
-                                      |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_display",
-                                          [
-                                            Ty.apply
-                                              (Ty.path "alloc::boxed::Box")
-                                              []
-                                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
-                                          ]
-                                        |),
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
                                         [
-                                          M.SubPointer.get_struct_record_field (|
-                                            person,
-                                            "scoping_rules_ownership_and_rules_partial_moves::main::Person",
-                                            "age"
-                                          |)
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "alloc::boxed::Box")
+                                                []
+                                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                            ]
                                         ]
-                                      |)
-                                    ]
-                                |))
+                                      |),
+                                      [ age ]
+                                    |)
+                                  ]
+                              |)
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |) in
+                let~ _ :=
+                  let~ _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "The person's name is " |);
+                                    M.read (| Value.String "
+" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [ Ty.path "alloc::string::String" ]
+                                      |),
+                                      [ name ]
+                                    |)
+                                  ]
+                              |)
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  M.alloc (| Value.Tuple [] |) in
+                let~ _ :=
+                  let~ _ :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_function (| "std::io::stdio::_print", [] |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::Arguments",
+                              "new_v1",
+                              []
+                            |),
+                            [
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (|
+                                      Value.String "The person's age from person struct is "
+                                    |);
+                                    M.read (| Value.String "
+" |)
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_display",
+                                        [
+                                          Ty.apply
+                                            (Ty.path "alloc::boxed::Box")
+                                            []
+                                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]
+                                        ]
+                                      |),
+                                      [
+                                        M.SubPointer.get_struct_record_field (|
+                                          person,
+                                          "scoping_rules_ownership_and_rules_partial_moves::main::Person",
+                                          "age"
+                                        |)
+                                      ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -241,7 +229,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_ownership_and_rules_partial_moves::main" main.
@@ -284,26 +272,22 @@ Module main.
               M.read (| f |);
               M.read (| Value.String "Person" |);
               M.read (| Value.String "name" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "scoping_rules_ownership_and_rules_partial_moves::main::Person",
+                "name"
+              |);
+              M.read (| Value.String "age" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "scoping_rules_ownership_and_rules_partial_moves::main::Person",
-                  "name"
-                |));
-              M.read (| Value.String "age" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "scoping_rules_ownership_and_rules_partial_moves::main::Person",
-                    "age"
-                  |)
-                |))
+                  "age"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

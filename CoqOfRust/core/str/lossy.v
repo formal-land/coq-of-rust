@@ -3,6 +3,26 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module str.
   Module lossy.
+    Module Impl_slice_u8.
+      Definition Self : Ty.t := Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ].
+      
+      (*
+          pub fn utf8_chunks(&self) -> Utf8Chunks<'_> {
+              Utf8Chunks { source: self }
+          }
+      *)
+      Definition utf8_chunks (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            Value.StructRecord "core::str::lossy::Utf8Chunks" [ ("source", M.read (| self |)) ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_utf8_chunks : M.IsAssociatedFunction Self "utf8_chunks" utf8_chunks.
+    End Impl_slice_u8.
+    
     (* StructRecord
       {
         name := "Utf8Chunk";
@@ -63,7 +83,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -94,26 +114,22 @@ Module str.
                 M.read (| f |);
                 M.read (| Value.String "Utf8Chunk" |);
                 M.read (| Value.String "valid" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::str::lossy::Utf8Chunk",
+                  "valid"
+                |);
+                M.read (| Value.String "invalid" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::str::lossy::Utf8Chunk",
-                    "valid"
-                  |));
-                M.read (| Value.String "invalid" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::str::lossy::Utf8Chunk",
-                      "invalid"
-                    |)
-                  |))
+                    "invalid"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -191,7 +207,7 @@ Module str.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -201,17 +217,6 @@ Module str.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_str_lossy_Utf8Chunk.
-    
-    Module Impl_core_marker_StructuralEq_for_core_str_lossy_Utf8Chunk.
-      Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunk".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_str_lossy_Utf8Chunk.
     
     Module Impl_core_cmp_Eq_for_core_str_lossy_Utf8Chunk.
       Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunk".
@@ -239,7 +244,7 @@ Module str.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -271,7 +276,7 @@ Module str.
                 "valid"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_valid : M.IsAssociatedFunction Self "valid" valid.
@@ -293,7 +298,7 @@ Module str.
                 "invalid"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_invalid : M.IsAssociatedFunction Self "invalid" invalid.
@@ -314,7 +319,7 @@ Module str.
           fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
               f.write_char('"')?;
       
-              for chunk in Utf8Chunks::new(self.0) {
+              for chunk in self.0.utf8_chunks() {
                   // Valid part.
                   // Here we partially parse UTF-8 again which is suboptimal.
                   {
@@ -446,8 +451,8 @@ Module str.
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
-                                  Ty.path "core::str::lossy::Utf8Chunks",
-                                  "new",
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                  "utf8_chunks",
                                   []
                                 |),
                                 [
@@ -515,7 +520,8 @@ Module str.
                                                     [ chunk ]
                                                   |)
                                                 |) in
-                                              let~ from := M.alloc (| Value.Integer 0 |) in
+                                              let~ from :=
+                                                M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                                               let~ _ :=
                                                 M.use
                                                   (M.match_operator (|
@@ -619,8 +625,8 @@ Module str.
                                                                                 (let γ :=
                                                                                   M.use
                                                                                     (M.alloc (|
-                                                                                      BinOp.Pure.ne
-                                                                                        (M.call_closure (|
+                                                                                      BinOp.ne (|
+                                                                                        M.call_closure (|
                                                                                           M.get_trait_method (|
                                                                                             "core::iter::traits::exact_size::ExactSizeIterator",
                                                                                             Ty.path
@@ -630,9 +636,11 @@ Module str.
                                                                                             []
                                                                                           |),
                                                                                           [ esc ]
-                                                                                        |))
-                                                                                        (Value.Integer
-                                                                                          1)
+                                                                                        |),
+                                                                                        Value.Integer
+                                                                                          IntegerKind.Usize
+                                                                                          1
+                                                                                      |)
                                                                                     |)) in
                                                                                 let _ :=
                                                                                   M.is_constant_or_break_match (|
@@ -1000,12 +1008,11 @@ Module str.
                                                                                 let~ _ :=
                                                                                   M.write (|
                                                                                     from,
-                                                                                    BinOp.Wrap.add
-                                                                                      Integer.Usize
-                                                                                      (M.read (|
+                                                                                    BinOp.Wrap.add (|
+                                                                                      M.read (|
                                                                                         i
-                                                                                      |))
-                                                                                      (M.call_closure (|
+                                                                                      |),
+                                                                                      M.call_closure (|
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
                                                                                             "char",
@@ -1017,7 +1024,8 @@ Module str.
                                                                                             c
                                                                                           |)
                                                                                         ]
-                                                                                      |))
+                                                                                      |)
+                                                                                    |)
                                                                                   |) in
                                                                                 M.alloc (|
                                                                                   Value.Tuple []
@@ -1258,72 +1266,68 @@ Module str.
                                                                                       []
                                                                                     |),
                                                                                     [
-                                                                                      (* Unsize *)
-                                                                                      M.pointer_coercion
-                                                                                        (M.alloc (|
-                                                                                          Value.Array
-                                                                                            [
-                                                                                              M.read (|
-                                                                                                Value.String
-                                                                                                  "\x"
-                                                                                              |)
-                                                                                            ]
-                                                                                        |));
-                                                                                      (* Unsize *)
-                                                                                      M.pointer_coercion
-                                                                                        (M.alloc (|
-                                                                                          Value.Array
-                                                                                            [
-                                                                                              M.call_closure (|
-                                                                                                M.get_associated_function (|
-                                                                                                  Ty.path
-                                                                                                    "core::fmt::rt::Argument",
-                                                                                                  "new_upper_hex",
-                                                                                                  [
-                                                                                                    Ty.path
-                                                                                                      "u8"
-                                                                                                  ]
-                                                                                                |),
-                                                                                                [ b
-                                                                                                ]
-                                                                                              |)
-                                                                                            ]
-                                                                                        |));
-                                                                                      (* Unsize *)
-                                                                                      M.pointer_coercion
-                                                                                        (M.alloc (|
-                                                                                          Value.Array
-                                                                                            [
-                                                                                              M.call_closure (|
-                                                                                                M.get_associated_function (|
-                                                                                                  Ty.path
-                                                                                                    "core::fmt::rt::Placeholder",
-                                                                                                  "new",
-                                                                                                  []
-                                                                                                |),
+                                                                                      M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              Value.String
+                                                                                                "\x"
+                                                                                            |)
+                                                                                          ]
+                                                                                      |);
+                                                                                      M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.call_closure (|
+                                                                                              M.get_associated_function (|
+                                                                                                Ty.path
+                                                                                                  "core::fmt::rt::Argument",
+                                                                                                "new_upper_hex",
                                                                                                 [
-                                                                                                  Value.Integer
-                                                                                                    0;
-                                                                                                  Value.UnicodeChar
-                                                                                                    32;
-                                                                                                  Value.StructTuple
-                                                                                                    "core::fmt::rt::Alignment::Unknown"
-                                                                                                    [];
-                                                                                                  Value.Integer
-                                                                                                    8;
-                                                                                                  Value.StructTuple
-                                                                                                    "core::fmt::rt::Count::Implied"
-                                                                                                    [];
-                                                                                                  Value.StructTuple
-                                                                                                    "core::fmt::rt::Count::Is"
-                                                                                                    [
-                                                                                                      Value.Integer
-                                                                                                        2
-                                                                                                    ]
+                                                                                                  Ty.path
+                                                                                                    "u8"
                                                                                                 ]
-                                                                                              |)
-                                                                                            ]
-                                                                                        |));
+                                                                                              |),
+                                                                                              [ b ]
+                                                                                            |)
+                                                                                          ]
+                                                                                      |);
+                                                                                      M.alloc (|
+                                                                                        Value.Array
+                                                                                          [
+                                                                                            M.call_closure (|
+                                                                                              M.get_associated_function (|
+                                                                                                Ty.path
+                                                                                                  "core::fmt::rt::Placeholder",
+                                                                                                "new",
+                                                                                                []
+                                                                                              |),
+                                                                                              [
+                                                                                                Value.Integer
+                                                                                                  IntegerKind.Usize
+                                                                                                  0;
+                                                                                                Value.UnicodeChar
+                                                                                                  32;
+                                                                                                Value.StructTuple
+                                                                                                  "core::fmt::rt::Alignment::Unknown"
+                                                                                                  [];
+                                                                                                Value.Integer
+                                                                                                  IntegerKind.U32
+                                                                                                  8;
+                                                                                                Value.StructTuple
+                                                                                                  "core::fmt::rt::Count::Implied"
+                                                                                                  [];
+                                                                                                Value.StructTuple
+                                                                                                  "core::fmt::rt::Count::Is"
+                                                                                                  [
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.Usize
+                                                                                                      2
+                                                                                                  ]
+                                                                                              ]
+                                                                                            |)
+                                                                                          ]
+                                                                                      |);
                                                                                       M.call_closure (|
                                                                                         M.get_associated_function (|
                                                                                           Ty.path
@@ -1433,7 +1437,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1484,7 +1488,7 @@ Module str.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1497,22 +1501,6 @@ Module str.
     
     Module Impl_core_str_lossy_Utf8Chunks.
       Definition Self : Ty.t := Ty.path "core::str::lossy::Utf8Chunks".
-      
-      (*
-          pub fn new(bytes: &'a [u8]) -> Self {
-              Self { source: bytes }
-          }
-      *)
-      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ bytes ] =>
-          ltac:(M.monadic
-            (let bytes := M.alloc (| bytes |) in
-            Value.StructRecord "core::str::lossy::Utf8Chunks" [ ("source", M.read (| bytes |)) ]))
-        | _, _, _ => M.impossible
-        end.
-      
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
       
       (*
           pub fn debug(&self) -> Debug<'_> {
@@ -1535,7 +1523,7 @@ Module str.
                   |)
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_debug : M.IsAssociatedFunction Self "debug" debug.
@@ -1688,8 +1676,8 @@ Module str.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  let~ i := M.alloc (| Value.Integer 0 |) in
-                  let~ valid_up_to := M.alloc (| Value.Integer 0 |) in
+                  let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                  let~ valid_up_to := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                   let~ _ :=
                     M.loop (|
                       ltac:(M.monadic
@@ -1701,9 +1689,9 @@ Module str.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.lt
-                                        (M.read (| i |))
-                                        (M.call_closure (|
+                                      BinOp.lt (|
+                                        M.read (| i |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                             "len",
@@ -1718,7 +1706,8 @@ Module str.
                                               |)
                                             |)
                                           ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -1749,7 +1738,10 @@ Module str.
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |) in
                                 let~ _ :=
                                   M.match_operator (|
@@ -1760,9 +1752,10 @@ Module str.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.Pure.lt
-                                                  (M.read (| byte |))
-                                                  (Value.Integer 128)
+                                                BinOp.lt (|
+                                                  M.read (| byte |),
+                                                  Value.Integer IntegerKind.U8 128
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -1790,7 +1783,7 @@ Module str.
                                                   (let _ :=
                                                     M.is_constant_or_break_match (|
                                                       M.read (| γ |),
-                                                      Value.Integer 2
+                                                      Value.Integer IntegerKind.Usize 2
                                                     |) in
                                                   let~ _ :=
                                                     M.match_operator (|
@@ -1801,8 +1794,8 @@ Module str.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  BinOp.Pure.ne
-                                                                    (BinOp.Pure.bit_and
+                                                                  BinOp.ne (|
+                                                                    BinOp.bit_and
                                                                       (M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Self,
@@ -1820,12 +1813,15 @@ Module str.
                                                                           M.read (| i |)
                                                                         ]
                                                                       |))
-                                                                      (Value.Integer 192))
-                                                                    (M.read (|
+                                                                      (Value.Integer
+                                                                        IntegerKind.U8
+                                                                        192),
+                                                                    M.read (|
                                                                       M.get_constant (|
                                                                         "core::str::lossy::next::TAG_CONT_U8"
                                                                       |)
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -1846,10 +1842,10 @@ Module str.
                                                     let β := i in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (| β |))
-                                                        (Value.Integer 1)
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| β |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
                                               fun γ =>
@@ -1857,7 +1853,7 @@ Module str.
                                                   (let _ :=
                                                     M.is_constant_or_break_match (|
                                                       M.read (| γ |),
-                                                      Value.Integer 3
+                                                      Value.Integer IntegerKind.Usize 3
                                                     |) in
                                                   let~ _ :=
                                                     M.match_operator (|
@@ -1900,7 +1896,7 @@ Module str.
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ0_0 |),
-                                                                Value.Integer 224
+                                                                Value.Integer IntegerKind.U8 224
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
@@ -1931,7 +1927,7 @@ Module str.
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ0_0 |),
-                                                                Value.Integer 237
+                                                                Value.Integer IntegerKind.U8 237
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
@@ -1960,10 +1956,10 @@ Module str.
                                                     let β := i in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (| β |))
-                                                        (Value.Integer 1)
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| β |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     |) in
                                                   let~ _ :=
                                                     M.match_operator (|
@@ -1974,8 +1970,8 @@ Module str.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  BinOp.Pure.ne
-                                                                    (BinOp.Pure.bit_and
+                                                                  BinOp.ne (|
+                                                                    BinOp.bit_and
                                                                       (M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Self,
@@ -1993,12 +1989,15 @@ Module str.
                                                                           M.read (| i |)
                                                                         ]
                                                                       |))
-                                                                      (Value.Integer 192))
-                                                                    (M.read (|
+                                                                      (Value.Integer
+                                                                        IntegerKind.U8
+                                                                        192),
+                                                                    M.read (|
                                                                       M.get_constant (|
                                                                         "core::str::lossy::next::TAG_CONT_U8"
                                                                       |)
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -2019,10 +2018,10 @@ Module str.
                                                     let β := i in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (| β |))
-                                                        (Value.Integer 1)
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| β |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
                                               fun γ =>
@@ -2030,7 +2029,7 @@ Module str.
                                                   (let _ :=
                                                     M.is_constant_or_break_match (|
                                                       M.read (| γ |),
-                                                      Value.Integer 4
+                                                      Value.Integer IntegerKind.Usize 4
                                                     |) in
                                                   let~ _ :=
                                                     M.match_operator (|
@@ -2073,7 +2072,7 @@ Module str.
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ0_0 |),
-                                                                Value.Integer 240
+                                                                Value.Integer IntegerKind.U8 240
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
@@ -2104,7 +2103,7 @@ Module str.
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
                                                                 M.read (| γ0_0 |),
-                                                                Value.Integer 244
+                                                                Value.Integer IntegerKind.U8 244
                                                               |) in
                                                             M.alloc (| Value.Tuple [] |)));
                                                         fun γ =>
@@ -2120,10 +2119,10 @@ Module str.
                                                     let β := i in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (| β |))
-                                                        (Value.Integer 1)
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| β |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     |) in
                                                   let~ _ :=
                                                     M.match_operator (|
@@ -2134,8 +2133,8 @@ Module str.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  BinOp.Pure.ne
-                                                                    (BinOp.Pure.bit_and
+                                                                  BinOp.ne (|
+                                                                    BinOp.bit_and
                                                                       (M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Self,
@@ -2153,12 +2152,15 @@ Module str.
                                                                           M.read (| i |)
                                                                         ]
                                                                       |))
-                                                                      (Value.Integer 192))
-                                                                    (M.read (|
+                                                                      (Value.Integer
+                                                                        IntegerKind.U8
+                                                                        192),
+                                                                    M.read (|
                                                                       M.get_constant (|
                                                                         "core::str::lossy::next::TAG_CONT_U8"
                                                                       |)
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -2179,10 +2181,10 @@ Module str.
                                                     let β := i in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (| β |))
-                                                        (Value.Integer 1)
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| β |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     |) in
                                                   let~ _ :=
                                                     M.match_operator (|
@@ -2193,8 +2195,8 @@ Module str.
                                                             (let γ :=
                                                               M.use
                                                                 (M.alloc (|
-                                                                  BinOp.Pure.ne
-                                                                    (BinOp.Pure.bit_and
+                                                                  BinOp.ne (|
+                                                                    BinOp.bit_and
                                                                       (M.call_closure (|
                                                                         M.get_associated_function (|
                                                                           Self,
@@ -2212,12 +2214,15 @@ Module str.
                                                                           M.read (| i |)
                                                                         ]
                                                                       |))
-                                                                      (Value.Integer 192))
-                                                                    (M.read (|
+                                                                      (Value.Integer
+                                                                        IntegerKind.U8
+                                                                        192),
+                                                                    M.read (|
                                                                       M.get_constant (|
                                                                         "core::str::lossy::next::TAG_CONT_U8"
                                                                       |)
-                                                                    |))
+                                                                    |)
+                                                                  |)
                                                                 |)) in
                                                             let _ :=
                                                               M.is_constant_or_break_match (|
@@ -2238,10 +2243,10 @@ Module str.
                                                     let β := i in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.add
-                                                        Integer.Usize
-                                                        (M.read (| β |))
-                                                        (Value.Integer 1)
+                                                      BinOp.Wrap.add (|
+                                                        M.read (| β |),
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
                                                     |) in
                                                   M.alloc (| Value.Tuple [] |)));
                                               fun γ =>
@@ -2350,7 +2355,7 @@ Module str.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2411,23 +2416,21 @@ Module str.
                       |)
                     |);
                     M.read (| Value.String "source" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::str::lossy::Utf8Chunks",
-                            "debug",
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::str::lossy::Utf8Chunks",
+                          "debug",
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |)
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

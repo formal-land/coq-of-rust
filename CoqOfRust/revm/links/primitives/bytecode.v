@@ -18,10 +18,10 @@ Require Import CoqOfRust.links.M.
 Module Bytecode.
   Parameter t : Set.
 
-  Global Instance IsToTy : ToTy t := {
-    Φ := Ty.path "revm_primitives::bytecode::Bytecode";
-  }.
+  Parameter to_value : t -> Value.t.
 
-  Global Instance IsToValue : ToValue t.
-  Admitted.
+  Global Instance IsLink : Link t := {
+    to_ty := Ty.path "revm_primitives::bytecode::Bytecode";
+    to_value := to_value;
+  }.
 End Bytecode.

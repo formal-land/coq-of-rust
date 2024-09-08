@@ -19,13 +19,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "called `function()`
-" |) ]
-                        |))
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "called `function()`
+" |) ] |)
                     ]
                   |)
                 ]
@@ -34,7 +29,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_function : M.IsFunction "the_use_as_declaration::function" function.
@@ -64,13 +59,11 @@ Module deeply.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "called `deeply::nested::function()`
+                          M.alloc (|
+                            Value.Array
+                              [ M.read (| Value.String "called `deeply::nested::function()`
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -79,7 +72,7 @@ Module deeply.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_function :
@@ -128,12 +121,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (| Value.Array [ M.read (| Value.String "Entering block
-" |) ] |))
-                    ]
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "Entering block
+" |) ] |) ]
                   |)
                 ]
               |)
@@ -159,12 +148,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         "new_const",
                         []
                       |),
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (| Value.Array [ M.read (| Value.String "Leaving block
-" |) ] |))
-                      ]
+                      [ M.alloc (| Value.Array [ M.read (| Value.String "Leaving block
+" |) ] |) ]
                     |)
                   ]
                 |)
@@ -177,7 +162,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "the_use_as_declaration::main" main.

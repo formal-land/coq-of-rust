@@ -133,7 +133,7 @@ Module builder.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -284,7 +284,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_empty_db :
@@ -384,7 +384,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_db :
@@ -504,7 +504,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_ref_db :
@@ -592,7 +592,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_external_context :
@@ -703,7 +703,7 @@ Module builder.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_env_with_handler_cfg :
@@ -772,7 +772,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_context_with_handler_cfg :
@@ -887,7 +887,7 @@ Module builder.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_cfg_env_with_handler_cfg :
@@ -946,7 +946,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_handler_cfg :
@@ -989,7 +989,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new :
@@ -1129,7 +1129,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_reset_handler_with_empty_db :
@@ -1240,7 +1240,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_reset_handler_with_db :
@@ -1360,7 +1360,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_reset_handler_with_ref_db :
@@ -1451,7 +1451,7 @@ Module builder.
                 |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_reset_handler_with_external_context :
@@ -1493,7 +1493,7 @@ Module builder.
             |),
             [ M.read (| handler_cfg |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_handler :
@@ -1538,7 +1538,7 @@ Module builder.
               ("handler", M.read (| handler |));
               ("phantom", Value.StructTuple "core::marker::PhantomData" [])
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_handler :
@@ -1587,7 +1587,7 @@ Module builder.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_build :
@@ -1669,7 +1669,7 @@ Module builder.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_append_handler_register :
@@ -1726,7 +1726,7 @@ Module builder.
                     |);
                     Value.StructTuple
                       "revm::handler::register::HandleRegisters::Box"
-                      [ (* Unsize *) M.pointer_coercion (M.read (| handle_register |)) ]
+                      [ M.read (| handle_register |) ]
                   ]
                 |)
               |) in
@@ -1754,7 +1754,7 @@ Module builder.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_append_handler_register_box :
@@ -1833,7 +1833,7 @@ Module builder.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_spec_id :
@@ -1906,7 +1906,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_modify_db :
@@ -1961,7 +1961,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_modify_external_context :
@@ -2050,7 +2050,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_modify_env :
@@ -2109,7 +2109,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_env :
@@ -2191,7 +2191,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_modify_tx_env :
@@ -2256,7 +2256,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_tx_env :
@@ -2342,7 +2342,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_modify_block_env :
@@ -2407,7 +2407,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_block_env :
@@ -2492,7 +2492,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_modify_cfg_env :
@@ -2556,7 +2556,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_clear_env :
@@ -2628,7 +2628,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_clear_tx_env :
@@ -2700,7 +2700,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_with_clear_block_env :
@@ -2764,7 +2764,7 @@ Module builder.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_reset_handler :

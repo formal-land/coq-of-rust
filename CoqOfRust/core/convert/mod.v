@@ -9,11 +9,11 @@ Module convert.
   *)
   Definition identity (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ x ] =>
+    | [], [ T ], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
         M.read (| x |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_identity : M.IsFunction "core::convert::identity" identity.
@@ -54,7 +54,7 @@ Module convert.
             M.get_trait_method (| "core::convert::AsRef", T, [ U ], "as_ref", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -84,7 +84,7 @@ Module convert.
             M.get_trait_method (| "core::convert::AsRef", T, [ U ], "as_ref", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -114,7 +114,7 @@ Module convert.
             M.get_trait_method (| "core::convert::AsMut", T, [ U ], "as_mut", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -144,7 +144,7 @@ Module convert.
             M.get_trait_method (| "core::convert::From", U, [ T ], "from", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -171,7 +171,7 @@ Module convert.
         ltac:(M.monadic
           (let t := M.alloc (| t |) in
           M.read (| t |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -198,7 +198,7 @@ Module convert.
         ltac:(M.monadic
           (let t := M.alloc (| t |) in
           M.never_to_any (| M.read (| t |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -231,7 +231,7 @@ Module convert.
             M.get_trait_method (| "core::convert::TryFrom", U, [ T ], "try_from", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -272,7 +272,7 @@ Module convert.
                 [ M.read (| value |) ]
               |)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -303,7 +303,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -330,7 +330,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -356,7 +356,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -381,7 +381,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| self |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -426,7 +426,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -459,7 +459,7 @@ Module convert.
                   (M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -492,7 +492,7 @@ Module convert.
                   (M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -517,7 +517,7 @@ Module convert.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -550,7 +550,7 @@ Module convert.
                   (M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -583,7 +583,7 @@ Module convert.
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -609,7 +609,7 @@ Module convert.
           (let self := M.alloc (| self |) in
           let _other := M.alloc (| _other |) in
           M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -634,7 +634,7 @@ Module convert.
         ltac:(M.monadic
           (let x := M.alloc (| x |) in
           M.never_to_any (| M.read (| x |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -667,7 +667,7 @@ Module convert.
                   (M.never_to_any (| M.read (| M.match_operator (| M.read (| self |), [] |) |) |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

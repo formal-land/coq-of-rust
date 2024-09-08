@@ -7,6 +7,13 @@ Import List.ListNotations.
 Local Open Scope list.
 Local Open Scope type.
 
+Module IntegerKind.
+  Lemma eqb_refl (kind : IntegerKind.t) : IntegerKind.eqb kind kind = true.
+  Proof.
+    destruct kind; reflexivity.
+  Qed.
+End IntegerKind.
+
 Module State.
   Class Trait (State Address : Set) : Type := {
     get_Set (a : Address) : Set;

@@ -60,7 +60,7 @@ Module db.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -101,7 +101,7 @@ Module db.
                       []
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -132,18 +132,16 @@ Module db.
                   M.read (| f |);
                   M.read (| Value.String "TransitionState" |);
                   M.read (| Value.String "transitions" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm::db::states::transition_state::TransitionState",
-                        "transitions"
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "revm::db::states::transition_state::TransitionState",
+                      "transitions"
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -212,7 +210,7 @@ Module db.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -222,17 +220,6 @@ Module db.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_db_states_transition_state_TransitionState.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_db_states_transition_state_TransitionState.
-        Definition Self : Ty.t := Ty.path "revm::db::states::transition_state::TransitionState".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_db_states_transition_state_TransitionState.
       
       Module Impl_core_cmp_Eq_for_revm_db_states_transition_state_TransitionState.
         Definition Self : Ty.t := Ty.path "revm::db::states::transition_state::TransitionState".
@@ -253,7 +240,7 @@ Module db.
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -324,7 +311,7 @@ Module db.
                     [ ("transitions", M.read (| transitions |)) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_single : M.IsAssociatedFunction Self "single" single.
@@ -346,7 +333,7 @@ Module db.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_take : M.IsAssociatedFunction Self "take" take.
@@ -557,7 +544,7 @@ Module db.
                     ]
                   |))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_add_transitions :

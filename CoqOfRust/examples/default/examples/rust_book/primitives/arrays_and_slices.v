@@ -22,36 +22,32 @@ Definition analyze_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "first element of the slice: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "first element of the slice: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.SubPointer.get_array_field (|
-                                    M.read (| slice |),
-                                    M.alloc (| Value.Integer 0 |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.SubPointer.get_array_field (|
+                                  M.read (| slice |),
+                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -67,42 +63,38 @@ Definition analyze_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "the slice has " |);
-                              M.read (| Value.String " elements
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "the slice has " |);
+                            M.read (| Value.String " elements
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
-                                        "len",
-                                        []
-                                      |),
-                                      [ M.read (| slice |) ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
+                                      "len",
+                                      []
+                                    |),
+                                    [ M.read (| slice |) ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -111,7 +103,7 @@ Definition analyze_slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_analyze_slice : M.IsFunction "arrays_and_slices::analyze_slice" analyze_slice.
@@ -173,10 +165,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ xs :=
           M.alloc (|
             Value.Array
-              [ Value.Integer 1; Value.Integer 2; Value.Integer 3; Value.Integer 4; Value.Integer 5
+              [
+                Value.Integer IntegerKind.I32 1;
+                Value.Integer IntegerKind.I32 2;
+                Value.Integer IntegerKind.I32 3;
+                Value.Integer IntegerKind.I32 4;
+                Value.Integer IntegerKind.I32 5
               ]
           |) in
-        let~ ys := M.alloc (| repeat (| Value.Integer 0, Value.Integer 500 |) |) in
+        let~ ys :=
+          M.alloc (|
+            repeat (| Value.Integer IntegerKind.I32 0, Value.Integer IntegerKind.Usize 500 |)
+          |) in
         let~ _ :=
           let~ _ :=
             M.alloc (|
@@ -186,36 +186,32 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "first element of the array: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "first element of the array: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.SubPointer.get_array_field (|
-                                    xs,
-                                    M.alloc (| Value.Integer 0 |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.SubPointer.get_array_field (|
+                                  xs,
+                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -231,36 +227,32 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "second element of the array: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "second element of the array: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "i32" ]
-                                |),
-                                [
-                                  M.SubPointer.get_array_field (|
-                                    xs,
-                                    M.alloc (| Value.Integer 1 |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "i32" ]
+                              |),
+                              [
+                                M.SubPointer.get_array_field (|
+                                  xs,
+                                  M.alloc (| Value.Integer IntegerKind.Usize 1 |)
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -276,42 +268,38 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "number of elements in array: " |);
-                              M.read (| Value.String "
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "number of elements in array: " |);
+                            M.read (| Value.String "
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
-                                        "len",
-                                        []
-                                      |),
-                                      [ (* Unsize *) M.pointer_coercion xs ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
+                                      "len",
+                                      []
+                                    |),
+                                    [ xs ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -327,46 +315,42 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "array occupies " |);
-                              M.read (| Value.String " bytes
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "array occupies " |);
+                            M.read (| Value.String " bytes
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::mem::size_of_val",
-                                        [
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer 5 ]
-                                            [ Ty.path "i32" ]
-                                        ]
-                                      |),
-                                      [ xs ]
-                                    |)
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "usize" ]
+                              |),
+                              [
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "core::mem::size_of_val",
+                                      [
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 5 ]
+                                          [ Ty.path "i32" ]
+                                      ]
+                                    |),
+                                    [ xs ]
                                   |)
-                                ]
-                              |)
-                            ]
-                        |))
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -382,13 +366,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "borrow the whole array as a slice
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "borrow the whole array as a slice
 " |) ]
-                        |))
+                      |)
                     ]
                   |)
                 ]
@@ -397,10 +379,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (| Value.Tuple [] |) in
         let~ _ :=
           M.alloc (|
-            M.call_closure (|
-              M.get_function (| "arrays_and_slices::analyze_slice", [] |),
-              [ (* Unsize *) M.pointer_coercion xs ]
-            |)
+            M.call_closure (| M.get_function (| "arrays_and_slices::analyze_slice", [] |), [ xs ] |)
           |) in
         let~ _ :=
           let~ _ :=
@@ -411,14 +390,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "borrow a section of the array as a slice
-" |)
-                            ]
-                        |))
+                      M.alloc (|
+                        Value.Array
+                          [ M.read (| Value.String "borrow a section of the array as a slice
+" |) ]
+                      |)
                     ]
                   |)
                 ]
@@ -433,7 +409,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.call_closure (|
                   M.get_trait_method (|
                     "core::ops::index::Index",
-                    Ty.apply (Ty.path "array") [ Value.Integer 500 ] [ Ty.path "i32" ],
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 500 ]
+                      [ Ty.path "i32" ],
                     [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
                     "index",
                     []
@@ -442,7 +421,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ys;
                     Value.StructRecord
                       "core::ops::range::Range"
-                      [ ("start", Value.Integer 1); ("end_", Value.Integer 4) ]
+                      [
+                        ("start", Value.Integer IntegerKind.Usize 1);
+                        ("end_", Value.Integer IntegerKind.Usize 4)
+                      ]
                   ]
                 |)
               ]
@@ -469,8 +451,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -479,7 +461,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "array")
-                                            [ Value.Integer 0 ]
+                                            [ Value.Integer IntegerKind.Usize 0 ]
                                             [ Ty.path "u32" ]
                                         ],
                                       [
@@ -489,7 +471,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "array")
-                                              [ Value.Integer 0 ]
+                                              [ Value.Integer IntegerKind.Usize 0 ]
                                               [ Ty.path "u32" ]
                                           ]
                                       ],
@@ -497,7 +479,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -519,7 +502,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "array")
-                                              [ Value.Integer 0 ]
+                                              [ Value.Integer IntegerKind.Usize 0 ]
                                               [ Ty.path "u32" ]
                                           ];
                                         Ty.apply
@@ -528,7 +511,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "array")
-                                              [ Value.Integer 0 ]
+                                              [ Value.Integer IntegerKind.Usize 0 ]
                                               [ Ty.path "u32" ]
                                           ]
                                       ]
@@ -559,7 +542,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     M.call_closure (|
                       M.get_trait_method (|
                         "core::ops::index::Index",
-                        Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ Ty.path "u32" ],
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 0 ]
+                          [ Ty.path "u32" ],
                         [ Ty.path "core::ops::range::RangeFull" ],
                         "index",
                         []
@@ -587,8 +573,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
@@ -597,7 +583,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         [
                                           Ty.apply
                                             (Ty.path "array")
-                                            [ Value.Integer 0 ]
+                                            [ Value.Integer IntegerKind.Usize 0 ]
                                             [ Ty.path "u32" ]
                                         ],
                                       [
@@ -610,7 +596,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [ M.read (| left_val |); M.read (| right_val |) ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -632,7 +619,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           [
                                             Ty.apply
                                               (Ty.path "array")
-                                              [ Value.Integer 0 ]
+                                              [ Value.Integer IntegerKind.Usize 0 ]
                                               [ Ty.path "u32" ]
                                           ];
                                         Ty.apply
@@ -672,19 +659,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   Value.StructRecord
                     "core::ops::range::Range"
                     [
-                      ("start", Value.Integer 0);
+                      ("start", Value.Integer IntegerKind.Usize 0);
                       ("end_",
-                        BinOp.Wrap.add
-                          Integer.Usize
-                          (M.call_closure (|
+                        BinOp.Wrap.add (|
+                          M.call_closure (|
                             M.get_associated_function (|
                               Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
                               "len",
                               []
                             |),
-                            [ (* Unsize *) M.pointer_coercion xs ]
-                          |))
-                          (Value.Integer 1))
+                            [ xs ]
+                          |),
+                          Value.Integer IntegerKind.Usize 1
+                        |))
                     ]
                 ]
               |)
@@ -731,7 +718,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         "get",
                                         [ Ty.path "usize" ]
                                       |),
-                                      [ (* Unsize *) M.pointer_coercion xs; M.read (| i |) ]
+                                      [ xs; M.read (| i |) ]
                                     |)
                                   |),
                                   [
@@ -756,45 +743,41 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (| Value.String "" |);
-                                                            M.read (| Value.String ": " |);
-                                                            M.read (| Value.String "
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (| Value.String "" |);
+                                                          M.read (| Value.String ": " |);
+                                                          M.read (| Value.String "
 " |)
-                                                          ]
-                                                      |));
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_display",
-                                                                [ Ty.path "usize" ]
-                                                              |),
-                                                              [ i ]
-                                                            |);
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_display",
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [ Ty.path "i32" ]
-                                                                ]
-                                                              |),
-                                                              [ xval ]
-                                                            |)
-                                                          ]
-                                                      |))
+                                                        ]
+                                                    |);
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [ Ty.path "usize" ]
+                                                            |),
+                                                            [ i ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "i32" ]
+                                                              ]
+                                                            |),
+                                                            [ xval ]
+                                                          |)
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -817,33 +800,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.read (| Value.String "Slow down! " |);
-                                                            M.read (|
-                                                              Value.String " is too far!
-"
-                                                            |)
-                                                          ]
-                                                      |));
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_display",
-                                                                [ Ty.path "usize" ]
-                                                              |),
-                                                              [ i ]
-                                                            |)
-                                                          ]
-                                                      |))
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.read (| Value.String "Slow down! " |);
+                                                          M.read (| Value.String " is too far!
+" |)
+                                                        ]
+                                                    |);
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [ Ty.path "usize" ]
+                                                            |),
+                                                            [ i ]
+                                                          |)
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -859,7 +836,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             ]
           |))
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "arrays_and_slices::main" main.

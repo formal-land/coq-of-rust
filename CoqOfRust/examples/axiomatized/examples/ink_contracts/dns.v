@@ -138,7 +138,7 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_AccountId.
 
-Module Impl_core_convert_From_array_32_u8_for_dns_AccountId.
+Module Impl_core_convert_From_array_Usize_32_u8_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -148,14 +148,15 @@ Module Impl_core_convert_From_array_32_u8_for_dns_AccountId.
       "core::convert::From"
       Self
       (* Trait polymorphic types *)
-      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ]
+      [ (* T *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ] ]
       (* Instance *) [ ("from", InstanceField.Method from) ].
-End Impl_core_convert_From_array_32_u8_for_dns_AccountId.
+End Impl_core_convert_From_array_Usize_32_u8_for_dns_AccountId.
 
 Axiom Balance : (Ty.path "dns::Balance") = (Ty.path "u128").
 
 Axiom Hash :
-  (Ty.path "dns::Hash") = (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
+  (Ty.path "dns::Hash") =
+    (Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]).
 
 (* StructRecord
   {
@@ -172,7 +173,8 @@ Axiom Hash :
     ty_params := [];
     fields :=
       [
-        ("name", Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]);
+        ("name",
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]);
         ("from", Ty.path "dns::AccountId")
       ];
   } *)
@@ -184,7 +186,8 @@ Axiom Hash :
     ty_params := [];
     fields :=
       [
-        ("name", Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]);
+        ("name",
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]);
         ("from", Ty.path "dns::AccountId");
         ("old_address", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ]);
         ("new_address", Ty.path "dns::AccountId")
@@ -198,7 +201,8 @@ Axiom Hash :
     ty_params := [];
     fields :=
       [
-        ("name", Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]);
+        ("name",
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]);
         ("from", Ty.path "dns::AccountId");
         ("old_owner", Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "dns::AccountId" ]);
         ("new_owner", Ty.path "dns::AccountId")
@@ -255,7 +259,7 @@ End Impl_dns_Env.
             (Ty.path "dns::Mapping")
             []
             [
-              Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ];
               Ty.path "dns::AccountId"
             ]);
         ("name_to_owner",
@@ -263,7 +267,7 @@ End Impl_dns_Env.
             (Ty.path "dns::Mapping")
             []
             [
-              Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ];
+              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ];
               Ty.path "dns::AccountId"
             ]);
         ("default_address", Ty.path "dns::AccountId")
@@ -331,17 +335,6 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_dns_Error.
-
-Module Impl_core_marker_StructuralEq_for_dns_Error.
-  Definition Self : Ty.t := Ty.path "dns::Error".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_dns_Error.
 
 Module Impl_core_cmp_Eq_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".

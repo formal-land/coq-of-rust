@@ -50,7 +50,7 @@ Module Impl_core_default_Default_where_core_default_Default_T_for_move_abstract_
                 []
               |))
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -84,26 +84,22 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_move_abstract_stack_Abstra
             M.read (| f |);
             M.read (| Value.String "AbstractStack" |);
             M.read (| Value.String "values" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.SubPointer.get_struct_record_field (|
+            M.SubPointer.get_struct_record_field (|
+              M.read (| self |),
+              "move_abstract_stack::AbstractStack",
+              "values"
+            |);
+            M.read (| Value.String "len" |);
+            M.alloc (|
+              M.SubPointer.get_struct_record_field (|
                 M.read (| self |),
                 "move_abstract_stack::AbstractStack",
-                "values"
-              |));
-            M.read (| Value.String "len" |);
-            (* Unsize *)
-            M.pointer_coercion
-              (M.alloc (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_abstract_stack::AbstractStack",
-                  "len"
-                |)
-              |))
+                "len"
+              |)
+            |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -147,9 +143,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                 |),
                 []
               |));
-            ("len", Value.Integer 0)
+            ("len", Value.Integer IntegerKind.U64 0)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "new" (new T).
@@ -187,10 +183,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (LogicalOp.or (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                    UnOp.not (|
+                                      LogicalOp.or (|
+                                        UnOp.not (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -209,18 +205,21 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                 "values"
                                               |)
                                             ]
-                                          |)),
+                                          |)
+                                        |),
                                         ltac:(M.monadic
-                                          (BinOp.Pure.eq
-                                            (M.read (|
+                                          (BinOp.eq (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "move_abstract_stack::AbstractStack",
                                                 "len"
                                               |)
-                                            |))
-                                            (Value.Integer 0)))
-                                      |))
+                                            |),
+                                            Value.Integer IntegerKind.U64 0
+                                          |)))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -264,8 +263,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (LogicalOp.or (|
+                                    UnOp.not (|
+                                      LogicalOp.or (|
                                         M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
@@ -287,8 +286,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                           ]
                                         |),
                                         ltac:(M.monadic
-                                          (BinOp.Pure.le
-                                            (M.read (|
+                                          (BinOp.le (|
+                                            M.read (|
                                               M.SubPointer.get_tuple_field (|
                                                 M.call_closure (|
                                                   M.get_associated_function (|
@@ -343,15 +342,17 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                 |),
                                                 0
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "move_abstract_stack::AbstractStack",
                                                 "len"
                                               |)
-                                            |))))
-                                      |))
+                                            |)
+                                          |)))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -398,7 +399,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_is_empty :
@@ -440,17 +441,18 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (LogicalOp.or (|
-                                        BinOp.Pure.ne
-                                          (M.read (|
+                                    UnOp.not (|
+                                      LogicalOp.or (|
+                                        BinOp.ne (|
+                                          M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "move_abstract_stack::AbstractStack",
                                               "len"
                                             |)
-                                          |))
-                                          (Value.Integer 0),
+                                          |),
+                                          Value.Integer IntegerKind.U64 0
+                                        |),
                                         ltac:(M.monadic
                                           (M.call_closure (|
                                             M.get_associated_function (|
@@ -472,7 +474,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                               |)
                                             ]
                                           |)))
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -516,21 +519,22 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (LogicalOp.or (|
-                                        BinOp.Pure.eq
-                                          (M.read (|
+                                    UnOp.not (|
+                                      LogicalOp.or (|
+                                        BinOp.eq (|
+                                          M.read (|
                                             M.SubPointer.get_struct_record_field (|
                                               M.read (| self |),
                                               "move_abstract_stack::AbstractStack",
                                               "len"
                                             |)
-                                          |))
-                                          (Value.Integer 0),
+                                          |),
+                                          Value.Integer IntegerKind.U64 0
+                                        |),
                                         ltac:(M.monadic
                                           (LogicalOp.and (|
-                                            UnOp.Pure.not
-                                              (M.call_closure (|
+                                            UnOp.not (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "alloc::vec::Vec")
@@ -549,10 +553,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                     "values"
                                                   |)
                                                 ]
-                                              |)),
+                                              |)
+                                            |),
                                             ltac:(M.monadic
-                                              (BinOp.Pure.le
-                                                (M.read (|
+                                              (BinOp.le (|
+                                                M.read (|
                                                   M.SubPointer.get_tuple_field (|
                                                     M.call_closure (|
                                                       M.get_associated_function (|
@@ -607,16 +612,18 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                     |),
                                                     0
                                                   |)
-                                                |))
-                                                (M.read (|
+                                                |),
+                                                M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "move_abstract_stack::AbstractStack",
                                                     "len"
                                                   |)
-                                                |))))
+                                                |)
+                                              |)))
                                           |)))
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -650,7 +657,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
             "len"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_len : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "len" (len T).
@@ -673,9 +680,9 @@ Module Impl_move_abstract_stack_AbstractStack_T.
             "push_n",
             []
           |),
-          [ M.read (| self |); M.read (| item |); Value.Integer 1 ]
+          [ M.read (| self |); M.read (| item |); Value.Integer IntegerKind.U64 1 ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_push :
@@ -720,7 +727,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use (M.alloc (| BinOp.Pure.eq (M.read (| n |)) (Value.Integer 0) |)) in
+                          M.use
+                            (M.alloc (|
+                              BinOp.eq (| M.read (| n |), Value.Integer IntegerKind.U64 0 |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -858,10 +868,12 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (BinOp.Pure.gt
-                                                              (M.read (| M.read (| count |) |))
-                                                              (Value.Integer 0))
+                                                          UnOp.not (|
+                                                            BinOp.gt (|
+                                                              M.read (| M.read (| count |) |),
+                                                              Value.Integer IntegerKind.U64 0
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -895,7 +907,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                 let β := M.read (| count |) in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add Integer.U64 (M.read (| β |)) (M.read (| n |))
+                                  BinOp.Wrap.add (| M.read (| β |), M.read (| n |) |)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -931,7 +943,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_push_n :
@@ -962,24 +974,24 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
-                  [ Ty.path "core::num::nonzero::NonZeroU64" ],
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
                 "unwrap",
                 []
               |),
               [
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.path "core::num::nonzero::NonZeroU64",
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                     "new",
                     []
                   |),
-                  [ Value.Integer 1 ]
+                  [ Value.Integer IntegerKind.U64 1 ]
                 |)
               ]
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_pop : forall (T : Ty.t), M.IsAssociatedFunction (Self T) "pop" (pop T).
@@ -1021,7 +1033,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU64",
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       "get",
                       []
                     |),
@@ -1050,15 +1062,16 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                   [ M.read (| self |) ]
                                 |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.gt
-                                    (M.read (| n |))
-                                    (M.read (|
+                                  (BinOp.gt (|
+                                    M.read (| n |),
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "move_abstract_stack::AbstractStack",
                                         "len"
                                       |)
-                                    |))))
+                                    |)
+                                  |)))
                               |)
                             |)) in
                         let _ :=
@@ -1153,10 +1166,12 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                UnOp.Pure.not
-                                                  (BinOp.Pure.gt
-                                                    (M.read (| M.read (| count |) |))
-                                                    (Value.Integer 0))
+                                                UnOp.not (|
+                                                  BinOp.gt (|
+                                                    M.read (| M.read (| count |) |),
+                                                    Value.Integer IntegerKind.U64 0
+                                                  |)
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -1273,7 +1288,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     let β := M.read (| count |) in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.sub Integer.U64 (M.read (| β |)) (M.read (| n |))
+                                      BinOp.Wrap.sub (| M.read (| β |), M.read (| n |) |)
                                     |) in
                                   M.alloc (|
                                     M.call_closure (|
@@ -1297,10 +1312,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                             "move_abstract_stack::AbstractStack",
                             "len"
                           |) in
-                        M.write (|
-                          β,
-                          BinOp.Wrap.sub Integer.U64 (M.read (| β |)) (M.read (| n |))
-                        |) in
+                        M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| n |) |) |) in
                       M.alloc (|
                         Value.StructTuple "core::result::Result::Ok" [ M.read (| ret |) ]
                       |)))
@@ -1308,7 +1320,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_pop_eq_n :
@@ -1354,7 +1366,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.path "core::num::nonzero::NonZeroU64",
+                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
                       "get",
                       []
                     |),
@@ -1383,15 +1395,16 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                   [ M.read (| self |) ]
                                 |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.gt
-                                    (M.read (| n |))
-                                    (M.read (|
+                                  (BinOp.gt (|
+                                    M.read (| n |),
+                                    M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.read (| self |),
                                         "move_abstract_stack::AbstractStack",
                                         "len"
                                       |)
-                                    |))))
+                                    |)
+                                  |)))
                               |)
                             |)) in
                         let _ :=
@@ -1426,7 +1439,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt (M.read (| rem |)) (Value.Integer 0)
+                                  BinOp.gt (| M.read (| rem |), Value.Integer IntegerKind.U64 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1513,10 +1526,12 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              UnOp.Pure.not
-                                                                (BinOp.Pure.gt
-                                                                  (M.read (| M.read (| count |) |))
-                                                                  (Value.Integer 0))
+                                                              UnOp.not (|
+                                                                BinOp.gt (|
+                                                                  M.read (| M.read (| count |) |),
+                                                                  Value.Integer IntegerKind.U64 0
+                                                                |)
+                                                              |)
                                                             |)) in
                                                         let _ :=
                                                           M.is_constant_or_break_match (|
@@ -1589,52 +1604,55 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                   ltac:(M.monadic
                                                     match γ with
                                                     | [] =>
-                                                      let~ _ :=
-                                                        let β := rem in
-                                                        M.write (|
-                                                          β,
-                                                          BinOp.Wrap.sub
-                                                            Integer.U64
-                                                            (M.read (| β |))
-                                                            (M.read (| M.read (| count |) |))
-                                                        |) in
-                                                      let~ _ :=
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.apply
-                                                                (Ty.path "core::option::Option")
-                                                                []
-                                                                [ Ty.tuple [ Ty.path "u64"; T ] ],
-                                                              "unwrap",
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.apply
-                                                                    (Ty.path "alloc::vec::Vec")
-                                                                    []
-                                                                    [
-                                                                      Ty.tuple [ Ty.path "u64"; T ];
-                                                                      Ty.path "alloc::alloc::Global"
-                                                                    ],
-                                                                  "pop",
+                                                      ltac:(M.monadic
+                                                        (let~ _ :=
+                                                          let β := rem in
+                                                          M.write (|
+                                                            β,
+                                                            BinOp.Wrap.sub (|
+                                                              M.read (| β |),
+                                                              M.read (| M.read (| count |) |)
+                                                            |)
+                                                          |) in
+                                                        let~ _ :=
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "core::option::Option")
                                                                   []
-                                                                |),
-                                                                [
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.read (| self |),
-                                                                    "move_abstract_stack::AbstractStack",
-                                                                    "values"
-                                                                  |)
-                                                                ]
-                                                              |)
-                                                            ]
-                                                          |)
-                                                        |) in
-                                                      M.alloc (| Value.Tuple [] |)
-                                                    | _ => M.impossible (||)
+                                                                  [ Ty.tuple [ Ty.path "u64"; T ] ],
+                                                                "unwrap",
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.apply
+                                                                      (Ty.path "alloc::vec::Vec")
+                                                                      []
+                                                                      [
+                                                                        Ty.tuple
+                                                                          [ Ty.path "u64"; T ];
+                                                                        Ty.path
+                                                                          "alloc::alloc::Global"
+                                                                      ],
+                                                                    "pop",
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      M.read (| self |),
+                                                                      "move_abstract_stack::AbstractStack",
+                                                                      "values"
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          |) in
+                                                        M.alloc (| Value.Tuple [] |)))
+                                                    | _ => M.impossible "wrong number of arguments"
                                                     end))
                                             |)));
                                         fun γ =>
@@ -1651,10 +1669,10 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                     let β := M.read (| count |) in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.sub
-                                                        Integer.U64
-                                                        (M.read (| β |))
-                                                        (M.read (| rem |))
+                                                      BinOp.Wrap.sub (|
+                                                        M.read (| β |),
+                                                        M.read (| rem |)
+                                                      |)
                                                     |) in
                                                   M.break (||)
                                                 |)
@@ -1685,11 +1703,11 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                     "move_abstract_stack::AbstractStack",
                     "len"
                   |) in
-                M.write (| β, BinOp.Wrap.sub Integer.U64 (M.read (| β |)) (M.read (| n |)) |) in
+                M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| n |) |) |) in
               M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_pop_any_n :
@@ -1723,17 +1741,6 @@ Enum AbsStackError
 }
 *)
 
-Module Impl_core_marker_StructuralEq_for_move_abstract_stack_AbsStackError.
-  Definition Self : Ty.t := Ty.path "move_abstract_stack::AbsStackError".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_move_abstract_stack_AbsStackError.
-
 Module Impl_core_cmp_Eq_for_move_abstract_stack_AbsStackError.
   Definition Self : Ty.t := Ty.path "move_abstract_stack::AbsStackError".
   
@@ -1748,7 +1755,7 @@ Module Impl_core_cmp_Eq_for_move_abstract_stack_AbsStackError.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         Value.Tuple []))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1782,7 +1789,7 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1792,7 +1799,7 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1802,9 +1809,9 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
                 [ M.read (| other |) ]
               |)
             |) in
-          M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1826,7 +1833,7 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1836,7 +1843,7 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1855,11 +1862,11 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
                 "partial_cmp",
                 []
               |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1881,7 +1888,7 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
         M.read (|
-          let~ __self_tag :=
+          let~ __self_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1891,7 +1898,7 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
                 [ M.read (| self |) ]
               |)
             |) in
-          let~ __arg1_tag :=
+          let~ __arg1_discr :=
             M.alloc (|
               M.call_closure (|
                 M.get_function (|
@@ -1904,11 +1911,11 @@ Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
           M.alloc (|
             M.call_closure (|
               M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-              [ __self_tag; __arg1_tag ]
+              [ __self_discr; __arg1_discr ]
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1929,7 +1936,7 @@ Module Impl_core_clone_Clone_for_move_abstract_stack_AbsStackError.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -1994,7 +2001,7 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -2057,16 +2064,14 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "Popped element is not equal to specified item"
-                                    |)
-                                  ]
-                              |))
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String "Popped element is not equal to specified item"
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -2093,16 +2098,14 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "Popped more values than are on the stack"
-                                    |)
-                                  ]
-                              |))
+                            M.alloc (|
+                              Value.Array
+                                [
+                                  M.read (|
+                                    Value.String "Popped more values than are on the stack"
+                                  |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -2129,16 +2132,11 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                             []
                           |),
                           [
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "Pushed too many elements on the stack"
-                                    |)
-                                  ]
-                              |))
+                            M.alloc (|
+                              Value.Array
+                                [ M.read (| Value.String "Pushed too many elements on the stack" |)
+                                ]
+                            |)
                           ]
                         |)
                       ]
@@ -2147,7 +2145,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :

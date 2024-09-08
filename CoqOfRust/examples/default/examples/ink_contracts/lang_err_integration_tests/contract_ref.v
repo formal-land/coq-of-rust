@@ -25,7 +25,7 @@ Module Impl_core_default_Default_for_contract_ref_AccountId.
               []
             |)
           ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -51,7 +51,7 @@ Module Impl_core_clone_Clone_for_contract_ref_AccountId.
             [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -73,7 +73,7 @@ Axiom Balance : (Ty.path "contract_ref::Balance") = (Ty.path "u128").
 
 Axiom Hash :
   (Ty.path "contract_ref::Hash") =
-    (Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ]).
+    (Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ Ty.path "u8" ]).
 
 (* StructRecord
   {
@@ -113,7 +113,7 @@ Module Impl_core_fmt_Debug_for_contract_ref_FlipperError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
           [ M.read (| f |); M.read (| Value.String "FlipperError" |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -150,7 +150,7 @@ Module Impl_contract_ref_FlipperRef.
           M.get_associated_function (| Ty.path "contract_ref::FlipperRef", "init_env", [] |),
           []
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_env : M.IsAssociatedFunction Self "env" env.
@@ -166,7 +166,7 @@ Module Impl_contract_ref_FlipperRef.
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord "contract_ref::FlipperRef" [ ("value", M.read (| init_value |)) ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -189,7 +189,7 @@ Module Impl_contract_ref_FlipperRef.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new_default : M.IsAssociatedFunction Self "new_default" new_default.
@@ -240,7 +240,7 @@ Module Impl_contract_ref_FlipperRef.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
@@ -263,18 +263,19 @@ Module Impl_contract_ref_FlipperRef.
                 "contract_ref::FlipperRef",
                 "value"
               |),
-              UnOp.Pure.not
-                (M.read (|
+              UnOp.not (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "contract_ref::FlipperRef",
                     "value"
                   |)
-                |))
+                |)
+              |)
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
@@ -296,7 +297,7 @@ Module Impl_contract_ref_FlipperRef.
             "value"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.
@@ -354,7 +355,7 @@ Module Impl_contract_ref_ContractRef.
             Value.StructRecord "contract_ref::ContractRef" [ ("flipper", M.read (| flipper |)) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -419,7 +420,7 @@ Module Impl_contract_ref_ContractRef.
             Value.StructRecord "contract_ref::ContractRef" [ ("flipper", M.read (| flipper |)) ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
@@ -450,7 +451,7 @@ Module Impl_contract_ref_ContractRef.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_flip : M.IsAssociatedFunction Self "flip" flip.
@@ -475,7 +476,7 @@ Module Impl_contract_ref_ContractRef.
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_get : M.IsAssociatedFunction Self "get" get.

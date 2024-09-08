@@ -66,7 +66,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let~ b := M.alloc (| Value.StructTuple "if_let_match_enum_values::Foo::Baz" [] |) in
         let~ c :=
           M.alloc (|
-            Value.StructTuple "if_let_match_enum_values::Foo::Qux" [ Value.Integer 100 ]
+            Value.StructTuple
+              "if_let_match_enum_values::Foo::Qux"
+              [ Value.Integer IntegerKind.U32 100 ]
           |) in
         let~ _ :=
           M.match_operator (|
@@ -89,12 +91,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "a is foobar
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "a is foobar
 " |) ]
-                                  |))
+                                |)
                               ]
                             |)
                           ]
@@ -126,12 +126,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array [ M.read (| Value.String "b is foobar
+                                M.alloc (|
+                                  Value.Array [ M.read (| Value.String "b is foobar
 " |) ]
-                                  |))
+                                |)
                               ]
                             |)
                           ]
@@ -169,31 +167,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "c is " |);
-                                        M.read (| Value.String "
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "c is " |);
+                                      M.read (| Value.String "
 " |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "u32" ]
-                                          |),
-                                          [ value ]
-                                        |)
-                                      ]
-                                  |))
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "u32" ]
+                                        |),
+                                        [ value ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -217,7 +211,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     0
                   |) in
                 let value := M.copy (| γ0_0 |) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 100 |) in
+                let _ :=
+                  M.is_constant_or_break_match (|
+                    M.read (| γ0_0 |),
+                    Value.Integer IntegerKind.U32 100
+                  |) in
                 let~ _ :=
                   let~ _ :=
                     M.alloc (|
@@ -231,12 +229,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array [ M.read (| Value.String "c is one hundred
+                              M.alloc (|
+                                Value.Array [ M.read (| Value.String "c is one hundred
 " |) ]
-                                |))
+                              |)
                             ]
                           |)
                         ]
@@ -248,7 +244,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "if_let_match_enum_values::main" main.

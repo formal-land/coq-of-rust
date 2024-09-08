@@ -29,7 +29,7 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_initialize_interp :
@@ -55,7 +55,7 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_step :
@@ -86,7 +86,7 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_step_end :
@@ -112,7 +112,7 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_log :
@@ -142,7 +142,7 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_call :
@@ -171,7 +171,7 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_call_end :
@@ -201,7 +201,7 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_create :
@@ -230,7 +230,7 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_create_end :
@@ -265,7 +265,7 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_eofcreate :
@@ -294,7 +294,7 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_eofcreate_end :
@@ -333,7 +333,7 @@ Module inspector.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_selfdestruct :
@@ -369,7 +369,7 @@ Module inspector.
               |),
               [ M.read (| M.read (| self |) |); M.read (| interp |); M.read (| context |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -385,7 +385,7 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "step", [] |),
               [ M.read (| M.read (| self |) |); M.read (| interp |); M.read (| context |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -401,7 +401,7 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "step_end", [] |),
               [ M.read (| M.read (| self |) |); M.read (| interp |); M.read (| context |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -417,7 +417,7 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "log", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| log |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -433,7 +433,7 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "call", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| inputs |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -455,7 +455,7 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -471,7 +471,7 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "create", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| inputs |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -498,7 +498,7 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -519,7 +519,7 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "eofcreate", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| inputs |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -546,7 +546,7 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -573,7 +573,7 @@ Module inspector.
                 M.read (| value |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -625,7 +625,7 @@ Module inspector.
               |),
               [ M.read (| M.read (| self |) |); M.read (| interp |); M.read (| context |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -641,7 +641,7 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "step", [] |),
               [ M.read (| M.read (| self |) |); M.read (| interp |); M.read (| context |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -657,7 +657,7 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "step_end", [] |),
               [ M.read (| M.read (| self |) |); M.read (| interp |); M.read (| context |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -673,7 +673,7 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "log", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| log |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -689,7 +689,7 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "call", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| inputs |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -711,7 +711,7 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -727,7 +727,7 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "create", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| inputs |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -754,7 +754,7 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -775,7 +775,7 @@ Module inspector.
               M.get_trait_method (| "revm::inspector::Inspector", T, [ DB ], "eofcreate", [] |),
               [ M.read (| M.read (| self |) |); M.read (| context |); M.read (| inputs |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -802,7 +802,7 @@ Module inspector.
                 M.read (| outcome |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (* #[auto_impl(&mut, Box)] *)
@@ -829,7 +829,7 @@ Module inspector.
                 M.read (| value |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

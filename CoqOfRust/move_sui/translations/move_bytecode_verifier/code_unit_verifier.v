@@ -81,41 +81,43 @@ Module code_unit_verifier.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let e := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "move_binary_format::errors::PartialVMError",
-                                  "finish",
-                                  []
-                                |),
-                                [
-                                  M.read (| e |);
-                                  Value.StructTuple
-                                    "move_binary_format::errors::Location::Module"
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "move_binary_format::file_format::CompiledModule",
-                                          "self_id",
-                                          []
-                                        |),
-                                        [ M.read (| module |) ]
-                                      |)
-                                    ]
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let e := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "move_binary_format::errors::PartialVMError",
+                                    "finish",
+                                    []
+                                  |),
+                                  [
+                                    M.read (| e |);
+                                    Value.StructTuple
+                                      "move_binary_format::errors::Location::Module"
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path
+                                              "move_binary_format::file_format::CompiledModule",
+                                            "self_id",
+                                            []
+                                          |),
+                                          [ M.read (| module |) ]
+                                        |)
+                                      ]
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_module :
@@ -357,7 +359,7 @@ Module code_unit_verifier.
                             |)))
                       ]
                     |)) in
-                let~ total_back_edges := M.alloc (| Value.Integer 0 |) in
+                let~ total_back_edges := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
                 let~ _ :=
                   M.use
                     (M.match_operator (|
@@ -547,37 +549,40 @@ Module code_unit_verifier.
                                                               ltac:(M.monadic
                                                                 match γ with
                                                                 | [ α0 ] =>
-                                                                  M.match_operator (|
-                                                                    M.alloc (| α0 |),
-                                                                    [
-                                                                      fun γ =>
-                                                                        ltac:(M.monadic
-                                                                          (let err :=
-                                                                            M.copy (| γ |) in
-                                                                          M.call_closure (|
-                                                                            M.get_associated_function (|
-                                                                              Ty.path
-                                                                                "move_binary_format::errors::PartialVMError",
-                                                                              "at_index",
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.read (| err |);
-                                                                              Value.StructTuple
-                                                                                "move_binary_format::IndexKind::FunctionDefinition"
-                                                                                [];
-                                                                              M.read (|
-                                                                                M.SubPointer.get_struct_tuple_field (|
-                                                                                  index,
-                                                                                  "move_binary_format::file_format::FunctionDefinitionIndex",
-                                                                                  0
+                                                                  ltac:(M.monadic
+                                                                    (M.match_operator (|
+                                                                      M.alloc (| α0 |),
+                                                                      [
+                                                                        fun γ =>
+                                                                          ltac:(M.monadic
+                                                                            (let err :=
+                                                                              M.copy (| γ |) in
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "move_binary_format::errors::PartialVMError",
+                                                                                "at_index",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.read (| err |);
+                                                                                Value.StructTuple
+                                                                                  "move_binary_format::IndexKind::FunctionDefinition"
+                                                                                  [];
+                                                                                M.read (|
+                                                                                  M.SubPointer.get_struct_tuple_field (|
+                                                                                    index,
+                                                                                    "move_binary_format::file_format::FunctionDefinitionIndex",
+                                                                                    0
+                                                                                  |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |)))
-                                                                    ]
-                                                                  |)
-                                                                | _ => M.impossible (||)
+                                                                              ]
+                                                                            |)))
+                                                                      ]
+                                                                    |)))
+                                                                | _ =>
+                                                                  M.impossible
+                                                                    "wrong number of arguments"
                                                                 end))
                                                         ]
                                                       |)
@@ -647,10 +652,10 @@ Module code_unit_verifier.
                                             let β := total_back_edges in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (M.read (| β |))
-                                                (M.read (| num_back_edges |))
+                                              BinOp.Wrap.add (|
+                                                M.read (| β |),
+                                                M.read (| num_back_edges |)
+                                              |)
                                             |) in
                                           M.alloc (| Value.Tuple [] |)))
                                     ]
@@ -686,9 +691,10 @@ Module code_unit_verifier.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.read (| total_back_edges |))
-                                          (M.read (| limit |))
+                                        BinOp.gt (|
+                                          M.read (| total_back_edges |),
+                                          M.read (| limit |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -729,7 +735,7 @@ Module code_unit_verifier.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_module_impl :
@@ -900,7 +906,9 @@ Module code_unit_verifier.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    Value.StructTuple "core::result::Result::Ok" [ Value.Integer 0 ]
+                                    Value.StructTuple
+                                      "core::result::Result::Ok"
+                                      [ Value.Integer IntegerKind.Usize 0 ]
                                   |)
                                 |)
                               |)
@@ -1026,8 +1034,8 @@ Module code_unit_verifier.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.call_closure (|
+                                        BinOp.gt (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -1061,8 +1069,9 @@ Module code_unit_verifier.
                                                 |)
                                               |)
                                             ]
-                                          |))
-                                          (M.read (| limit |))
+                                          |),
+                                          M.read (| limit |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1098,7 +1107,7 @@ Module code_unit_verifier.
                                                     ]
                                                   |);
                                                   M.read (| index |);
-                                                  Value.Integer 0
+                                                  Value.Integer IntegerKind.U16 0
                                                 ]
                                               |)
                                             ]
@@ -1161,9 +1170,10 @@ Module code_unit_verifier.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt
-                                          (M.read (| num_back_edges |))
-                                          (M.read (| limit |))
+                                        BinOp.gt (|
+                                          M.read (| num_back_edges |),
+                                          M.read (| limit |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1199,7 +1209,7 @@ Module code_unit_verifier.
                                                     ]
                                                   |);
                                                   M.read (| index |);
-                                                  Value.Integer 0
+                                                  Value.Integer IntegerKind.U16 0
                                                 ]
                                               |)
                                             ]
@@ -1482,7 +1492,7 @@ Module code_unit_verifier.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_function :
@@ -1829,7 +1839,7 @@ Module code_unit_verifier.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_common :

@@ -411,7 +411,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -568,13 +568,13 @@ Module normalized.
                           M.read (| f |);
                           M.read (| Value.String "Struct" |);
                           M.read (| Value.String "address" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
+                          M.read (| __self_0 |);
                           M.read (| Value.String "module" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_1 |));
+                          M.read (| __self_1 |);
                           M.read (| Value.String "name" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_2 |));
+                          M.read (| __self_2 |);
                           M.read (| Value.String "type_arguments" |);
-                          (* Unsize *) M.pointer_coercion __self_3
+                          __self_3
                         ]
                       |)
                     |)));
@@ -595,11 +595,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Vector" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Vector" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -619,11 +615,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "TypeParameter" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "TypeParameter" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -643,11 +635,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Reference" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Reference" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -667,11 +655,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "MutableReference" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "MutableReference" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -722,7 +706,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -744,7 +728,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -754,7 +738,7 @@ Module normalized.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -768,7 +752,7 @@ Module normalized.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |),
               [
@@ -1099,7 +1083,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1121,7 +1105,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1131,7 +1115,7 @@ Module normalized.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1507,13 +1491,13 @@ Module normalized.
                           "partial_cmp",
                           []
                         |),
-                        [ __self_tag; __arg1_tag ]
+                        [ __self_discr; __arg1_discr ]
                       |)
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1523,17 +1507,6 @@ Module normalized.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Type.
-  
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Type.
-    Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Type".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Type.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_Type.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Type".
@@ -1600,7 +1573,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1634,7 +1607,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1644,7 +1617,7 @@ Module normalized.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -1656,7 +1629,7 @@ Module normalized.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -1731,36 +1704,65 @@ Module normalized.
                                     M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.path "move_core_types::account_address::AccountAddress",
-                                        [ Ty.path "move_core_types::account_address::AccountAddress"
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.path
+                                              "move_core_types::account_address::AccountAddress"
+                                          ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.path
+                                                "move_core_types::account_address::AccountAddress"
+                                            ]
                                         ],
                                         "eq",
                                         []
                                       |),
-                                      [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                      [ __self_0; __arg1_0 ]
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         M.get_trait_method (|
                                           "core::cmp::PartialEq",
-                                          Ty.path "move_core_types::identifier::Identifier",
-                                          [ Ty.path "move_core_types::identifier::Identifier" ],
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "move_core_types::identifier::Identifier" ],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "move_core_types::identifier::Identifier" ]
+                                          ],
                                           "eq",
                                           []
                                         |),
-                                        [ M.read (| __self_1 |); M.read (| __arg1_1 |) ]
+                                        [ __self_1; __arg1_1 ]
                                       |)))
                                   |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
                                       M.get_trait_method (|
                                         "core::cmp::PartialEq",
-                                        Ty.path "move_core_types::identifier::Identifier",
-                                        [ Ty.path "move_core_types::identifier::Identifier" ],
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "move_core_types::identifier::Identifier" ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "move_core_types::identifier::Identifier" ]
+                                        ],
                                         "eq",
                                         []
                                       |),
-                                      [ M.read (| __self_2 |); M.read (| __arg1_2 |) ]
+                                      [ __self_2; __arg1_2 ]
                                     |)))
                                 |),
                                 ltac:(M.monadic
@@ -1768,25 +1770,35 @@ Module normalized.
                                     M.get_trait_method (|
                                       "core::cmp::PartialEq",
                                       Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
+                                        (Ty.path "&")
                                         []
                                         [
-                                          Ty.path "move_binary_format::normalized::Type";
-                                          Ty.path "alloc::alloc::Global"
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Type";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
                                         ],
                                       [
                                         Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
+                                          (Ty.path "&")
                                           []
                                           [
-                                            Ty.path "move_binary_format::normalized::Type";
-                                            Ty.path "alloc::alloc::Global"
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::normalized::Type";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ]
                                       ],
                                       "eq",
                                       []
                                     |),
-                                    [ M.read (| __self_3 |); M.read (| __arg1_3 |) ]
+                                    [ __self_3; __arg1_3 ]
                                   |)))
                               |)
                             |)));
@@ -1815,25 +1827,35 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
+                                    (Ty.path "&")
                                     []
                                     [
-                                      Ty.path "move_binary_format::normalized::Type";
-                                      Ty.path "alloc::alloc::Global"
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ],
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                      (Ty.path "&")
                                       []
                                       [
-                                        Ty.path "move_binary_format::normalized::Type";
-                                        Ty.path "alloc::alloc::Global"
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path "move_binary_format::normalized::Type";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -1857,9 +1879,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -1886,25 +1915,35 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
+                                    (Ty.path "&")
                                     []
                                     [
-                                      Ty.path "move_binary_format::normalized::Type";
-                                      Ty.path "alloc::alloc::Global"
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ],
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                      (Ty.path "&")
                                       []
                                       [
-                                        Ty.path "move_binary_format::normalized::Type";
-                                        Ty.path "alloc::alloc::Global"
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path "move_binary_format::normalized::Type";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -1932,25 +1971,35 @@ Module normalized.
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
-                                    (Ty.path "alloc::boxed::Box")
+                                    (Ty.path "&")
                                     []
                                     [
-                                      Ty.path "move_binary_format::normalized::Type";
-                                      Ty.path "alloc::alloc::Global"
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path "move_binary_format::normalized::Type";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ],
                                   [
                                     Ty.apply
-                                      (Ty.path "alloc::boxed::Box")
+                                      (Ty.path "&")
                                       []
                                       [
-                                        Ty.path "move_binary_format::normalized::Type";
-                                        Ty.path "alloc::alloc::Global"
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path "move_binary_format::normalized::Type";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -1960,7 +2009,7 @@ Module normalized.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2007,7 +2056,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 0;
+                                Value.Integer IntegerKind.U32 0;
                                 M.read (| Value.String "bool" |)
                               ]
                             |)
@@ -2028,7 +2077,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 1;
+                                Value.Integer IntegerKind.U32 1;
                                 M.read (| Value.String "u8" |)
                               ]
                             |)
@@ -2052,7 +2101,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 2;
+                                Value.Integer IntegerKind.U32 2;
                                 M.read (| Value.String "u64" |)
                               ]
                             |)
@@ -2076,7 +2125,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 3;
+                                Value.Integer IntegerKind.U32 3;
                                 M.read (| Value.String "u128" |)
                               ]
                             |)
@@ -2100,7 +2149,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 4;
+                                Value.Integer IntegerKind.U32 4;
                                 M.read (| Value.String "address" |)
                               ]
                             |)
@@ -2124,7 +2173,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 5;
+                                Value.Integer IntegerKind.U32 5;
                                 M.read (| Value.String "signer" |)
                               ]
                             |)
@@ -2174,21 +2223,21 @@ Module normalized.
                                     [
                                       M.read (| __serializer |);
                                       M.read (| Value.String "Type" |);
-                                      Value.Integer 6;
+                                      Value.Integer IntegerKind.U32 6;
                                       M.read (| Value.String "Struct" |);
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (BinOp.Wrap.add
-                                          Integer.Usize
-                                          (BinOp.Wrap.add
-                                            Integer.Usize
-                                            (BinOp.Wrap.add
-                                              Integer.Usize
-                                              (Value.Integer 0)
-                                              (Value.Integer 1))
-                                            (Value.Integer 1))
-                                          (Value.Integer 1))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.add (|
+                                        BinOp.Wrap.add (|
+                                          BinOp.Wrap.add (|
+                                            BinOp.Wrap.add (|
+                                              Value.Integer IntegerKind.Usize 0,
+                                              Value.Integer IntegerKind.Usize 1
+                                            |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -2479,7 +2528,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 7;
+                                Value.Integer IntegerKind.U32 7;
                                 M.read (| Value.String "vector" |);
                                 M.read (| __field0 |)
                               ]
@@ -2506,7 +2555,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 8;
+                                Value.Integer IntegerKind.U32 8;
                                 M.read (| Value.String "TypeParameter" |);
                                 M.read (| __field0 |)
                               ]
@@ -2541,7 +2590,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 9;
+                                Value.Integer IntegerKind.U32 9;
                                 M.read (| Value.String "Reference" |);
                                 M.read (| __field0 |)
                               ]
@@ -2576,7 +2625,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 10;
+                                Value.Integer IntegerKind.U32 10;
                                 M.read (| Value.String "MutableReference" |);
                                 M.read (| __field0 |)
                               ]
@@ -2601,7 +2650,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 11;
+                                Value.Integer IntegerKind.U32 11;
                                 M.read (| Value.String "u16" |)
                               ]
                             |)
@@ -2625,7 +2674,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 12;
+                                Value.Integer IntegerKind.U32 12;
                                 M.read (| Value.String "u32" |)
                               ]
                             |)
@@ -2649,7 +2698,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Type" |);
-                                Value.Integer 13;
+                                Value.Integer IntegerKind.U32 13;
                                 M.read (| Value.String "u256" |)
                               ]
                             |)
@@ -2658,7 +2707,7 @@ Module normalized.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2699,7 +2748,7 @@ Module normalized.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2737,13 +2786,13 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "Field" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -2905,7 +2954,7 @@ Module normalized.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2946,7 +2995,7 @@ Module normalized.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2984,13 +3033,13 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "Constant" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -3157,7 +3206,7 @@ Module normalized.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3198,7 +3247,7 @@ Module normalized.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3236,16 +3285,16 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "Struct" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.rust_cast (Value.Bool false))
-                                    (Value.Integer 1))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  BinOp.Wrap.add (|
+                                    M.rust_cast (Value.Bool false),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -3478,7 +3527,7 @@ Module normalized.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3519,7 +3568,7 @@ Module normalized.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3557,25 +3606,25 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "Function" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (BinOp.Wrap.add
-                                    Integer.Usize
-                                    (BinOp.Wrap.add
-                                      Integer.Usize
-                                      (BinOp.Wrap.add
-                                        Integer.Usize
-                                        (BinOp.Wrap.add
-                                          Integer.Usize
-                                          (M.rust_cast (Value.Bool false))
-                                          (Value.Integer 1))
-                                        (Value.Integer 1))
-                                      (Value.Integer 1))
-                                    (Value.Integer 1))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  BinOp.Wrap.add (|
+                                    BinOp.Wrap.add (|
+                                      BinOp.Wrap.add (|
+                                        BinOp.Wrap.add (|
+                                          M.rust_cast (Value.Bool false),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -3989,7 +4038,7 @@ Module normalized.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4030,7 +4079,7 @@ Module normalized.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4068,13 +4117,13 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "FieldRef" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -4236,7 +4285,7 @@ Module normalized.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4277,7 +4326,7 @@ Module normalized.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4315,13 +4364,13 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "FunctionRef" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (M.rust_cast (Value.Bool false))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  M.rust_cast (Value.Bool false),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -4483,7 +4532,7 @@ Module normalized.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4524,7 +4573,7 @@ Module normalized.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4569,7 +4618,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 0;
+                                Value.Integer IntegerKind.U32 0;
                                 M.read (| Value.String "Pop" |)
                               ]
                             |)
@@ -4593,7 +4642,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 1;
+                                Value.Integer IntegerKind.U32 1;
                                 M.read (| Value.String "Ret" |)
                               ]
                             |)
@@ -4619,7 +4668,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 2;
+                                Value.Integer IntegerKind.U32 2;
                                 M.read (| Value.String "BrTrue" |);
                                 M.read (| __field0 |)
                               ]
@@ -4646,7 +4695,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 3;
+                                Value.Integer IntegerKind.U32 3;
                                 M.read (| Value.String "BrFalse" |);
                                 M.read (| __field0 |)
                               ]
@@ -4673,7 +4722,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 4;
+                                Value.Integer IntegerKind.U32 4;
                                 M.read (| Value.String "Branch" |);
                                 M.read (| __field0 |)
                               ]
@@ -4700,7 +4749,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 5;
+                                Value.Integer IntegerKind.U32 5;
                                 M.read (| Value.String "LdU8" |);
                                 M.read (| __field0 |)
                               ]
@@ -4727,7 +4776,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 6;
+                                Value.Integer IntegerKind.U32 6;
                                 M.read (| Value.String "LdU64" |);
                                 M.read (| __field0 |)
                               ]
@@ -4754,7 +4803,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 7;
+                                Value.Integer IntegerKind.U32 7;
                                 M.read (| Value.String "LdU128" |);
                                 M.read (| __field0 |)
                               ]
@@ -4779,7 +4828,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 8;
+                                Value.Integer IntegerKind.U32 8;
                                 M.read (| Value.String "CastU8" |)
                               ]
                             |)
@@ -4803,7 +4852,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 9;
+                                Value.Integer IntegerKind.U32 9;
                                 M.read (| Value.String "CastU64" |)
                               ]
                             |)
@@ -4827,7 +4876,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 10;
+                                Value.Integer IntegerKind.U32 10;
                                 M.read (| Value.String "CastU128" |)
                               ]
                             |)
@@ -4853,7 +4902,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 11;
+                                Value.Integer IntegerKind.U32 11;
                                 M.read (| Value.String "LdConst" |);
                                 M.read (| __field0 |)
                               ]
@@ -4878,7 +4927,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 12;
+                                Value.Integer IntegerKind.U32 12;
                                 M.read (| Value.String "LdTrue" |)
                               ]
                             |)
@@ -4902,7 +4951,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 13;
+                                Value.Integer IntegerKind.U32 13;
                                 M.read (| Value.String "LdFalse" |)
                               ]
                             |)
@@ -4928,7 +4977,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 14;
+                                Value.Integer IntegerKind.U32 14;
                                 M.read (| Value.String "CopyLoc" |);
                                 M.read (| __field0 |)
                               ]
@@ -4955,7 +5004,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 15;
+                                Value.Integer IntegerKind.U32 15;
                                 M.read (| Value.String "MoveLoc" |);
                                 M.read (| __field0 |)
                               ]
@@ -4982,7 +5031,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 16;
+                                Value.Integer IntegerKind.U32 16;
                                 M.read (| Value.String "StLoc" |);
                                 M.read (| __field0 |)
                               ]
@@ -5009,7 +5058,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 17;
+                                Value.Integer IntegerKind.U32 17;
                                 M.read (| Value.String "Call" |);
                                 M.read (| __field0 |)
                               ]
@@ -5048,7 +5097,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 18;
+                                Value.Integer IntegerKind.U32 18;
                                 M.read (| Value.String "CallGeneric" |);
                                 M.read (| __field0 |)
                               ]
@@ -5075,7 +5124,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 19;
+                                Value.Integer IntegerKind.U32 19;
                                 M.read (| Value.String "Pack" |);
                                 M.read (| __field0 |)
                               ]
@@ -5114,7 +5163,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 20;
+                                Value.Integer IntegerKind.U32 20;
                                 M.read (| Value.String "PackGeneric" |);
                                 M.read (| __field0 |)
                               ]
@@ -5141,7 +5190,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 21;
+                                Value.Integer IntegerKind.U32 21;
                                 M.read (| Value.String "Unpack" |);
                                 M.read (| __field0 |)
                               ]
@@ -5180,7 +5229,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 22;
+                                Value.Integer IntegerKind.U32 22;
                                 M.read (| Value.String "UnpackGeneric" |);
                                 M.read (| __field0 |)
                               ]
@@ -5205,7 +5254,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 23;
+                                Value.Integer IntegerKind.U32 23;
                                 M.read (| Value.String "ReadRef" |)
                               ]
                             |)
@@ -5229,7 +5278,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 24;
+                                Value.Integer IntegerKind.U32 24;
                                 M.read (| Value.String "WriteRef" |)
                               ]
                             |)
@@ -5253,7 +5302,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 25;
+                                Value.Integer IntegerKind.U32 25;
                                 M.read (| Value.String "FreezeRef" |)
                               ]
                             |)
@@ -5279,7 +5328,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 26;
+                                Value.Integer IntegerKind.U32 26;
                                 M.read (| Value.String "MutBorrowLoc" |);
                                 M.read (| __field0 |)
                               ]
@@ -5306,7 +5355,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 27;
+                                Value.Integer IntegerKind.U32 27;
                                 M.read (| Value.String "ImmBorrowLoc" |);
                                 M.read (| __field0 |)
                               ]
@@ -5333,7 +5382,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 28;
+                                Value.Integer IntegerKind.U32 28;
                                 M.read (| Value.String "MutBorrowField" |);
                                 M.read (| __field0 |)
                               ]
@@ -5372,7 +5421,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 29;
+                                Value.Integer IntegerKind.U32 29;
                                 M.read (| Value.String "MutBorrowFieldGeneric" |);
                                 M.read (| __field0 |)
                               ]
@@ -5399,7 +5448,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 30;
+                                Value.Integer IntegerKind.U32 30;
                                 M.read (| Value.String "ImmBorrowField" |);
                                 M.read (| __field0 |)
                               ]
@@ -5438,7 +5487,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 31;
+                                Value.Integer IntegerKind.U32 31;
                                 M.read (| Value.String "ImmBorrowFieldGeneric" |);
                                 M.read (| __field0 |)
                               ]
@@ -5463,7 +5512,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 32;
+                                Value.Integer IntegerKind.U32 32;
                                 M.read (| Value.String "Add" |)
                               ]
                             |)
@@ -5487,7 +5536,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 33;
+                                Value.Integer IntegerKind.U32 33;
                                 M.read (| Value.String "Sub" |)
                               ]
                             |)
@@ -5511,7 +5560,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 34;
+                                Value.Integer IntegerKind.U32 34;
                                 M.read (| Value.String "Mul" |)
                               ]
                             |)
@@ -5535,7 +5584,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 35;
+                                Value.Integer IntegerKind.U32 35;
                                 M.read (| Value.String "Mod" |)
                               ]
                             |)
@@ -5559,7 +5608,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 36;
+                                Value.Integer IntegerKind.U32 36;
                                 M.read (| Value.String "Div" |)
                               ]
                             |)
@@ -5583,7 +5632,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 37;
+                                Value.Integer IntegerKind.U32 37;
                                 M.read (| Value.String "BitOr" |)
                               ]
                             |)
@@ -5607,7 +5656,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 38;
+                                Value.Integer IntegerKind.U32 38;
                                 M.read (| Value.String "BitAnd" |)
                               ]
                             |)
@@ -5631,7 +5680,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 39;
+                                Value.Integer IntegerKind.U32 39;
                                 M.read (| Value.String "Xor" |)
                               ]
                             |)
@@ -5655,7 +5704,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 40;
+                                Value.Integer IntegerKind.U32 40;
                                 M.read (| Value.String "Or" |)
                               ]
                             |)
@@ -5679,7 +5728,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 41;
+                                Value.Integer IntegerKind.U32 41;
                                 M.read (| Value.String "And" |)
                               ]
                             |)
@@ -5703,7 +5752,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 42;
+                                Value.Integer IntegerKind.U32 42;
                                 M.read (| Value.String "Not" |)
                               ]
                             |)
@@ -5727,7 +5776,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 43;
+                                Value.Integer IntegerKind.U32 43;
                                 M.read (| Value.String "Eq" |)
                               ]
                             |)
@@ -5751,7 +5800,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 44;
+                                Value.Integer IntegerKind.U32 44;
                                 M.read (| Value.String "Neq" |)
                               ]
                             |)
@@ -5775,7 +5824,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 45;
+                                Value.Integer IntegerKind.U32 45;
                                 M.read (| Value.String "Lt" |)
                               ]
                             |)
@@ -5799,7 +5848,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 46;
+                                Value.Integer IntegerKind.U32 46;
                                 M.read (| Value.String "Gt" |)
                               ]
                             |)
@@ -5823,7 +5872,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 47;
+                                Value.Integer IntegerKind.U32 47;
                                 M.read (| Value.String "Le" |)
                               ]
                             |)
@@ -5847,7 +5896,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 48;
+                                Value.Integer IntegerKind.U32 48;
                                 M.read (| Value.String "Ge" |)
                               ]
                             |)
@@ -5871,7 +5920,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 49;
+                                Value.Integer IntegerKind.U32 49;
                                 M.read (| Value.String "Abort" |)
                               ]
                             |)
@@ -5895,7 +5944,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 50;
+                                Value.Integer IntegerKind.U32 50;
                                 M.read (| Value.String "Nop" |)
                               ]
                             |)
@@ -5919,7 +5968,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 51;
+                                Value.Integer IntegerKind.U32 51;
                                 M.read (| Value.String "Shl" |)
                               ]
                             |)
@@ -5943,7 +5992,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 52;
+                                Value.Integer IntegerKind.U32 52;
                                 M.read (| Value.String "Shr" |)
                               ]
                             |)
@@ -5979,15 +6028,15 @@ Module normalized.
                                     [
                                       M.read (| __serializer |);
                                       M.read (| Value.String "Bytecode" |);
-                                      Value.Integer 53;
+                                      Value.Integer IntegerKind.U32 53;
                                       M.read (| Value.String "VecPack" |);
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (BinOp.Wrap.add
-                                          Integer.Usize
-                                          (Value.Integer 0)
-                                          (Value.Integer 1))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.add (|
+                                        BinOp.Wrap.add (|
+                                          Value.Integer IntegerKind.Usize 0,
+                                          Value.Integer IntegerKind.Usize 1
+                                        |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -6152,7 +6201,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 54;
+                                Value.Integer IntegerKind.U32 54;
                                 M.read (| Value.String "VecLen" |);
                                 M.read (| __field0 |)
                               ]
@@ -6179,7 +6228,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 55;
+                                Value.Integer IntegerKind.U32 55;
                                 M.read (| Value.String "VecImmBorrow" |);
                                 M.read (| __field0 |)
                               ]
@@ -6206,7 +6255,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 56;
+                                Value.Integer IntegerKind.U32 56;
                                 M.read (| Value.String "VecMutBorrow" |);
                                 M.read (| __field0 |)
                               ]
@@ -6233,7 +6282,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 57;
+                                Value.Integer IntegerKind.U32 57;
                                 M.read (| Value.String "VecPushBack" |);
                                 M.read (| __field0 |)
                               ]
@@ -6260,7 +6309,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 58;
+                                Value.Integer IntegerKind.U32 58;
                                 M.read (| Value.String "VecPopBack" |);
                                 M.read (| __field0 |)
                               ]
@@ -6297,15 +6346,15 @@ Module normalized.
                                     [
                                       M.read (| __serializer |);
                                       M.read (| Value.String "Bytecode" |);
-                                      Value.Integer 59;
+                                      Value.Integer IntegerKind.U32 59;
                                       M.read (| Value.String "VecUnpack" |);
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (BinOp.Wrap.add
-                                          Integer.Usize
-                                          (Value.Integer 0)
-                                          (Value.Integer 1))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.add (|
+                                        BinOp.Wrap.add (|
+                                          Value.Integer IntegerKind.Usize 0,
+                                          Value.Integer IntegerKind.Usize 1
+                                        |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -6470,7 +6519,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 60;
+                                Value.Integer IntegerKind.U32 60;
                                 M.read (| Value.String "VecSwap" |);
                                 M.read (| __field0 |)
                               ]
@@ -6497,7 +6546,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 61;
+                                Value.Integer IntegerKind.U32 61;
                                 M.read (| Value.String "LdU16" |);
                                 M.read (| __field0 |)
                               ]
@@ -6524,7 +6573,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 62;
+                                Value.Integer IntegerKind.U32 62;
                                 M.read (| Value.String "LdU32" |);
                                 M.read (| __field0 |)
                               ]
@@ -6551,7 +6600,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 63;
+                                Value.Integer IntegerKind.U32 63;
                                 M.read (| Value.String "LdU256" |);
                                 M.read (| __field0 |)
                               ]
@@ -6576,7 +6625,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 64;
+                                Value.Integer IntegerKind.U32 64;
                                 M.read (| Value.String "CastU16" |)
                               ]
                             |)
@@ -6600,7 +6649,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 65;
+                                Value.Integer IntegerKind.U32 65;
                                 M.read (| Value.String "CastU32" |)
                               ]
                             |)
@@ -6624,7 +6673,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 66;
+                                Value.Integer IntegerKind.U32 66;
                                 M.read (| Value.String "CastU256" |)
                               ]
                             |)
@@ -6650,7 +6699,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 67;
+                                Value.Integer IntegerKind.U32 67;
                                 M.read (| Value.String "MutBorrowGlobalDeprecated" |);
                                 M.read (| __field0 |)
                               ]
@@ -6689,7 +6738,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 68;
+                                Value.Integer IntegerKind.U32 68;
                                 M.read (| Value.String "MutBorrowGlobalGenericDeprecated" |);
                                 M.read (| __field0 |)
                               ]
@@ -6716,7 +6765,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 69;
+                                Value.Integer IntegerKind.U32 69;
                                 M.read (| Value.String "ImmBorrowGlobalDeprecated" |);
                                 M.read (| __field0 |)
                               ]
@@ -6755,7 +6804,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 70;
+                                Value.Integer IntegerKind.U32 70;
                                 M.read (| Value.String "ImmBorrowGlobalGenericDeprecated" |);
                                 M.read (| __field0 |)
                               ]
@@ -6782,7 +6831,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 71;
+                                Value.Integer IntegerKind.U32 71;
                                 M.read (| Value.String "ExistsDeprecated" |);
                                 M.read (| __field0 |)
                               ]
@@ -6821,7 +6870,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 72;
+                                Value.Integer IntegerKind.U32 72;
                                 M.read (| Value.String "ExistsGenericDeprecated" |);
                                 M.read (| __field0 |)
                               ]
@@ -6848,7 +6897,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 73;
+                                Value.Integer IntegerKind.U32 73;
                                 M.read (| Value.String "MoveFromDeprecated" |);
                                 M.read (| __field0 |)
                               ]
@@ -6887,7 +6936,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 74;
+                                Value.Integer IntegerKind.U32 74;
                                 M.read (| Value.String "MoveFromGenericDeprecated" |);
                                 M.read (| __field0 |)
                               ]
@@ -6914,7 +6963,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 75;
+                                Value.Integer IntegerKind.U32 75;
                                 M.read (| Value.String "MoveToDeprecated" |);
                                 M.read (| __field0 |)
                               ]
@@ -6953,7 +7002,7 @@ Module normalized.
                               [
                                 M.read (| __serializer |);
                                 M.read (| Value.String "Bytecode" |);
-                                Value.Integer 76;
+                                Value.Integer IntegerKind.U32 76;
                                 M.read (| Value.String "MoveToGenericDeprecated" |);
                                 M.read (| __field0 |)
                               ]
@@ -6963,7 +7012,7 @@ Module normalized.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7004,7 +7053,7 @@ Module normalized.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7042,31 +7091,31 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               M.read (| Value.String "Module" |);
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (BinOp.Wrap.add
-                                  Integer.Usize
-                                  (BinOp.Wrap.add
-                                    Integer.Usize
-                                    (BinOp.Wrap.add
-                                      Integer.Usize
-                                      (BinOp.Wrap.add
-                                        Integer.Usize
-                                        (BinOp.Wrap.add
-                                          Integer.Usize
-                                          (BinOp.Wrap.add
-                                            Integer.Usize
-                                            (BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.rust_cast (Value.Bool false))
-                                              (Value.Integer 1))
-                                            (Value.Integer 1))
-                                          (Value.Integer 1))
-                                        (Value.Integer 1))
-                                      (Value.Integer 1))
-                                    (Value.Integer 1))
-                                  (Value.Integer 1))
-                                (Value.Integer 1)
+                              BinOp.Wrap.add (|
+                                BinOp.Wrap.add (|
+                                  BinOp.Wrap.add (|
+                                    BinOp.Wrap.add (|
+                                      BinOp.Wrap.add (|
+                                        BinOp.Wrap.add (|
+                                          BinOp.Wrap.add (|
+                                            BinOp.Wrap.add (|
+                                              M.rust_cast (Value.Bool false),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |),
+                                Value.Integer IntegerKind.Usize 1
+                              |)
                             ]
                           |)
                         |),
@@ -7600,7 +7649,7 @@ Module normalized.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7641,7 +7690,7 @@ Module normalized.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7713,7 +7762,7 @@ Module normalized.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7744,26 +7793,22 @@ Module normalized.
               M.read (| f |);
               M.read (| Value.String "Field" |);
               M.read (| Value.String "name" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_binary_format::normalized::Field",
+                "name"
+              |);
+              M.read (| Value.String "type_" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_binary_format::normalized::Field",
-                  "name"
-                |));
-              M.read (| Value.String "type_" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::Field",
-                    "type_"
-                  |)
-                |))
+                  "type_"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7773,17 +7818,6 @@ Module normalized.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_Field.
-  
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Field.
-    Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Field".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Field.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_Field.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Field".
@@ -7811,7 +7845,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7889,7 +7923,7 @@ Module normalized.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -7971,7 +8005,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8057,7 +8091,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8134,7 +8168,7 @@ Module normalized.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8165,26 +8199,22 @@ Module normalized.
               M.read (| f |);
               M.read (| Value.String "Constant" |);
               M.read (| Value.String "type_" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_binary_format::normalized::Constant",
+                "type_"
+              |);
+              M.read (| Value.String "data" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_binary_format::normalized::Constant",
-                  "type_"
-                |));
-              M.read (| Value.String "data" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::Constant",
-                    "data"
-                  |)
-                |))
+                  "data"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8194,17 +8224,6 @@ Module normalized.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_Constant.
-  
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Constant.
-    Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Constant".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Constant.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_Constant.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Constant".
@@ -8232,7 +8251,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8318,7 +8337,7 @@ Module normalized.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8403,7 +8422,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8497,7 +8516,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8608,7 +8627,7 @@ Module normalized.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8639,34 +8658,28 @@ Module normalized.
               M.read (| f |);
               M.read (| Value.String "Struct" |);
               M.read (| Value.String "abilities" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "move_binary_format::normalized::Struct",
-                  "abilities"
-                |));
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_binary_format::normalized::Struct",
+                "abilities"
+              |);
               M.read (| Value.String "type_parameters" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_binary_format::normalized::Struct",
+                "type_parameters"
+              |);
+              M.read (| Value.String "fields" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_binary_format::normalized::Struct",
-                  "type_parameters"
-                |));
-              M.read (| Value.String "fields" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::Struct",
-                    "fields"
-                  |)
-                |))
+                  "fields"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8676,17 +8689,6 @@ Module normalized.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_Struct.
-  
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Struct.
-    Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Struct".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Struct.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_Struct.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Struct".
@@ -8721,7 +8723,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8851,7 +8853,7 @@ Module normalized.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -8979,7 +8981,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9133,7 +9135,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9313,7 +9315,7 @@ Module normalized.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9351,57 +9353,43 @@ Module normalized.
               |) in
             let~ values :=
               M.alloc (|
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Function",
-                            "visibility"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Function",
-                            "is_entry"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Function",
-                            "type_parameters"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Function",
-                            "parameters"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Function",
-                            "return_"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Function",
-                              "code"
-                            |)
-                          |))
-                      ]
-                  |))
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::normalized::Function",
+                        "visibility"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::normalized::Function",
+                        "is_entry"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::normalized::Function",
+                        "type_parameters"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::normalized::Function",
+                        "parameters"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::normalized::Function",
+                        "return_"
+                      |);
+                      M.alloc (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "move_binary_format::normalized::Function",
+                          "code"
+                        |)
+                      |)
+                    ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -9413,13 +9401,13 @@ Module normalized.
                 [
                   M.read (| f |);
                   M.read (| Value.String "Function" |);
-                  (* Unsize *) M.pointer_coercion (M.read (| names |));
+                  M.read (| names |);
                   M.read (| values |)
                 ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9664,7 +9652,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9979,7 +9967,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -9989,17 +9977,6 @@ Module normalized.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Function.
-  
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Function.
-    Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Function".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Function.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_Function.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Function".
@@ -10059,7 +10036,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10119,21 +10096,22 @@ Module normalized.
                       ]
                     |),
                     ltac:(M.monadic
-                      (BinOp.Pure.eq
-                        (M.read (|
+                      (BinOp.eq (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "move_binary_format::normalized::Function",
                             "is_entry"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "move_binary_format::normalized::Function",
                             "is_entry"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
@@ -10283,7 +10261,7 @@ Module normalized.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10349,7 +10327,7 @@ Module normalized.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10380,26 +10358,22 @@ Module normalized.
               M.read (| f |);
               M.read (| Value.String "FieldRef" |);
               M.read (| Value.String "struct_name" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_binary_format::normalized::FieldRef",
+                "struct_name"
+              |);
+              M.read (| Value.String "field_index" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_binary_format::normalized::FieldRef",
-                  "struct_name"
-                |));
-              M.read (| Value.String "field_index" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::FieldRef",
-                    "field_index"
-                  |)
-                |))
+                  "field_index"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10473,7 +10447,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10559,7 +10533,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10569,17 +10543,6 @@ Module normalized.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_FieldRef.
-  
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_normalized_FieldRef.
-    Definition Self : Ty.t := Ty.path "move_binary_format::normalized::FieldRef".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_normalized_FieldRef.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_FieldRef.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::FieldRef".
@@ -10607,7 +10570,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10663,23 +10626,24 @@ Module normalized.
               ]
             |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "move_binary_format::normalized::FieldRef",
                     "field_index"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "move_binary_format::normalized::FieldRef",
                     "field_index"
                   |)
-                |))))
+                |)
+              |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10751,7 +10715,7 @@ Module normalized.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10782,26 +10746,22 @@ Module normalized.
               M.read (| f |);
               M.read (| Value.String "FunctionRef" |);
               M.read (| Value.String "module_id" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "move_binary_format::normalized::FunctionRef",
+                "module_id"
+              |);
+              M.read (| Value.String "function_ident" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "move_binary_format::normalized::FunctionRef",
-                  "module_id"
-                |));
-              M.read (| Value.String "function_ident" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "move_binary_format::normalized::FunctionRef",
-                    "function_ident"
-                  |)
-                |))
+                  "function_ident"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10881,7 +10841,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10967,7 +10927,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -10977,17 +10937,6 @@ Module normalized.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_FunctionRef.
-  
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_normalized_FunctionRef.
-    Definition Self : Ty.t := Ty.path "move_binary_format::normalized::FunctionRef".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_normalized_FunctionRef.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_FunctionRef.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::FunctionRef".
@@ -11015,7 +10964,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -11093,7 +11042,7 @@ Module normalized.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -13224,7 +13173,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -13296,11 +13245,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "BrTrue" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "BrTrue" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13320,11 +13265,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "BrFalse" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "BrFalse" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13344,11 +13285,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Branch" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Branch" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13368,11 +13305,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "LdU8" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "LdU8" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13392,11 +13325,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "LdU64" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "LdU64" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13416,11 +13345,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "LdU128" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "LdU128" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13494,11 +13419,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "LdConst" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "LdConst" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13554,11 +13475,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "CopyLoc" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "CopyLoc" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13578,11 +13495,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "MoveLoc" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "MoveLoc" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13602,11 +13515,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "StLoc" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "StLoc" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13626,11 +13535,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Call" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Call" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13650,11 +13555,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "CallGeneric" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "CallGeneric" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13674,11 +13575,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Pack" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Pack" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13698,11 +13595,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "PackGeneric" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "PackGeneric" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13722,11 +13615,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Unpack" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "Unpack" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13746,11 +13635,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "UnpackGeneric" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "UnpackGeneric" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13824,11 +13709,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "MutBorrowLoc" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "MutBorrowLoc" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13848,11 +13729,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "ImmBorrowLoc" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "ImmBorrowLoc" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13872,11 +13749,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "MutBorrowField" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "MutBorrowField" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13899,7 +13772,7 @@ Module normalized.
                         [
                           M.read (| f |);
                           M.read (| Value.String "MutBorrowFieldGeneric" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -13920,11 +13793,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "ImmBorrowField" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "ImmBorrowField" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -13947,7 +13816,7 @@ Module normalized.
                         [
                           M.read (| f |);
                           M.read (| Value.String "ImmBorrowFieldGeneric" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -14302,8 +14171,8 @@ Module normalized.
                         [
                           M.read (| f |);
                           M.read (| Value.String "VecPack" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
-                          (* Unsize *) M.pointer_coercion __self_1
+                          M.read (| __self_0 |);
+                          __self_1
                         ]
                       |)
                     |)));
@@ -14324,11 +14193,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "VecLen" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "VecLen" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -14348,11 +14213,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "VecImmBorrow" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "VecImmBorrow" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -14372,11 +14233,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "VecMutBorrow" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "VecMutBorrow" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -14396,11 +14253,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "VecPushBack" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "VecPushBack" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -14420,11 +14273,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "VecPopBack" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "VecPopBack" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -14454,8 +14303,8 @@ Module normalized.
                         [
                           M.read (| f |);
                           M.read (| Value.String "VecUnpack" |);
-                          (* Unsize *) M.pointer_coercion (M.read (| __self_0 |));
-                          (* Unsize *) M.pointer_coercion __self_1
+                          M.read (| __self_0 |);
+                          __self_1
                         ]
                       |)
                     |)));
@@ -14476,11 +14325,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "VecSwap" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "VecSwap" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -14500,11 +14345,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "LdU16" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "LdU16" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -14524,11 +14365,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "LdU32" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "LdU32" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -14548,11 +14385,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "LdU256" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "LdU256" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -14629,7 +14462,7 @@ Module normalized.
                         [
                           M.read (| f |);
                           M.read (| Value.String "MutBorrowGlobalDeprecated" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -14653,7 +14486,7 @@ Module normalized.
                         [
                           M.read (| f |);
                           M.read (| Value.String "MutBorrowGlobalGenericDeprecated" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -14677,7 +14510,7 @@ Module normalized.
                         [
                           M.read (| f |);
                           M.read (| Value.String "ImmBorrowGlobalDeprecated" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -14701,7 +14534,7 @@ Module normalized.
                         [
                           M.read (| f |);
                           M.read (| Value.String "ImmBorrowGlobalGenericDeprecated" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -14722,11 +14555,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "ExistsDeprecated" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "ExistsDeprecated" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -14749,7 +14578,7 @@ Module normalized.
                         [
                           M.read (| f |);
                           M.read (| Value.String "ExistsGenericDeprecated" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -14770,11 +14599,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "MoveFromDeprecated" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "MoveFromDeprecated" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -14797,7 +14622,7 @@ Module normalized.
                         [
                           M.read (| f |);
                           M.read (| Value.String "MoveFromGenericDeprecated" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)));
@@ -14818,11 +14643,7 @@ Module normalized.
                           "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "MoveToDeprecated" |);
-                          (* Unsize *) M.pointer_coercion __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "MoveToDeprecated" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -14845,14 +14666,14 @@ Module normalized.
                         [
                           M.read (| f |);
                           M.read (| Value.String "MoveToGenericDeprecated" |);
-                          (* Unsize *) M.pointer_coercion __self_0
+                          __self_0
                         ]
                       |)
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -14874,7 +14695,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -14884,7 +14705,7 @@ Module normalized.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -14898,7 +14719,7 @@ Module normalized.
               M.alloc (|
                 M.call_closure (|
                   M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |),
               [
@@ -16472,7 +16293,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -16494,7 +16315,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -16504,7 +16325,7 @@ Module normalized.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -16524,7 +16345,7 @@ Module normalized.
                     "partial_cmp",
                     []
                   |),
-                  [ __self_tag; __arg1_tag ]
+                  [ __self_discr; __arg1_discr ]
                 |)
               |),
               [
@@ -18240,7 +18061,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -18250,17 +18071,6 @@ Module normalized.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_normalized_Bytecode.
-  
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Bytecode.
-    Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Bytecode".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Bytecode.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_Bytecode.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Bytecode".
@@ -18455,7 +18265,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -18489,7 +18299,7 @@ Module normalized.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -18499,7 +18309,7 @@ Module normalized.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -18511,7 +18321,7 @@ Module normalized.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -18538,9 +18348,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -18563,9 +18380,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -18588,9 +18412,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -18613,9 +18444,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -18638,9 +18476,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -18663,9 +18508,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u128" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u128" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -18691,12 +18543,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_binary_format::normalized::Constant",
-                                  [ Ty.path "move_binary_format::normalized::Constant" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::normalized::Constant" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::Constant" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -18720,9 +18580,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -18745,9 +18612,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -18770,9 +18644,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -18798,12 +18679,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_binary_format::normalized::FunctionRef",
-                                  [ Ty.path "move_binary_format::normalized::FunctionRef" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::normalized::FunctionRef" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::FunctionRef" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -18830,34 +18719,44 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.path "move_binary_format::normalized::FunctionRef";
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.path "move_binary_format::normalized::Type";
-                                          Ty.path "alloc::alloc::Global"
+                                          Ty.path "move_binary_format::normalized::FunctionRef";
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Type";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
                                         ]
                                     ],
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
-                                        Ty.path "move_binary_format::normalized::FunctionRef";
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                        Ty.tuple
                                           [
-                                            Ty.path "move_binary_format::normalized::Type";
-                                            Ty.path "alloc::alloc::Global"
+                                            Ty.path "move_binary_format::normalized::FunctionRef";
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::normalized::Type";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -18884,12 +18783,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::identifier::Identifier",
-                                  [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::Identifier" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -18916,34 +18823,44 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.path "move_core_types::identifier::Identifier";
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.path "move_binary_format::normalized::Type";
-                                          Ty.path "alloc::alloc::Global"
+                                          Ty.path "move_core_types::identifier::Identifier";
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Type";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
                                         ]
                                     ],
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
-                                        Ty.path "move_core_types::identifier::Identifier";
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                        Ty.tuple
                                           [
-                                            Ty.path "move_binary_format::normalized::Type";
-                                            Ty.path "alloc::alloc::Global"
+                                            Ty.path "move_core_types::identifier::Identifier";
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::normalized::Type";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -18970,12 +18887,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::identifier::Identifier",
-                                  [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::Identifier" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19002,34 +18927,44 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.path "move_core_types::identifier::Identifier";
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.path "move_binary_format::normalized::Type";
-                                          Ty.path "alloc::alloc::Global"
+                                          Ty.path "move_core_types::identifier::Identifier";
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Type";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
                                         ]
                                     ],
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
-                                        Ty.path "move_core_types::identifier::Identifier";
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                        Ty.tuple
                                           [
-                                            Ty.path "move_binary_format::normalized::Type";
-                                            Ty.path "alloc::alloc::Global"
+                                            Ty.path "move_core_types::identifier::Identifier";
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::normalized::Type";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19053,9 +18988,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -19078,9 +19020,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u8" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u8" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -19106,12 +19055,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_binary_format::normalized::FieldRef",
-                                  [ Ty.path "move_binary_format::normalized::FieldRef" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::normalized::FieldRef" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::FieldRef" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19138,34 +19095,44 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.path "move_binary_format::normalized::FieldRef";
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.path "move_binary_format::normalized::Type";
-                                          Ty.path "alloc::alloc::Global"
+                                          Ty.path "move_binary_format::normalized::FieldRef";
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Type";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
                                         ]
                                     ],
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
-                                        Ty.path "move_binary_format::normalized::FieldRef";
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                        Ty.tuple
                                           [
-                                            Ty.path "move_binary_format::normalized::Type";
-                                            Ty.path "alloc::alloc::Global"
+                                            Ty.path "move_binary_format::normalized::FieldRef";
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::normalized::Type";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19192,12 +19159,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_binary_format::normalized::FieldRef",
-                                  [ Ty.path "move_binary_format::normalized::FieldRef" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::normalized::FieldRef" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::FieldRef" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19224,34 +19199,44 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.path "move_binary_format::normalized::FieldRef";
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.path "move_binary_format::normalized::Type";
-                                          Ty.path "alloc::alloc::Global"
+                                          Ty.path "move_binary_format::normalized::FieldRef";
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Type";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
                                         ]
                                     ],
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
-                                        Ty.path "move_binary_format::normalized::FieldRef";
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                        Ty.tuple
                                           [
-                                            Ty.path "move_binary_format::normalized::Type";
-                                            Ty.path "alloc::alloc::Global"
+                                            Ty.path "move_binary_format::normalized::FieldRef";
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::normalized::Type";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19293,17 +19278,32 @@ Module normalized.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "move_binary_format::normalized::Type",
-                                    [ Ty.path "move_binary_format::normalized::Type" ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::Type" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_binary_format::normalized::Type" ]
+                                    ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| __self_1 |) |))
-                                    (M.read (| M.read (| __arg1_1 |) |))))
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ __self_1; __arg1_1 ]
+                                  |)))
                               |)
                             |)));
                         fun γ =>
@@ -19330,12 +19330,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_binary_format::normalized::Type",
-                                  [ Ty.path "move_binary_format::normalized::Type" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::Type" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19362,12 +19370,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_binary_format::normalized::Type",
-                                  [ Ty.path "move_binary_format::normalized::Type" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::Type" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19394,12 +19410,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_binary_format::normalized::Type",
-                                  [ Ty.path "move_binary_format::normalized::Type" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::Type" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19426,12 +19450,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_binary_format::normalized::Type",
-                                  [ Ty.path "move_binary_format::normalized::Type" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::Type" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19458,12 +19490,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_binary_format::normalized::Type",
-                                  [ Ty.path "move_binary_format::normalized::Type" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::Type" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19505,17 +19545,32 @@ Module normalized.
                                 M.call_closure (|
                                   M.get_trait_method (|
                                     "core::cmp::PartialEq",
-                                    Ty.path "move_binary_format::normalized::Type",
-                                    [ Ty.path "move_binary_format::normalized::Type" ],
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::Type" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "move_binary_format::normalized::Type" ]
+                                    ],
                                     "eq",
                                     []
                                   |),
-                                  [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                  [ __self_0; __arg1_0 ]
                                 |),
                                 ltac:(M.monadic
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| __self_1 |) |))
-                                    (M.read (| M.read (| __arg1_1 |) |))))
+                                  (M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                      [ Ty.apply (Ty.path "&") [] [ Ty.path "u64" ] ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ __self_1; __arg1_1 ]
+                                  |)))
                               |)
                             |)));
                         fun γ =>
@@ -19542,12 +19597,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_binary_format::normalized::Type",
-                                  [ Ty.path "move_binary_format::normalized::Type" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_binary_format::normalized::Type" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_binary_format::normalized::Type" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19571,9 +19634,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -19596,9 +19666,16 @@ Module normalized.
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (| M.read (| __self_0 |) |))
-                                (M.read (| M.read (| __arg1_0 |) |))
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "u32" ],
+                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "u32" ] ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
                             |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -19624,12 +19701,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::u256::U256",
-                                  [ Ty.path "move_core_types::u256::U256" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::u256::U256" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::u256::U256" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19656,12 +19741,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::identifier::Identifier",
-                                  [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::Identifier" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19688,34 +19781,44 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.path "move_core_types::identifier::Identifier";
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.path "move_binary_format::normalized::Type";
-                                          Ty.path "alloc::alloc::Global"
+                                          Ty.path "move_core_types::identifier::Identifier";
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Type";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
                                         ]
                                     ],
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
-                                        Ty.path "move_core_types::identifier::Identifier";
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                        Ty.tuple
                                           [
-                                            Ty.path "move_binary_format::normalized::Type";
-                                            Ty.path "alloc::alloc::Global"
+                                            Ty.path "move_core_types::identifier::Identifier";
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::normalized::Type";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19742,12 +19845,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::identifier::Identifier",
-                                  [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::Identifier" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19774,34 +19885,44 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.path "move_core_types::identifier::Identifier";
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.path "move_binary_format::normalized::Type";
-                                          Ty.path "alloc::alloc::Global"
+                                          Ty.path "move_core_types::identifier::Identifier";
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Type";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
                                         ]
                                     ],
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
-                                        Ty.path "move_core_types::identifier::Identifier";
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                        Ty.tuple
                                           [
-                                            Ty.path "move_binary_format::normalized::Type";
-                                            Ty.path "alloc::alloc::Global"
+                                            Ty.path "move_core_types::identifier::Identifier";
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::normalized::Type";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19828,12 +19949,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::identifier::Identifier",
-                                  [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::Identifier" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19860,34 +19989,44 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.path "move_core_types::identifier::Identifier";
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.path "move_binary_format::normalized::Type";
-                                          Ty.path "alloc::alloc::Global"
+                                          Ty.path "move_core_types::identifier::Identifier";
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Type";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
                                         ]
                                     ],
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
-                                        Ty.path "move_core_types::identifier::Identifier";
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                        Ty.tuple
                                           [
-                                            Ty.path "move_binary_format::normalized::Type";
-                                            Ty.path "alloc::alloc::Global"
+                                            Ty.path "move_core_types::identifier::Identifier";
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::normalized::Type";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19914,12 +20053,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::identifier::Identifier",
-                                  [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::Identifier" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -19946,34 +20093,44 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.path "move_core_types::identifier::Identifier";
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.path "move_binary_format::normalized::Type";
-                                          Ty.path "alloc::alloc::Global"
+                                          Ty.path "move_core_types::identifier::Identifier";
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Type";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
                                         ]
                                     ],
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
-                                        Ty.path "move_core_types::identifier::Identifier";
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                        Ty.tuple
                                           [
-                                            Ty.path "move_binary_format::normalized::Type";
-                                            Ty.path "alloc::alloc::Global"
+                                            Ty.path "move_core_types::identifier::Identifier";
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::normalized::Type";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -20000,12 +20157,20 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.path "move_core_types::identifier::Identifier",
-                                  [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.path "move_core_types::identifier::Identifier" ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "move_core_types::identifier::Identifier" ]
+                                  ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ =>
@@ -20032,34 +20197,44 @@ Module normalized.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
-                                  Ty.tuple
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
                                     [
-                                      Ty.path "move_core_types::identifier::Identifier";
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
+                                      Ty.tuple
                                         [
-                                          Ty.path "move_binary_format::normalized::Type";
-                                          Ty.path "alloc::alloc::Global"
+                                          Ty.path "move_core_types::identifier::Identifier";
+                                          Ty.apply
+                                            (Ty.path "alloc::vec::Vec")
+                                            []
+                                            [
+                                              Ty.path "move_binary_format::normalized::Type";
+                                              Ty.path "alloc::alloc::Global"
+                                            ]
                                         ]
                                     ],
                                   [
-                                    Ty.tuple
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
                                       [
-                                        Ty.path "move_core_types::identifier::Identifier";
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
+                                        Ty.tuple
                                           [
-                                            Ty.path "move_binary_format::normalized::Type";
-                                            Ty.path "alloc::alloc::Global"
+                                            Ty.path "move_core_types::identifier::Identifier";
+                                            Ty.apply
+                                              (Ty.path "alloc::vec::Vec")
+                                              []
+                                              [
+                                                Ty.path "move_binary_format::normalized::Type";
+                                                Ty.path "alloc::alloc::Global"
+                                              ]
                                           ]
                                       ]
                                   ],
                                   "eq",
                                   []
                                 |),
-                                [ M.read (| __self_0 |); M.read (| __arg1_0 |) ]
+                                [ __self_0; __arg1_0 ]
                               |)
                             |)));
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
@@ -20069,7 +20244,7 @@ Module normalized.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -20139,7 +20314,7 @@ Module normalized.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -20373,7 +20548,7 @@ Module normalized.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -20413,71 +20588,53 @@ Module normalized.
               |) in
             let~ values :=
               M.alloc (|
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Module",
-                            "file_format_version"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Module",
-                            "address"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Module",
-                            "name"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Module",
-                            "dependencies"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Module",
-                            "friends"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Module",
-                            "structs"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::normalized::Module",
-                            "functions"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::normalized::Module",
-                              "constants"
-                            |)
-                          |))
-                      ]
-                  |))
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::normalized::Module",
+                        "file_format_version"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::normalized::Module",
+                        "address"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::normalized::Module",
+                        "name"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::normalized::Module",
+                        "dependencies"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::normalized::Module",
+                        "friends"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::normalized::Module",
+                        "structs"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::normalized::Module",
+                        "functions"
+                      |);
+                      M.alloc (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "move_binary_format::normalized::Module",
+                          "constants"
+                        |)
+                      |)
+                    ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -20489,13 +20646,13 @@ Module normalized.
                 [
                   M.read (| f |);
                   M.read (| Value.String "Module" |);
-                  (* Unsize *) M.pointer_coercion (M.read (| names |));
+                  M.read (| names |);
                   M.read (| values |)
                 ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -20505,17 +20662,6 @@ Module normalized.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_binary_format_normalized_Module.
-  
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Module.
-    Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Module".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_normalized_Module.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_normalized_Module.
     Definition Self : Ty.t := Ty.path "move_binary_format::normalized::Module".
@@ -20591,7 +20737,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -20631,21 +20777,22 @@ Module normalized.
                   LogicalOp.and (|
                     LogicalOp.and (|
                       LogicalOp.and (|
-                        BinOp.Pure.eq
-                          (M.read (|
+                        BinOp.eq (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "move_binary_format::normalized::Module",
                               "file_format_version"
                             |)
-                          |))
-                          (M.read (|
+                          |),
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| other |),
                               "move_binary_format::normalized::Module",
                               "file_format_version"
                             |)
-                          |)),
+                          |)
+                        |),
                         ltac:(M.monadic
                           (M.call_closure (|
                             M.get_trait_method (|
@@ -20881,7 +21028,7 @@ Module normalized.
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -21042,23 +21189,24 @@ Module normalized.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let d := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "move_binary_format::normalized::Struct",
-                                            "new",
-                                            []
-                                          |),
-                                          [ M.read (| m |); M.read (| d |) ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let d := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "move_binary_format::normalized::Struct",
+                                              "new",
+                                              []
+                                            |),
+                                            [ M.read (| m |); M.read (| d |) ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -21164,23 +21312,24 @@ Module normalized.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let constant := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "move_binary_format::normalized::Constant",
-                                            "new",
-                                            []
-                                          |),
-                                          [ M.read (| m |); M.read (| constant |) ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let constant := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "move_binary_format::normalized::Constant",
+                                              "new",
+                                              []
+                                            |),
+                                            [ M.read (| m |); M.read (| constant |) ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -21289,23 +21438,24 @@ Module normalized.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let func_def := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "move_binary_format::normalized::Function",
-                                            "new",
-                                            []
-                                          |),
-                                          [ M.read (| m |); M.read (| func_def |) ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let func_def := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "move_binary_format::normalized::Function",
+                                              "new",
+                                              []
+                                            |),
+                                            [ M.read (| m |); M.read (| func_def |) ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -21364,7 +21514,7 @@ Module normalized.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -21411,7 +21561,7 @@ Module normalized.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_module_id : M.IsAssociatedFunction Self "module_id" module_id.
@@ -21502,8 +21652,8 @@ Module normalized.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (M.call_closure (|
+                                    UnOp.not (|
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.apply
                                             (Ty.path "alloc::vec::Vec")
@@ -21523,7 +21673,8 @@ Module normalized.
                                             "type_parameters"
                                           |)
                                         ]
-                                      |))
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -21542,17 +21693,15 @@ Module normalized.
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String
-                                                      "A struct with N type parameters should be encoded as StructModuleInstantiation with type_arguments = [TypeParameter(1), ..., TypeParameter(N)]"
-                                                  |)
-                                                ]
-                                            |))
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (|
+                                                  Value.String
+                                                    "A struct with N type parameters should be encoded as StructModuleInstantiation with type_arguments = [TypeParameter(1), ..., TypeParameter(N)]"
+                                                |)
+                                              ]
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -21927,24 +22076,25 @@ Module normalized.
                                                 ltac:(M.monadic
                                                   match γ with
                                                   | [ α0 ] =>
-                                                    M.match_operator (|
-                                                      M.alloc (| α0 |),
-                                                      [
-                                                        fun γ =>
-                                                          ltac:(M.monadic
-                                                            (let t := M.copy (| γ |) in
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path
-                                                                  "move_binary_format::normalized::Type",
-                                                                "new",
-                                                                []
-                                                              |),
-                                                              [ M.read (| m |); M.read (| t |) ]
-                                                            |)))
-                                                      ]
-                                                    |)
-                                                  | _ => M.impossible (||)
+                                                    ltac:(M.monadic
+                                                      (M.match_operator (|
+                                                        M.alloc (| α0 |),
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let t := M.copy (| γ |) in
+                                                              M.call_closure (|
+                                                                M.get_associated_function (|
+                                                                  Ty.path
+                                                                    "move_binary_format::normalized::Type",
+                                                                  "new",
+                                                                  []
+                                                                |),
+                                                                [ M.read (| m |); M.read (| t |) ]
+                                                              |)))
+                                                        ]
+                                                      |)))
+                                                  | _ => M.impossible "wrong number of arguments"
                                                   end))
                                           ]
                                         |)
@@ -22186,7 +22336,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -22353,23 +22503,24 @@ Module normalized.
                               ltac:(M.monadic
                                 match γ with
                                 | [ α0 ] =>
-                                  M.match_operator (|
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let t := M.copy (| γ |) in
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "move_binary_format::normalized::Type",
-                                              "is_closed",
-                                              []
-                                            |),
-                                            [ M.read (| t |) ]
-                                          |)))
-                                    ]
-                                  |)
-                                | _ => M.impossible (||)
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α0 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let t := M.copy (| γ |) in
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "move_binary_format::normalized::Type",
+                                                "is_closed",
+                                                []
+                                              |),
+                                              [ M.read (| t |) ]
+                                            |)))
+                                      ]
+                                    |)))
+                                | _ => M.impossible "wrong number of arguments"
                                 end))
                         ]
                       |)
@@ -22418,23 +22569,24 @@ Module normalized.
                           ltac:(M.monadic
                             match γ with
                             | [ t ] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path "move_binary_format::normalized::Type",
-                                    "is_closed",
-                                    []
-                                  |),
-                                  [ M.read (| M.read (| t |) |) ]
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "move_binary_format::normalized::Type",
+                                      "is_closed",
+                                      []
+                                    |),
+                                    [ M.read (| M.read (| t |) |) ]
+                                  |)
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_closed : M.IsAssociatedFunction Self "is_closed" is_closed.
@@ -22545,18 +22697,19 @@ Module normalized.
                                           ltac:(M.monadic
                                             match γ with
                                             | [] =>
-                                              M.alloc (|
-                                                M.never_to_any (|
-                                                  M.read (|
-                                                    M.return_ (|
-                                                      Value.StructTuple
-                                                        "core::option::Option::None"
-                                                        []
+                                              ltac:(M.monadic
+                                                (M.alloc (|
+                                                  M.never_to_any (|
+                                                    M.read (|
+                                                      M.return_ (|
+                                                        Value.StructTuple
+                                                          "core::option::Option::None"
+                                                          []
+                                                      |)
                                                     |)
                                                   |)
-                                                |)
-                                              |)
-                                            | _ => M.impossible (||)
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     |)));
                                 fun γ =>
@@ -22874,45 +23027,49 @@ Module normalized.
                                                                 ltac:(M.monadic
                                                                   match γ with
                                                                   | [ α0 ] =>
-                                                                    M.match_operator (|
-                                                                      M.alloc (| α0 |),
-                                                                      [
-                                                                        fun γ =>
-                                                                          ltac:(M.monadic
-                                                                            (let t :=
-                                                                              M.copy (| γ |) in
-                                                                            M.call_closure (|
-                                                                              M.get_associated_function (|
-                                                                                Ty.apply
-                                                                                  (Ty.path
-                                                                                    "core::option::Option")
-                                                                                  []
-                                                                                  [
-                                                                                    Ty.path
-                                                                                      "move_core_types::language_storage::TypeTag"
-                                                                                  ],
-                                                                                "expect",
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "move_binary_format::normalized::Type",
-                                                                                    "into_type_tag",
+                                                                    ltac:(M.monadic
+                                                                      (M.match_operator (|
+                                                                        M.alloc (| α0 |),
+                                                                        [
+                                                                          fun γ =>
+                                                                            ltac:(M.monadic
+                                                                              (let t :=
+                                                                                M.copy (| γ |) in
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "core::option::Option")
                                                                                     []
-                                                                                  |),
-                                                                                  [ M.read (| t |) ]
-                                                                                |);
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    "Invariant violation: struct type argument contains reference"
-                                                                                |)
-                                                                              ]
-                                                                            |)))
-                                                                      ]
-                                                                    |)
-                                                                  | _ => M.impossible (||)
+                                                                                    [
+                                                                                      Ty.path
+                                                                                        "move_core_types::language_storage::TypeTag"
+                                                                                    ],
+                                                                                  "expect",
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "move_binary_format::normalized::Type",
+                                                                                      "into_type_tag",
+                                                                                      []
+                                                                                    |),
+                                                                                    [ M.read (| t |)
+                                                                                    ]
+                                                                                  |);
+                                                                                  M.read (|
+                                                                                    Value.String
+                                                                                      "Invariant violation: struct type argument contains reference"
+                                                                                  |)
+                                                                                ]
+                                                                              |)))
+                                                                        ]
+                                                                      |)))
+                                                                  | _ =>
+                                                                    M.impossible
+                                                                      "wrong number of arguments"
                                                                   end))
                                                           ]
                                                         |)
@@ -22960,7 +23117,7 @@ Module normalized.
                   |)
                 ]))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_type_tag :
@@ -23078,7 +23235,7 @@ Module normalized.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_into_struct_tag :
@@ -23215,19 +23372,20 @@ Module normalized.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::clone::Clone",
-                                    Ty.path "move_binary_format::normalized::Type",
-                                    [],
-                                    "clone",
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::clone::Clone",
+                                      Ty.path "move_binary_format::normalized::Type",
+                                      [],
+                                      "clone",
+                                      []
+                                    |),
+                                    [ M.read (| self |) ]
+                                  |)
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -23500,24 +23658,25 @@ Module normalized.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let t := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "move_binary_format::normalized::Type",
-                                                        "subst",
-                                                        []
-                                                      |),
-                                                      [ M.read (| t |); M.read (| type_args |) ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let t := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_binary_format::normalized::Type",
+                                                          "subst",
+                                                          []
+                                                        |),
+                                                        [ M.read (| t |); M.read (| type_args |) ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |)
@@ -23581,7 +23740,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_subst : M.IsAssociatedFunction Self "subst" subst.
@@ -23657,7 +23816,7 @@ Module normalized.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -23862,24 +24021,25 @@ Module normalized.
                                       ltac:(M.monadic
                                         match γ with
                                         | [ α0 ] =>
-                                          M.match_operator (|
-                                            M.alloc (| α0 |),
-                                            [
-                                              fun γ =>
-                                                ltac:(M.monadic
-                                                  (let f := M.copy (| γ |) in
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path
-                                                        "move_binary_format::normalized::Field",
-                                                      "new",
-                                                      []
-                                                    |),
-                                                    [ M.read (| m |); M.read (| f |) ]
-                                                  |)))
-                                            ]
-                                          |)
-                                        | _ => M.impossible (||)
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| α0 |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let f := M.copy (| γ |) in
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "move_binary_format::normalized::Field",
+                                                        "new",
+                                                        []
+                                                      |),
+                                                      [ M.read (| m |); M.read (| f |) ]
+                                                    |)))
+                                              ]
+                                            |)))
+                                        | _ => M.impossible "wrong number of arguments"
                                         end))
                                 ]
                               |)
@@ -23961,7 +24121,7 @@ Module normalized.
               |) in
             M.alloc (| Value.Tuple [ M.read (| name |); M.read (| s |) ] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -23995,7 +24155,7 @@ Module normalized.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_idx : M.IsAssociatedFunction Self "from_idx" from_idx.
@@ -24077,24 +24237,25 @@ Module normalized.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let param := M.copy (| γ |) in
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| param |),
-                                "move_binary_format::file_format::StructTypeParameter",
-                                "constraints"
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let param := M.copy (| γ |) in
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| param |),
+                                  "move_binary_format::file_format::StructTypeParameter",
+                                  "constraints"
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_type_param_constraints :
@@ -24280,71 +24441,27 @@ Module normalized.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let code := M.copy (| γ |) in
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::iter::traits::iterator::Iterator",
-                                            Ty.apply
-                                              (Ty.path "core::iter::adapters::map::Map")
-                                              []
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "core::slice::iter::Iter")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::Bytecode"
-                                                  ];
-                                                Ty.function
-                                                  [
-                                                    Ty.tuple
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::Bytecode"
-                                                          ]
-                                                      ]
-                                                  ]
-                                                  (Ty.path
-                                                    "move_binary_format::normalized::Bytecode")
-                                              ],
-                                            [],
-                                            "collect",
-                                            [
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let code := M.copy (| γ |) in
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::iter::traits::iterator::Iterator",
                                               Ty.apply
-                                                (Ty.path "alloc::vec::Vec")
+                                                (Ty.path "core::iter::adapters::map::Map")
                                                 []
                                                 [
-                                                  Ty.path
-                                                    "move_binary_format::normalized::Bytecode";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ]
-                                            ]
-                                          |),
-                                          [
-                                            M.call_closure (|
-                                              M.get_trait_method (|
-                                                "core::iter::traits::iterator::Iterator",
-                                                Ty.apply
-                                                  (Ty.path "core::slice::iter::Iter")
-                                                  []
-                                                  [
-                                                    Ty.path
-                                                      "move_binary_format::file_format::Bytecode"
-                                                  ],
-                                                [],
-                                                "map",
-                                                [
-                                                  Ty.path
-                                                    "move_binary_format::normalized::Bytecode";
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::Iter")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::Bytecode"
+                                                    ];
                                                   Ty.function
                                                     [
                                                       Ty.tuple
@@ -24360,81 +24477,129 @@ Module normalized.
                                                     ]
                                                     (Ty.path
                                                       "move_binary_format::normalized::Bytecode")
-                                                ]
-                                              |),
+                                                ],
+                                              [],
+                                              "collect",
                                               [
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "slice")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::file_format::Bytecode"
-                                                      ],
-                                                    "iter",
-                                                    []
-                                                  |),
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
                                                   [
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
-                                                        Ty.apply
-                                                          (Ty.path "alloc::vec::Vec")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_binary_format::file_format::Bytecode";
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ],
-                                                        [],
-                                                        "deref",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.read (| code |),
-                                                          "move_binary_format::file_format::CodeUnit",
-                                                          "code"
-                                                        |)
-                                                      ]
-                                                    |)
+                                                    Ty.path
+                                                      "move_binary_format::normalized::Bytecode";
+                                                    Ty.path "alloc::alloc::Global"
                                                   ]
-                                                |);
-                                                M.closure
-                                                  (fun γ =>
-                                                    ltac:(M.monadic
-                                                      match γ with
-                                                      | [ α0 ] =>
-                                                        M.match_operator (|
-                                                          M.alloc (| α0 |),
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (let bytecode := M.copy (| γ |) in
-                                                                M.call_closure (|
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "move_binary_format::normalized::Bytecode",
-                                                                    "new",
-                                                                    []
-                                                                  |),
-                                                                  [
-                                                                    M.read (| m |);
-                                                                    M.read (| bytecode |)
-                                                                  ]
-                                                                |)))
-                                                          ]
-                                                        |)
-                                                      | _ => M.impossible (||)
-                                                      end))
                                               ]
-                                            |)
-                                          ]
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                            |),
+                                            [
+                                              M.call_closure (|
+                                                M.get_trait_method (|
+                                                  "core::iter::traits::iterator::Iterator",
+                                                  Ty.apply
+                                                    (Ty.path "core::slice::iter::Iter")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::file_format::Bytecode"
+                                                    ],
+                                                  [],
+                                                  "map",
+                                                  [
+                                                    Ty.path
+                                                      "move_binary_format::normalized::Bytecode";
+                                                    Ty.function
+                                                      [
+                                                        Ty.tuple
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "&")
+                                                              []
+                                                              [
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::Bytecode"
+                                                              ]
+                                                          ]
+                                                      ]
+                                                      (Ty.path
+                                                        "move_binary_format::normalized::Bytecode")
+                                                  ]
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "slice")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_binary_format::file_format::Bytecode"
+                                                        ],
+                                                      "iter",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::ops::deref::Deref",
+                                                          Ty.apply
+                                                            (Ty.path "alloc::vec::Vec")
+                                                            []
+                                                            [
+                                                              Ty.path
+                                                                "move_binary_format::file_format::Bytecode";
+                                                              Ty.path "alloc::alloc::Global"
+                                                            ],
+                                                          [],
+                                                          "deref",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| code |),
+                                                            "move_binary_format::file_format::CodeUnit",
+                                                            "code"
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  M.closure
+                                                    (fun γ =>
+                                                      ltac:(M.monadic
+                                                        match γ with
+                                                        | [ α0 ] =>
+                                                          ltac:(M.monadic
+                                                            (M.match_operator (|
+                                                              M.alloc (| α0 |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let bytecode :=
+                                                                      M.copy (| γ |) in
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "move_binary_format::normalized::Bytecode",
+                                                                        "new",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (| m |);
+                                                                        M.read (| bytecode |)
+                                                                      ]
+                                                                    |)))
+                                                              ]
+                                                            |)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
+                                                        end))
+                                                ]
+                                              |)
+                                            ]
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -24607,23 +24772,24 @@ Module normalized.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let s := M.copy (| γ |) in
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "move_binary_format::normalized::Type",
-                                                  "new",
-                                                  []
-                                                |),
-                                                [ M.read (| m |); M.read (| s |) ]
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let s := M.copy (| γ |) in
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "move_binary_format::normalized::Type",
+                                                    "new",
+                                                    []
+                                                  |),
+                                                  [ M.read (| m |); M.read (| s |) ]
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -24751,23 +24917,24 @@ Module normalized.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let s := M.copy (| γ |) in
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "move_binary_format::normalized::Type",
-                                                  "new",
-                                                  []
-                                                |),
-                                                [ M.read (| m |); M.read (| s |) ]
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let s := M.copy (| γ |) in
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "move_binary_format::normalized::Type",
+                                                    "new",
+                                                    []
+                                                  |),
+                                                  [ M.read (| m |); M.read (| s |) ]
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -24778,7 +24945,7 @@ Module normalized.
               |) in
             M.alloc (| Value.Tuple [ M.read (| name |); M.read (| f |) ] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -25003,7 +25170,7 @@ Module normalized.
                 M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new_from_name :
@@ -25294,29 +25461,30 @@ Module normalized.
                                         ltac:(M.monadic
                                           match γ with
                                           | [ α0 ] =>
-                                            M.match_operator (|
-                                              M.alloc (| α0 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let ty := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::convert::Into",
-                                                        Ty.path
-                                                          "move_core_types::language_storage::TypeTag",
-                                                        [
+                                            ltac:(M.monadic
+                                              (M.match_operator (|
+                                                M.alloc (| α0 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let ty := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::convert::Into",
                                                           Ty.path
-                                                            "move_binary_format::normalized::Type"
-                                                        ],
-                                                        "into",
-                                                        []
-                                                      |),
-                                                      [ M.read (| ty |) ]
-                                                    |)))
-                                              ]
-                                            |)
-                                          | _ => M.impossible (||)
+                                                            "move_core_types::language_storage::TypeTag",
+                                                          [
+                                                            Ty.path
+                                                              "move_binary_format::normalized::Type"
+                                                          ],
+                                                          "into",
+                                                          []
+                                                        |),
+                                                        [ M.read (| ty |) ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   ]
                                 |)
@@ -25327,7 +25495,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -25397,7 +25565,7 @@ Module normalized.
                   |)
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -25431,7 +25599,7 @@ Module normalized.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_idx : M.IsAssociatedFunction Self "from_idx" from_idx.
@@ -25515,7 +25683,7 @@ Module normalized.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -25549,7 +25717,7 @@ Module normalized.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_idx : M.IsAssociatedFunction Self "from_idx" from_idx.
@@ -26415,24 +26583,26 @@ Module normalized.
                                                   ltac:(M.monadic
                                                     match γ with
                                                     | [ α0 ] =>
-                                                      M.match_operator (|
-                                                        M.alloc (| α0 |),
-                                                        [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let tok := M.copy (| γ |) in
-                                                              M.call_closure (|
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "move_binary_format::normalized::Type",
-                                                                  "new",
-                                                                  []
-                                                                |),
-                                                                [ M.read (| m |); M.read (| tok |) ]
-                                                              |)))
-                                                        ]
-                                                      |)
-                                                    | _ => M.impossible (||)
+                                                      ltac:(M.monadic
+                                                        (M.match_operator (|
+                                                          M.alloc (| α0 |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let tok := M.copy (| γ |) in
+                                                                M.call_closure (|
+                                                                  M.get_associated_function (|
+                                                                    Ty.path
+                                                                      "move_binary_format::normalized::Type",
+                                                                    "new",
+                                                                    []
+                                                                  |),
+                                                                  [ M.read (| m |); M.read (| tok |)
+                                                                  ]
+                                                                |)))
+                                                          ]
+                                                        |)))
+                                                    | _ => M.impossible "wrong number of arguments"
                                                     end))
                                             ]
                                           |)
@@ -27176,7 +27346,7 @@ Module normalized.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -27300,75 +27470,71 @@ Module normalized.
                                           []
                                         |),
                                         [
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "0x" |);
-                                                  M.read (| Value.String "::" |);
-                                                  M.read (| Value.String "::" |)
-                                                ]
-                                            |));
-                                          (* Unsize *)
-                                          M.pointer_coercion
-                                            (M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [ Ty.path "alloc::string::String" ]
-                                                    |),
-                                                    [
-                                                      M.alloc (|
-                                                        M.call_closure (|
-                                                          M.get_associated_function (|
-                                                            Ty.path
-                                                              "move_core_types::account_address::AccountAddress",
-                                                            "short_str_lossless",
-                                                            []
-                                                          |),
-                                                          [ M.read (| address |) ]
-                                                        |)
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (| Value.String "0x" |);
+                                                M.read (| Value.String "::" |);
+                                                M.read (| Value.String "::" |)
+                                              ]
+                                          |);
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [ Ty.path "alloc::string::String" ]
+                                                  |),
+                                                  [
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "move_core_types::account_address::AccountAddress",
+                                                          "short_str_lossless",
+                                                          []
+                                                        |),
+                                                        [ M.read (| address |) ]
                                                       |)
+                                                    |)
+                                                  ]
+                                                |);
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::identifier::Identifier"
+                                                        ]
                                                     ]
-                                                  |);
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_core_types::identifier::Identifier"
-                                                          ]
-                                                      ]
-                                                    |),
-                                                    [ module ]
-                                                  |);
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.path "core::fmt::rt::Argument",
-                                                      "new_display",
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path "&")
-                                                          []
-                                                          [
-                                                            Ty.path
-                                                              "move_core_types::identifier::Identifier"
-                                                          ]
-                                                      ]
-                                                    |),
-                                                    [ name ]
-                                                  |)
-                                                ]
-                                            |))
+                                                  |),
+                                                  [ module ]
+                                                |);
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "core::fmt::rt::Argument",
+                                                    "new_display",
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "&")
+                                                        []
+                                                        [
+                                                          Ty.path
+                                                            "move_core_types::identifier::Identifier"
+                                                        ]
+                                                    ]
+                                                  |),
+                                                  [ name ]
+                                                |)
+                                              ]
+                                          |)
                                         ]
                                       |)
                                     ]
@@ -27501,12 +27667,9 @@ Module normalized.
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [ M.read (| Value.String "<" |) ]
-                                                      |))
+                                                    M.alloc (|
+                                                      Value.Array [ M.read (| Value.String "<" |) ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -27596,34 +27759,30 @@ Module normalized.
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array [ M.read (| Value.String "" |) ]
-                                                      |));
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::rt::Argument",
-                                                                "new_display",
-                                                                [
-                                                                  Ty.apply
-                                                                    (Ty.path "&")
-                                                                    []
-                                                                    [
-                                                                      Ty.path
-                                                                        "move_binary_format::normalized::Type"
-                                                                    ]
-                                                                ]
-                                                              |),
-                                                              [ first_ty ]
-                                                            |)
-                                                          ]
-                                                      |))
+                                                    M.alloc (|
+                                                      Value.Array [ M.read (| Value.String "" |) ]
+                                                    |);
+                                                    M.alloc (|
+                                                      Value.Array
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::fmt::rt::Argument",
+                                                              "new_display",
+                                                              [
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [
+                                                                    Ty.path
+                                                                      "move_binary_format::normalized::Type"
+                                                                  ]
+                                                              ]
+                                                            |),
+                                                            [ first_ty ]
+                                                          |)
+                                                        ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -27750,7 +27909,7 @@ Module normalized.
                                                       |)
                                                     ]
                                                   |);
-                                                  Value.Integer 1
+                                                  Value.Integer IntegerKind.Usize 1
                                                 ]
                                               |)
                                             ]
@@ -27847,42 +28006,38 @@ Module normalized.
                                                                               []
                                                                             |),
                                                                             [
-                                                                              (* Unsize *)
-                                                                              M.pointer_coercion
-                                                                                (M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          ", "
-                                                                                      |)
-                                                                                    ]
-                                                                                |));
-                                                                              (* Unsize *)
-                                                                              M.pointer_coercion
-                                                                                (M.alloc (|
-                                                                                  Value.Array
-                                                                                    [
-                                                                                      M.call_closure (|
-                                                                                        M.get_associated_function (|
-                                                                                          Ty.path
-                                                                                            "core::fmt::rt::Argument",
-                                                                                          "new_display",
-                                                                                          [
-                                                                                            Ty.apply
-                                                                                              (Ty.path
-                                                                                                "&")
-                                                                                              []
-                                                                                              [
-                                                                                                Ty.path
-                                                                                                  "move_binary_format::normalized::Type"
-                                                                                              ]
-                                                                                          ]
-                                                                                        |),
-                                                                                        [ ty ]
-                                                                                      |)
-                                                                                    ]
-                                                                                |))
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      Value.String
+                                                                                        ", "
+                                                                                    |)
+                                                                                  ]
+                                                                              |);
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.call_closure (|
+                                                                                      M.get_associated_function (|
+                                                                                        Ty.path
+                                                                                          "core::fmt::rt::Argument",
+                                                                                        "new_display",
+                                                                                        [
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "&")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "move_binary_format::normalized::Type"
+                                                                                            ]
+                                                                                        ]
+                                                                                      |),
+                                                                                      [ ty ]
+                                                                                    |)
+                                                                                  ]
+                                                                              |)
                                                                             ]
                                                                           |)
                                                                         ]
@@ -27992,12 +28147,9 @@ Module normalized.
                                                     []
                                                   |),
                                                   [
-                                                    (* Unsize *)
-                                                    M.pointer_coercion
-                                                      (M.alloc (|
-                                                        Value.Array
-                                                          [ M.read (| Value.String ">" |) ]
-                                                      |))
+                                                    M.alloc (|
+                                                      Value.Array [ M.read (| Value.String ">" |) ]
+                                                    |)
                                                   ]
                                                 |)
                                               ]
@@ -28090,44 +28242,40 @@ Module normalized.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "vector<" |);
-                                          M.read (| Value.String ">" |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "alloc::boxed::Box")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::normalized::Type";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ]
-                                                  ]
-                                              ]
-                                            |),
-                                            [ ty ]
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (| Value.String "vector<" |);
+                                        M.read (| Value.String ">" |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::boxed::Box")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::normalized::Type";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ]
+                                                ]
+                                            ]
+                                          |),
+                                          [ ty ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -28153,11 +28301,7 @@ Module normalized.
                                   "new_const",
                                   []
                                 |),
-                                [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |))
-                                ]
+                                [ M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |) ]
                               |)
                             ]
                           |)
@@ -28182,11 +28326,7 @@ Module normalized.
                                   "new_const",
                                   []
                                 |),
-                                [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |))
-                                ]
+                                [ M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |) ]
                               |)
                             ]
                           |)
@@ -28211,11 +28351,7 @@ Module normalized.
                                   "new_const",
                                   []
                                 |),
-                                [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |))
-                                ]
+                                [ M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |) ]
                               |)
                             ]
                           |)
@@ -28240,11 +28376,7 @@ Module normalized.
                                   "new_const",
                                   []
                                 |),
-                                [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |))
-                                ]
+                                [ M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |) ]
                               |)
                             ]
                           |)
@@ -28269,11 +28401,7 @@ Module normalized.
                                   "new_const",
                                   []
                                 |),
-                                [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |))
-                                ]
+                                [ M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |) ]
                               |)
                             ]
                           |)
@@ -28298,11 +28426,7 @@ Module normalized.
                                   "new_const",
                                   []
                                 |),
-                                [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |))
-                                ]
+                                [ M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |) ]
                               |)
                             ]
                           |)
@@ -28330,12 +28454,7 @@ Module normalized.
                                   "new_const",
                                   []
                                 |),
-                                [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array [ M.read (| Value.String "address" |) ]
-                                    |))
+                                [ M.alloc (| Value.Array [ M.read (| Value.String "address" |) ] |)
                                 ]
                               |)
                             ]
@@ -28364,13 +28483,7 @@ Module normalized.
                                   "new_const",
                                   []
                                 |),
-                                [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array [ M.read (| Value.String "signer" |) ]
-                                    |))
-                                ]
+                                [ M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |) ]
                               |)
                             ]
                           |)
@@ -28395,11 +28508,7 @@ Module normalized.
                                   "new_const",
                                   []
                                 |),
-                                [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |))
-                                ]
+                                [ M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |) ]
                               |)
                             ]
                           |)
@@ -28430,38 +28539,34 @@ Module normalized.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (| Value.Array [ M.read (| Value.String "&" |) ] |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "alloc::boxed::Box")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::normalized::Type";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ]
-                                                  ]
-                                              ]
-                                            |),
-                                            [ r ]
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (| Value.Array [ M.read (| Value.String "&" |) ] |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::boxed::Box")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::normalized::Type";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ]
+                                                ]
+                                            ]
+                                          |),
+                                          [ r ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -28493,40 +28598,34 @@ Module normalized.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array [ M.read (| Value.String "&mut " |) ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_display",
-                                              [
-                                                Ty.apply
-                                                  (Ty.path "&")
-                                                  []
-                                                  [
-                                                    Ty.apply
-                                                      (Ty.path "alloc::boxed::Box")
-                                                      []
-                                                      [
-                                                        Ty.path
-                                                          "move_binary_format::normalized::Type";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ]
-                                                  ]
-                                              ]
-                                            |),
-                                            [ r ]
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (| Value.Array [ M.read (| Value.String "&mut " |) ] |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_display",
+                                            [
+                                              Ty.apply
+                                                (Ty.path "&")
+                                                []
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "alloc::boxed::Box")
+                                                    []
+                                                    [
+                                                      Ty.path
+                                                        "move_binary_format::normalized::Type";
+                                                      Ty.path "alloc::alloc::Global"
+                                                    ]
+                                                ]
+                                            ]
+                                          |),
+                                          [ r ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -28558,24 +28657,20 @@ Module normalized.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (| Value.Array [ M.read (| Value.String "T" |) ] |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_debug",
-                                              [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
-                                            |),
-                                            [ i ]
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (| Value.Array [ M.read (| Value.String "T" |) ] |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "u16" ] ]
+                                          |),
+                                          [ i ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -28585,7 +28680,7 @@ Module normalized.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -28803,24 +28898,25 @@ Module normalized.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let tok := M.copy (| γ |) in
-                                                      M.call_closure (|
-                                                        M.get_associated_function (|
-                                                          Ty.path
-                                                            "move_binary_format::normalized::Type",
-                                                          "new",
-                                                          []
-                                                        |),
-                                                        [ M.read (| m |); M.read (| tok |) ]
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let tok := M.copy (| γ |) in
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.path
+                                                              "move_binary_format::normalized::Type",
+                                                            "new",
+                                                            []
+                                                          |),
+                                                          [ M.read (| m |); M.read (| tok |) ]
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |)
@@ -28833,7 +28929,7 @@ Module normalized.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_struct_instantiation :
@@ -29029,23 +29125,24 @@ Module normalized.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let tok := M.copy (| γ |) in
-                                              M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.path "move_binary_format::normalized::Type",
-                                                  "new",
-                                                  []
-                                                |),
-                                                [ M.read (| m |); M.read (| tok |) ]
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let tok := M.copy (| γ |) in
+                                                M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.path "move_binary_format::normalized::Type",
+                                                    "new",
+                                                    []
+                                                  |),
+                                                  [ M.read (| m |); M.read (| tok |) ]
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -29056,7 +29153,7 @@ Module normalized.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_field_instantiation :
@@ -29104,12 +29201,12 @@ Module normalized.
                   "move_binary_format::file_format::Signature",
                   0
                 |);
-                Value.Integer 0
+                Value.Integer IntegerKind.Usize 0
               ]
             |)
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_signature_to_single_type :

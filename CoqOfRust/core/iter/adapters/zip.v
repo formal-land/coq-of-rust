@@ -107,7 +107,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -145,7 +145,7 @@ Module iter.
                 |),
                 [ M.read (| a |); M.read (| b |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -218,7 +218,10 @@ Module iter.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.Pure.eq (M.read (| n |)) (Value.Integer 0)
+                                                  BinOp.eq (|
+                                                    M.read (| n |),
+                                                    Value.Integer IntegerKind.Usize 0
+                                                  |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -243,10 +246,10 @@ Module iter.
                                     let β := n in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| β |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.sub (|
+                                        M.read (| β |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |)
                                     |) in
                                   M.alloc (| Value.Tuple [] |)));
                               fun γ =>
@@ -268,7 +271,7 @@ Module iter.
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_super_nth :
@@ -325,7 +328,7 @@ Module iter.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_zip : M.IsFunction "core::iter::adapters::zip::zip" zip.
@@ -358,7 +361,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -387,7 +390,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -412,7 +415,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -441,7 +444,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -476,7 +479,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| idx |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -526,7 +529,7 @@ Module iter.
                 |),
                 [ M.read (| self |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -571,11 +574,11 @@ Module iter.
                 [
                   ("a", M.read (| a |));
                   ("b", M.read (| b |));
-                  ("index", Value.Integer 0);
-                  ("len", Value.Integer 0);
-                  ("a_len", Value.Integer 0)
+                  ("index", Value.Integer IntegerKind.Usize 0);
+                  ("len", Value.Integer IntegerKind.Usize 0);
+                  ("a_len", Value.Integer IntegerKind.Usize 0)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -763,7 +766,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -786,7 +789,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -878,9 +881,7 @@ Module iter.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (|
-                                BinOp.Pure.ne (M.read (| a_sz |)) (M.read (| b_sz |))
-                              |)) in
+                              (M.alloc (| BinOp.ne (| M.read (| a_sz |), M.read (| b_sz |) |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.match_operator (|
@@ -891,7 +892,7 @@ Module iter.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt (M.read (| a_sz |)) (M.read (| b_sz |))
+                                        BinOp.gt (| M.read (| a_sz |), M.read (| b_sz |) |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -916,12 +917,12 @@ Module iter.
                                             Value.StructRecord
                                               "core::ops::range::Range"
                                               [
-                                                ("start", Value.Integer 0);
+                                                ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_",
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| a_sz |))
-                                                    (M.read (| b_sz |)))
+                                                  BinOp.Wrap.sub (|
+                                                    M.read (| a_sz |),
+                                                    M.read (| b_sz |)
+                                                  |))
                                               ]
                                           ]
                                         |)
@@ -1016,12 +1017,12 @@ Module iter.
                                             Value.StructRecord
                                               "core::ops::range::Range"
                                               [
-                                                ("start", Value.Integer 0);
+                                                ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_",
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| b_sz |))
-                                                    (M.read (| a_sz |)))
+                                                  BinOp.Wrap.sub (|
+                                                    M.read (| b_sz |),
+                                                    M.read (| a_sz |)
+                                                  |))
                                               ]
                                           ]
                                         |)
@@ -1184,7 +1185,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1383,7 +1384,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1413,35 +1414,31 @@ Module iter.
                     M.call_closure (|
                       M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [
-                                M.read (|
-                                  Value.String
-                                    "internal error: entered unreachable code: Always specialized"
-                                |)
-                              ]
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "none",
-                                []
-                              |),
+                        M.alloc (|
+                          Value.Array
+                            [
+                              M.read (|
+                                Value.String
+                                  "internal error: entered unreachable code: Always specialized"
+                              |)
+                            ]
+                        |);
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "none",
                               []
-                            |)
-                          |))
+                            |),
+                            []
+                          |)
+                        |)
                       ]
                     |)
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1470,7 +1467,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| init |); M.read (| f |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -1519,11 +1516,11 @@ Module iter.
                 [
                   ("a", M.read (| a |));
                   ("b", M.read (| b |));
-                  ("index", Value.Integer 0);
-                  ("len", Value.Integer 0);
-                  ("a_len", Value.Integer 0)
+                  ("index", Value.Integer IntegerKind.Usize 0);
+                  ("len", Value.Integer IntegerKind.Usize 0);
+                  ("a_len", Value.Integer IntegerKind.Usize 0)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1711,7 +1708,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1734,7 +1731,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| n |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -1826,9 +1823,7 @@ Module iter.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.alloc (|
-                                BinOp.Pure.ne (M.read (| a_sz |)) (M.read (| b_sz |))
-                              |)) in
+                              (M.alloc (| BinOp.ne (| M.read (| a_sz |), M.read (| b_sz |) |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.match_operator (|
@@ -1839,7 +1834,7 @@ Module iter.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt (M.read (| a_sz |)) (M.read (| b_sz |))
+                                        BinOp.gt (| M.read (| a_sz |), M.read (| b_sz |) |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1864,12 +1859,12 @@ Module iter.
                                             Value.StructRecord
                                               "core::ops::range::Range"
                                               [
-                                                ("start", Value.Integer 0);
+                                                ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_",
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| a_sz |))
-                                                    (M.read (| b_sz |)))
+                                                  BinOp.Wrap.sub (|
+                                                    M.read (| a_sz |),
+                                                    M.read (| b_sz |)
+                                                  |))
                                               ]
                                           ]
                                         |)
@@ -1964,12 +1959,12 @@ Module iter.
                                             Value.StructRecord
                                               "core::ops::range::Range"
                                               [
-                                                ("start", Value.Integer 0);
+                                                ("start", Value.Integer IntegerKind.Usize 0);
                                                 ("end_",
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| b_sz |))
-                                                    (M.read (| a_sz |)))
+                                                  BinOp.Wrap.sub (|
+                                                    M.read (| b_sz |),
+                                                    M.read (| a_sz |)
+                                                  |))
                                               ]
                                           ]
                                         |)
@@ -2132,7 +2127,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2201,7 +2196,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2227,16 +2222,16 @@ Module iter.
               M.read (|
                 let~ idx :=
                   M.alloc (|
-                    BinOp.Wrap.add
-                      Integer.Usize
-                      (M.read (|
+                    BinOp.Wrap.add (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::zip::Zip",
                           "index"
                         |)
-                      |))
-                      (M.read (| idx |))
+                      |),
+                      M.read (| idx |)
+                    |)
                   |) in
                 M.alloc (|
                   Value.Tuple
@@ -2278,7 +2273,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2342,7 +2337,10 @@ Module iter.
                           [
                             Value.StructRecord
                               "core::ops::range::Range"
-                              [ ("start", Value.Integer 0); ("end_", M.read (| len |)) ]
+                              [
+                                ("start", Value.Integer IntegerKind.Usize 0);
+                                ("end_", M.read (| len |))
+                              ]
                           ]
                         |)
                       |),
@@ -2438,7 +2436,7 @@ Module iter.
                     |)) in
                 accum
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -2516,13 +2514,13 @@ Module iter.
                     [
                       ("a", M.read (| a |));
                       ("b", M.read (| b |));
-                      ("index", Value.Integer 0);
+                      ("index", Value.Integer IntegerKind.Usize 0);
                       ("len", M.read (| len |));
                       ("a_len", M.read (| a_len |))
                     ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2567,21 +2565,22 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (|
+                              BinOp.lt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::iter::adapters::zip::Zip",
                                     "index"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::iter::adapters::zip::Zip",
                                     "len"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2602,7 +2601,7 @@ Module iter.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                           |) in
                         M.alloc (|
                           Value.StructTuple
@@ -2664,21 +2663,22 @@ Module iter.
                                           |)
                                         |),
                                         ltac:(M.monadic
-                                          (BinOp.Pure.lt
-                                            (M.read (|
+                                          (BinOp.lt (|
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "core::iter::adapters::zip::Zip",
                                                 "index"
                                               |)
-                                            |))
-                                            (M.read (|
+                                            |),
+                                            M.read (|
                                               M.SubPointer.get_struct_record_field (|
                                                 M.read (| self |),
                                                 "core::iter::adapters::zip::Zip",
                                                 "a_len"
                                               |)
-                                            |))))
+                                            |)
+                                          |)))
                                       |)
                                     |)) in
                                 let _ :=
@@ -2703,7 +2703,10 @@ Module iter.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |) in
                                 let~ _ :=
                                   let β :=
@@ -2714,7 +2717,10 @@ Module iter.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |) in
                                 let~ _ :=
                                   let~ _ :=
@@ -2747,7 +2753,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2770,22 +2776,22 @@ Module iter.
               M.read (|
                 let~ len :=
                   M.alloc (|
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.read (|
+                    BinOp.Wrap.sub (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::zip::Zip",
                           "len"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::zip::Zip",
                           "index"
                         |)
-                      |))
+                      |)
+                    |)
                   |) in
                 M.alloc (|
                   Value.Tuple
@@ -2795,7 +2801,7 @@ Module iter.
                     ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -2840,37 +2846,37 @@ Module iter.
                       M.get_function (| "core::cmp::min", [ Ty.path "usize" ] |),
                       [
                         M.read (| n |);
-                        BinOp.Wrap.sub
-                          Integer.Usize
-                          (M.read (|
+                        BinOp.Wrap.sub (|
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::zip::Zip",
                               "len"
                             |)
-                          |))
-                          (M.read (|
+                          |),
+                          M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.read (| self |),
                               "core::iter::adapters::zip::Zip",
                               "index"
                             |)
-                          |))
+                          |)
+                        |)
                       ]
                     |)
                   |) in
                 let~ end_ :=
                   M.alloc (|
-                    BinOp.Wrap.add
-                      Integer.Usize
-                      (M.read (|
+                    BinOp.Wrap.add (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::iter::adapters::zip::Zip",
                           "index"
                         |)
-                      |))
-                      (M.read (| delta |))
+                      |),
+                      M.read (| delta |)
+                    |)
                   |) in
                 let~ _ :=
                   M.loop (|
@@ -2883,15 +2889,16 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.lt
-                                      (M.read (|
+                                    BinOp.lt (|
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| self |),
                                           "core::iter::adapters::zip::Zip",
                                           "index"
                                         |)
-                                      |))
-                                      (M.read (| end_ |))
+                                      |),
+                                      M.read (| end_ |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -2915,7 +2922,10 @@ Module iter.
                                   |) in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |) in
                               let~ _ :=
                                 M.match_operator (|
@@ -3019,14 +3029,11 @@ Module iter.
                       "super_nth",
                       []
                     |),
-                    [
-                      M.read (| self |);
-                      BinOp.Wrap.sub Integer.Usize (M.read (| n |)) (M.read (| delta |))
-                    ]
+                    [ M.read (| self |); BinOp.Wrap.sub (| M.read (| n |), M.read (| delta |) |) ]
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -3159,7 +3166,7 @@ Module iter.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.ne (M.read (| sz_a |)) (M.read (| sz_b |))
+                                        BinOp.ne (| M.read (| sz_a |), M.read (| sz_b |) |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -3201,15 +3208,16 @@ Module iter.
                                                       |)
                                                     |),
                                                     ltac:(M.monadic
-                                                      (BinOp.Pure.gt
-                                                        (M.read (| sz_a |))
-                                                        (M.read (|
+                                                      (BinOp.gt (|
+                                                        M.read (| sz_a |),
+                                                        M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             M.read (| self |),
                                                             "core::iter::adapters::zip::Zip",
                                                             "len"
                                                           |)
-                                                        |))))
+                                                        |)
+                                                      |)))
                                                   |)
                                                 |)) in
                                             let _ :=
@@ -3236,18 +3244,19 @@ Module iter.
                                                         Value.StructRecord
                                                           "core::ops::range::Range"
                                                           [
-                                                            ("start", Value.Integer 0);
+                                                            ("start",
+                                                              Value.Integer IntegerKind.Usize 0);
                                                             ("end_",
-                                                              BinOp.Wrap.sub
-                                                                Integer.Usize
-                                                                (M.read (| sz_a |))
-                                                                (M.read (|
+                                                              BinOp.Wrap.sub (|
+                                                                M.read (| sz_a |),
+                                                                M.read (|
                                                                   M.SubPointer.get_struct_record_field (|
                                                                     M.read (| self |),
                                                                     "core::iter::adapters::zip::Zip",
                                                                     "len"
                                                                   |)
-                                                                |)))
+                                                                |)
+                                                              |))
                                                           ]
                                                       ]
                                                     |)
@@ -3306,10 +3315,12 @@ Module iter.
                                                                           |) in
                                                                         M.write (|
                                                                           β,
-                                                                          BinOp.Wrap.sub
-                                                                            Integer.Usize
-                                                                            (M.read (| β |))
-                                                                            (Value.Integer 1)
+                                                                          BinOp.Wrap.sub (|
+                                                                            M.read (| β |),
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          |)
                                                                         |) in
                                                                       let~ _ :=
                                                                         M.alloc (|
@@ -3391,18 +3402,20 @@ Module iter.
                                                                         (let γ :=
                                                                           M.use
                                                                             (M.alloc (|
-                                                                              UnOp.Pure.not
-                                                                                (BinOp.Pure.eq
-                                                                                  (M.read (|
+                                                                              UnOp.not (|
+                                                                                BinOp.eq (|
+                                                                                  M.read (|
                                                                                     M.read (|
                                                                                       left_val
                                                                                     |)
-                                                                                  |))
-                                                                                  (M.read (|
+                                                                                  |),
+                                                                                  M.read (|
                                                                                     M.read (|
                                                                                       right_val
                                                                                     |)
-                                                                                  |)))
+                                                                                  |)
+                                                                                |)
+                                                                              |)
                                                                             |)) in
                                                                         let _ :=
                                                                           M.is_constant_or_break_match (|
@@ -3500,15 +3513,16 @@ Module iter.
                                                     |)
                                                   |),
                                                   ltac:(M.monadic
-                                                    (BinOp.Pure.gt
-                                                      (M.read (| sz_b |))
-                                                      (M.read (|
+                                                    (BinOp.gt (|
+                                                      M.read (| sz_b |),
+                                                      M.read (|
                                                         M.SubPointer.get_struct_record_field (|
                                                           M.read (| self |),
                                                           "core::iter::adapters::zip::Zip",
                                                           "len"
                                                         |)
-                                                      |))))
+                                                      |)
+                                                    |)))
                                                 |)
                                               |)) in
                                           let _ :=
@@ -3534,18 +3548,19 @@ Module iter.
                                                     Value.StructRecord
                                                       "core::ops::range::Range"
                                                       [
-                                                        ("start", Value.Integer 0);
+                                                        ("start",
+                                                          Value.Integer IntegerKind.Usize 0);
                                                         ("end_",
-                                                          BinOp.Wrap.sub
-                                                            Integer.Usize
-                                                            (M.read (| sz_b |))
-                                                            (M.read (|
+                                                          BinOp.Wrap.sub (|
+                                                            M.read (| sz_b |),
+                                                            M.read (|
                                                               M.SubPointer.get_struct_record_field (|
                                                                 M.read (| self |),
                                                                 "core::iter::adapters::zip::Zip",
                                                                 "len"
                                                               |)
-                                                            |)))
+                                                            |)
+                                                          |))
                                                       ]
                                                   ]
                                                 |)
@@ -3638,21 +3653,22 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.lt
-                                (M.read (|
+                              BinOp.lt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::iter::adapters::zip::Zip",
                                     "index"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::iter::adapters::zip::Zip",
                                     "len"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3665,7 +3681,7 @@ Module iter.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                           |) in
                         let~ _ :=
                           let β :=
@@ -3676,7 +3692,7 @@ Module iter.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                           |) in
                         let~ i :=
                           M.copy (|
@@ -3735,7 +3751,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3905,7 +3921,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -3925,22 +3941,22 @@ Module iter.
         Definition Self (A B : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::zip::Zip") [] [ A; B ].
         
-        (*     const EXPAND_BY: Option<NonZeroUsize> = A::EXPAND_BY; *)
+        (*     const EXPAND_BY: Option<NonZero<usize>> = A::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_EXPAND_BY (A B : Ty.t) : Value.t :=
           let Self : Ty.t := Self A B in
           M.run
             ltac:(M.monadic
               (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
         
-        (*     const MERGE_BY: Option<NonZeroUsize> = A::MERGE_BY; *)
+        (*     const MERGE_BY: Option<NonZero<usize>> = A::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_MERGE_BY (A B : Ty.t) : Value.t :=
           let Self : Ty.t := Self A B in
           M.run
@@ -3986,7 +4002,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| f |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4049,28 +4065,24 @@ Module iter.
                             |)
                           |);
                           M.read (| Value.String "a" |);
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::iter::adapters::zip::Zip",
-                              "a"
-                            |))
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::adapters::zip::Zip",
+                            "a"
+                          |)
                         ]
                       |);
                       M.read (| Value.String "b" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::zip::Zip",
-                          "b"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::zip::Zip",
+                        "b"
+                      |)
                     ]
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4119,7 +4131,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4158,7 +4170,7 @@ Module iter.
                   0
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom ProvidedMethod_size :
@@ -4191,7 +4203,7 @@ Module iter.
               |),
               [ M.read (| it |); M.read (| idx |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_try_get_unchecked :
@@ -4236,17 +4248,15 @@ Module iter.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "Should only be called on TrustedRandomAccess iterators"
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String
+                                          "Should only be called on TrustedRandomAccess iterators"
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -4254,7 +4264,7 @@ Module iter.
                       |)))
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4298,7 +4308,7 @@ Module iter.
                 |),
                 [ M.read (| self |); M.read (| index |) ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4409,7 +4419,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -4544,7 +4554,7 @@ Module iter.
                                           Value.StructRecord
                                             "core::ops::range::Range"
                                             [
-                                              ("start", Value.Integer 0);
+                                              ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_", M.read (| upper |))
                                             ]
                                         ]
@@ -4702,7 +4712,7 @@ Module iter.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let γ :=
-                                        M.use (M.alloc (| UnOp.Pure.not (M.read (| more |)) |)) in
+                                        M.use (M.alloc (| UnOp.not (| M.read (| more |) |) |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ |),
@@ -4719,7 +4729,7 @@ Module iter.
                   |) in
                 accum
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

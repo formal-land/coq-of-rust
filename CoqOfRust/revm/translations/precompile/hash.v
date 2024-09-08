@@ -11,7 +11,7 @@ Module hash.
             [
               M.call_closure (|
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
-                [ Value.Integer 2 ]
+                [ Value.Integer IntegerKind.U64 2 ]
               |);
               Value.StructTuple
                 "revm_primitives::precompile::Precompile::Standard"
@@ -31,7 +31,7 @@ Module hash.
             [
               M.call_closure (|
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
-                [ Value.Integer 3 ]
+                [ Value.Integer IntegerKind.U64 3 ]
               |);
               Value.StructTuple
                 "revm_primitives::precompile::Precompile::Standard"
@@ -81,8 +81,8 @@ Module hash.
                       |)
                     ]
                   |);
-                  Value.Integer 60;
-                  Value.Integer 12
+                  Value.Integer IntegerKind.U64 60;
+                  Value.Integer IntegerKind.U64 12
                 ]
               |)
             |) in
@@ -93,7 +93,7 @@ Module hash.
                 ltac:(M.monadic
                   (let γ :=
                     M.use
-                      (M.alloc (| BinOp.Pure.gt (M.read (| cost |)) (M.read (| gas_limit |)) |)) in
+                      (M.alloc (| BinOp.gt (| M.read (| cost |), M.read (| gas_limit |) |) |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
@@ -256,7 +256,7 @@ Module hash.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_sha256_run : M.IsFunction "revm_precompile::hash::sha256_run" sha256_run.
@@ -303,8 +303,8 @@ Module hash.
                       |)
                     ]
                   |);
-                  Value.Integer 600;
-                  Value.Integer 120
+                  Value.Integer IntegerKind.U64 600;
+                  Value.Integer IntegerKind.U64 120
                 ]
               |)
             |) in
@@ -316,7 +316,7 @@ Module hash.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.Pure.gt (M.read (| gas_used |)) (M.read (| gas_limit |))
+                        BinOp.gt (| M.read (| gas_used |), M.read (| gas_limit |) |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
@@ -363,7 +363,13 @@ Module hash.
                         [ hasher; M.read (| input |) ]
                       |)
                     |) in
-                  let~ output := M.alloc (| repeat (| Value.Integer 0, Value.Integer 32 |) |) in
+                  let~ output :=
+                    M.alloc (|
+                      repeat (|
+                        Value.Integer IntegerKind.U8 0,
+                        Value.Integer IntegerKind.Usize 32
+                      |)
+                    |) in
                   let~ _ :=
                     M.alloc (|
                       M.call_closure (|
@@ -437,7 +443,10 @@ Module hash.
                               M.call_closure (|
                                 M.get_trait_method (|
                                   "core::ops::index::IndexMut",
-                                  Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ],
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 32 ]
+                                    [ Ty.path "u8" ],
                                   [
                                     Ty.apply
                                       (Ty.path "core::ops::range::RangeFrom")
@@ -451,7 +460,7 @@ Module hash.
                                   output;
                                   Value.StructRecord
                                     "core::ops::range::RangeFrom"
-                                    [ ("start", Value.Integer 12) ]
+                                    [ ("start", Value.Integer IntegerKind.Usize 12) ]
                                 ]
                               |)
                             ]
@@ -484,7 +493,7 @@ Module hash.
                                     "to_vec",
                                     []
                                   |),
-                                  [ (* Unsize *) M.pointer_coercion output ]
+                                  [ output ]
                                 |)
                               ]
                             |)
@@ -494,7 +503,7 @@ Module hash.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_ripemd160_run : M.IsFunction "revm_precompile::hash::ripemd160_run" ripemd160_run.

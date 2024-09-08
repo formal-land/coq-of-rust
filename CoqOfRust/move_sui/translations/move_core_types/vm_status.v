@@ -3,34 +3,34 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module vm_status.
   Definition value_VALIDATION_STATUS_MIN_CODE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 0 |) |))).
+    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 0 |) |))).
   
   Definition value_VALIDATION_STATUS_MAX_CODE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 999 |) |))).
+    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 999 |) |))).
   
   Definition value_VERIFICATION_STATUS_MIN_CODE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 1000 |) |))).
+    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 1000 |) |))).
   
   Definition value_VERIFICATION_STATUS_MAX_CODE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 1999 |) |))).
+    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 1999 |) |))).
   
   Definition value_INVARIANT_VIOLATION_STATUS_MIN_CODE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 2000 |) |))).
+    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 2000 |) |))).
   
   Definition value_INVARIANT_VIOLATION_STATUS_MAX_CODE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 2999 |) |))).
+    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 2999 |) |))).
   
   Definition value_DESERIALIZATION_STATUS_MIN_CODE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 3000 |) |))).
+    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 3000 |) |))).
   
   Definition value_DESERIALIZATION_STATUS_MAX_CODE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 3999 |) |))).
+    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 3999 |) |))).
   
   Definition value_EXECUTION_STATUS_MIN_CODE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 4000 |) |))).
+    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 4000 |) |))).
   
   Definition value_EXECUTION_STATUS_MAX_CODE : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer 4999 |) |))).
+    M.run ltac:(M.monadic (M.alloc (| M.alloc (| Value.Integer IntegerKind.U64 4999 |) |))).
   
   (*
   Enum StatusType
@@ -157,7 +157,7 @@ Module vm_status.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -190,7 +190,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -200,7 +200,7 @@ Module vm_status.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -210,9 +210,9 @@ Module vm_status.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -222,17 +222,6 @@ Module vm_status.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_core_types_vm_status_StatusType.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_vm_status_StatusType.
-    Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusType".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_vm_status_StatusType.
   
   Module Impl_core_cmp_Eq_for_move_core_types_vm_status_StatusType.
     Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusType".
@@ -248,7 +237,7 @@ Module vm_status.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -337,7 +326,7 @@ Module vm_status.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -359,7 +348,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -372,11 +361,11 @@ Module vm_status.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "isize", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1443,7 +1432,7 @@ Module vm_status.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3427,7 +3416,7 @@ Module vm_status.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3437,17 +3426,6 @@ Module vm_status.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_move_core_types_vm_status_StatusCode.
-  
-  Module Impl_core_marker_StructuralEq_for_move_core_types_vm_status_StatusCode.
-    Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusCode".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_core_types_vm_status_StatusCode.
   
   Module Impl_core_cmp_Eq_for_move_core_types_vm_status_StatusCode.
     Definition Self : Ty.t := Ty.path "move_core_types::vm_status::StatusCode".
@@ -3463,7 +3441,7 @@ Module vm_status.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3486,7 +3464,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3499,11 +3477,11 @@ Module vm_status.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "u64", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3536,7 +3514,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3546,7 +3524,7 @@ Module vm_status.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3556,9 +3534,9 @@ Module vm_status.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3580,7 +3558,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3590,7 +3568,7 @@ Module vm_status.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3609,11 +3587,11 @@ Module vm_status.
                   "partial_cmp",
                   []
                 |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3635,7 +3613,7 @@ Module vm_status.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3645,7 +3623,7 @@ Module vm_status.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3658,11 +3636,11 @@ Module vm_status.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "u64", [], "cmp", [] |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3700,7 +3678,11 @@ Module vm_status.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 0
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3712,7 +3694,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3724,7 +3710,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3736,7 +3726,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3748,7 +3742,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3760,7 +3758,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 5 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 5
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3772,7 +3774,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 6 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 6
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3784,7 +3790,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 7 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 7
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3796,7 +3806,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 8 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 8
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3808,7 +3822,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 9 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 9
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3820,7 +3838,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 10 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 10
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3832,7 +3854,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 11 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 11
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3844,7 +3870,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 12 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 12
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3856,7 +3886,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 13 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 13
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3868,7 +3902,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 14 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 14
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3880,7 +3918,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 15 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 15
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3892,7 +3934,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 16 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 16
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3904,7 +3950,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 17 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 17
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3916,7 +3966,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 18 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 18
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3928,7 +3982,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 19 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 19
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3940,7 +3998,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 20 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 20
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3952,7 +4014,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 21 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 21
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3964,7 +4030,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 22 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 22
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3976,7 +4046,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 23 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 23
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -3988,7 +4062,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 24 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 24
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4000,7 +4078,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 25 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 25
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4012,7 +4094,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 26 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 26
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4024,7 +4110,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 27 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 27
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4036,7 +4126,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 28 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 28
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4048,7 +4142,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 29 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 29
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4060,7 +4158,11 @@ Module vm_status.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 30 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 30
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4073,7 +4175,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1000 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1000
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4086,7 +4191,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1001 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1001
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4099,7 +4207,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1003 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1003
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4112,7 +4223,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1005 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1005
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4125,7 +4239,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1006 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1006
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4138,7 +4255,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1007 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1007
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4151,7 +4271,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1009 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1009
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4164,7 +4287,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1011 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1011
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4177,7 +4303,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1012 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1012
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4190,7 +4319,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1013 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1013
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4203,7 +4335,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1014 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1014
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4216,7 +4351,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1017 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1017
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4229,7 +4367,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1020 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1020
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4242,7 +4383,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1021 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1021
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4255,7 +4399,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1023 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1023
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4268,7 +4415,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1025 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1025
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4281,7 +4431,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1026 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1026
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4294,7 +4447,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1027 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1027
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4307,7 +4463,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1028 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1028
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4320,7 +4479,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1029 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1029
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4333,7 +4495,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1030 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1030
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4346,7 +4511,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1031 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1031
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4359,7 +4527,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1032 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1032
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4372,7 +4543,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1033 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1033
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4385,7 +4559,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1034 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1034
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4398,7 +4575,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1035 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1035
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4411,7 +4591,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1036 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1036
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4424,7 +4607,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1037 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1037
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4437,7 +4623,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1038 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1038
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4450,7 +4639,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1039 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1039
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4463,7 +4655,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1040 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1040
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4476,7 +4671,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1041 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1041
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4489,7 +4687,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1042 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1042
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4502,7 +4703,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1043 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1043
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4515,7 +4719,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1044 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1044
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4528,7 +4735,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1045 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1045
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4541,7 +4751,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1046 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1046
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4554,7 +4767,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1047 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1047
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4567,7 +4783,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1048 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1048
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4580,7 +4799,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1049 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1049
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4593,7 +4815,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1050 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1050
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4606,7 +4831,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1051 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1051
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4619,7 +4847,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1052 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1052
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4632,7 +4863,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1053 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1053
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4645,7 +4879,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1054 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1054
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4658,7 +4895,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1055 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1055
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4671,7 +4911,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1056 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1056
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4684,7 +4927,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1057 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1057
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4697,7 +4943,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1058 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1058
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4710,7 +4959,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1059 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1059
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4723,7 +4975,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1060 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1060
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4736,7 +4991,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1061 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1061
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4749,7 +5007,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1062 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1062
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4762,7 +5023,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1063 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1063
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4775,7 +5039,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1064 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1064
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4788,7 +5055,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1065 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1065
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4801,7 +5071,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1067 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1067
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4814,7 +5087,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1068 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1068
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4827,7 +5103,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1069 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1069
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4840,7 +5119,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1070 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1070
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4853,7 +5135,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1071 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1071
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4866,7 +5151,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1072 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1072
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4879,7 +5167,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1073 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1073
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4892,7 +5183,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1074 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1074
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4905,7 +5199,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1075 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1075
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4918,7 +5215,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1076 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1076
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4931,7 +5231,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1077 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1077
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4944,7 +5247,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1080 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1080
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4957,7 +5263,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1081 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1081
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4970,7 +5279,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1082 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1082
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4983,7 +5295,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1083 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1083
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -4996,7 +5311,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1084 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1084
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5009,7 +5327,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1085 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1085
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5022,7 +5343,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1086 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1086
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5035,7 +5359,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1087 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1087
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5048,7 +5375,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1088 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1088
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5061,7 +5391,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1089 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1089
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5074,7 +5407,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1090 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1090
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5087,7 +5423,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1091 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1091
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5100,7 +5439,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1094 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1094
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5113,7 +5455,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1095 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1095
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5126,7 +5471,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1096 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1096
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5139,7 +5487,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1097 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1097
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5152,7 +5503,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1098 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1098
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5165,7 +5519,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1099 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1099
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5178,7 +5535,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1100 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1100
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5191,7 +5551,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1101 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1101
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5204,7 +5567,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1102 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1102
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5217,7 +5583,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1103 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1103
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5230,7 +5599,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1104 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1104
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5243,7 +5615,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1105 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1105
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5256,7 +5631,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1106 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1106
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5269,7 +5647,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1107 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1107
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5282,7 +5663,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1108 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1108
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5295,7 +5679,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1109 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1109
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5308,7 +5695,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1110 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1110
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5321,7 +5711,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1111 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1111
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5334,7 +5727,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1112 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1112
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5347,7 +5743,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1113 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1113
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5360,7 +5759,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1114 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1114
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5373,7 +5775,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1115 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1115
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5386,7 +5791,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1116 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1116
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5399,7 +5807,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1117 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1117
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5412,7 +5823,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1118 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1118
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5425,7 +5839,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1119 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1119
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5438,7 +5855,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1120 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1120
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5451,7 +5871,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1121 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1121
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5464,7 +5887,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1122 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1122
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5477,7 +5903,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1123 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1123
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5490,7 +5919,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1124 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1124
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5503,7 +5935,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1125 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1125
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5516,7 +5951,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1126 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1126
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5529,7 +5967,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1127 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1127
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5542,7 +5983,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1128 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1128
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5555,7 +5999,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1129 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1129
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5568,7 +6015,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1130 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 1130
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5581,7 +6031,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2000 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2000
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5594,7 +6047,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2003 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2003
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5607,7 +6063,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2005 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2005
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5617,7 +6076,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2006 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2006
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5630,7 +6092,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2008 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2008
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5643,7 +6108,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2009 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2009
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5656,7 +6124,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2010 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2010
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5669,7 +6140,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2011 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2011
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5679,7 +6153,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2012 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2012
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5692,7 +6169,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2015 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2015
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5705,7 +6185,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2016 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2016
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5718,7 +6201,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2017 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2017
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5731,7 +6217,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2018 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2018
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5744,7 +6233,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2019 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2019
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5757,7 +6249,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2020 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2020
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5770,7 +6265,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2021 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2021
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5783,7 +6281,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2022 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2022
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5796,7 +6297,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2023 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 2023
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5809,7 +6313,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3000 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3000
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5822,7 +6329,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3001 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3001
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5831,7 +6341,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3002 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3002
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5840,7 +6353,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3003 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3003
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5853,7 +6369,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3004 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3004
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5866,7 +6385,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3005 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3005
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5879,7 +6401,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3006 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3006
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5892,7 +6417,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3007 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3007
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5905,7 +6433,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3008 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3008
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5918,7 +6449,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3009 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3009
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5931,7 +6465,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3010 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3010
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5944,7 +6481,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3013 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3013
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5957,7 +6497,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3014 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3014
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5970,7 +6513,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3017 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3017
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5979,7 +6525,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3018 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3018
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5988,7 +6537,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3019 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3019
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -5997,7 +6549,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3020 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3020
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6006,7 +6561,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3021 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3021
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6015,7 +6573,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3022 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3022
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6028,7 +6589,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3023 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3023
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6041,7 +6605,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3024 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3024
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6054,7 +6621,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3025 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3025
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6067,7 +6637,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3026 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 3026
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6080,7 +6653,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4000 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4000
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6093,7 +6669,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4001 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4001
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6102,7 +6681,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4002 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4002
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6112,7 +6694,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4003 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4003
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6125,7 +6710,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4004 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4004
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6138,7 +6726,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4008 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4008
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6151,7 +6742,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4009 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4009
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6164,7 +6758,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4016 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4016
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6173,7 +6770,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4017 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4017
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6186,7 +6786,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4018 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4018
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6199,7 +6802,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4020 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4020
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6212,7 +6818,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4021 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4021
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6225,7 +6834,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4024 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4024
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6238,7 +6850,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4025 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4025
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6251,7 +6866,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4026 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4026
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6264,7 +6882,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4027 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4027
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6277,7 +6898,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4028 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4028
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6290,7 +6914,10 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4029 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U64 4029
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::result::Result::Ok"
@@ -6305,7 +6932,7 @@ Module vm_status.
                     (let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ |),
-                        Value.Integer 18446744073709551615
+                        Value.Integer IntegerKind.U64 18446744073709551615
                       |) in
                     M.alloc (|
                       Value.StructTuple
@@ -6326,7 +6953,7 @@ Module vm_status.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6408,25 +7035,27 @@ Module vm_status.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.ge
-                                    (M.read (| major_status_number |))
-                                    (M.read (|
+                                  BinOp.ge (|
+                                    M.read (| major_status_number |),
+                                    M.read (|
                                       M.read (|
                                         M.get_constant (|
                                           "move_core_types::vm_status::VALIDATION_STATUS_MIN_CODE"
                                         |)
                                       |)
-                                    |)),
+                                    |)
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.le
-                                      (M.read (| major_status_number |))
-                                      (M.read (|
+                                    (BinOp.le (|
+                                      M.read (| major_status_number |),
+                                      M.read (|
                                         M.read (|
                                           M.get_constant (|
                                             "move_core_types::vm_status::VALIDATION_STATUS_MAX_CODE"
                                           |)
                                         |)
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -6455,25 +7084,27 @@ Module vm_status.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.ge
-                                    (M.read (| major_status_number |))
-                                    (M.read (|
+                                  BinOp.ge (|
+                                    M.read (| major_status_number |),
+                                    M.read (|
                                       M.read (|
                                         M.get_constant (|
                                           "move_core_types::vm_status::VERIFICATION_STATUS_MIN_CODE"
                                         |)
                                       |)
-                                    |)),
+                                    |)
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.le
-                                      (M.read (| major_status_number |))
-                                      (M.read (|
+                                    (BinOp.le (|
+                                      M.read (| major_status_number |),
+                                      M.read (|
                                         M.read (|
                                           M.get_constant (|
                                             "move_core_types::vm_status::VERIFICATION_STATUS_MAX_CODE"
                                           |)
                                         |)
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -6502,25 +7133,27 @@ Module vm_status.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.ge
-                                    (M.read (| major_status_number |))
-                                    (M.read (|
+                                  BinOp.ge (|
+                                    M.read (| major_status_number |),
+                                    M.read (|
                                       M.read (|
                                         M.get_constant (|
                                           "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MIN_CODE"
                                         |)
                                       |)
-                                    |)),
+                                    |)
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.le
-                                      (M.read (| major_status_number |))
-                                      (M.read (|
+                                    (BinOp.le (|
+                                      M.read (| major_status_number |),
+                                      M.read (|
                                         M.read (|
                                           M.get_constant (|
                                             "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MAX_CODE"
                                           |)
                                         |)
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -6549,25 +7182,27 @@ Module vm_status.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.ge
-                                    (M.read (| major_status_number |))
-                                    (M.read (|
+                                  BinOp.ge (|
+                                    M.read (| major_status_number |),
+                                    M.read (|
                                       M.read (|
                                         M.get_constant (|
                                           "move_core_types::vm_status::DESERIALIZATION_STATUS_MIN_CODE"
                                         |)
                                       |)
-                                    |)),
+                                    |)
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.le
-                                      (M.read (| major_status_number |))
-                                      (M.read (|
+                                    (BinOp.le (|
+                                      M.read (| major_status_number |),
+                                      M.read (|
                                         M.read (|
                                           M.get_constant (|
                                             "move_core_types::vm_status::DESERIALIZATION_STATUS_MAX_CODE"
                                           |)
                                         |)
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -6596,25 +7231,27 @@ Module vm_status.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.Pure.ge
-                                    (M.read (| major_status_number |))
-                                    (M.read (|
+                                  BinOp.ge (|
+                                    M.read (| major_status_number |),
+                                    M.read (|
                                       M.read (|
                                         M.get_constant (|
                                           "move_core_types::vm_status::EXECUTION_STATUS_MIN_CODE"
                                         |)
                                       |)
-                                    |)),
+                                    |)
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.le
-                                      (M.read (| major_status_number |))
-                                      (M.read (|
+                                    (BinOp.le (|
+                                      M.read (| major_status_number |),
+                                      M.read (|
                                         M.read (|
                                           M.get_constant (|
                                             "move_core_types::vm_status::EXECUTION_STATUS_MAX_CODE"
                                           |)
                                         |)
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -6636,7 +7273,7 @@ Module vm_status.
                 M.alloc (| Value.StructTuple "move_core_types::vm_status::StatusType::Unknown" [] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_status_type : M.IsAssociatedFunction Self "status_type" status_type.
@@ -6675,7 +7312,7 @@ Module vm_status.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6731,7 +7368,7 @@ Module vm_status.
               Value.StructTuple "move_core_types::vm_status::deserialize::StatusCodeVisitor" []
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6756,7 +7393,7 @@ Module vm_status.
         ltac:(M.monadic
           (let status := M.alloc (| status |) in
           M.rust_cast (M.read (| status |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -6769,12 +7406,12 @@ Module vm_status.
   
   Module sub_status.
     Definition value_NFE_VECTOR_ERROR_BASE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |))).
     
     Definition value_NFE_OUT_OF_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 1 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     Definition value_NFE_BCS_SERIALIZATION_FAILURE : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 453 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 453 |))).
   End sub_status.
 End vm_status.

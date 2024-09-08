@@ -86,12 +86,93 @@ Module boxed.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
         forall (T : Ty.t),
         M.IsAssociatedFunction (Self T) "new" (new T).
+      
+      (*
+          pub fn try_new(value: T) -> Result<Self, core::alloc::AllocError> {
+              let meta = ptr::metadata(&value);
+              WithOpaqueHeader::try_new(meta, value).map(|ptr| ThinBox { ptr, _marker: PhantomData })
+          }
+      *)
+      Definition try_new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ value ] =>
+          ltac:(M.monadic
+            (let value := M.alloc (| value |) in
+            M.read (|
+              let~ meta :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "core::ptr::metadata::metadata", [ T ] |),
+                    [ value ]
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [
+                        Ty.path "alloc::boxed::thin::WithOpaqueHeader";
+                        Ty.path "core::alloc::AllocError"
+                      ],
+                    "map",
+                    [
+                      Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ];
+                      Ty.function
+                        [ Ty.tuple [ Ty.path "alloc::boxed::thin::WithOpaqueHeader" ] ]
+                        (Ty.apply (Ty.path "alloc::boxed::thin::ThinBox") [] [ T ])
+                    ]
+                  |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "alloc::boxed::thin::WithOpaqueHeader",
+                        "try_new",
+                        [ Ty.tuple []; T ]
+                      |),
+                      [ M.read (| meta |); M.read (| value |) ]
+                    |);
+                    M.closure
+                      (fun γ =>
+                        ltac:(M.monadic
+                          match γ with
+                          | [ α0 ] =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let ptr := M.copy (| γ |) in
+                                      Value.StructRecord
+                                        "alloc::boxed::thin::ThinBox"
+                                        [
+                                          ("ptr", M.read (| ptr |));
+                                          ("_marker",
+                                            Value.StructTuple "core::marker::PhantomData" [])
+                                        ]))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
+                          end))
+                  ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_try_new :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction (Self T) "try_new" (try_new T).
       (*
           fn meta(&self) -> <T as Pointee>::Metadata {
               //  Safety:
@@ -124,7 +205,7 @@ Module boxed.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_meta :
@@ -159,7 +240,7 @@ Module boxed.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_data :
@@ -169,7 +250,7 @@ Module boxed.
       (*
           fn with_header(&self) -> &WithHeader<<T as Pointee>::Metadata> {
               // SAFETY: both types are transparent to `NonNull<u8>`
-              unsafe { &*((&self.ptr) as *const WithOpaqueHeader as *const WithHeader<_>) }
+              unsafe { &*(core::ptr::addr_of!(self.ptr) as *const WithHeader<_>) }
           }
       *)
       Definition with_header (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -179,17 +260,12 @@ Module boxed.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.rust_cast
-              (M.read (|
-                M.use
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::boxed::thin::ThinBox",
-                      "ptr"
-                    |)
-                  |))
+              (M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::boxed::thin::ThinBox",
+                "ptr"
               |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_with_header :
@@ -206,9 +282,14 @@ Module boxed.
           where
               T: Unsize<Dyn>,
           {
-              let meta = ptr::metadata(&value as &Dyn);
-              let ptr = WithOpaqueHeader::new(meta, value);
-              ThinBox { ptr, _marker: PhantomData }
+              if mem::size_of::<T>() == 0 {
+                  let ptr = WithOpaqueHeader::new_unsize_zst::<Dyn, T>(value);
+                  ThinBox { ptr, _marker: PhantomData }
+              } else {
+                  let meta = ptr::metadata(&value as &Dyn);
+                  let ptr = WithOpaqueHeader::new(meta, value);
+                  ThinBox { ptr, _marker: PhantomData }
+              }
           }
       *)
       Definition new_unsize
@@ -223,34 +304,74 @@ Module boxed.
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             M.read (|
-              let~ meta :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (| "core::ptr::metadata::metadata", [ Dyn ] |),
-                    [ M.read (| M.use (M.alloc (| (* Unsize *) M.pointer_coercion value |)) |) ]
-                  |)
-                |) in
-              let~ ptr :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.path "alloc::boxed::thin::WithOpaqueHeader",
-                      "new",
-                      [ Ty.associated; T ]
-                    |),
-                    [ M.read (| meta |); M.read (| value |) ]
-                  |)
-                |) in
-              M.alloc (|
-                Value.StructRecord
-                  "alloc::boxed::thin::ThinBox"
-                  [
-                    ("ptr", M.read (| ptr |));
-                    ("_marker", Value.StructTuple "core::marker::PhantomData" [])
-                  ]
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            BinOp.eq (|
+                              M.call_closure (|
+                                M.get_function (| "core::mem::size_of", [ T ] |),
+                                []
+                              |),
+                              Value.Integer IntegerKind.Usize 0
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ ptr :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "alloc::boxed::thin::WithOpaqueHeader",
+                              "new_unsize_zst",
+                              [ Dyn; T ]
+                            |),
+                            [ M.read (| value |) ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructRecord
+                          "alloc::boxed::thin::ThinBox"
+                          [
+                            ("ptr", M.read (| ptr |));
+                            ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                          ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let~ meta :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::ptr::metadata::metadata", [ Dyn ] |),
+                            [ M.read (| M.use (M.alloc (| value |)) |) ]
+                          |)
+                        |) in
+                      let~ ptr :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "alloc::boxed::thin::WithOpaqueHeader",
+                              "new",
+                              [ Ty.associated; T ]
+                            |),
+                            [ M.read (| meta |); M.read (| value |) ]
+                          |)
+                        |) in
+                      M.alloc (|
+                        Value.StructRecord
+                          "alloc::boxed::thin::ThinBox"
+                          [
+                            ("ptr", M.read (| ptr |));
+                            ("_marker", Value.StructTuple "core::marker::PhantomData" [])
+                          ]
+                      |)))
+                ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_unsize :
@@ -290,7 +411,7 @@ Module boxed.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -334,7 +455,7 @@ Module boxed.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -393,13 +514,13 @@ Module boxed.
               let~ pointer :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::metadata::from_raw_parts", [ T ] |),
+                    M.get_function (| "core::ptr::metadata::from_raw_parts", [ T; Ty.tuple [] ] |),
                     [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
                   |)
                 |) in
               M.alloc (| M.read (| pointer |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -456,13 +577,16 @@ Module boxed.
               let~ pointer :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_function (| "core::ptr::metadata::from_raw_parts_mut", [ T ] |),
+                    M.get_function (|
+                      "core::ptr::metadata::from_raw_parts_mut",
+                      [ T; Ty.tuple [] ]
+                    |),
                     [ M.rust_cast (M.read (| value |)); M.read (| metadata |) ]
                   |)
                 |) in
               M.alloc (| M.read (| pointer |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -531,7 +655,7 @@ Module boxed.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -605,10 +729,128 @@ Module boxed.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      
+      (*
+          fn new_unsize_zst<Dyn, T>(value: T) -> Self
+          where
+              Dyn: ?Sized,
+              T: Unsize<Dyn>,
+          {
+              let ptr = WithHeader::<<Dyn as Pointee>::Metadata>::new_unsize_zst::<Dyn, T>(value);
+              Self(ptr.0)
+          }
+      *)
+      Definition new_unsize_zst (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ Dyn; T ], [ value ] =>
+          ltac:(M.monadic
+            (let value := M.alloc (| value |) in
+            M.read (|
+              let~ ptr :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ Ty.associated ],
+                      "new_unsize_zst",
+                      [ Dyn; T ]
+                    |),
+                    [ M.read (| value |) ]
+                  |)
+                |) in
+              M.alloc (|
+                Value.StructTuple
+                  "alloc::boxed::thin::WithOpaqueHeader"
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        ptr,
+                        "alloc::boxed::thin::WithHeader",
+                        0
+                      |)
+                    |)
+                  ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_new_unsize_zst :
+        M.IsAssociatedFunction Self "new_unsize_zst" new_unsize_zst.
+      
+      (*
+          fn try_new<H, T>(header: H, value: T) -> Result<Self, core::alloc::AllocError> {
+              WithHeader::try_new(header, value).map(|ptr| Self(ptr.0))
+          }
+      *)
+      Definition try_new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ H; T ], [ header; value ] =>
+          ltac:(M.monadic
+            (let header := M.alloc (| header |) in
+            let value := M.alloc (| value |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [
+                    Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ];
+                    Ty.path "core::alloc::AllocError"
+                  ],
+                "map",
+                [
+                  Ty.path "alloc::boxed::thin::WithOpaqueHeader";
+                  Ty.function
+                    [ Ty.tuple [ Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ] ] ]
+                    (Ty.path "alloc::boxed::thin::WithOpaqueHeader")
+                ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
+                    "try_new",
+                    [ T ]
+                  |),
+                  [ M.read (| header |); M.read (| value |) ]
+                |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let ptr := M.copy (| γ |) in
+                                  Value.StructTuple
+                                    "alloc::boxed::thin::WithOpaqueHeader"
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          ptr,
+                                          "alloc::boxed::thin::WithHeader",
+                                          0
+                                        |)
+                                      |)
+                                    ]))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_try_new : M.IsAssociatedFunction Self "try_new" try_new.
     End Impl_alloc_boxed_thin_WithOpaqueHeader.
     
     Module Impl_alloc_boxed_thin_WithHeader_H.
@@ -710,16 +952,17 @@ Module boxed.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.eq
-                                          (M.call_closure (|
+                                        BinOp.eq (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "core::alloc::layout::Layout",
                                               "size",
                                               []
                                             |),
                                             [ layout ]
-                                          |))
-                                          (Value.Integer 0)
+                                          |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -747,12 +990,15 @@ Module boxed.
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            UnOp.Pure.not
-                                                              (LogicalOp.and (|
+                                                            UnOp.not (|
+                                                              LogicalOp.and (|
                                                                 LogicalOp.and (|
-                                                                  BinOp.Pure.eq
-                                                                    (M.read (| value_offset |))
-                                                                    (Value.Integer 0),
+                                                                  BinOp.eq (|
+                                                                    M.read (| value_offset |),
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      0
+                                                                  |),
                                                                   ltac:(M.monadic
                                                                     (M.read (|
                                                                       M.get_constant (|
@@ -766,7 +1012,8 @@ Module boxed.
                                                                       "core::mem::SizedTypeProperties::IS_ZST"
                                                                     |)
                                                                   |)))
-                                                              |))
+                                                              |)
+                                                            |)
                                                           |)) in
                                                       let _ :=
                                                         M.is_constant_or_break_match (|
@@ -934,12 +1181,610 @@ Module boxed.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
         forall (H : Ty.t),
         M.IsAssociatedFunction (Self H) "new" (new H).
+      
+      (*
+          fn try_new<T>(header: H, value: T) -> Result<WithHeader<H>, core::alloc::AllocError> {
+              let value_layout = Layout::new::<T>();
+              let Ok((layout, value_offset)) = Self::alloc_layout(value_layout) else {
+                  return Err(core::alloc::AllocError);
+              };
+      
+              unsafe {
+                  // Note: It's UB to pass a layout with a zero size to `alloc::alloc`, so
+                  // we use `layout.dangling()` for this case, which should have a valid
+                  // alignment for both `T` and `H`.
+                  let ptr = if layout.size() == 0 {
+                      // Some paranoia checking, mostly so that the ThinBox tests are
+                      // more able to catch issues.
+                      debug_assert!(
+                          value_offset == 0 && mem::size_of::<T>() == 0 && mem::size_of::<H>() == 0
+                      );
+                      layout.dangling()
+                  } else {
+                      let ptr = alloc::alloc(layout);
+                      if ptr.is_null() {
+                          return Err(core::alloc::AllocError);
+                      }
+      
+                      // Safety:
+                      // - The size is at least `aligned_header_size`.
+                      let ptr = ptr.add(value_offset) as *mut _;
+      
+                      NonNull::new_unchecked(ptr)
+                  };
+      
+                  let result = WithHeader(ptr, PhantomData);
+                  ptr::write(result.header(), header);
+                  ptr::write(result.value().cast(), value);
+      
+                  Ok(result)
+              }
+          }
+      *)
+      Definition try_new (H : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self H in
+        match ε, τ, α with
+        | [], [ T ], [ header; value ] =>
+          ltac:(M.monadic
+            (let header := M.alloc (| header |) in
+            let value := M.alloc (| value |) in
+            M.catch_return (|
+              ltac:(M.monadic
+                (M.read (|
+                  let~ value_layout :=
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::alloc::layout::Layout",
+                          "new",
+                          [ T ]
+                        |),
+                        []
+                      |)
+                    |) in
+                  M.match_operator (|
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
+                          "alloc_layout",
+                          []
+                        |),
+                        [ M.read (| value_layout |) ]
+                      |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::result::Result::Ok",
+                              0
+                            |) in
+                          let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
+                          let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
+                          let layout := M.copy (| γ1_0 |) in
+                          let value_offset := M.copy (| γ1_1 |) in
+                          let~ ptr :=
+                            M.copy (|
+                              M.match_operator (|
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            BinOp.eq (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::alloc::layout::Layout",
+                                                  "size",
+                                                  []
+                                                |),
+                                                [ layout ]
+                                              |),
+                                              Value.Integer IntegerKind.Usize 0
+                                            |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      let~ _ :=
+                                        M.match_operator (|
+                                          M.alloc (| Value.Tuple [] |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                                let _ :=
+                                                  M.is_constant_or_break_match (|
+                                                    M.read (| γ |),
+                                                    Value.Bool true
+                                                  |) in
+                                                let~ _ :=
+                                                  M.match_operator (|
+                                                    M.alloc (| Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use
+                                                              (M.alloc (|
+                                                                UnOp.not (|
+                                                                  LogicalOp.and (|
+                                                                    LogicalOp.and (|
+                                                                      BinOp.eq (|
+                                                                        M.read (| value_offset |),
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          0
+                                                                      |),
+                                                                      ltac:(M.monadic
+                                                                        (BinOp.eq (|
+                                                                          M.call_closure (|
+                                                                            M.get_function (|
+                                                                              "core::mem::size_of",
+                                                                              [ T ]
+                                                                            |),
+                                                                            []
+                                                                          |),
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            0
+                                                                        |)))
+                                                                    |),
+                                                                    ltac:(M.monadic
+                                                                      (BinOp.eq (|
+                                                                        M.call_closure (|
+                                                                          M.get_function (|
+                                                                            "core::mem::size_of",
+                                                                            [ H ]
+                                                                          |),
+                                                                          []
+                                                                        |),
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          0
+                                                                      |)))
+                                                                  |)
+                                                                |)
+                                                              |)) in
+                                                          let _ :=
+                                                            M.is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          M.alloc (|
+                                                            M.never_to_any (|
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "core::panicking::panic",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.read (|
+                                                                    Value.String
+                                                                      "assertion failed: value_offset == 0 && mem::size_of::<T>() == 0 && mem::size_of::<H>() == 0"
+                                                                  |)
+                                                                ]
+                                                              |)
+                                                            |)
+                                                          |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (| Value.Tuple [] |)))
+                                                    ]
+                                                  |) in
+                                                M.alloc (| Value.Tuple [] |)));
+                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          ]
+                                        |) in
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::alloc::layout::Layout",
+                                            "dangling",
+                                            []
+                                          |),
+                                          [ layout ]
+                                        |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let~ ptr :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_function (| "alloc::alloc::alloc", [] |),
+                                            [ M.read (| layout |) ]
+                                          |)
+                                        |) in
+                                      let~ _ :=
+                                        M.match_operator (|
+                                          M.alloc (| Value.Tuple [] |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ :=
+                                                  M.use
+                                                    (M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "*mut")
+                                                            []
+                                                            [ Ty.path "u8" ],
+                                                          "is_null",
+                                                          []
+                                                        |),
+                                                        [ M.read (| ptr |) ]
+                                                      |)
+                                                    |)) in
+                                                let _ :=
+                                                  M.is_constant_or_break_match (|
+                                                    M.read (| γ |),
+                                                    Value.Bool true
+                                                  |) in
+                                                M.alloc (|
+                                                  M.never_to_any (|
+                                                    M.read (|
+                                                      M.return_ (|
+                                                        Value.StructTuple
+                                                          "core::result::Result::Err"
+                                                          [
+                                                            Value.StructTuple
+                                                              "core::alloc::AllocError"
+                                                              []
+                                                          ]
+                                                      |)
+                                                    |)
+                                                  |)
+                                                |)));
+                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                          ]
+                                        |) in
+                                      let~ ptr :=
+                                        M.alloc (|
+                                          M.rust_cast
+                                            (M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                                "add",
+                                                []
+                                              |),
+                                              [ M.read (| ptr |); M.read (| value_offset |) ]
+                                            |))
+                                        |) in
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [ Ty.path "u8" ],
+                                            "new_unchecked",
+                                            []
+                                          |),
+                                          [ M.read (| ptr |) ]
+                                        |)
+                                      |)))
+                                ]
+                              |)
+                            |) in
+                          let~ result :=
+                            M.alloc (|
+                              Value.StructTuple
+                                "alloc::boxed::thin::WithHeader"
+                                [ M.read (| ptr |); Value.StructTuple "core::marker::PhantomData" []
+                                ]
+                            |) in
+                          let~ _ :=
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::ptr::write", [ H ] |),
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "alloc::boxed::thin::WithHeader") [] [ H ],
+                                      "header",
+                                      []
+                                    |),
+                                    [ result ]
+                                  |);
+                                  M.read (| header |)
+                                ]
+                              |)
+                            |) in
+                          let~ _ :=
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::ptr::write", [ T ] |),
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                      "cast",
+                                      [ T ]
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloc::boxed::thin::WithHeader")
+                                            []
+                                            [ H ],
+                                          "value",
+                                          []
+                                        |),
+                                        [ result ]
+                                      |)
+                                    ]
+                                  |);
+                                  M.read (| value |)
+                                ]
+                              |)
+                            |) in
+                          M.alloc (|
+                            Value.StructTuple "core::result::Result::Ok" [ M.read (| result |) ]
+                          |)))
+                    ]
+                  |)
+                |)))
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_try_new :
+        forall (H : Ty.t),
+        M.IsAssociatedFunction (Self H) "try_new" (try_new H).
+      
+      (*
+          fn new_unsize_zst<Dyn, T>(value: T) -> WithHeader<H>
+          where
+              Dyn: Pointee<Metadata = H> + ?Sized,
+              T: Unsize<Dyn>,
+          {
+              assert!(mem::size_of::<T>() == 0);
+      
+              const fn max(a: usize, b: usize) -> usize {
+                  if a > b { a } else { b }
+              }
+      
+              // Compute a pointer to the right metadata. This will point to the beginning
+              // of the header, past the padding, so the assigned type makes sense.
+              // It also ensures that the address at the end of the header is sufficiently
+              // aligned for T.
+              let alloc: &<Dyn as Pointee>::Metadata = const {
+                  // FIXME: just call `WithHeader::alloc_layout` with size reset to 0.
+                  // Currently that's blocked on `Layout::extend` not being `const fn`.
+      
+                  let alloc_align =
+                      max(mem::align_of::<T>(), mem::align_of::<<Dyn as Pointee>::Metadata>());
+      
+                  let alloc_size =
+                      max(mem::align_of::<T>(), mem::size_of::<<Dyn as Pointee>::Metadata>());
+      
+                  unsafe {
+                      // SAFETY: align is power of two because it is the maximum of two alignments.
+                      let alloc: *mut u8 = const_allocate(alloc_size, alloc_align);
+      
+                      let metadata_offset =
+                          alloc_size.checked_sub(mem::size_of::<<Dyn as Pointee>::Metadata>()).unwrap();
+                      // SAFETY: adding offset within the allocation.
+                      let metadata_ptr: *mut <Dyn as Pointee>::Metadata =
+                          alloc.add(metadata_offset).cast();
+                      // SAFETY: `*metadata_ptr` is within the allocation.
+                      metadata_ptr.write(ptr::metadata::<Dyn>(ptr::dangling::<T>() as *const Dyn));
+      
+                      // SAFETY: we have just written the metadata.
+                      &*(metadata_ptr)
+                  }
+              };
+      
+              // SAFETY: `alloc` points to `<Dyn as Pointee>::Metadata`, so addition stays in-bounds.
+              let value_ptr =
+                  unsafe { (alloc as *const <Dyn as Pointee>::Metadata).add(1) }.cast::<T>().cast_mut();
+              debug_assert!(value_ptr.is_aligned());
+              mem::forget(value);
+              WithHeader(NonNull::new(value_ptr.cast()).unwrap(), PhantomData)
+          }
+      *)
+      Definition new_unsize_zst
+          (H : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self H in
+        match ε, τ, α with
+        | [], [ Dyn; T ], [ value ] =>
+          ltac:(M.monadic
+            (let value := M.alloc (| value |) in
+            M.read (|
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              UnOp.not (|
+                                BinOp.eq (|
+                                  M.call_closure (|
+                                    M.get_function (| "core::mem::size_of", [ T ] |),
+                                    []
+                                  |),
+                                  Value.Integer IntegerKind.Usize 0
+                                |)
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.call_closure (|
+                              M.get_function (| "core::panicking::panic", [] |),
+                              [
+                                M.read (|
+                                  Value.String "assertion failed: mem::size_of::<T>() == 0"
+                                |)
+                              ]
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              let~ alloc :=
+                M.copy (|
+                  M.get_constant (| "alloc::boxed::thin::new_unsize_zst_discriminant" |)
+                |) in
+              let~ value_ptr :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
+                      "cast_mut",
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*const") [] [ H ],
+                          "cast",
+                          [ T ]
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "*const") [] [ H ],
+                              "add",
+                              []
+                            |),
+                            [
+                              M.read (| M.use (M.alloc (| M.read (| alloc |) |)) |);
+                              Value.Integer IntegerKind.Usize 1
+                            ]
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)
+                |) in
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ _ :=
+                          M.match_operator (|
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        UnOp.not (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "*mut") [] [ T ],
+                                              "is_aligned",
+                                              []
+                                            |),
+                                            [ M.read (| value_ptr |) ]
+                                          |)
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    M.is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  M.alloc (|
+                                    M.never_to_any (|
+                                      M.call_closure (|
+                                        M.get_function (| "core::panicking::panic", [] |),
+                                        [
+                                          M.read (|
+                                            Value.String "assertion failed: value_ptr.is_aligned()"
+                                          |)
+                                        ]
+                                      |)
+                                    |)
+                                  |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "core::mem::forget", [ T ] |),
+                    [ M.read (| value |) ]
+                  |)
+                |) in
+              M.alloc (|
+                Value.StructTuple
+                  "alloc::boxed::thin::WithHeader"
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
+                          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ] ],
+                        "unwrap",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.path "u8" ],
+                            "new",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "*mut") [] [ T ],
+                                "cast",
+                                [ Ty.path "u8" ]
+                              |),
+                              [ M.read (| value_ptr |) ]
+                            |)
+                          ]
+                        |)
+                      ]
+                    |);
+                    Value.StructTuple "core::marker::PhantomData" []
+                  ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_new_unsize_zst :
+        forall (H : Ty.t),
+        M.IsAssociatedFunction (Self H) "new_unsize_zst" (new_unsize_zst H).
       
       (*
           unsafe fn drop<T: ?Sized>(&self, value: *mut T) {
@@ -951,20 +1796,19 @@ Module boxed.
       
               impl<H> Drop for DropGuard<H> {
                   fn drop(&mut self) {
+                      // All ZST are allocated statically.
+                      if self.value_layout.size() == 0 {
+                          return;
+                      }
+      
                       unsafe {
                           // SAFETY: Layout must have been computable if we're in drop
                           let (layout, value_offset) =
                               WithHeader::<H>::alloc_layout(self.value_layout).unwrap_unchecked();
       
-                          // Note: Don't deallocate if the layout size is zero, because the pointer
-                          // didn't come from the allocator.
-                          if layout.size() != 0 {
-                              alloc::dealloc(self.ptr.as_ptr().sub(value_offset), layout);
-                          } else {
-                              debug_assert!(
-                                  value_offset == 0 && H::IS_ZST && self.value_layout.size() == 0
-                              );
-                          }
+                          // Since we only allocate for non-ZSTs, the layout size cannot be zero.
+                          debug_assert!(layout.size() != 0);
+                          alloc::dealloc(self.ptr.as_ptr().sub(value_offset), layout);
                       }
                   }
               }
@@ -1025,7 +1869,7 @@ Module boxed.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_drop :
@@ -1108,15 +1952,16 @@ Module boxed.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.not (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply (Ty.path "*mut") [] [ H ],
                                               "is_aligned",
                                               []
                                             |),
                                             [ M.read (| hp |) ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1144,7 +1989,7 @@ Module boxed.
                 |) in
               hp
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_header :
@@ -1178,7 +2023,7 @@ Module boxed.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_value :
@@ -1196,7 +2041,7 @@ Module boxed.
         | [], [], [] =>
           ltac:(M.monadic
             (M.call_closure (| M.get_function (| "core::mem::size_of", [ H ] |), [] |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_header_size :
@@ -1235,7 +2080,7 @@ Module boxed.
                 M.read (| value_layout |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_alloc_layout :
@@ -1273,7 +2118,7 @@ Module boxed.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

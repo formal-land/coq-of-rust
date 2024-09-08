@@ -44,71 +44,75 @@ Module compatibility.
               LogicalOp.and (|
                 LogicalOp.and (|
                   LogicalOp.and (|
-                    BinOp.Pure.eq
-                      (M.read (|
+                    BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "move_binary_format::compatibility::Compatibility",
                           "check_struct_and_pub_function_linking"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "move_binary_format::compatibility::Compatibility",
                           "check_struct_and_pub_function_linking"
                         |)
-                      |)),
+                      |)
+                    |),
                     ltac:(M.monadic
-                      (BinOp.Pure.eq
-                        (M.read (|
+                      (BinOp.eq (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "move_binary_format::compatibility::Compatibility",
                             "check_struct_layout"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "move_binary_format::compatibility::Compatibility",
                             "check_struct_layout"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "move_binary_format::compatibility::Compatibility",
                           "check_friend_linking"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "move_binary_format::compatibility::Compatibility",
                           "check_friend_linking"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "move_binary_format::compatibility::Compatibility",
                         "check_private_entry_linking"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "move_binary_format::compatibility::Compatibility",
                         "check_private_entry_linking"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -134,23 +138,24 @@ Module compatibility.
                 |)))
             |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "move_binary_format::compatibility::Compatibility",
                     "disallow_change_struct_type_params"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "move_binary_format::compatibility::Compatibility",
                     "disallow_change_struct_type_params"
                   |)
-                |))))
+                |)
+              |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -160,17 +165,6 @@ Module compatibility.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_move_binary_format_compatibility_Compatibility.
-  
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_compatibility_Compatibility.
-    Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::Compatibility".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_compatibility_Compatibility.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_compatibility_Compatibility.
     Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::Compatibility".
@@ -198,7 +192,7 @@ Module compatibility.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -237,57 +231,43 @@ Module compatibility.
               |) in
             let~ values :=
               M.alloc (|
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    Value.Array
-                      [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::compatibility::Compatibility",
-                            "check_struct_and_pub_function_linking"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::compatibility::Compatibility",
-                            "check_struct_layout"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::compatibility::Compatibility",
-                            "check_friend_linking"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::compatibility::Compatibility",
-                            "check_private_entry_linking"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "move_binary_format::compatibility::Compatibility",
-                            "disallowed_new_abilities"
-                          |));
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "move_binary_format::compatibility::Compatibility",
-                              "disallow_change_struct_type_params"
-                            |)
-                          |))
-                      ]
-                  |))
+                M.alloc (|
+                  Value.Array
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::compatibility::Compatibility",
+                        "check_struct_and_pub_function_linking"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::compatibility::Compatibility",
+                        "check_struct_layout"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::compatibility::Compatibility",
+                        "check_friend_linking"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::compatibility::Compatibility",
+                        "check_private_entry_linking"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "move_binary_format::compatibility::Compatibility",
+                        "disallowed_new_abilities"
+                      |);
+                      M.alloc (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "move_binary_format::compatibility::Compatibility",
+                          "disallow_change_struct_type_params"
+                        |)
+                      |)
+                    ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -299,13 +279,13 @@ Module compatibility.
                 [
                   M.read (| f |);
                   M.read (| Value.String "Compatibility" |);
-                  (* Unsize *) M.pointer_coercion (M.read (| names |));
+                  M.read (| names |);
                   M.read (| values |)
                 ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -338,7 +318,7 @@ Module compatibility.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -390,7 +370,7 @@ Module compatibility.
                 M.read (| M.get_constant (| "move_binary_format::file_format::EMPTY" |) |));
               ("disallow_change_struct_type_params", Value.Bool true)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -423,7 +403,7 @@ Module compatibility.
             |),
             []
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_full_check : M.IsAssociatedFunction Self "full_check" full_check.
@@ -455,7 +435,7 @@ Module compatibility.
                 M.read (| M.get_constant (| "move_binary_format::file_format::EMPTY" |) |));
               ("disallow_change_struct_type_params", Value.Bool false)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_no_check : M.IsAssociatedFunction Self "no_check" no_check.
@@ -502,7 +482,7 @@ Module compatibility.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_need_check_compat :
@@ -866,8 +846,8 @@ Module compatibility.
                                                               M.use
                                                                 (M.alloc (|
                                                                   LogicalOp.or (|
-                                                                    UnOp.Pure.not
-                                                                      (M.call_closure (|
+                                                                    UnOp.not (|
+                                                                      M.call_closure (|
                                                                         M.get_function (|
                                                                           "move_binary_format::compatibility::struct_abilities_compatible",
                                                                           []
@@ -899,10 +879,11 @@ Module compatibility.
                                                                             |)
                                                                           |)
                                                                         ]
-                                                                      |)),
+                                                                      |)
+                                                                    |),
                                                                     ltac:(M.monadic
-                                                                      (UnOp.Pure.not
-                                                                        (M.call_closure (|
+                                                                      (UnOp.not (|
+                                                                        M.call_closure (|
                                                                           M.get_function (|
                                                                             "move_binary_format::compatibility::struct_type_parameters_compatible",
                                                                             []
@@ -970,7 +951,8 @@ Module compatibility.
                                                                               ]
                                                                             |)
                                                                           ]
-                                                                        |))))
+                                                                        |)
+                                                                      |)))
                                                                   |)
                                                                 |)) in
                                                             let _ :=
@@ -1246,11 +1228,14 @@ Module compatibility.
                                                                   ltac:(M.monadic
                                                                     match γ with
                                                                     | [] =>
-                                                                      M.write (|
-                                                                        struct_and_function_linking,
-                                                                        Value.Bool false
-                                                                      |)
-                                                                    | _ => M.impossible (||)
+                                                                      ltac:(M.monadic
+                                                                        (M.write (|
+                                                                          struct_and_function_linking,
+                                                                          Value.Bool false
+                                                                        |)))
+                                                                    | _ =>
+                                                                      M.impossible
+                                                                        "wrong number of arguments"
                                                                     end))
                                                             |)));
                                                         fun γ =>
@@ -1296,8 +1281,8 @@ Module compatibility.
                                                                   LogicalOp.and (|
                                                                     LogicalOp.and (|
                                                                       LogicalOp.and (|
-                                                                        BinOp.Pure.lt
-                                                                          (M.read (|
+                                                                        BinOp.lt (|
+                                                                          M.read (|
                                                                             M.SubPointer.get_struct_record_field (|
                                                                               M.read (|
                                                                                 old_module
@@ -1305,15 +1290,16 @@ Module compatibility.
                                                                               "move_binary_format::normalized::Module",
                                                                               "file_format_version"
                                                                             |)
-                                                                          |))
-                                                                          (M.read (|
+                                                                          |),
+                                                                          M.read (|
                                                                             M.get_constant (|
                                                                               "move_binary_format::file_format_common::VERSION_5"
                                                                             |)
-                                                                          |)),
+                                                                          |)
+                                                                        |),
                                                                         ltac:(M.monadic
-                                                                          (BinOp.Pure.lt
-                                                                            (M.read (|
+                                                                          (BinOp.lt (|
+                                                                            M.read (|
                                                                               M.SubPointer.get_struct_record_field (|
                                                                                 M.read (|
                                                                                   new_module
@@ -1321,12 +1307,13 @@ Module compatibility.
                                                                                 "move_binary_format::normalized::Module",
                                                                                 "file_format_version"
                                                                               |)
-                                                                            |))
-                                                                            (M.read (|
+                                                                            |),
+                                                                            M.read (|
                                                                               M.get_constant (|
                                                                                 "move_binary_format::file_format_common::VERSION_5"
                                                                               |)
-                                                                            |))))
+                                                                            |)
+                                                                          |)))
                                                                       |),
                                                                       ltac:(M.monadic
                                                                         (M.call_closure (|
@@ -1356,21 +1343,22 @@ Module compatibility.
                                                                         |)))
                                                                     |),
                                                                     ltac:(M.monadic
-                                                                      (BinOp.Pure.ne
-                                                                        (M.read (|
+                                                                      (BinOp.ne (|
+                                                                        M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
                                                                             M.read (| old_func |),
                                                                             "move_binary_format::normalized::Function",
                                                                             "is_entry"
                                                                           |)
-                                                                        |))
-                                                                        (M.read (|
+                                                                        |),
+                                                                        M.read (|
                                                                           M.SubPointer.get_struct_record_field (|
                                                                             M.read (| new_func |),
                                                                             "move_binary_format::normalized::Function",
                                                                             "is_entry"
                                                                           |)
-                                                                        |))))
+                                                                        |)
+                                                                      |)))
                                                                   |)
                                                                 |)) in
                                                             let _ :=
@@ -1403,8 +1391,8 @@ Module compatibility.
                                                                               |)
                                                                             |),
                                                                             ltac:(M.monadic
-                                                                              (UnOp.Pure.not
-                                                                                (M.read (|
+                                                                              (UnOp.not (|
+                                                                                M.read (|
                                                                                   M.SubPointer.get_struct_record_field (|
                                                                                     M.read (|
                                                                                       new_func
@@ -1412,7 +1400,8 @@ Module compatibility.
                                                                                     "move_binary_format::normalized::Function",
                                                                                     "is_entry"
                                                                                   |)
-                                                                                |))))
+                                                                                |)
+                                                                              |)))
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
@@ -1528,8 +1517,8 @@ Module compatibility.
                                                                       |)))
                                                                   |),
                                                                   ltac:(M.monadic
-                                                                    (UnOp.Pure.not
-                                                                      (M.call_closure (|
+                                                                    (UnOp.not (|
+                                                                      M.call_closure (|
                                                                         M.get_function (|
                                                                           "move_binary_format::compatibility::fun_type_parameters_compatible",
                                                                           []
@@ -1590,7 +1579,8 @@ Module compatibility.
                                                                             ]
                                                                           |)
                                                                         ]
-                                                                      |))))
+                                                                      |)
+                                                                    |)))
                                                                 |)
                                                               |)) in
                                                           let _ :=
@@ -1844,8 +1834,8 @@ Module compatibility.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (M.call_closure (|
+                                UnOp.not (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::collections::btree::set::BTreeSet")
@@ -1858,7 +1848,8 @@ Module compatibility.
                                       []
                                     |),
                                     [ old_friend_module_ids; new_friend_module_ids ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1885,7 +1876,7 @@ Module compatibility.
                                     |)
                                   |),
                                   ltac:(M.monadic
-                                    (UnOp.Pure.not (M.read (| struct_and_function_linking |))))
+                                    (UnOp.not (| M.read (| struct_and_function_linking |) |)))
                                 |)
                               |)) in
                           let _ :=
@@ -1934,7 +1925,7 @@ Module compatibility.
                                       "check_struct_layout"
                                     |)
                                   |),
-                                  ltac:(M.monadic (UnOp.Pure.not (M.read (| struct_layout |))))
+                                  ltac:(M.monadic (UnOp.not (| M.read (| struct_layout |) |)))
                                 |)
                               |)) in
                           let _ :=
@@ -1983,7 +1974,7 @@ Module compatibility.
                                       "check_friend_linking"
                                     |)
                                   |),
-                                  ltac:(M.monadic (UnOp.Pure.not (M.read (| friend_linking |))))
+                                  ltac:(M.monadic (UnOp.not (| M.read (| friend_linking |) |)))
                                 |)
                               |)) in
                           let _ :=
@@ -2032,7 +2023,7 @@ Module compatibility.
                                       "check_private_entry_linking"
                                     |)
                                   |),
-                                  ltac:(M.monadic (UnOp.Pure.not (M.read (| entry_linking |))))
+                                  ltac:(M.monadic (UnOp.not (| M.read (| entry_linking |) |)))
                                 |)
                               |)) in
                           let _ :=
@@ -2067,7 +2058,7 @@ Module compatibility.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check : M.IsAssociatedFunction Self "check" check.
@@ -2137,40 +2128,42 @@ Module compatibility.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let ability := M.copy (| γ |) in
-                                LogicalOp.or (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::AbilitySet",
-                                        "has_ability",
-                                        []
-                                      |),
-                                      [ M.read (| new_abilities |); M.read (| ability |) ]
-                                    |)),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "move_binary_format::file_format::AbilitySet",
-                                        "has_ability",
-                                        []
-                                      |),
-                                      [ M.read (| old_abilities |); M.read (| ability |) ]
-                                    |)))
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let ability := M.copy (| γ |) in
+                                  LogicalOp.or (|
+                                    UnOp.not (|
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::AbilitySet",
+                                          "has_ability",
+                                          []
+                                        |),
+                                        [ M.read (| new_abilities |); M.read (| ability |) ]
+                                      |)
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "move_binary_format::file_format::AbilitySet",
+                                          "has_ability",
+                                          []
+                                        |),
+                                        [ M.read (| old_abilities |); M.read (| ability |) ]
+                                      |)))
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_struct_abilities_compatible :
@@ -2206,8 +2199,8 @@ Module compatibility.
         (let old_type_parameters := M.alloc (| old_type_parameters |) in
         let new_type_parameters := M.alloc (| new_type_parameters |) in
         LogicalOp.and (|
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -2217,8 +2210,8 @@ Module compatibility.
                 []
               |),
               [ M.read (| old_type_parameters |) ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -2228,7 +2221,8 @@ Module compatibility.
                 []
               |),
               [ M.read (| new_type_parameters |) ]
-            |)),
+            |)
+          |),
           ltac:(M.monadic
             (M.call_closure (|
               M.get_trait_method (|
@@ -2313,34 +2307,35 @@ Module compatibility.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let old_type_parameter_constraint := M.copy (| γ0_0 |) in
-                                let new_type_parameter_constraint := M.copy (| γ0_1 |) in
-                                M.call_closure (|
-                                  M.get_function (|
-                                    "move_binary_format::compatibility::type_parameter_constraints_compatible",
-                                    []
-                                  |),
-                                  [
-                                    Value.Bool false;
-                                    M.read (| M.read (| old_type_parameter_constraint |) |);
-                                    M.read (| M.read (| new_type_parameter_constraint |) |)
-                                  ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let old_type_parameter_constraint := M.copy (| γ0_0 |) in
+                                  let new_type_parameter_constraint := M.copy (| γ0_1 |) in
+                                  M.call_closure (|
+                                    M.get_function (|
+                                      "move_binary_format::compatibility::type_parameter_constraints_compatible",
+                                      []
+                                    |),
+                                    [
+                                      Value.Bool false;
+                                      M.read (| M.read (| old_type_parameter_constraint |) |);
+                                      M.read (| M.read (| new_type_parameter_constraint |) |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_fun_type_parameters_compatible :
@@ -2383,8 +2378,8 @@ Module compatibility.
         let old_type_parameters := M.alloc (| old_type_parameters |) in
         let new_type_parameters := M.alloc (| new_type_parameters |) in
         LogicalOp.and (|
-          BinOp.Pure.eq
-            (M.call_closure (|
+          BinOp.eq (|
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -2394,8 +2389,8 @@ Module compatibility.
                 []
               |),
               [ M.read (| old_type_parameters |) ]
-            |))
-            (M.call_closure (|
+            |),
+            M.call_closure (|
               M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
@@ -2405,7 +2400,8 @@ Module compatibility.
                 []
               |),
               [ M.read (| new_type_parameters |) ]
-            |)),
+            |)
+          |),
           ltac:(M.monadic
             (M.call_closure (|
               M.get_trait_method (|
@@ -2490,60 +2486,61 @@ Module compatibility.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let old_type_parameter := M.copy (| γ0_0 |) in
-                                let new_type_parameter := M.copy (| γ0_1 |) in
-                                LogicalOp.and (|
-                                  M.call_closure (|
-                                    M.get_function (|
-                                      "move_binary_format::compatibility::type_parameter_phantom_decl_compatible",
-                                      []
-                                    |),
-                                    [
-                                      M.read (| disallow_changing_generic_abilities |);
-                                      M.read (| old_type_parameter |);
-                                      M.read (| new_type_parameter |)
-                                    ]
-                                  |),
-                                  ltac:(M.monadic
-                                    (M.call_closure (|
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let old_type_parameter := M.copy (| γ0_0 |) in
+                                  let new_type_parameter := M.copy (| γ0_1 |) in
+                                  LogicalOp.and (|
+                                    M.call_closure (|
                                       M.get_function (|
-                                        "move_binary_format::compatibility::type_parameter_constraints_compatible",
+                                        "move_binary_format::compatibility::type_parameter_phantom_decl_compatible",
                                         []
                                       |),
                                       [
                                         M.read (| disallow_changing_generic_abilities |);
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| old_type_parameter |),
-                                            "move_binary_format::file_format::StructTypeParameter",
-                                            "constraints"
-                                          |)
-                                        |);
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| new_type_parameter |),
-                                            "move_binary_format::file_format::StructTypeParameter",
-                                            "constraints"
-                                          |)
-                                        |)
+                                        M.read (| old_type_parameter |);
+                                        M.read (| new_type_parameter |)
                                       ]
-                                    |)))
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        M.get_function (|
+                                          "move_binary_format::compatibility::type_parameter_constraints_compatible",
+                                          []
+                                        |),
+                                        [
+                                          M.read (| disallow_changing_generic_abilities |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| old_type_parameter |),
+                                              "move_binary_format::file_format::StructTypeParameter",
+                                              "constraints"
+                                            |)
+                                          |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| new_type_parameter |),
+                                              "move_binary_format::file_format::StructTypeParameter",
+                                              "constraints"
+                                            |)
+                                          |)
+                                        ]
+                                      |)))
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_struct_type_parameters_compatible :
@@ -2611,7 +2608,7 @@ Module compatibility.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_type_parameter_constraints_compatible :
@@ -2655,34 +2652,36 @@ Module compatibility.
                   (let γ := M.use disallow_changing_generic_abilities in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
-                    BinOp.Pure.eq
-                      (M.read (|
+                    BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| old_type_parameter |),
                           "move_binary_format::file_format::StructTypeParameter",
                           "is_phantom"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| new_type_parameter |),
                           "move_binary_format::file_format::StructTypeParameter",
                           "is_phantom"
                         |)
-                      |))
+                      |)
+                    |)
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (M.alloc (|
                     LogicalOp.or (|
-                      UnOp.Pure.not
-                        (M.read (|
+                      UnOp.not (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| old_type_parameter |),
                             "move_binary_format::file_format::StructTypeParameter",
                             "is_phantom"
                           |)
-                        |)),
+                        |)
+                      |),
                       ltac:(M.monadic
                         (M.read (|
                           M.SubPointer.get_struct_record_field (|
@@ -2696,7 +2695,7 @@ Module compatibility.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_type_parameter_phantom_decl_compatible :
@@ -2767,7 +2766,7 @@ Module compatibility.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2819,7 +2818,7 @@ Module compatibility.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2841,7 +2840,7 @@ Module compatibility.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2851,7 +2850,7 @@ Module compatibility.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2864,11 +2863,11 @@ Module compatibility.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "isize", [], "cmp", [] |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2890,7 +2889,7 @@ Module compatibility.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2900,7 +2899,7 @@ Module compatibility.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -2919,11 +2918,11 @@ Module compatibility.
                   "partial_cmp",
                   []
                 |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2933,17 +2932,6 @@ Module compatibility.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
   End Impl_core_cmp_PartialOrd_for_move_binary_format_compatibility_InclusionCheck.
-  
-  Module Impl_core_marker_StructuralEq_for_move_binary_format_compatibility_InclusionCheck.
-    Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::InclusionCheck".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_move_binary_format_compatibility_InclusionCheck.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_compatibility_InclusionCheck.
     Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::InclusionCheck".
@@ -2959,7 +2947,7 @@ Module compatibility.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2993,7 +2981,7 @@ Module compatibility.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3003,7 +2991,7 @@ Module compatibility.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -3013,9 +3001,9 @@ Module compatibility.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3166,21 +3154,22 @@ Module compatibility.
                                       |)))
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.gt
-                                      (M.read (|
+                                    (BinOp.gt (|
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| old_module |),
                                           "move_binary_format::normalized::Module",
                                           "file_format_version"
                                         |)
-                                      |))
-                                      (M.read (|
+                                      |),
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| new_module |),
                                           "move_binary_format::normalized::Module",
                                           "file_format_version"
                                         |)
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -3237,8 +3226,8 @@ Module compatibility.
                                   ltac:(M.monadic
                                     (LogicalOp.or (|
                                       LogicalOp.or (|
-                                        BinOp.Pure.ne
-                                          (M.call_closure (|
+                                        BinOp.ne (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3258,8 +3247,8 @@ Module compatibility.
                                                 "structs"
                                               |)
                                             ]
-                                          |))
-                                          (M.call_closure (|
+                                          |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -3279,10 +3268,11 @@ Module compatibility.
                                                 "structs"
                                               |)
                                             ]
-                                          |)),
+                                          |)
+                                        |),
                                         ltac:(M.monadic
-                                          (BinOp.Pure.ne
-                                            (M.call_closure (|
+                                          (BinOp.ne (|
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path
@@ -3305,8 +3295,8 @@ Module compatibility.
                                                   "functions"
                                                 |)
                                               ]
-                                            |))
-                                            (M.call_closure (|
+                                            |),
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path
@@ -3329,11 +3319,12 @@ Module compatibility.
                                                   "functions"
                                                 |)
                                               ]
-                                            |))))
+                                            |)
+                                          |)))
                                       |),
                                       ltac:(M.monadic
-                                        (BinOp.Pure.ne
-                                          (M.call_closure (|
+                                        (BinOp.ne (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -3353,8 +3344,8 @@ Module compatibility.
                                                 "friends"
                                               |)
                                             ]
-                                          |))
-                                          (M.call_closure (|
+                                          |),
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "alloc::vec::Vec")
@@ -3374,7 +3365,8 @@ Module compatibility.
                                                 "friends"
                                               |)
                                             ]
-                                          |))))
+                                          |)
+                                        |)))
                                     |)))
                                 |)
                               |)) in
@@ -3711,43 +3703,45 @@ Module compatibility.
                                                       ltac:(M.monadic
                                                         match γ with
                                                         | [ α0 ] =>
-                                                          M.match_operator (|
-                                                            M.alloc (| α0 |),
-                                                            [
-                                                              fun γ =>
-                                                                ltac:(M.monadic
-                                                                  (M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "alloc::collections::btree::map::BTreeMap")
-                                                                        []
+                                                          ltac:(M.monadic
+                                                            (M.match_operator (|
+                                                              M.alloc (| α0 |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::collections::btree::map::BTreeMap")
+                                                                          []
+                                                                          [
+                                                                            Ty.path
+                                                                              "move_core_types::identifier::Identifier";
+                                                                            Ty.path
+                                                                              "move_binary_format::normalized::Function";
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ],
+                                                                        "get",
                                                                         [
                                                                           Ty.path
-                                                                            "move_core_types::identifier::Identifier";
-                                                                          Ty.path
-                                                                            "move_binary_format::normalized::Function";
-                                                                          Ty.path
-                                                                            "alloc::alloc::Global"
-                                                                        ],
-                                                                      "get",
+                                                                            "move_core_types::identifier::Identifier"
+                                                                        ]
+                                                                      |),
                                                                       [
-                                                                        Ty.path
-                                                                          "move_core_types::identifier::Identifier"
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          M.read (| new_module |),
+                                                                          "move_binary_format::normalized::Module",
+                                                                          "functions"
+                                                                        |);
+                                                                        M.read (| name |)
                                                                       ]
-                                                                    |),
-                                                                    [
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        M.read (| new_module |),
-                                                                        "move_binary_format::normalized::Module",
-                                                                        "functions"
-                                                                      |);
-                                                                      M.read (| name |)
-                                                                    ]
-                                                                  |)))
-                                                            ]
-                                                          |)
-                                                        | _ => M.impossible (||)
+                                                                    |)))
+                                                              ]
+                                                            |)))
+                                                        | _ =>
+                                                          M.impossible "wrong number of arguments"
                                                         end))
                                                 ]
                                               |)
@@ -3813,7 +3807,7 @@ Module compatibility.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_check : M.IsAssociatedFunction Self "check" check.

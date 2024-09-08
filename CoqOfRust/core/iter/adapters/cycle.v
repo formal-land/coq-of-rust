@@ -49,7 +49,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -83,26 +83,22 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "Cycle" |);
                   M.read (| Value.String "orig" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::iter::adapters::cycle::Cycle",
+                    "orig"
+                  |);
+                  M.read (| Value.String "iter" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::iter::adapters::cycle::Cycle",
-                      "orig"
-                    |));
-                  M.read (| Value.String "iter" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::adapters::cycle::Cycle",
-                        "iter"
-                      |)
-                    |))
+                      "iter"
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -139,7 +135,7 @@ Module iter.
                     |));
                   ("iter", M.read (| iter |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -238,7 +234,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -284,7 +280,10 @@ Module iter.
                         let γ1_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ1_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Integer 0 |) in
+                          M.is_constant_or_break_match (|
+                            M.read (| γ1_0 |),
+                            Value.Integer IntegerKind.Usize 0
+                          |) in
                         let γ2_0 :=
                           M.SubPointer.get_struct_tuple_field (|
                             γ1_1,
@@ -292,17 +291,26 @@ Module iter.
                             0
                           |) in
                         let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ2_0 |), Value.Integer 0 |) in
+                          M.is_constant_or_break_match (|
+                            M.read (| γ2_0 |),
+                            Value.Integer IntegerKind.Usize 0
+                          |) in
                         sz));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                         let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
+                          M.is_constant_or_break_match (|
+                            M.read (| γ0_0 |),
+                            Value.Integer IntegerKind.Usize 0
+                          |) in
                         M.alloc (|
                           Value.Tuple
-                            [ Value.Integer 0; Value.StructTuple "core::option::Option::None" [] ]
+                            [
+                              Value.Integer IntegerKind.Usize 0;
+                              Value.StructTuple "core::option::Option::None" []
+                            ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -316,7 +324,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -492,52 +500,53 @@ Module iter.
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0; α1 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (let acc := M.copy (| γ |) in
-                                                      M.match_operator (|
-                                                        M.alloc (| α1 |),
-                                                        [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let x := M.copy (| γ |) in
-                                                              M.read (|
-                                                                let~ _ :=
-                                                                  M.write (|
-                                                                    is_empty,
-                                                                    Value.Bool false
-                                                                  |) in
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_trait_method (|
-                                                                      "core::ops::function::FnMut",
-                                                                      F,
-                                                                      [
-                                                                        Ty.tuple
-                                                                          [ Acc; Ty.associated ]
-                                                                      ],
-                                                                      "call_mut",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      f;
-                                                                      Value.Tuple
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (let acc := M.copy (| γ |) in
+                                                        M.match_operator (|
+                                                          M.alloc (| α1 |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let x := M.copy (| γ |) in
+                                                                M.read (|
+                                                                  let~ _ :=
+                                                                    M.write (|
+                                                                      is_empty,
+                                                                      Value.Bool false
+                                                                    |) in
+                                                                  M.alloc (|
+                                                                    M.call_closure (|
+                                                                      M.get_trait_method (|
+                                                                        "core::ops::function::FnMut",
+                                                                        F,
                                                                         [
-                                                                          M.read (| acc |);
-                                                                          M.read (| x |)
-                                                                        ]
-                                                                    ]
+                                                                          Ty.tuple
+                                                                            [ Acc; Ty.associated ]
+                                                                        ],
+                                                                        "call_mut",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        f;
+                                                                        Value.Tuple
+                                                                          [
+                                                                            M.read (| acc |);
+                                                                            M.read (| x |)
+                                                                          ]
+                                                                      ]
+                                                                    |)
                                                                   |)
-                                                                |)
-                                                              |)))
-                                                        ]
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                                                |)))
+                                                          ]
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |)
@@ -733,11 +742,11 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 let mut n = match self.iter.advance_by(n) {
                     Ok(()) => return Ok(()),
                     Err(rem) => rem.get(),
@@ -752,7 +761,7 @@ Module iter.
                     };
                 }
         
-                NonZeroUsize::new(n).map_or(Ok(()), Err)
+                NonZero::new(n).map_or(Ok(()), Err)
             }
         *)
         Definition advance_by
@@ -824,7 +833,10 @@ Module iter.
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ],
                                       "get",
                                       []
                                     |),
@@ -845,7 +857,10 @@ Module iter.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.Pure.gt (M.read (| n |)) (Value.Integer 0)
+                                        BinOp.gt (|
+                                          M.read (| n |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -932,17 +947,20 @@ Module iter.
                                                 let rem := M.copy (| γ1_0 |) in
                                                 let γ :=
                                                   M.alloc (|
-                                                    BinOp.Pure.eq
-                                                      (M.call_closure (|
+                                                    BinOp.eq (|
+                                                      M.call_closure (|
                                                         M.get_associated_function (|
-                                                          Ty.path
-                                                            "core::num::nonzero::NonZeroUsize",
+                                                          Ty.apply
+                                                            (Ty.path "core::num::nonzero::NonZero")
+                                                            []
+                                                            [ Ty.path "usize" ],
                                                           "get",
                                                           []
                                                         |),
                                                         [ M.read (| rem |) ]
-                                                      |))
-                                                      (M.read (| n |))
+                                                      |),
+                                                      M.read (| n |)
+                                                    |)
                                                   |) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -966,7 +984,10 @@ Module iter.
                                                 M.alloc (|
                                                   M.call_closure (|
                                                     M.get_associated_function (|
-                                                      Ty.path "core::num::nonzero::NonZeroUsize",
+                                                      Ty.apply
+                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                        []
+                                                        [ Ty.path "usize" ],
                                                       "get",
                                                       []
                                                     |),
@@ -1000,25 +1021,50 @@ Module iter.
                           Ty.apply
                             (Ty.path "core::option::Option")
                             []
-                            [ Ty.path "core::num::nonzero::NonZeroUsize" ],
+                            [
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ]
+                            ],
                           "map_or",
                           [
                             Ty.apply
                               (Ty.path "core::result::Result")
                               []
-                              [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ];
+                              [
+                                Ty.tuple [];
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ]
+                              ];
                             Ty.function
-                              [ Ty.path "core::num::nonzero::NonZeroUsize" ]
+                              [
+                                Ty.apply
+                                  (Ty.path "core::num::nonzero::NonZero")
+                                  []
+                                  [ Ty.path "usize" ]
+                              ]
                               (Ty.apply
                                 (Ty.path "core::result::Result")
                                 []
-                                [ Ty.tuple []; Ty.path "core::num::nonzero::NonZeroUsize" ])
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ]
+                                ])
                           ]
                         |),
                         [
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.path "core::num::nonzero::NonZeroUsize",
+                              Ty.apply
+                                (Ty.path "core::num::nonzero::NonZero")
+                                []
+                                [ Ty.path "usize" ],
                               "new",
                               []
                             |),
@@ -1031,7 +1077,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

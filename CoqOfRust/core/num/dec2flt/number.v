@@ -10,22 +10,22 @@ Module num.
             (M.alloc (|
               Value.Array
                 [
-                  Value.Integer 1;
-                  Value.Integer 10;
-                  Value.Integer 100;
-                  Value.Integer 1000;
-                  Value.Integer 10000;
-                  Value.Integer 100000;
-                  Value.Integer 1000000;
-                  Value.Integer 10000000;
-                  Value.Integer 100000000;
-                  Value.Integer 1000000000;
-                  Value.Integer 10000000000;
-                  Value.Integer 100000000000;
-                  Value.Integer 1000000000000;
-                  Value.Integer 10000000000000;
-                  Value.Integer 100000000000000;
-                  Value.Integer 1000000000000000
+                  Value.Integer IntegerKind.U64 1;
+                  Value.Integer IntegerKind.U64 10;
+                  Value.Integer IntegerKind.U64 100;
+                  Value.Integer IntegerKind.U64 1000;
+                  Value.Integer IntegerKind.U64 10000;
+                  Value.Integer IntegerKind.U64 100000;
+                  Value.Integer IntegerKind.U64 1000000;
+                  Value.Integer IntegerKind.U64 10000000;
+                  Value.Integer IntegerKind.U64 100000000;
+                  Value.Integer IntegerKind.U64 1000000000;
+                  Value.Integer IntegerKind.U64 10000000000;
+                  Value.Integer IntegerKind.U64 100000000000;
+                  Value.Integer IntegerKind.U64 1000000000000;
+                  Value.Integer IntegerKind.U64 10000000000000;
+                  Value.Integer IntegerKind.U64 100000000000000;
+                  Value.Integer IntegerKind.U64 1000000000000000
                 ]
             |))).
       
@@ -72,7 +72,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -114,42 +114,34 @@ Module num.
                   M.read (| f |);
                   M.read (| Value.String "Number" |);
                   M.read (| Value.String "exponent" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::dec2flt::number::Number",
-                      "exponent"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::dec2flt::number::Number",
+                    "exponent"
+                  |);
                   M.read (| Value.String "mantissa" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::num::dec2flt::number::Number",
-                      "mantissa"
-                    |));
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::dec2flt::number::Number",
+                    "mantissa"
+                  |);
                   M.read (| Value.String "negative" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.SubPointer.get_struct_record_field (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::num::dec2flt::number::Number",
+                    "negative"
+                  |);
+                  M.read (| Value.String "many_digits" |);
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::num::dec2flt::number::Number",
-                      "negative"
-                    |));
-                  M.read (| Value.String "many_digits" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::num::dec2flt::number::Number",
-                        "many_digits"
-                      |)
-                    |))
+                      "many_digits"
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -216,7 +208,7 @@ Module num.
                       []
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -251,73 +243,77 @@ Module num.
               LogicalOp.and (|
                 LogicalOp.and (|
                   LogicalOp.and (|
-                    BinOp.Pure.eq
-                      (M.read (|
+                    BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::num::dec2flt::number::Number",
                           "exponent"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::num::dec2flt::number::Number",
                           "exponent"
                         |)
-                      |)),
+                      |)
+                    |),
                     ltac:(M.monadic
-                      (BinOp.Pure.eq
-                        (M.read (|
+                      (BinOp.eq (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::num::dec2flt::number::Number",
                             "mantissa"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| other |),
                             "core::num::dec2flt::number::Number",
                             "mantissa"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::num::dec2flt::number::Number",
                           "negative"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::num::dec2flt::number::Number",
                           "negative"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::dec2flt::number::Number",
                         "many_digits"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::num::dec2flt::number::Number",
                         "many_digits"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -327,17 +323,6 @@ Module num.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_core_num_dec2flt_number_Number.
-      
-      Module Impl_core_marker_StructuralEq_for_core_num_dec2flt_number_Number.
-        Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_core_num_dec2flt_number_Number.
       
       Module Impl_core_cmp_Eq_for_core_num_dec2flt_number_Number.
         Definition Self : Ty.t := Ty.path "core::num::dec2flt::number::Number".
@@ -372,7 +357,7 @@ Module num.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -403,60 +388,64 @@ Module num.
               LogicalOp.and (|
                 LogicalOp.and (|
                   LogicalOp.and (|
-                    BinOp.Pure.le
-                      (M.read (|
+                    BinOp.le (|
+                      M.read (|
                         M.get_constant (|
                           "core::num::dec2flt::float::RawFloat::MIN_EXPONENT_FAST_PATH"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::num::dec2flt::number::Number",
                           "exponent"
                         |)
-                      |)),
+                      |)
+                    |),
                     ltac:(M.monadic
-                      (BinOp.Pure.le
-                        (M.read (|
+                      (BinOp.le (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (| self |),
                             "core::num::dec2flt::number::Number",
                             "exponent"
                           |)
-                        |))
-                        (M.read (|
+                        |),
+                        M.read (|
                           M.get_constant (|
                             "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_DISGUISED_FAST_PATH"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.Pure.le
-                      (M.read (|
+                    (BinOp.le (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::num::dec2flt::number::Number",
                           "mantissa"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.get_constant (|
                           "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (UnOp.Pure.not
-                    (M.read (|
+                  (UnOp.not (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::num::dec2flt::number::Number",
                         "many_digits"
                       |)
-                    |))))
+                    |)
+                  |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_fast_path :
@@ -546,19 +535,20 @@ Module num.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.Pure.le
-                                                (M.read (|
+                                              BinOp.le (|
+                                                M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| self |),
                                                     "core::num::dec2flt::number::Number",
                                                     "exponent"
                                                   |)
-                                                |))
-                                                (M.read (|
+                                                |),
+                                                M.read (|
                                                   M.get_constant (|
                                                     "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"
                                                   |)
-                                                |))
+                                                |)
+                                              |)
                                             |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
@@ -594,15 +584,16 @@ Module num.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.Pure.lt
-                                                        (M.read (|
+                                                      BinOp.lt (|
+                                                        M.read (|
                                                           M.SubPointer.get_struct_record_field (|
                                                             M.read (| self |),
                                                             "core::num::dec2flt::number::Number",
                                                             "exponent"
                                                           |)
-                                                        |))
-                                                        (Value.Integer 0)
+                                                        |),
+                                                        Value.Integer IntegerKind.I64 0
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -630,8 +621,7 @@ Module num.
                                                         |),
                                                         [
                                                           M.rust_cast
-                                                            (UnOp.Panic.neg (|
-                                                              Integer.I64,
+                                                            (UnOp.neg (|
                                                               M.read (|
                                                                 M.SubPointer.get_struct_record_field (|
                                                                   M.read (| self |),
@@ -686,20 +676,20 @@ Module num.
                                       ltac:(M.monadic
                                         (let~ shift :=
                                           M.alloc (|
-                                            BinOp.Wrap.sub
-                                              Integer.I64
-                                              (M.read (|
+                                            BinOp.Wrap.sub (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (| self |),
                                                   "core::num::dec2flt::number::Number",
                                                   "exponent"
                                                 |)
-                                              |))
-                                              (M.read (|
+                                              |),
+                                              M.read (|
                                                 M.get_constant (|
                                                   "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_FAST_PATH"
                                                 |)
-                                              |))
+                                              |)
+                                            |)
                                           |) in
                                         let~ mantissa :=
                                           M.copy (|
@@ -807,13 +797,14 @@ Module num.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.Pure.gt
-                                                          (M.read (| mantissa |))
-                                                          (M.read (|
+                                                        BinOp.gt (|
+                                                          M.read (| mantissa |),
+                                                          M.read (|
                                                             M.get_constant (|
                                                               "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
                                                             |)
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -924,7 +915,7 @@ Module num.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_try_fast_path :

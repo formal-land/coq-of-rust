@@ -54,15 +54,17 @@ impl Callbacks for ToCoq {
             let coq_file_name = file_name.replace(".rs", ".v");
             println!("Writing to {coq_file_name:}");
 
-            // We exclude this specific file as it is triggered by the `thread_local!` macro
-            // but is not a file part of the current crate being translated.
-            if coq_file_name.contains("library/std/src/sys/common/thread_local/fast_local.v") {
-                println!("Skipping {coq_file_name:}");
+            let file = File::create(coq_file_name.clone());
+
+            // For some of the files we cannot create the output as the path is not accessible,
+            // especially for files corresponding to part of the standard library that appear
+            // sometimes in the translation.
+            if file.is_err() {
+                println!("Failed to create {coq_file_name:}");
                 continue;
             }
 
-            let mut file = File::create(coq_file_name).unwrap();
-            file.write_all(coq_output.as_bytes()).unwrap();
+            file.unwrap().write_all(coq_output.as_bytes()).unwrap();
         }
 
         let mut file = File::create(format!("{crate_name}.v")).unwrap();
@@ -70,7 +72,7 @@ impl Callbacks for ToCoq {
 
         file.write_all(index_content.as_bytes()).unwrap();
 
-        compiler.sess.abort_if_errors();
+        compiler.sess.dcx().abort_if_errors();
 
         if self.opts.in_cargo {
             Compilation::Continue

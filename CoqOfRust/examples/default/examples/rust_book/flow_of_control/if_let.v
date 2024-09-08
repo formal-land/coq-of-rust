@@ -43,7 +43,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ number :=
-          M.alloc (| Value.StructTuple "core::option::Option::Some" [ Value.Integer 7 ] |) in
+          M.alloc (|
+            Value.StructTuple "core::option::Option::Some" [ Value.Integer IntegerKind.I32 7 ]
+          |) in
         let~ letter := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
         let~ emoticon := M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
         let~ _ :=
@@ -69,31 +71,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "Matched " |);
-                                        M.read (| Value.String "!
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "Matched " |);
+                                      M.read (| Value.String "!
 " |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [ Ty.path "i32" ]
-                                          |),
-                                          [ i ]
-                                        |)
-                                      ]
-                                  |))
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_debug",
+                                          [ Ty.path "i32" ]
+                                        |),
+                                        [ i ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -127,31 +125,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "Matched " |);
-                                        M.read (| Value.String "!
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (| Value.String "Matched " |);
+                                      M.read (| Value.String "!
 " |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_debug",
-                                            [ Ty.path "i32" ]
-                                          |),
-                                          [ i ]
-                                        |)
-                                      ]
-                                  |))
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_debug",
+                                          [ Ty.path "i32" ]
+                                        |),
+                                        [ i ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -174,18 +168,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "Didn't match a number. Let's go with a letter!
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String
+                                          "Didn't match a number. Let's go with a letter!
 "
-                                        |)
-                                      ]
-                                  |))
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -218,31 +210,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               []
                             |),
                             [
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Matched " |);
-                                      M.read (| Value.String "!
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.read (| Value.String "Matched " |);
+                                    M.read (| Value.String "!
 " |)
-                                    ]
-                                |));
-                              (* Unsize *)
-                              M.pointer_coercion
-                                (M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          "new_debug",
-                                          [ Ty.path "i32" ]
-                                        |),
-                                        [ i ]
-                                      |)
-                                    ]
-                                |))
+                                  ]
+                              |);
+                              M.alloc (|
+                                Value.Array
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        "new_debug",
+                                        [ Ty.path "i32" ]
+                                      |),
+                                      [ i ]
+                                    |)
+                                  ]
+                              |)
                             ]
                           |)
                         ]
@@ -273,18 +261,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String
-                                                  "Didn't match a number. Let's go with a letter!
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "Didn't match a number. Let's go with a letter!
 "
-                                              |)
-                                            ]
-                                        |))
+                                            |)
+                                          ]
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -307,18 +293,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       []
                                     |),
                                     [
-                                      (* Unsize *)
-                                      M.pointer_coercion
-                                        (M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String
-                                                  "I don't like letters. Let's go with an emoticon :)!
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String
+                                                "I don't like letters. Let's go with an emoticon :)!
 "
-                                              |)
-                                            ]
-                                        |))
+                                            |)
+                                          ]
+                                      |)
                                     ]
                                   |)
                                 ]
@@ -331,7 +315,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           ]
         |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "if_let::main" main.

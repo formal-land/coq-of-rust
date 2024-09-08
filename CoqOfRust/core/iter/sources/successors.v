@@ -24,7 +24,7 @@ Module iter.
             Value.StructRecord
               "core::iter::sources::successors::Successors"
               [ ("next", M.read (| first |)); ("succ", M.read (| succ |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_successors :
@@ -81,7 +81,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -222,7 +222,7 @@ Module iter.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -269,21 +269,26 @@ Module iter.
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.Tuple
-                            [ Value.Integer 1; Value.StructTuple "core::option::Option::None" [] ]
+                            [
+                              Value.Integer IntegerKind.Usize 1;
+                              Value.StructTuple "core::option::Option::None" []
+                            ]
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
                           Value.Tuple
                             [
-                              Value.Integer 0;
-                              Value.StructTuple "core::option::Option::Some" [ Value.Integer 0 ]
+                              Value.Integer IntegerKind.Usize 0;
+                              Value.StructTuple
+                                "core::option::Option::Some"
+                                [ Value.Integer IntegerKind.Usize 0 ]
                             ]
                         |)))
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -354,18 +359,16 @@ Module iter.
                         |)
                       |);
                       M.read (| Value.String "next" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::successors::Successors",
-                          "next"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::sources::successors::Successors",
+                        "next"
+                      |)
                     ]
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

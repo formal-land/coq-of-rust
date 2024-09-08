@@ -70,7 +70,7 @@ Module ffi.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -122,7 +122,7 @@ Module ffi.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -132,17 +132,6 @@ Module ffi.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_for_alloc_ffi_c_str_CString.
-    
-    Module Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_CString.
-      Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::CString".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_CString.
     
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_CString.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::CString".
@@ -163,7 +152,7 @@ Module ffi.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -210,7 +199,7 @@ Module ffi.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -252,7 +241,7 @@ Module ffi.
                 M.read (| state |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -299,7 +288,7 @@ Module ffi.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -364,7 +353,7 @@ Module ffi.
                   ]
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -397,21 +386,22 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.read (|
+              BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "alloc::ffi::c_str::NulError",
                     0
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_tuple_field (|
                     M.read (| other |),
                     "alloc::ffi::c_str::NulError",
                     0
                   |)
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -443,7 +433,7 @@ Module ffi.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -453,17 +443,6 @@ Module ffi.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_NulError.
-    
-    Module Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_NulError.
-      Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::NulError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_NulError.
     
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_NulError.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::NulError".
@@ -491,7 +470,7 @@ Module ffi.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -522,25 +501,21 @@ Module ffi.
               [
                 M.read (| f |);
                 M.read (| Value.String "NulError" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_tuple_field (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.read (| self |),
+                  "alloc::ffi::c_str::NulError",
+                  0
+                |);
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
                     M.read (| self |),
                     "alloc::ffi::c_str::NulError",
-                    0
-                  |));
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "alloc::ffi::c_str::NulError",
-                      1
-                    |)
-                  |))
+                    1
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -627,7 +602,7 @@ Module ffi.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -660,7 +635,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             M.read (|
-              let~ __self_tag :=
+              let~ __self_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -670,7 +645,7 @@ Module ffi.
                     [ M.read (| self |) ]
                   |)
                 |) in
-              let~ __arg1_tag :=
+              let~ __arg1_discr :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (|
@@ -682,7 +657,7 @@ Module ffi.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)),
+                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -709,9 +684,16 @@ Module ffi.
                                 |) in
                               let __arg1_0 := M.alloc (| γ2_0 |) in
                               M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.read (| M.read (| __self_0 |) |))
-                                  (M.read (| M.read (| __arg1_0 |) |))
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "usize" ],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "usize" ] ],
+                                    "eq",
+                                    []
+                                  |),
+                                  [ __self_0; __arg1_0 ]
+                                |)
                               |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
                         ]
@@ -720,7 +702,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -730,17 +712,6 @@ Module ffi.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
-    
-    Module Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
-      Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
     
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_FromBytesWithNulErrorKind.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::FromBytesWithNulErrorKind".
@@ -761,7 +732,7 @@ Module ffi.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -804,11 +775,7 @@ Module ffi.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "InteriorNul" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "InteriorNul" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -832,7 +799,7 @@ Module ffi.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -909,7 +876,7 @@ Module ffi.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -994,7 +961,7 @@ Module ffi.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1004,17 +971,6 @@ Module ffi.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_FromVecWithNulError.
-    
-    Module Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_FromVecWithNulError.
-      Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::FromVecWithNulError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_FromVecWithNulError.
     
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_FromVecWithNulError.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::FromVecWithNulError".
@@ -1042,7 +998,7 @@ Module ffi.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1074,26 +1030,22 @@ Module ffi.
                 M.read (| f |);
                 M.read (| Value.String "FromVecWithNulError" |);
                 M.read (| Value.String "error_kind" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::ffi::c_str::FromVecWithNulError",
+                  "error_kind"
+                |);
+                M.read (| Value.String "bytes" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "alloc::ffi::c_str::FromVecWithNulError",
-                    "error_kind"
-                  |));
-                M.read (| Value.String "bytes" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::ffi::c_str::FromVecWithNulError",
-                      "bytes"
-                    |)
-                  |))
+                    "bytes"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1137,7 +1089,7 @@ Module ffi.
                 Value.StructTuple "core::ops::range::RangeFull" []
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
@@ -1159,7 +1111,7 @@ Module ffi.
                 "bytes"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
@@ -1224,7 +1176,7 @@ Module ffi.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1301,7 +1253,7 @@ Module ffi.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1311,17 +1263,6 @@ Module ffi.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_alloc_ffi_c_str_IntoStringError.
-    
-    Module Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_IntoStringError.
-      Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::IntoStringError".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_alloc_ffi_c_str_IntoStringError.
     
     Module Impl_core_cmp_Eq_for_alloc_ffi_c_str_IntoStringError.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::IntoStringError".
@@ -1349,7 +1290,7 @@ Module ffi.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1381,26 +1322,22 @@ Module ffi.
                 M.read (| f |);
                 M.read (| Value.String "IntoStringError" |);
                 M.read (| Value.String "inner" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::ffi::c_str::IntoStringError",
+                  "inner"
+                |);
+                M.read (| Value.String "error" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "alloc::ffi::c_str::IntoStringError",
-                    "inner"
-                  |));
-                M.read (| Value.String "error" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "alloc::ffi::c_str::IntoStringError",
-                      "error"
-                    |)
-                  |))
+                    "error"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1488,7 +1425,7 @@ Module ffi.
               |),
               [ M.read (| t |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1523,8 +1460,8 @@ Module ffi.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.not (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "core::option::Option")
@@ -1541,7 +1478,7 @@ Module ffi.
                                                     []
                                                   |),
                                                   [
-                                                    Value.Integer 0;
+                                                    Value.Integer IntegerKind.U8 0;
                                                     M.call_closure (|
                                                       M.get_trait_method (|
                                                         "core::ops::deref::Deref",
@@ -1562,7 +1499,8 @@ Module ffi.
                                                 |)
                                               |)
                                             ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -1600,7 +1538,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_vec_unchecked :
@@ -1630,7 +1568,7 @@ Module ffi.
                       "reserve_exact",
                       []
                     |),
-                    [ v; Value.Integer 1 ]
+                    [ v; Value.Integer IntegerKind.Usize 1 ]
                   |)
                 |) in
               let~ _ :=
@@ -1644,7 +1582,7 @@ Module ffi.
                       "push",
                       []
                     |),
-                    [ v; Value.Integer 0 ]
+                    [ v; Value.Integer IntegerKind.U8 0 ]
                   |)
                 |) in
               M.alloc (|
@@ -1666,7 +1604,7 @@ Module ffi.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction__from_vec_unchecked :
@@ -1685,7 +1623,7 @@ Module ffi.
                       fn strlen(s: *const c_char) -> usize;
                   }
                   let len = strlen(ptr) + 1; // Including the NUL byte
-                  let slice = slice::from_raw_parts_mut(ptr, len as usize);
+                  let slice = slice::from_raw_parts_mut(ptr, len);
                   CString { inner: Box::from_raw(slice as *mut [c_char] as *mut [u8]) }
               }
           }
@@ -1698,19 +1636,19 @@ Module ffi.
             M.read (|
               let~ len :=
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.Usize
-                    (M.call_closure (|
+                  BinOp.Wrap.add (|
+                    M.call_closure (|
                       M.get_function (| "alloc::ffi::c_str::from_raw::strlen", [] |),
                       [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
-                    |))
-                    (Value.Integer 1)
+                    |),
+                    Value.Integer IntegerKind.Usize 1
+                  |)
                 |) in
               let~ slice :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_function (| "core::slice::raw::from_raw_parts_mut", [ Ty.path "i8" ] |),
-                    [ M.read (| ptr |); M.read (| M.use len |) ]
+                    [ M.read (| ptr |); M.read (| len |) ]
                   |)
                 |) in
               M.alloc (|
@@ -1735,7 +1673,7 @@ Module ffi.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_raw : M.IsAssociatedFunction Self "from_raw" from_raw.
@@ -1772,7 +1710,7 @@ Module ffi.
                   |)
                 ]
               |))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_raw : M.IsAssociatedFunction Self "into_raw" into_raw.
@@ -1823,50 +1761,51 @@ Module ffi.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let e := M.copy (| γ |) in
-                                Value.StructRecord
-                                  "alloc::ffi::c_str::IntoStringError"
-                                  [
-                                    ("error",
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "alloc::string::FromUtf8Error",
-                                          "utf8_error",
-                                          []
-                                        |),
-                                        [ e ]
-                                      |));
-                                    ("inner",
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "alloc::ffi::c_str::CString",
-                                          "_from_vec_unchecked",
-                                          []
-                                        |),
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "alloc::string::FromUtf8Error",
-                                              "into_bytes",
-                                              []
-                                            |),
-                                            [ M.read (| e |) ]
-                                          |)
-                                        ]
-                                      |))
-                                  ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let e := M.copy (| γ |) in
+                                  Value.StructRecord
+                                    "alloc::ffi::c_str::IntoStringError"
+                                    [
+                                      ("error",
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "alloc::string::FromUtf8Error",
+                                            "utf8_error",
+                                            []
+                                          |),
+                                          [ e ]
+                                        |));
+                                      ("inner",
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "alloc::ffi::c_str::CString",
+                                            "_from_vec_unchecked",
+                                            []
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "alloc::string::FromUtf8Error",
+                                                "into_bytes",
+                                                []
+                                              |),
+                                              [ M.read (| e |) ]
+                                            |)
+                                          ]
+                                        |))
+                                    ]))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_string : M.IsAssociatedFunction Self "into_string" into_string.
@@ -1936,7 +1875,7 @@ Module ffi.
                                   M.alloc (|
                                     Value.StructTuple
                                       "core::option::Option::Some"
-                                      [ Value.Integer 0 ]
+                                      [ Value.Integer IntegerKind.U8 0 ]
                                   |)
                                 ]
                             |),
@@ -1955,8 +1894,8 @@ Module ffi.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                UnOp.Pure.not
-                                                  (M.call_closure (|
+                                                UnOp.not (|
+                                                  M.call_closure (|
                                                     M.get_trait_method (|
                                                       "core::cmp::PartialEq",
                                                       Ty.apply
@@ -1974,7 +1913,8 @@ Module ffi.
                                                     |),
                                                     [ M.read (| left_val |); M.read (| right_val |)
                                                     ]
-                                                  |))
+                                                  |)
+                                                |)
                                               |)) in
                                           let _ :=
                                             M.is_constant_or_break_match (|
@@ -2029,7 +1969,7 @@ Module ffi.
                 |) in
               vec
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_bytes : M.IsAssociatedFunction Self "into_bytes" into_bytes.
@@ -2060,7 +2000,7 @@ Module ffi.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_bytes_with_nul :
@@ -2095,9 +2035,8 @@ Module ffi.
                   "core::ops::range::RangeTo"
                   [
                     ("end_",
-                      BinOp.Wrap.sub
-                        Integer.Usize
-                        (M.call_closure (|
+                      BinOp.Wrap.sub (|
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                             "len",
@@ -2112,12 +2051,13 @@ Module ffi.
                               |)
                             |)
                           ]
-                        |))
-                        (Value.Integer 1))
+                        |),
+                        Value.Integer IntegerKind.Usize 1
+                      |))
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
@@ -2139,7 +2079,7 @@ Module ffi.
                 "inner"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_bytes_with_nul :
@@ -2165,7 +2105,7 @@ Module ffi.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_c_str : M.IsAssociatedFunction Self "as_c_str" as_c_str.
@@ -2216,7 +2156,7 @@ Module ffi.
                   |))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_boxed_c_str :
@@ -2288,7 +2228,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner : M.IsAssociatedFunction Self "into_inner" into_inner.
@@ -2327,11 +2267,10 @@ Module ffi.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (BinOp.Pure.eq
-                                            (BinOp.Wrap.add
-                                              Integer.Usize
-                                              (M.call_closure (|
+                                        UnOp.not (|
+                                          BinOp.eq (|
+                                            BinOp.Wrap.add (|
+                                              M.call_closure (|
                                                 M.get_associated_function (|
                                                   Ty.apply
                                                     (Ty.path "core::option::Option")
@@ -2347,7 +2286,7 @@ Module ffi.
                                                       []
                                                     |),
                                                     [
-                                                      Value.Integer 0;
+                                                      Value.Integer IntegerKind.U8 0;
                                                       M.call_closure (|
                                                         M.get_trait_method (|
                                                           "core::ops::deref::Deref",
@@ -2367,9 +2306,10 @@ Module ffi.
                                                     ]
                                                   |)
                                                 ]
-                                              |))
-                                              (Value.Integer 1))
-                                            (M.call_closure (|
+                                              |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |),
+                                            M.call_closure (|
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "alloc::vec::Vec")
@@ -2379,7 +2319,9 @@ Module ffi.
                                                 []
                                               |),
                                               [ v ]
-                                            |)))
+                                            |)
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -2417,7 +2359,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_vec_with_nul_unchecked :
@@ -2453,7 +2395,7 @@ Module ffi.
                     [ M.read (| v |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction__from_vec_with_nul_unchecked :
@@ -2490,7 +2432,7 @@ Module ffi.
                   M.call_closure (|
                     M.get_function (| "core::slice::memchr::memchr", [] |),
                     [
-                      Value.Integer 0;
+                      Value.Integer IntegerKind.U8 0;
                       M.call_closure (|
                         M.get_trait_method (|
                           "core::ops::deref::Deref",
@@ -2521,9 +2463,12 @@ Module ffi.
                       let nul_pos := M.copy (| γ0_0 |) in
                       let γ :=
                         M.alloc (|
-                          BinOp.Pure.eq
-                            (BinOp.Wrap.add Integer.Usize (M.read (| nul_pos |)) (Value.Integer 1))
-                            (M.call_closure (|
+                          BinOp.eq (|
+                            BinOp.Wrap.add (|
+                              M.read (| nul_pos |),
+                              Value.Integer IntegerKind.Usize 1
+                            |),
+                            M.call_closure (|
                               M.get_associated_function (|
                                 Ty.apply
                                   (Ty.path "alloc::vec::Vec")
@@ -2533,7 +2478,8 @@ Module ffi.
                                 []
                               |),
                               [ v ]
-                            |))
+                            |)
+                          |)
                         |) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -2595,7 +2541,7 @@ Module ffi.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_from_vec_with_nul :
@@ -2634,14 +2580,14 @@ Module ffi.
                           "inner"
                         |)
                       |);
-                      Value.Integer 0
+                      Value.Integer IntegerKind.Usize 0
                     ]
                   |),
-                  Value.Integer 0
+                  Value.Integer IntegerKind.U8 0
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2685,7 +2631,7 @@ Module ffi.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2733,7 +2679,7 @@ Module ffi.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2766,7 +2712,7 @@ Module ffi.
               |),
               [ M.read (| s |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2817,7 +2763,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2851,7 +2797,7 @@ Module ffi.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2883,7 +2829,7 @@ Module ffi.
               |),
               [ M.read (| s |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2974,7 +2920,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3061,7 +3007,7 @@ Module ffi.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3126,7 +3072,7 @@ Module ffi.
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3144,22 +3090,22 @@ Module ffi.
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
     
-    Module Impl_core_convert_From_alloc_vec_Vec_core_num_nonzero_NonZeroU8_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
+    Module Impl_core_convert_From_alloc_vec_Vec_core_num_nonzero_NonZero_u8_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
       Definition Self : Ty.t := Ty.path "alloc::ffi::c_str::CString".
       
       (*
-          fn from(v: Vec<NonZeroU8>) -> CString {
+          fn from(v: Vec<NonZero<u8>>) -> CString {
               unsafe {
-                  // Transmute `Vec<NonZeroU8>` to `Vec<u8>`.
+                  // Transmute `Vec<NonZero<u8>>` to `Vec<u8>`.
                   let v: Vec<u8> = {
                       // SAFETY:
-                      //   - transmuting between `NonZeroU8` and `u8` is sound;
-                      //   - `alloc::Layout<NonZeroU8> == alloc::Layout<u8>`.
-                      let (ptr, len, cap): ( *mut NonZeroU8, _, _) = Vec::into_raw_parts(v);
+                      //   - transmuting between `NonZero<u8>` and `u8` is sound;
+                      //   - `alloc::Layout<NonZero<u8>> == alloc::Layout<u8>`.
+                      let (ptr, len, cap): ( *mut NonZero<u8>, _, _) = Vec::into_raw_parts(v);
                       Vec::from_raw_parts(ptr.cast::<u8>(), len, cap)
                   };
                   // SAFETY: `v` cannot contain nul bytes, given the type-level
-                  // invariant of `NonZeroU8`.
+                  // invariant of `NonZero<u8>`.
                   Self::_from_vec_unchecked(v)
               }
           }
@@ -3180,7 +3126,7 @@ Module ffi.
                             (Ty.path "alloc::vec::Vec")
                             []
                             [
-                              Ty.path "core::num::nonzero::NonZeroU8";
+                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
                               Ty.path "alloc::alloc::Global"
                             ],
                           "into_raw_parts",
@@ -3214,7 +3160,12 @@ Module ffi.
                                     Ty.apply
                                       (Ty.path "*mut")
                                       []
-                                      [ Ty.path "core::num::nonzero::NonZeroU8" ],
+                                      [
+                                        Ty.apply
+                                          (Ty.path "core::num::nonzero::NonZero")
+                                          []
+                                          [ Ty.path "u8" ]
+                                      ],
                                     "cast",
                                     [ Ty.path "u8" ]
                                   |),
@@ -3239,7 +3190,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3252,10 +3203,13 @@ Module ffi.
             Ty.apply
               (Ty.path "alloc::vec::Vec")
               []
-              [ Ty.path "core::num::nonzero::NonZeroU8"; Ty.path "alloc::alloc::Global" ]
+              [
+                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ];
+                Ty.path "alloc::alloc::Global"
+              ]
           ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
-    End Impl_core_convert_From_alloc_vec_Vec_core_num_nonzero_NonZeroU8_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
+    End Impl_core_convert_From_alloc_vec_Vec_core_num_nonzero_NonZero_u8_alloc_alloc_Global_for_alloc_ffi_c_str_CString.
     
     Module Impl_core_clone_Clone_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
       Definition Self : Ty.t :=
@@ -3289,7 +3243,7 @@ Module ffi.
               |),
               [ M.read (| M.read (| self |) |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3325,7 +3279,7 @@ Module ffi.
               |),
               [ M.read (| s |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3351,7 +3305,7 @@ Module ffi.
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             Value.StructTuple "alloc::borrow::Cow::Owned" [ M.read (| s |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3377,7 +3331,7 @@ Module ffi.
           ltac:(M.monadic
             (let s := M.alloc (| s |) in
             Value.StructTuple "alloc::borrow::Cow::Borrowed" [ M.read (| s |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3415,7 +3369,7 @@ Module ffi.
                   [ M.read (| s |) ]
                 |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3512,7 +3466,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3601,7 +3555,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3698,7 +3652,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3787,7 +3741,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3798,6 +3752,64 @@ Module ffi.
           [ (* T *) Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ]
           (* Instance *) [ ("from", InstanceField.Method from) ].
     End Impl_core_convert_From_ref__core_ffi_c_str_CStr_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
+    
+    Module Impl_core_default_Default_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "alloc::rc::Rc")
+          []
+          [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ].
+      
+      (*
+          fn default() -> Self {
+              let c_str: &CStr = Default::default();
+              Rc::from(c_str)
+          }
+      *)
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
+          ltac:(M.monadic
+            (M.read (|
+              let~ c_str :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ],
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply
+                      (Ty.path "alloc::rc::Rc")
+                      []
+                      [ Ty.path "core::ffi::c_str::CStr"; Ty.path "alloc::alloc::Global" ],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "core::ffi::c_str::CStr" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| c_str |) ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::default::Default"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("default", InstanceField.Method default) ].
+    End Impl_core_default_Default_for_alloc_rc_Rc_core_ffi_c_str_CStr_alloc_alloc_Global.
     
     Module Impl_core_default_Default_for_alloc_boxed_Box_core_ffi_c_str_CStr_alloc_alloc_Global.
       Definition Self : Ty.t :=
@@ -3829,11 +3841,16 @@ Module ffi.
                           Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
                           Ty.path "alloc::alloc::Global"
                         ],
-                      [ Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u8" ] ],
+                      [
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 1 ]
+                          [ Ty.path "u8" ]
+                      ],
                       "from",
                       []
                     |),
-                    [ Value.Array [ Value.Integer 0 ] ]
+                    [ Value.Array [ Value.Integer IntegerKind.U8 0 ] ]
                   |)
                 |) in
               M.alloc (|
@@ -3866,7 +3883,7 @@ Module ffi.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3897,7 +3914,7 @@ Module ffi.
                 0
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_nul_position :
@@ -3916,7 +3933,7 @@ Module ffi.
             M.read (|
               M.SubPointer.get_struct_tuple_field (| self, "alloc::ffi::c_str::NulError", 1 |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_vec : M.IsAssociatedFunction Self "into_vec" into_vec.
@@ -3943,42 +3960,35 @@ Module ffi.
                 M.call_closure (|
                   M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.read (|
-                              Value.String "nul byte found in provided data at position: "
-                            |)
-                          ]
-                      |));
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        Value.Array
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::rt::Argument",
-                                "new_display",
-                                [ Ty.path "usize" ]
-                              |),
-                              [
-                                M.SubPointer.get_struct_tuple_field (|
-                                  M.read (| self |),
-                                  "alloc::ffi::c_str::NulError",
-                                  0
-                                |)
-                              ]
-                            |)
-                          ]
-                      |))
+                    M.alloc (|
+                      Value.Array
+                        [ M.read (| Value.String "nul byte found in provided data at position: " |)
+                        ]
+                    |);
+                    M.alloc (|
+                      Value.Array
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.path "core::fmt::rt::Argument",
+                              "new_display",
+                              [ Ty.path "usize" ]
+                            |),
+                            [
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.read (| self |),
+                                "alloc::ffi::c_str::NulError",
+                                0
+                              |)
+                            ]
+                          |)
+                        ]
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4043,32 +4053,28 @@ Module ffi.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "data provided contains an interior nul byte at pos "
-                                        |)
-                                      ]
-                                  |));
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [ Ty.path "usize" ]
-                                          |),
-                                          [ pos ]
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String
+                                          "data provided contains an interior nul byte at pos "
+                                      |)
+                                    ]
+                                |);
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [ Ty.path "usize" ]
+                                        |),
+                                        [ pos ]
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -4097,16 +4103,14 @@ Module ffi.
                                 []
                               |),
                               [
-                                (* Unsize *)
-                                M.pointer_coercion
-                                  (M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "data provided is not nul terminated"
-                                        |)
-                                      ]
-                                  |))
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.read (|
+                                        Value.String "data provided is not nul terminated"
+                                      |)
+                                    ]
+                                |)
                               ]
                             |)
                           ]
@@ -4115,7 +4119,7 @@ Module ffi.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4146,7 +4150,7 @@ Module ffi.
                 "inner"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_cstring :
@@ -4169,7 +4173,7 @@ Module ffi.
                 "error"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_utf8_error : M.IsAssociatedFunction Self "utf8_error" utf8_error.
@@ -4184,7 +4188,7 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| Value.String "C string contained non-utf8 bytes" |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_description : M.IsAssociatedFunction Self "description" description.
@@ -4219,7 +4223,7 @@ Module ffi.
                 M.read (| f |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4278,7 +4282,7 @@ Module ffi.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4371,7 +4375,7 @@ Module ffi.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4410,7 +4414,7 @@ Module ffi.
               |),
               [ M.read (| s |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4449,7 +4453,7 @@ Module ffi.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4484,7 +4488,7 @@ Module ffi.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4521,7 +4525,7 @@ Module ffi.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_to_string_lossy :
@@ -4552,7 +4556,7 @@ Module ffi.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_c_string :
@@ -4573,7 +4577,7 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| Value.String "nul byte found in data" |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4609,7 +4613,7 @@ Module ffi.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| Value.String "C string contained non-utf8 bytes" |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4625,15 +4629,13 @@ Module ffi.
             Value.StructTuple
               "core::option::Option::Some"
               [
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "alloc::ffi::c_str::IntoStringError",
-                    "error"
-                  |))
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "alloc::ffi::c_str::IntoStringError",
+                  "error"
+                |)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

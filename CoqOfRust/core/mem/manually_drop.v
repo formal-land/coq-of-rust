@@ -50,7 +50,7 @@ Module mem.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -84,18 +84,16 @@ Module mem.
                 M.read (| f |);
                 M.read (| Value.String "ManuallyDrop" |);
                 M.read (| Value.String "value" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::mem::manually_drop::ManuallyDrop",
-                      "value"
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::mem::manually_drop::ManuallyDrop",
+                    "value"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -126,7 +124,7 @@ Module mem.
                     []
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -178,7 +176,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -189,19 +187,6 @@ Module mem.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
     End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
-    
-    Module Impl_core_marker_StructuralEq_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
-      Definition Self (T : Ty.t) : Ty.t :=
-        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
-      
-      Axiom Implements :
-        forall (T : Ty.t),
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          (Self T)
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -225,7 +210,7 @@ Module mem.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -265,7 +250,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -304,7 +289,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -339,7 +324,7 @@ Module mem.
                 M.read (| state |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -363,13 +348,13 @@ Module mem.
       Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ value ] =>
+        | [], [], [ value ] =>
           ltac:(M.monadic
             (let value := M.alloc (| value |) in
             Value.StructRecord
               "core::mem::manually_drop::ManuallyDrop"
               [ ("value", M.read (| value |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -384,7 +369,7 @@ Module mem.
       Definition into_inner (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [ host ], [], [ slot ] =>
+        | [], [], [ slot ] =>
           ltac:(M.monadic
             (let slot := M.alloc (| slot |) in
             M.read (|
@@ -394,7 +379,7 @@ Module mem.
                 "value"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_inner :
@@ -424,7 +409,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_take :
@@ -454,7 +439,7 @@ Module mem.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_drop :
@@ -486,7 +471,7 @@ Module mem.
               "core::mem::manually_drop::ManuallyDrop",
               "value"
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -519,7 +504,7 @@ Module mem.
               "core::mem::manually_drop::ManuallyDrop",
               "value"
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -530,5 +515,18 @@ Module mem.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T)) ].
     End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
+    
+    Module Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ].
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::ops::deref::DerefPure"
+          (Self T)
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_core_mem_manually_drop_ManuallyDrop_T.
   End manually_drop.
 End mem.

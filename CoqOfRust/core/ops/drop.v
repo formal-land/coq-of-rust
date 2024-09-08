@@ -5,5 +5,25 @@ Module ops.
   Module drop.
     (* Trait *)
     (* Empty module 'Drop' *)
+    
+    (*
+    pub(crate) fn fallback_surface_drop<T: Drop + ?Sized>(x: &mut T) {
+        <T as Drop>::drop(x)
+    }
+    *)
+    Definition fallback_surface_drop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ x ] =>
+        ltac:(M.monadic
+          (let x := M.alloc (| x |) in
+          M.call_closure (|
+            M.get_trait_method (| "core::ops::drop::Drop", T, [], "drop", [] |),
+            [ M.read (| x |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_fallback_surface_drop :
+      M.IsFunction "core::ops::drop::fallback_surface_drop" fallback_surface_drop.
   End drop.
 End ops.

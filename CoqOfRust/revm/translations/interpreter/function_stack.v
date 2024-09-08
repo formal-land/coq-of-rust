@@ -30,26 +30,22 @@ Module function_stack.
               M.read (| f |);
               M.read (| Value.String "FunctionReturnFrame" |);
               M.read (| Value.String "idx" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::function_stack::FunctionReturnFrame",
+                "idx"
+              |);
+              M.read (| Value.String "pc" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::function_stack::FunctionReturnFrame",
-                  "idx"
-                |));
-              M.read (| Value.String "pc" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::function_stack::FunctionReturnFrame",
-                    "pc"
-                  |)
-                |))
+                  "pc"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -94,7 +90,7 @@ Module function_stack.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -120,7 +116,7 @@ Module function_stack.
               [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -164,39 +160,41 @@ Module function_stack.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           LogicalOp.and (|
-            BinOp.Pure.eq
-              (M.read (|
+            BinOp.eq (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::function_stack::FunctionReturnFrame",
                   "idx"
                 |)
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| other |),
                   "revm_interpreter::function_stack::FunctionReturnFrame",
                   "idx"
                 |)
-              |)),
+              |)
+            |),
             ltac:(M.monadic
-              (BinOp.Pure.eq
-                (M.read (|
+              (BinOp.eq (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_interpreter::function_stack::FunctionReturnFrame",
                     "pc"
                   |)
-                |))
-                (M.read (|
+                |),
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.read (| other |),
                     "revm_interpreter::function_stack::FunctionReturnFrame",
                     "pc"
                   |)
-                |))))
+                |)
+              |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -206,17 +204,6 @@ Module function_stack.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_interpreter_function_stack_FunctionReturnFrame.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_interpreter_function_stack_FunctionReturnFrame.
-    Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_interpreter_function_stack_FunctionReturnFrame.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_function_stack_FunctionReturnFrame.
     Definition Self : Ty.t := Ty.path "revm_interpreter::function_stack::FunctionReturnFrame".
@@ -237,7 +224,7 @@ Module function_stack.
               [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -288,7 +275,7 @@ Module function_stack.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -316,7 +303,7 @@ Module function_stack.
           Value.StructRecord
             "revm_interpreter::function_stack::FunctionReturnFrame"
             [ ("idx", M.read (| idx |)); ("pc", M.read (| pc |)) ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -361,26 +348,22 @@ Module function_stack.
               M.read (| f |);
               M.read (| Value.String "FunctionStack" |);
               M.read (| Value.String "return_stack" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.SubPointer.get_struct_record_field (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "revm_interpreter::function_stack::FunctionStack",
+                "return_stack"
+              |);
+              M.read (| Value.String "current_code_idx" |);
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "revm_interpreter::function_stack::FunctionStack",
-                  "return_stack"
-                |));
-              M.read (| Value.String "current_code_idx" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm_interpreter::function_stack::FunctionStack",
-                    "current_code_idx"
-                  |)
-                |))
+                  "current_code_idx"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -431,7 +414,7 @@ Module function_stack.
                   []
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -475,9 +458,9 @@ Module function_stack.
                   |),
                   []
                 |));
-              ("current_code_idx", Value.Integer 0)
+              ("current_code_idx", Value.Integer IntegerKind.Usize 0)
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -546,7 +529,7 @@ Module function_stack.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_push : M.IsAssociatedFunction Self "push" push.
@@ -581,7 +564,7 @@ Module function_stack.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_return_stack_len :
@@ -640,37 +623,38 @@ Module function_stack.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let frame := M.copy (| γ |) in
-                              M.read (|
-                                let~ _ :=
-                                  M.write (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "revm_interpreter::function_stack::FunctionStack",
-                                      "current_code_idx"
-                                    |),
-                                    M.read (|
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let frame := M.copy (| γ |) in
+                                M.read (|
+                                  let~ _ :=
+                                    M.write (|
                                       M.SubPointer.get_struct_record_field (|
-                                        frame,
-                                        "revm_interpreter::function_stack::FunctionReturnFrame",
-                                        "idx"
+                                        M.read (| self |),
+                                        "revm_interpreter::function_stack::FunctionStack",
+                                        "current_code_idx"
+                                      |),
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          frame,
+                                          "revm_interpreter::function_stack::FunctionReturnFrame",
+                                          "idx"
+                                        |)
                                       |)
-                                    |)
-                                  |) in
-                                frame
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                    |) in
+                                  frame
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_pop : M.IsAssociatedFunction Self "pop" pop.
@@ -698,7 +682,7 @@ Module function_stack.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_set_current_code_idx :

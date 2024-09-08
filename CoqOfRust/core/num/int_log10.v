@@ -25,26 +25,27 @@ Module num.
     *)
     Definition u8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
             let~ val := M.alloc (| M.rust_cast (M.read (| val |)) |) in
             M.alloc (|
-              BinOp.Wrap.shr
-                (BinOp.Pure.bit_and
-                  (BinOp.Wrap.add
-                    Integer.U32
-                    (M.read (| val |))
-                    (M.read (| M.get_constant (| "core::num::int_log10::u8::C1" |) |)))
-                  (BinOp.Wrap.add
-                    Integer.U32
-                    (M.read (| val |))
-                    (M.read (| M.get_constant (| "core::num::int_log10::u8::C2" |) |))))
-                (Value.Integer 8)
+              BinOp.Wrap.shr (|
+                BinOp.bit_and
+                  (BinOp.Wrap.add (|
+                    M.read (| val |),
+                    M.read (| M.get_constant (| "core::num::int_log10::u8::C1" |) |)
+                  |))
+                  (BinOp.Wrap.add (|
+                    M.read (| val |),
+                    M.read (| M.get_constant (| "core::num::int_log10::u8::C2" |) |)
+                  |)),
+                Value.Integer IntegerKind.I32 8
+              |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_u8 : M.IsFunction "core::num::int_log10::u8" u8.
@@ -53,12 +54,22 @@ Module num.
       Definition value_C1 : Value.t :=
         M.run
           ltac:(M.monadic
-            (M.alloc (| BinOp.Wrap.sub Integer.U32 (Value.Integer 768) (Value.Integer 10) |))).
+            (M.alloc (|
+              BinOp.Wrap.sub (|
+                Value.Integer IntegerKind.U32 768,
+                Value.Integer IntegerKind.U32 10
+              |)
+            |))).
       
       Definition value_C2 : Value.t :=
         M.run
           ltac:(M.monadic
-            (M.alloc (| BinOp.Wrap.sub Integer.U32 (Value.Integer 512) (Value.Integer 100) |))).
+            (M.alloc (|
+              BinOp.Wrap.sub (|
+                Value.Integer IntegerKind.U32 512,
+                Value.Integer IntegerKind.U32 100
+              |)
+            |))).
     End u8.
     
     (*
@@ -83,31 +94,32 @@ Module num.
     *)
     Definition less_than_5 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
-          BinOp.Wrap.shr
-            (BinOp.Pure.bit_xor
-              (BinOp.Pure.bit_and
-                (BinOp.Wrap.add
-                  Integer.U32
-                  (M.read (| val |))
-                  (M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C1" |) |)))
-                (BinOp.Wrap.add
-                  Integer.U32
-                  (M.read (| val |))
-                  (M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C2" |) |))))
-              (BinOp.Pure.bit_and
-                (BinOp.Wrap.add
-                  Integer.U32
-                  (M.read (| val |))
-                  (M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C3" |) |)))
-                (BinOp.Wrap.add
-                  Integer.U32
-                  (M.read (| val |))
-                  (M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C4" |) |)))))
-            (Value.Integer 17)))
-      | _, _, _ => M.impossible
+          BinOp.Wrap.shr (|
+            BinOp.bit_xor
+              (BinOp.bit_and
+                (BinOp.Wrap.add (|
+                  M.read (| val |),
+                  M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C1" |) |)
+                |))
+                (BinOp.Wrap.add (|
+                  M.read (| val |),
+                  M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C2" |) |)
+                |)))
+              (BinOp.bit_and
+                (BinOp.Wrap.add (|
+                  M.read (| val |),
+                  M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C3" |) |)
+                |))
+                (BinOp.Wrap.add (|
+                  M.read (| val |),
+                  M.read (| M.get_constant (| "core::num::int_log10::less_than_5::C4" |) |)
+                |))),
+            Value.Integer IntegerKind.I32 17
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_less_than_5 : M.IsFunction "core::num::int_log10::less_than_5" less_than_5.
@@ -116,23 +128,41 @@ Module num.
       Definition value_C1 : Value.t :=
         M.run
           ltac:(M.monadic
-            (M.alloc (| BinOp.Wrap.sub Integer.U32 (Value.Integer 393216) (Value.Integer 10) |))).
+            (M.alloc (|
+              BinOp.Wrap.sub (|
+                Value.Integer IntegerKind.U32 393216,
+                Value.Integer IntegerKind.U32 10
+              |)
+            |))).
       
       Definition value_C2 : Value.t :=
         M.run
           ltac:(M.monadic
-            (M.alloc (| BinOp.Wrap.sub Integer.U32 (Value.Integer 524288) (Value.Integer 100) |))).
+            (M.alloc (|
+              BinOp.Wrap.sub (|
+                Value.Integer IntegerKind.U32 524288,
+                Value.Integer IntegerKind.U32 100
+              |)
+            |))).
       
       Definition value_C3 : Value.t :=
         M.run
           ltac:(M.monadic
-            (M.alloc (| BinOp.Wrap.sub Integer.U32 (Value.Integer 917504) (Value.Integer 1000) |))).
+            (M.alloc (|
+              BinOp.Wrap.sub (|
+                Value.Integer IntegerKind.U32 917504,
+                Value.Integer IntegerKind.U32 1000
+              |)
+            |))).
       
       Definition value_C4 : Value.t :=
         M.run
           ltac:(M.monadic
             (M.alloc (|
-              BinOp.Wrap.sub Integer.U32 (Value.Integer 524288) (Value.Integer 10000)
+              BinOp.Wrap.sub (|
+                Value.Integer IntegerKind.U32 524288,
+                Value.Integer IntegerKind.U32 10000
+              |)
             |))).
     End less_than_5.
     
@@ -143,14 +173,14 @@ Module num.
     *)
     Definition u16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::less_than_5", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_u16 : M.IsFunction "core::num::int_log10::u16" u16.
@@ -167,11 +197,11 @@ Module num.
     *)
     Definition u32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
-            let~ log := M.alloc (| Value.Integer 0 |) in
+            let~ log := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
             let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -180,35 +210,37 @@ Module num.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.Pure.ge (M.read (| val |)) (Value.Integer 100000) |)) in
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| val |), Value.Integer IntegerKind.U32 100000 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         let β := val in
                         M.write (|
                           β,
-                          BinOp.Wrap.div Integer.U32 (M.read (| β |)) (Value.Integer 100000)
+                          BinOp.Wrap.div (| M.read (| β |), Value.Integer IntegerKind.U32 100000 |)
                         |) in
                       let~ _ :=
                         let β := log in
                         M.write (|
                           β,
-                          BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 5)
+                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 5 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
             M.alloc (|
-              BinOp.Wrap.add
-                Integer.U32
-                (M.read (| log |))
-                (M.call_closure (|
+              BinOp.Wrap.add (|
+                M.read (| log |),
+                M.call_closure (|
                   M.get_function (| "core::num::int_log10::less_than_5", [] |),
                   [ M.read (| val |) ]
-                |))
+                |)
+              |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_u32 : M.IsFunction "core::num::int_log10::u32" u32.
@@ -229,11 +261,11 @@ Module num.
     *)
     Definition u64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.read (|
-            let~ log := M.alloc (| Value.Integer 0 |) in
+            let~ log := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
             let~ _ :=
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -243,20 +275,26 @@ Module num.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.ge (M.read (| val |)) (Value.Integer 10000000000)
+                            BinOp.ge (|
+                              M.read (| val |),
+                              Value.Integer IntegerKind.U64 10000000000
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         let β := val in
                         M.write (|
                           β,
-                          BinOp.Wrap.div Integer.U64 (M.read (| β |)) (Value.Integer 10000000000)
+                          BinOp.Wrap.div (|
+                            M.read (| β |),
+                            Value.Integer IntegerKind.U64 10000000000
+                          |)
                         |) in
                       let~ _ :=
                         let β := log in
                         M.write (|
                           β,
-                          BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 10)
+                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 10 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -270,35 +308,37 @@ Module num.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.Pure.ge (M.read (| val |)) (Value.Integer 100000) |)) in
+                          (M.alloc (|
+                            BinOp.ge (| M.read (| val |), Value.Integer IntegerKind.U64 100000 |)
+                          |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         let β := val in
                         M.write (|
                           β,
-                          BinOp.Wrap.div Integer.U64 (M.read (| β |)) (Value.Integer 100000)
+                          BinOp.Wrap.div (| M.read (| β |), Value.Integer IntegerKind.U64 100000 |)
                         |) in
                       let~ _ :=
                         let β := log in
                         M.write (|
                           β,
-                          BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 5)
+                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 5 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |) in
             M.alloc (|
-              BinOp.Wrap.add
-                Integer.U32
-                (M.read (| log |))
-                (M.call_closure (|
+              BinOp.Wrap.add (|
+                M.read (| log |),
+                M.call_closure (|
                   M.get_function (| "core::num::int_log10::less_than_5", [] |),
                   [ M.rust_cast (M.read (| val |)) ]
-                |))
+                |)
+              |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_u64 : M.IsFunction "core::num::int_log10::u64" u64.
@@ -320,13 +360,13 @@ Module num.
     *)
     Definition u128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.catch_return (|
             ltac:(M.monadic
               (M.read (|
-                let~ log := M.alloc (| Value.Integer 0 |) in
+                let~ log := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
                 let~ _ :=
                   M.match_operator (|
                     M.alloc (| Value.Tuple [] |),
@@ -336,9 +376,10 @@ Module num.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ge
-                                  (M.read (| val |))
-                                  (Value.Integer 100000000000000000000000000000000)
+                                BinOp.ge (|
+                                  M.read (| val |),
+                                  Value.Integer IntegerKind.U128 100000000000000000000000000000000
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -349,25 +390,30 @@ Module num.
                                   let β := val in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.div
-                                      Integer.U128
-                                      (M.read (| β |))
-                                      (Value.Integer 100000000000000000000000000000000)
+                                    BinOp.Wrap.div (|
+                                      M.read (| β |),
+                                      Value.Integer
+                                        IntegerKind.U128
+                                        100000000000000000000000000000000
+                                    |)
                                   |) in
                                 let~ _ :=
                                   let β := log in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 32)
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.U32 32
+                                    |)
                                   |) in
                                 M.return_ (|
-                                  BinOp.Wrap.add
-                                    Integer.U32
-                                    (M.read (| log |))
-                                    (M.call_closure (|
+                                  BinOp.Wrap.add (|
+                                    M.read (| log |),
+                                    M.call_closure (|
                                       M.get_function (| "core::num::int_log10::u32", [] |),
                                       [ M.rust_cast (M.read (| val |)) ]
-                                    |))
+                                    |)
+                                  |)
                                 |)
                               |)
                             |)
@@ -384,7 +430,10 @@ Module num.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.ge (M.read (| val |)) (Value.Integer 10000000000000000)
+                                BinOp.ge (|
+                                  M.read (| val |),
+                                  Value.Integer IntegerKind.U128 10000000000000000
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -392,33 +441,33 @@ Module num.
                             let β := val in
                             M.write (|
                               β,
-                              BinOp.Wrap.div
-                                Integer.U128
-                                (M.read (| β |))
-                                (Value.Integer 10000000000000000)
+                              BinOp.Wrap.div (|
+                                M.read (| β |),
+                                Value.Integer IntegerKind.U128 10000000000000000
+                              |)
                             |) in
                           let~ _ :=
                             let β := log in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.U32 (M.read (| β |)) (Value.Integer 16)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 16 |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |) in
                 M.alloc (|
-                  BinOp.Wrap.add
-                    Integer.U32
-                    (M.read (| log |))
-                    (M.call_closure (|
+                  BinOp.Wrap.add (|
+                    M.read (| log |),
+                    M.call_closure (|
                       M.get_function (| "core::num::int_log10::u64", [] |),
                       [ M.rust_cast (M.read (| val |)) ]
-                    |))
+                    |)
+                  |)
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_u128 : M.IsFunction "core::num::int_log10::u128" u128.
@@ -430,14 +479,14 @@ Module num.
     *)
     Definition usize (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u64", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_usize : M.IsFunction "core::num::int_log10::usize" usize.
@@ -449,14 +498,14 @@ Module num.
     *)
     Definition i8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u8", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i8 : M.IsFunction "core::num::int_log10::i8" i8.
@@ -468,14 +517,14 @@ Module num.
     *)
     Definition i16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u16", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i16 : M.IsFunction "core::num::int_log10::i16" i16.
@@ -487,14 +536,14 @@ Module num.
     *)
     Definition i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u32", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i32 : M.IsFunction "core::num::int_log10::i32" i32.
@@ -506,14 +555,14 @@ Module num.
     *)
     Definition i64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u64", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i64 : M.IsFunction "core::num::int_log10::i64" i64.
@@ -525,14 +574,14 @@ Module num.
     *)
     Definition i128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ val ] =>
+      | [], [], [ val ] =>
         ltac:(M.monadic
           (let val := M.alloc (| val |) in
           M.call_closure (|
             M.get_function (| "core::num::int_log10::u128", [] |),
             [ M.rust_cast (M.read (| val |)) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_i128 : M.IsFunction "core::num::int_log10::i128" i128.
@@ -548,7 +597,7 @@ Module num.
         (α : list Value.t)
         : M :=
       match ε, τ, α with
-      | [ host ], [], [] =>
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -556,18 +605,15 @@ Module num.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [ M.read (| Value.String "argument of integer logarithm must be positive" |)
-                        ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [ M.read (| Value.String "argument of integer logarithm must be positive" |) ]
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_panic_for_nonpositive_argument :

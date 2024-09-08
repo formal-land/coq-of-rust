@@ -24,7 +24,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -67,7 +67,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -98,7 +98,7 @@ Module ops.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (| M.read (| self |) |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -109,6 +109,33 @@ Module ops.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("deref_mut", InstanceField.Method (deref_mut T)) ].
     End Impl_core_ops_deref_DerefMut_where_core_marker_Sized_T_for_ref_mut_T.
+    
+    (* Trait *)
+    (* Empty module 'DerefPure' *)
+    
+    Module Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_ref__T.
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::ops::deref::DerefPure"
+          (Self T)
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_ref__T.
+    
+    Module Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_ref_mut_T.
+      Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::ops::deref::DerefPure"
+          (Self T)
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_ops_deref_DerefPure_where_core_marker_Sized_T_for_ref_mut_T.
     
     (* Trait *)
     (* Empty module 'Receiver' *)

@@ -29,7 +29,7 @@ Module Impl_trait_incrementer_Incrementer.
       ltac:(M.monadic
         (let init_value := M.alloc (| init_value |) in
         Value.StructRecord "trait_incrementer::Incrementer" [ ("value", M.read (| init_value |)) ]))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -53,10 +53,10 @@ Module Impl_trait_incrementer_Incrementer.
                 "trait_incrementer::Incrementer",
                 "value"
               |) in
-            M.write (| β, BinOp.Wrap.add Integer.U64 (M.read (| β |)) (M.read (| delta |)) |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| delta |) |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_inc_by : M.IsAssociatedFunction Self "inc_by" inc_by.
@@ -77,9 +77,9 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         M.call_closure (|
           M.get_associated_function (| Ty.path "trait_incrementer::Incrementer", "inc_by", [] |),
-          [ M.read (| self |); Value.Integer 1 ]
+          [ M.read (| self |); Value.Integer IntegerKind.U64 1 ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -99,7 +99,7 @@ Module Impl_trait_incrementer_Increment_for_trait_incrementer_Incrementer.
             "value"
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -131,11 +131,11 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
                 "trait_incrementer::Incrementer",
                 "value"
               |),
-              Value.Integer 0
+              Value.Integer IntegerKind.U64 0
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :

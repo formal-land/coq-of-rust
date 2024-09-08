@@ -171,141 +171,9 @@ Module cmp.
           (* Instance *) [].
     End Impl_core_cmp_bytewise_BytewiseEq_for_core_cmp_Ordering.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroU8.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU8".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::bytewise::BytewiseEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroU8.
-    
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroU16.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU16".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::bytewise::BytewiseEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroU16.
-    
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroU32.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU32".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::bytewise::BytewiseEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroU32.
-    
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroU64.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU64".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::bytewise::BytewiseEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroU64.
-    
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroU128.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroU128".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::bytewise::BytewiseEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroU128.
-    
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroUsize.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroUsize".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::bytewise::BytewiseEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroUsize.
-    
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroI8.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI8".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::bytewise::BytewiseEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroI8.
-    
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroI16.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI16".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::bytewise::BytewiseEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroI16.
-    
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroI32.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI32".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::bytewise::BytewiseEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroI32.
-    
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroI64.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI64".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::bytewise::BytewiseEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroI64.
-    
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroI128.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroI128".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::bytewise::BytewiseEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroI128.
-    
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroIsize.
-      Definition Self : Ty.t := Ty.path "core::num::nonzero::NonZeroIsize".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::cmp::bytewise::BytewiseEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZeroIsize.
-    
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroU8.
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_u8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU8" ].
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ].
       
       Axiom Implements :
         M.IsTraitInstance
@@ -313,11 +181,11 @@ Module cmp.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroU8.
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_u8.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroU16.
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_u16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU16" ].
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ].
       
       Axiom Implements :
         M.IsTraitInstance
@@ -325,11 +193,11 @@ Module cmp.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroU16.
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_u16.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroU32.
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_u32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU32" ].
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ].
       
       Axiom Implements :
         M.IsTraitInstance
@@ -337,11 +205,11 @@ Module cmp.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroU32.
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_u32.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroU64.
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_u64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU64" ].
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ].
       
       Axiom Implements :
         M.IsTraitInstance
@@ -349,11 +217,11 @@ Module cmp.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroU64.
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_u64.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroU128.
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_u128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroU128" ].
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ].
       
       Axiom Implements :
         M.IsTraitInstance
@@ -361,11 +229,11 @@ Module cmp.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroU128.
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_u128.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroUsize.
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_usize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroUsize" ].
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ].
       
       Axiom Implements :
         M.IsTraitInstance
@@ -373,11 +241,11 @@ Module cmp.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroUsize.
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_usize.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroI8.
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_i8.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI8" ].
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ].
       
       Axiom Implements :
         M.IsTraitInstance
@@ -385,11 +253,11 @@ Module cmp.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroI8.
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_i8.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroI16.
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_i16.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI16" ].
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ].
       
       Axiom Implements :
         M.IsTraitInstance
@@ -397,11 +265,11 @@ Module cmp.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroI16.
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_i16.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroI32.
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_i32.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI32" ].
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ].
       
       Axiom Implements :
         M.IsTraitInstance
@@ -409,11 +277,11 @@ Module cmp.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroI32.
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_i32.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroI64.
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_i64.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI64" ].
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ].
       
       Axiom Implements :
         M.IsTraitInstance
@@ -421,11 +289,11 @@ Module cmp.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroI64.
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_i64.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroI128.
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_i128.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroI128" ].
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ].
       
       Axiom Implements :
         M.IsTraitInstance
@@ -433,11 +301,11 @@ Module cmp.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroI128.
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_i128.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroIsize.
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_isize.
       Definition Self : Ty.t :=
-        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "core::num::nonzero::NonZeroIsize" ].
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ].
       
       Axiom Implements :
         M.IsTraitInstance
@@ -445,10 +313,191 @@ Module cmp.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZeroIsize.
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_num_nonzero_NonZero_isize.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_0_U_for_array_0_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_u8.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::bytewise::BytewiseEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_u8.
+    
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_u16.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::bytewise::BytewiseEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_u16.
+    
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_u32.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::bytewise::BytewiseEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_u32.
+    
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_u64.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::bytewise::BytewiseEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_u64.
+    
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_u128.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::bytewise::BytewiseEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_u128.
+    
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_usize.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::bytewise::BytewiseEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_usize.
+    
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_i8.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::bytewise::BytewiseEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_i8.
+    
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_i16.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::bytewise::BytewiseEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_i16.
+    
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_i32.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::bytewise::BytewiseEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_i32.
+    
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_i64.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::bytewise::BytewiseEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_i64.
+    
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_i128.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::bytewise::BytewiseEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_i128.
+    
+    Module Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_isize.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::bytewise::BytewiseEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_cmp_bytewise_BytewiseEq_for_core_option_Option_core_num_nonzero_NonZero_isize.
+    
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_0_U_for_array_Usize_0_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -456,12 +505,13 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 0 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 0 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_0_U_for_array_0_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_0_U_for_array_Usize_0_T.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_1_U_for_array_1_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_1_U_for_array_Usize_1_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -469,12 +519,13 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_1_U_for_array_1_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_1_U_for_array_Usize_1_T.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_2_U_for_array_2_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_2_U_for_array_Usize_2_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -482,12 +533,13 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 2 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_2_U_for_array_2_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_2_U_for_array_Usize_2_T.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_3_U_for_array_3_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_3_U_for_array_Usize_3_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -495,12 +547,13 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 3 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_3_U_for_array_3_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_3_U_for_array_Usize_3_T.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_4_U_for_array_4_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_4_U_for_array_Usize_4_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -508,12 +561,13 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_4_U_for_array_4_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_4_U_for_array_Usize_4_T.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_6_U_for_array_6_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 6 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_6_U_for_array_Usize_6_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 6 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -521,12 +575,13 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 6 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 6 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_6_U_for_array_6_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_6_U_for_array_Usize_6_T.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_8_U_for_array_8_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 8 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_8_U_for_array_Usize_8_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -534,12 +589,13 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 8 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_8_U_for_array_8_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_8_U_for_array_Usize_8_T.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_12_U_for_array_12_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 12 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_12_U_for_array_Usize_12_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -547,12 +603,13 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 12 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_12_U_for_array_12_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_12_U_for_array_Usize_12_T.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_16_U_for_array_16_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_16_U_for_array_Usize_16_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -560,12 +617,13 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 16 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_16_U_for_array_16_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_16_U_for_array_Usize_16_T.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_24_U_for_array_24_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 24 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_24_U_for_array_Usize_24_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 24 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -573,12 +631,13 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 24 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 24 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_24_U_for_array_24_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_24_U_for_array_Usize_24_T.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_32_U_for_array_32_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_32_U_for_array_Usize_32_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -586,12 +645,13 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 32 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_32_U_for_array_32_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_32_U_for_array_Usize_32_T.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_48_U_for_array_48_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 48 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_48_U_for_array_Usize_48_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 48 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -599,12 +659,13 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 48 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 48 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_48_U_for_array_48_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_48_U_for_array_Usize_48_T.
     
-    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_64_U_for_array_64_T.
-      Definition Self (T U : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ Value.Integer 64 ] [ T ].
+    Module Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_64_U_for_array_Usize_64_T.
+      Definition Self (T U : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 64 ] [ T ].
       
       Axiom Implements :
         forall (T U : Ty.t),
@@ -612,8 +673,8 @@ Module cmp.
           "core::cmp::bytewise::BytewiseEq"
           (Self T U)
           (* Trait polymorphic types *)
-          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer 64 ] [ U ] ]
+          [ (* Rhs *) Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 64 ] [ U ] ]
           (* Instance *) [].
-    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_64_U_for_array_64_T.
+    End Impl_core_cmp_bytewise_BytewiseEq_where_core_cmp_bytewise_BytewiseEq_T_U_array_Usize_64_U_for_array_Usize_64_T.
   End bytewise.
 End cmp.

@@ -50,42 +50,34 @@ Module context.
                 M.read (| f |);
                 M.read (| Value.String "InnerEvmContext" |);
                 M.read (| Value.String "env" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::context::inner_evm_context::InnerEvmContext",
-                    "env"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::context::inner_evm_context::InnerEvmContext",
+                  "env"
+                |);
                 M.read (| Value.String "journaled_state" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "revm::context::inner_evm_context::InnerEvmContext",
-                    "journaled_state"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::context::inner_evm_context::InnerEvmContext",
+                  "journaled_state"
+                |);
                 M.read (| Value.String "db" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm::context::inner_evm_context::InnerEvmContext",
+                  "db"
+                |);
+                M.read (| Value.String "error" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm::context::inner_evm_context::InnerEvmContext",
-                    "db"
-                  |));
-                M.read (| Value.String "error" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm::context::inner_evm_context::InnerEvmContext",
-                      "error"
-                    |)
-                  |))
+                    "error"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -197,7 +189,7 @@ Module context.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -276,7 +268,7 @@ Module context.
                 ("db", M.read (| db |));
                 ("error", Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -339,7 +331,7 @@ Module context.
                 ("db", M.read (| db |));
                 ("error", Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_with_env :
@@ -387,7 +379,7 @@ Module context.
                 ("db", M.read (| db |));
                 ("error", Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_with_db :
@@ -416,7 +408,7 @@ Module context.
                 "spec"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_spec_id :
@@ -466,7 +458,10 @@ Module context.
                                         [
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
                                             [];
                                           Ty.path "alloc::alloc::Global"
                                         ]
@@ -492,7 +487,10 @@ Module context.
                                             [
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
-                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
                                                 [];
                                               Ty.path "alloc::alloc::Global"
                                             ]
@@ -518,7 +516,10 @@ Module context.
                                                 [
                                                   Ty.apply
                                                     (Ty.path "ruint::Uint")
-                                                    [ Value.Integer 256; Value.Integer 4 ]
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
                                                     [];
                                                   Ty.path "alloc::alloc::Global"
                                                 ]
@@ -578,7 +579,10 @@ Module context.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "ruint::Uint")
-                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
                                                           [];
                                                         Ty.path "alloc::alloc::Global"
                                                       ]
@@ -669,8 +673,12 @@ Module context.
                                                                   Ty.apply
                                                                     (Ty.path "ruint::Uint")
                                                                     [
-                                                                      Value.Integer 256;
-                                                                      Value.Integer 4
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        256;
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        4
                                                                     ]
                                                                     [];
                                                                   Ty.path "alloc::alloc::Global"
@@ -765,7 +773,7 @@ Module context.
                   M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load_access_list :
@@ -790,7 +798,7 @@ Module context.
                 "env"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_env :
@@ -830,7 +838,7 @@ Module context.
                 Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_take_error :
@@ -857,7 +865,7 @@ Module context.
                   [
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       [];
                     Ty.associated
                   ],
@@ -890,7 +898,7 @@ Module context.
                 M.constructor_as_closure "revm_primitives::result::EVMError::Database"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_block_hash :
@@ -930,7 +938,7 @@ Module context.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_touch :
@@ -977,7 +985,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load_account :
@@ -1025,7 +1033,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_load_account_exist :
@@ -1063,7 +1071,10 @@ Module context.
                 [
                   Ty.tuple
                     [
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [];
                       Ty.path "bool"
                     ];
                   Ty.function
@@ -1082,7 +1093,10 @@ Module context.
                     ]
                     (Ty.tuple
                       [
-                        Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [];
                         Ty.path "bool"
                       ])
                 ]
@@ -1113,37 +1127,38 @@ Module context.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let acc := M.copy (| γ0_0 |) in
-                                let is_cold := M.copy (| γ0_1 |) in
-                                Value.Tuple
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let acc := M.copy (| γ0_0 |) in
+                                  let is_cold := M.copy (| γ0_1 |) in
+                                  Value.Tuple
+                                    [
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| acc |),
-                                          "revm_primitives::state::Account",
-                                          "info"
-                                        |),
-                                        "revm_primitives::state::AccountInfo",
-                                        "balance"
-                                      |)
-                                    |);
-                                    M.read (| is_cold |)
-                                  ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| acc |),
+                                            "revm_primitives::state::Account",
+                                            "info"
+                                          |),
+                                          "revm_primitives::state::AccountInfo",
+                                          "balance"
+                                        |)
+                                      |);
+                                      M.read (| is_cold |)
+                                    ]))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_balance :
@@ -1223,61 +1238,62 @@ Module context.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                let a := M.copy (| γ0_0 |) in
-                                let is_cold := M.copy (| γ0_1 |) in
-                                Value.Tuple
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "revm_primitives::bytecode::Bytecode" ],
-                                        "unwrap",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::clone::Clone",
-                                            Ty.apply
-                                              (Ty.path "core::option::Option")
-                                              []
-                                              [ Ty.path "revm_primitives::bytecode::Bytecode" ],
-                                            [],
-                                            "clone",
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                  let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                  let a := M.copy (| γ0_0 |) in
+                                  let is_cold := M.copy (| γ0_1 |) in
+                                  Value.Tuple
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "core::option::Option")
                                             []
-                                          |),
-                                          [
-                                            M.SubPointer.get_struct_record_field (|
+                                            [ Ty.path "revm_primitives::bytecode::Bytecode" ],
+                                          "unwrap",
+                                          []
+                                        |),
+                                        [
+                                          M.call_closure (|
+                                            M.get_trait_method (|
+                                              "core::clone::Clone",
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "revm_primitives::bytecode::Bytecode" ],
+                                              [],
+                                              "clone",
+                                              []
+                                            |),
+                                            [
                                               M.SubPointer.get_struct_record_field (|
-                                                M.read (| a |),
-                                                "revm_primitives::state::Account",
-                                                "info"
-                                              |),
-                                              "revm_primitives::state::AccountInfo",
-                                              "code"
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |);
-                                    M.read (| is_cold |)
-                                  ]))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| a |),
+                                                  "revm_primitives::state::Account",
+                                                  "info"
+                                                |),
+                                                "revm_primitives::state::AccountInfo",
+                                                "code"
+                                              |)
+                                            ]
+                                          |)
+                                        ]
+                                      |);
+                                      M.read (| is_cold |)
+                                    ]))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_code :
@@ -1380,7 +1396,7 @@ Module context.
                                                 Ty.apply
                                                   (Ty.path
                                                     "alloy_primitives::bits::fixed::FixedBytes")
-                                                  [ Value.Integer 32 ]
+                                                  [ Value.Integer IntegerKind.Usize 32 ]
                                                   [];
                                                 Ty.path "bool"
                                               ];
@@ -1501,7 +1517,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_code_hash :
@@ -1547,7 +1563,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_sload :
@@ -1596,7 +1612,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_sstore :
@@ -1632,7 +1648,7 @@ Module context.
                 M.read (| index |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_tload :
@@ -1670,7 +1686,7 @@ Module context.
                 M.read (| value |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_tstore :
@@ -1721,7 +1737,7 @@ Module context.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_selfdestruct :
@@ -1827,85 +1843,86 @@ Module context.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let e := M.copy (| γ |) in
-                                      Value.StructTuple
-                                        "core::result::Result::Ok"
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "revm::frame::FrameOrResult",
-                                              "new_eofcreate_result",
-                                              []
-                                            |),
-                                            [
-                                              Value.StructRecord
-                                                "revm_interpreter::interpreter::InterpreterResult"
-                                                [
-                                                  ("result", M.read (| e |));
-                                                  ("gas",
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "revm_interpreter::gas::Gas",
-                                                        "new",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| inputs |),
-                                                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                                                            "gas_limit"
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let e := M.copy (| γ |) in
+                                        Value.StructTuple
+                                          "core::result::Result::Ok"
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "revm::frame::FrameOrResult",
+                                                "new_eofcreate_result",
+                                                []
+                                              |),
+                                              [
+                                                Value.StructRecord
+                                                  "revm_interpreter::interpreter::InterpreterResult"
+                                                  [
+                                                    ("result", M.read (| e |));
+                                                    ("gas",
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "revm_interpreter::gas::Gas",
+                                                          "new",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (| inputs |),
+                                                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                                                              "gas_limit"
+                                                            |)
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |));
-                                                  ("output",
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
-                                                        "new",
+                                                        ]
+                                                      |));
+                                                    ("output",
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "alloy_primitives::bytes_::Bytes",
+                                                          "new",
+                                                          []
+                                                        |),
                                                         []
-                                                      |),
-                                                      []
-                                                    |))
-                                                ];
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| inputs |),
-                                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                                                  "created_address"
-                                                |)
-                                              |);
-                                              M.call_closure (|
-                                                M.get_trait_method (|
-                                                  "core::clone::Clone",
-                                                  Ty.apply
-                                                    (Ty.path "core::ops::range::Range")
-                                                    []
-                                                    [ Ty.path "usize" ],
-                                                  [],
-                                                  "clone",
-                                                  []
-                                                |),
-                                                [
+                                                      |))
+                                                  ];
+                                                M.read (|
                                                   M.SubPointer.get_struct_record_field (|
                                                     M.read (| inputs |),
                                                     "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                                                    "return_memory_range"
+                                                    "created_address"
                                                   |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        ]))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                |);
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::clone::Clone",
+                                                    Ty.apply
+                                                      (Ty.path "core::ops::range::Range")
+                                                      []
+                                                      [ Ty.path "usize" ],
+                                                    [],
+                                                    "clone",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| inputs |),
+                                                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                                                      "return_memory_range"
+                                                    |)
+                                                  ]
+                                                |)
+                                              ]
+                                            |)
+                                          ]))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |) in
                   let~ _ :=
@@ -1917,8 +1934,8 @@ Module context.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt
-                                    (M.call_closure (|
+                                  BinOp.gt (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "revm::journaled_state::JournaledState",
                                         "depth",
@@ -1931,10 +1948,9 @@ Module context.
                                           "journaled_state"
                                         |)
                                       ]
-                                    |))
-                                    (M.read (|
-                                      M.get_constant (| "revm::evm::CALL_STACK_LIMIT" |)
-                                    |))
+                                    |),
+                                    M.read (| M.get_constant (| "revm::evm::CALL_STACK_LIMIT" |) |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2004,7 +2020,10 @@ Module context.
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       [];
                                     Ty.path "bool"
                                   ];
@@ -2121,12 +2140,18 @@ Module context.
                                               "core::cmp::PartialOrd",
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
-                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
                                                 [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "ruint::Uint")
-                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
                                                   []
                                               ],
                                               "lt",
@@ -2668,7 +2693,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_make_eofcreate_frame :
@@ -2873,7 +2898,7 @@ Module context.
                   M.alloc (| Value.Tuple [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_eofcreate_return :
@@ -3008,44 +3033,45 @@ Module context.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let e := M.copy (| γ |) in
-                                      Value.StructTuple
-                                        "core::result::Result::Ok"
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "revm::frame::FrameOrResult",
-                                              "new_create_result",
-                                              []
-                                            |),
-                                            [
-                                              Value.StructRecord
-                                                "revm_interpreter::interpreter::InterpreterResult"
-                                                [
-                                                  ("result", M.read (| e |));
-                                                  ("gas", M.read (| gas |));
-                                                  ("output",
-                                                    M.call_closure (|
-                                                      M.get_associated_function (|
-                                                        Ty.path "alloy_primitives::bytes_::Bytes",
-                                                        "new",
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let e := M.copy (| γ |) in
+                                        Value.StructTuple
+                                          "core::result::Result::Ok"
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.path "revm::frame::FrameOrResult",
+                                                "new_create_result",
+                                                []
+                                              |),
+                                              [
+                                                Value.StructRecord
+                                                  "revm_interpreter::interpreter::InterpreterResult"
+                                                  [
+                                                    ("result", M.read (| e |));
+                                                    ("gas", M.read (| gas |));
+                                                    ("output",
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.path "alloy_primitives::bytes_::Bytes",
+                                                          "new",
+                                                          []
+                                                        |),
                                                         []
-                                                      |),
-                                                      []
-                                                    |))
-                                                ];
-                                              Value.StructTuple "core::option::Option::None" []
-                                            ]
-                                          |)
-                                        ]))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                                      |))
+                                                  ];
+                                                Value.StructTuple "core::option::Option::None" []
+                                              ]
+                                            |)
+                                          ]))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |) in
                   let~ _ :=
@@ -3057,8 +3083,8 @@ Module context.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt
-                                    (M.call_closure (|
+                                  BinOp.gt (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "revm::journaled_state::JournaledState",
                                         "depth",
@@ -3071,10 +3097,9 @@ Module context.
                                           "journaled_state"
                                         |)
                                       ]
-                                    |))
-                                    (M.read (|
-                                      M.get_constant (| "revm::evm::CALL_STACK_LIMIT" |)
-                                    |))
+                                    |),
+                                    M.read (| M.get_constant (| "revm::evm::CALL_STACK_LIMIT" |) |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3144,7 +3169,10 @@ Module context.
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       [];
                                     Ty.path "bool"
                                   ];
@@ -3261,12 +3289,18 @@ Module context.
                                               "core::cmp::PartialOrd",
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
-                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
                                                 [],
                                               [
                                                 Ty.apply
                                                   (Ty.path "ruint::Uint")
-                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
                                                   []
                                               ],
                                               "lt",
@@ -3381,10 +3415,10 @@ Module context.
                                     let~ _ :=
                                       M.write (|
                                         old_nonce,
-                                        BinOp.Wrap.sub
-                                          Integer.U64
-                                          (M.read (| nonce |))
-                                          (Value.Integer 1)
+                                        BinOp.Wrap.sub (|
+                                          M.read (| nonce |),
+                                          Value.Integer IntegerKind.U64 1
+                                        |)
                                       |) in
                                     M.alloc (| Value.Tuple [] |)));
                                 fun γ =>
@@ -3517,12 +3551,12 @@ Module context.
                                             [
                                               Ty.apply
                                                 (Ty.path "array")
-                                                [ Value.Integer 32 ]
+                                                [ Value.Integer IntegerKind.Usize 32 ]
                                                 [ Ty.path "u8" ];
                                               Ty.apply
                                                 (Ty.path
                                                   "alloy_primitives::bits::fixed::FixedBytes")
-                                                [ Value.Integer 32 ]
+                                                [ Value.Integer IntegerKind.Usize 32 ]
                                                 []
                                             ]
                                           |),
@@ -3536,7 +3570,10 @@ Module context.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "ruint::Uint")
-                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
                                                   [],
                                                 "to_be_bytes",
                                                 []
@@ -3869,7 +3906,7 @@ Module context.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_make_create_frame :
@@ -3968,8 +4005,8 @@ Module context.
                                       (fun γ =>
                                         ltac:(M.monadic
                                           match γ with
-                                          | [] => M.alloc (| Value.Bool true |)
-                                          | _ => M.impossible (||)
+                                          | [] => ltac:(M.monadic (M.alloc (| Value.Bool true |)))
+                                          | _ => M.impossible "wrong number of arguments"
                                           end))
                                   |)));
                               fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -4018,7 +4055,7 @@ Module context.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_call_return :
@@ -4121,8 +4158,8 @@ Module context.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.read (|
+                                  UnOp.not (|
+                                    M.read (|
                                       M.match_operator (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.read (| interpreter_result |),
@@ -4180,14 +4217,18 @@ Module context.
                                                   (fun γ =>
                                                     ltac:(M.monadic
                                                       match γ with
-                                                      | [] => M.alloc (| Value.Bool true |)
-                                                      | _ => M.impossible (||)
+                                                      | [] =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (| Value.Bool true |)))
+                                                      | _ =>
+                                                        M.impossible "wrong number of arguments"
                                                       end))
                                               |)));
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
                                         ]
                                       |)
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4245,8 +4286,8 @@ Module context.
                                         ]
                                       |),
                                       ltac:(M.monadic
-                                        (UnOp.Pure.not
-                                          (M.call_closure (|
+                                        (UnOp.not (|
+                                          M.call_closure (|
                                             M.get_associated_function (|
                                               Ty.path "bytes::bytes::Bytes",
                                               "is_empty",
@@ -4270,7 +4311,8 @@ Module context.
                                                 ]
                                               |)
                                             ]
-                                          |))))
+                                          |)
+                                        |)))
                                     |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
@@ -4331,7 +4373,7 @@ Module context.
                                           M.alloc (|
                                             Value.StructTuple
                                               "core::option::Option::Some"
-                                              [ M.alloc (| Value.Integer 239 |) ]
+                                              [ M.alloc (| Value.Integer IntegerKind.U8 239 |) ]
                                           |)
                                         ]
                                       |)))
@@ -4403,8 +4445,8 @@ Module context.
                                       ]
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.Pure.gt
-                                        (M.call_closure (|
+                                      (BinOp.gt (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.path "bytes::bytes::Bytes",
                                             "len",
@@ -4428,8 +4470,8 @@ Module context.
                                               ]
                                             |)
                                           ]
-                                        |))
-                                        (M.call_closure (|
+                                        |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "core::option::Option")
@@ -4462,7 +4504,8 @@ Module context.
                                               |)
                                             |)
                                           ]
-                                        |))))
+                                        |)
+                                      |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -4508,9 +4551,8 @@ Module context.
                     |) in
                   let~ gas_for_code :=
                     M.alloc (|
-                      BinOp.Wrap.mul
-                        Integer.U64
-                        (M.rust_cast
+                      BinOp.Wrap.mul (|
+                        M.rust_cast
                           (M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "bytes::bytes::Bytes",
@@ -4535,10 +4577,11 @@ Module context.
                                 ]
                               |)
                             ]
-                          |)))
-                        (M.read (|
+                          |)),
+                        M.read (|
                           M.get_constant (| "revm_interpreter::gas::constants::CODEDEPOSIT" |)
-                        |))
+                        |)
+                      |)
                     |) in
                   let~ _ :=
                     M.match_operator (|
@@ -4549,8 +4592,8 @@ Module context.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
+                                  UnOp.not (|
+                                    M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.path "revm_interpreter::gas::Gas",
                                         "record_cost",
@@ -4564,7 +4607,8 @@ Module context.
                                         |);
                                         M.read (| gas_for_code |)
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4804,7 +4848,7 @@ Module context.
                   M.alloc (| Value.Tuple [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_create_return :

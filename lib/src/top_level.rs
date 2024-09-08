@@ -406,8 +406,11 @@ fn compile_top_level_item_without_local_items<'a>(
                 let name = to_valid_coq_name(is_value, item.ident.name.as_str());
 
                 match &foreign_item.kind {
-                    rustc_hir::ForeignItemKind::Fn(decl, _, generics) => {
-                        let fn_decl_and_body = HirFnDeclAndBody { decl, body: None };
+                    rustc_hir::ForeignItemKind::Fn(sign, _, generics) => {
+                        let fn_decl_and_body = HirFnDeclAndBody {
+                            decl: sign.decl,
+                            body: None,
+                        };
 
                         Rc::new(TopLevelItem::Definition {
                             name: name.clone(),
@@ -421,7 +424,7 @@ fn compile_top_level_item_without_local_items<'a>(
                             ),
                         })
                     }
-                    rustc_hir::ForeignItemKind::Static(_, _) => {
+                    rustc_hir::ForeignItemKind::Static(..) => {
                         Rc::new(TopLevelItem::Const { name, value: None })
                     }
                     rustc_hir::ForeignItemKind::Type => Rc::new(TopLevelItem::TypeForeign(name)),
@@ -451,7 +454,10 @@ fn compile_top_level_item_without_local_items<'a>(
                     .map(|variant| {
                         let name = variant.ident.name.to_string();
                         let fields = match &variant.data {
-                            VariantData::Struct(fields, _) => {
+                            VariantData::Struct {
+                                fields,
+                                recovered: _,
+                            } => {
                                 let fields = fields
                                     .iter()
                                     .map(|field| {
@@ -482,7 +488,7 @@ fn compile_top_level_item_without_local_items<'a>(
                                     rustc_hir::ExprKind::Lit(rustc_span::source_map::Spanned {
                                         node: rustc_ast::ast::LitKind::Int(discriminant, _),
                                         ..
-                                    }) => Some(*discriminant),
+                                    }) => Some(discriminant.get()),
                                     _ => None,
                                 }
                             }
@@ -502,7 +508,10 @@ fn compile_top_level_item_without_local_items<'a>(
             let ty_params = get_ty_params(env, generics);
 
             match body {
-                VariantData::Struct(fields, _) => {
+                VariantData::Struct {
+                    fields,
+                    recovered: _,
+                } => {
                     if fields.is_empty() {
                         return vec![Rc::new(TopLevelItem::TypeStructTuple {
                             name,
@@ -906,7 +915,7 @@ fn compile_function_body(
 
 /// Return a list of argument names with their type, and an optional pattern if
 /// the name needs to go through a `match` later.
-fn get_args<'a>(env: &Env<'a>, body: &'a rustc_hir::Body, inputs: &[rustc_hir::Ty]) -> FnArgs {
+fn get_args<'a>(env: &Env<'a>, body: &'a rustc_hir::Body, inputs: &'a [rustc_hir::Ty]) -> FnArgs {
     let local_def_id = body.value.hir_id.owner.def_id;
 
     get_arg_names(env, body)
@@ -925,12 +934,9 @@ fn get_arg_names<'a>(
         .iter()
         .enumerate()
         .map(|(index, param)| match param.pat.kind {
-            PatKind::Binding(
-                rustc_hir::BindingAnnotation(rustc_hir::ByRef::No, _),
-                _,
-                ident,
-                None,
-            ) => (to_valid_coq_name(IsValue::Yes, ident.name.as_str()), None),
+            PatKind::Binding(rustc_hir::BindingMode(rustc_hir::ByRef::No, _), _, ident, None) => {
+                (to_valid_coq_name(IsValue::Yes, ident.name.as_str()), None)
+            }
             _ => (
                 format!("β{}", index),
                 Some(Pattern::compile(env, param.pat)),
@@ -971,10 +977,10 @@ fn get_ty_params(env: &Env, generics: &rustc_hir::Generics) -> Vec<String> {
 }
 
 /// extracts where predicates from the generics
-fn get_where_predicates(
-    env: &Env,
+fn get_where_predicates<'a>(
+    env: &Env<'a>,
     local_def_id: &LocalDefId,
-    generics: &rustc_hir::Generics,
+    generics: &rustc_hir::Generics<'a>,
 ) -> Vec<Rc<WherePredicate>> {
     generics
         .predicates
@@ -1005,10 +1011,10 @@ fn trait_bound_to_where_predicate(bound: Rc<TraitBound>, ty: Rc<CoqType>) -> Rc<
 }
 
 /// [compile_generic_bounds] compiles generic bounds in [compile_trait_item_body]
-fn compile_generic_bounds(
-    env: &Env,
+fn compile_generic_bounds<'a>(
+    env: &Env<'a>,
     local_def_id: &LocalDefId,
-    generic_bounds: GenericBounds,
+    generic_bounds: GenericBounds<'a>,
 ) -> Vec<Rc<TraitBound>> {
     generic_bounds
         .iter()
@@ -1016,25 +1022,20 @@ fn compile_generic_bounds(
             GenericBound::Trait(ptraitref, _) => {
                 Some(TraitBound::compile(env, local_def_id, ptraitref))
             }
-            GenericBound::LangItemTrait { .. } => {
-                let warning_msg = "LangItem trait bounds are not supported yet.";
-                let note_msg = "It will change in the future.";
-                let span = &generic_bound.span();
-                emit_warning_with_note(env, span, warning_msg, Some(note_msg));
-                None
-            }
             // we ignore lifetimes
             GenericBound::Outlives { .. } => None,
+            // we ignore the use generics
+            GenericBound::Use(_, _) => None,
         })
         .collect()
 }
 
 /// computes the list of actual type parameters with their default status
-fn get_ty_params_with_default_status(
-    env: &Env,
+fn get_ty_params_with_default_status<'a>(
+    env: &Env<'a>,
     local_def_id: &LocalDefId,
     generics: &rustc_middle::ty::Generics,
-    path: &rustc_hir::Path,
+    path: &rustc_hir::Path<'a>,
 ) -> Vec<(String, Rc<TraitTyParamValue>)> {
     let mut type_params_name_and_default_status = get_type_params_name_and_default_status(generics);
     // The first type parameter is always the Self type, that we do not consider as
@@ -1086,7 +1087,7 @@ pub(crate) fn get_type_params_name_and_default_status(
     generics: &rustc_middle::ty::Generics,
 ) -> Vec<(String, bool)> {
     generics
-        .params
+        .own_params
         .iter()
         .filter_map(|param| match param.kind {
             rustc_middle::ty::GenericParamDefKind::Type { has_default, .. } => {
@@ -1341,7 +1342,11 @@ impl FunDefinition {
                                     coq::Expression::Wild,
                                     coq::Expression::Wild,
                                 ],
-                                coq::Expression::just_name("M.impossible"),
+                                coq::Expression::just_name("M.impossible").apply(
+                                    &coq::Expression::String(
+                                        "wrong number of arguments".to_string(),
+                                    ),
+                                ),
                             ),
                         ],
                     };
@@ -1524,10 +1529,10 @@ impl ImplItemKind {
 
 impl TraitBound {
     /// Get the generics for the trait
-    fn compile(
-        env: &Env,
+    fn compile<'a>(
+        env: &Env<'a>,
         local_def_id: &LocalDefId,
-        ptraitref: &rustc_hir::PolyTraitRef,
+        ptraitref: &rustc_hir::PolyTraitRef<'a>,
     ) -> Rc<TraitBound> {
         Rc::new(TraitBound {
             name: compile_path(env, ptraitref.trait_ref.path),

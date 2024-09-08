@@ -4,17 +4,19 @@ Require Import CoqOfRust.CoqOfRust.
 Module hint.
   (*
   pub const unsafe fn unreachable_unchecked() -> ! {
+      ub_checks::assert_unsafe_precondition!(
+          check_language_ub,
+          "hint::unreachable_unchecked must never be reached",
+          () => false
+      );
       // SAFETY: the safety contract for `intrinsics::unreachable` must
       // be upheld by the caller.
-      unsafe {
-          intrinsics::assert_unsafe_precondition!("hint::unreachable_unchecked must never be reached", () => false);
-          intrinsics::unreachable()
-      }
+      unsafe { intrinsics::unreachable() }
   }
   *)
   Definition unreachable_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [], [] =>
+    | [], [], [] =>
       ltac:(M.monadic
         (M.read (|
           let~ _ :=
@@ -23,25 +25,23 @@ Module hint.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            []
+                          |)
+                        |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ :=
                       M.alloc (|
                         M.call_closure (|
                           M.get_function (|
-                            "core::intrinsics::const_eval_select",
-                            [
-                              Ty.tuple [];
-                              Ty.function [] (Ty.tuple []);
-                              Ty.function [] (Ty.tuple []);
-                              Ty.tuple []
-                            ]
+                            "core::hint::unreachable_unchecked.precondition_check",
+                            []
                           |),
-                          [
-                            Value.Tuple [];
-                            M.get_function (| "core::hint::unreachable_unchecked.comptime", [] |);
-                            M.get_function (| "core::hint::unreachable_unchecked.runtime", [] |)
-                          ]
+                          []
                         |)
                       |) in
                     M.alloc (| Value.Tuple [] |)));
@@ -52,11 +52,73 @@ Module hint.
             M.call_closure (| M.get_function (| "core::intrinsics::unreachable", [] |), [] |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_unreachable_unchecked :
     M.IsFunction "core::hint::unreachable_unchecked" unreachable_unchecked.
+  
+  (*
+  pub const unsafe fn assert_unchecked(cond: bool) {
+      // SAFETY: The caller promised `cond` is true.
+      unsafe {
+          ub_checks::assert_unsafe_precondition!(
+              check_language_ub,
+              "hint::assert_unchecked must never be called when the condition is false",
+              (cond: bool = cond) => cond,
+          );
+          crate::intrinsics::assume(cond);
+      }
+  }
+  *)
+  Definition assert_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ cond ] =>
+      ltac:(M.monadic
+        (let cond := M.alloc (| cond |) in
+        M.read (|
+          let~ _ :=
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                            []
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let~ _ :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::hint::assert_unchecked.precondition_check",
+                            []
+                          |),
+                          [ M.read (| cond |) ]
+                        |)
+                      |) in
+                    M.alloc (| Value.Tuple [] |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
+            |) in
+          let~ _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "core::intrinsics::assume", [] |),
+                [ M.read (| cond |) ]
+              |)
+            |) in
+          M.alloc (| Value.Tuple [] |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom Function_assert_unchecked : M.IsFunction "core::hint::assert_unchecked" assert_unchecked.
   
   (*
   pub fn spin_loop() {
@@ -82,7 +144,7 @@ Module hint.
           crate::arch::riscv64::pause();
       }
   
-      #[cfg(target_arch = "aarch64")]
+      #[cfg(any(target_arch = "aarch64", target_arch = "arm64ec"))]
       {
           // SAFETY: the `cfg` attr ensures that we only execute this on aarch64 targets.
           unsafe { crate::arch::aarch64::__isb(crate::arch::aarch64::SY) };
@@ -110,7 +172,7 @@ Module hint.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_spin_loop : M.IsFunction "core::hint::spin_loop" spin_loop.
@@ -122,14 +184,14 @@ Module hint.
   *)
   Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ dummy ] =>
+    | [], [ T ], [ dummy ] =>
       ltac:(M.monadic
         (let dummy := M.alloc (| dummy |) in
         M.call_closure (|
           M.get_function (| "core::intrinsics::black_box", [ T ] |),
           [ M.read (| dummy |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_black_box : M.IsFunction "core::hint::black_box" black_box.
@@ -141,11 +203,11 @@ Module hint.
   *)
   Definition must_use (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     match ε, τ, α with
-    | [ host ], [ T ], [ value ] =>
+    | [], [ T ], [ value ] =>
       ltac:(M.monadic
         (let value := M.alloc (| value |) in
         M.read (| value |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_must_use : M.IsFunction "core::hint::must_use" must_use.

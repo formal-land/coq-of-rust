@@ -145,17 +145,6 @@ Module Impl_core_cmp_PartialEq_for_multisig_AccountId.
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_multisig_AccountId.
 
-Module Impl_core_marker_StructuralEq_for_multisig_AccountId.
-  Definition Self : Ty.t := Ty.path "multisig::AccountId".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_multisig_AccountId.
-
 Module Impl_core_cmp_Eq_for_multisig_AccountId.
   Definition Self : Ty.t := Ty.path "multisig::AccountId".
   
@@ -269,7 +258,8 @@ End Impl_core_marker_Copy_for_multisig_ConfirmationStatus.
     fields :=
       [
         ("callee", Ty.path "multisig::AccountId");
-        ("selector", Ty.apply (Ty.path "array") [ Value.Integer 4 ] [ Ty.path "u8" ]);
+        ("selector",
+          Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ Ty.path "u8" ]);
         ("input",
           Ty.apply (Ty.path "alloc::vec::Vec") [] [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ]);
         ("transferred_value", Ty.path "u128");
@@ -350,17 +340,6 @@ Module Impl_core_cmp_PartialEq_for_multisig_Error.
       (* Trait polymorphic types *) []
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
 End Impl_core_cmp_PartialEq_for_multisig_Error.
-
-Module Impl_core_marker_StructuralEq_for_multisig_Error.
-  Definition Self : Ty.t := Ty.path "multisig::Error".
-  
-  Axiom Implements :
-    M.IsTraitInstance
-      "core::marker::StructuralEq"
-      Self
-      (* Trait polymorphic types *) []
-      (* Instance *) [].
-End Impl_core_marker_StructuralEq_for_multisig_Error.
 
 Module Impl_core_cmp_Eq_for_multisig_Error.
   Definition Self : Ty.t := Ty.path "multisig::Error".

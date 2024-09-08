@@ -17,7 +17,7 @@ Module str.
     *)
     Definition from_utf8 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ v ] =>
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.read (|
@@ -54,7 +54,7 @@ Module str.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_utf8 : M.IsFunction "core::str::converts::from_utf8" from_utf8.
@@ -73,7 +73,7 @@ Module str.
     *)
     Definition from_utf8_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ v ] =>
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.read (|
@@ -110,7 +110,7 @@ Module str.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_utf8_mut : M.IsFunction "core::str::converts::from_utf8_mut" from_utf8_mut.
@@ -124,7 +124,7 @@ Module str.
     *)
     Definition from_utf8_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ v ] =>
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
@@ -137,7 +137,7 @@ Module str.
             |),
             [ M.read (| v |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_utf8_unchecked :
@@ -154,14 +154,64 @@ Module str.
     *)
     Definition from_utf8_unchecked_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ v ] =>
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.rust_cast (M.read (| M.use (M.alloc (| M.read (| v |) |)) |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_from_utf8_unchecked_mut :
       M.IsFunction "core::str::converts::from_utf8_unchecked_mut" from_utf8_unchecked_mut.
+    
+    (*
+    pub const unsafe fn from_raw_parts<'a>(ptr: *const u8, len: usize) -> &'a str {
+        // SAFETY: the caller must uphold the safety contract for `from_raw_parts`.
+        unsafe { &*ptr::from_raw_parts(ptr, len) }
+    }
+    *)
+    Definition from_raw_parts (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ ptr; len ] =>
+        ltac:(M.monadic
+          (let ptr := M.alloc (| ptr |) in
+          let len := M.alloc (| len |) in
+          M.call_closure (|
+            M.get_function (|
+              "core::ptr::metadata::from_raw_parts",
+              [ Ty.path "str"; Ty.path "u8" ]
+            |),
+            [ M.read (| ptr |); M.read (| len |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_from_raw_parts :
+      M.IsFunction "core::str::converts::from_raw_parts" from_raw_parts.
+    
+    (*
+    pub const unsafe fn from_raw_parts_mut<'a>(ptr: *mut u8, len: usize) -> &'a mut str {
+        // SAFETY: the caller must uphold the safety contract for `from_raw_parts_mut`.
+        unsafe { &mut *ptr::from_raw_parts_mut(ptr, len) }
+    }
+    *)
+    Definition from_raw_parts_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ ptr; len ] =>
+        ltac:(M.monadic
+          (let ptr := M.alloc (| ptr |) in
+          let len := M.alloc (| len |) in
+          M.call_closure (|
+            M.get_function (|
+              "core::ptr::metadata::from_raw_parts_mut",
+              [ Ty.path "str"; Ty.path "u8" ]
+            |),
+            [ M.read (| ptr |); M.read (| len |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_from_raw_parts_mut :
+      M.IsFunction "core::str::converts::from_raw_parts_mut" from_raw_parts_mut.
   End converts.
 End str.

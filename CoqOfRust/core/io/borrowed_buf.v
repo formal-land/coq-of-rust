@@ -83,43 +83,37 @@ Module io.
                               |)
                             |);
                             M.read (| Value.String "init" |);
-                            (* Unsize *)
-                            M.pointer_coercion
-                              (M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::io::borrowed_buf::BorrowedBuf",
-                                "init"
-                              |))
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::io::borrowed_buf::BorrowedBuf",
+                              "init"
+                            |)
                           ]
                         |);
                         M.read (| Value.String "filled" |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::io::borrowed_buf::BorrowedBuf",
-                            "filled"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::io::borrowed_buf::BorrowedBuf",
+                          "filled"
+                        |)
                       ]
                     |);
                     M.read (| Value.String "capacity" |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::io::borrowed_buf::BorrowedBuf",
-                            "capacity",
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::io::borrowed_buf::BorrowedBuf",
+                          "capacity",
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |)
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -205,12 +199,12 @@ Module io.
                           |)
                         ]
                       |));
-                    ("filled", Value.Integer 0);
+                    ("filled", Value.Integer IntegerKind.Usize 0);
                     ("init", M.read (| len |))
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -238,9 +232,12 @@ Module io.
             (let buf := M.alloc (| buf |) in
             Value.StructRecord
               "core::io::borrowed_buf::BorrowedBuf"
-              [ ("buf", M.read (| buf |)); ("filled", Value.Integer 0); ("init", Value.Integer 0)
+              [
+                ("buf", M.read (| buf |));
+                ("filled", Value.Integer IntegerKind.Usize 0);
+                ("init", Value.Integer IntegerKind.Usize 0)
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -295,7 +292,7 @@ Module io.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_capacity : M.IsAssociatedFunction Self "capacity" capacity.
@@ -317,7 +314,7 @@ Module io.
                 "filled"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len : M.IsAssociatedFunction Self "len" len.
@@ -339,7 +336,7 @@ Module io.
                 "init"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_init_len : M.IsAssociatedFunction Self "init_len" init_len.
@@ -347,7 +344,10 @@ Module io.
       (*
           pub fn filled(&self) -> &[u8] {
               // SAFETY: We only slice the filled part of the buffer, which is always valid
-              unsafe { MaybeUninit::slice_assume_init_ref(&self.buf[0..self.filled]) }
+              unsafe {
+                  let buf = self.buf.get_unchecked(..self.filled);
+                  MaybeUninit::slice_assume_init_ref(buf)
+              }
           }
       *)
       Definition filled (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -355,55 +355,58 @@ Module io.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                "slice_assume_init_ref",
-                []
-              |),
-              [
+            M.read (|
+              let~ buf :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            []
+                            [ Ty.path "u8" ]
+                        ],
+                      "get_unchecked",
+                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::io::borrowed_buf::BorrowedBuf",
+                          "buf"
+                        |)
+                      |);
+                      Value.StructRecord
+                        "core::ops::range::RangeTo"
+                        [
+                          ("end_",
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::io::borrowed_buf::BorrowedBuf",
+                                "filled"
+                              |)
+                            |))
+                        ]
+                    ]
+                  |)
+                |) in
+              M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::index::Index",
-                    Ty.apply
-                      (Ty.path "slice")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.path "u8" ]
-                      ],
-                    [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-                    "index",
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                    "slice_assume_init_ref",
                     []
                   |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::io::borrowed_buf::BorrowedBuf",
-                        "buf"
-                      |)
-                    |);
-                    Value.StructRecord
-                      "core::ops::range::Range"
-                      [
-                        ("start", Value.Integer 0);
-                        ("end_",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::io::borrowed_buf::BorrowedBuf",
-                              "filled"
-                            |)
-                          |))
-                      ]
-                  ]
+                  [ M.read (| buf |) ]
                 |)
-              ]
+              |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_filled : M.IsAssociatedFunction Self "filled" filled.
@@ -411,7 +414,10 @@ Module io.
       (*
           pub fn filled_mut(&mut self) -> &mut [u8] {
               // SAFETY: We only slice the filled part of the buffer, which is always valid
-              unsafe { MaybeUninit::slice_assume_init_mut(&mut self.buf[0..self.filled]) }
+              unsafe {
+                  let buf = self.buf.get_unchecked_mut(..self.filled);
+                  MaybeUninit::slice_assume_init_mut(buf)
+              }
           }
       *)
       Definition filled_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -419,55 +425,58 @@ Module io.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                "slice_assume_init_mut",
-                []
-              |),
-              [
+            M.read (|
+              let~ buf :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            []
+                            [ Ty.path "u8" ]
+                        ],
+                      "get_unchecked_mut",
+                      [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ] ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "core::io::borrowed_buf::BorrowedBuf",
+                          "buf"
+                        |)
+                      |);
+                      Value.StructRecord
+                        "core::ops::range::RangeTo"
+                        [
+                          ("end_",
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::io::borrowed_buf::BorrowedBuf",
+                                "filled"
+                              |)
+                            |))
+                        ]
+                    ]
+                  |)
+                |) in
+              M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::index::IndexMut",
-                    Ty.apply
-                      (Ty.path "slice")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.path "u8" ]
-                      ],
-                    [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-                    "index_mut",
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                    "slice_assume_init_mut",
                     []
                   |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::io::borrowed_buf::BorrowedBuf",
-                        "buf"
-                      |)
-                    |);
-                    Value.StructRecord
-                      "core::ops::range::Range"
-                      [
-                        ("start", Value.Integer 0);
-                        ("end_",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "core::io::borrowed_buf::BorrowedBuf",
-                              "filled"
-                            |)
-                          |))
-                      ]
-                  ]
+                  [ M.read (| buf |) ]
                 |)
-              ]
+              |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_filled_mut : M.IsAssociatedFunction Self "filled_mut" filled_mut.
@@ -518,7 +527,7 @@ Module io.
                     [ M.read (| self |) ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unfilled : M.IsAssociatedFunction Self "unfilled" unfilled.
@@ -542,11 +551,11 @@ Module io.
                     "core::io::borrowed_buf::BorrowedBuf",
                     "filled"
                   |),
-                  Value.Integer 0
+                  Value.Integer IntegerKind.Usize 0
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_clear : M.IsAssociatedFunction Self "clear" clear.
@@ -587,7 +596,7 @@ Module io.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_init : M.IsAssociatedFunction Self "set_init" set_init.
@@ -625,26 +634,22 @@ Module io.
                 M.read (| f |);
                 M.read (| Value.String "BorrowedCursor" |);
                 M.read (| Value.String "buf" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::io::borrowed_buf::BorrowedCursor",
+                  "buf"
+                |);
+                M.read (| Value.String "start" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::io::borrowed_buf::BorrowedCursor",
-                    "buf"
-                  |));
-                M.read (| Value.String "start" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::io::borrowed_buf::BorrowedCursor",
-                      "start"
-                    |)
-                  |))
+                    "start"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -714,7 +719,7 @@ Module io.
                     |)
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_reborrow : M.IsAssociatedFunction Self "reborrow" reborrow.
@@ -729,9 +734,8 @@ Module io.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub
-              Integer.Usize
-              (M.call_closure (|
+            BinOp.Wrap.sub (|
+              M.call_closure (|
                 M.get_associated_function (|
                   Ty.path "core::io::borrowed_buf::BorrowedBuf",
                   "capacity",
@@ -746,8 +750,8 @@ Module io.
                     |)
                   |)
                 ]
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -759,8 +763,9 @@ Module io.
                   "core::io::borrowed_buf::BorrowedBuf",
                   "filled"
                 |)
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_capacity : M.IsAssociatedFunction Self "capacity" capacity.
@@ -775,9 +780,8 @@ Module io.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub
-              Integer.Usize
-              (M.read (|
+            BinOp.Wrap.sub (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -789,15 +793,16 @@ Module io.
                   "core::io::borrowed_buf::BorrowedBuf",
                   "filled"
                 |)
-              |))
-              (M.read (|
+              |),
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.read (| self |),
                   "core::io::borrowed_buf::BorrowedCursor",
                   "start"
                 |)
-              |))))
-        | _, _, _ => M.impossible
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_written : M.IsAssociatedFunction Self "written" written.
@@ -805,7 +810,10 @@ Module io.
       (*
           pub fn init_ref(&self) -> &[u8] {
               // SAFETY: We only slice the initialized part of the buffer, which is always valid
-              unsafe { MaybeUninit::slice_assume_init_ref(&self.buf.buf[self.buf.filled..self.buf.init]) }
+              unsafe {
+                  let buf = self.buf.buf.get_unchecked(self.buf.filled..self.buf.init);
+                  MaybeUninit::slice_assume_init_ref(buf)
+              }
           }
       *)
       Definition init_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -813,80 +821,84 @@ Module io.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                "slice_assume_init_ref",
-                []
-              |),
-              [
+            M.read (|
+              let~ buf :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            []
+                            [ Ty.path "u8" ]
+                        ],
+                      "get_unchecked",
+                      [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::io::borrowed_buf::BorrowedCursor",
+                              "buf"
+                            |)
+                          |),
+                          "core::io::borrowed_buf::BorrowedBuf",
+                          "buf"
+                        |)
+                      |);
+                      Value.StructRecord
+                        "core::ops::range::Range"
+                        [
+                          ("start",
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::io::borrowed_buf::BorrowedCursor",
+                                    "buf"
+                                  |)
+                                |),
+                                "core::io::borrowed_buf::BorrowedBuf",
+                                "filled"
+                              |)
+                            |));
+                          ("end_",
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::io::borrowed_buf::BorrowedCursor",
+                                    "buf"
+                                  |)
+                                |),
+                                "core::io::borrowed_buf::BorrowedBuf",
+                                "init"
+                              |)
+                            |))
+                        ]
+                    ]
+                  |)
+                |) in
+              M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::index::Index",
-                    Ty.apply
-                      (Ty.path "slice")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.path "u8" ]
-                      ],
-                    [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-                    "index",
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                    "slice_assume_init_ref",
                     []
                   |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::io::borrowed_buf::BorrowedCursor",
-                            "buf"
-                          |)
-                        |),
-                        "core::io::borrowed_buf::BorrowedBuf",
-                        "buf"
-                      |)
-                    |);
-                    Value.StructRecord
-                      "core::ops::range::Range"
-                      [
-                        ("start",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::io::borrowed_buf::BorrowedCursor",
-                                  "buf"
-                                |)
-                              |),
-                              "core::io::borrowed_buf::BorrowedBuf",
-                              "filled"
-                            |)
-                          |));
-                        ("end_",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::io::borrowed_buf::BorrowedCursor",
-                                  "buf"
-                                |)
-                              |),
-                              "core::io::borrowed_buf::BorrowedBuf",
-                              "init"
-                            |)
-                          |))
-                      ]
-                  ]
+                  [ M.read (| buf |) ]
                 |)
-              ]
+              |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_init_ref : M.IsAssociatedFunction Self "init_ref" init_ref.
@@ -895,7 +907,8 @@ Module io.
           pub fn init_mut(&mut self) -> &mut [u8] {
               // SAFETY: We only slice the initialized part of the buffer, which is always valid
               unsafe {
-                  MaybeUninit::slice_assume_init_mut(&mut self.buf.buf[self.buf.filled..self.buf.init])
+                  let buf = self.buf.buf.get_unchecked_mut(self.buf.filled..self.buf.init);
+                  MaybeUninit::slice_assume_init_mut(buf)
               }
           }
       *)
@@ -904,87 +917,92 @@ Module io.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
-                "slice_assume_init_mut",
-                []
-              |),
-              [
+            M.read (|
+              let~ buf :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            []
+                            [ Ty.path "u8" ]
+                        ],
+                      "get_unchecked_mut",
+                      [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ]
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::io::borrowed_buf::BorrowedCursor",
+                              "buf"
+                            |)
+                          |),
+                          "core::io::borrowed_buf::BorrowedBuf",
+                          "buf"
+                        |)
+                      |);
+                      Value.StructRecord
+                        "core::ops::range::Range"
+                        [
+                          ("start",
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::io::borrowed_buf::BorrowedCursor",
+                                    "buf"
+                                  |)
+                                |),
+                                "core::io::borrowed_buf::BorrowedBuf",
+                                "filled"
+                              |)
+                            |));
+                          ("end_",
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::io::borrowed_buf::BorrowedCursor",
+                                    "buf"
+                                  |)
+                                |),
+                                "core::io::borrowed_buf::BorrowedBuf",
+                                "init"
+                              |)
+                            |))
+                        ]
+                    ]
+                  |)
+                |) in
+              M.alloc (|
                 M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::index::IndexMut",
-                    Ty.apply
-                      (Ty.path "slice")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                          []
-                          [ Ty.path "u8" ]
-                      ],
-                    [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
-                    "index_mut",
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
+                    "slice_assume_init_mut",
                     []
                   |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "core::io::borrowed_buf::BorrowedCursor",
-                            "buf"
-                          |)
-                        |),
-                        "core::io::borrowed_buf::BorrowedBuf",
-                        "buf"
-                      |)
-                    |);
-                    Value.StructRecord
-                      "core::ops::range::Range"
-                      [
-                        ("start",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::io::borrowed_buf::BorrowedCursor",
-                                  "buf"
-                                |)
-                              |),
-                              "core::io::borrowed_buf::BorrowedBuf",
-                              "filled"
-                            |)
-                          |));
-                        ("end_",
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.read (| self |),
-                                  "core::io::borrowed_buf::BorrowedCursor",
-                                  "buf"
-                                |)
-                              |),
-                              "core::io::borrowed_buf::BorrowedBuf",
-                              "init"
-                            |)
-                          |))
-                      ]
-                  ]
+                  [ M.read (| buf |) ]
                 |)
-              ]
+              |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_init_mut : M.IsAssociatedFunction Self "init_mut" init_mut.
       
       (*
           pub fn uninit_mut(&mut self) -> &mut [MaybeUninit<u8>] {
-              &mut self.buf.buf[self.buf.init..]
+              // SAFETY: always in bounds
+              unsafe { self.buf.buf.get_unchecked_mut(self.buf.init..) }
           }
       *)
       Definition uninit_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -993,15 +1011,13 @@ Module io.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_trait_method (|
-                "core::ops::index::IndexMut",
+              M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
                   []
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ] ],
-                [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ],
-                "index_mut",
-                []
+                "get_unchecked_mut",
+                [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
               |),
               [
                 M.read (|
@@ -1037,14 +1053,15 @@ Module io.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_uninit_mut : M.IsAssociatedFunction Self "uninit_mut" uninit_mut.
       
       (*
           pub unsafe fn as_mut(&mut self) -> &mut [MaybeUninit<u8>] {
-              &mut self.buf.buf[self.buf.filled..]
+              // SAFETY: always in bounds
+              unsafe { self.buf.buf.get_unchecked_mut(self.buf.filled..) }
           }
       *)
       Definition as_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1053,15 +1070,13 @@ Module io.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_trait_method (|
-                "core::ops::index::IndexMut",
+              M.get_associated_function (|
                 Ty.apply
                   (Ty.path "slice")
                   []
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ] ],
-                [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ],
-                "index_mut",
-                []
+                "get_unchecked_mut",
+                [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ]
               |),
               [
                 M.read (|
@@ -1097,19 +1112,124 @@ Module io.
                   ]
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_mut : M.IsAssociatedFunction Self "as_mut" as_mut.
       
       (*
-          pub unsafe fn advance(&mut self, n: usize) -> &mut Self {
+          pub fn advance(&mut self, n: usize) -> &mut Self {
+              let filled = self.buf.filled.strict_add(n);
+              assert!(filled <= self.buf.init);
+      
+              self.buf.filled = filled;
+              self
+          }
+      *)
+      Definition advance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; n ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let n := M.alloc (| n |) in
+            M.read (|
+              let~ filled :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "usize", "strict_add", [] |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.read (| self |),
+                              "core::io::borrowed_buf::BorrowedCursor",
+                              "buf"
+                            |)
+                          |),
+                          "core::io::borrowed_buf::BorrowedBuf",
+                          "filled"
+                        |)
+                      |);
+                      M.read (| n |)
+                    ]
+                  |)
+                |) in
+              let~ _ :=
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              UnOp.not (|
+                                BinOp.le (|
+                                  M.read (| filled |),
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "core::io::borrowed_buf::BorrowedCursor",
+                                          "buf"
+                                        |)
+                                      |),
+                                      "core::io::borrowed_buf::BorrowedBuf",
+                                      "init"
+                                    |)
+                                  |)
+                                |)
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.call_closure (|
+                              M.get_function (| "core::panicking::panic", [] |),
+                              [
+                                M.read (|
+                                  Value.String "assertion failed: filled <= self.buf.init"
+                                |)
+                              ]
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              let~ _ :=
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::io::borrowed_buf::BorrowedCursor",
+                        "buf"
+                      |)
+                    |),
+                    "core::io::borrowed_buf::BorrowedBuf",
+                    "filled"
+                  |),
+                  M.read (| filled |)
+                |) in
+              M.alloc (| M.read (| self |) |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_advance : M.IsAssociatedFunction Self "advance" advance.
+      
+      (*
+          pub unsafe fn advance_unchecked(&mut self, n: usize) -> &mut Self {
               self.buf.filled += n;
               self.buf.init = cmp::max(self.buf.init, self.buf.filled);
               self
           }
       *)
-      Definition advance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition advance_unchecked (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; n ] =>
           ltac:(M.monadic
@@ -1129,7 +1249,7 @@ Module io.
                     "core::io::borrowed_buf::BorrowedBuf",
                     "filled"
                   |) in
-                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| n |)) |) in
+                M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| n |) |) |) in
               let~ _ :=
                 M.write (|
                   M.SubPointer.get_struct_record_field (|
@@ -1177,10 +1297,11 @@ Module io.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_advance : M.IsAssociatedFunction Self "advance" advance.
+      Axiom AssociatedFunction_advance_unchecked :
+        M.IsAssociatedFunction Self "advance_unchecked" advance_unchecked.
       
       (*
           pub fn ensure_init(&mut self) -> &mut Self {
@@ -1242,7 +1363,7 @@ Module io.
                           |),
                           [ M.read (| uninit |) ]
                         |);
-                        Value.Integer 0;
+                        Value.Integer IntegerKind.U8 0;
                         M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply
@@ -1295,7 +1416,7 @@ Module io.
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_ensure_init : M.IsAssociatedFunction Self "ensure_init" ensure_init.
@@ -1342,9 +1463,8 @@ Module io.
                           "init"
                         |)
                       |);
-                      BinOp.Wrap.add
-                        Integer.Usize
-                        (M.read (|
+                      BinOp.Wrap.add (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.read (|
                               M.SubPointer.get_struct_record_field (|
@@ -1356,14 +1476,15 @@ Module io.
                             "core::io::borrowed_buf::BorrowedBuf",
                             "filled"
                           |)
-                        |))
-                        (M.read (| n |))
+                        |),
+                        M.read (| n |)
+                      |)
                     ]
                   |)
                 |) in
               M.alloc (| M.read (| self |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_set_init : M.IsAssociatedFunction Self "set_init" set_init.
@@ -1374,7 +1495,7 @@ Module io.
       
               // SAFETY: we do not de-initialize any of the elements of the slice
               unsafe {
-                  MaybeUninit::write_slice(&mut self.as_mut()[..buf.len()], buf);
+                  MaybeUninit::copy_from_slice(&mut self.as_mut()[..buf.len()], buf);
               }
       
               // SAFETY: We just added the entire contents of buf to the filled section.
@@ -1400,24 +1521,26 @@ Module io.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not
-                                (BinOp.Pure.ge
-                                  (M.call_closure (|
+                              UnOp.not (|
+                                BinOp.ge (|
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.path "core::io::borrowed_buf::BorrowedCursor",
                                       "capacity",
                                       []
                                     |),
                                     [ M.read (| self |) ]
-                                  |))
-                                  (M.call_closure (|
+                                  |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                                       "len",
                                       []
                                     |),
                                     [ M.read (| buf |) ]
-                                  |)))
+                                  |)
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1445,7 +1568,7 @@ Module io.
                           (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                           []
                           [ Ty.path "u8" ],
-                        "write_slice",
+                        "copy_from_slice",
                         []
                       |),
                       [
@@ -1533,21 +1656,21 @@ Module io.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Wrap.add
-                    Integer.Usize
-                    (M.read (| β |))
-                    (M.call_closure (|
+                  BinOp.Wrap.add (|
+                    M.read (| β |),
+                    M.call_closure (|
                       M.get_associated_function (|
                         Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
                         "len",
                         []
                       |),
                       [ M.read (| buf |) ]
-                    |))
+                    |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_append : M.IsAssociatedFunction Self "append" append.

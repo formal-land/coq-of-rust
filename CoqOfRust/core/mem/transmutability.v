@@ -44,73 +44,77 @@ Module mem.
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
-                  BinOp.Pure.eq
-                    (M.read (|
+                  BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::mem::transmutability::Assume",
                         "alignment"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::mem::transmutability::Assume",
                         "alignment"
                       |)
-                    |)),
+                    |)
+                  |),
                   ltac:(M.monadic
-                    (BinOp.Pure.eq
-                      (M.read (|
+                    (BinOp.eq (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "core::mem::transmutability::Assume",
                           "lifetimes"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
                           "core::mem::transmutability::Assume",
                           "lifetimes"
                         |)
-                      |))))
+                      |)
+                    |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.Pure.eq
-                    (M.read (|
+                  (BinOp.eq (|
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
                         "core::mem::transmutability::Assume",
                         "safety"
                       |)
-                    |))
-                    (M.read (|
+                    |),
+                    M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
                         "core::mem::transmutability::Assume",
                         "safety"
                       |)
-                    |))))
+                    |)
+                  |)))
               |),
               ltac:(M.monadic
-                (BinOp.Pure.eq
-                  (M.read (|
+                (BinOp.eq (|
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
                       "core::mem::transmutability::Assume",
                       "validity"
                     |)
-                  |))
-                  (M.read (|
+                  |),
+                  M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
                       "core::mem::transmutability::Assume",
                       "validity"
                     |)
-                  |))))
+                  |)
+                |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -120,17 +124,6 @@ Module mem.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_for_core_mem_transmutability_Assume.
-    
-    Module Impl_core_marker_StructuralEq_for_core_mem_transmutability_Assume.
-      Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::StructuralEq"
-          Self
-          (* Trait polymorphic types *) []
-          (* Instance *) [].
-    End Impl_core_marker_StructuralEq_for_core_mem_transmutability_Assume.
     
     Module Impl_core_cmp_Eq_for_core_mem_transmutability_Assume.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
@@ -151,7 +144,7 @@ Module mem.
                 [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -178,7 +171,7 @@ Module mem.
                 [ fun γ => ltac:(M.monadic (M.read (| self |))) ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -220,42 +213,34 @@ Module mem.
                 M.read (| f |);
                 M.read (| Value.String "Assume" |);
                 M.read (| Value.String "alignment" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::mem::transmutability::Assume",
-                    "alignment"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::mem::transmutability::Assume",
+                  "alignment"
+                |);
                 M.read (| Value.String "lifetimes" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::mem::transmutability::Assume",
-                    "lifetimes"
-                  |));
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::mem::transmutability::Assume",
+                  "lifetimes"
+                |);
                 M.read (| Value.String "safety" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::mem::transmutability::Assume",
+                  "safety"
+                |);
+                M.read (| Value.String "validity" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "core::mem::transmutability::Assume",
-                    "safety"
-                  |));
-                M.read (| Value.String "validity" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::mem::transmutability::Assume",
-                      "validity"
-                    |)
-                  |))
+                    "validity"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -266,16 +251,27 @@ Module mem.
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
     End Impl_core_fmt_Debug_for_core_mem_transmutability_Assume.
     
-    Module Impl_core_marker_ConstParamTy_for_core_mem_transmutability_Assume.
+    Module Impl_core_marker_ConstParamTy__for_core_mem_transmutability_Assume.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       Axiom Implements :
         M.IsTraitInstance
-          "core::marker::ConstParamTy"
+          "core::marker::ConstParamTy_"
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_marker_ConstParamTy_for_core_mem_transmutability_Assume.
+    End Impl_core_marker_ConstParamTy__for_core_mem_transmutability_Assume.
+    
+    Module Impl_core_marker_UnsizedConstParamTy_for_core_mem_transmutability_Assume.
+      Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::UnsizedConstParamTy"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_UnsizedConstParamTy_for_core_mem_transmutability_Assume.
     
     Module Impl_core_mem_transmutability_Assume.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
@@ -370,7 +366,7 @@ Module mem.
       *)
       Definition and (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; other_assumptions ] =>
+        | [], [], [ self; other_assumptions ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other_assumptions := M.alloc (| other_assumptions |) in
@@ -450,7 +446,7 @@ Module mem.
                       |)))
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_and : M.IsAssociatedFunction Self "and" and.
@@ -467,7 +463,7 @@ Module mem.
       *)
       Definition but_not (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [ host ], [], [ self; other_assumptions ] =>
+        | [], [], [ self; other_assumptions ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other_assumptions := M.alloc (| other_assumptions |) in
@@ -484,14 +480,15 @@ Module mem.
                       |)
                     |),
                     ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.read (|
+                      (UnOp.not (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             other_assumptions,
                             "core::mem::transmutability::Assume",
                             "alignment"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |));
                 ("lifetimes",
                   LogicalOp.and (|
@@ -503,14 +500,15 @@ Module mem.
                       |)
                     |),
                     ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.read (|
+                      (UnOp.not (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             other_assumptions,
                             "core::mem::transmutability::Assume",
                             "lifetimes"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |));
                 ("safety",
                   LogicalOp.and (|
@@ -522,14 +520,15 @@ Module mem.
                       |)
                     |),
                     ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.read (|
+                      (UnOp.not (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             other_assumptions,
                             "core::mem::transmutability::Assume",
                             "safety"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |));
                 ("validity",
                   LogicalOp.and (|
@@ -541,17 +540,18 @@ Module mem.
                       |)
                     |),
                     ltac:(M.monadic
-                      (UnOp.Pure.not
-                        (M.read (|
+                      (UnOp.not (|
+                        M.read (|
                           M.SubPointer.get_struct_record_field (|
                             other_assumptions,
                             "core::mem::transmutability::Assume",
                             "validity"
                           |)
-                        |))))
+                        |)
+                      |)))
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_but_not : M.IsAssociatedFunction Self "but_not" but_not.
@@ -582,7 +582,7 @@ Module mem.
               |),
               [ M.read (| self |); M.read (| other_assumptions |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -619,7 +619,7 @@ Module mem.
               |),
               [ M.read (| self |); M.read (| other_assumptions |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

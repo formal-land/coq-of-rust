@@ -10,7 +10,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.StructTuple "core::option::Option::None" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_source : M.IsProvidedMethod "core::error::Error" "source" source.
@@ -31,7 +31,7 @@ Module error.
                   |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_type_id : M.IsProvidedMethod "core::error::Error" "type_id" type_id.
@@ -46,7 +46,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "description() is deprecated; use Display" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_description :
@@ -60,7 +60,7 @@ Module error.
             M.get_trait_method (| "core::error::Error", Self, [], "source", [] |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_cause : M.IsProvidedMethod "core::error::Error" "cause" cause.
@@ -71,7 +71,7 @@ Module error.
           (let self := M.alloc (| self |) in
           let request := M.alloc (| request |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_provide : M.IsProvidedMethod "core::error::Error" "provide" provide.
@@ -100,7 +100,7 @@ Module error.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
               [ M.read (| f |); M.read (| Value.String "Internal" |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -177,7 +177,7 @@ Module error.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -219,20 +219,14 @@ Module error.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [
-                          M.rust_cast
-                            (M.read (|
-                              M.use
-                                (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |))
-                            |))
-                        ]
+                        [ M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |)) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -274,20 +268,14 @@ Module error.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [
-                          M.rust_cast
-                            (M.read (|
-                              M.use
-                                (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |))
-                            |))
-                        ]
+                        [ M.rust_cast (M.read (| M.use (M.alloc (| M.read (| self |) |)) |)) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
@@ -314,13 +302,8 @@ Module error.
           (let self := M.alloc (| self |) in
           Value.StructRecord
             "core::error::Source"
-            [
-              ("current",
-                Value.StructTuple
-                  "core::option::Option::Some"
-                  [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ])
-            ]))
-      | _, _, _ => M.impossible
+            [ ("current", Value.StructTuple "core::option::Option::Some" [ M.read (| self |) ]) ]))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_sources : M.IsAssociatedFunction Self "sources" sources.
@@ -346,9 +329,9 @@ Module error.
               "is",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -369,9 +352,9 @@ Module error.
               "downcast_ref",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -392,21 +375,21 @@ Module error.
               "downcast_mut",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
   End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
   
-  Module Impl_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
+  Module Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
     Definition Self : Ty.t :=
       Ty.dyn
         [
           ("core::error::Error::Trait", []);
-          ("core::marker::Sync::AutoTrait", []);
-          ("core::marker::Send::AutoTrait", [])
+          ("core::marker::Send::AutoTrait", []);
+          ("core::marker::Sync::AutoTrait", [])
         ].
     
     (*
@@ -425,9 +408,9 @@ Module error.
               "is",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is : M.IsAssociatedFunction Self "is" is.
@@ -448,9 +431,9 @@ Module error.
               "downcast_ref",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_ref : M.IsAssociatedFunction Self "downcast_ref" downcast_ref.
@@ -471,13 +454,13 @@ Module error.
               "downcast_mut",
               [ T ]
             |),
-            [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+            [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
-  End Impl_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
+  End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
   
   
   (*
@@ -500,7 +483,7 @@ Module error.
           |),
           [ M.read (| err |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_request_value : M.IsFunction "core::error::request_value" request_value.
@@ -531,7 +514,7 @@ Module error.
           |),
           [ M.read (| err |) ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_request_ref : M.IsFunction "core::error::request_ref" request_ref.
@@ -541,9 +524,9 @@ Module error.
   where
       I: tags::Type<'a>,
   {
-      let mut tagged = TaggedOption::<'a, I>(None);
+      let mut tagged = Tagged { tag_id: TypeId::of::<I>(), value: TaggedOption::<'a, I>(None) };
       err.provide(tagged.as_request());
-      tagged.0
+      tagged.value.0
   }
   *)
   Definition request_by_type_tag (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -554,9 +537,19 @@ Module error.
         M.read (|
           let~ tagged :=
             M.alloc (|
-              Value.StructTuple
-                "core::error::TaggedOption"
-                [ Value.StructTuple "core::option::Option::None" [] ]
+              Value.StructRecord
+                "core::error::Tagged"
+                [
+                  ("tag_id",
+                    M.call_closure (|
+                      M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ I ] |),
+                      []
+                    |));
+                  ("value",
+                    Value.StructTuple
+                      "core::error::TaggedOption"
+                      [ Value.StructTuple "core::option::Option::None" [] ])
+                ]
             |) in
           let~ _ :=
             M.alloc (|
@@ -572,7 +565,10 @@ Module error.
                   M.read (| err |);
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ],
+                      Ty.apply
+                        (Ty.path "core::error::Tagged")
+                        []
+                        [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ],
                       "as_request",
                       []
                     |),
@@ -581,9 +577,13 @@ Module error.
                 ]
               |)
             |) in
-          M.SubPointer.get_struct_tuple_field (| tagged, "core::error::TaggedOption", 0 |)
+          M.SubPointer.get_struct_tuple_field (|
+            M.SubPointer.get_struct_record_field (| tagged, "core::error::Tagged", "value" |),
+            "core::error::TaggedOption",
+            0
+          |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_request_by_type_tag :
@@ -594,32 +594,17 @@ Module error.
       name := "Request";
       const_params := [];
       ty_params := [];
-      fields := [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ];
+      fields :=
+        [
+          Ty.apply
+            (Ty.path "core::error::Tagged")
+            []
+            [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+        ];
     } *)
   
   Module Impl_core_error_Request.
     Definition Self : Ty.t := Ty.path "core::error::Request".
-    
-    (*
-        fn new<'b>(erased: &'b mut (dyn Erased<'a> + 'a)) -> &'b mut Request<'a> {
-            // SAFETY: transmuting `&mut (dyn Erased<'a> + 'a)` to `&mut Request<'a>` is safe since
-            // `Request` is repr(transparent).
-            unsafe { &mut *(erased as *mut dyn Erased<'a> as *mut Request<'a>) }
-        }
-    *)
-    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ erased ] =>
-        ltac:(M.monadic
-          (let erased := M.alloc (| erased |) in
-          M.rust_cast
-            (M.read (|
-              M.use (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| erased |)) |))
-            |))))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
     
     (*
         pub fn provide_value<T>(&mut self, value: T) -> &mut Self
@@ -643,7 +628,7 @@ Module error.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_provide_value :
@@ -671,7 +656,7 @@ Module error.
             |),
             [ M.read (| self |); M.read (| fulfil |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_provide_value_with :
@@ -701,7 +686,7 @@ Module error.
             |),
             [ M.read (| self |); M.read (| value |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_provide_ref : M.IsAssociatedFunction Self "provide_ref" provide_ref.
@@ -734,7 +719,7 @@ Module error.
             |),
             [ M.read (| self |); M.read (| fulfil |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_provide_ref_with :
@@ -768,7 +753,10 @@ Module error.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.dyn [ ("core::error::Erased::Trait", []) ],
+                              Ty.apply
+                                (Ty.path "core::error::Tagged")
+                                []
+                                [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
                               "downcast_mut",
                               [ I ]
                             |),
@@ -811,7 +799,7 @@ Module error.
               |) in
             M.alloc (| M.read (| self |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_provide : M.IsAssociatedFunction Self "provide" provide.
@@ -844,7 +832,10 @@ Module error.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.dyn [ ("core::error::Erased::Trait", []) ],
+                              Ty.apply
+                                (Ty.path "core::error::Tagged")
+                                []
+                                [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
                               "downcast_mut",
                               [ I ]
                             |),
@@ -900,7 +891,7 @@ Module error.
               |) in
             M.alloc (| M.read (| self |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_provide_with : M.IsAssociatedFunction Self "provide_with" provide_with.
@@ -930,7 +921,7 @@ Module error.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_would_be_satisfied_by_value_of :
@@ -966,7 +957,7 @@ Module error.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_would_be_satisfied_by_ref_of :
@@ -990,7 +981,10 @@ Module error.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.dyn [ ("core::error::Erased::Trait", []) ],
+                    Ty.apply
+                      (Ty.path "core::error::Tagged")
+                      []
+                      [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
                     "downcast",
                     [ I ]
                   |),
@@ -1025,7 +1019,7 @@ Module error.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_would_be_satisfied_by :
@@ -1065,7 +1059,7 @@ Module error.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1126,18 +1120,16 @@ Module error.
               [
                 M.read (| f |);
                 M.read (| Value.String "Value" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::error::tags::Value",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::error::tags::Value",
+                    0
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1193,18 +1185,16 @@ Module error.
               [
                 M.read (| f |);
                 M.read (| Value.String "MaybeSizedValue" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::error::tags::MaybeSizedValue",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::error::tags::MaybeSizedValue",
+                    0
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1260,18 +1250,16 @@ Module error.
               [
                 M.read (| f |);
                 M.read (| Value.String "Ref" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      M.read (| self |),
-                      "core::error::tags::Ref",
-                      0
-                    |)
-                  |))
+                M.alloc (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.read (| self |),
+                    "core::error::tags::Ref",
+                    0
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1307,12 +1295,19 @@ Module error.
       fields := [ Ty.apply (Ty.path "core::option::Option") [] [ Ty.associated ] ];
     } *)
   
-  Module Impl_core_error_TaggedOption_I.
-    Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ].
+  Module Impl_core_error_Tagged_core_error_TaggedOption_I.
+    Definition Self (I : Ty.t) : Ty.t :=
+      Ty.apply
+        (Ty.path "core::error::Tagged")
+        []
+        [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ].
     
     (*
         pub(crate) fn as_request(&mut self) -> &mut Request<'a> {
-            Request::new(self as &mut (dyn Erased<'a> + 'a))
+            let erased = self as &mut Tagged<dyn Erased<'a> + 'a>;
+            // SAFETY: transmuting `&mut Tagged<dyn Erased<'a> + 'a>` to `&mut Request<'a>` is safe since
+            // `Request` is repr(transparent).
+            unsafe { &mut *(erased as *mut Tagged<dyn Erased<'a>> as *mut Request<'a>) }
         }
     *)
     Definition as_request (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1321,23 +1316,17 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (| Ty.path "core::error::Request", "new", [] |),
-            [
-              (* Unsize *)
-              M.pointer_coercion
-                (M.read (|
-                  M.use (M.alloc (| (* Unsize *) M.pointer_coercion (M.read (| self |)) |))
-                |))
-            ]
+          M.read (|
+            let~ erased := M.copy (| M.use (M.alloc (| M.read (| self |) |)) |) in
+            M.alloc (| M.rust_cast (M.read (| M.use (M.alloc (| M.read (| erased |) |)) |)) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_as_request :
       forall (I : Ty.t),
       M.IsAssociatedFunction (Self I) "as_request" (as_request I).
-  End Impl_core_error_TaggedOption_I.
+  End Impl_core_error_Tagged_core_error_TaggedOption_I.
   
   (* Trait *)
   (* Empty module 'Erased' *)
@@ -1345,44 +1334,35 @@ Module error.
   Module Impl_core_error_Erased_where_core_error_tags_Type_I_for_core_error_TaggedOption_I.
     Definition Self (I : Ty.t) : Ty.t := Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ].
     
-    (*
-        fn tag_id(&self) -> TypeId {
-            TypeId::of::<I>()
-        }
-    *)
-    Definition tag_id (I : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      let Self : Ty.t := Self I in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (| Ty.path "core::any::TypeId", "of", [ I ] |),
-            []
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
     Axiom Implements :
       forall (I : Ty.t),
       M.IsTraitInstance
         "core::error::Erased"
         (Self I)
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("tag_id", InstanceField.Method (tag_id I)) ].
+        (* Instance *) [].
   End Impl_core_error_Erased_where_core_error_tags_Type_I_for_core_error_TaggedOption_I.
   
-  Module Impl_Dyn_core_error_Erased_Trait.
-    Definition Self : Ty.t := Ty.dyn [ ("core::error::Erased::Trait", []) ].
+  (* StructRecord
+    {
+      name := "Tagged";
+      const_params := [];
+      ty_params := [ "E" ];
+      fields := [ ("tag_id", Ty.path "core::any::TypeId"); ("value", E) ];
+    } *)
+  
+  Module Impl_core_error_Tagged_Dyn_core_error_Erased_Trait.
+    Definition Self : Ty.t :=
+      Ty.apply (Ty.path "core::error::Tagged") [] [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ].
     
     (*
         fn downcast<I>(&self) -> Option<&TaggedOption<'a, I>>
         where
             I: tags::Type<'a>,
         {
-            if self.tag_id() == TypeId::of::<I>() {
+            if self.tag_id == TypeId::of::<I>() {
                 // SAFETY: Just checked whether we're pointing to an I.
-                Some(unsafe { &*(self as *const Self).cast::<TaggedOption<'a, I>>() })
+                Some(&unsafe { &*(self as *const Self).cast::<Tagged<TaggedOption<'a, I>>>() }.value)
             } else {
                 None
             }
@@ -1411,17 +1391,10 @@ Module error.
                               []
                             |),
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::error::Erased",
-                                    Ty.dyn [ ("core::error::Erased::Trait", []) ],
-                                    [],
-                                    "tag_id",
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
-                                |)
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::error::Tagged",
+                                "tag_id"
                               |);
                               M.alloc (|
                                 M.call_closure (|
@@ -1441,23 +1414,30 @@ Module error.
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "*const")
-                                []
-                                [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
-                              "cast",
-                              [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                          M.SubPointer.get_struct_record_field (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "*const")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::error::Tagged")
+                                      []
+                                      [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                                  ],
+                                "cast",
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::error::Tagged")
+                                    []
+                                    [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                                ]
+                              |),
+                              [ M.read (| M.use (M.alloc (| M.read (| self |) |)) |) ]
                             |),
-                            [
-                              M.read (|
-                                M.use
-                                  (M.alloc (|
-                                    (* Unsize *) M.pointer_coercion (M.read (| self |))
-                                  |))
-                              |)
-                            ]
+                            "core::error::Tagged",
+                            "value"
                           |)
                         ]
                     |)));
@@ -1466,7 +1446,7 @@ Module error.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast : M.IsAssociatedFunction Self "downcast" downcast.
@@ -1476,9 +1456,12 @@ Module error.
         where
             I: tags::Type<'a>,
         {
-            if self.tag_id() == TypeId::of::<I>() {
-                // SAFETY: Just checked whether we're pointing to an I.
-                Some(unsafe { &mut *(self as *mut Self).cast::<TaggedOption<'a, I>>() })
+            if self.tag_id == TypeId::of::<I>() {
+                Some(
+                    // SAFETY: Just checked whether we're pointing to an I.
+                    &mut unsafe { &mut *(self as *mut Self).cast::<Tagged<TaggedOption<'a, I>>>() }
+                        .value,
+                )
             } else {
                 None
             }
@@ -1507,17 +1490,10 @@ Module error.
                               []
                             |),
                             [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::error::Erased",
-                                    Ty.dyn [ ("core::error::Erased::Trait", []) ],
-                                    [],
-                                    "tag_id",
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
-                                |)
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::error::Tagged",
+                                "tag_id"
                               |);
                               M.alloc (|
                                 M.call_closure (|
@@ -1537,23 +1513,30 @@ Module error.
                       Value.StructTuple
                         "core::option::Option::Some"
                         [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "*mut")
-                                []
-                                [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
-                              "cast",
-                              [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                          M.SubPointer.get_struct_record_field (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "*mut")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::error::Tagged")
+                                      []
+                                      [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
+                                  ],
+                                "cast",
+                                [
+                                  Ty.apply
+                                    (Ty.path "core::error::Tagged")
+                                    []
+                                    [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                                ]
+                              |),
+                              [ M.read (| M.use (M.alloc (| M.read (| self |) |)) |) ]
                             |),
-                            [
-                              M.read (|
-                                M.use
-                                  (M.alloc (|
-                                    (* Unsize *) M.pointer_coercion (M.read (| self |))
-                                  |))
-                              |)
-                            ]
+                            "core::error::Tagged",
+                            "value"
                           |)
                         ]
                     |)));
@@ -1562,11 +1545,11 @@ Module error.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_downcast_mut : M.IsAssociatedFunction Self "downcast_mut" downcast_mut.
-  End Impl_Dyn_core_error_Erased_Trait.
+  End Impl_core_error_Tagged_Dyn_core_error_Erased_Trait.
   
   (* StructRecord
     {
@@ -1617,7 +1600,7 @@ Module error.
                   ]
                 |))
             ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1648,18 +1631,16 @@ Module error.
               M.read (| f |);
               M.read (| Value.String "Source" |);
               M.read (| Value.String "current" |);
-              (* Unsize *)
-              M.pointer_coercion
-                (M.alloc (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::error::Source",
-                    "current"
-                  |)
-                |))
+              M.alloc (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::error::Source",
+                  "current"
+                |)
+              |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1749,7 +1730,74 @@ Module error.
               |) in
             current
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    (*
+        fn size_hint(&self) -> (usize, Option<usize>) {
+            if self.current.is_some() { (1, None) } else { (0, Some(0)) }
+        }
+    *)
+    Definition size_hint (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::option::Option")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
+                                ],
+                              "is_some",
+                              []
+                            |),
+                            [
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "core::error::Source",
+                                "current"
+                              |)
+                            ]
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          Value.Integer IntegerKind.Usize 1;
+                          Value.StructTuple "core::option::Option::None" []
+                        ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      Value.Tuple
+                        [
+                          Value.Integer IntegerKind.Usize 0;
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [ Value.Integer IntegerKind.Usize 0 ]
+                        ]
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1757,8 +1805,24 @@ Module error.
         "core::iter::traits::iterator::Iterator"
         Self
         (* Trait polymorphic types *) []
-        (* Instance *) [ ("Item", InstanceField.Ty _Item); ("next", InstanceField.Method next) ].
+        (* Instance *)
+        [
+          ("Item", InstanceField.Ty _Item);
+          ("next", InstanceField.Method next);
+          ("size_hint", InstanceField.Method size_hint)
+        ].
   End Impl_core_iter_traits_iterator_Iterator_for_core_error_Source.
+  
+  Module Impl_core_iter_traits_marker_FusedIterator_for_core_error_Source.
+    Definition Self : Ty.t := Ty.path "core::error::Source".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::iter::traits::marker::FusedIterator"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_iter_traits_marker_FusedIterator_for_core_error_Source.
   
   Module Impl_core_error_Error_where_core_error_Error_T_where_core_marker_Sized_T_for_ref__T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
@@ -1778,7 +1842,7 @@ Module error.
             M.get_trait_method (| "core::error::Error", T, [], "description", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1796,7 +1860,7 @@ Module error.
             M.get_trait_method (| "core::error::Error", T, [], "cause", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1814,7 +1878,7 @@ Module error.
             M.get_trait_method (| "core::error::Error", T, [], "source", [] |),
             [ M.read (| M.read (| self |) |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -1839,7 +1903,7 @@ Module error.
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1871,7 +1935,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "an error occurred when formatting an argument" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1896,7 +1960,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "already mutably borrowed" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1921,7 +1985,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "already borrowed" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1946,7 +2010,7 @@ Module error.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| Value.String "converted integer out of range for `char`" |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

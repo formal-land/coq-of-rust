@@ -109,12 +109,10 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "+=======================+
+                          M.alloc (|
+                            Value.Array [ M.read (| Value.String "+=======================+
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -134,31 +132,27 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "| Enter:  " |);
-                                  M.read (| Value.String "            |
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (| Value.String "| Enter:  " |);
+                                M.read (| Value.String "            |
 " |)
-                                ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "u16" ]
-                                    |),
-                                    [ entry ]
-                                  |)
-                                ]
-                            |))
+                              ]
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "u16" ]
+                                  |),
+                                  [ entry ]
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -178,12 +172,10 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "+-----------------------+
+                          M.alloc (|
+                            Value.Array [ M.read (| Value.String "+-----------------------+
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -203,42 +195,38 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "==> Children: " |);
-                                  M.read (| Value.String "
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (| Value.String "==> Children: " |);
+                                M.read (| Value.String "
 " |)
-                                ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_debug",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::vec::Vec")
-                                          []
-                                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
-                                      ]
-                                    |),
+                              ]
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_debug",
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "move_binary_format::control_flow_graph::BasicBlock",
-                                        "successors"
-                                      |)
+                                      Ty.apply
+                                        (Ty.path "alloc::vec::Vec")
+                                        []
+                                        [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ]
                                     ]
-                                  |)
-                                ]
-                            |))
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "move_binary_format::control_flow_graph::BasicBlock",
+                                      "successors"
+                                    |)
+                                  ]
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -258,12 +246,10 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "+-----------------------+
+                          M.alloc (|
+                            Value.Array [ M.read (| Value.String "+-----------------------+
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -283,37 +269,33 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "| Exit:   " |);
-                                  M.read (| Value.String "            |
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (| Value.String "| Exit:   " |);
+                                M.read (| Value.String "            |
 " |)
-                                ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [ Ty.path "u16" ]
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "move_binary_format::control_flow_graph::BasicBlock",
-                                        "exit"
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                            |))
+                              ]
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_display",
+                                    [ Ty.path "u16" ]
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "move_binary_format::control_flow_graph::BasicBlock",
+                                      "exit"
+                                    |)
+                                  ]
+                                |)
+                              ]
+                          |)
                         ]
                       |)
                     ]
@@ -333,12 +315,10 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array [ M.read (| Value.String "+=======================+
+                          M.alloc (|
+                            Value.Array [ M.read (| Value.String "+=======================+
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -347,14 +327,14 @@ Module control_flow_graph.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_display : M.IsAssociatedFunction Self "display" display.
   End Impl_move_binary_format_control_flow_graph_BasicBlock.
   
   Definition value_ENTRY_BLOCK_ID : Value.t :=
-    M.run ltac:(M.monadic (M.alloc (| Value.Integer 0 |))).
+    M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |))).
   
   Module Impl_move_binary_format_control_flow_graph_VMControlFlowGraph.
     Definition Self : Ty.t := Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph".
@@ -573,7 +553,7 @@ Module control_flow_graph.
                         Value.StructRecord
                           "core::ops::range::Range"
                           [
-                            ("start", Value.Integer 0);
+                            ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -671,7 +651,7 @@ Module control_flow_graph.
                   []
                 |)
               |) in
-            let~ entry := M.alloc (| Value.Integer 0 |) in
+            let~ entry := M.alloc (| Value.Integer IntegerKind.U16 0 |) in
             let~ exit_to_entry :=
               M.alloc (|
                 M.call_closure (|
@@ -702,7 +682,7 @@ Module control_flow_graph.
                         Value.StructRecord
                           "core::ops::range::Range"
                           [
-                            ("start", Value.Integer 0);
+                            ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -855,10 +835,10 @@ Module control_flow_graph.
                                               let~ _ :=
                                                 M.write (|
                                                   entry,
-                                                  BinOp.Wrap.add
-                                                    Integer.U16
-                                                    (M.read (| co_pc |))
-                                                    (Value.Integer 1)
+                                                  BinOp.Wrap.add (|
+                                                    M.read (| co_pc |),
+                                                    Value.Integer IntegerKind.U16 1
+                                                  |)
                                                 |) in
                                               M.alloc (| Value.Tuple [] |)));
                                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -889,10 +869,12 @@ Module control_flow_graph.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    UnOp.Pure.not
-                                      (BinOp.Pure.eq
-                                        (M.read (| M.read (| left_val |) |))
-                                        (M.read (| M.read (| right_val |) |)))
+                                    UnOp.not (|
+                                      BinOp.eq (|
+                                        M.read (| M.read (| left_val |) |),
+                                        M.read (| M.read (| right_val |) |)
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -955,35 +937,36 @@ Module control_flow_graph.
                     [ Ty.path "alloc::alloc::Global" ]
                   |),
                   [
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.read (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply (Ty.path "array") [ Value.Integer 1 ] [ Ty.path "u16" ];
-                                Ty.path "alloc::alloc::Global"
-                              ],
-                            "new",
+                    M.read (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::boxed::Box")
                             []
-                          |),
-                          [
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    M.get_constant (|
-                                      "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID"
-                                    |)
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                                [ Ty.path "u16" ];
+                              Ty.path "alloc::alloc::Global"
+                            ],
+                          "new",
+                          []
+                        |),
+                        [
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (|
+                                  M.get_constant (|
+                                    "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID"
                                   |)
-                                ]
-                            |)
-                          ]
-                        |)
-                      |))
+                                |)
+                              ]
+                          |)
+                        ]
+                      |)
+                    |)
                   ]
                 |)
               |) in
@@ -1611,7 +1594,7 @@ Module control_flow_graph.
                               |),
                               [ traversal_order ]
                             |);
-                            Value.Integer 2
+                            Value.Integer IntegerKind.Usize 2
                           ]
                         |);
                         M.closure
@@ -1619,102 +1602,111 @@ Module control_flow_graph.
                             ltac:(M.monadic
                               match γ with
                               | [ α0 ] =>
-                                M.match_operator (|
-                                  M.alloc (| α0 |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let window := M.copy (| γ |) in
-                                        M.read (|
-                                          let~ _ :=
-                                            M.match_operator (|
-                                              M.alloc (| Value.Tuple [] |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let γ :=
-                                                      M.use (M.alloc (| Value.Bool true |)) in
-                                                    let _ :=
-                                                      M.is_constant_or_break_match (|
-                                                        M.read (| γ |),
-                                                        Value.Bool true
-                                                      |) in
-                                                    let~ _ :=
-                                                      M.match_operator (|
-                                                        M.alloc (| Value.Tuple [] |),
-                                                        [
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (let γ :=
-                                                                M.use
-                                                                  (M.alloc (|
-                                                                    UnOp.Pure.not
-                                                                      (BinOp.Pure.eq
-                                                                        (M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.apply
-                                                                              (Ty.path "slice")
+                                ltac:(M.monadic
+                                  (M.match_operator (|
+                                    M.alloc (| α0 |),
+                                    [
+                                      fun γ =>
+                                        ltac:(M.monadic
+                                          (let window := M.copy (| γ |) in
+                                          M.read (|
+                                            let~ _ :=
+                                              M.match_operator (|
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use (M.alloc (| Value.Bool true |)) in
+                                                      let _ :=
+                                                        M.is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      let~ _ :=
+                                                        M.match_operator (|
+                                                          M.alloc (| Value.Tuple [] |),
+                                                          [
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (let γ :=
+                                                                  M.use
+                                                                    (M.alloc (|
+                                                                      UnOp.not (|
+                                                                        BinOp.eq (|
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.apply
+                                                                                (Ty.path "slice")
+                                                                                []
+                                                                                [ Ty.path "u16" ],
+                                                                              "len",
                                                                               []
-                                                                              [ Ty.path "u16" ],
-                                                                            "len",
-                                                                            []
+                                                                            |),
+                                                                            [ M.read (| window |) ]
                                                                           |),
-                                                                          [ M.read (| window |) ]
-                                                                        |))
-                                                                        (Value.Integer 2))
-                                                                  |)) in
-                                                              let _ :=
-                                                                M.is_constant_or_break_match (|
-                                                                  M.read (| γ |),
-                                                                  Value.Bool true
-                                                                |) in
-                                                              M.alloc (|
-                                                                M.never_to_any (|
-                                                                  M.call_closure (|
-                                                                    M.get_function (|
-                                                                      "core::panicking::panic",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "assertion failed: window.len() == 2"
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            2
+                                                                        |)
                                                                       |)
-                                                                    ]
+                                                                    |)) in
+                                                                let _ :=
+                                                                  M.is_constant_or_break_match (|
+                                                                    M.read (| γ |),
+                                                                    Value.Bool true
+                                                                  |) in
+                                                                M.alloc (|
+                                                                  M.never_to_any (|
+                                                                    M.call_closure (|
+                                                                      M.get_function (|
+                                                                        "core::panicking::panic",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.read (|
+                                                                          Value.String
+                                                                            "assertion failed: window.len() == 2"
+                                                                        |)
+                                                                      ]
+                                                                    |)
                                                                   |)
-                                                                |)
-                                                              |)));
-                                                          fun γ =>
-                                                            ltac:(M.monadic
-                                                              (M.alloc (| Value.Tuple [] |)))
-                                                        ]
-                                                      |) in
-                                                    M.alloc (| Value.Tuple [] |)));
-                                                fun γ =>
-                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                              ]
-                                            |) in
-                                          M.alloc (|
-                                            Value.Tuple
-                                              [
-                                                M.read (|
-                                                  M.SubPointer.get_array_field (|
-                                                    M.read (| window |),
-                                                    M.alloc (| Value.Integer 0 |)
+                                                                |)));
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (M.alloc (| Value.Tuple [] |)))
+                                                          ]
+                                                        |) in
+                                                      M.alloc (| Value.Tuple [] |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                                ]
+                                              |) in
+                                            M.alloc (|
+                                              Value.Tuple
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.read (| window |),
+                                                      M.alloc (|
+                                                        Value.Integer IntegerKind.Usize 0
+                                                      |)
+                                                    |)
+                                                  |);
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.read (| window |),
+                                                      M.alloc (|
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      |)
+                                                    |)
                                                   |)
-                                                |);
-                                                M.read (|
-                                                  M.SubPointer.get_array_field (|
-                                                    M.read (| window |),
-                                                    M.alloc (| Value.Integer 1 |)
-                                                  |)
-                                                |)
-                                              ]
-                                          |)
-                                        |)))
-                                  ]
-                                |)
-                              | _ => M.impossible (||)
+                                                ]
+                                            |)
+                                          |)))
+                                    ]
+                                  |)))
+                              | _ => M.impossible "wrong number of arguments"
                               end))
                       ]
                     |)
@@ -1731,7 +1723,7 @@ Module control_flow_graph.
                 ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
@@ -1862,68 +1854,62 @@ Module control_flow_graph.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Traversal: " |);
-                                  M.read (| Value.String "
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.read (| Value.String "Traversal: " |);
+                                M.read (| Value.String "
 " |)
-                                ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_debug",
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::btree::map::BTreeMap")
-                                          []
-                                          [
-                                            Ty.path "u16";
-                                            Ty.path "u16";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                    |),
+                              ]
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Argument",
+                                    "new_debug",
                                     [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                                        "traversal_successors"
-                                      |)
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                        []
+                                        [
+                                          Ty.path "u16";
+                                          Ty.path "u16";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
                                     ]
-                                  |)
-                                ]
-                            |));
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer 0;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer 4;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                    ]
-                                  |)
-                                ]
-                            |));
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                                      "traversal_successors"
+                                    |)
+                                  ]
+                                |)
+                              ]
+                          |);
+                          M.alloc (|
+                            Value.Array
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::rt::Placeholder",
+                                    "new",
+                                    []
+                                  |),
+                                  [
+                                    Value.Integer IntegerKind.Usize 0;
+                                    Value.UnicodeChar 32;
+                                    Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
+                                    Value.Integer IntegerKind.U32 4;
+                                    Value.StructTuple "core::fmt::rt::Count::Implied" [];
+                                    Value.StructTuple "core::fmt::rt::Count::Implied" []
+                                  ]
+                                |)
+                              ]
+                          |);
                           M.call_closure (|
                             M.get_associated_function (|
                               Ty.path "core::fmt::rt::UnsafeArg",
@@ -1940,7 +1926,7 @@ Module control_flow_graph.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_display : M.IsAssociatedFunction Self "display" display.
@@ -1958,9 +1944,9 @@ Module control_flow_graph.
           let code := M.alloc (| code |) in
           let block_ids := M.alloc (| block_ids |) in
           LogicalOp.or (|
-            BinOp.Pure.eq
-              (BinOp.Wrap.add Integer.U16 (M.read (| pc |)) (Value.Integer 1))
-              (M.rust_cast
+            BinOp.eq (|
+              BinOp.Wrap.add (| M.read (| pc |), Value.Integer IntegerKind.U16 1 |),
+              M.rust_cast
                 (M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply
@@ -1971,7 +1957,8 @@ Module control_flow_graph.
                     []
                   |),
                   [ M.read (| code |) ]
-                |))),
+                |))
+            |),
             ltac:(M.monadic
               (M.call_closure (|
                 M.get_associated_function (|
@@ -1984,11 +1971,13 @@ Module control_flow_graph.
                 |),
                 [
                   M.read (| block_ids |);
-                  M.alloc (| BinOp.Wrap.add Integer.U16 (M.read (| pc |)) (Value.Integer 1) |)
+                  M.alloc (|
+                    BinOp.Wrap.add (| M.read (| pc |), Value.Integer IntegerKind.U16 1 |)
+                  |)
                 ]
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_end_of_block :
@@ -2082,9 +2071,12 @@ Module control_flow_graph.
                               [ M.read (| bytecode |) ]
                             |),
                             ltac:(M.monadic
-                              (BinOp.Pure.lt
-                                (BinOp.Wrap.add Integer.U16 (M.read (| pc |)) (Value.Integer 1))
-                                (M.rust_cast
+                              (BinOp.lt (|
+                                BinOp.Wrap.add (|
+                                  M.read (| pc |),
+                                  Value.Integer IntegerKind.U16 1
+                                |),
+                                M.rust_cast
                                   (M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -2095,7 +2087,8 @@ Module control_flow_graph.
                                       []
                                     |),
                                     [ M.read (| code |) ]
-                                  |)))))
+                                  |))
+                              |)))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2112,7 +2105,7 @@ Module control_flow_graph.
                           |),
                           [
                             M.read (| block_ids |);
-                            BinOp.Wrap.add Integer.U16 (M.read (| pc |)) (Value.Integer 1)
+                            BinOp.Wrap.add (| M.read (| pc |), Value.Integer IntegerKind.U16 1 |)
                           ]
                         |)
                       |) in
@@ -2121,7 +2114,7 @@ Module control_flow_graph.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_record_block_ids :
@@ -2174,7 +2167,7 @@ Module control_flow_graph.
                   []
                 |)
               |) in
-            let~ index := M.alloc (| Value.Integer 0 |) in
+            let~ index := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
             let~ seen :=
               M.alloc (|
                 M.call_closure (|
@@ -2230,9 +2223,9 @@ Module control_flow_graph.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.lt
-                                  (M.read (| index |))
-                                  (M.call_closure (|
+                                BinOp.lt (|
+                                  M.read (| index |),
+                                  M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "alloc::vec::Vec")
@@ -2242,7 +2235,8 @@ Module control_flow_graph.
                                       []
                                     |),
                                     [ ret ]
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2266,7 +2260,7 @@ Module control_flow_graph.
                             let β := index in
                             M.write (|
                               β,
-                              BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                             |) in
                           let~ successors :=
                             M.alloc (|
@@ -2373,8 +2367,8 @@ Module control_flow_graph.
                                                           (let γ :=
                                                             M.use
                                                               (M.alloc (|
-                                                                UnOp.Pure.not
-                                                                  (M.call_closure (|
+                                                                UnOp.not (|
+                                                                  M.call_closure (|
                                                                     M.get_associated_function (|
                                                                       Ty.apply
                                                                         (Ty.path
@@ -2397,7 +2391,8 @@ Module control_flow_graph.
                                                                       ]
                                                                     |),
                                                                     [ seen; block_id ]
-                                                                  |))
+                                                                  |)
+                                                                |)
                                                               |)) in
                                                           let _ :=
                                                             M.is_constant_or_break_match (|
@@ -2473,7 +2468,7 @@ Module control_flow_graph.
               |) in
             ret
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_traverse_by : M.IsAssociatedFunction Self "traverse_by" traverse_by.
@@ -2497,7 +2492,7 @@ Module control_flow_graph.
             |),
             [ M.read (| self |); M.read (| block_id |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_reachable_from :
@@ -2519,7 +2514,7 @@ Module control_flow_graph.
           (let self := M.alloc (| self |) in
           let block_id := M.alloc (| block_id |) in
           M.read (| block_id |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2563,7 +2558,7 @@ Module control_flow_graph.
               "exit"
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2605,7 +2600,7 @@ Module control_flow_graph.
             "move_binary_format::control_flow_graph::BasicBlock",
             "successors"
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2638,8 +2633,8 @@ Module control_flow_graph.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      UnOp.Pure.not
-                                        (M.call_closure (|
+                                      UnOp.not (|
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply
                                               (Ty.path "alloc::collections::btree::map::BTreeMap")
@@ -2661,7 +2656,8 @@ Module control_flow_graph.
                                             |);
                                             block_id
                                           ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2721,7 +2717,7 @@ Module control_flow_graph.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2735,55 +2731,51 @@ Module control_flow_graph.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let block_id := M.alloc (| block_id |) in
-          (* Unsize *)
-          M.pointer_coercion
-            (* Unsize *)
-            (M.pointer_coercion
-              (M.call_closure (|
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "alloc::boxed::Box")
+                []
+                [
+                  Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ];
+                  Ty.path "alloc::alloc::Global"
+                ],
+              "new",
+              []
+            |),
+            [
+              M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [
-                      Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ];
-                      Ty.path "alloc::alloc::Global"
-                    ],
+                  Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ],
                   "new",
                   []
                 |),
                 [
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "u16" ],
-                      "new",
+                    M.get_trait_method (|
+                      "move_binary_format::control_flow_graph::ControlFlowGraph",
+                      Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                      [],
+                      "block_start",
                       []
                     |),
-                    [
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "move_binary_format::control_flow_graph::ControlFlowGraph",
-                          Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                          [],
-                          "block_start",
-                          []
-                        |),
-                        [ M.read (| self |); M.read (| block_id |) ]
-                      |);
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "move_binary_format::control_flow_graph::ControlFlowGraph",
-                          Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
-                          [],
-                          "block_end",
-                          []
-                        |),
-                        [ M.read (| self |); M.read (| block_id |) ]
-                      |)
-                    ]
+                    [ M.read (| self |); M.read (| block_id |) ]
+                  |);
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "move_binary_format::control_flow_graph::ControlFlowGraph",
+                      Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph",
+                      [],
+                      "block_end",
+                      []
+                    |),
+                    [ M.read (| self |); M.read (| block_id |) ]
                   |)
                 ]
-              |)))))
-      | _, _, _ => M.impossible
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2855,7 +2847,7 @@ Module control_flow_graph.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2890,7 +2882,7 @@ Module control_flow_graph.
                 |)
               ]
             |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2906,7 +2898,7 @@ Module control_flow_graph.
           M.read (|
             M.get_constant (| "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID" |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -2945,7 +2937,7 @@ Module control_flow_graph.
               block_id
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3031,30 +3023,31 @@ Module control_flow_graph.
                   ltac:(M.monadic
                     match γ with
                     | [ α0 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let back_edges := M.copy (| γ |) in
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::set::BTreeSet")
-                                    []
-                                    [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                  "contains",
-                                  [ Ty.path "u16" ]
-                                |),
-                                [ M.read (| back_edges |); cur ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let back_edges := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                      []
+                                      [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                    "contains",
+                                    [ Ty.path "u16" ]
+                                  |),
+                                  [ M.read (| back_edges |); cur ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     (*
@@ -3134,49 +3127,50 @@ Module control_flow_graph.
                   |)
                 ]
               |);
-              Value.Integer 0;
+              Value.Integer IntegerKind.Usize 0;
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
                     match γ with
                     | [ α0; α1 ] =>
-                      M.match_operator (|
-                        M.alloc (| α0 |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let acc := M.copy (| γ |) in
-                              M.match_operator (|
-                                M.alloc (| α1 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                      let edges := M.copy (| γ0_1 |) in
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| acc |))
-                                        (M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "alloc::collections::btree::set::BTreeSet")
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let acc := M.copy (| γ |) in
+                                M.match_operator (|
+                                  M.alloc (| α1 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                        let edges := M.copy (| γ0_1 |) in
+                                        BinOp.Wrap.add (|
+                                          M.read (| acc |),
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                                []
+                                                [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                              "len",
                                               []
-                                              [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                            "len",
-                                            []
-                                          |),
-                                          [ M.read (| edges |) ]
-                                        |))))
-                                ]
-                              |)))
-                        ]
-                      |)
-                    | _ => M.impossible (||)
+                                            |),
+                                            [ M.read (| edges |) ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
                     end))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

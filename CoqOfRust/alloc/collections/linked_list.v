@@ -173,90 +173,86 @@ Module collections.
                             [ M.read (| f |); M.read (| Value.String "Iter" |) ]
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.apply
-                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::linked_list::LinkedList")
-                                    []
-                                    [ T; Ty.path "alloc::alloc::Global" ]
-                                ],
-                              [],
-                              "deref",
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
                               []
-                            |),
-                            [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::linked_list::LinkedList")
-                                          []
-                                          [ T; Ty.path "alloc::alloc::Global" ]
-                                      ],
-                                    "new",
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::collections::linked_list::LinkedList")
+                                  []
+                                  [ T; Ty.path "alloc::alloc::Global" ]
+                              ],
+                            [],
+                            "deref",
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
                                     []
-                                  |),
-                                  [
-                                    Value.StructRecord
-                                      "alloc::collections::linked_list::LinkedList"
-                                      [
-                                        ("head",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::collections::linked_list::Iter",
-                                              "head"
-                                            |)
-                                          |));
-                                        ("tail",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::collections::linked_list::Iter",
-                                              "tail"
-                                            |)
-                                          |));
-                                        ("len",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::collections::linked_list::Iter",
-                                              "len"
-                                            |)
-                                          |));
-                                        ("alloc", Value.StructTuple "alloc::alloc::Global" []);
-                                        ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                                      ]
-                                  ]
-                                |)
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::LinkedList")
+                                        []
+                                        [ T; Ty.path "alloc::alloc::Global" ]
+                                    ],
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  Value.StructRecord
+                                    "alloc::collections::linked_list::LinkedList"
+                                    [
+                                      ("head",
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::collections::linked_list::Iter",
+                                            "head"
+                                          |)
+                                        |));
+                                      ("tail",
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::collections::linked_list::Iter",
+                                            "tail"
+                                          |)
+                                        |));
+                                      ("len",
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::collections::linked_list::Iter",
+                                            "len"
+                                          |)
+                                        |));
+                                      ("alloc", Value.StructTuple "alloc::alloc::Global" []);
+                                      ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                                    ]
+                                ]
                               |)
-                            ]
-                          |))
+                            |)
+                          ]
+                        |)
                       ]
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::linked_list::Iter",
-                        "len"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::linked_list::Iter",
+                      "len"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -284,7 +280,7 @@ Module collections.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructTuple "alloc::collections::linked_list::Iter" []))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -393,90 +389,86 @@ Module collections.
                             [ M.read (| f |); M.read (| Value.String "IterMut" |) ]
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.apply
-                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::linked_list::LinkedList")
-                                    []
-                                    [ T; Ty.path "alloc::alloc::Global" ]
-                                ],
-                              [],
-                              "deref",
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "core::mem::manually_drop::ManuallyDrop")
                               []
-                            |),
-                            [
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::collections::linked_list::LinkedList")
-                                          []
-                                          [ T; Ty.path "alloc::alloc::Global" ]
-                                      ],
-                                    "new",
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::collections::linked_list::LinkedList")
+                                  []
+                                  [ T; Ty.path "alloc::alloc::Global" ]
+                              ],
+                            [],
+                            "deref",
+                            []
+                          |),
+                          [
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
                                     []
-                                  |),
-                                  [
-                                    Value.StructRecord
-                                      "alloc::collections::linked_list::LinkedList"
-                                      [
-                                        ("head",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::collections::linked_list::IterMut",
-                                              "head"
-                                            |)
-                                          |));
-                                        ("tail",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::collections::linked_list::IterMut",
-                                              "tail"
-                                            |)
-                                          |));
-                                        ("len",
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.read (| self |),
-                                              "alloc::collections::linked_list::IterMut",
-                                              "len"
-                                            |)
-                                          |));
-                                        ("alloc", Value.StructTuple "alloc::alloc::Global" []);
-                                        ("marker", Value.StructTuple "core::marker::PhantomData" [])
-                                      ]
-                                  ]
-                                |)
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::LinkedList")
+                                        []
+                                        [ T; Ty.path "alloc::alloc::Global" ]
+                                    ],
+                                  "new",
+                                  []
+                                |),
+                                [
+                                  Value.StructRecord
+                                    "alloc::collections::linked_list::LinkedList"
+                                    [
+                                      ("head",
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::collections::linked_list::IterMut",
+                                            "head"
+                                          |)
+                                        |));
+                                      ("tail",
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::collections::linked_list::IterMut",
+                                            "tail"
+                                          |)
+                                        |));
+                                      ("len",
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "alloc::collections::linked_list::IterMut",
+                                            "len"
+                                          |)
+                                        |));
+                                      ("alloc", Value.StructTuple "alloc::alloc::Global" []);
+                                      ("marker", Value.StructTuple "core::marker::PhantomData" [])
+                                    ]
+                                ]
                               |)
-                            ]
-                          |))
+                            |)
+                          ]
+                        |)
                       ]
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::linked_list::IterMut",
-                        "len"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::linked_list::IterMut",
+                      "len"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -530,7 +522,7 @@ Module collections.
                     ]
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -582,18 +574,16 @@ Module collections.
                         [ M.read (| f |); M.read (| Value.String "IntoIter" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::linked_list::IntoIter",
-                        "list"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::linked_list::IntoIter",
+                      "list"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -627,7 +617,7 @@ Module collections.
                 ("prev", Value.StructTuple "core::option::Option::None" []);
                 ("element", M.read (| element |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -657,7 +647,7 @@ Module collections.
                 "element"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_into_element :
@@ -819,10 +809,13 @@ Module collections.
                     "alloc::collections::linked_list::LinkedList",
                     "len"
                   |) in
-                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
+                M.write (|
+                  β,
+                  BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_push_front_node :
@@ -911,152 +904,153 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let node := M.copy (| γ |) in
-                                M.read (|
-                                  let~ node :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::boxed::Box")
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let node := M.copy (| γ |) in
+                                  M.read (|
+                                    let~ node :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::boxed::Box")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
+                                                  [ T ];
+                                                Ty.apply (Ty.path "&") [] [ A ]
+                                              ],
+                                            "from_raw_in",
                                             []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::linked_list::Node")
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::linked_list::Node")
+                                                      []
+                                                      [ T ]
+                                                  ],
+                                                "as_ptr",
                                                 []
-                                                [ T ];
-                                              Ty.apply (Ty.path "&") [] [ A ]
-                                            ],
-                                          "from_raw_in",
-                                          []
+                                              |),
+                                              [ M.read (| node |) ]
+                                            |);
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "alloc::collections::linked_list::LinkedList",
+                                              "alloc"
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "head"
+                                        |),
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| node |),
+                                            "alloc::collections::linked_list::Node",
+                                            "next"
+                                          |)
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.match_operator (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "head"
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::ptr::non_null::NonNull")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::linked_list::Node")
-                                                    []
-                                                    [ T ]
-                                                ],
-                                              "as_ptr",
-                                              []
-                                            |),
-                                            [ M.read (| node |) ]
-                                          |);
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "alloc::collections::linked_list::LinkedList",
-                                            "alloc"
-                                          |)
-                                        ]
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::LinkedList",
-                                        "head"
-                                      |),
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| node |),
-                                          "alloc::collections::linked_list::Node",
-                                          "next"
-                                        |)
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.match_operator (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::LinkedList",
-                                        "head"
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let _ :=
-                                              M.is_struct_tuple (|
-                                                γ,
-                                                "core::option::Option::None"
-                                              |) in
-                                            M.write (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "alloc::collections::linked_list::LinkedList",
-                                                "tail"
-                                              |),
-                                              Value.StructTuple "core::option::Option::None" []
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                            let head := M.copy (| γ0_0 |) in
-                                            M.write (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "alloc::collections::linked_list::Node")
-                                                          []
-                                                          [ T ]
-                                                      ],
-                                                    "as_ptr",
-                                                    []
-                                                  |),
-                                                  [ M.read (| head |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::option::Option::None"
+                                                |) in
+                                              M.write (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::linked_list::LinkedList",
+                                                  "tail"
                                                 |),
-                                                "alloc::collections::linked_list::Node",
-                                                "prev"
-                                              |),
-                                              Value.StructTuple "core::option::Option::None" []
-                                            |)))
-                                      ]
-                                    |) in
-                                  let~ _ :=
-                                    let β :=
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::LinkedList",
-                                        "len"
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::option::Option::Some",
+                                                  0
+                                                |) in
+                                              let head := M.copy (| γ0_0 |) in
+                                              M.write (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::linked_list::Node")
+                                                            []
+                                                            [ T ]
+                                                        ],
+                                                      "as_ptr",
+                                                      []
+                                                    |),
+                                                    [ M.read (| head |) ]
+                                                  |),
+                                                  "alloc::collections::linked_list::Node",
+                                                  "prev"
+                                                |),
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)))
+                                        ]
                                       |) in
-                                    M.write (|
-                                      β,
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| β |))
-                                        (Value.Integer 1)
-                                    |) in
-                                  node
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    let~ _ :=
+                                      let β :=
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "len"
+                                        |) in
+                                      M.write (|
+                                        β,
+                                        BinOp.Wrap.sub (|
+                                          M.read (| β |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |)
+                                      |) in
+                                    node
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_pop_front_node :
@@ -1213,10 +1207,13 @@ Module collections.
                     "alloc::collections::linked_list::LinkedList",
                     "len"
                   |) in
-                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
+                M.write (|
+                  β,
+                  BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_push_back_node :
@@ -1305,152 +1302,153 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let node := M.copy (| γ |) in
-                                M.read (|
-                                  let~ node :=
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::boxed::Box")
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let node := M.copy (| γ |) in
+                                  M.read (|
+                                    let~ node :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::boxed::Box")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
+                                                  [ T ];
+                                                Ty.apply (Ty.path "&") [] [ A ]
+                                              ],
+                                            "from_raw_in",
                                             []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::linked_list::Node")
+                                          |),
+                                          [
+                                            M.call_closure (|
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "core::ptr::non_null::NonNull")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::linked_list::Node")
+                                                      []
+                                                      [ T ]
+                                                  ],
+                                                "as_ptr",
                                                 []
-                                                [ T ];
-                                              Ty.apply (Ty.path "&") [] [ A ]
-                                            ],
-                                          "from_raw_in",
-                                          []
+                                              |),
+                                              [ M.read (| node |) ]
+                                            |);
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| self |),
+                                              "alloc::collections::linked_list::LinkedList",
+                                              "alloc"
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.write (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "tail"
+                                        |),
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| node |),
+                                            "alloc::collections::linked_list::Node",
+                                            "prev"
+                                          |)
+                                        |)
+                                      |) in
+                                    let~ _ :=
+                                      M.match_operator (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "tail"
                                         |),
                                         [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "core::ptr::non_null::NonNull")
-                                                []
-                                                [
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::linked_list::Node")
-                                                    []
-                                                    [ T ]
-                                                ],
-                                              "as_ptr",
-                                              []
-                                            |),
-                                            [ M.read (| node |) ]
-                                          |);
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| self |),
-                                            "alloc::collections::linked_list::LinkedList",
-                                            "alloc"
-                                          |)
-                                        ]
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::LinkedList",
-                                        "tail"
-                                      |),
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| node |),
-                                          "alloc::collections::linked_list::Node",
-                                          "prev"
-                                        |)
-                                      |)
-                                    |) in
-                                  let~ _ :=
-                                    M.match_operator (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::LinkedList",
-                                        "tail"
-                                      |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let _ :=
-                                              M.is_struct_tuple (|
-                                                γ,
-                                                "core::option::Option::None"
-                                              |) in
-                                            M.write (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.read (| self |),
-                                                "alloc::collections::linked_list::LinkedList",
-                                                "head"
-                                              |),
-                                              Value.StructTuple "core::option::Option::None" []
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ0_0 :=
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                γ,
-                                                "core::option::Option::Some",
-                                                0
-                                              |) in
-                                            let tail := M.copy (| γ0_0 |) in
-                                            M.write (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "core::ptr::non_null::NonNull")
-                                                      []
-                                                      [
-                                                        Ty.apply
-                                                          (Ty.path
-                                                            "alloc::collections::linked_list::Node")
-                                                          []
-                                                          [ T ]
-                                                      ],
-                                                    "as_ptr",
-                                                    []
-                                                  |),
-                                                  [ M.read (| tail |) ]
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let _ :=
+                                                M.is_struct_tuple (|
+                                                  γ,
+                                                  "core::option::Option::None"
+                                                |) in
+                                              M.write (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| self |),
+                                                  "alloc::collections::linked_list::LinkedList",
+                                                  "head"
                                                 |),
-                                                "alloc::collections::linked_list::Node",
-                                                "next"
-                                              |),
-                                              Value.StructTuple "core::option::Option::None" []
-                                            |)))
-                                      ]
-                                    |) in
-                                  let~ _ :=
-                                    let β :=
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| self |),
-                                        "alloc::collections::linked_list::LinkedList",
-                                        "len"
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)));
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ0_0 :=
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  γ,
+                                                  "core::option::Option::Some",
+                                                  0
+                                                |) in
+                                              let tail := M.copy (| γ0_0 |) in
+                                              M.write (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                                        []
+                                                        [
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "alloc::collections::linked_list::Node")
+                                                            []
+                                                            [ T ]
+                                                        ],
+                                                      "as_ptr",
+                                                      []
+                                                    |),
+                                                    [ M.read (| tail |) ]
+                                                  |),
+                                                  "alloc::collections::linked_list::Node",
+                                                  "next"
+                                                |),
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)))
+                                        ]
                                       |) in
-                                    M.write (|
-                                      β,
-                                      BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| β |))
-                                        (Value.Integer 1)
-                                    |) in
-                                  node
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    let~ _ :=
+                                      let β :=
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.read (| self |),
+                                          "alloc::collections::linked_list::LinkedList",
+                                          "len"
+                                        |) in
+                                      M.write (|
+                                        β,
+                                        BinOp.Wrap.sub (|
+                                          M.read (| β |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |)
+                                      |) in
+                                    node
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_pop_back_node :
@@ -1641,10 +1639,13 @@ Module collections.
                     "alloc::collections::linked_list::LinkedList",
                     "len"
                   |) in
-                M.write (| β, BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
+                M.write (|
+                  β,
+                  BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_unlink_node :
@@ -1862,13 +1863,10 @@ Module collections.
                     "alloc::collections::linked_list::LinkedList",
                     "len"
                   |) in
-                M.write (|
-                  β,
-                  BinOp.Wrap.add Integer.Usize (M.read (| β |)) (M.read (| splice_length |))
-                |) in
+                M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| splice_length |) |) |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_splice_nodes :
@@ -1963,7 +1961,7 @@ Module collections.
                         "alloc::collections::linked_list::LinkedList",
                         "len"
                       |);
-                      Value.Integer 0
+                      Value.Integer IntegerKind.Usize 0
                     ]
                   |)
                 |) in
@@ -2015,7 +2013,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_detach_all_nodes :
@@ -2242,16 +2240,16 @@ Module collections.
                             "alloc::collections::linked_list::LinkedList",
                             "len"
                           |),
-                          BinOp.Wrap.sub
-                            Integer.Usize
-                            (M.read (|
+                          BinOp.Wrap.sub (|
+                            M.read (|
                               M.SubPointer.get_struct_record_field (|
                                 M.read (| self |),
                                 "alloc::collections::linked_list::LinkedList",
                                 "len"
                               |)
-                            |))
-                            (M.read (| at_ |))
+                            |),
+                            M.read (| at_ |)
+                          |)
                         |) in
                       first_part));
                   fun γ =>
@@ -2297,7 +2295,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_split_off_before_node :
@@ -2495,16 +2493,16 @@ Module collections.
                               ("head", M.read (| second_part_head |));
                               ("tail", M.read (| second_part_tail |));
                               ("len",
-                                BinOp.Wrap.sub
-                                  Integer.Usize
-                                  (M.read (|
+                                BinOp.Wrap.sub (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "alloc::collections::linked_list::LinkedList",
                                       "len"
                                     |)
-                                  |))
-                                  (M.read (| at_ |)));
+                                  |),
+                                  M.read (| at_ |)
+                                |));
                               ("alloc",
                                 M.call_closure (|
                                   M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
@@ -2581,7 +2579,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_split_off_after_node :
@@ -2603,11 +2601,11 @@ Module collections.
               [
                 ("head", Value.StructTuple "core::option::Option::None" []);
                 ("tail", Value.StructTuple "core::option::Option::None" []);
-                ("len", Value.Integer 0);
+                ("len", Value.Integer IntegerKind.Usize 0);
                 ("alloc", M.read (| alloc |));
                 ("marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new_in :
@@ -2654,7 +2652,7 @@ Module collections.
                   |));
                 ("marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_iter :
@@ -2701,7 +2699,7 @@ Module collections.
                   |));
                 ("marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_iter_mut :
@@ -2727,7 +2725,7 @@ Module collections.
             Value.StructRecord
               "alloc::collections::linked_list::Cursor"
               [
-                ("index", Value.Integer 0);
+                ("index", Value.Integer IntegerKind.Usize 0);
                 ("current",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -2738,7 +2736,7 @@ Module collections.
                   |));
                 ("list", M.read (| self |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_cursor_front :
@@ -2764,7 +2762,7 @@ Module collections.
             Value.StructRecord
               "alloc::collections::linked_list::CursorMut"
               [
-                ("index", Value.Integer 0);
+                ("index", Value.Integer IntegerKind.Usize 0);
                 ("current",
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
@@ -2775,7 +2773,7 @@ Module collections.
                   |));
                 ("list", M.read (| self |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_cursor_front_mut :
@@ -2819,10 +2817,10 @@ Module collections.
                               "len"
                             |)
                           |);
-                          Value.Integer 1
+                          Value.Integer IntegerKind.Usize 1
                         ]
                       |);
-                      Value.Integer 0
+                      Value.Integer IntegerKind.Usize 0
                     ]
                   |));
                 ("current",
@@ -2835,7 +2833,7 @@ Module collections.
                   |));
                 ("list", M.read (| self |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_cursor_back :
@@ -2879,10 +2877,10 @@ Module collections.
                               "len"
                             |)
                           |);
-                          Value.Integer 1
+                          Value.Integer IntegerKind.Usize 1
                         ]
                       |);
-                      Value.Integer 0
+                      Value.Integer IntegerKind.Usize 0
                     ]
                   |));
                 ("current",
@@ -2895,7 +2893,7 @@ Module collections.
                   |));
                 ("list", M.read (| self |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_cursor_back_mut :
@@ -2935,7 +2933,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_is_empty :
@@ -2960,7 +2958,7 @@ Module collections.
                 "len"
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_len :
@@ -3083,7 +3081,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_clear :
@@ -3129,29 +3127,30 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let e := M.copy (| γ |) in
-                                M.call_closure (|
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialEq",
-                                    Ty.apply (Ty.path "&") [] [ T ],
-                                    [ Ty.apply (Ty.path "&") [] [ T ] ],
-                                    "eq",
-                                    []
-                                  |),
-                                  [ e; x ]
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let e := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::cmp::PartialEq",
+                                      Ty.apply (Ty.path "&") [] [ T ],
+                                      [ Ty.apply (Ty.path "&") [] [ T ] ],
+                                      "eq",
+                                      []
+                                    |),
+                                    [ e; x ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_contains :
@@ -3239,39 +3238,40 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let node := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let node := M.copy (| γ |) in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              []
+                                              [ T ]
+                                          ],
+                                        "as_ref",
                                         []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::Node")
-                                            []
-                                            [ T ]
-                                        ],
-                                      "as_ref",
-                                      []
+                                      |),
+                                      [ M.read (| node |) ]
                                     |),
-                                    [ M.read (| node |) ]
-                                  |),
-                                  "alloc::collections::linked_list::Node",
-                                  "element"
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    "alloc::collections::linked_list::Node",
+                                    "element"
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_front :
@@ -3359,39 +3359,40 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let node := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let node := M.copy (| γ |) in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              []
+                                              [ T ]
+                                          ],
+                                        "as_mut",
                                         []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::Node")
-                                            []
-                                            [ T ]
-                                        ],
-                                      "as_mut",
-                                      []
+                                      |),
+                                      [ M.read (| node |) ]
                                     |),
-                                    [ M.read (| node |) ]
-                                  |),
-                                  "alloc::collections::linked_list::Node",
-                                  "element"
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    "alloc::collections::linked_list::Node",
+                                    "element"
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_front_mut :
@@ -3479,39 +3480,40 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let node := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let node := M.copy (| γ |) in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              []
+                                              [ T ]
+                                          ],
+                                        "as_ref",
                                         []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::Node")
-                                            []
-                                            [ T ]
-                                        ],
-                                      "as_ref",
-                                      []
+                                      |),
+                                      [ M.read (| node |) ]
                                     |),
-                                    [ M.read (| node |) ]
-                                  |),
-                                  "alloc::collections::linked_list::Node",
-                                  "element"
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    "alloc::collections::linked_list::Node",
+                                    "element"
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_back :
@@ -3599,39 +3601,40 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let node := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let node := M.copy (| γ |) in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              []
+                                              [ T ]
+                                          ],
+                                        "as_mut",
                                         []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::Node")
-                                            []
-                                            [ T ]
-                                        ],
-                                      "as_mut",
-                                      []
+                                      |),
+                                      [ M.read (| node |) ]
                                     |),
-                                    [ M.read (| node |) ]
-                                  |),
-                                  "alloc::collections::linked_list::Node",
-                                  "element"
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    "alloc::collections::linked_list::Node",
+                                    "element"
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_back_mut :
@@ -3741,7 +3744,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_push_front :
@@ -3805,7 +3808,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_pop_front :
@@ -3910,7 +3913,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_push_back :
@@ -3974,7 +3977,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_pop_back :
@@ -4049,8 +4052,7 @@ Module collections.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.Pure.not
-                                    (BinOp.Pure.le (M.read (| at_ |)) (M.read (| len |)))
+                                  UnOp.not (| BinOp.le (| M.read (| at_ |), M.read (| len |) |) |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4066,17 +4068,15 @@ Module collections.
                                         []
                                       |),
                                       [
-                                        (* Unsize *)
-                                        M.pointer_coercion
-                                          (M.alloc (|
-                                            Value.Array
-                                              [
-                                                M.read (|
-                                                  Value.String
-                                                    "Cannot split off at a nonexistent index"
-                                                |)
-                                              ]
-                                          |))
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              M.read (|
+                                                Value.String
+                                                  "Cannot split off at a nonexistent index"
+                                              |)
+                                            ]
+                                        |)
                                       ]
                                     |)
                                   ]
@@ -4095,7 +4095,7 @@ Module collections.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| at_ |)) (Value.Integer 0)
+                                  BinOp.eq (| M.read (| at_ |), Value.Integer IntegerKind.Usize 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4160,7 +4160,7 @@ Module collections.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| at_ |)) (M.read (| len |))
+                                          BinOp.eq (| M.read (| at_ |), M.read (| len |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -4219,21 +4219,22 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.Pure.le
-                                      (BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (M.read (| at_ |))
-                                        (Value.Integer 1))
-                                      (BinOp.Wrap.sub
-                                        Integer.Usize
-                                        (BinOp.Wrap.sub
-                                          Integer.Usize
-                                          (M.read (| len |))
-                                          (Value.Integer 1))
-                                        (BinOp.Wrap.sub
-                                          Integer.Usize
-                                          (M.read (| at_ |))
-                                          (Value.Integer 1)))
+                                    BinOp.le (|
+                                      BinOp.Wrap.sub (|
+                                        M.read (| at_ |),
+                                        Value.Integer IntegerKind.Usize 1
+                                      |),
+                                      BinOp.Wrap.sub (|
+                                        BinOp.Wrap.sub (|
+                                          M.read (| len |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |),
+                                        BinOp.Wrap.sub (|
+                                          M.read (| at_ |),
+                                          Value.Integer IntegerKind.Usize 1
+                                        |)
+                                      |)
+                                    |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -4273,12 +4274,12 @@ Module collections.
                                           Value.StructRecord
                                             "core::ops::range::Range"
                                             [
-                                              ("start", Value.Integer 0);
+                                              ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
-                                                BinOp.Wrap.sub
-                                                  Integer.Usize
-                                                  (M.read (| at_ |))
-                                                  (Value.Integer 1))
+                                                BinOp.Wrap.sub (|
+                                                  M.read (| at_ |),
+                                                  Value.Integer IntegerKind.Usize 1
+                                                |))
                                             ]
                                         ]
                                       |)
@@ -4391,18 +4392,18 @@ Module collections.
                                           Value.StructRecord
                                             "core::ops::range::Range"
                                             [
-                                              ("start", Value.Integer 0);
+                                              ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
-                                                BinOp.Wrap.sub
-                                                  Integer.Usize
-                                                  (BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| len |))
-                                                    (Value.Integer 1))
-                                                  (BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| at_ |))
-                                                    (Value.Integer 1)))
+                                                BinOp.Wrap.sub (|
+                                                  BinOp.Wrap.sub (|
+                                                    M.read (| len |),
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  |),
+                                                  BinOp.Wrap.sub (|
+                                                    M.read (| at_ |),
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  |)
+                                                |))
                                             ]
                                         ]
                                       |)
@@ -4498,7 +4499,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_split_off :
@@ -4556,7 +4557,7 @@ Module collections.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.Pure.not (BinOp.Pure.lt (M.read (| at_ |)) (M.read (| len |)))
+                              UnOp.not (| BinOp.lt (| M.read (| at_ |), M.read (| len |) |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4572,17 +4573,15 @@ Module collections.
                                     []
                                   |),
                                   [
-                                    (* Unsize *)
-                                    M.pointer_coercion
-                                      (M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "Cannot remove at an index outside of the list bounds"
-                                            |)
-                                          ]
-                                      |))
+                                    M.alloc (|
+                                      Value.Array
+                                        [
+                                          M.read (|
+                                            Value.String
+                                              "Cannot remove at an index outside of the list bounds"
+                                          |)
+                                        ]
+                                    |)
                                   ]
                                 |)
                               ]
@@ -4594,10 +4593,10 @@ Module collections.
                 |) in
               let~ offset_from_end :=
                 M.alloc (|
-                  BinOp.Wrap.sub
-                    Integer.Usize
-                    (BinOp.Wrap.sub Integer.Usize (M.read (| len |)) (M.read (| at_ |)))
-                    (Value.Integer 1)
+                  BinOp.Wrap.sub (|
+                    BinOp.Wrap.sub (| M.read (| len |), M.read (| at_ |) |),
+                    Value.Integer IntegerKind.Usize 1
+                  |)
                 |) in
               M.match_operator (|
                 M.alloc (| Value.Tuple [] |),
@@ -4607,7 +4606,7 @@ Module collections.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le (M.read (| at_ |)) (M.read (| offset_from_end |))
+                            BinOp.le (| M.read (| at_ |), M.read (| offset_from_end |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ cursor :=
@@ -4642,7 +4641,10 @@ Module collections.
                                 [
                                   Value.StructRecord
                                     "core::ops::range::Range"
-                                    [ ("start", Value.Integer 0); ("end_", M.read (| at_ |)) ]
+                                    [
+                                      ("start", Value.Integer IntegerKind.Usize 0);
+                                      ("end_", M.read (| at_ |))
+                                    ]
                                 ]
                               |)
                             |),
@@ -4767,7 +4769,7 @@ Module collections.
                                   Value.StructRecord
                                     "core::ops::range::Range"
                                     [
-                                      ("start", Value.Integer 0);
+                                      ("start", Value.Integer IntegerKind.Usize 0);
                                       ("end_", M.read (| offset_from_end |))
                                     ]
                                 ]
@@ -4862,7 +4864,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_remove :
@@ -4904,32 +4906,33 @@ Module collections.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let elem := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::ops::function::FnMut",
-                                          F,
-                                          [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
-                                          "call_mut",
-                                          []
-                                        |),
-                                        [ f; Value.Tuple [ M.read (| elem |) ] ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let elem := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::ops::function::FnMut",
+                                            F,
+                                            [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                            "call_mut",
+                                            []
+                                          |),
+                                          [ f; Value.Tuple [ M.read (| elem |) ] ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_retain :
@@ -5011,8 +5014,8 @@ Module collections.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        UnOp.Pure.not
-                                          (M.call_closure (|
+                                        UnOp.not (|
+                                          M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
                                               F,
@@ -5021,7 +5024,8 @@ Module collections.
                                               []
                                             |),
                                             [ f; Value.Tuple [ M.read (| node |) ] ]
-                                          |))
+                                          |)
+                                        |)
                                       |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
@@ -5087,7 +5091,7 @@ Module collections.
                   |)))
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_retain_mut :
@@ -5142,12 +5146,12 @@ Module collections.
                     ("list", M.read (| self |));
                     ("it", M.read (| it |));
                     ("pred", M.read (| filter |));
-                    ("idx", Value.Integer 0);
+                    ("idx", Value.Integer IntegerKind.Usize 0);
                     ("old_len", M.read (| old_len |))
                   ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_extract_if :
@@ -5183,7 +5187,7 @@ Module collections.
               |),
               []
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5217,11 +5221,11 @@ Module collections.
               [
                 ("head", Value.StructTuple "core::option::Option::None" []);
                 ("tail", Value.StructTuple "core::option::Option::None" []);
-                ("len", Value.Integer 0);
+                ("len", Value.Integer IntegerKind.Usize 0);
                 ("alloc", Value.StructTuple "alloc::alloc::Global" []);
                 ("marker", Value.StructTuple "core::marker::PhantomData" [])
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_new :
@@ -5429,10 +5433,9 @@ Module collections.
                                   |) in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add
-                                    Integer.Usize
-                                    (M.read (| β |))
-                                    (M.call_closure (|
+                                  BinOp.Wrap.add (|
+                                    M.read (| β |),
+                                    M.call_closure (|
                                       M.get_function (|
                                         "core::mem::replace",
                                         [ Ty.path "usize" ]
@@ -5443,9 +5446,10 @@ Module collections.
                                           "alloc::collections::linked_list::LinkedList",
                                           "len"
                                         |);
-                                        Value.Integer 0
+                                        Value.Integer IntegerKind.Usize 0
                                       ]
-                                    |))
+                                    |)
+                                  |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -5454,7 +5458,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_append :
@@ -5589,7 +5593,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5638,15 +5642,16 @@ Module collections.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::linked_list::Iter",
                                   "len"
                                 |)
-                              |))
-                              (Value.Integer 0)
+                              |),
+                              Value.Integer IntegerKind.Usize 0
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -5703,73 +5708,74 @@ Module collections.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let node := M.copy (| γ |) in
-                                            M.read (|
-                                              let~ node :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let node := M.copy (| γ |) in
+                                              M.read (|
+                                                let~ node :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::linked_list::Node")
+                                                              []
+                                                              [ T ]
+                                                          ],
+                                                        "as_ptr",
                                                         []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::linked_list::Node")
-                                                            []
-                                                            [ T ]
-                                                        ],
-                                                      "as_ptr",
-                                                      []
-                                                    |),
-                                                    [ M.read (| node |) ]
-                                                  |)
-                                                |) in
-                                              let~ _ :=
-                                                let β :=
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::Iter",
-                                                    "len"
-                                                  |) in
-                                                M.write (|
-                                                  β,
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (Value.Integer 1)
-                                                |) in
-                                              let~ _ :=
-                                                M.write (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::Iter",
-                                                    "head"
-                                                  |),
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| node |),
-                                                      "alloc::collections::linked_list::Node",
-                                                      "next"
+                                                      |),
+                                                      [ M.read (| node |) ]
                                                     |)
+                                                  |) in
+                                                let~ _ :=
+                                                  let β :=
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::Iter",
+                                                      "len"
+                                                    |) in
+                                                  M.write (|
+                                                    β,
+                                                    BinOp.Wrap.sub (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
+                                                  |) in
+                                                let~ _ :=
+                                                  M.write (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::Iter",
+                                                      "head"
+                                                    |),
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| node |),
+                                                        "alloc::collections::linked_list::Node",
+                                                        "next"
+                                                      |)
+                                                    |)
+                                                  |) in
+                                                M.alloc (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| node |),
+                                                    "alloc::collections::linked_list::Node",
+                                                    "element"
                                                   |)
-                                                |) in
-                                              M.alloc (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| node |),
-                                                  "alloc::collections::linked_list::Node",
-                                                  "element"
                                                 |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -5777,7 +5783,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5812,7 +5818,7 @@ Module collections.
                     |)
                   ]
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5836,7 +5842,7 @@ Module collections.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -5888,15 +5894,16 @@ Module collections.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::linked_list::Iter",
                                   "len"
                                 |)
-                              |))
-                              (Value.Integer 0)
+                              |),
+                              Value.Integer IntegerKind.Usize 0
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -5953,73 +5960,74 @@ Module collections.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let node := M.copy (| γ |) in
-                                            M.read (|
-                                              let~ node :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let node := M.copy (| γ |) in
+                                              M.read (|
+                                                let~ node :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::linked_list::Node")
+                                                              []
+                                                              [ T ]
+                                                          ],
+                                                        "as_ptr",
                                                         []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::linked_list::Node")
-                                                            []
-                                                            [ T ]
-                                                        ],
-                                                      "as_ptr",
-                                                      []
-                                                    |),
-                                                    [ M.read (| node |) ]
-                                                  |)
-                                                |) in
-                                              let~ _ :=
-                                                let β :=
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::Iter",
-                                                    "len"
-                                                  |) in
-                                                M.write (|
-                                                  β,
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (Value.Integer 1)
-                                                |) in
-                                              let~ _ :=
-                                                M.write (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::Iter",
-                                                    "tail"
-                                                  |),
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| node |),
-                                                      "alloc::collections::linked_list::Node",
-                                                      "prev"
+                                                      |),
+                                                      [ M.read (| node |) ]
                                                     |)
+                                                  |) in
+                                                let~ _ :=
+                                                  let β :=
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::Iter",
+                                                      "len"
+                                                    |) in
+                                                  M.write (|
+                                                    β,
+                                                    BinOp.Wrap.sub (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
+                                                  |) in
+                                                let~ _ :=
+                                                  M.write (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::Iter",
+                                                      "tail"
+                                                    |),
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| node |),
+                                                        "alloc::collections::linked_list::Node",
+                                                        "prev"
+                                                      |)
+                                                    |)
+                                                  |) in
+                                                M.alloc (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| node |),
+                                                    "alloc::collections::linked_list::Node",
+                                                    "element"
                                                   |)
-                                                |) in
-                                              M.alloc (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| node |),
-                                                  "alloc::collections::linked_list::Node",
-                                                  "element"
                                                 |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -6027,7 +6035,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6084,7 +6092,7 @@ Module collections.
               [
                 ("head", Value.StructTuple "core::option::Option::None" []);
                 ("tail", Value.StructTuple "core::option::Option::None" []);
-                ("len", Value.Integer 0);
+                ("len", Value.Integer IntegerKind.Usize 0);
                 ("marker",
                   M.call_closure (|
                     M.get_trait_method (|
@@ -6105,7 +6113,7 @@ Module collections.
                     []
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6154,15 +6162,16 @@ Module collections.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::linked_list::IterMut",
                                   "len"
                                 |)
-                              |))
-                              (Value.Integer 0)
+                              |),
+                              Value.Integer IntegerKind.Usize 0
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -6219,73 +6228,74 @@ Module collections.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let node := M.copy (| γ |) in
-                                            M.read (|
-                                              let~ node :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let node := M.copy (| γ |) in
+                                              M.read (|
+                                                let~ node :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::linked_list::Node")
+                                                              []
+                                                              [ T ]
+                                                          ],
+                                                        "as_ptr",
                                                         []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::linked_list::Node")
-                                                            []
-                                                            [ T ]
-                                                        ],
-                                                      "as_ptr",
-                                                      []
-                                                    |),
-                                                    [ M.read (| node |) ]
-                                                  |)
-                                                |) in
-                                              let~ _ :=
-                                                let β :=
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::IterMut",
-                                                    "len"
-                                                  |) in
-                                                M.write (|
-                                                  β,
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (Value.Integer 1)
-                                                |) in
-                                              let~ _ :=
-                                                M.write (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::IterMut",
-                                                    "head"
-                                                  |),
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| node |),
-                                                      "alloc::collections::linked_list::Node",
-                                                      "next"
+                                                      |),
+                                                      [ M.read (| node |) ]
                                                     |)
+                                                  |) in
+                                                let~ _ :=
+                                                  let β :=
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::IterMut",
+                                                      "len"
+                                                    |) in
+                                                  M.write (|
+                                                    β,
+                                                    BinOp.Wrap.sub (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
+                                                  |) in
+                                                let~ _ :=
+                                                  M.write (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::IterMut",
+                                                      "head"
+                                                    |),
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| node |),
+                                                        "alloc::collections::linked_list::Node",
+                                                        "next"
+                                                      |)
+                                                    |)
+                                                  |) in
+                                                M.alloc (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| node |),
+                                                    "alloc::collections::linked_list::Node",
+                                                    "element"
                                                   |)
-                                                |) in
-                                              M.alloc (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| node |),
-                                                  "alloc::collections::linked_list::Node",
-                                                  "element"
                                                 |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -6293,7 +6303,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6328,7 +6338,7 @@ Module collections.
                     |)
                   ]
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -6352,7 +6362,7 @@ Module collections.
               |),
               [ self ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6404,15 +6414,16 @@ Module collections.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::linked_list::IterMut",
                                   "len"
                                 |)
-                              |))
-                              (Value.Integer 0)
+                              |),
+                              Value.Integer IntegerKind.Usize 0
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -6469,73 +6480,74 @@ Module collections.
                                 ltac:(M.monadic
                                   match γ with
                                   | [ α0 ] =>
-                                    M.match_operator (|
-                                      M.alloc (| α0 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let node := M.copy (| γ |) in
-                                            M.read (|
-                                              let~ node :=
-                                                M.alloc (|
-                                                  M.call_closure (|
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::ptr::non_null::NonNull")
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let node := M.copy (| γ |) in
+                                              M.read (|
+                                                let~ node :=
+                                                  M.alloc (|
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "core::ptr::non_null::NonNull")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path
+                                                                "alloc::collections::linked_list::Node")
+                                                              []
+                                                              [ T ]
+                                                          ],
+                                                        "as_ptr",
                                                         []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::linked_list::Node")
-                                                            []
-                                                            [ T ]
-                                                        ],
-                                                      "as_ptr",
-                                                      []
-                                                    |),
-                                                    [ M.read (| node |) ]
-                                                  |)
-                                                |) in
-                                              let~ _ :=
-                                                let β :=
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::IterMut",
-                                                    "len"
-                                                  |) in
-                                                M.write (|
-                                                  β,
-                                                  BinOp.Wrap.sub
-                                                    Integer.Usize
-                                                    (M.read (| β |))
-                                                    (Value.Integer 1)
-                                                |) in
-                                              let~ _ :=
-                                                M.write (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.read (| self |),
-                                                    "alloc::collections::linked_list::IterMut",
-                                                    "tail"
-                                                  |),
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| node |),
-                                                      "alloc::collections::linked_list::Node",
-                                                      "prev"
+                                                      |),
+                                                      [ M.read (| node |) ]
                                                     |)
+                                                  |) in
+                                                let~ _ :=
+                                                  let β :=
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::IterMut",
+                                                      "len"
+                                                    |) in
+                                                  M.write (|
+                                                    β,
+                                                    BinOp.Wrap.sub (|
+                                                      M.read (| β |),
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    |)
+                                                  |) in
+                                                let~ _ :=
+                                                  M.write (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.read (| self |),
+                                                      "alloc::collections::linked_list::IterMut",
+                                                      "tail"
+                                                    |),
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| node |),
+                                                        "alloc::collections::linked_list::Node",
+                                                        "prev"
+                                                      |)
+                                                    |)
+                                                  |) in
+                                                M.alloc (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.read (| node |),
+                                                    "alloc::collections::linked_list::Node",
+                                                    "element"
                                                   |)
-                                                |) in
-                                              M.alloc (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| node |),
-                                                  "alloc::collections::linked_list::Node",
-                                                  "element"
                                                 |)
-                                              |)
-                                            |)))
-                                      ]
-                                    |)
-                                  | _ => M.impossible (||)
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
                                   end))
                           ]
                         |)
@@ -6543,7 +6555,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6600,7 +6612,7 @@ Module collections.
               [
                 ("head", Value.StructTuple "core::option::Option::None" []);
                 ("tail", Value.StructTuple "core::option::Option::None" []);
-                ("len", Value.Integer 0);
+                ("len", Value.Integer IntegerKind.Usize 0);
                 ("marker",
                   M.call_closure (|
                     M.get_trait_method (|
@@ -6621,7 +6633,7 @@ Module collections.
                     []
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6714,7 +6726,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6773,35 +6785,28 @@ Module collections.
                             [ M.read (| f |); M.read (| Value.String "Cursor" |) ]
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::linked_list::Cursor",
-                            "list"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::Cursor",
+                          "list"
+                        |)
                       ]
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::linked_list::Cursor")
-                              []
-                              [ T; A ],
-                            "index",
-                            []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
-                      |))
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "alloc::collections::linked_list::Cursor") [] [ T; A ],
+                          "index",
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |)
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -6886,35 +6891,31 @@ Module collections.
                             [ M.read (| f |); M.read (| Value.String "CursorMut" |) ]
                           |)
                         |);
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "alloc::collections::linked_list::CursorMut",
-                            "list"
-                          |))
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::linked_list::CursorMut",
+                          "list"
+                        |)
                       ]
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::linked_list::CursorMut")
-                              []
-                              [ T; A ],
-                            "index",
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::collections::linked_list::CursorMut")
                             []
-                          |),
-                          [ M.read (| self |) ]
-                        |)
-                      |))
+                            [ T; A ],
+                          "index",
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |)
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -7048,7 +7049,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_index :
@@ -7136,7 +7137,7 @@ Module collections.
                             "alloc::collections::linked_list::Cursor",
                             "index"
                           |),
-                          Value.Integer 0
+                          Value.Integer IntegerKind.Usize 0
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ =>
@@ -7187,13 +7188,13 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_move_next :
@@ -7309,10 +7310,10 @@ Module collections.
                                       |)
                                     ]
                                   |);
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.Usize 1
                                 ]
                               |);
-                              Value.Integer 0
+                              Value.Integer IntegerKind.Usize 0
                             ]
                           |)
                         |) in
@@ -7380,7 +7381,7 @@ Module collections.
                                       "index"
                                     |)
                                   |);
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.Usize 1
                                 ]
                               |);
                               M.closure
@@ -7388,34 +7389,35 @@ Module collections.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::linked_list::LinkedList")
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::linked_list::LinkedList")
+                                                      []
+                                                      [ T; A ],
+                                                    "len",
                                                     []
-                                                    [ T; A ],
-                                                  "len",
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "alloc::collections::linked_list::Cursor",
-                                                      "list"
+                                                  |),
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "alloc::collections::linked_list::Cursor",
+                                                        "list"
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -7424,7 +7426,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_move_prev :
@@ -7482,39 +7484,40 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let current := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let current := M.copy (| γ |) in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              []
+                                              [ T ]
+                                          ],
+                                        "as_ptr",
                                         []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::Node")
-                                            []
-                                            [ T ]
-                                        ],
-                                      "as_ptr",
-                                      []
+                                      |),
+                                      [ M.read (| current |) ]
                                     |),
-                                    [ M.read (| current |) ]
-                                  |),
-                                  "alloc::collections::linked_list::Node",
-                                  "element"
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    "alloc::collections::linked_list::Node",
+                                    "element"
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_current :
@@ -7634,41 +7637,42 @@ Module collections.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let next := M.copy (| γ |) in
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let next := M.copy (| γ |) in
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
+                                                  [ T ]
+                                              ],
+                                            "as_ptr",
                                             []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::linked_list::Node")
-                                                []
-                                                [ T ]
-                                            ],
-                                          "as_ptr",
-                                          []
+                                          |),
+                                          [ M.read (| next |) ]
                                         |),
-                                        [ M.read (| next |) ]
-                                      |),
-                                      "alloc::collections::linked_list::Node",
-                                      "element"
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                        "alloc::collections::linked_list::Node",
+                                        "element"
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_peek_next :
@@ -7788,41 +7792,42 @@ Module collections.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let prev := M.copy (| γ |) in
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let prev := M.copy (| γ |) in
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
+                                                  [ T ]
+                                              ],
+                                            "as_ptr",
                                             []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::linked_list::Node")
-                                                []
-                                                [ T ]
-                                            ],
-                                          "as_ptr",
-                                          []
+                                          |),
+                                          [ M.read (| prev |) ]
                                         |),
-                                        [ M.read (| prev |) ]
-                                      |),
-                                      "alloc::collections::linked_list::Node",
-                                      "element"
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                        "alloc::collections::linked_list::Node",
+                                        "element"
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_peek_prev :
@@ -7856,7 +7861,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_front :
@@ -7890,12 +7895,37 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_back :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "back" (back T A).
+      
+      (*
+          pub fn as_list(&self) -> &'a LinkedList<T, A> {
+              self.list
+          }
+      *)
+      Definition as_list (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T A in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::collections::linked_list::Cursor",
+                "list"
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_as_list :
+        forall (T A : Ty.t),
+        M.IsAssociatedFunction (Self T A) "as_list" (as_list T A).
     End Impl_alloc_collections_linked_list_Cursor_T_A.
     
     Module Impl_alloc_collections_linked_list_CursorMut_T_A.
@@ -8020,7 +8050,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_index :
@@ -8108,7 +8138,7 @@ Module collections.
                             "alloc::collections::linked_list::CursorMut",
                             "index"
                           |),
-                          Value.Integer 0
+                          Value.Integer IntegerKind.Usize 0
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ =>
@@ -8159,13 +8189,13 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_move_next :
@@ -8281,10 +8311,10 @@ Module collections.
                                       |)
                                     ]
                                   |);
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.Usize 1
                                 ]
                               |);
-                              Value.Integer 0
+                              Value.Integer IntegerKind.Usize 0
                             ]
                           |)
                         |) in
@@ -8352,7 +8382,7 @@ Module collections.
                                       "index"
                                     |)
                                   |);
-                                  Value.Integer 1
+                                  Value.Integer IntegerKind.Usize 1
                                 ]
                               |);
                               M.closure
@@ -8360,34 +8390,35 @@ Module collections.
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path
-                                                      "alloc::collections::linked_list::LinkedList")
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.call_closure (|
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path
+                                                        "alloc::collections::linked_list::LinkedList")
+                                                      []
+                                                      [ T; A ],
+                                                    "len",
                                                     []
-                                                    [ T; A ],
-                                                  "len",
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| self |),
-                                                      "alloc::collections::linked_list::CursorMut",
-                                                      "list"
+                                                  |),
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| self |),
+                                                        "alloc::collections::linked_list::CursorMut",
+                                                        "list"
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                                  ]
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -8396,7 +8427,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_move_prev :
@@ -8454,39 +8485,40 @@ Module collections.
                     ltac:(M.monadic
                       match γ with
                       | [ α0 ] =>
-                        M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let current := M.copy (| γ |) in
-                                M.SubPointer.get_struct_record_field (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::ptr::non_null::NonNull")
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let current := M.copy (| γ |) in
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "core::ptr::non_null::NonNull")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::linked_list::Node")
+                                              []
+                                              [ T ]
+                                          ],
+                                        "as_ptr",
                                         []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::Node")
-                                            []
-                                            [ T ]
-                                        ],
-                                      "as_ptr",
-                                      []
+                                      |),
+                                      [ M.read (| current |) ]
                                     |),
-                                    [ M.read (| current |) ]
-                                  |),
-                                  "alloc::collections::linked_list::Node",
-                                  "element"
-                                |)))
-                          ]
-                        |)
-                      | _ => M.impossible (||)
+                                    "alloc::collections::linked_list::Node",
+                                    "element"
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
                       end))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_current :
@@ -8606,41 +8638,42 @@ Module collections.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let next := M.copy (| γ |) in
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let next := M.copy (| γ |) in
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
+                                                  [ T ]
+                                              ],
+                                            "as_ptr",
                                             []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::linked_list::Node")
-                                                []
-                                                [ T ]
-                                            ],
-                                          "as_ptr",
-                                          []
+                                          |),
+                                          [ M.read (| next |) ]
                                         |),
-                                        [ M.read (| next |) ]
-                                      |),
-                                      "alloc::collections::linked_list::Node",
-                                      "element"
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                        "alloc::collections::linked_list::Node",
+                                        "element"
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_peek_next :
@@ -8760,41 +8793,42 @@ Module collections.
                         ltac:(M.monadic
                           match γ with
                           | [ α0 ] =>
-                            M.match_operator (|
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let prev := M.copy (| γ |) in
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "core::ptr::non_null::NonNull")
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                M.alloc (| α0 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let prev := M.copy (| γ |) in
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "core::ptr::non_null::NonNull")
+                                              []
+                                              [
+                                                Ty.apply
+                                                  (Ty.path "alloc::collections::linked_list::Node")
+                                                  []
+                                                  [ T ]
+                                              ],
+                                            "as_ptr",
                                             []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::linked_list::Node")
-                                                []
-                                                [ T ]
-                                            ],
-                                          "as_ptr",
-                                          []
+                                          |),
+                                          [ M.read (| prev |) ]
                                         |),
-                                        [ M.read (| prev |) ]
-                                      |),
-                                      "alloc::collections::linked_list::Node",
-                                      "element"
-                                    |)))
-                              ]
-                            |)
-                          | _ => M.impossible (||)
+                                        "alloc::collections::linked_list::Node",
+                                        "element"
+                                      |)))
+                                ]
+                              |)))
+                          | _ => M.impossible "wrong number of arguments"
                           end))
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_peek_prev :
@@ -8840,12 +8874,37 @@ Module collections.
                     |)
                   |))
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_cursor :
         forall (T A : Ty.t),
         M.IsAssociatedFunction (Self T A) "as_cursor" (as_cursor T A).
+      
+      (*
+          pub fn as_list(&self) -> &LinkedList<T, A> {
+              self.list
+          }
+      *)
+      Definition as_list (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T A in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.read (| self |),
+                "alloc::collections::linked_list::CursorMut",
+                "list"
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_as_list :
+        forall (T A : Ty.t),
+        M.IsAssociatedFunction (Self T A) "as_list" (as_list T A).
       (*
           pub fn insert_after(&mut self, item: T) {
               unsafe {
@@ -9033,7 +9092,7 @@ Module collections.
                       M.read (| node_next |);
                       M.read (| spliced_node |);
                       M.read (| spliced_node |);
-                      Value.Integer 1
+                      Value.Integer IntegerKind.Usize 1
                     ]
                   |)
                 |) in
@@ -9100,7 +9159,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_insert_after :
@@ -9291,7 +9350,7 @@ Module collections.
                       |);
                       M.read (| spliced_node |);
                       M.read (| spliced_node |);
-                      Value.Integer 1
+                      Value.Integer IntegerKind.Usize 1
                     ]
                   |)
                 |) in
@@ -9302,10 +9361,13 @@ Module collections.
                     "alloc::collections::linked_list::CursorMut",
                     "index"
                   |) in
-                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
+                M.write (|
+                  β,
+                  BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_insert_before :
@@ -9318,7 +9380,7 @@ Module collections.
               unsafe {
                   self.current = unlinked_node.as_ref().next;
                   self.list.unlink_node(unlinked_node);
-                  let unlinked_node = Box::from_raw(unlinked_node.as_ptr());
+                  let unlinked_node = Box::from_raw_in(unlinked_node.as_ptr(), &self.list.alloc);
                   Some(unlinked_node.element)
               }
           }
@@ -9481,9 +9543,9 @@ Module collections.
                             []
                             [
                               Ty.apply (Ty.path "alloc::collections::linked_list::Node") [] [ T ];
-                              Ty.path "alloc::alloc::Global"
+                              Ty.apply (Ty.path "&") [] [ A ]
                             ],
-                          "from_raw",
+                          "from_raw_in",
                           []
                         |),
                         [
@@ -9502,6 +9564,17 @@ Module collections.
                               []
                             |),
                             [ M.read (| unlinked_node |) ]
+                          |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::linked_list::CursorMut",
+                                "list"
+                              |)
+                            |),
+                            "alloc::collections::linked_list::LinkedList",
+                            "alloc"
                           |)
                         ]
                       |)
@@ -9521,7 +9594,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_remove_current :
@@ -9763,7 +9836,7 @@ Module collections.
                               Value.StructTuple
                                 "core::option::Option::Some"
                                 [ M.read (| unlinked_node |) ]);
-                            ("len", Value.Integer 1);
+                            ("len", Value.Integer IntegerKind.Usize 1);
                             ("alloc",
                               M.call_closure (|
                                 M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
@@ -9787,7 +9860,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_remove_current_as_list :
@@ -9829,15 +9902,15 @@ Module collections.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.Pure.eq
-                                  (M.read (|
+                                BinOp.eq (|
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (| self |),
                                       "alloc::collections::linked_list::CursorMut",
                                       "index"
                                     |)
-                                  |))
-                                  (M.read (|
+                                  |),
+                                  M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
@@ -9849,24 +9922,25 @@ Module collections.
                                       "alloc::collections::linked_list::LinkedList",
                                       "len"
                                     |)
-                                  |))
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (| Value.Integer 0 |)));
+                          M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.read (|
+                            BinOp.Wrap.add (|
+                              M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   M.read (| self |),
                                   "alloc::collections::linked_list::CursorMut",
                                   "index"
                                 |)
-                              |))
-                              (Value.Integer 1)
+                              |),
+                              Value.Integer IntegerKind.Usize 1
+                            |)
                           |)))
                     ]
                   |)
@@ -9880,15 +9954,15 @@ Module collections.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.eq (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "alloc::collections::linked_list::CursorMut",
                                     "index"
                                   |)
-                                |))
-                                (M.read (|
+                                |),
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
@@ -9900,7 +9974,8 @@ Module collections.
                                     "alloc::collections::linked_list::LinkedList",
                                     "len"
                                   |)
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -9911,7 +9986,7 @@ Module collections.
                               "alloc::collections::linked_list::CursorMut",
                               "index"
                             |),
-                            Value.Integer 0
+                            Value.Integer IntegerKind.Usize 0
                           |) in
                         M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -9944,7 +10019,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_split_after :
@@ -9988,7 +10063,7 @@ Module collections.
                     "alloc::collections::linked_list::CursorMut",
                     "index"
                   |),
-                  Value.Integer 0
+                  Value.Integer IntegerKind.Usize 0
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -10017,7 +10092,7 @@ Module collections.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_split_before :
@@ -10073,10 +10148,13 @@ Module collections.
                     "alloc::collections::linked_list::CursorMut",
                     "index"
                   |) in
-                M.write (| β, BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1) |) in
+                M.write (|
+                  β,
+                  BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_push_front :
@@ -10168,14 +10246,14 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_push_back :
@@ -10340,7 +10418,10 @@ Module collections.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.sub Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                    BinOp.Wrap.sub (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |) in
                                 M.alloc (| Value.Tuple [] |)))
                           ]
@@ -10369,7 +10450,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_pop_front :
@@ -10565,9 +10646,8 @@ Module collections.
                                               "alloc::collections::linked_list::CursorMut",
                                               "index"
                                             |),
-                                            BinOp.Wrap.sub
-                                              Integer.Usize
-                                              (M.read (|
+                                            BinOp.Wrap.sub (|
+                                              M.read (|
                                                 M.SubPointer.get_struct_record_field (|
                                                   M.read (|
                                                     M.SubPointer.get_struct_record_field (|
@@ -10579,8 +10659,9 @@ Module collections.
                                                   "alloc::collections::linked_list::LinkedList",
                                                   "len"
                                                 |)
-                                              |))
-                                              (Value.Integer 1)
+                                              |),
+                                              Value.Integer IntegerKind.Usize 1
+                                            |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)));
                                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -10612,7 +10693,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_pop_back :
@@ -10646,7 +10727,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_front :
@@ -10680,7 +10761,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_front_mut :
@@ -10714,7 +10795,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_back :
@@ -10748,7 +10829,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_back_mut :
@@ -10999,7 +11080,7 @@ Module collections.
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_splice_after :
@@ -11177,17 +11258,14 @@ Module collections.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add
-                                Integer.Usize
-                                (M.read (| β |))
-                                (M.read (| splice_len |))
+                              BinOp.Wrap.add (| M.read (| β |), M.read (| splice_len |) |)
                             |) in
                           M.alloc (| Value.Tuple [] |)))
                     ]
                   |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_splice_before :
@@ -11241,7 +11319,7 @@ Module collections.
                       if (self.pred)(&mut node.as_mut().element) {
                           // `unlink_node` is okay with aliasing `element` references.
                           self.list.unlink_node(node);
-                          return Some(Box::from_raw(node.as_ptr()).element);
+                          return Some(Box::from_raw_in(node.as_ptr(), &self.list.alloc).element);
                       }
                   }
               }
@@ -11318,7 +11396,10 @@ Module collections.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add Integer.Usize (M.read (| β |)) (Value.Integer 1)
+                                    BinOp.Wrap.add (|
+                                      M.read (| β |),
+                                      Value.Integer IntegerKind.Usize 1
+                                    |)
                                   |) in
                                 M.match_operator (|
                                   M.alloc (| Value.Tuple [] |),
@@ -11420,9 +11501,9 @@ Module collections.
                                                                     "alloc::collections::linked_list::Node")
                                                                   []
                                                                   [ T ];
-                                                                Ty.path "alloc::alloc::Global"
+                                                                Ty.apply (Ty.path "&") [] [ A ]
                                                               ],
-                                                            "from_raw",
+                                                            "from_raw_in",
                                                             []
                                                           |),
                                                           [
@@ -11443,6 +11524,17 @@ Module collections.
                                                                 []
                                                               |),
                                                               [ M.read (| node |) ]
+                                                            |);
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.read (| self |),
+                                                                  "alloc::collections::linked_list::ExtractIf",
+                                                                  "list"
+                                                                |)
+                                                              |),
+                                                              "alloc::collections::linked_list::LinkedList",
+                                                              "alloc"
                                                             |)
                                                           ]
                                                         |),
@@ -11477,7 +11569,7 @@ Module collections.
                   M.alloc (| Value.StructTuple "core::option::Option::None" [] |)
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -11498,29 +11590,29 @@ Module collections.
             (let self := M.alloc (| self |) in
             Value.Tuple
               [
-                Value.Integer 0;
+                Value.Integer IntegerKind.Usize 0;
                 Value.StructTuple
                   "core::option::Option::Some"
                   [
-                    BinOp.Wrap.sub
-                      Integer.Usize
-                      (M.read (|
+                    BinOp.Wrap.sub (|
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "alloc::collections::linked_list::ExtractIf",
                           "old_len"
                         |)
-                      |))
-                      (M.read (|
+                      |),
+                      M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
                           "alloc::collections::linked_list::ExtractIf",
                           "idx"
                         |)
-                      |))
+                      |)
+                    |)
                   ]
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11580,18 +11672,16 @@ Module collections.
                         [ M.read (| f |); M.read (| Value.String "ExtractIf" |) ]
                       |)
                     |);
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "alloc::collections::linked_list::ExtractIf",
-                        "list"
-                      |))
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "alloc::collections::linked_list::ExtractIf",
+                      "list"
+                    |)
                   ]
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11635,7 +11725,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -11678,7 +11768,7 @@ Module collections.
                     |)
                   ]
               ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11724,7 +11814,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11804,7 +11894,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11869,7 +11959,7 @@ Module collections.
                 |) in
               list
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11906,7 +11996,7 @@ Module collections.
             Value.StructRecord
               "alloc::collections::linked_list::IntoIter"
               [ ("list", M.read (| self |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -11956,7 +12046,7 @@ Module collections.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12006,7 +12096,7 @@ Module collections.
               |),
               [ M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12055,7 +12145,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12089,7 +12179,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12153,33 +12243,35 @@ Module collections.
                           ltac:(M.monadic
                             match γ with
                             | [ α0 ] =>
-                              M.match_operator (|
-                                M.alloc (| α0 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let elt := M.copy (| γ |) in
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::linked_list::LinkedList")
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let elt := M.copy (| γ |) in
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path
+                                                "alloc::collections::linked_list::LinkedList")
+                                              []
+                                              [ Ty.associated; A ],
+                                            "push_back",
                                             []
-                                            [ Ty.associated; A ],
-                                          "push_back",
-                                          []
-                                        |),
-                                        [ M.read (| self |); M.read (| elt |) ]
-                                      |)))
-                                ]
-                              |)
-                            | _ => M.impossible (||)
+                                          |),
+                                          [ M.read (| self |); M.read (| elt |) ]
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12235,7 +12327,7 @@ Module collections.
                     |)))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12314,7 +12406,7 @@ Module collections.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12360,7 +12452,7 @@ Module collections.
                     |)))
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12393,23 +12485,24 @@ Module collections.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.Pure.eq
-                (M.call_closure (|
+              BinOp.eq (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "len",
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                (M.call_closure (|
+                |),
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "len",
                     []
                   |),
                   [ M.read (| other |) ]
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -12445,7 +12538,7 @@ Module collections.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -12461,23 +12554,24 @@ Module collections.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.or (|
-              BinOp.Pure.ne
-                (M.call_closure (|
+              BinOp.ne (|
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "len",
                     []
                   |),
                   [ M.read (| self |) ]
-                |))
-                (M.call_closure (|
+                |),
+                M.call_closure (|
                   M.get_associated_function (|
                     Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
                     "len",
                     []
                   |),
                   [ M.read (| other |) ]
-                |)),
+                |)
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   M.get_trait_method (|
@@ -12513,7 +12607,7 @@ Module collections.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12585,7 +12679,7 @@ Module collections.
                 M.read (| other |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12638,7 +12732,7 @@ Module collections.
                 M.read (| other |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -12734,20 +12828,20 @@ Module collections.
                 |) in
               list
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
-          fn clone_from(&mut self, other: &Self) {
-              let mut iter_other = other.iter();
-              if self.len() > other.len() {
-                  self.split_off(other.len());
+          fn clone_from(&mut self, source: &Self) {
+              let mut source_iter = source.iter();
+              if self.len() > source.len() {
+                  self.split_off(source.len());
               }
-              for (elem, elem_other) in self.iter_mut().zip(&mut iter_other) {
-                  elem.clone_from(elem_other);
+              for (elem, source_elem) in self.iter_mut().zip(&mut source_iter) {
+                  elem.clone_from(source_elem);
               }
-              if !iter_other.is_empty() {
-                  self.extend(iter_other.cloned());
+              if !source_iter.is_empty() {
+                  self.extend(source_iter.cloned());
               }
           }
       *)
@@ -12759,12 +12853,12 @@ Module collections.
           : M :=
         let Self : Ty.t := Self T A in
         match ε, τ, α with
-        | [], [], [ self; other ] =>
+        | [], [], [ self; source ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            let other := M.alloc (| other |) in
+            let source := M.alloc (| source |) in
             M.read (|
-              let~ iter_other :=
+              let~ source_iter :=
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
@@ -12772,7 +12866,7 @@ Module collections.
                       "iter",
                       []
                     |),
-                    [ M.read (| other |) ]
+                    [ M.read (| source |) ]
                   |)
                 |) in
               let~ _ :=
@@ -12784,8 +12878,8 @@ Module collections.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.call_closure (|
+                              BinOp.gt (|
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::linked_list::LinkedList")
@@ -12795,8 +12889,8 @@ Module collections.
                                     []
                                   |),
                                   [ M.read (| self |) ]
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "alloc::collections::linked_list::LinkedList")
@@ -12805,8 +12899,9 @@ Module collections.
                                     "len",
                                     []
                                   |),
-                                  [ M.read (| other |) ]
-                                |))
+                                  [ M.read (| source |) ]
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -12832,7 +12927,7 @@ Module collections.
                                     "len",
                                     []
                                   |),
-                                  [ M.read (| other |) ]
+                                  [ M.read (| source |) ]
                                 |)
                               ]
                             |)
@@ -12904,7 +12999,7 @@ Module collections.
                                 |),
                                 [ M.read (| self |) ]
                               |);
-                              iter_other
+                              source_iter
                             ]
                           |)
                         ]
@@ -12966,7 +13061,7 @@ Module collections.
                                         let γ1_0 := M.SubPointer.get_tuple_field (| γ0_0, 0 |) in
                                         let γ1_1 := M.SubPointer.get_tuple_field (| γ0_0, 1 |) in
                                         let elem := M.copy (| γ1_0 |) in
-                                        let elem_other := M.copy (| γ1_1 |) in
+                                        let source_elem := M.copy (| γ1_1 |) in
                                         let~ _ :=
                                           M.alloc (|
                                             M.call_closure (|
@@ -12977,7 +13072,7 @@ Module collections.
                                                 "clone_from",
                                                 []
                                               |),
-                                              [ M.read (| elem |); M.read (| elem_other |) ]
+                                              [ M.read (| elem |); M.read (| source_elem |) ]
                                             |)
                                           |) in
                                         M.alloc (| Value.Tuple [] |)))
@@ -12995,8 +13090,8 @@ Module collections.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not
-                              (M.call_closure (|
+                            UnOp.not (|
+                              M.call_closure (|
                                 M.get_trait_method (|
                                   "core::iter::traits::exact_size::ExactSizeIterator",
                                   Ty.apply
@@ -13007,8 +13102,9 @@ Module collections.
                                   "is_empty",
                                   []
                                 |),
-                                [ iter_other ]
-                              |))
+                                [ source_iter ]
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
@@ -13047,7 +13143,7 @@ Module collections.
                                   "cloned",
                                   [ T ]
                                 |),
-                                [ M.read (| iter_other |) ]
+                                [ M.read (| source_iter |) ]
                               |)
                             ]
                           |)
@@ -13057,7 +13153,7 @@ Module collections.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13129,7 +13225,7 @@ Module collections.
                 |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13264,7 +13360,7 @@ Module collections.
                   ]
                 |))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13313,7 +13409,7 @@ Module collections.
               |),
               [ M.read (| arr |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -13341,7 +13437,7 @@ Module collections.
     Definition assert_covariance (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] => ltac:(M.monadic (Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_assert_covariance :
@@ -13359,7 +13455,7 @@ Module collections.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (| x |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_a : M.IsFunction "alloc::collections::linked_list::assert_covariance::a" a.
@@ -13375,7 +13471,7 @@ Module collections.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (| x |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_b : M.IsFunction "alloc::collections::linked_list::assert_covariance::b" b.
@@ -13391,7 +13487,7 @@ Module collections.
           ltac:(M.monadic
             (let x := M.alloc (| x |) in
             M.read (| x |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_c : M.IsFunction "alloc::collections::linked_list::assert_covariance::c" c.

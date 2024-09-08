@@ -17,7 +17,7 @@ Module iter.
             Value.StructRecord
               "core::iter::sources::repeat::Repeat"
               [ ("element", M.read (| elt |)) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_repeat : M.IsFunction "core::iter::sources::repeat::repeat" repeat.
@@ -56,7 +56,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -90,18 +90,16 @@ Module iter.
                   M.read (| f |);
                   M.read (| Value.String "Repeat" |);
                   M.read (| Value.String "element" |);
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "core::iter::sources::repeat::Repeat",
-                        "element"
-                      |)
-                    |))
+                  M.alloc (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::iter::sources::repeat::Repeat",
+                      "element"
+                    |)
+                  |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -145,7 +143,7 @@ Module iter.
                     ]
                   |)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -164,11 +162,11 @@ Module iter.
                   M.read (| M.get_constant (| "core::num::MAX" |) |);
                   Value.StructTuple "core::option::Option::None" []
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
-            fn advance_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 // Advancing an infinite iterator of a single element is a no-op.
                 let _ = n;
                 Ok(())
@@ -198,7 +196,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -239,7 +237,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -256,7 +254,7 @@ Module iter.
               M.never_to_any (|
                 M.read (| M.loop (| ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) |) |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -273,7 +271,7 @@ Module iter.
               M.never_to_any (|
                 M.read (| M.loop (| ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) |) |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -323,11 +321,11 @@ Module iter.
                     ]
                   |)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
-            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZeroUsize> {
+            fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 // Advancing an infinite iterator of a single element is a no-op.
                 let _ = n;
                 Ok(())
@@ -357,7 +355,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -398,7 +396,7 @@ Module iter.
                   ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :

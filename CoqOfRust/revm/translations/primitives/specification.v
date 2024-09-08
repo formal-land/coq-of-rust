@@ -123,7 +123,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -348,7 +348,7 @@ Module specification.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -367,7 +367,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::SpecId::LATEST" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -400,7 +400,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -410,7 +410,7 @@ Module specification.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -420,9 +420,9 @@ Module specification.
                   [ M.read (| other |) ]
                 |)
               |) in
-            M.alloc (| BinOp.Pure.eq (M.read (| __self_tag |)) (M.read (| __arg1_tag |)) |)
+            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -432,17 +432,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_SpecId.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_SpecId.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_SpecId.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_SpecId.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpecId".
@@ -458,7 +447,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -481,7 +470,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -491,7 +480,7 @@ Module specification.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -510,11 +499,11 @@ Module specification.
                   "partial_cmp",
                   []
                 |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -536,7 +525,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -546,7 +535,7 @@ Module specification.
                   [ M.read (| self |) ]
                 |)
               |) in
-            let~ __arg1_tag :=
+            let~ __arg1_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -559,11 +548,11 @@ Module specification.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::cmp::Ord", Ty.path "u8", [], "cmp", [] |),
-                [ __self_tag; __arg1_tag ]
+                [ __self_discr; __arg1_discr ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -585,7 +574,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           M.read (|
-            let~ __self_tag :=
+            let~ __self_discr :=
               M.alloc (|
                 M.call_closure (|
                   M.get_function (|
@@ -598,11 +587,11 @@ Module specification.
             M.alloc (|
               M.call_closure (|
                 M.get_trait_method (| "core::hash::Hash", Ty.path "u8", [], "hash", [ __H ] |),
-                [ __self_tag; M.read (| state |) ]
+                [ __self_discr; M.read (| state |) ]
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -628,7 +617,11 @@ Module specification.
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 0 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 0
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -636,7 +629,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 1 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 1
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -648,7 +645,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 2 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 2
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -656,7 +657,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 3 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 3
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -664,7 +669,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 4 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 4
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -672,7 +681,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 5 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 5
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -684,7 +697,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 6 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 6
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -692,7 +709,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 7 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 7
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -704,7 +725,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 8 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 8
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -713,7 +738,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 9 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 9
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -721,7 +750,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 10 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 10
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -733,7 +766,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 11 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 11
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -741,7 +778,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 12 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 12
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -749,7 +790,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 13 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 13
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -761,7 +806,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 14 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 14
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -773,7 +822,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 15 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 15
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -781,7 +834,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 16 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 16
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -789,7 +846,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 17 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 17
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -797,7 +858,11 @@ Module specification.
                     |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 18 |) in
+                    (let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 18
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -806,7 +871,10 @@ Module specification.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.Integer 255 |) in
+                      M.is_constant_or_break_match (|
+                        M.read (| γ |),
+                        Value.Integer IntegerKind.U8 255
+                      |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -817,7 +885,7 @@ Module specification.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_n : M.IsAssociatedFunction Self "n" n.
@@ -839,7 +907,7 @@ Module specification.
             |),
             [ M.read (| spec_id |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_try_from_u8 : M.IsAssociatedFunction Self "try_from_u8" try_from_u8.
@@ -863,7 +931,7 @@ Module specification.
             |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_enabled_in :
@@ -880,8 +948,8 @@ Module specification.
         ltac:(M.monadic
           (let our := M.alloc (| our |) in
           let other := M.alloc (| other |) in
-          BinOp.Pure.ge (M.rust_cast (M.read (| our |))) (M.rust_cast (M.read (| other |)))))
-      | _, _, _ => M.impossible
+          BinOp.ge (| M.rust_cast (M.read (| our |)), M.rust_cast (M.read (| other |)) |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_enabled : M.IsAssociatedFunction Self "enabled" enabled.
@@ -1052,7 +1120,7 @@ Module specification.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1254,7 +1322,7 @@ Module specification.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1283,7 +1351,7 @@ Module specification.
               M.read (| spec_id |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom ProvidedMethod_enabled :
@@ -1308,7 +1376,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1344,7 +1412,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "FrontierSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1363,7 +1431,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::FrontierSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1396,7 +1464,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1406,17 +1474,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_FrontierSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_FrontierSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::FrontierSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_FrontierSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_FrontierSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::FrontierSpec".
@@ -1432,7 +1489,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1457,7 +1514,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1479,7 +1536,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1501,7 +1558,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1548,7 +1605,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1584,7 +1641,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "HomesteadSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1603,7 +1660,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::HomesteadSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1636,7 +1693,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1646,17 +1703,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_HomesteadSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_HomesteadSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::HomesteadSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_HomesteadSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_HomesteadSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::HomesteadSpec".
@@ -1672,7 +1718,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1697,7 +1743,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1719,7 +1765,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1741,7 +1787,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1788,7 +1834,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1824,7 +1870,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "TangerineSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1843,7 +1889,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::TangerineSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1876,7 +1922,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1886,17 +1932,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_TangerineSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_TangerineSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::TangerineSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_TangerineSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_TangerineSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::TangerineSpec".
@@ -1912,7 +1947,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1937,7 +1972,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1959,7 +1994,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -1981,7 +2016,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2028,7 +2063,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2064,7 +2099,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "SpuriousDragonSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2083,7 +2118,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::SpuriousDragonSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2116,7 +2151,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2126,17 +2161,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_SpuriousDragonSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_SpuriousDragonSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpuriousDragonSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_SpuriousDragonSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_SpuriousDragonSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::SpuriousDragonSpec".
@@ -2152,7 +2176,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2177,7 +2201,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2199,7 +2223,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2221,7 +2245,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2270,7 +2294,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2306,7 +2330,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "ByzantiumSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2325,7 +2349,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::ByzantiumSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2358,7 +2382,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2368,17 +2392,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_ByzantiumSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_ByzantiumSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::ByzantiumSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_ByzantiumSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_ByzantiumSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ByzantiumSpec".
@@ -2394,7 +2407,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2419,7 +2432,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2441,7 +2454,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2463,7 +2476,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2510,7 +2523,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2546,7 +2559,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "PetersburgSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2565,7 +2578,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::PetersburgSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2598,7 +2611,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2608,17 +2621,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_PetersburgSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_PetersburgSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::PetersburgSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_PetersburgSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_PetersburgSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PetersburgSpec".
@@ -2634,7 +2636,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2659,7 +2661,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2681,7 +2683,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2703,7 +2705,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2752,7 +2754,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2788,7 +2790,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "IstanbulSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2807,7 +2809,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::IstanbulSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2840,7 +2842,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2850,17 +2852,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_IstanbulSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_IstanbulSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::IstanbulSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_IstanbulSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_IstanbulSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::IstanbulSpec".
@@ -2876,7 +2867,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2901,7 +2892,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2923,7 +2914,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2945,7 +2936,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -2992,7 +2983,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3028,7 +3019,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "BerlinSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3047,7 +3038,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::BerlinSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3080,7 +3071,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3090,17 +3081,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_BerlinSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_BerlinSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::BerlinSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_BerlinSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_BerlinSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::BerlinSpec".
@@ -3116,7 +3096,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3141,7 +3121,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3163,7 +3143,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3185,7 +3165,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3232,7 +3212,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3268,7 +3248,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "LondonSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3287,7 +3267,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::LondonSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3320,7 +3300,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3330,17 +3310,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_LondonSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_LondonSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::LondonSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_LondonSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_LondonSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LondonSpec".
@@ -3356,7 +3325,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3381,7 +3350,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3403,7 +3372,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3425,7 +3394,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3472,7 +3441,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3508,7 +3477,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "MergeSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3527,7 +3496,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::MergeSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3560,7 +3529,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3570,17 +3539,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_MergeSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_MergeSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::MergeSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_MergeSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_MergeSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::MergeSpec".
@@ -3596,7 +3554,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3621,7 +3579,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3643,7 +3601,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3665,7 +3623,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3712,7 +3670,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3748,7 +3706,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "ShanghaiSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3767,7 +3725,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::ShanghaiSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3800,7 +3758,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3810,17 +3768,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_ShanghaiSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_ShanghaiSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::ShanghaiSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_ShanghaiSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_ShanghaiSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::ShanghaiSpec".
@@ -3836,7 +3783,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3861,7 +3808,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3883,7 +3830,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3905,7 +3852,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3952,7 +3899,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -3988,7 +3935,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "CancunSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4007,7 +3954,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::CancunSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4040,7 +3987,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4050,17 +3997,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_CancunSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_CancunSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::CancunSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_CancunSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_CancunSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::CancunSpec".
@@ -4076,7 +4012,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4101,7 +4037,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4123,7 +4059,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4145,7 +4081,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4192,7 +4128,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4228,7 +4164,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "PragueSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4247,7 +4183,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::PragueSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4280,7 +4216,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4290,17 +4226,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_PragueSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_PragueSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::PragueSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_PragueSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_PragueSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::PragueSpec".
@@ -4316,7 +4241,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4341,7 +4266,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4363,7 +4288,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4385,7 +4310,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4432,7 +4357,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (| M.read (| self |) |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4468,7 +4393,7 @@ Module specification.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [] |),
             [ M.read (| f |); M.read (| Value.String "LatestSpec" |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4487,7 +4412,7 @@ Module specification.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic (Value.StructTuple "revm_primitives::specification::LatestSpec" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4520,7 +4445,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.Bool true))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4530,17 +4455,6 @@ Module specification.
         (* Trait polymorphic types *) []
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
   End Impl_core_cmp_PartialEq_for_revm_primitives_specification_LatestSpec.
-  
-  Module Impl_core_marker_StructuralEq_for_revm_primitives_specification_LatestSpec.
-    Definition Self : Ty.t := Ty.path "revm_primitives::specification::LatestSpec".
-    
-    Axiom Implements :
-      M.IsTraitInstance
-        "core::marker::StructuralEq"
-        Self
-        (* Trait polymorphic types *) []
-        (* Instance *) [].
-  End Impl_core_marker_StructuralEq_for_revm_primitives_specification_LatestSpec.
   
   Module Impl_core_cmp_Eq_for_revm_primitives_specification_LatestSpec.
     Definition Self : Ty.t := Ty.path "revm_primitives::specification::LatestSpec".
@@ -4556,7 +4470,7 @@ Module specification.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4581,7 +4495,7 @@ Module specification.
           Value.StructTuple
             "core::option::Option::Some"
             [ Value.StructTuple "core::cmp::Ordering::Equal" [] ]))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4603,7 +4517,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           Value.StructTuple "core::cmp::Ordering::Equal" []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :
@@ -4625,7 +4539,7 @@ Module specification.
           (let self := M.alloc (| self |) in
           let state := M.alloc (| state |) in
           Value.Tuple []))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Implements :

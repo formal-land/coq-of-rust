@@ -481,53 +481,57 @@ Module acquires_list_verifier.
                                                                   []
                                                               ]
                                                             |);
-                                                            M.read (|
-                                                              let~ res :=
-                                                                M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_function (|
-                                                                      "alloc::fmt::format",
-                                                                      []
-                                                                    |),
-                                                                    [
+                                                            M.call_closure (|
+                                                              M.get_function (|
+                                                                "core::hint::must_use",
+                                                                [ Ty.path "alloc::string::String" ]
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  let~ res :=
+                                                                    M.alloc (|
                                                                       M.call_closure (|
-                                                                        M.get_associated_function (|
-                                                                          Ty.path
-                                                                            "core::fmt::Arguments",
-                                                                          "new_v1",
+                                                                        M.get_function (|
+                                                                          "alloc::fmt::format",
                                                                           []
                                                                         |),
                                                                         [
-                                                                          (* Unsize *)
-                                                                          M.pointer_coercion
-                                                                            (M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "crates/move-bytecode-verifier/src/acquires_list_verifier.rs:59 (none)"
-                                                                                  |)
-                                                                                ]
-                                                                            |));
-                                                                          (* Unsize *)
-                                                                          M.pointer_coercion
-                                                                            (M.alloc (|
-                                                                              M.call_closure (|
-                                                                                M.get_associated_function (|
-                                                                                  Ty.path
-                                                                                    "core::fmt::rt::Argument",
-                                                                                  "none",
+                                                                          M.call_closure (|
+                                                                            M.get_associated_function (|
+                                                                              Ty.path
+                                                                                "core::fmt::Arguments",
+                                                                              "new_v1",
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.alloc (|
+                                                                                Value.Array
+                                                                                  [
+                                                                                    M.read (|
+                                                                                      Value.String
+                                                                                        "crates/move-bytecode-verifier/src/acquires_list_verifier.rs:59 (none)"
+                                                                                    |)
+                                                                                  ]
+                                                                              |);
+                                                                              M.alloc (|
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
+                                                                                    "none",
+                                                                                    []
+                                                                                  |),
                                                                                   []
-                                                                                |),
-                                                                                []
+                                                                                |)
                                                                               |)
-                                                                            |))
+                                                                            ]
+                                                                          |)
                                                                         ]
                                                                       |)
-                                                                    ]
-                                                                  |)
-                                                                |) in
-                                                              res
+                                                                    |) in
+                                                                  res
+                                                                |)
+                                                              ]
                                                             |)
                                                           ]
                                                         |)
@@ -561,35 +565,31 @@ Module acquires_list_verifier.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        (* Unsize *)
-                                                                        M.pointer_coercion
-                                                                          (M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.read (|
-                                                                                  Value.String ""
-                                                                                |)
-                                                                              ]
-                                                                          |));
-                                                                        (* Unsize *)
-                                                                        M.pointer_coercion
-                                                                          (M.alloc (|
-                                                                            Value.Array
-                                                                              [
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.read (|
+                                                                                Value.String ""
+                                                                              |)
+                                                                            ]
+                                                                        |);
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.call_closure (|
+                                                                                M.get_associated_function (|
+                                                                                  Ty.path
+                                                                                    "core::fmt::rt::Argument",
+                                                                                  "new_debug",
+                                                                                  [
                                                                                     Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "new_debug",
-                                                                                    [
-                                                                                      Ty.path
-                                                                                        "move_binary_format::errors::PartialVMError"
-                                                                                    ]
-                                                                                  |),
-                                                                                  [ err ]
-                                                                                |)
-                                                                              ]
-                                                                          |))
+                                                                                      "move_binary_format::errors::PartialVMError"
+                                                                                  ]
+                                                                                |),
+                                                                                [ err ]
+                                                                              |)
+                                                                            ]
+                                                                        |)
                                                                       ]
                                                                     |)
                                                                   ]
@@ -862,8 +862,8 @@ Module acquires_list_verifier.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          UnOp.Pure.not
-                                                            (M.call_closure (|
+                                                          UnOp.not (|
+                                                            M.call_closure (|
                                                               M.get_associated_function (|
                                                                 Ty.apply
                                                                   (Ty.path
@@ -888,7 +888,8 @@ Module acquires_list_verifier.
                                                                 |);
                                                                 annotation
                                                               ]
-                                                            |))
+                                                            |)
+                                                          |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|
@@ -1002,53 +1003,58 @@ Module acquires_list_verifier.
                                                                     []
                                                                 ]
                                                               |);
-                                                              M.read (|
-                                                                let~ res :=
-                                                                  M.alloc (|
-                                                                    M.call_closure (|
-                                                                      M.get_function (|
-                                                                        "alloc::fmt::format",
-                                                                        []
-                                                                      |),
-                                                                      [
+                                                              M.call_closure (|
+                                                                M.get_function (|
+                                                                  "core::hint::must_use",
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ]
+                                                                |),
+                                                                [
+                                                                  M.read (|
+                                                                    let~ res :=
+                                                                      M.alloc (|
                                                                         M.call_closure (|
-                                                                          M.get_associated_function (|
-                                                                            Ty.path
-                                                                              "core::fmt::Arguments",
-                                                                            "new_v1",
+                                                                          M.get_function (|
+                                                                            "alloc::fmt::format",
                                                                             []
                                                                           |),
                                                                           [
-                                                                            (* Unsize *)
-                                                                            M.pointer_coercion
-                                                                              (M.alloc (|
-                                                                                Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "crates/move-bytecode-verifier/src/acquires_list_verifier.rs:74 (none)"
-                                                                                    |)
-                                                                                  ]
-                                                                              |));
-                                                                            (* Unsize *)
-                                                                            M.pointer_coercion
-                                                                              (M.alloc (|
-                                                                                M.call_closure (|
-                                                                                  M.get_associated_function (|
-                                                                                    Ty.path
-                                                                                      "core::fmt::rt::Argument",
-                                                                                    "none",
+                                                                            M.call_closure (|
+                                                                              M.get_associated_function (|
+                                                                                Ty.path
+                                                                                  "core::fmt::Arguments",
+                                                                                "new_v1",
+                                                                                []
+                                                                              |),
+                                                                              [
+                                                                                M.alloc (|
+                                                                                  Value.Array
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        Value.String
+                                                                                          "crates/move-bytecode-verifier/src/acquires_list_verifier.rs:74 (none)"
+                                                                                      |)
+                                                                                    ]
+                                                                                |);
+                                                                                M.alloc (|
+                                                                                  M.call_closure (|
+                                                                                    M.get_associated_function (|
+                                                                                      Ty.path
+                                                                                        "core::fmt::rt::Argument",
+                                                                                      "none",
+                                                                                      []
+                                                                                    |),
                                                                                     []
-                                                                                  |),
-                                                                                  []
+                                                                                  |)
                                                                                 |)
-                                                                              |))
+                                                                              ]
+                                                                            |)
                                                                           ]
                                                                         |)
-                                                                      ]
-                                                                    |)
-                                                                  |) in
-                                                                res
+                                                                      |) in
+                                                                    res
+                                                                  |)
+                                                                ]
                                                               |)
                                                             ]
                                                           |)
@@ -1082,35 +1088,31 @@ Module acquires_list_verifier.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          (* Unsize *)
-                                                                          M.pointer_coercion
-                                                                            (M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.read (|
-                                                                                    Value.String ""
-                                                                                  |)
-                                                                                ]
-                                                                            |));
-                                                                          (* Unsize *)
-                                                                          M.pointer_coercion
-                                                                            (M.alloc (|
-                                                                              Value.Array
-                                                                                [
-                                                                                  M.call_closure (|
-                                                                                    M.get_associated_function (|
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.read (|
+                                                                                  Value.String ""
+                                                                                |)
+                                                                              ]
+                                                                          |);
+                                                                          M.alloc (|
+                                                                            Value.Array
+                                                                              [
+                                                                                M.call_closure (|
+                                                                                  M.get_associated_function (|
+                                                                                    Ty.path
+                                                                                      "core::fmt::rt::Argument",
+                                                                                    "new_debug",
+                                                                                    [
                                                                                       Ty.path
-                                                                                        "core::fmt::rt::Argument",
-                                                                                      "new_debug",
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "move_binary_format::errors::PartialVMError"
-                                                                                      ]
-                                                                                    |),
-                                                                                    [ err ]
-                                                                                  |)
-                                                                                ]
-                                                                            |))
+                                                                                        "move_binary_format::errors::PartialVMError"
+                                                                                    ]
+                                                                                  |),
+                                                                                  [ err ]
+                                                                                |)
+                                                                              ]
+                                                                          |)
                                                                         ]
                                                                       |)
                                                                     ]
@@ -1164,8 +1166,8 @@ Module acquires_list_verifier.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (M.call_closure (|
+                                                        UnOp.not (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.path
                                                                 "move_binary_format::file_format::AbilitySet",
@@ -1181,7 +1183,8 @@ Module acquires_list_verifier.
                                                                 |)
                                                               |)
                                                             ]
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -1226,7 +1229,7 @@ Module acquires_list_verifier.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify : M.IsAssociatedFunction Self "verify" verify.
@@ -1452,22 +1455,23 @@ Module acquires_list_verifier.
                           ltac:(M.monadic
                             match γ with
                             | [ idx ] =>
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path
-                                      "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
-                                    "struct_acquire",
-                                    []
-                                  |),
-                                  [
-                                    M.read (| self |);
-                                    M.read (| M.read (| idx |) |);
-                                    M.read (| offset |)
-                                  ]
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path
+                                        "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
+                                      "struct_acquire",
+                                      []
+                                    |),
+                                    [
+                                      M.read (| self |);
+                                      M.read (| M.read (| idx |) |);
+                                      M.read (| offset |)
+                                    ]
+                                  |)
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -1514,48 +1518,49 @@ Module acquires_list_verifier.
                           ltac:(M.monadic
                             match γ with
                             | [ idx ] =>
-                              let~ si :=
+                              ltac:(M.monadic
+                                (let~ si :=
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "move_binary_format::file_format::CompiledModule",
+                                        "struct_instantiation_at",
+                                        []
+                                      |),
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| self |),
+                                            "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
+                                            "module"
+                                          |)
+                                        |);
+                                        M.read (| M.read (| idx |) |)
+                                      ]
+                                    |)
+                                  |) in
                                 M.alloc (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.path "move_binary_format::file_format::CompiledModule",
-                                      "struct_instantiation_at",
+                                      Ty.path
+                                        "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
+                                      "struct_acquire",
                                       []
                                     |),
                                     [
+                                      M.read (| self |);
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.read (| self |),
-                                          "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
-                                          "module"
+                                          M.read (| si |),
+                                          "move_binary_format::file_format::StructDefInstantiation",
+                                          "def"
                                         |)
                                       |);
-                                      M.read (| M.read (| idx |) |)
+                                      M.read (| offset |)
                                     ]
                                   |)
-                                |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.path
-                                      "move_bytecode_verifier::acquires_list_verifier::AcquiresVerifier",
-                                    "struct_acquire",
-                                    []
-                                  |),
-                                  [
-                                    M.read (| self |);
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| si |),
-                                        "move_binary_format::file_format::StructDefInstantiation",
-                                        "def"
-                                      |)
-                                    |);
-                                    M.read (| offset |)
-                                  ]
-                                |)
-                              |)
-                            | _ => M.impossible (||)
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)));
                 fun γ =>
@@ -2223,16 +2228,17 @@ Module acquires_list_verifier.
                           ltac:(M.monadic
                             match γ with
                             | [] =>
-                              M.alloc (|
-                                Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
-                              |)
-                            | _ => M.impossible (||)
+                              ltac:(M.monadic
+                                (M.alloc (|
+                                  Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
                             end))
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_verify_instruction :
@@ -2379,8 +2385,8 @@ Module acquires_list_verifier.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        UnOp.Pure.not
-                                                          (M.call_closure (|
+                                                        UnOp.not (|
+                                                          M.call_closure (|
                                                             M.get_associated_function (|
                                                               Ty.apply
                                                                 (Ty.path
@@ -2405,7 +2411,8 @@ Module acquires_list_verifier.
                                                               |);
                                                               M.read (| acquired_resource |)
                                                             ]
-                                                          |))
+                                                          |)
+                                                        |)
                                                       |)) in
                                                   let _ :=
                                                     M.is_constant_or_break_match (|
@@ -2476,7 +2483,7 @@ Module acquires_list_verifier.
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_call_acquire : M.IsAssociatedFunction Self "call_acquire" call_acquire.
@@ -2585,7 +2592,7 @@ Module acquires_list_verifier.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_struct_acquire :
@@ -2843,7 +2850,7 @@ Module acquires_list_verifier.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_function_acquired_resources :
@@ -2886,7 +2893,7 @@ Module acquires_list_verifier.
               M.read (| offset |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_error : M.IsAssociatedFunction Self "error" error.

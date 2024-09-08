@@ -19,7 +19,7 @@ Module array.
       Definition as_ascii (N : Value.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self N in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -37,7 +37,7 @@ Module array.
                                 "is_ascii",
                                 []
                               |),
-                              [ (* Unsize *) M.pointer_coercion (M.read (| self |)) ]
+                              [ M.read (| self |) ]
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -61,7 +61,7 @@ Module array.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ascii :
@@ -84,7 +84,7 @@ Module array.
           : M :=
         let Self : Ty.t := Self N in
         match ε, τ, α with
-        | [ host ], [], [ self ] =>
+        | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
@@ -92,7 +92,7 @@ Module array.
               let~ ascii_ptr := M.alloc (| M.rust_cast (M.read (| byte_ptr |)) |) in
               M.alloc (| M.read (| ascii_ptr |) |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom AssociatedFunction_as_ascii_unchecked :

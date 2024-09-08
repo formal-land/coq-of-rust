@@ -19,13 +19,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 [
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
-                    [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array [ M.read (| Value.String "called `function()`
-" |) ]
-                        |))
+                    [ M.alloc (| Value.Array [ M.read (| Value.String "called `function()`
+" |) ] |)
                     ]
                   |)
                 ]
@@ -34,7 +29,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_function : M.IsFunction "super_and_self::function" function.
@@ -63,12 +58,10 @@ Module cool.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array [ M.read (| Value.String "called `cool::function()`
+                        M.alloc (|
+                          Value.Array [ M.read (| Value.String "called `cool::function()`
 " |) ]
-                          |))
+                        |)
                       ]
                     |)
                   ]
@@ -77,7 +70,7 @@ Module cool.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_function : M.IsFunction "super_and_self::cool::function" function.
@@ -107,12 +100,10 @@ Module my.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array [ M.read (| Value.String "called `my::function()`
+                        M.alloc (|
+                          Value.Array [ M.read (| Value.String "called `my::function()`
 " |) ]
-                          |))
+                        |)
                       ]
                     |)
                   ]
@@ -121,7 +112,7 @@ Module my.
             M.alloc (| Value.Tuple [] |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_function : M.IsFunction "super_and_self::my::function" function.
@@ -150,13 +141,11 @@ Module my.
                           []
                         |),
                         [
-                          (* Unsize *)
-                          M.pointer_coercion
-                            (M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "called `my::cool::function()`
+                          M.alloc (|
+                            Value.Array
+                              [ M.read (| Value.String "called `my::cool::function()`
 " |) ]
-                            |))
+                          |)
                         ]
                       |)
                     ]
@@ -165,7 +154,7 @@ Module my.
               M.alloc (| Value.Tuple [] |) in
             M.alloc (| Value.Tuple [] |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_function : M.IsFunction "super_and_self::my::cool::function" function.
@@ -214,13 +203,11 @@ Module my.
                         []
                       |),
                       [
-                        (* Unsize *)
-                        M.pointer_coercion
-                          (M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "called `my::indirect_call()`, that
+                        M.alloc (|
+                          Value.Array
+                            [ M.read (| Value.String "called `my::indirect_call()`, that
 > " |) ]
-                          |))
+                        |)
                       ]
                     |)
                   ]
@@ -249,7 +236,7 @@ Module my.
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_indirect_call : M.IsFunction "super_and_self::my::indirect_call" indirect_call.
@@ -271,7 +258,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "super_and_self::main" main.

@@ -8,10 +8,9 @@ Module ProvidedAndRequired.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        BinOp.Wrap.add
-          Integer.I32
-          (Value.Integer 42)
-          (M.call_closure (|
+        BinOp.Wrap.add (|
+          Value.Integer IntegerKind.I32 42,
+          M.call_closure (|
             M.get_trait_method (|
               "provided_method::ProvidedAndRequired",
               Self,
@@ -20,8 +19,9 @@ Module ProvidedAndRequired.
               []
             |),
             [ M.read (| self |) ]
-          |))))
-    | _, _, _ => M.impossible
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom ProvidedMethod_provided :
@@ -42,7 +42,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_i32.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.read (| M.read (| self |) |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -67,7 +67,7 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         M.rust_cast (M.read (| M.read (| self |) |))))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   (*
@@ -80,8 +80,8 @@ Module Impl_provided_method_ProvidedAndRequired_for_u32.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        Value.Integer 0))
-    | _, _, _ => M.impossible
+        Value.Integer IntegerKind.I32 0))
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -106,7 +106,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ x := M.alloc (| Value.Integer 5 |) in
+        let~ x := M.alloc (| Value.Integer IntegerKind.I32 5 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (|
@@ -124,7 +124,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [ x ]
                     |)
                   |);
-                  M.alloc (| Value.Integer 47 |)
+                  M.alloc (| Value.Integer IntegerKind.I32 47 |)
                 ]
             |),
             [
@@ -142,10 +142,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |)))
+                                UnOp.not (|
+                                  BinOp.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -178,7 +180,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   |)))
             ]
           |) in
-        let~ y := M.alloc (| Value.Integer 5 |) in
+        let~ y := M.alloc (| Value.Integer IntegerKind.U32 5 |) in
         let~ _ :=
           M.match_operator (|
             M.alloc (|
@@ -196,7 +198,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [ y ]
                     |)
                   |);
-                  M.alloc (| Value.Integer 0 |)
+                  M.alloc (| Value.Integer IntegerKind.I32 0 |)
                 ]
             |),
             [
@@ -214,10 +216,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.Pure.not
-                                  (BinOp.Pure.eq
-                                    (M.read (| M.read (| left_val |) |))
-                                    (M.read (| M.read (| right_val |) |)))
+                                UnOp.not (|
+                                  BinOp.eq (|
+                                    M.read (| M.read (| left_val |) |),
+                                    M.read (| M.read (| right_val |) |)
+                                  |)
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -252,7 +256,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "provided_method::main" main.

@@ -49,7 +49,7 @@ Module iter.
                       ]
                     |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -80,7 +80,7 @@ Module iter.
               Value.StructRecord
                 "core::iter::adapters::inspect::Inspect"
                 [ ("iter", M.read (| iter |)); ("f", M.read (| f |)) ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -148,7 +148,7 @@ Module iter.
                   |) in
                 elt
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_do_inspect :
@@ -197,18 +197,16 @@ Module iter.
                         |)
                       |);
                       M.read (| Value.String "iter" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::adapters::inspect::Inspect",
-                          "iter"
-                        |))
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::adapters::inspect::Inspect",
+                        "iter"
+                      |)
                     ]
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -243,55 +241,56 @@ Module iter.
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let acc := M.copy (| γ |) in
-                            M.match_operator (|
-                              M.alloc (| α1 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let item := M.copy (| γ |) in
-                                    M.read (|
-                                      let~ _ :=
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let acc := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let item := M.copy (| γ |) in
+                                      M.read (|
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnMut",
+                                                impl_FnMut__T_,
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                                "call_mut",
+                                                []
+                                              |),
+                                              [ f; Value.Tuple [ item ] ]
+                                            |)
+                                          |) in
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
-                                              impl_FnMut__T_,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                              impl_FnMut_Acc__T__arrow_Acc,
+                                              [ Ty.tuple [ Acc; T ] ],
                                               "call_mut",
                                               []
                                             |),
-                                            [ f; Value.Tuple [ item ] ]
+                                            [
+                                              fold;
+                                              Value.Tuple [ M.read (| acc |); M.read (| item |) ]
+                                            ]
                                           |)
-                                        |) in
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::function::FnMut",
-                                            impl_FnMut_Acc__T__arrow_Acc,
-                                            [ Ty.tuple [ Acc; T ] ],
-                                            "call_mut",
-                                            []
-                                          |),
-                                          [
-                                            fold;
-                                            Value.Tuple [ M.read (| acc |); M.read (| item |) ]
-                                          ]
                                         |)
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_inspect_fold :
@@ -323,55 +322,56 @@ Module iter.
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let acc := M.copy (| γ |) in
-                            M.match_operator (|
-                              M.alloc (| α1 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let item := M.copy (| γ |) in
-                                    M.read (|
-                                      let~ _ :=
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let acc := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let item := M.copy (| γ |) in
+                                      M.read (|
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::function::FnMut",
+                                                impl_FnMut__T_,
+                                                [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                                "call_mut",
+                                                []
+                                              |),
+                                              [ M.read (| f |); Value.Tuple [ item ] ]
+                                            |)
+                                          |) in
                                         M.alloc (|
                                           M.call_closure (|
                                             M.get_trait_method (|
                                               "core::ops::function::FnMut",
-                                              impl_FnMut__T_,
-                                              [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ],
+                                              impl_FnMut_Acc__T__arrow_R__plus__'a,
+                                              [ Ty.tuple [ Acc; T ] ],
                                               "call_mut",
                                               []
                                             |),
-                                            [ M.read (| f |); Value.Tuple [ item ] ]
+                                            [
+                                              fold;
+                                              Value.Tuple [ M.read (| acc |); M.read (| item |) ]
+                                            ]
                                           |)
-                                        |) in
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          M.get_trait_method (|
-                                            "core::ops::function::FnMut",
-                                            impl_FnMut_Acc__T__arrow_R__plus__'a,
-                                            [ Ty.tuple [ Acc; T ] ],
-                                            "call_mut",
-                                            []
-                                          |),
-                                          [
-                                            fold;
-                                            Value.Tuple [ M.read (| acc |); M.read (| item |) ]
-                                          ]
                                         |)
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Function_inspect_try_fold :
@@ -431,7 +431,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -466,7 +466,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -523,7 +523,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -577,7 +577,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -648,7 +648,7 @@ Module iter.
                   |)
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -705,7 +705,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -759,7 +759,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -807,7 +807,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         (*
@@ -842,7 +842,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -918,7 +918,7 @@ Module iter.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -938,22 +938,22 @@ Module iter.
         Definition Self (I F : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::inspect::Inspect") [] [ I; F ].
         
-        (*     const EXPAND_BY: Option<NonZeroUsize> = I::EXPAND_BY; *)
+        (*     const EXPAND_BY: Option<NonZero<usize>> = I::EXPAND_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_EXPAND_BY (I F : Ty.t) : Value.t :=
           let Self : Ty.t := Self I F in
           M.run
             ltac:(M.monadic
               (M.get_constant (| "core::iter::traits::marker::InPlaceIterable::EXPAND_BY" |))).
         
-        (*     const MERGE_BY: Option<NonZeroUsize> = I::MERGE_BY; *)
+        (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
-          [ Ty.path "core::num::nonzero::NonZeroUsize" ] *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
         Definition value_MERGE_BY (I F : Ty.t) : Value.t :=
           let Self : Ty.t := Self I F in
           M.run

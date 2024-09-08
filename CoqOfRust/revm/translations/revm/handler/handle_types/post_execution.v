@@ -191,149 +191,130 @@ Module handler.
                 "revm::handler::handle_types::post_execution::PostExecutionHandler"
                 [
                   ("reimburse_caller",
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::sync::Arc")
-                            []
-                            [
-                              Ty.function
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.tuple [];
-                                    Ty.apply
-                                      (Ty.path "revm_primitives::result::EVMError")
-                                      []
-                                      [ Ty.associated ]
-                                  ]);
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "new",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
                           []
-                        |),
-                        [
-                          M.get_function (|
-                            "revm::handler::mainnet::post_execution::reimburse_caller",
-                            [ SPEC; EXT; DB ]
-                          |)
-                        ]
-                      |)));
+                          [
+                            Ty.function
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ]
+                              ]
+                              (Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "revm_primitives::result::EVMError")
+                                    []
+                                    [ Ty.associated ]
+                                ]);
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        []
+                      |),
+                      [
+                        M.get_function (|
+                          "revm::handler::mainnet::post_execution::reimburse_caller",
+                          [ SPEC; EXT; DB ]
+                        |)
+                      ]
+                    |));
                   ("reward_beneficiary",
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::sync::Arc")
-                            []
-                            [
-                              Ty.function
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
-                                  Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ]
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.tuple [];
-                                    Ty.apply
-                                      (Ty.path "revm_primitives::result::EVMError")
-                                      []
-                                      [ Ty.associated ]
-                                  ]);
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "new",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
                           []
-                        |),
-                        [
-                          M.get_function (|
-                            "revm::handler::mainnet::post_execution::reward_beneficiary",
-                            [ SPEC; EXT; DB ]
-                          |)
-                        ]
-                      |)));
+                          [
+                            Ty.function
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                Ty.apply (Ty.path "&") [] [ Ty.path "revm_interpreter::gas::Gas" ]
+                              ]
+                              (Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.tuple [];
+                                  Ty.apply
+                                    (Ty.path "revm_primitives::result::EVMError")
+                                    []
+                                    [ Ty.associated ]
+                                ]);
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        []
+                      |),
+                      [
+                        M.get_function (|
+                          "revm::handler::mainnet::post_execution::reward_beneficiary",
+                          [ SPEC; EXT; DB ]
+                        |)
+                      ]
+                    |));
                   ("output",
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::sync::Arc")
-                            []
-                            [
-                              Ty.function
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
-                                  Ty.path "revm::frame::FrameResult"
-                                ]
-                                (Ty.apply
-                                  (Ty.path "core::result::Result")
-                                  []
-                                  [
-                                    Ty.path "revm_primitives::result::ResultAndState";
-                                    Ty.apply
-                                      (Ty.path "revm_primitives::result::EVMError")
-                                      []
-                                      [ Ty.associated ]
-                                  ]);
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "new",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
                           []
-                        |),
-                        [
-                          M.get_function (|
-                            "revm::handler::mainnet::post_execution::output",
-                            [ EXT; DB ]
-                          |)
-                        ]
-                      |)));
+                          [
+                            Ty.function
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                Ty.path "revm::frame::FrameResult"
+                              ]
+                              (Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [
+                                  Ty.path "revm_primitives::result::ResultAndState";
+                                  Ty.apply
+                                    (Ty.path "revm_primitives::result::EVMError")
+                                    []
+                                    [ Ty.associated ]
+                                ]);
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        []
+                      |),
+                      [
+                        M.get_function (|
+                          "revm::handler::mainnet::post_execution::output",
+                          [ EXT; DB ]
+                        |)
+                      ]
+                    |));
                   ("end_",
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::sync::Arc")
-                            []
-                            [
-                              Ty.function
-                                [
-                                  Ty.apply
-                                    (Ty.path "&mut")
-                                    []
-                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [
-                                      Ty.path "revm_primitives::result::ResultAndState";
-                                      Ty.apply
-                                        (Ty.path "revm_primitives::result::EVMError")
-                                        []
-                                        [ Ty.associated ]
-                                    ]
-                                ]
-                                (Ty.apply
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
+                          []
+                          [
+                            Ty.function
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ];
+                                Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
                                   [
@@ -342,50 +323,59 @@ Module handler.
                                       (Ty.path "revm_primitives::result::EVMError")
                                       []
                                       [ Ty.associated ]
-                                  ]);
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "new",
-                          []
-                        |),
-                        [
-                          M.get_function (|
-                            "revm::handler::mainnet::post_execution::end",
-                            [ EXT; DB ]
-                          |)
-                        ]
-                      |)));
-                  ("clear",
-                    (* Unsize *)
-                    M.pointer_coercion
-                      (M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "alloc::sync::Arc")
-                            []
-                            [
-                              Ty.function
+                                  ]
+                              ]
+                              (Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
                                 [
+                                  Ty.path "revm_primitives::result::ResultAndState";
                                   Ty.apply
-                                    (Ty.path "&mut")
+                                    (Ty.path "revm_primitives::result::EVMError")
                                     []
-                                    [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ]
-                                ]
-                                (Ty.tuple []);
-                              Ty.path "alloc::alloc::Global"
-                            ],
-                          "new",
+                                    [ Ty.associated ]
+                                ]);
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        []
+                      |),
+                      [
+                        M.get_function (|
+                          "revm::handler::mainnet::post_execution::end",
+                          [ EXT; DB ]
+                        |)
+                      ]
+                    |));
+                  ("clear",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::sync::Arc")
                           []
-                        |),
-                        [
-                          M.get_function (|
-                            "revm::handler::mainnet::post_execution::clear",
-                            [ EXT; DB ]
-                          |)
-                        ]
-                      |)))
+                          [
+                            Ty.function
+                              [
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "revm::context::Context") [] [ EXT; DB ] ]
+                              ]
+                              (Ty.tuple []);
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        "new",
+                        []
+                      |),
+                      [
+                        M.get_function (|
+                          "revm::handler::mainnet::post_execution::clear",
+                          [ EXT; DB ]
+                        |)
+                      ]
+                    |))
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_new :
@@ -464,7 +454,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| gas |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_reimburse_caller :
@@ -544,7 +534,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| gas |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_reward_beneficiary :
@@ -624,7 +614,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| result |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_output :
@@ -708,7 +698,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |); M.read (| end_output |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_end_ :
@@ -782,7 +772,7 @@ Module handler.
                   Value.Tuple [ M.read (| context |) ]
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_clear :

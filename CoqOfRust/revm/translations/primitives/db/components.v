@@ -33,26 +33,22 @@ Module db.
                 M.read (| f |);
                 M.read (| Value.String "DatabaseComponents" |);
                 M.read (| Value.String "state" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_primitives::db::components::DatabaseComponents",
+                  "state"
+                |);
+                M.read (| Value.String "block_hash" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
                     M.read (| self |),
                     "revm_primitives::db::components::DatabaseComponents",
-                    "state"
-                  |));
-                M.read (| Value.String "block_hash" |);
-                (* Unsize *)
-                M.pointer_coercion
-                  (M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "revm_primitives::db::components::DatabaseComponents",
-                      "block_hash"
-                    |)
-                  |))
+                    "block_hash"
+                  |)
+                |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -118,11 +114,7 @@ Module db.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "State" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "State" |); __self_0 ]
                         |)
                       |)));
                   fun γ =>
@@ -142,17 +134,13 @@ Module db.
                             "debug_tuple_field1_finish",
                             []
                           |),
-                          [
-                            M.read (| f |);
-                            M.read (| Value.String "BlockHash" |);
-                            (* Unsize *) M.pointer_coercion __self_0
-                          ]
+                          [ M.read (| f |); M.read (| Value.String "BlockHash" |); __self_0 ]
                         |)
                       |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -235,7 +223,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -299,7 +287,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -323,7 +311,10 @@ Module db.
                   (Ty.path "core::result::Result")
                   []
                   [
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [];
                     Ty.associated
                   ],
                 "map_err",
@@ -363,7 +354,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -393,7 +384,7 @@ Module db.
                   [
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       [];
                     Ty.associated
                   ],
@@ -433,7 +424,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::BlockHash"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -528,7 +519,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -592,7 +583,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -621,7 +612,10 @@ Module db.
                   (Ty.path "core::result::Result")
                   []
                   [
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [];
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [];
                     Ty.associated
                   ],
                 "map_err",
@@ -661,7 +655,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::State"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -691,7 +685,7 @@ Module db.
                   [
                     Ty.apply
                       (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer 32 ]
+                      [ Value.Integer IntegerKind.Usize 32 ]
                       [];
                     Ty.associated
                   ],
@@ -731,7 +725,7 @@ Module db.
                   "revm_primitives::db::components::DatabaseComponentError::BlockHash"
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -789,7 +783,7 @@ Module db.
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

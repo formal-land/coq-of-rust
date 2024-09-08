@@ -11,7 +11,7 @@ Module modexp.
             [
               M.call_closure (|
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
-                [ Value.Integer 5 ]
+                [ Value.Integer IntegerKind.U64 5 ]
               |);
               Value.StructTuple
                 "revm_primitives::precompile::Precompile::Standard"
@@ -32,7 +32,7 @@ Module modexp.
             [
               M.call_closure (|
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
-                [ Value.Integer 5 ]
+                [ Value.Integer IntegerKind.U64 5 ]
               |);
               Value.StructTuple
                 "revm_primitives::precompile::Precompile::Standard"
@@ -71,7 +71,12 @@ Module modexp.
                       Ty.apply
                         (Ty.path "&")
                         []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            []
                         ]
                     ]
                 ]
@@ -101,61 +106,62 @@ Module modexp.
               ]
             |);
             M.read (| gas_limit |);
-            Value.Integer 0;
+            Value.Integer IntegerKind.U64 0;
             M.closure
               (fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1; α2; α3 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let a := M.copy (| γ |) in
-                            M.match_operator (|
-                              M.alloc (| α1 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let b := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α2 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let c := M.copy (| γ |) in
-                                            M.match_operator (|
-                                              M.alloc (| α3 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let d := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "revm_precompile::modexp::byzantium_gas_calc",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| a |);
-                                                        M.read (| b |);
-                                                        M.read (| c |);
-                                                        M.read (| d |)
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let a := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let b := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α2 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let c := M.copy (| γ |) in
+                                              M.match_operator (|
+                                                M.alloc (| α3 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let d := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "revm_precompile::modexp::byzantium_gas_calc",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| a |);
+                                                          M.read (| b |);
+                                                          M.read (| c |);
+                                                          M.read (| d |)
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_byzantium_run :
@@ -188,7 +194,12 @@ Module modexp.
                       Ty.apply
                         (Ty.path "&")
                         []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            []
                         ]
                     ]
                 ]
@@ -218,61 +229,62 @@ Module modexp.
               ]
             |);
             M.read (| gas_limit |);
-            Value.Integer 200;
+            Value.Integer IntegerKind.U64 200;
             M.closure
               (fun γ =>
                 ltac:(M.monadic
                   match γ with
                   | [ α0; α1; α2; α3 ] =>
-                    M.match_operator (|
-                      M.alloc (| α0 |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let a := M.copy (| γ |) in
-                            M.match_operator (|
-                              M.alloc (| α1 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let b := M.copy (| γ |) in
-                                    M.match_operator (|
-                                      M.alloc (| α2 |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let c := M.copy (| γ |) in
-                                            M.match_operator (|
-                                              M.alloc (| α3 |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let d := M.copy (| γ |) in
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "revm_precompile::modexp::berlin_gas_calc",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.read (| a |);
-                                                        M.read (| b |);
-                                                        M.read (| c |);
-                                                        M.read (| d |)
-                                                      ]
-                                                    |)))
-                                              ]
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)
-                  | _ => M.impossible (||)
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        M.alloc (| α0 |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let a := M.copy (| γ |) in
+                              M.match_operator (|
+                                M.alloc (| α1 |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let b := M.copy (| γ |) in
+                                      M.match_operator (|
+                                        M.alloc (| α2 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let c := M.copy (| γ |) in
+                                              M.match_operator (|
+                                                M.alloc (| α3 |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let d := M.copy (| γ |) in
+                                                      M.call_closure (|
+                                                        M.get_function (|
+                                                          "revm_precompile::modexp::berlin_gas_calc",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.read (| a |);
+                                                          M.read (| b |);
+                                                          M.read (| c |);
+                                                          M.read (| d |)
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                ]
+                              |)))
+                        ]
+                      |)))
+                  | _ => M.impossible "wrong number of arguments"
                   end))
           ]
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_berlin_run : M.IsFunction "revm_precompile::modexp::berlin_run" berlin_run.
@@ -300,7 +312,7 @@ Module modexp.
         (let exp_length := M.alloc (| exp_length |) in
         let exp_highp := M.alloc (| exp_highp |) in
         M.read (|
-          let~ iteration_count := M.alloc (| Value.Integer 0 |) in
+          let~ iteration_count := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
           let~ _ :=
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
@@ -311,19 +323,28 @@ Module modexp.
                       M.use
                         (M.alloc (|
                           LogicalOp.and (|
-                            BinOp.Pure.le (M.read (| exp_length |)) (Value.Integer 32),
+                            BinOp.le (|
+                              M.read (| exp_length |),
+                              Value.Integer IntegerKind.U64 32
+                            |),
                             ltac:(M.monadic
                               (M.call_closure (|
                                 M.get_trait_method (|
                                   "core::cmp::PartialEq",
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
                                     [],
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       []
                                   ],
                                   "eq",
@@ -334,7 +355,7 @@ Module modexp.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ := M.write (| iteration_count, Value.Integer 0 |) in
+                    let~ _ := M.write (| iteration_count, Value.Integer IntegerKind.U64 0 |) in
                     M.alloc (| Value.Tuple [] |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -346,28 +367,34 @@ Module modexp.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.le (M.read (| exp_length |)) (Value.Integer 32)
+                                  BinOp.le (|
+                                    M.read (| exp_length |),
+                                    Value.Integer IntegerKind.U64 32
+                                  |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ :=
                               M.write (|
                                 iteration_count,
-                                BinOp.Wrap.sub
-                                  Integer.U64
-                                  (M.rust_cast
+                                BinOp.Wrap.sub (|
+                                  M.rust_cast
                                     (M.call_closure (|
                                       M.get_associated_function (|
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                           [],
                                         "bit_len",
                                         []
                                       |),
                                       [ M.read (| exp_highp |) ]
-                                    |)))
-                                  (Value.Integer 1)
+                                    |)),
+                                  Value.Integer IntegerKind.U64 1
+                                |)
                               |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
@@ -380,7 +407,10 @@ Module modexp.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.gt (M.read (| exp_length |)) (Value.Integer 32)
+                                          BinOp.gt (|
+                                            M.read (| exp_length |),
+                                            Value.Integer IntegerKind.U64 32
+                                          |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -404,28 +434,30 @@ Module modexp.
                                                 []
                                               |),
                                               [
-                                                Value.Integer 8;
-                                                BinOp.Wrap.sub
-                                                  Integer.U64
-                                                  (M.read (| exp_length |))
-                                                  (Value.Integer 32)
+                                                Value.Integer IntegerKind.U64 8;
+                                                BinOp.Wrap.sub (|
+                                                  M.read (| exp_length |),
+                                                  Value.Integer IntegerKind.U64 32
+                                                |)
                                               ]
                                             |);
-                                            BinOp.Wrap.sub
-                                              Integer.U64
-                                              (M.call_closure (|
+                                            BinOp.Wrap.sub (|
+                                              M.call_closure (|
                                                 M.get_function (|
                                                   "core::cmp::max",
                                                   [ Ty.path "u64" ]
                                                 |),
                                                 [
-                                                  Value.Integer 1;
+                                                  Value.Integer IntegerKind.U64 1;
                                                   M.rust_cast
                                                     (M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "ruint::Uint")
-                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
                                                           [],
                                                         "bit_len",
                                                         []
@@ -433,8 +465,9 @@ Module modexp.
                                                       [ M.read (| exp_highp |) ]
                                                     |))
                                                 ]
-                                              |))
-                                              (Value.Integer 1)
+                                              |),
+                                              Value.Integer IntegerKind.U64 1
+                                            |)
                                           ]
                                         |)
                                       |) in
@@ -449,11 +482,11 @@ Module modexp.
           M.alloc (|
             M.call_closure (|
               M.get_function (| "core::cmp::max", [ Ty.path "u64" ] |),
-              [ M.read (| iteration_count |); Value.Integer 1 ]
+              [ M.read (| iteration_count |); Value.Integer IntegerKind.U64 1 ]
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_calculate_iteration_count :
@@ -552,7 +585,7 @@ Module modexp.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt (M.read (| min_gas |)) (M.read (| gas_limit |))
+                              BinOp.gt (| M.read (| min_gas |), M.read (| gas_limit |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -578,7 +611,10 @@ Module modexp.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       "from_be_bytes",
                       []
                     |),
@@ -588,7 +624,12 @@ Module modexp.
                           Ty.apply
                             (Ty.path "alloc::borrow::Cow")
                             []
-                            [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                [ Ty.path "u8" ]
+                            ],
                           "into_owned",
                           []
                         |),
@@ -598,7 +639,7 @@ Module modexp.
                               "revm_precompile::utilities::right_pad_with_offset",
                               []
                             |),
-                            [ M.read (| input |); Value.Integer 0 ]
+                            [ M.read (| input |); Value.Integer IntegerKind.Usize 0 ]
                           |)
                         ]
                       |)
@@ -609,7 +650,10 @@ Module modexp.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       "from_be_bytes",
                       []
                     |),
@@ -619,7 +663,12 @@ Module modexp.
                           Ty.apply
                             (Ty.path "alloc::borrow::Cow")
                             []
-                            [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                [ Ty.path "u8" ]
+                            ],
                           "into_owned",
                           []
                         |),
@@ -629,7 +678,7 @@ Module modexp.
                               "revm_precompile::utilities::right_pad_with_offset",
                               []
                             |),
-                            [ M.read (| input |); Value.Integer 32 ]
+                            [ M.read (| input |); Value.Integer IntegerKind.Usize 32 ]
                           |)
                         ]
                       |)
@@ -640,7 +689,10 @@ Module modexp.
                 M.alloc (|
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       "from_be_bytes",
                       []
                     |),
@@ -650,7 +702,12 @@ Module modexp.
                           Ty.apply
                             (Ty.path "alloc::borrow::Cow")
                             []
-                            [ Ty.apply (Ty.path "array") [ Value.Integer 32 ] [ Ty.path "u8" ] ],
+                            [
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 32 ]
+                                [ Ty.path "u8" ]
+                            ],
                           "into_owned",
                           []
                         |),
@@ -660,7 +717,7 @@ Module modexp.
                               "revm_precompile::utilities::right_pad_with_offset",
                               []
                             |),
-                            [ M.read (| input |); Value.Integer 64 ]
+                            [ M.read (| input |); Value.Integer IntegerKind.Usize 64 ]
                           |)
                         ]
                       |)
@@ -673,7 +730,11 @@ Module modexp.
                     M.get_trait_method (|
                       "core::convert::TryFrom",
                       Ty.path "usize",
-                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
                       ],
                       "try_from",
                       []
@@ -700,7 +761,10 @@ Module modexp.
                               [
                                 Ty.apply
                                   (Ty.path "ruint::Uint")
-                                  [ Value.Integer 256; Value.Integer 4 ]
+                                  [
+                                    Value.Integer IntegerKind.Usize 256;
+                                    Value.Integer IntegerKind.Usize 4
+                                  ]
                                   []
                               ],
                               "try_from",
@@ -729,13 +793,15 @@ Module modexp.
                                           M.use
                                             (M.alloc (|
                                               LogicalOp.and (|
-                                                BinOp.Pure.eq
-                                                  (M.read (| base_len |))
-                                                  (Value.Integer 0),
+                                                BinOp.eq (|
+                                                  M.read (| base_len |),
+                                                  Value.Integer IntegerKind.Usize 0
+                                                |),
                                                 ltac:(M.monadic
-                                                  (BinOp.Pure.eq
-                                                    (M.read (| mod_len |))
-                                                    (Value.Integer 0)))
+                                                  (BinOp.eq (|
+                                                    M.read (| mod_len |),
+                                                    Value.Integer IntegerKind.Usize 0
+                                                  |)))
                                               |)
                                             |)) in
                                         let _ :=
@@ -780,7 +846,10 @@ Module modexp.
                                       [
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                           []
                                       ],
                                       "try_from",
@@ -806,7 +875,10 @@ Module modexp.
                                               "core::cmp::min",
                                               [ Ty.path "usize" ]
                                             |),
-                                            [ M.read (| exp_len |); Value.Integer 32 ]
+                                            [
+                                              M.read (| exp_len |);
+                                              Value.Integer IntegerKind.Usize 32
+                                            ]
                                           |)
                                         |) in
                                       let~ input :=
@@ -880,7 +952,7 @@ Module modexp.
                                                       "core::ops::index::Index",
                                                       Ty.apply
                                                         (Ty.path "array")
-                                                        [ Value.Integer 32 ]
+                                                        [ Value.Integer IntegerKind.Usize 32 ]
                                                         [ Ty.path "u8" ],
                                                       [
                                                         Ty.apply
@@ -901,7 +973,8 @@ Module modexp.
                                                             [
                                                               Ty.apply
                                                                 (Ty.path "array")
-                                                                [ Value.Integer 32 ]
+                                                                [ Value.Integer IntegerKind.Usize 32
+                                                                ]
                                                                 [ Ty.path "u8" ]
                                                             ],
                                                           [],
@@ -923,7 +996,10 @@ Module modexp.
                                               M.get_associated_function (|
                                                 Ty.apply
                                                   (Ty.path "ruint::Uint")
-                                                  [ Value.Integer 256; Value.Integer 4 ]
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 256;
+                                                    Value.Integer IntegerKind.Usize 4
+                                                  ]
                                                   [],
                                                 "from_be_bytes",
                                                 []
@@ -937,7 +1013,7 @@ Module modexp.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "array")
-                                                          [ Value.Integer 32 ]
+                                                          [ Value.Integer IntegerKind.Usize 32 ]
                                                           [ Ty.path "u8" ]
                                                       ],
                                                     "into_owned",
@@ -967,7 +1043,10 @@ Module modexp.
                                                       [
                                                         Ty.apply
                                                           (Ty.path "ruint::Uint")
-                                                          [ Value.Integer 256; Value.Integer 4 ]
+                                                          [
+                                                            Value.Integer IntegerKind.Usize 256;
+                                                            Value.Integer IntegerKind.Usize 4
+                                                          ]
                                                           []
                                                       ]
                                                   ]
@@ -996,9 +1075,10 @@ Module modexp.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.Pure.gt
-                                                        (M.read (| gas_cost |))
-                                                        (M.read (| gas_limit |))
+                                                      BinOp.gt (|
+                                                        M.read (| gas_cost |),
+                                                        M.read (| gas_limit |)
+                                                      |)
                                                     |)) in
                                                 let _ :=
                                                   M.is_constant_or_break_match (|
@@ -1177,18 +1257,20 @@ Module modexp.
                                                                                   (let γ :=
                                                                                     M.use
                                                                                       (M.alloc (|
-                                                                                        UnOp.Pure.not
-                                                                                          (BinOp.Pure.eq
-                                                                                            (M.read (|
+                                                                                        UnOp.not (|
+                                                                                          BinOp.eq (|
+                                                                                            M.read (|
                                                                                               M.read (|
                                                                                                 left_val
                                                                                               |)
-                                                                                            |))
-                                                                                            (M.read (|
+                                                                                            |),
+                                                                                            M.read (|
                                                                                               M.read (|
                                                                                                 right_val
                                                                                               |)
-                                                                                            |)))
+                                                                                            |)
+                                                                                          |)
+                                                                                        |)
                                                                                       |)) in
                                                                                   let _ :=
                                                                                     M.is_constant_or_break_match (|
@@ -1354,14 +1436,14 @@ Module modexp.
               |)
             |)))
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_run_inner : M.IsFunction "revm_precompile::modexp::run_inner" run_inner.
   
   Module run_inner.
     Definition value_HEADER_LENGTH : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 96 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 96 |))).
   End run_inner.
   
   (*
@@ -1415,7 +1497,10 @@ Module modexp.
             M.alloc (|
               M.call_closure (|
                 M.get_associated_function (|
-                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [],
                   "from",
                   [ Ty.path "u64" ]
                 |),
@@ -1432,8 +1517,16 @@ Module modexp.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::arith::Div",
-                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [],
+                  [
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []
+                  ],
                   "div",
                   []
                 |),
@@ -1441,8 +1534,15 @@ Module modexp.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
                       ],
                       "mul",
                       []
@@ -1451,11 +1551,14 @@ Module modexp.
                   |);
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       "from",
                       [ Ty.path "i32" ]
                     |),
-                    [ Value.Integer 20 ]
+                    [ Value.Integer IntegerKind.I32 20 ]
                   |)
                 ]
               |)
@@ -1463,7 +1566,10 @@ Module modexp.
           M.alloc (|
             M.call_closure (|
               M.get_associated_function (|
-                Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                Ty.apply
+                  (Ty.path "ruint::Uint")
+                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                  [],
                 "saturating_to",
                 [ Ty.path "u64" ]
               |),
@@ -1471,7 +1577,7 @@ Module modexp.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_byzantium_gas_calc :
@@ -1504,19 +1610,23 @@ Module modexp.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use (M.alloc (| BinOp.Pure.le (M.read (| x |)) (Value.Integer 64) |)) in
+                      M.use
+                        (M.alloc (|
+                          BinOp.le (| M.read (| x |), Value.Integer IntegerKind.U64 64 |)
+                        |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [],
                           "from",
                           [ Ty.path "u64" ]
                         |),
-                        [ BinOp.Wrap.mul Integer.U64 (M.read (| x |)) (M.read (| x |)) ]
+                        [ BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |) ]
                       |)
                     |)));
                 fun γ =>
@@ -1529,7 +1639,7 @@ Module modexp.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.le (M.read (| x |)) (Value.Integer 1024)
+                                  BinOp.le (| M.read (| x |), Value.Integer IntegerKind.U64 1024 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1538,28 +1648,28 @@ Module modexp.
                                 M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
                                     [],
                                   "from",
                                   [ Ty.path "u64" ]
                                 |),
                                 [
-                                  BinOp.Wrap.sub
-                                    Integer.U64
-                                    (BinOp.Wrap.add
-                                      Integer.U64
-                                      (BinOp.Wrap.div
-                                        Integer.U64
-                                        (BinOp.Wrap.mul
-                                          Integer.U64
-                                          (M.read (| x |))
-                                          (M.read (| x |)))
-                                        (Value.Integer 4))
-                                      (BinOp.Wrap.mul
-                                        Integer.U64
-                                        (Value.Integer 96)
-                                        (M.read (| x |))))
-                                    (Value.Integer 3072)
+                                  BinOp.Wrap.sub (|
+                                    BinOp.Wrap.add (|
+                                      BinOp.Wrap.div (|
+                                        BinOp.Wrap.mul (| M.read (| x |), M.read (| x |) |),
+                                        Value.Integer IntegerKind.U64 4
+                                      |),
+                                      BinOp.Wrap.mul (|
+                                        Value.Integer IntegerKind.U64 96,
+                                        M.read (| x |)
+                                      |)
+                                    |),
+                                    Value.Integer IntegerKind.U64 3072
+                                  |)
                                 ]
                               |)
                             |)));
@@ -1571,7 +1681,10 @@ Module modexp.
                                   M.get_associated_function (|
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       [],
                                     "from",
                                     [ Ty.path "u64" ]
@@ -1586,12 +1699,18 @@ Module modexp.
                                     "core::ops::arith::Mul",
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       [],
                                     [
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         []
                                     ],
                                     "mul",
@@ -1606,12 +1725,18 @@ Module modexp.
                                   "core::ops::arith::Sub",
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
-                                    [ Value.Integer 256; Value.Integer 4 ]
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
                                     [],
                                   [
                                     Ty.apply
                                       (Ty.path "ruint::Uint")
-                                      [ Value.Integer 256; Value.Integer 4 ]
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
                                       []
                                   ],
                                   "sub",
@@ -1623,12 +1748,18 @@ Module modexp.
                                       "core::ops::arith::Add",
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         [],
                                       [
                                         Ty.apply
                                           (Ty.path "ruint::Uint")
-                                          [ Value.Integer 256; Value.Integer 4 ]
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
                                           []
                                       ],
                                       "add",
@@ -1640,12 +1771,18 @@ Module modexp.
                                           "core::ops::arith::Div",
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
                                             [],
                                           [
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
-                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
                                               []
                                           ],
                                           "div",
@@ -1657,12 +1794,15 @@ Module modexp.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
-                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
                                                 [],
                                               "from",
                                               [ Ty.path "i32" ]
                                             |),
-                                            [ Value.Integer 16 ]
+                                            [ Value.Integer IntegerKind.I32 16 ]
                                           |)
                                         ]
                                       |);
@@ -1671,12 +1811,18 @@ Module modexp.
                                           "core::ops::arith::Mul",
                                           Ty.apply
                                             (Ty.path "ruint::Uint")
-                                            [ Value.Integer 256; Value.Integer 4 ]
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
                                             [],
                                           [
                                             Ty.apply
                                               (Ty.path "ruint::Uint")
-                                              [ Value.Integer 256; Value.Integer 4 ]
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
                                               []
                                           ],
                                           "mul",
@@ -1687,12 +1833,15 @@ Module modexp.
                                             M.get_associated_function (|
                                               Ty.apply
                                                 (Ty.path "ruint::Uint")
-                                                [ Value.Integer 256; Value.Integer 4 ]
+                                                [
+                                                  Value.Integer IntegerKind.Usize 256;
+                                                  Value.Integer IntegerKind.Usize 4
+                                                ]
                                                 [],
                                               "from",
                                               [ Ty.path "i32" ]
                                             |),
-                                            [ Value.Integer 480 ]
+                                            [ Value.Integer IntegerKind.I32 480 ]
                                           |);
                                           M.read (| x |)
                                         ]
@@ -1703,12 +1852,15 @@ Module modexp.
                                     M.get_associated_function (|
                                       Ty.apply
                                         (Ty.path "ruint::Uint")
-                                        [ Value.Integer 256; Value.Integer 4 ]
+                                        [
+                                          Value.Integer IntegerKind.Usize 256;
+                                          Value.Integer IntegerKind.Usize 4
+                                        ]
                                         [],
                                       "from",
                                       [ Ty.path "i32" ]
                                     |),
-                                    [ Value.Integer 199680 ]
+                                    [ Value.Integer IntegerKind.I32 199680 ]
                                   |)
                                 ]
                               |)
@@ -1718,7 +1870,7 @@ Module modexp.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_mul_complexity :
@@ -1779,8 +1931,16 @@ Module modexp.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::arith::Div",
-                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [],
+                  [
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []
+                  ],
                   "div",
                   []
                 |),
@@ -1788,8 +1948,15 @@ Module modexp.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::ops::arith::Mul",
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                      [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] []
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
+                      [
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          []
                       ],
                       "mul",
                       []
@@ -1800,7 +1967,8 @@ Module modexp.
                         M.get_associated_function (|
                           Ty.apply
                             (Ty.path "ruint::Uint")
-                            [ Value.Integer 256; Value.Integer 4 ]
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
                             [],
                           "from",
                           [ Ty.path "u64" ]
@@ -1811,11 +1979,14 @@ Module modexp.
                   |);
                   M.call_closure (|
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                      Ty.apply
+                        (Ty.path "ruint::Uint")
+                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                        [],
                       "from",
                       [ Ty.path "i32" ]
                     |),
-                    [ Value.Integer 3 ]
+                    [ Value.Integer IntegerKind.I32 3 ]
                   |)
                 ]
               |)
@@ -1824,10 +1995,13 @@ Module modexp.
             M.call_closure (|
               M.get_function (| "core::cmp::max", [ Ty.path "u64" ] |),
               [
-                Value.Integer 200;
+                Value.Integer IntegerKind.U64 200;
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     "saturating_to",
                     [ Ty.path "u64" ]
                   |),
@@ -1837,7 +2011,7 @@ Module modexp.
             |)
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Function_berlin_gas_calc :
@@ -1875,7 +2049,7 @@ Module modexp.
               |) in
             let~ words :=
               M.alloc (|
-                BinOp.Wrap.div Integer.U64 (M.read (| max_length |)) (Value.Integer 8)
+                BinOp.Wrap.div (| M.read (| max_length |), Value.Integer IntegerKind.U64 8 |)
               |) in
             let~ _ :=
               M.match_operator (|
@@ -1886,19 +2060,20 @@ Module modexp.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.gt
-                              (BinOp.Wrap.rem
-                                Integer.U64
-                                (M.read (| max_length |))
-                                (Value.Integer 8))
-                              (Value.Integer 0)
+                            BinOp.gt (|
+                              BinOp.Wrap.rem (|
+                                M.read (| max_length |),
+                                Value.Integer IntegerKind.U64 8
+                              |),
+                              Value.Integer IntegerKind.U64 0
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ :=
                         let β := words in
                         M.write (|
                           β,
-                          BinOp.Wrap.add Integer.U64 (M.read (| β |)) (Value.Integer 1)
+                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U64 1 |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1908,7 +2083,10 @@ Module modexp.
               M.alloc (|
                 M.call_closure (|
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
                     "from",
                     [ Ty.path "u64" ]
                   |),
@@ -1919,8 +2097,16 @@ Module modexp.
               M.call_closure (|
                 M.get_trait_method (|
                   "core::ops::arith::Mul",
-                  Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [],
-                  [ Ty.apply (Ty.path "ruint::Uint") [ Value.Integer 256; Value.Integer 4 ] [] ],
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [],
+                  [
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []
+                  ],
                   "mul",
                   []
                 |),
@@ -1928,7 +2114,7 @@ Module modexp.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_calculate_multiplication_complexity :

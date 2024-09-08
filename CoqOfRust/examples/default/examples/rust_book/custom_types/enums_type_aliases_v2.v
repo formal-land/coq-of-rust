@@ -52,7 +52,7 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                       γ,
                       "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers::Add"
                     |) in
-                  M.alloc (| BinOp.Wrap.add Integer.I32 (M.read (| x |)) (M.read (| y |)) |)));
+                  M.alloc (| BinOp.Wrap.add (| M.read (| x |), M.read (| y |) |) |)));
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.read (| γ |) in
@@ -61,11 +61,11 @@ Module Impl_enums_type_aliases_v2_VeryVerboseEnumOfThingsToDoWithNumbers.
                       γ,
                       "enums_type_aliases_v2::VeryVerboseEnumOfThingsToDoWithNumbers::Subtract"
                     |) in
-                  M.alloc (| BinOp.Wrap.sub Integer.I32 (M.read (| x |)) (M.read (| y |)) |)))
+                  M.alloc (| BinOp.Wrap.sub (| M.read (| x |), M.read (| y |) |) |)))
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom AssociatedFunction_run : M.IsAssociatedFunction Self "run" run.

@@ -2,6 +2,7 @@ use crate::env::*;
 use crate::expression::*;
 use crate::path::*;
 use crate::pattern::*;
+use crate::render::*;
 use rustc_middle::thir::{Pat, PatKind};
 use rustc_type_ir::TyKind;
 use std::rc::Rc;
@@ -13,14 +14,14 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
         PatKind::Binding {
             name,
             mode,
+            var: _,
+            ty: _,
             subpattern,
-            ..
+            is_primary: _,
         } => {
             let name = to_valid_coq_name(IsValue::Yes, name.as_str());
-            let is_with_ref = match mode {
-                rustc_middle::thir::BindingMode::ByValue => false,
-                rustc_middle::thir::BindingMode::ByRef(_) => true,
-            };
+            let rustc_ast::ast::BindingMode(by_ref, _) = mode;
+            let is_with_ref = matches!(by_ref, rustc_ast::ast::ByRef::Yes(_));
             let pattern = subpattern
                 .as_ref()
                 .map(|subpattern| compile_pattern(env, subpattern));
@@ -97,13 +98,12 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
         }
         PatKind::Deref { subpattern } => Rc::new(Pattern::Deref(compile_pattern(env, subpattern))),
         PatKind::Constant { value } => {
-            if let rustc_middle::mir::Const::Ty(constant) = value {
-                let ty = constant.ty();
+            if let rustc_middle::mir::Const::Ty(ty, constant) = value {
                 // Brutal way to handle the case of rustc_middle::ty::TyKind::Str
                 // Since the type would be erased when it comes down to THIR level
                 // TODO: have a translation that works for all strings
                 let kind_name = format!("{:?}", ty.kind());
-                if kind_name == *"&ReErased str".to_string() {
+                if kind_name == "&'{erased} str" {
                     let string_value = constant.to_string();
                     // The generated string comes with extra "" so we trim the 1st and last character out
                     let mut chars = string_value.chars();
@@ -116,12 +116,13 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 }
                 // And for the rest...
                 match &ty.kind() {
-                    rustc_middle::ty::TyKind::Int(_) => {
-                        let uint_value = constant.try_to_scalar().unwrap().assert_int();
-                        let int_value = uint_value.try_to_int(uint_value.size()).unwrap();
+                    rustc_middle::ty::TyKind::Int(int_ty) => {
+                        let uint_value = constant.try_to_scalar().unwrap().assert_scalar_int();
+                        let int_value = uint_value.to_int(uint_value.size());
 
                         return Rc::new(Pattern::Literal(Rc::new(Literal::Integer(
                             LiteralInteger {
+                                kind: capitalize(&format!("{int_ty:?}")),
                                 negative_sign: int_value < 0,
                                 // The `unsigned_abs` method is necessary to get the minimal int128's
                                 // absolute value.
@@ -129,13 +130,14 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                             },
                         ))));
                     }
-                    rustc_middle::ty::TyKind::Uint(_) => {
-                        let uint_value = constant.try_to_scalar().unwrap().assert_int();
+                    rustc_middle::ty::TyKind::Uint(uint_ty) => {
+                        let uint_value = constant.try_to_scalar().unwrap().assert_scalar_int();
 
                         return Rc::new(Pattern::Literal(Rc::new(Literal::Integer(
                             LiteralInteger {
+                                kind: capitalize(&format!("{uint_ty:?}")),
                                 negative_sign: false,
-                                value: uint_value.assert_bits(uint_value.size()),
+                                value: uint_value.to_bits(uint_value.size()),
                             },
                         ))));
                     }
@@ -197,6 +199,9 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
         PatKind::Or { pats } => Rc::new(Pattern::Or(
             pats.iter().map(|pat| compile_pattern(env, pat)).collect(),
         )),
-        PatKind::InlineConstant { .. } | PatKind::Never | PatKind::Error(_) => todo!(),
+        PatKind::InlineConstant { .. }
+        | PatKind::Never
+        | PatKind::Error(_)
+        | PatKind::DerefPattern { .. } => todo!(),
     }
 }

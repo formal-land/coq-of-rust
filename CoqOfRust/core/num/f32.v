@@ -64,6 +64,8 @@ Module f32.
     
     Definition value_FRAC_1_SQRT_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
     
+    Definition value_FRAC_1_SQRT_2PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
+    
     Definition value_FRAC_2_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
     
     Definition value_FRAC_2_SQRT_PI : Value.t := M.run ltac:(M.monadic UnsupportedLiteral).
@@ -96,21 +98,23 @@ Module f32.
     
     (*     pub const RADIX: u32 = 2; *)
     (* Ty.path "u32" *)
-    Definition value_RADIX : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 2 |))).
+    Definition value_RADIX : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2 |))).
     
     Axiom AssociatedConstant_value_RADIX : M.IsAssociatedConstant Self "value_RADIX" value_RADIX.
     
     (*     pub const MANTISSA_DIGITS: u32 = 24; *)
     (* Ty.path "u32" *)
     Definition value_MANTISSA_DIGITS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 24 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 24 |))).
     
     Axiom AssociatedConstant_value_MANTISSA_DIGITS :
       M.IsAssociatedConstant Self "value_MANTISSA_DIGITS" value_MANTISSA_DIGITS.
     
     (*     pub const DIGITS: u32 = 6; *)
     (* Ty.path "u32" *)
-    Definition value_DIGITS : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 6 |))).
+    Definition value_DIGITS : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 6 |))).
     
     Axiom AssociatedConstant_value_DIGITS : M.IsAssociatedConstant Self "value_DIGITS" value_DIGITS.
     
@@ -143,14 +147,15 @@ Module f32.
     (*     pub const MIN_EXP: i32 = -125; *)
     (* Ty.path "i32" *)
     Definition value_MIN_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer (-125) |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-125) |))).
     
     Axiom AssociatedConstant_value_MIN_EXP :
       M.IsAssociatedConstant Self "value_MIN_EXP" value_MIN_EXP.
     
     (*     pub const MAX_EXP: i32 = 128; *)
     (* Ty.path "i32" *)
-    Definition value_MAX_EXP : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.Integer 128 |))).
+    Definition value_MAX_EXP : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 128 |))).
     
     Axiom AssociatedConstant_value_MAX_EXP :
       M.IsAssociatedConstant Self "value_MAX_EXP" value_MAX_EXP.
@@ -158,7 +163,7 @@ Module f32.
     (*     pub const MIN_10_EXP: i32 = -37; *)
     (* Ty.path "i32" *)
     Definition value_MIN_10_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer (-37) |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-37) |))).
     
     Axiom AssociatedConstant_value_MIN_10_EXP :
       M.IsAssociatedConstant Self "value_MIN_10_EXP" value_MIN_10_EXP.
@@ -166,7 +171,7 @@ Module f32.
     (*     pub const MAX_10_EXP: i32 = 38; *)
     (* Ty.path "i32" *)
     Definition value_MAX_10_EXP : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 38 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 38 |))).
     
     Axiom AssociatedConstant_value_MAX_10_EXP :
       M.IsAssociatedConstant Self "value_MAX_10_EXP" value_MAX_10_EXP.
@@ -177,10 +182,7 @@ Module f32.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.div
-              Integer.Usize
-              (M.read (| UnsupportedLiteral |))
-              (M.read (| UnsupportedLiteral |))
+            BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
           |))).
     
     Axiom AssociatedConstant_value_NAN : M.IsAssociatedConstant Self "value_NAN" value_NAN.
@@ -191,10 +193,7 @@ Module f32.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.div
-              Integer.Usize
-              (M.read (| UnsupportedLiteral |))
-              (M.read (| UnsupportedLiteral |))
+            BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
           |))).
     
     Axiom AssociatedConstant_value_INFINITY :
@@ -206,14 +205,57 @@ Module f32.
       M.run
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.div
-              Integer.Usize
-              (M.read (| UnsupportedLiteral |))
-              (M.read (| UnsupportedLiteral |))
+            BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| UnsupportedLiteral |) |)
           |))).
     
     Axiom AssociatedConstant_value_NEG_INFINITY :
       M.IsAssociatedConstant Self "value_NEG_INFINITY" value_NEG_INFINITY.
+    
+    (*     const SIGN_MASK: u32 = 0x8000_0000; *)
+    (* Ty.path "u32" *)
+    Definition value_SIGN_MASK : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2147483648 |))).
+    
+    Axiom AssociatedConstant_value_SIGN_MASK :
+      M.IsAssociatedConstant Self "value_SIGN_MASK" value_SIGN_MASK.
+    
+    (*     const EXP_MASK: u32 = 0x7f80_0000; *)
+    (* Ty.path "u32" *)
+    Definition value_EXP_MASK : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 2139095040 |))).
+    
+    Axiom AssociatedConstant_value_EXP_MASK :
+      M.IsAssociatedConstant Self "value_EXP_MASK" value_EXP_MASK.
+    
+    (*     const MAN_MASK: u32 = 0x007f_ffff; *)
+    (* Ty.path "u32" *)
+    Definition value_MAN_MASK : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 8388607 |))).
+    
+    Axiom AssociatedConstant_value_MAN_MASK :
+      M.IsAssociatedConstant Self "value_MAN_MASK" value_MAN_MASK.
+    
+    (*     const TINY_BITS: u32 = 0x1; *)
+    (* Ty.path "u32" *)
+    Definition value_TINY_BITS : Value.t :=
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1 |))).
+    
+    Axiom AssociatedConstant_value_TINY_BITS :
+      M.IsAssociatedConstant Self "value_TINY_BITS" value_TINY_BITS.
+    
+    (*     const NEG_TINY_BITS: u32 = Self::TINY_BITS | Self::SIGN_MASK; *)
+    (* Ty.path "u32" *)
+    Definition value_NEG_TINY_BITS : Value.t :=
+      M.run
+        ltac:(M.monadic
+          (M.alloc (|
+            BinOp.bit_or
+              (M.read (| M.get_constant (| "core::f32::TINY_BITS" |) |))
+              (M.read (| M.get_constant (| "core::f32::SIGN_MASK" |) |))
+          |))).
+    
+    Axiom AssociatedConstant_value_NEG_TINY_BITS :
+      M.IsAssociatedConstant Self "value_NEG_TINY_BITS" value_NEG_TINY_BITS.
     
     (*
         pub const fn is_nan(self) -> bool {
@@ -222,30 +264,30 @@ Module f32.
     *)
     Definition is_nan (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.ne (M.read (| self |)) (M.read (| self |))))
-      | _, _, _ => M.impossible
+          BinOp.ne (| M.read (| self |), M.read (| self |) |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_nan : M.IsAssociatedFunction Self "is_nan" is_nan.
     
     (*
         pub(crate) const fn abs_private(self) -> f32 {
-            // SAFETY: This transmutation is fine. Probably. For the reasons std is using it.
-            unsafe { mem::transmute::<u32, f32>(mem::transmute::<f32, u32>(self) & 0x7fff_ffff) }
+            // SAFETY: This transmutation is fine just like in `to_bits`/`from_bits`.
+            unsafe { mem::transmute::<u32, f32>(mem::transmute::<f32, u32>(self) & !Self::SIGN_MASK) }
         }
     *)
     Definition abs_private (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
             M.get_function (| "core::intrinsics::transmute", [ Ty.path "u32"; Ty.path "f32" ] |),
             [
-              BinOp.Pure.bit_and
+              BinOp.bit_and
                 (M.call_closure (|
                   M.get_function (|
                     "core::intrinsics::transmute",
@@ -253,10 +295,10 @@ Module f32.
                   |),
                   [ M.read (| self |) ]
                 |))
-                (Value.Integer 2147483647)
+                (UnOp.not (| M.read (| M.get_constant (| "core::f32::SIGN_MASK" |) |) |))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_abs_private : M.IsAssociatedFunction Self "abs_private" abs_private.
@@ -271,17 +313,19 @@ Module f32.
     *)
     Definition is_infinite (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.bit_or
-            (BinOp.Pure.eq
-              (M.read (| self |))
-              (M.read (| M.get_constant (| "core::f32::INFINITY" |) |)))
-            (BinOp.Pure.eq
-              (M.read (| self |))
-              (M.read (| M.get_constant (| "core::f32::NEG_INFINITY" |) |)))))
-      | _, _, _ => M.impossible
+          BinOp.bit_or
+            (BinOp.eq (|
+              M.read (| self |),
+              M.read (| M.get_constant (| "core::f32::INFINITY" |) |)
+            |))
+            (BinOp.eq (|
+              M.read (| self |),
+              M.read (| M.get_constant (| "core::f32::NEG_INFINITY" |) |)
+            |))))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_infinite : M.IsAssociatedFunction Self "is_infinite" is_infinite.
@@ -295,16 +339,17 @@ Module f32.
     *)
     Definition is_finite (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.lt
-            (M.call_closure (|
+          BinOp.lt (|
+            M.call_closure (|
               M.get_associated_function (| Ty.path "f32", "abs_private", [] |),
               [ M.read (| self |) ]
-            |))
-            (M.read (| M.get_constant (| "core::f32::INFINITY" |) |))))
-      | _, _, _ => M.impossible
+            |),
+            M.read (| M.get_constant (| "core::f32::INFINITY" |) |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_finite : M.IsAssociatedFunction Self "is_finite" is_finite.
@@ -316,7 +361,7 @@ Module f32.
     *)
     Definition is_subnormal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -336,7 +381,7 @@ Module f32.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_subnormal : M.IsAssociatedFunction Self "is_subnormal" is_subnormal.
@@ -348,7 +393,7 @@ Module f32.
     *)
     Definition is_normal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -368,7 +413,7 @@ Module f32.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_normal : M.IsAssociatedFunction Self "is_normal" is_normal.
@@ -377,18 +422,20 @@ Module f32.
         pub const fn classify(self) -> FpCategory {
             // A previous implementation tried to only use bitmask-based checks,
             // using f32::to_bits to transmute the float to its bit repr and match on that.
-            // Unfortunately, floating point numbers can be much worse than that.
-            // This also needs to not result in recursive evaluations of f64::to_bits.
+            // If we only cared about being "technically" correct, that's an entirely legit
+            // implementation.
             //
-            // On some processors, in some cases, LLVM will "helpfully" lower floating point ops,
-            // in spite of a request for them using f32 and f64, to things like x87 operations.
-            // These have an f64's mantissa, but can have a larger than normal exponent.
+            // Unfortunately, there is hardware out there that does not correctly implement the IEEE
+            // float semantics Rust relies on: x87 uses a too-large mantissa and exponent, and some
+            // hardware flushes subnormals to zero. These are platforms bugs, and Rust will misbehave on
+            // such hardware, but we can at least try to make things seem as sane as possible by being
+            // careful here.
+            //
             // FIXME(jubilee): Using x87 operations is never necessary in order to function
             // on x86 processors for Rust-to-Rust calls, so this issue should not happen.
             // Code generation should be adjusted to use non-C calling conventions, avoiding this.
-            //
             if self.is_infinite() {
-                // Thus, a value may compare unequal to infinity, despite having a "full" exponent mask.
+                // A value may compare unequal to infinity, despite having a "full" exponent mask.
                 FpCategory::Infinite
             } else if self.is_nan() {
                 // And it may not be NaN, as it can simply be an "overextended" finite value.
@@ -398,17 +445,26 @@ Module f32.
                 // as correctness requires avoiding equality tests that may be Subnormal == -0.0
                 // because it may be wrong under "denormals are zero" and "flush to zero" modes.
                 // Most of std's targets don't use those, but they are used for thumbv7neon.
-                // So, this does use bitpattern matching for the rest.
-    
-                // SAFETY: f32 to u32 is fine. Usually.
-                // If classify has gotten this far, the value is definitely in one of these categories.
-                unsafe { f32::partial_classify(self) }
+                // So, this does use bitpattern matching for the rest. On x87, due to the incorrect
+                // float codegen on this hardware, this doesn't actually return a right answer for NaN
+                // because it cannot correctly discern between a floating point NaN, and some normal
+                // floating point numbers truncated from an x87 FPU -- but we took care of NaN above, so
+                // we are fine.
+                // FIXME(jubilee): This probably could at least answer things correctly for Infinity,
+                // like the f64 version does, but I need to run more checks on how things go on x86.
+                // I fear losing mantissa data that would have answered that differently.
+                let b = self.to_bits();
+                match (b & Self::MAN_MASK, b & Self::EXP_MASK) {
+                    (0, 0) => FpCategory::Zero,
+                    (_, 0) => FpCategory::Subnormal,
+                    _ => FpCategory::Normal,
+                }
             }
         }
     *)
     Definition classify (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
@@ -447,179 +503,71 @@ Module f32.
                             M.alloc (| Value.StructTuple "core::num::FpCategory::Nan" [] |)));
                         fun γ =>
                           ltac:(M.monadic
-                            (M.alloc (|
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "f32",
-                                  "partial_classify",
-                                  []
-                                |),
-                                [ M.read (| self |) ]
-                              |)
+                            (let~ b :=
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (| Ty.path "f32", "to_bits", [] |),
+                                  [ M.read (| self |) ]
+                                |)
+                              |) in
+                            M.match_operator (|
+                              M.alloc (|
+                                Value.Tuple
+                                  [
+                                    BinOp.bit_and
+                                      (M.read (| b |))
+                                      (M.read (| M.get_constant (| "core::f32::MAN_MASK" |) |));
+                                    BinOp.bit_and
+                                      (M.read (| b |))
+                                      (M.read (| M.get_constant (| "core::f32::EXP_MASK" |) |))
+                                  ]
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                        M.read (| γ0_0 |),
+                                        Value.Integer IntegerKind.U32 0
+                                      |) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                        M.read (| γ0_1 |),
+                                        Value.Integer IntegerKind.U32 0
+                                      |) in
+                                    M.alloc (|
+                                      Value.StructTuple "core::num::FpCategory::Zero" []
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                    let _ :=
+                                      M.is_constant_or_break_match (|
+                                        M.read (| γ0_1 |),
+                                        Value.Integer IntegerKind.U32 0
+                                      |) in
+                                    M.alloc (|
+                                      Value.StructTuple "core::num::FpCategory::Subnormal" []
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.alloc (|
+                                      Value.StructTuple "core::num::FpCategory::Normal" []
+                                    |)))
+                              ]
                             |)))
                       ]
                     |)))
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_classify : M.IsAssociatedFunction Self "classify" classify.
-    
-    (*
-        const unsafe fn partial_classify(self) -> FpCategory {
-            const EXP_MASK: u32 = 0x7f800000;
-            const MAN_MASK: u32 = 0x007fffff;
-    
-            // SAFETY: The caller is not asking questions for which this will tell lies.
-            let b = unsafe { mem::transmute::<f32, u32>(self) };
-            match (b & MAN_MASK, b & EXP_MASK) {
-                (0, 0) => FpCategory::Zero,
-                (_, 0) => FpCategory::Subnormal,
-                _ => FpCategory::Normal,
-            }
-        }
-    *)
-    Definition partial_classify (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [ host ], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            let~ b :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (|
-                    "core::intrinsics::transmute",
-                    [ Ty.path "f32"; Ty.path "u32" ]
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |) in
-            M.match_operator (|
-              M.alloc (|
-                Value.Tuple
-                  [
-                    BinOp.Pure.bit_and
-                      (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f32::partial_classify::MAN_MASK" |) |));
-                    BinOp.Pure.bit_and
-                      (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f32::partial_classify::EXP_MASK" |) |))
-                  ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Zero" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Subnormal" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::num::FpCategory::Normal" [] |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_partial_classify :
-      M.IsAssociatedFunction Self "partial_classify" partial_classify.
-    
-    (*
-        const fn classify_bits(b: u32) -> FpCategory {
-            const EXP_MASK: u32 = 0x7f800000;
-            const MAN_MASK: u32 = 0x007fffff;
-    
-            match (b & MAN_MASK, b & EXP_MASK) {
-                (0, EXP_MASK) => FpCategory::Infinite,
-                (_, EXP_MASK) => FpCategory::Nan,
-                (0, 0) => FpCategory::Zero,
-                (_, 0) => FpCategory::Subnormal,
-                _ => FpCategory::Normal,
-            }
-        }
-    *)
-    Definition classify_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [ host ], [], [ b ] =>
-        ltac:(M.monadic
-          (let b := M.alloc (| b |) in
-          M.read (|
-            M.match_operator (|
-              M.alloc (|
-                Value.Tuple
-                  [
-                    BinOp.Pure.bit_and
-                      (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f32::classify_bits::MAN_MASK" |) |));
-                    BinOp.Pure.bit_and
-                      (M.read (| b |))
-                      (M.read (| M.get_constant (| "core::f32::classify_bits::EXP_MASK" |) |))
-                  ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ0_1 |),
-                        Value.Integer 2139095040
-                      |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Infinite" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ0_1 |),
-                        Value.Integer 2139095040
-                      |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Nan" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_0 |), Value.Integer 0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Zero" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Integer 0 |) in
-                    M.alloc (| Value.StructTuple "core::num::FpCategory::Subnormal" [] |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (| Value.StructTuple "core::num::FpCategory::Normal" [] |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
-      end.
-    
-    Axiom AssociatedFunction_classify_bits :
-      M.IsAssociatedFunction Self "classify_bits" classify_bits.
     
     (*
         pub const fn is_sign_positive(self) -> bool {
@@ -628,15 +576,16 @@ Module f32.
     *)
     Definition is_sign_positive (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          UnOp.Pure.not
-            (M.call_closure (|
+          UnOp.not (|
+            M.call_closure (|
               M.get_associated_function (| Ty.path "f32", "is_sign_negative", [] |),
               [ M.read (| self |) ]
-            |))))
-      | _, _, _ => M.impossible
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_sign_positive :
@@ -652,11 +601,11 @@ Module f32.
     *)
     Definition is_sign_negative (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Pure.ne
-            (BinOp.Pure.bit_and
+          BinOp.ne (|
+            BinOp.bit_and
               (M.call_closure (|
                 M.get_function (|
                   "core::intrinsics::transmute",
@@ -664,9 +613,10 @@ Module f32.
                 |),
                 [ M.read (| self |) ]
               |))
-              (Value.Integer 2147483648))
-            (Value.Integer 0)))
-      | _, _, _ => M.impossible
+              (Value.Integer IntegerKind.U32 2147483648),
+            Value.Integer IntegerKind.U32 0
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_is_sign_negative :
@@ -674,19 +624,17 @@ Module f32.
     
     (*
         pub const fn next_up(self) -> Self {
-            // We must use strictly integer arithmetic to prevent denormals from
-            // flushing to zero after an arithmetic operation on some platforms.
-            const TINY_BITS: u32 = 0x1; // Smallest positive f32.
-            const CLEAR_SIGN_MASK: u32 = 0x7fff_ffff;
-    
+            // Some targets violate Rust's assumption of IEEE semantics, e.g. by flushing
+            // denormals to zero. This is in general unsound and unsupported, but here
+            // we do our best to still produce the correct result on such targets.
             let bits = self.to_bits();
             if self.is_nan() || bits == Self::INFINITY.to_bits() {
                 return self;
             }
     
-            let abs = bits & CLEAR_SIGN_MASK;
+            let abs = bits & !Self::SIGN_MASK;
             let next_bits = if abs == 0 {
-                TINY_BITS
+                Self::TINY_BITS
             } else if bits == abs {
                 bits + 1
             } else {
@@ -697,7 +645,7 @@ Module f32.
     *)
     Definition next_up (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -725,16 +673,17 @@ Module f32.
                                     [ M.read (| self |) ]
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| bits |))
-                                      (M.call_closure (|
+                                    (BinOp.eq (|
+                                      M.read (| bits |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "f32",
                                           "to_bits",
                                           []
                                         |),
                                         [ M.read (| M.get_constant (| "core::f32::INFINITY" |) |) ]
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -747,9 +696,9 @@ Module f32.
                   |) in
                 let~ abs :=
                   M.alloc (|
-                    BinOp.Pure.bit_and
+                    BinOp.bit_and
                       (M.read (| bits |))
-                      (M.read (| M.get_constant (| "core::f32::next_up::CLEAR_SIGN_MASK" |) |))
+                      (UnOp.not (| M.read (| M.get_constant (| "core::f32::SIGN_MASK" |) |) |))
                   |) in
                 let~ next_bits :=
                   M.copy (|
@@ -761,11 +710,11 @@ Module f32.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| abs |)) (Value.Integer 0)
+                                  BinOp.eq (| M.read (| abs |), Value.Integer IntegerKind.U32 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::f32::next_up::TINY_BITS" |)));
+                            M.get_constant (| "core::f32::TINY_BITS" |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -776,7 +725,7 @@ Module f32.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| bits |)) (M.read (| abs |))
+                                          BinOp.eq (| M.read (| bits |), M.read (| abs |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -784,18 +733,18 @@ Module f32.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
-                                      BinOp.Wrap.add
-                                        Integer.U32
-                                        (M.read (| bits |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.add (|
+                                        M.read (| bits |),
+                                        Value.Integer IntegerKind.U32 1
+                                      |)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Wrap.sub
-                                        Integer.U32
-                                        (M.read (| bits |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.sub (|
+                                        M.read (| bits |),
+                                        Value.Integer IntegerKind.U32 1
+                                      |)
                                     |)))
                               ]
                             |)))
@@ -810,26 +759,24 @@ Module f32.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_next_up : M.IsAssociatedFunction Self "next_up" next_up.
     
     (*
         pub const fn next_down(self) -> Self {
-            // We must use strictly integer arithmetic to prevent denormals from
-            // flushing to zero after an arithmetic operation on some platforms.
-            const NEG_TINY_BITS: u32 = 0x8000_0001; // Smallest (in magnitude) negative f32.
-            const CLEAR_SIGN_MASK: u32 = 0x7fff_ffff;
-    
+            // Some targets violate Rust's assumption of IEEE semantics, e.g. by flushing
+            // denormals to zero. This is in general unsound and unsupported, but here
+            // we do our best to still produce the correct result on such targets.
             let bits = self.to_bits();
             if self.is_nan() || bits == Self::NEG_INFINITY.to_bits() {
                 return self;
             }
     
-            let abs = bits & CLEAR_SIGN_MASK;
+            let abs = bits & !Self::SIGN_MASK;
             let next_bits = if abs == 0 {
-                NEG_TINY_BITS
+                Self::NEG_TINY_BITS
             } else if bits == abs {
                 bits - 1
             } else {
@@ -840,7 +787,7 @@ Module f32.
     *)
     Definition next_down (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.catch_return (|
@@ -868,9 +815,9 @@ Module f32.
                                     [ M.read (| self |) ]
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.Pure.eq
-                                      (M.read (| bits |))
-                                      (M.call_closure (|
+                                    (BinOp.eq (|
+                                      M.read (| bits |),
+                                      M.call_closure (|
                                         M.get_associated_function (|
                                           Ty.path "f32",
                                           "to_bits",
@@ -881,7 +828,8 @@ Module f32.
                                             M.get_constant (| "core::f32::NEG_INFINITY" |)
                                           |)
                                         ]
-                                      |))))
+                                      |)
+                                    |)))
                                 |)
                               |)) in
                           let _ :=
@@ -894,9 +842,9 @@ Module f32.
                   |) in
                 let~ abs :=
                   M.alloc (|
-                    BinOp.Pure.bit_and
+                    BinOp.bit_and
                       (M.read (| bits |))
-                      (M.read (| M.get_constant (| "core::f32::next_down::CLEAR_SIGN_MASK" |) |))
+                      (UnOp.not (| M.read (| M.get_constant (| "core::f32::SIGN_MASK" |) |) |))
                   |) in
                 let~ next_bits :=
                   M.copy (|
@@ -908,11 +856,11 @@ Module f32.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.eq (M.read (| abs |)) (Value.Integer 0)
+                                  BinOp.eq (| M.read (| abs |), Value.Integer IntegerKind.U32 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.get_constant (| "core::f32::next_down::NEG_TINY_BITS" |)));
+                            M.get_constant (| "core::f32::NEG_TINY_BITS" |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.match_operator (|
@@ -923,7 +871,7 @@ Module f32.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| bits |)) (M.read (| abs |))
+                                          BinOp.eq (| M.read (| bits |), M.read (| abs |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -931,18 +879,18 @@ Module f32.
                                         Value.Bool true
                                       |) in
                                     M.alloc (|
-                                      BinOp.Wrap.sub
-                                        Integer.U32
-                                        (M.read (| bits |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.sub (|
+                                        M.read (| bits |),
+                                        Value.Integer IntegerKind.U32 1
+                                      |)
                                     |)));
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Wrap.add
-                                        Integer.U32
-                                        (M.read (| bits |))
-                                        (Value.Integer 1)
+                                      BinOp.Wrap.add (|
+                                        M.read (| bits |),
+                                        Value.Integer IntegerKind.U32 1
+                                      |)
                                     |)))
                               ]
                             |)))
@@ -957,7 +905,7 @@ Module f32.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_next_down : M.IsAssociatedFunction Self "next_down" next_down.
@@ -972,8 +920,8 @@ Module f32.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Wrap.div Integer.Usize (M.read (| UnsupportedLiteral |)) (M.read (| self |))))
-      | _, _, _ => M.impossible
+          BinOp.Wrap.div (| M.read (| UnsupportedLiteral |), M.read (| self |) |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_recip : M.IsAssociatedFunction Self "recip" recip.
@@ -990,19 +938,19 @@ Module f32.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Wrap.mul
-            Integer.Usize
-            (M.read (| self |))
-            (M.read (| M.get_constant (| "core::f32::to_degrees::PIS_IN_180" |) |))))
-      | _, _, _ => M.impossible
+          BinOp.Wrap.mul (|
+            M.read (| self |),
+            M.read (| M.get_constant (| "core::f32::to_degrees::PIS_IN_180" |) |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_degrees : M.IsAssociatedFunction Self "to_degrees" to_degrees.
     
     (*
         pub fn to_radians(self) -> f32 {
-            let value: f32 = consts::PI;
-            self * (value / 180.0f32)
+            const RADS_PER_DEG: f32 = consts::PI / 180.0;
+            self * RADS_PER_DEG
         }
     *)
     Definition to_radians (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1010,19 +958,11 @@ Module f32.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            let~ value := M.copy (| M.get_constant (| "core::f32::consts::PI" |) |) in
-            M.alloc (|
-              BinOp.Wrap.mul
-                Integer.Usize
-                (M.read (| self |))
-                (BinOp.Wrap.div
-                  Integer.Usize
-                  (M.read (| value |))
-                  (M.read (| UnsupportedLiteral |)))
-            |)
+          BinOp.Wrap.mul (|
+            M.read (| self |),
+            M.read (| M.get_constant (| "core::f32::to_radians::RADS_PER_DEG" |) |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_radians : M.IsAssociatedFunction Self "to_radians" to_radians.
@@ -1042,7 +982,7 @@ Module f32.
             M.get_function (| "core::intrinsics::maxnumf32", [] |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_max : M.IsAssociatedFunction Self "max" max.
@@ -1062,7 +1002,7 @@ Module f32.
             M.get_function (| "core::intrinsics::minnumf32", [] |),
             [ M.read (| self |); M.read (| other |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_min : M.IsAssociatedFunction Self "min" min.
@@ -1093,8 +1033,7 @@ Module f32.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use
-                        (M.alloc (| BinOp.Pure.gt (M.read (| self |)) (M.read (| other |)) |)) in
+                      M.use (M.alloc (| BinOp.gt (| M.read (| self |), M.read (| other |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     self));
                 fun γ =>
@@ -1107,7 +1046,7 @@ Module f32.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.gt (M.read (| other |)) (M.read (| self |))
+                                  BinOp.gt (| M.read (| other |), M.read (| self |) |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1122,7 +1061,7 @@ Module f32.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| self |)) (M.read (| other |))
+                                          BinOp.eq (| M.read (| self |), M.read (| other |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1169,10 +1108,7 @@ Module f32.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| self |))
-                                        (M.read (| other |))
+                                      BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)
                                     |)))
                               ]
                             |)))
@@ -1181,7 +1117,7 @@ Module f32.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_maximum : M.IsAssociatedFunction Self "maximum" maximum.
@@ -1213,8 +1149,7 @@ Module f32.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ :=
-                      M.use
-                        (M.alloc (| BinOp.Pure.lt (M.read (| self |)) (M.read (| other |)) |)) in
+                      M.use (M.alloc (| BinOp.lt (| M.read (| self |), M.read (| other |) |) |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     self));
                 fun γ =>
@@ -1227,7 +1162,7 @@ Module f32.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.Pure.lt (M.read (| other |)) (M.read (| self |))
+                                  BinOp.lt (| M.read (| other |), M.read (| self |) |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1242,7 +1177,7 @@ Module f32.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.Pure.eq (M.read (| self |)) (M.read (| other |))
+                                          BinOp.eq (| M.read (| self |), M.read (| other |) |)
                                         |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
@@ -1289,10 +1224,7 @@ Module f32.
                                 fun γ =>
                                   ltac:(M.monadic
                                     (M.alloc (|
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| self |))
-                                        (M.read (| other |))
+                                      BinOp.Wrap.add (| M.read (| self |), M.read (| other |) |)
                                     |)))
                               ]
                             |)))
@@ -1301,32 +1233,49 @@ Module f32.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_minimum : M.IsAssociatedFunction Self "minimum" minimum.
     
     (*
         pub fn midpoint(self, other: f32) -> f32 {
-            const LO: f32 = f32::MIN_POSITIVE * 2.;
-            const HI: f32 = f32::MAX / 2.;
+            cfg_if! {
+                if #[cfg(any(
+                        target_arch = "x86_64",
+                        target_arch = "aarch64",
+                        all(any(target_arch="riscv32", target_arch= "riscv64"), target_feature="d"),
+                        all(target_arch = "arm", target_feature="vfp2"),
+                        target_arch = "wasm32",
+                        target_arch = "wasm64",
+                    ))] {
+                    // whitelist the faster implementation to targets that have known good 64-bit float
+                    // implementations. Falling back to the branchy code on targets that don't have
+                    // 64-bit hardware floats or buggy implementations.
+                    // see: https://github.com/rust-lang/rust/pull/121062#issuecomment-2123408114
+                    ((f64::from(self) + f64::from(other)) / 2.0) as f32
+                } else {
+                    const LO: f32 = f32::MIN_POSITIVE * 2.;
+                    const HI: f32 = f32::MAX / 2.;
     
-            let (a, b) = (self, other);
-            let abs_a = a.abs_private();
-            let abs_b = b.abs_private();
+                    let (a, b) = (self, other);
+                    let abs_a = a.abs_private();
+                    let abs_b = b.abs_private();
     
-            if abs_a <= HI && abs_b <= HI {
-                // Overflow is impossible
-                (a + b) / 2.
-            } else if abs_a < LO {
-                // Not safe to halve a
-                a + (b / 2.)
-            } else if abs_b < LO {
-                // Not safe to halve b
-                (a / 2.) + b
-            } else {
-                // Not safe to halve a and b
-                (a / 2.) + (b / 2.)
+                    if abs_a <= HI && abs_b <= HI {
+                        // Overflow is impossible
+                        (a + b) / 2.
+                    } else if abs_a < LO {
+                        // Not safe to halve `a` (would underflow)
+                        a + (b / 2.)
+                    } else if abs_b < LO {
+                        // Not safe to halve `b` (would underflow)
+                        (a / 2.) + b
+                    } else {
+                        // Safe to halve `a` and `b`
+                        (a / 2.) + (b / 2.)
+                    }
+                }
             }
         }
     *)
@@ -1336,142 +1285,33 @@ Module f32.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          M.read (|
-            M.match_operator (|
-              M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let a := M.copy (| γ0_0 |) in
-                    let b := M.copy (| γ0_1 |) in
-                    let~ abs_a :=
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "f32", "abs_private", [] |),
-                          [ M.read (| a |) ]
-                        |)
-                      |) in
-                    let~ abs_b :=
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (| Ty.path "f32", "abs_private", [] |),
-                          [ M.read (| b |) ]
-                        |)
-                      |) in
-                    M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  LogicalOp.and (|
-                                    BinOp.Pure.le
-                                      (M.read (| abs_a |))
-                                      (M.read (| M.get_constant (| "core::f32::midpoint::HI" |) |)),
-                                    ltac:(M.monadic
-                                      (BinOp.Pure.le
-                                        (M.read (| abs_b |))
-                                        (M.read (|
-                                          M.get_constant (| "core::f32::midpoint::HI" |)
-                                        |))))
-                                  |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              BinOp.Wrap.div
-                                Integer.Usize
-                                (BinOp.Wrap.add Integer.Usize (M.read (| a |)) (M.read (| b |)))
-                                (M.read (| UnsupportedLiteral |))
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              M.alloc (| Value.Tuple [] |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (M.alloc (|
-                                          BinOp.Pure.lt
-                                            (M.read (| abs_a |))
-                                            (M.read (|
-                                              M.get_constant (| "core::f32::midpoint::LO" |)
-                                            |))
-                                        |)) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ |),
-                                        Value.Bool true
-                                      |) in
-                                    M.alloc (|
-                                      BinOp.Wrap.add
-                                        Integer.Usize
-                                        (M.read (| a |))
-                                        (BinOp.Wrap.div
-                                          Integer.Usize
-                                          (M.read (| b |))
-                                          (M.read (| UnsupportedLiteral |)))
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  BinOp.Pure.lt
-                                                    (M.read (| abs_b |))
-                                                    (M.read (|
-                                                      M.get_constant (| "core::f32::midpoint::LO" |)
-                                                    |))
-                                                |)) in
-                                            let _ :=
-                                              M.is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            M.alloc (|
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (BinOp.Wrap.div
-                                                  Integer.Usize
-                                                  (M.read (| a |))
-                                                  (M.read (| UnsupportedLiteral |)))
-                                                (M.read (| b |))
-                                            |)));
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (M.alloc (|
-                                              BinOp.Wrap.add
-                                                Integer.Usize
-                                                (BinOp.Wrap.div
-                                                  Integer.Usize
-                                                  (M.read (| a |))
-                                                  (M.read (| UnsupportedLiteral |)))
-                                                (BinOp.Wrap.div
-                                                  Integer.Usize
-                                                  (M.read (| b |))
-                                                  (M.read (| UnsupportedLiteral |)))
-                                            |)))
-                                      ]
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)))
-              ]
-            |)
-          |)))
-      | _, _, _ => M.impossible
+          M.rust_cast
+            (BinOp.Wrap.div (|
+              BinOp.Wrap.add (|
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.path "f64",
+                    [ Ty.path "f32" ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |),
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.path "f64",
+                    [ Ty.path "f32" ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| other |) ]
+                |)
+              |),
+              M.read (| UnsupportedLiteral |)
+            |))))
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_midpoint : M.IsAssociatedFunction Self "midpoint" midpoint.
@@ -1501,7 +1341,7 @@ Module f32.
             |),
             [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_int_unchecked :
@@ -1510,76 +1350,19 @@ Module f32.
     (*
         pub const fn to_bits(self) -> u32 {
             // SAFETY: `u32` is a plain old datatype so we can always transmute to it.
-            // ...sorta.
-            //
-            // It turns out that at runtime, it is possible for a floating point number
-            // to be subject to a floating point mode that alters nonzero subnormal numbers
-            // to zero on reads and writes, aka "denormals are zero" and "flush to zero".
-            // This is not a problem per se, but at least one tier2 platform for Rust
-            // actually exhibits this behavior by default.
-            //
-            // In addition, on x86 targets with SSE or SSE2 disabled and the x87 FPU enabled,
-            // i.e. not soft-float, the way Rust does parameter passing can actually alter
-            // a number that is "not infinity" to have the same exponent as infinity,
-            // in a slightly unpredictable manner.
-            //
-            // And, of course evaluating to a NaN value is fairly nondeterministic.
-            // More precisely: when NaN should be returned is knowable, but which NaN?
-            // So far that's defined by a combination of LLVM and the CPU, not Rust.
-            // This function, however, allows observing the bitstring of a NaN,
-            // thus introspection on CTFE.
-            //
-            // In order to preserve, at least for the moment, const-to-runtime equivalence,
-            // we reject any of these possible situations from happening.
-            #[rustc_const_unstable(feature = "const_float_bits_conv", issue = "72447")]
-            const fn ct_f32_to_u32(ct: f32) -> u32 {
-                match ct.classify() {
-                    FpCategory::Nan => {
-                        panic!("const-eval error: cannot use f32::to_bits on a NaN")
-                    }
-                    FpCategory::Subnormal => {
-                        panic!("const-eval error: cannot use f32::to_bits on a subnormal number")
-                    }
-                    FpCategory::Infinite | FpCategory::Normal | FpCategory::Zero => {
-                        // SAFETY: We have a normal floating point number. Now we transmute, i.e. do a bitcopy.
-                        unsafe { mem::transmute::<f32, u32>(ct) }
-                    }
-                }
-            }
-    
-            #[inline(always)] // See https://github.com/rust-lang/compiler-builtins/issues/491
-            fn rt_f32_to_u32(x: f32) -> u32 {
-                // SAFETY: `u32` is a plain old datatype so we can always... uh...
-                // ...look, just pretend you forgot what you just read.
-                // Stability concerns.
-                unsafe { mem::transmute(x) }
-            }
-            // SAFETY: We use internal implementations that either always work or fail at compile time.
-            unsafe { intrinsics::const_eval_select((self,), ct_f32_to_u32, rt_f32_to_u32) }
+            unsafe { mem::transmute(self) }
         }
     *)
     Definition to_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
-            M.get_function (|
-              "core::intrinsics::const_eval_select",
-              [
-                Ty.tuple [ Ty.path "f32" ];
-                Ty.function [ Ty.path "f32" ] (Ty.path "u32");
-                Ty.function [ Ty.path "f32" ] (Ty.path "u32");
-                Ty.path "u32"
-              ]
-            |),
-            [
-              Value.Tuple [ M.read (| self |) ];
-              M.get_associated_function (| Self, "ct_f32_to_u32.to_bits", [] |);
-              M.get_associated_function (| Self, "rt_f32_to_u32.to_bits", [] |)
-            ]
+            M.get_function (| "core::intrinsics::transmute", [ Ty.path "f32"; Ty.path "u32" ] |),
+            [ M.read (| self |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_bits : M.IsAssociatedFunction Self "to_bits" to_bits.
@@ -1587,78 +1370,20 @@ Module f32.
     (*
         pub const fn from_bits(v: u32) -> Self {
             // It turns out the safety issues with sNaN were overblown! Hooray!
-            // SAFETY: `u32` is a plain old datatype so we can always transmute from it
-            // ...sorta.
-            //
-            // It turns out that at runtime, it is possible for a floating point number
-            // to be subject to floating point modes that alter nonzero subnormal numbers
-            // to zero on reads and writes, aka "denormals are zero" and "flush to zero".
-            // This is not a problem usually, but at least one tier2 platform for Rust
-            // actually exhibits this behavior by default: thumbv7neon
-            // aka "the Neon FPU in AArch32 state"
-            //
-            // In addition, on x86 targets with SSE or SSE2 disabled and the x87 FPU enabled,
-            // i.e. not soft-float, the way Rust does parameter passing can actually alter
-            // a number that is "not infinity" to have the same exponent as infinity,
-            // in a slightly unpredictable manner.
-            //
-            // And, of course evaluating to a NaN value is fairly nondeterministic.
-            // More precisely: when NaN should be returned is knowable, but which NaN?
-            // So far that's defined by a combination of LLVM and the CPU, not Rust.
-            // This function, however, allows observing the bitstring of a NaN,
-            // thus introspection on CTFE.
-            //
-            // In order to preserve, at least for the moment, const-to-runtime equivalence,
-            // reject any of these possible situations from happening.
-            #[rustc_const_unstable(feature = "const_float_bits_conv", issue = "72447")]
-            const fn ct_u32_to_f32(ct: u32) -> f32 {
-                match f32::classify_bits(ct) {
-                    FpCategory::Subnormal => {
-                        panic!("const-eval error: cannot use f32::from_bits on a subnormal number")
-                    }
-                    FpCategory::Nan => {
-                        panic!("const-eval error: cannot use f32::from_bits on NaN")
-                    }
-                    FpCategory::Infinite | FpCategory::Normal | FpCategory::Zero => {
-                        // SAFETY: It's not a frumious number
-                        unsafe { mem::transmute::<u32, f32>(ct) }
-                    }
-                }
-            }
-    
-            #[inline(always)] // See https://github.com/rust-lang/compiler-builtins/issues/491
-            fn rt_u32_to_f32(x: u32) -> f32 {
-                // SAFETY: `u32` is a plain old datatype so we can always... uh...
-                // ...look, just pretend you forgot what you just read.
-                // Stability concerns.
-                unsafe { mem::transmute(x) }
-            }
-            // SAFETY: We use internal implementations that either always work or fail at compile time.
-            unsafe { intrinsics::const_eval_select((v,), ct_u32_to_f32, rt_u32_to_f32) }
+            // SAFETY: `u32` is a plain old datatype so we can always transmute from it.
+            unsafe { mem::transmute(v) }
         }
     *)
     Definition from_bits (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ v ] =>
+      | [], [], [ v ] =>
         ltac:(M.monadic
           (let v := M.alloc (| v |) in
           M.call_closure (|
-            M.get_function (|
-              "core::intrinsics::const_eval_select",
-              [
-                Ty.tuple [ Ty.path "u32" ];
-                Ty.function [ Ty.path "u32" ] (Ty.path "f32");
-                Ty.function [ Ty.path "u32" ] (Ty.path "f32");
-                Ty.path "f32"
-              ]
-            |),
-            [
-              Value.Tuple [ M.read (| v |) ];
-              M.get_associated_function (| Self, "ct_u32_to_f32.from_bits", [] |);
-              M.get_associated_function (| Self, "rt_u32_to_f32.from_bits", [] |)
-            ]
+            M.get_function (| "core::intrinsics::transmute", [ Ty.path "u32"; Ty.path "f32" ] |),
+            [ M.read (| v |) ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_bits : M.IsAssociatedFunction Self "from_bits" from_bits.
@@ -1670,7 +1395,7 @@ Module f32.
     *)
     Definition to_be_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1682,7 +1407,7 @@ Module f32.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_be_bytes : M.IsAssociatedFunction Self "to_be_bytes" to_be_bytes.
@@ -1694,7 +1419,7 @@ Module f32.
     *)
     Definition to_le_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1706,7 +1431,7 @@ Module f32.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_le_bytes : M.IsAssociatedFunction Self "to_le_bytes" to_le_bytes.
@@ -1718,7 +1443,7 @@ Module f32.
     *)
     Definition to_ne_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ self ] =>
+      | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.call_closure (|
@@ -1730,7 +1455,7 @@ Module f32.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_to_ne_bytes : M.IsAssociatedFunction Self "to_ne_bytes" to_ne_bytes.
@@ -1742,7 +1467,7 @@ Module f32.
     *)
     Definition from_be_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ bytes ] =>
+      | [], [], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
@@ -1754,7 +1479,7 @@ Module f32.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_be_bytes :
@@ -1767,7 +1492,7 @@ Module f32.
     *)
     Definition from_le_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ bytes ] =>
+      | [], [], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
@@ -1779,7 +1504,7 @@ Module f32.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_le_bytes :
@@ -1792,7 +1517,7 @@ Module f32.
     *)
     Definition from_ne_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ bytes ] =>
+      | [], [], [ bytes ] =>
         ltac:(M.monadic
           (let bytes := M.alloc (| bytes |) in
           M.call_closure (|
@@ -1804,7 +1529,7 @@ Module f32.
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_from_ne_bytes :
@@ -1870,23 +1595,27 @@ Module f32.
               let β := left in
               M.write (|
                 β,
-                BinOp.Pure.bit_xor
+                BinOp.bit_xor
                   (M.read (| β |))
                   (M.rust_cast
-                    (BinOp.Wrap.shr
-                      (M.rust_cast (BinOp.Wrap.shr (M.read (| left |)) (Value.Integer 31)))
-                      (Value.Integer 1)))
+                    (BinOp.Wrap.shr (|
+                      M.rust_cast
+                        (BinOp.Wrap.shr (| M.read (| left |), Value.Integer IntegerKind.I32 31 |)),
+                      Value.Integer IntegerKind.I32 1
+                    |)))
               |) in
             let~ _ :=
               let β := right in
               M.write (|
                 β,
-                BinOp.Pure.bit_xor
+                BinOp.bit_xor
                   (M.read (| β |))
                   (M.rust_cast
-                    (BinOp.Wrap.shr
-                      (M.rust_cast (BinOp.Wrap.shr (M.read (| right |)) (Value.Integer 31)))
-                      (Value.Integer 1)))
+                    (BinOp.Wrap.shr (|
+                      M.rust_cast
+                        (BinOp.Wrap.shr (| M.read (| right |), Value.Integer IntegerKind.I32 31 |)),
+                      Value.Integer IntegerKind.I32 1
+                    |)))
               |) in
             M.alloc (|
               M.call_closure (|
@@ -1895,7 +1624,7 @@ Module f32.
               |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_total_cmp : M.IsAssociatedFunction Self "total_cmp" total_cmp.
@@ -1929,7 +1658,7 @@ Module f32.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.Pure.not (BinOp.Pure.le (M.read (| min |)) (M.read (| max |)))
+                            UnOp.not (| BinOp.le (| M.read (| min |), M.read (| max |) |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1944,40 +1673,36 @@ Module f32.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "min > max, or either was NaN. min = "
-                                          |);
-                                          M.read (| Value.String ", max = " |)
-                                        ]
-                                    |));
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_debug",
-                                              [ Ty.path "f32" ]
-                                            |),
-                                            [ min ]
-                                          |);
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::fmt::rt::Argument",
-                                              "new_debug",
-                                              [ Ty.path "f32" ]
-                                            |),
-                                            [ max ]
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "min > max, or either was NaN. min = "
+                                        |);
+                                        M.read (| Value.String ", max = " |)
+                                      ]
+                                  |);
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [ Ty.path "f32" ]
+                                          |),
+                                          [ min ]
+                                        |);
+                                        M.call_closure (|
+                                          M.get_associated_function (|
+                                            Ty.path "core::fmt::rt::Argument",
+                                            "new_debug",
+                                            [ Ty.path "f32" ]
+                                          |),
+                                          [ max ]
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -1994,8 +1719,7 @@ Module f32.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (| BinOp.Pure.lt (M.read (| self |)) (M.read (| min |)) |)) in
+                        M.use (M.alloc (| BinOp.lt (| M.read (| self |), M.read (| min |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ := M.write (| self, M.read (| min |) |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -2009,8 +1733,7 @@ Module f32.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (| BinOp.Pure.gt (M.read (| self |)) (M.read (| max |)) |)) in
+                        M.use (M.alloc (| BinOp.gt (| M.read (| self |), M.read (| max |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ := M.write (| self, M.read (| max |) |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -2019,7 +1742,7 @@ Module f32.
               |) in
             self
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom AssociatedFunction_clamp : M.IsAssociatedFunction Self "clamp" clamp.

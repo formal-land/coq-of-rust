@@ -11,11 +11,11 @@ Module str.
           |))).
     
     Definition value_UNROLL_INNER : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer 4 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
     
     (*
     pub(super) fn count_chars(s: &str) -> usize {
-        if s.len() < USIZE_SIZE * UNROLL_INNER {
+        if cfg!(feature = "optimize_for_size") || s.len() < USIZE_SIZE * UNROLL_INNER {
             // Avoid entering the optimized implementation for strings where the
             // difference is not likely to matter, or where it might even be slower.
             // That said, a ton of thought was not spent on the particular threshold
@@ -40,15 +40,20 @@ Module str.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.Pure.lt
-                            (M.call_closure (|
-                              M.get_associated_function (| Ty.path "str", "len", [] |),
-                              [ M.read (| s |) ]
-                            |))
-                            (BinOp.Wrap.mul
-                              Integer.Usize
-                              (M.read (| M.get_constant (| "core::str::count::USIZE_SIZE" |) |))
-                              (M.read (| M.get_constant (| "core::str::count::UNROLL_INNER" |) |)))
+                          LogicalOp.or (|
+                            Value.Bool false,
+                            ltac:(M.monadic
+                              (BinOp.lt (|
+                                M.call_closure (|
+                                  M.get_associated_function (| Ty.path "str", "len", [] |),
+                                  [ M.read (| s |) ]
+                                |),
+                                BinOp.Wrap.mul (|
+                                  M.read (| M.get_constant (| "core::str::count::USIZE_SIZE" |) |),
+                                  M.read (| M.get_constant (| "core::str::count::UNROLL_INNER" |) |)
+                                |)
+                              |)))
+                          |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
@@ -73,7 +78,7 @@ Module str.
               ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_count_chars : M.IsFunction "core::str::count::count_chars" count_chars.
@@ -209,8 +214,8 @@ Module str.
                                                   [ M.read (| body |) ]
                                                 |),
                                                 ltac:(M.monadic
-                                                  (BinOp.Pure.gt
-                                                    (M.call_closure (|
+                                                  (BinOp.gt (|
+                                                    M.call_closure (|
                                                       M.get_associated_function (|
                                                         Ty.apply
                                                           (Ty.path "slice")
@@ -220,16 +225,17 @@ Module str.
                                                         []
                                                       |),
                                                       [ M.read (| head |) ]
-                                                    |))
-                                                    (M.read (|
+                                                    |),
+                                                    M.read (|
                                                       M.get_constant (|
                                                         "core::str::count::USIZE_SIZE"
                                                       |)
-                                                    |))))
+                                                    |)
+                                                  |)))
                                               |),
                                               ltac:(M.monadic
-                                                (BinOp.Pure.gt
-                                                  (M.call_closure (|
+                                                (BinOp.gt (|
+                                                  M.call_closure (|
                                                     M.get_associated_function (|
                                                       Ty.apply
                                                         (Ty.path "slice")
@@ -239,12 +245,13 @@ Module str.
                                                       []
                                                     |),
                                                     [ M.read (| tail |) ]
-                                                  |))
-                                                  (M.read (|
+                                                  |),
+                                                  M.read (|
                                                     M.get_constant (|
                                                       "core::str::count::USIZE_SIZE"
                                                     |)
-                                                  |))))
+                                                  |)
+                                                |)))
                                             |)
                                           ]
                                         |)
@@ -283,22 +290,22 @@ Module str.
                           |) in
                         let~ total :=
                           M.alloc (|
-                            BinOp.Wrap.add
-                              Integer.Usize
-                              (M.call_closure (|
+                            BinOp.Wrap.add (|
+                              M.call_closure (|
                                 M.get_function (|
                                   "core::str::count::char_count_general_case",
                                   []
                                 |),
                                 [ M.read (| head |) ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_function (|
                                   "core::str::count::char_count_general_case",
                                   []
                                 |),
                                 [ M.read (| tail |) ]
-                              |))
+                              |)
+                            |)
                           |) in
                         let~ _ :=
                           M.use
@@ -377,7 +384,10 @@ Module str.
                                                       0
                                                     |) in
                                                   let chunk := M.copy (| γ0_0 |) in
-                                                  let~ counts := M.alloc (| Value.Integer 0 |) in
+                                                  let~ counts :=
+                                                    M.alloc (|
+                                                      Value.Integer IntegerKind.Usize 0
+                                                    |) in
                                                   M.match_operator (|
                                                     M.alloc (|
                                                       M.call_closure (|
@@ -425,7 +435,11 @@ Module str.
                                                                             [
                                                                               Ty.apply
                                                                                 (Ty.path "array")
-                                                                                [ Value.Integer 4 ]
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    4
+                                                                                ]
                                                                                 [ Ty.path "usize" ]
                                                                             ]
                                                                         ],
@@ -458,6 +472,7 @@ Module str.
                                                                                             "array")
                                                                                           [
                                                                                             Value.Integer
+                                                                                              IntegerKind.Usize
                                                                                               4
                                                                                           ]
                                                                                           [
@@ -515,6 +530,7 @@ Module str.
                                                                                                       "array")
                                                                                                     [
                                                                                                       Value.Integer
+                                                                                                        IntegerKind.Usize
                                                                                                         4
                                                                                                     ]
                                                                                                     [
@@ -611,12 +627,11 @@ Module str.
                                                                                                                 counts in
                                                                                                               M.write (|
                                                                                                                 β,
-                                                                                                                BinOp.Wrap.add
-                                                                                                                  Integer.Usize
-                                                                                                                  (M.read (|
+                                                                                                                BinOp.Wrap.add (|
+                                                                                                                  M.read (|
                                                                                                                     β
-                                                                                                                  |))
-                                                                                                                  (M.call_closure (|
+                                                                                                                  |),
+                                                                                                                  M.call_closure (|
                                                                                                                     M.get_function (|
                                                                                                                       "core::str::count::contains_non_continuation_byte",
                                                                                                                       []
@@ -626,7 +641,8 @@ Module str.
                                                                                                                         word
                                                                                                                       |)
                                                                                                                     ]
-                                                                                                                  |))
+                                                                                                                  |)
+                                                                                                                |)
                                                                                                               |) in
                                                                                                             M.alloc (|
                                                                                                               Value.Tuple
@@ -653,16 +669,16 @@ Module str.
                                                             let β := total in
                                                             M.write (|
                                                               β,
-                                                              BinOp.Wrap.add
-                                                                Integer.Usize
-                                                                (M.read (| β |))
-                                                                (M.call_closure (|
+                                                              BinOp.Wrap.add (|
+                                                                M.read (| β |),
+                                                                M.call_closure (|
                                                                   M.get_function (|
                                                                     "core::str::count::sum_bytes_in_usize",
                                                                     []
                                                                   |),
                                                                   [ M.read (| counts |) ]
-                                                                |))
+                                                                |)
+                                                              |)
                                                             |) in
                                                           M.match_operator (|
                                                             M.alloc (| Value.Tuple [] |),
@@ -672,8 +688,8 @@ Module str.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        UnOp.Pure.not
-                                                                          (M.call_closure (|
+                                                                        UnOp.not (|
+                                                                          M.call_closure (|
                                                                             M.get_associated_function (|
                                                                               Ty.apply
                                                                                 (Ty.path "slice")
@@ -684,7 +700,8 @@ Module str.
                                                                             |),
                                                                             [ M.read (| remainder |)
                                                                             ]
-                                                                          |))
+                                                                          |)
+                                                                        |)
                                                                       |)) in
                                                                   let _ :=
                                                                     M.is_constant_or_break_match (|
@@ -696,7 +713,9 @@ Module str.
                                                                       M.read (|
                                                                         let~ counts :=
                                                                           M.alloc (|
-                                                                            Value.Integer 0
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              0
                                                                           |) in
                                                                         let~ _ :=
                                                                           M.use
@@ -805,12 +824,11 @@ Module str.
                                                                                                       counts in
                                                                                                     M.write (|
                                                                                                       β,
-                                                                                                      BinOp.Wrap.add
-                                                                                                        Integer.Usize
-                                                                                                        (M.read (|
+                                                                                                      BinOp.Wrap.add (|
+                                                                                                        M.read (|
                                                                                                           β
-                                                                                                        |))
-                                                                                                        (M.call_closure (|
+                                                                                                        |),
+                                                                                                        M.call_closure (|
                                                                                                           M.get_function (|
                                                                                                             "core::str::count::contains_non_continuation_byte",
                                                                                                             []
@@ -820,7 +838,8 @@ Module str.
                                                                                                               word
                                                                                                             |)
                                                                                                           ]
-                                                                                                        |))
+                                                                                                        |)
+                                                                                                      |)
                                                                                                     |) in
                                                                                                   M.alloc (|
                                                                                                     Value.Tuple
@@ -839,10 +858,9 @@ Module str.
                                                                           let β := total in
                                                                           M.write (|
                                                                             β,
-                                                                            BinOp.Wrap.add
-                                                                              Integer.Usize
-                                                                              (M.read (| β |))
-                                                                              (M.call_closure (|
+                                                                            BinOp.Wrap.add (|
+                                                                              M.read (| β |),
+                                                                              M.call_closure (|
                                                                                 M.get_function (|
                                                                                   "core::str::count::sum_bytes_in_usize",
                                                                                   []
@@ -852,7 +870,8 @@ Module str.
                                                                                     counts
                                                                                   |)
                                                                                 ]
-                                                                              |))
+                                                                              |)
+                                                                            |)
                                                                           |) in
                                                                         M.break (||)
                                                                       |)
@@ -876,14 +895,14 @@ Module str.
                 |)
               |)))
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_do_count_chars : M.IsFunction "core::str::count::do_count_chars" do_count_chars.
     
     Module do_count_chars.
       Definition value_CHUNK_SIZE : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Integer 192 |))).
+        M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 192 |))).
     End do_count_chars.
     
     (*
@@ -901,14 +920,14 @@ Module str.
       | [], [], [ w ] =>
         ltac:(M.monadic
           (let w := M.alloc (| w |) in
-          BinOp.Pure.bit_and
-            (BinOp.Pure.bit_or
-              (BinOp.Wrap.shr (UnOp.Pure.not (M.read (| w |))) (Value.Integer 7))
-              (BinOp.Wrap.shr (M.read (| w |)) (Value.Integer 6)))
+          BinOp.bit_and
+            (BinOp.bit_or
+              (BinOp.Wrap.shr (| UnOp.not (| M.read (| w |) |), Value.Integer IntegerKind.I32 7 |))
+              (BinOp.Wrap.shr (| M.read (| w |), Value.Integer IntegerKind.I32 6 |)))
             (M.read (|
               M.get_constant (| "core::str::count::contains_non_continuation_byte::LSB" |)
             |))))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_contains_non_continuation_byte :
@@ -923,7 +942,7 @@ Module str.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "usize", "repeat_u8", [] |),
-                [ Value.Integer 1 ]
+                [ Value.Integer IntegerKind.U8 1 ]
               |)
             |))).
     End contains_non_continuation_byte.
@@ -945,22 +964,22 @@ Module str.
           M.read (|
             let~ pair_sum :=
               M.alloc (|
-                BinOp.Wrap.add
-                  Integer.Usize
-                  (BinOp.Pure.bit_and
+                BinOp.Wrap.add (|
+                  BinOp.bit_and
                     (M.read (| values |))
                     (M.read (|
                       M.get_constant (| "core::str::count::sum_bytes_in_usize::SKIP_BYTES" |)
-                    |)))
-                  (BinOp.Pure.bit_and
-                    (BinOp.Wrap.shr (M.read (| values |)) (Value.Integer 8))
+                    |)),
+                  BinOp.bit_and
+                    (BinOp.Wrap.shr (| M.read (| values |), Value.Integer IntegerKind.I32 8 |))
                     (M.read (|
                       M.get_constant (| "core::str::count::sum_bytes_in_usize::SKIP_BYTES" |)
-                    |)))
+                    |))
+                |)
               |) in
             M.alloc (|
-              BinOp.Wrap.shr
-                (M.call_closure (|
+              BinOp.Wrap.shr (|
+                M.call_closure (|
                   M.get_associated_function (| Ty.path "usize", "wrapping_mul", [] |),
                   [
                     M.read (| pair_sum |);
@@ -968,17 +987,18 @@ Module str.
                       M.get_constant (| "core::str::count::sum_bytes_in_usize::LSB_SHORTS" |)
                     |)
                   ]
-                |))
-                (BinOp.Wrap.mul
-                  Integer.Usize
-                  (BinOp.Wrap.sub
-                    Integer.Usize
-                    (M.read (| M.get_constant (| "core::str::count::USIZE_SIZE" |) |))
-                    (Value.Integer 2))
-                  (Value.Integer 8))
+                |),
+                BinOp.Wrap.mul (|
+                  BinOp.Wrap.sub (|
+                    M.read (| M.get_constant (| "core::str::count::USIZE_SIZE" |) |),
+                    Value.Integer IntegerKind.Usize 2
+                  |),
+                  Value.Integer IntegerKind.Usize 8
+                |)
+              |)
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_sum_bytes_in_usize :
@@ -991,7 +1011,7 @@ Module str.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "usize", "repeat_u16", [] |),
-                [ Value.Integer 1 ]
+                [ Value.Integer IntegerKind.U16 1 ]
               |)
             |))).
       
@@ -1001,7 +1021,7 @@ Module str.
             (M.alloc (|
               M.call_closure (|
                 M.get_associated_function (| Ty.path "usize", "repeat_u16", [] |),
-                [ Value.Integer 255 ]
+                [ Value.Integer IntegerKind.U16 255 ]
               |)
             |))).
     End sum_bytes_in_usize.
@@ -1066,31 +1086,33 @@ Module str.
                       ltac:(M.monadic
                         match γ with
                         | [ α0 ] =>
-                          M.match_operator (|
-                            M.alloc (| α0 |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ := M.read (| γ |) in
-                                  let γ := M.read (| γ |) in
-                                  let byte := M.copy (| γ |) in
-                                  UnOp.Pure.not
-                                    (M.call_closure (|
-                                      M.get_function (|
-                                        "core::str::validations::utf8_is_cont_byte",
-                                        []
-                                      |),
-                                      [ M.read (| byte |) ]
-                                    |))))
-                            ]
-                          |)
-                        | _ => M.impossible (||)
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ := M.read (| γ |) in
+                                    let γ := M.read (| γ |) in
+                                    let byte := M.copy (| γ |) in
+                                    UnOp.not (|
+                                      M.call_closure (|
+                                        M.get_function (|
+                                          "core::str::validations::utf8_is_cont_byte",
+                                          []
+                                        |),
+                                        [ M.read (| byte |) ]
+                                      |)
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
                         end))
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_char_count_general_case :

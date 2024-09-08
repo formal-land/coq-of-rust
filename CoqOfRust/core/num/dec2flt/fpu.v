@@ -9,7 +9,7 @@ Module num.
         Definition set_precision (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           match ε, τ, α with
           | [], [ T ], [] => ltac:(M.monadic (Value.Tuple []))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Function_set_precision :

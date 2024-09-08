@@ -31,7 +31,7 @@ Module slice.
               |),
               [ M.read (| index |); M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -70,7 +70,7 @@ Module slice.
               |),
               [ M.read (| index |); M.read (| self |) ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -84,14 +84,7 @@ Module slice.
     
     (*
     const fn slice_start_index_len_fail(index: usize, len: usize) -> ! {
-        // SAFETY: we are just panicking here
-        unsafe {
-            const_eval_select(
-                (index, len),
-                slice_start_index_len_fail_ct,
-                slice_start_index_len_fail_rt,
-            )
-        }
+        const_eval_select((index, len), slice_start_index_len_fail_ct, slice_start_index_len_fail_rt)
     }
     *)
     Definition slice_start_index_len_fail
@@ -100,7 +93,7 @@ Module slice.
         (α : list Value.t)
         : M :=
       match ε, τ, α with
-      | [ host ], [], [ index; len ] =>
+      | [], [], [ index; len ] =>
         ltac:(M.monadic
           (let index := M.alloc (| index |) in
           let len := M.alloc (| len |) in
@@ -120,7 +113,7 @@ Module slice.
               M.get_function (| "core::slice::index::slice_start_index_len_fail_rt", [] |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_start_index_len_fail :
@@ -147,43 +140,39 @@ Module slice.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (| Value.String "range start index " |);
-                          M.read (| Value.String " out of range for slice of length " |)
-                        ]
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ index ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ len ]
-                          |)
-                        ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.read (| Value.String "range start index " |);
+                        M.read (| Value.String " out of range for slice of length " |)
+                      ]
+                  |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "usize" ]
+                          |),
+                          [ index ]
+                        |);
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "usize" ]
+                          |),
+                          [ len ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_start_index_len_fail_rt :
@@ -202,7 +191,7 @@ Module slice.
         (α : list Value.t)
         : M :=
       match ε, τ, α with
-      | [ host ], [], [ β0; β1 ] =>
+      | [], [], [ β0; β1 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           let β1 := M.alloc (| β1 |) in
@@ -226,17 +215,14 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "slice start index is out of range for slice"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "slice start index is out of range for slice"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -245,7 +231,7 @@ Module slice.
                   |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_start_index_len_fail_ct :
@@ -255,15 +241,12 @@ Module slice.
     
     (*
     const fn slice_end_index_len_fail(index: usize, len: usize) -> ! {
-        // SAFETY: we are just panicking here
-        unsafe {
-            const_eval_select((index, len), slice_end_index_len_fail_ct, slice_end_index_len_fail_rt)
-        }
+        const_eval_select((index, len), slice_end_index_len_fail_ct, slice_end_index_len_fail_rt)
     }
     *)
     Definition slice_end_index_len_fail (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ index; len ] =>
+      | [], [], [ index; len ] =>
         ltac:(M.monadic
           (let index := M.alloc (| index |) in
           let len := M.alloc (| len |) in
@@ -283,7 +266,7 @@ Module slice.
               M.get_function (| "core::slice::index::slice_end_index_len_fail_rt", [] |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_end_index_len_fail :
@@ -310,43 +293,39 @@ Module slice.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (| Value.String "range end index " |);
-                          M.read (| Value.String " out of range for slice of length " |)
-                        ]
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ index ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ len ]
-                          |)
-                        ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.read (| Value.String "range end index " |);
+                        M.read (| Value.String " out of range for slice of length " |)
+                      ]
+                  |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "usize" ]
+                          |),
+                          [ index ]
+                        |);
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "usize" ]
+                          |),
+                          [ len ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_end_index_len_fail_rt :
@@ -363,7 +342,7 @@ Module slice.
         (α : list Value.t)
         : M :=
       match ε, τ, α with
-      | [ host ], [], [ β0; β1 ] =>
+      | [], [], [ β0; β1 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           let β1 := M.alloc (| β1 |) in
@@ -387,16 +366,14 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "slice end index is out of range for slice"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "slice end index is out of range for slice"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -405,7 +382,7 @@ Module slice.
                   |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_end_index_len_fail_ct :
@@ -413,13 +390,12 @@ Module slice.
     
     (*
     const fn slice_index_order_fail(index: usize, end: usize) -> ! {
-        // SAFETY: we are just panicking here
-        unsafe { const_eval_select((index, end), slice_index_order_fail_ct, slice_index_order_fail_rt) }
+        const_eval_select((index, end), slice_index_order_fail_ct, slice_index_order_fail_rt)
     }
     *)
     Definition slice_index_order_fail (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [ host ], [], [ index; end_ ] =>
+      | [], [], [ index; end_ ] =>
         ltac:(M.monadic
           (let index := M.alloc (| index |) in
           let end_ := M.alloc (| end_ |) in
@@ -439,7 +415,7 @@ Module slice.
               M.get_function (| "core::slice::index::slice_index_order_fail_rt", [] |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_index_order_fail :
@@ -466,43 +442,39 @@ Module slice.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (| Value.String "slice index starts at " |);
-                          M.read (| Value.String " but ends at " |)
-                        ]
-                    |));
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ index ]
-                          |);
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.path "core::fmt::rt::Argument",
-                              "new_display",
-                              [ Ty.path "usize" ]
-                            |),
-                            [ end_ ]
-                          |)
-                        ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.read (| Value.String "slice index starts at " |);
+                        M.read (| Value.String " but ends at " |)
+                      ]
+                  |);
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "usize" ]
+                          |),
+                          [ index ]
+                        |);
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::rt::Argument",
+                            "new_display",
+                            [ Ty.path "usize" ]
+                          |),
+                          [ end_ ]
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_index_order_fail_rt :
@@ -519,7 +491,7 @@ Module slice.
         (α : list Value.t)
         : M :=
       match ε, τ, α with
-      | [ host ], [], [ β0; β1 ] =>
+      | [], [], [ β0; β1 ] =>
         ltac:(M.monadic
           (let β0 := M.alloc (| β0 |) in
           let β1 := M.alloc (| β1 |) in
@@ -543,16 +515,14 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  (* Unsize *)
-                                  M.pointer_coercion
-                                    (M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "slice index start is larger than end"
-                                          |)
-                                        ]
-                                    |))
+                                  M.alloc (|
+                                    Value.Array
+                                      [
+                                        M.read (|
+                                          Value.String "slice index start is larger than end"
+                                        |)
+                                      ]
+                                  |)
                                 ]
                               |)
                             ]
@@ -561,7 +531,7 @@ Module slice.
                   |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_index_order_fail_ct :
@@ -578,7 +548,7 @@ Module slice.
         (α : list Value.t)
         : M :=
       match ε, τ, α with
-      | [ host ], [], [] =>
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -586,21 +556,19 @@ Module slice.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [
-                          M.read (|
-                            Value.String "attempted to index slice from after maximum usize"
-                          |)
-                        ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [
+                        M.read (|
+                          Value.String "attempted to index slice from after maximum usize"
+                        |)
+                      ]
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_start_index_overflow_fail :
@@ -619,7 +587,7 @@ Module slice.
         (α : list Value.t)
         : M :=
       match ε, τ, α with
-      | [ host ], [], [] =>
+      | [], [], [] =>
         ltac:(M.monadic
           (M.call_closure (|
             M.get_function (| "core::panicking::panic_fmt", [] |),
@@ -627,23 +595,178 @@ Module slice.
               M.call_closure (|
                 M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
                 [
-                  (* Unsize *)
-                  M.pointer_coercion
-                    (M.alloc (|
-                      Value.Array
-                        [ M.read (| Value.String "attempted to index slice up to maximum usize" |) ]
-                    |))
+                  M.alloc (|
+                    Value.Array
+                      [ M.read (| Value.String "attempted to index slice up to maximum usize" |) ]
+                  |)
                 ]
               |)
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_slice_end_index_overflow_fail :
       M.IsFunction
         "core::slice::index::slice_end_index_overflow_fail"
         slice_end_index_overflow_fail.
+    
+    (*
+    const unsafe fn get_noubcheck<T>(ptr: *const [T], index: usize) -> *const T {
+        let ptr = ptr as *const T;
+        // SAFETY: The caller already checked these preconditions
+        unsafe { crate::intrinsics::offset(ptr, index) }
+    }
+    *)
+    Definition get_noubcheck (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ ptr; index ] =>
+        ltac:(M.monadic
+          (let ptr := M.alloc (| ptr |) in
+          let index := M.alloc (| index |) in
+          M.read (|
+            let~ ptr := M.alloc (| M.rust_cast (M.read (| ptr |)) |) in
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (|
+                  "core::intrinsics::offset",
+                  [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "usize" ]
+                |),
+                [ M.read (| ptr |); M.read (| index |) ]
+              |)
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_get_noubcheck : M.IsFunction "core::slice::index::get_noubcheck" get_noubcheck.
+    
+    (*
+    const unsafe fn get_mut_noubcheck<T>(ptr: *mut [T], index: usize) -> *mut T {
+        let ptr = ptr as *mut T;
+        // SAFETY: The caller already checked these preconditions
+        unsafe { crate::intrinsics::offset(ptr, index) }
+    }
+    *)
+    Definition get_mut_noubcheck (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ ptr; index ] =>
+        ltac:(M.monadic
+          (let ptr := M.alloc (| ptr |) in
+          let index := M.alloc (| index |) in
+          M.read (|
+            let~ ptr := M.alloc (| M.rust_cast (M.read (| ptr |)) |) in
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (|
+                  "core::intrinsics::offset",
+                  [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "usize" ]
+                |),
+                [ M.read (| ptr |); M.read (| index |) ]
+              |)
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_get_mut_noubcheck :
+      M.IsFunction "core::slice::index::get_mut_noubcheck" get_mut_noubcheck.
+    
+    (*
+    const unsafe fn get_offset_len_noubcheck<T>(
+        ptr: *const [T],
+        offset: usize,
+        len: usize,
+    ) -> *const [T] {
+        // SAFETY: The caller already checked these preconditions
+        let ptr = unsafe { get_noubcheck(ptr, offset) };
+        crate::intrinsics::aggregate_raw_ptr(ptr, len)
+    }
+    *)
+    Definition get_offset_len_noubcheck (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ T ], [ ptr; offset; len ] =>
+        ltac:(M.monadic
+          (let ptr := M.alloc (| ptr |) in
+          let offset := M.alloc (| offset |) in
+          let len := M.alloc (| len |) in
+          M.read (|
+            let~ ptr :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "core::slice::index::get_noubcheck", [ T ] |),
+                  [ M.read (| ptr |); M.read (| offset |) ]
+                |)
+              |) in
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (|
+                  "core::intrinsics::aggregate_raw_ptr",
+                  [
+                    Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                    Ty.apply (Ty.path "*const") [] [ T ];
+                    Ty.path "usize"
+                  ]
+                |),
+                [ M.read (| ptr |); M.read (| len |) ]
+              |)
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_get_offset_len_noubcheck :
+      M.IsFunction "core::slice::index::get_offset_len_noubcheck" get_offset_len_noubcheck.
+    
+    (*
+    const unsafe fn get_offset_len_mut_noubcheck<T>(
+        ptr: *mut [T],
+        offset: usize,
+        len: usize,
+    ) -> *mut [T] {
+        // SAFETY: The caller already checked these preconditions
+        let ptr = unsafe { get_mut_noubcheck(ptr, offset) };
+        crate::intrinsics::aggregate_raw_ptr(ptr, len)
+    }
+    *)
+    Definition get_offset_len_mut_noubcheck
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [ T ], [ ptr; offset; len ] =>
+        ltac:(M.monadic
+          (let ptr := M.alloc (| ptr |) in
+          let offset := M.alloc (| offset |) in
+          let len := M.alloc (| len |) in
+          M.read (|
+            let~ ptr :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (| "core::slice::index::get_mut_noubcheck", [ T ] |),
+                  [ M.read (| ptr |); M.read (| offset |) ]
+                |)
+              |) in
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (|
+                  "core::intrinsics::aggregate_raw_ptr",
+                  [
+                    Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ];
+                    Ty.apply (Ty.path "*mut") [] [ T ];
+                    Ty.path "usize"
+                  ]
+                |),
+                [ M.read (| ptr |); M.read (| len |) ]
+              |)
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_get_offset_len_mut_noubcheck :
+      M.IsFunction "core::slice::index::get_offset_len_mut_noubcheck" get_offset_len_mut_noubcheck.
     
     Module private_slice_index.
       (* Trait *)
@@ -747,6 +870,41 @@ Module slice.
             (* Instance *) [].
       End Impl_core_slice_index_private_slice_index_Sealed_for_Tuple_core_ops_range_Bound_usize_core_ops_range_Bound_usize_.
       
+      Module Impl_core_slice_index_private_slice_index_Sealed_for_core_range_Range_usize.
+        Definition Self : Ty.t := Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ].
+        
+        Axiom Implements :
+          M.IsTraitInstance
+            "core::slice::index::private_slice_index::Sealed"
+            Self
+            (* Trait polymorphic types *) []
+            (* Instance *) [].
+      End Impl_core_slice_index_private_slice_index_Sealed_for_core_range_Range_usize.
+      
+      Module Impl_core_slice_index_private_slice_index_Sealed_for_core_range_RangeInclusive_usize.
+        Definition Self : Ty.t :=
+          Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ].
+        
+        Axiom Implements :
+          M.IsTraitInstance
+            "core::slice::index::private_slice_index::Sealed"
+            Self
+            (* Trait polymorphic types *) []
+            (* Instance *) [].
+      End Impl_core_slice_index_private_slice_index_Sealed_for_core_range_RangeInclusive_usize.
+      
+      Module Impl_core_slice_index_private_slice_index_Sealed_for_core_range_RangeFrom_usize.
+        Definition Self : Ty.t :=
+          Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ].
+        
+        Axiom Implements :
+          M.IsTraitInstance
+            "core::slice::index::private_slice_index::Sealed"
+            Self
+            (* Trait polymorphic types *) []
+            (* Instance *) [].
+      End Impl_core_slice_index_private_slice_index_Sealed_for_core_range_RangeFrom_usize.
+      
       Module Impl_core_slice_index_private_slice_index_Sealed_for_core_ops_index_range_IndexRange.
         Definition Self : Ty.t := Ty.path "core::ops::index_range::IndexRange".
         
@@ -771,7 +929,7 @@ Module slice.
       (*
           fn get(self, slice: &[T]) -> Option<&T> {
               // SAFETY: `self` is checked to be in bounds.
-              if self < slice.len() { unsafe { Some(&*self.get_unchecked(slice)) } } else { None }
+              if self < slice.len() { unsafe { Some(&*get_noubcheck(slice, self)) } } else { None }
           }
       *)
       Definition get (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -790,16 +948,17 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| self |))
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.read (| self |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -807,14 +966,8 @@ Module slice.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
-                              M.get_trait_method (|
-                                "core::slice::index::SliceIndex",
-                                Ty.path "usize",
-                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "get_unchecked",
-                                []
-                              |),
-                              [ M.read (| self |); M.read (| slice |) ]
+                              M.get_function (| "core::slice::index::get_noubcheck", [ T ] |),
+                              [ M.read (| slice |); M.read (| self |) ]
                             |)
                           ]
                       |)));
@@ -824,13 +977,17 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           fn get_mut(self, slice: &mut [T]) -> Option<&mut T> {
-              // SAFETY: `self` is checked to be in bounds.
-              if self < slice.len() { unsafe { Some(&mut *self.get_unchecked_mut(slice)) } } else { None }
+              if self < slice.len() {
+                  // SAFETY: `self` is checked to be in bounds.
+                  unsafe { Some(&mut *get_mut_noubcheck(slice, self)) }
+              } else {
+                  None
+              }
           }
       *)
       Definition get_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -849,16 +1006,17 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.lt
-                              (M.read (| self |))
-                              (M.call_closure (|
+                            BinOp.lt (|
+                              M.read (| self |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -866,14 +1024,8 @@ Module slice.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
-                              M.get_trait_method (|
-                                "core::slice::index::SliceIndex",
-                                Ty.path "usize",
-                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "get_unchecked_mut",
-                                []
-                              |),
-                              [ M.read (| self |); M.read (| slice |) ]
+                              M.get_function (| "core::slice::index::get_mut_noubcheck", [ T ] |),
+                              [ M.read (| slice |); M.read (| self |) ]
                             |)
                           ]
                       |)));
@@ -883,22 +1035,25 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           unsafe fn get_unchecked(self, slice: *const [T]) -> *const T {
-              debug_assert_nounwind!(
-                  self < slice.len(),
+              assert_unsafe_precondition!(
+                  check_language_ub,
                   "slice::get_unchecked requires that the index is within the slice",
+                  (this: usize = self, len: usize = slice.len()) => this < len
               );
               // SAFETY: the caller guarantees that `slice` is not dangling, so it
               // cannot be longer than `isize::MAX`. They also guarantee that
               // `self` is in bounds of `slice` so `self` cannot overflow an `isize`,
               // so the call to `add` is safe.
               unsafe {
+                  // Use intrinsics::assume instead of hint::assert_unchecked so that we don't check the
+                  // precondition of this function twice.
                   crate::intrinsics::assume(self < slice.len());
-                  slice.as_ptr().add(self)
+                  get_noubcheck(slice, self)
               }
           }
       *)
@@ -921,73 +1076,41 @@ Module slice.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::ub_checks::check_language_ub", [] |),
+                                []
+                              |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.lt
-                                          (M.read (| self |))
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "*const")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                              "len",
-                                              []
-                                            |),
-                                            [ M.read (| slice |) ]
-                                          |)))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::panicking::panic_nounwind_fmt",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            []
-                                          |),
-                                          [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "slice::get_unchecked requires that the index is within the slice"
-                                                    |)
-                                                  ]
-                                              |))
-                                          ]
-                                        |);
-                                        Value.Bool false
-                                      ]
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)));
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.get_unchecked",
+                                []
+                              |),
+                              [
+                                M.read (| self |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*const")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    "len",
+                                    []
+                                  |),
+                                  [ M.read (| slice |) ]
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
@@ -996,47 +1119,39 @@ Module slice.
                   M.call_closure (|
                     M.get_function (| "core::intrinsics::assume", [] |),
                     [
-                      BinOp.Pure.lt
-                        (M.read (| self |))
-                        (M.call_closure (|
+                      BinOp.lt (|
+                        M.read (| self |),
+                        M.call_closure (|
                           M.get_associated_function (|
                             Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
                             "len",
                             []
                           |),
                           [ M.read (| slice |) ]
-                        |))
+                        |)
+                      |)
                     ]
                   |)
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "add", [] |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                        "as_ptr",
-                        []
-                      |),
-                      [ M.read (| slice |) ]
-                    |);
-                    M.read (| self |)
-                  ]
+                  M.get_function (| "core::slice::index::get_noubcheck", [ T ] |),
+                  [ M.read (| slice |); M.read (| self |) ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           unsafe fn get_unchecked_mut(self, slice: *mut [T]) -> *mut T {
-              debug_assert_nounwind!(
-                  self < slice.len(),
+              assert_unsafe_precondition!(
+                  check_library_ub,
                   "slice::get_unchecked_mut requires that the index is within the slice",
+                  (this: usize = self, len: usize = slice.len()) => this < len
               );
               // SAFETY: see comments for `get_unchecked` above.
-              unsafe { slice.as_mut_ptr().add(self) }
+              unsafe { get_mut_noubcheck(slice, self) }
           }
       *)
       Definition get_unchecked_mut
@@ -1058,94 +1173,52 @@ Module slice.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                []
+                              |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.lt
-                                          (M.read (| self |))
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "*mut")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                              "len",
-                                              []
-                                            |),
-                                            [ M.read (| slice |) ]
-                                          |)))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::panicking::panic_nounwind_fmt",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            []
-                                          |),
-                                          [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "slice::get_unchecked_mut requires that the index is within the slice"
-                                                    |)
-                                                  ]
-                                              |))
-                                          ]
-                                        |);
-                                        Value.Bool false
-                                      ]
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)));
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.get_unchecked_mut",
+                                []
+                              |),
+                              [
+                                M.read (| self |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    "len",
+                                    []
+                                  |),
+                                  [ M.read (| slice |) ]
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                        "as_mut_ptr",
-                        []
-                      |),
-                      [ M.read (| slice |) ]
-                    |);
-                    M.read (| self |)
-                  ]
+                  M.get_function (| "core::slice::index::get_mut_noubcheck", [ T ] |),
+                  [ M.read (| slice |); M.read (| self |) ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1162,7 +1235,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.SubPointer.get_array_field (| M.read (| slice |), self |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -1179,7 +1252,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.SubPointer.get_array_field (| M.read (| slice |), self |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1210,7 +1283,7 @@ Module slice.
           fn get(self, slice: &[T]) -> Option<&[T]> {
               if self.end() <= slice.len() {
                   // SAFETY: `self` is checked to be valid and in bounds above.
-                  unsafe { Some(&*self.get_unchecked(slice)) }
+                  unsafe { Some(&*get_offset_len_noubcheck(slice, self.start(), self.len())) }
               } else {
                   None
               }
@@ -1232,23 +1305,24 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1256,14 +1330,29 @@ Module slice.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
-                              M.get_trait_method (|
-                                "core::slice::index::SliceIndex",
-                                Ty.path "core::ops::index_range::IndexRange",
-                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "get_unchecked",
-                                []
+                              M.get_function (|
+                                "core::slice::index::get_offset_len_noubcheck",
+                                [ T ]
                               |),
-                              [ M.read (| self |); M.read (| slice |) ]
+                              [
+                                M.read (| slice |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ops::index_range::IndexRange",
+                                    "start",
+                                    []
+                                  |),
+                                  [ self ]
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ops::index_range::IndexRange",
+                                    "len",
+                                    []
+                                  |),
+                                  [ self ]
+                                |)
+                              ]
                             |)
                           ]
                       |)));
@@ -1273,14 +1362,14 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           fn get_mut(self, slice: &mut [T]) -> Option<&mut [T]> {
               if self.end() <= slice.len() {
                   // SAFETY: `self` is checked to be valid and in bounds above.
-                  unsafe { Some(&mut *self.get_unchecked_mut(slice)) }
+                  unsafe { Some(&mut *get_offset_len_mut_noubcheck(slice, self.start(), self.len())) }
               } else {
                   None
               }
@@ -1302,23 +1391,24 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -1326,14 +1416,29 @@ Module slice.
                           "core::option::Option::Some"
                           [
                             M.call_closure (|
-                              M.get_trait_method (|
-                                "core::slice::index::SliceIndex",
-                                Ty.path "core::ops::index_range::IndexRange",
-                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "get_unchecked_mut",
-                                []
+                              M.get_function (|
+                                "core::slice::index::get_offset_len_mut_noubcheck",
+                                [ T ]
                               |),
-                              [ M.read (| self |); M.read (| slice |) ]
+                              [
+                                M.read (| slice |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ops::index_range::IndexRange",
+                                    "start",
+                                    []
+                                  |),
+                                  [ self ]
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ops::index_range::IndexRange",
+                                    "len",
+                                    []
+                                  |),
+                                  [ self ]
+                                |)
+                              ]
                             |)
                           ]
                       |)));
@@ -1343,20 +1448,21 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           unsafe fn get_unchecked(self, slice: *const [T]) -> *const [T] {
-              debug_assert_nounwind!(
-                  self.end() <= slice.len(),
-                  "slice::get_unchecked requires that the index is within the slice"
+              assert_unsafe_precondition!(
+                  check_library_ub,
+                  "slice::get_unchecked requires that the index is within the slice",
+                  (end: usize = self.end(), len: usize = slice.len()) => end <= len
               );
               // SAFETY: the caller guarantees that `slice` is not dangling, so it
               // cannot be longer than `isize::MAX`. They also guarantee that
               // `self` is in bounds of `slice` so `self` cannot overflow an `isize`,
               // so the call to `add` is safe.
-              unsafe { ptr::slice_from_raw_parts(slice.as_ptr().add(self.start()), self.len()) }
+              unsafe { get_offset_len_noubcheck(slice, self.start(), self.len()) }
           }
       *)
       Definition get_unchecked
@@ -1378,111 +1484,63 @@ Module slice.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                []
+                              |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.le
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::ops::index_range::IndexRange",
-                                              "end",
-                                              []
-                                            |),
-                                            [ self ]
-                                          |))
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "*const")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                              "len",
-                                              []
-                                            |),
-                                            [ M.read (| slice |) ]
-                                          |)))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::panicking::panic_nounwind_fmt",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            []
-                                          |),
-                                          [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "slice::get_unchecked requires that the index is within the slice"
-                                                    |)
-                                                  ]
-                                              |))
-                                          ]
-                                        |);
-                                        Value.Bool false
-                                      ]
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)));
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.get_unchecked",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ops::index_range::IndexRange",
+                                    "end",
+                                    []
+                                  |),
+                                  [ self ]
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*const")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    "len",
+                                    []
+                                  |),
+                                  [ M.read (| slice |) ]
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::slice_from_raw_parts", [ T ] |),
+                  M.get_function (| "core::slice::index::get_offset_len_noubcheck", [ T ] |),
                   [
+                    M.read (| slice |);
                     M.call_closure (|
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [] [ T ],
-                        "add",
+                        Ty.path "core::ops::index_range::IndexRange",
+                        "start",
                         []
                       |),
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                            "as_ptr",
-                            []
-                          |),
-                          [ M.read (| slice |) ]
-                        |);
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::ops::index_range::IndexRange",
-                            "start",
-                            []
-                          |),
-                          [ self ]
-                        |)
-                      ]
+                      [ self ]
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1496,17 +1554,19 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           unsafe fn get_unchecked_mut(self, slice: *mut [T]) -> *mut [T] {
-              debug_assert_nounwind!(
-                  self.end() <= slice.len(),
+              assert_unsafe_precondition!(
+                  check_library_ub,
                   "slice::get_unchecked_mut requires that the index is within the slice",
+                  (end: usize = self.end(), len: usize = slice.len()) => end <= len
               );
+      
               // SAFETY: see comments for `get_unchecked` above.
-              unsafe { ptr::slice_from_raw_parts_mut(slice.as_mut_ptr().add(self.start()), self.len()) }
+              unsafe { get_offset_len_mut_noubcheck(slice, self.start(), self.len()) }
           }
       *)
       Definition get_unchecked_mut
@@ -1528,107 +1588,63 @@ Module slice.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                []
+                              |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (BinOp.Pure.le
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "core::ops::index_range::IndexRange",
-                                              "end",
-                                              []
-                                            |),
-                                            [ self ]
-                                          |))
-                                          (M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "*mut")
-                                                []
-                                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                              "len",
-                                              []
-                                            |),
-                                            [ M.read (| slice |) ]
-                                          |)))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::panicking::panic_nounwind_fmt",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            []
-                                          |),
-                                          [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "slice::get_unchecked_mut requires that the index is within the slice"
-                                                    |)
-                                                  ]
-                                              |))
-                                          ]
-                                        |);
-                                        Value.Bool false
-                                      ]
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)));
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.get_unchecked_mut",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.path "core::ops::index_range::IndexRange",
+                                    "end",
+                                    []
+                                  |),
+                                  [ self ]
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    "len",
+                                    []
+                                  |),
+                                  [ M.read (| slice |) ]
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                  M.get_function (| "core::slice::index::get_offset_len_mut_noubcheck", [ T ] |),
                   [
+                    M.read (| slice |);
                     M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                            "as_mut_ptr",
-                            []
-                          |),
-                          [ M.read (| slice |) ]
-                        |);
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::ops::index_range::IndexRange",
-                            "start",
-                            []
-                          |),
-                          [ self ]
-                        |)
-                      ]
+                      M.get_associated_function (|
+                        Ty.path "core::ops::index_range::IndexRange",
+                        "start",
+                        []
+                      |),
+                      [ self ]
                     |);
                     M.call_closure (|
                       M.get_associated_function (|
@@ -1642,14 +1658,14 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           fn index(self, slice: &[T]) -> &[T] {
               if self.end() <= slice.len() {
                   // SAFETY: `self` is checked to be valid and in bounds above.
-                  unsafe { &*self.get_unchecked(slice) }
+                  unsafe { &*get_offset_len_noubcheck(slice, self.start(), self.len()) }
               } else {
                   slice_end_index_len_fail(self.end(), slice.len())
               }
@@ -1671,35 +1687,51 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (|
-                            "core::slice::index::SliceIndex",
-                            Ty.path "core::ops::index_range::IndexRange",
-                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                            "get_unchecked",
-                            []
+                          M.get_function (|
+                            "core::slice::index::get_offset_len_noubcheck",
+                            [ T ]
                           |),
-                          [ M.read (| self |); M.read (| slice |) ]
+                          [
+                            M.read (| slice |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::ops::index_range::IndexRange",
+                                "start",
+                                []
+                              |),
+                              [ self ]
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::ops::index_range::IndexRange",
+                                "len",
+                                []
+                              |),
+                              [ self ]
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -1732,14 +1764,14 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           fn index_mut(self, slice: &mut [T]) -> &mut [T] {
               if self.end() <= slice.len() {
                   // SAFETY: `self` is checked to be valid and in bounds above.
-                  unsafe { &mut *self.get_unchecked_mut(slice) }
+                  unsafe { &mut *get_offset_len_mut_noubcheck(slice, self.start(), self.len()) }
               } else {
                   slice_end_index_len_fail(self.end(), slice.len())
               }
@@ -1761,35 +1793,51 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.le
-                              (M.call_closure (|
+                            BinOp.le (|
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.path "core::ops::index_range::IndexRange",
                                   "end",
                                   []
                                 |),
                                 [ self ]
-                              |))
-                              (M.call_closure (|
+                              |),
+                              M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply (Ty.path "slice") [] [ T ],
                                   "len",
                                   []
                                 |),
                                 [ M.read (| slice |) ]
-                              |))
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.call_closure (|
-                          M.get_trait_method (|
-                            "core::slice::index::SliceIndex",
-                            Ty.path "core::ops::index_range::IndexRange",
-                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                            "get_unchecked_mut",
-                            []
+                          M.get_function (|
+                            "core::slice::index::get_offset_len_mut_noubcheck",
+                            [ T ]
                           |),
-                          [ M.read (| self |); M.read (| slice |) ]
+                          [
+                            M.read (| slice |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::ops::index_range::IndexRange",
+                                "start",
+                                []
+                              |),
+                              [ self ]
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::ops::index_range::IndexRange",
+                                "len",
+                                []
+                              |),
+                              [ self ]
+                            |)
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -1822,7 +1870,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -1852,11 +1900,14 @@ Module slice.
       
       (*
           fn get(self, slice: &[T]) -> Option<&[T]> {
-              if self.start > self.end || self.end > slice.len() {
-                  None
-              } else {
+              // Using checked_sub is a safe way to get `SubUnchecked` in MIR
+              if let Some(new_len) = usize::checked_sub(self.end, self.start)
+                  && self.end <= slice.len()
+              {
                   // SAFETY: `self` is checked to be valid and in bounds above.
-                  unsafe { Some(&*self.get_unchecked(slice)) }
+                  unsafe { Some(&*get_offset_len_noubcheck(slice, self.start, new_len)) }
+              } else {
+                  None
               }
           }
       *)
@@ -1874,76 +1925,97 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::ops::range::Range",
+                                  "end"
+                                |)
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::ops::range::Range",
+                                  "start"
+                                |)
+                              |)
+                            ]
+                          |)
+                        |) in
+                      let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::option::Option::Some",
+                          0
+                        |) in
+                      let new_len := M.copy (| γ0_0 |) in
+                      let γ :=
                         M.use
                           (M.alloc (|
-                            LogicalOp.or (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                            BinOp.le (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::ops::range::Range",
+                                  "end"
+                                |)
+                              |),
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  []
+                                |),
+                                [ M.read (| slice |) ]
+                              |)
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::slice::index::get_offset_len_noubcheck",
+                                [ T ]
+                              |),
+                              [
+                                M.read (| slice |);
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "start"
                                   |)
-                                |))
-                                (M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::ops::range::Range",
-                                    "end"
-                                  |)
-                                |)),
-                              ltac:(M.monadic
-                                (BinOp.Pure.gt
-                                  (M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      self,
-                                      "core::ops::range::Range",
-                                      "end"
-                                    |)
-                                  |))
-                                  (M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ T ],
-                                      "len",
-                                      []
-                                    |),
-                                    [ M.read (| slice |) ]
-                                  |))))
-                            |)
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::slice::index::SliceIndex",
-                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "get_unchecked",
-                                []
-                              |),
-                              [ M.read (| self |); M.read (| slice |) ]
+                                |);
+                                M.read (| new_len |)
+                              ]
                             |)
                           ]
-                      |)))
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           fn get_mut(self, slice: &mut [T]) -> Option<&mut [T]> {
-              if self.start > self.end || self.end > slice.len() {
-                  None
-              } else {
+              if let Some(new_len) = usize::checked_sub(self.end, self.start)
+                  && self.end <= slice.len()
+              {
                   // SAFETY: `self` is checked to be valid and in bounds above.
-                  unsafe { Some(&mut *self.get_unchecked_mut(slice)) }
+                  unsafe { Some(&mut *get_offset_len_mut_noubcheck(slice, self.start, new_len)) }
+              } else {
+                  None
               }
           }
       *)
@@ -1961,82 +2033,109 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::ops::range::Range",
+                                  "end"
+                                |)
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::ops::range::Range",
+                                  "start"
+                                |)
+                              |)
+                            ]
+                          |)
+                        |) in
+                      let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::option::Option::Some",
+                          0
+                        |) in
+                      let new_len := M.copy (| γ0_0 |) in
+                      let γ :=
                         M.use
                           (M.alloc (|
-                            LogicalOp.or (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                            BinOp.le (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::ops::range::Range",
+                                  "end"
+                                |)
+                              |),
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  []
+                                |),
+                                [ M.read (| slice |) ]
+                              |)
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::slice::index::get_offset_len_mut_noubcheck",
+                                [ T ]
+                              |),
+                              [
+                                M.read (| slice |);
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::Range",
                                     "start"
                                   |)
-                                |))
-                                (M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::ops::range::Range",
-                                    "end"
-                                  |)
-                                |)),
-                              ltac:(M.monadic
-                                (BinOp.Pure.gt
-                                  (M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      self,
-                                      "core::ops::range::Range",
-                                      "end"
-                                    |)
-                                  |))
-                                  (M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ T ],
-                                      "len",
-                                      []
-                                    |),
-                                    [ M.read (| slice |) ]
-                                  |))))
-                            |)
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::slice::index::SliceIndex",
-                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "get_unchecked_mut",
-                                []
-                              |),
-                              [ M.read (| self |); M.read (| slice |) ]
+                                |);
+                                M.read (| new_len |)
+                              ]
                             |)
                           ]
-                      |)))
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           unsafe fn get_unchecked(self, slice: *const [T]) -> *const [T] {
-              debug_assert_nounwind!(
-                  self.end >= self.start && self.end <= slice.len(),
+              assert_unsafe_precondition!(
+                  check_library_ub,
                   "slice::get_unchecked requires that the range is within the slice",
+                  (
+                      start: usize = self.start,
+                      end: usize = self.end,
+                      len: usize = slice.len()
+                  ) => end >= start && end <= len
               );
+      
               // SAFETY: the caller guarantees that `slice` is not dangling, so it
               // cannot be longer than `isize::MAX`. They also guarantee that
               // `self` is in bounds of `slice` so `self` cannot overflow an `isize`,
               // so the call to `add` is safe and the length calculation cannot overflow.
               unsafe {
-                  let new_len = unchecked_sub(self.end, self.start);
-                  ptr::slice_from_raw_parts(slice.as_ptr().add(self.start), new_len)
+                  // Using the intrinsic avoids a superfluous UB check,
+                  // since the one on this method already checked `end >= start`.
+                  let new_len = crate::intrinsics::unchecked_sub(self.end, self.start);
+                  get_offset_len_noubcheck(slice, self.start, new_len)
               }
           }
       *)
@@ -2059,97 +2158,54 @@ Module slice.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                []
+                              |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                self,
-                                                "core::ops::range::Range",
-                                                "end"
-                                              |)
-                                            |))
-                                            (M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                self,
-                                                "core::ops::range::Range",
-                                                "start"
-                                              |)
-                                            |)),
-                                          ltac:(M.monadic
-                                            (BinOp.Pure.le
-                                              (M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  self,
-                                                  "core::ops::range::Range",
-                                                  "end"
-                                                |)
-                                              |))
-                                              (M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "*const")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                                  "len",
-                                                  []
-                                                |),
-                                                [ M.read (| slice |) ]
-                                              |))))
-                                        |))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::panicking::panic_nounwind_fmt",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            []
-                                          |),
-                                          [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "slice::get_unchecked requires that the range is within the slice"
-                                                    |)
-                                                  ]
-                                              |))
-                                          ]
-                                        |);
-                                        Value.Bool false
-                                      ]
-                                    |)
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.get_unchecked",
+                                []
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "start"
                                   |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)));
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*const")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    "len",
+                                    []
+                                  |),
+                                  [ M.read (| slice |) ]
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
@@ -2177,50 +2233,39 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::slice_from_raw_parts", [ T ] |),
+                  M.get_function (| "core::slice::index::get_offset_len_noubcheck", [ T ] |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "*const") [] [ T ],
-                        "add",
-                        []
-                      |),
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                            "as_ptr",
-                            []
-                          |),
-                          [ M.read (| slice |) ]
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            self,
-                            "core::ops::range::Range",
-                            "start"
-                          |)
-                        |)
-                      ]
+                    M.read (| slice |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::ops::range::Range",
+                        "start"
+                      |)
                     |);
                     M.read (| new_len |)
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           unsafe fn get_unchecked_mut(self, slice: *mut [T]) -> *mut [T] {
-              debug_assert_nounwind!(
-                  self.end >= self.start && self.end <= slice.len(),
+              assert_unsafe_precondition!(
+                  check_library_ub,
                   "slice::get_unchecked_mut requires that the range is within the slice",
+                  (
+                      start: usize = self.start,
+                      end: usize = self.end,
+                      len: usize = slice.len()
+                  ) => end >= start && end <= len
               );
               // SAFETY: see comments for `get_unchecked` above.
               unsafe {
-                  let new_len = unchecked_sub(self.end, self.start);
-                  ptr::slice_from_raw_parts_mut(slice.as_mut_ptr().add(self.start), new_len)
+                  let new_len = crate::intrinsics::unchecked_sub(self.end, self.start);
+                  get_offset_len_mut_noubcheck(slice, self.start, new_len)
               }
           }
       *)
@@ -2243,97 +2288,54 @@ Module slice.
                   [
                     fun γ =>
                       ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                M.get_function (| "core::intrinsics::ub_checks", [] |),
+                                []
+                              |)
+                            |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      UnOp.Pure.not
-                                        (LogicalOp.and (|
-                                          BinOp.Pure.ge
-                                            (M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                self,
-                                                "core::ops::range::Range",
-                                                "end"
-                                              |)
-                                            |))
-                                            (M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                self,
-                                                "core::ops::range::Range",
-                                                "start"
-                                              |)
-                                            |)),
-                                          ltac:(M.monadic
-                                            (BinOp.Pure.le
-                                              (M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  self,
-                                                  "core::ops::range::Range",
-                                                  "end"
-                                                |)
-                                              |))
-                                              (M.call_closure (|
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "*mut")
-                                                    []
-                                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                                  "len",
-                                                  []
-                                                |),
-                                                [ M.read (| slice |) ]
-                                              |))))
-                                        |))
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      M.get_function (|
-                                        "core::panicking::panic_nounwind_fmt",
-                                        []
-                                      |),
-                                      [
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            []
-                                          |),
-                                          [
-                                            (* Unsize *)
-                                            M.pointer_coercion
-                                              (M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String
-                                                        "slice::get_unchecked_mut requires that the range is within the slice"
-                                                    |)
-                                                  ]
-                                              |))
-                                          ]
-                                        |);
-                                        Value.Bool false
-                                      ]
-                                    |)
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.get_unchecked_mut",
+                                []
+                              |),
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "start"
                                   |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |)));
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    "len",
+                                    []
+                                  |),
+                                  [ M.read (| slice |) ]
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
                 |) in
@@ -2361,45 +2363,35 @@ Module slice.
                 |) in
               M.alloc (|
                 M.call_closure (|
-                  M.get_function (| "core::ptr::slice_from_raw_parts_mut", [ T ] |),
+                  M.get_function (| "core::slice::index::get_offset_len_mut_noubcheck", [ T ] |),
                   [
-                    M.call_closure (|
-                      M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "add", [] |),
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                            "as_mut_ptr",
-                            []
-                          |),
-                          [ M.read (| slice |) ]
-                        |);
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            self,
-                            "core::ops::range::Range",
-                            "start"
-                          |)
-                        |)
-                      ]
+                    M.read (| slice |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::ops::range::Range",
+                        "start"
+                      |)
                     |);
                     M.read (| new_len |)
                   ]
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           fn index(self, slice: &[T]) -> &[T] {
-              if self.start > self.end {
-                  slice_index_order_fail(self.start, self.end);
-              } else if self.end > slice.len() {
+              // Using checked_sub is a safe way to get `SubUnchecked` in MIR
+              let Some(new_len) = usize::checked_sub(self.end, self.start) else {
+                  slice_index_order_fail(self.start, self.end)
+              };
+              if self.end > slice.len() {
                   slice_end_index_len_fail(self.end, slice.len());
               }
               // SAFETY: `self` is checked to be valid and in bounds above.
-              unsafe { &*self.get_unchecked(slice) }
+              unsafe { &*get_offset_len_noubcheck(slice, self.start, new_len) }
           }
       *)
       Definition index (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2410,59 +2402,40 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let~ _ :=
-                M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::ops::range::Range",
-                                    "start"
-                                  |)
-                                |))
-                                (M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::ops::range::Range",
-                                    "end"
-                                  |)
-                                |))
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (|
-                          M.never_to_any (|
-                            M.call_closure (|
-                              M.get_function (| "core::slice::index::slice_index_order_fail", [] |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::ops::range::Range",
-                                    "start"
-                                  |)
-                                |);
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::ops::range::Range",
-                                    "end"
-                                  |)
-                                |)
-                              ]
-                            |)
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
+              M.match_operator (|
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::Range",
+                          "end"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::Range",
+                          "start"
+                        |)
+                      |)
+                    ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::option::Option::Some",
+                          0
+                        |) in
+                      let new_len := M.copy (| γ0_0 |) in
+                      let~ _ :=
+                        M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -2470,22 +2443,23 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.gt
-                                        (M.read (|
+                                      BinOp.gt (|
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             self,
                                             "core::ops::range::Range",
                                             "end"
                                           |)
-                                        |))
-                                        (M.call_closure (|
+                                        |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
                                             []
                                           |),
                                           [ M.read (| slice |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2521,34 +2495,42 @@ Module slice.
                                 |)));
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
-                        |)))
-                  ]
-                |) in
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::slice::index::SliceIndex",
-                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                    "get_unchecked",
-                    []
-                  |),
-                  [ M.read (| self |); M.read (| slice |) ]
-                |)
+                        |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::index::get_offset_len_noubcheck",
+                            [ T ]
+                          |),
+                          [
+                            M.read (| slice |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::ops::range::Range",
+                                "start"
+                              |)
+                            |);
+                            M.read (| new_len |)
+                          ]
+                        |)
+                      |)))
+                ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
           fn index_mut(self, slice: &mut [T]) -> &mut [T] {
-              if self.start > self.end {
-                  slice_index_order_fail(self.start, self.end);
-              } else if self.end > slice.len() {
+              let Some(new_len) = usize::checked_sub(self.end, self.start) else {
+                  slice_index_order_fail(self.start, self.end)
+              };
+              if self.end > slice.len() {
                   slice_end_index_len_fail(self.end, slice.len());
               }
               // SAFETY: `self` is checked to be valid and in bounds above.
-              unsafe { &mut *self.get_unchecked_mut(slice) }
+              unsafe { &mut *get_offset_len_mut_noubcheck(slice, self.start, new_len) }
           }
       *)
       Definition index_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2559,59 +2541,40 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (|
-              let~ _ :=
-                M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::ops::range::Range",
-                                    "start"
-                                  |)
-                                |))
-                                (M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::ops::range::Range",
-                                    "end"
-                                  |)
-                                |))
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        M.alloc (|
-                          M.never_to_any (|
-                            M.call_closure (|
-                              M.get_function (| "core::slice::index::slice_index_order_fail", [] |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::ops::range::Range",
-                                    "start"
-                                  |)
-                                |);
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::ops::range::Range",
-                                    "end"
-                                  |)
-                                |)
-                              ]
-                            |)
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
+              M.match_operator (|
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (| Ty.path "usize", "checked_sub", [] |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::Range",
+                          "end"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::Range",
+                          "start"
+                        |)
+                      |)
+                    ]
+                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::option::Option::Some",
+                          0
+                        |) in
+                      let new_len := M.copy (| γ0_0 |) in
+                      let~ _ :=
+                        M.match_operator (|
                           M.alloc (| Value.Tuple [] |),
                           [
                             fun γ =>
@@ -2619,22 +2582,23 @@ Module slice.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.Pure.gt
-                                        (M.read (|
+                                      BinOp.gt (|
+                                        M.read (|
                                           M.SubPointer.get_struct_record_field (|
                                             self,
                                             "core::ops::range::Range",
                                             "end"
                                           |)
-                                        |))
-                                        (M.call_closure (|
+                                        |),
+                                        M.call_closure (|
                                           M.get_associated_function (|
                                             Ty.apply (Ty.path "slice") [] [ T ],
                                             "len",
                                             []
                                           |),
                                           [ M.read (| slice |) ]
-                                        |))
+                                        |)
+                                      |)
                                     |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
@@ -2670,23 +2634,30 @@ Module slice.
                                 |)));
                             fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                           ]
-                        |)))
-                  ]
-                |) in
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::slice::index::SliceIndex",
-                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                    "get_unchecked_mut",
-                    []
-                  |),
-                  [ M.read (| self |); M.read (| slice |) ]
-                |)
+                        |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "core::slice::index::get_offset_len_mut_noubcheck",
+                            [ T ]
+                          |),
+                          [
+                            M.read (| slice |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                self,
+                                "core::ops::range::Range",
+                                "start"
+                              |)
+                            |);
+                            M.read (| new_len |)
+                          ]
+                        |)
+                      |)))
+                ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -2706,6 +2677,265 @@ Module slice.
             ("index_mut", InstanceField.Method (index_mut T))
           ].
     End Impl_core_slice_index_SliceIndex_slice_T_for_core_ops_range_Range_usize.
+    
+    Module Impl_core_slice_index_SliceIndex_slice_T_for_core_range_Range_usize.
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ].
+      
+      (*     type Output = [T]; *)
+      Definition _Output (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
+      
+      (*
+          fn get(self, slice: &[T]) -> Option<&[T]> {
+              ops::Range::from(self).get(slice)
+          }
+      *)
+      Definition get (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "get",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn get_mut(self, slice: &mut [T]) -> Option<&mut [T]> {
+              ops::Range::from(self).get_mut(slice)
+          }
+      *)
+      Definition get_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "get_mut",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          unsafe fn get_unchecked(self, slice: *const [T]) -> *const [T] {
+              // SAFETY: the caller has to uphold the safety contract for `get_unchecked`.
+              unsafe { ops::Range::from(self).get_unchecked(slice) }
+          }
+      *)
+      Definition get_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "get_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          unsafe fn get_unchecked_mut(self, slice: *mut [T]) -> *mut [T] {
+              // SAFETY: the caller has to uphold the safety contract for `get_unchecked_mut`.
+              unsafe { ops::Range::from(self).get_unchecked_mut(slice) }
+          }
+      *)
+      Definition get_unchecked_mut
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "get_unchecked_mut",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn index(self, slice: &[T]) -> &[T] {
+              ops::Range::from(self).index(slice)
+          }
+      *)
+      Definition index (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "index",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn index_mut(self, slice: &mut [T]) -> &mut [T] {
+              ops::Range::from(self).index_mut(slice)
+          }
+      *)
+      Definition index_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "index_mut",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::Range") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::slice::index::SliceIndex"
+          (Self T)
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
+          (* Instance *)
+          [
+            ("Output", InstanceField.Ty (_Output T));
+            ("get", InstanceField.Method (get T));
+            ("get_mut", InstanceField.Method (get_mut T));
+            ("get_unchecked", InstanceField.Method (get_unchecked T));
+            ("get_unchecked_mut", InstanceField.Method (get_unchecked_mut T));
+            ("index", InstanceField.Method (index T));
+            ("index_mut", InstanceField.Method (index_mut T))
+          ].
+    End Impl_core_slice_index_SliceIndex_slice_T_for_core_range_Range_usize.
     
     Module Impl_core_slice_index_SliceIndex_slice_T_for_core_ops_range_RangeTo_usize.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -2738,7 +2968,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2751,7 +2981,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2778,7 +3008,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2791,7 +3021,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2824,7 +3054,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2837,7 +3067,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2870,7 +3100,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2883,7 +3113,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2910,7 +3140,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2923,7 +3153,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -2950,7 +3180,7 @@ Module slice.
                 Value.StructRecord
                   "core::ops::range::Range"
                   [
-                    ("start", Value.Integer 0);
+                    ("start", Value.Integer IntegerKind.Usize 0);
                     ("end_",
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
@@ -2963,7 +3193,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3036,7 +3266,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3084,7 +3314,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3138,7 +3368,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3192,7 +3422,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3221,22 +3451,23 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::RangeFrom",
                                     "start"
                                   |)
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| slice |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3283,7 +3514,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3312,22 +3543,23 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.gt
-                                (M.read (|
+                              BinOp.gt (|
+                                M.read (|
                                   M.SubPointer.get_struct_record_field (|
                                     self,
                                     "core::ops::range::RangeFrom",
                                     "start"
                                   |)
-                                |))
-                                (M.call_closure (|
+                                |),
+                                M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply (Ty.path "slice") [] [ T ],
                                     "len",
                                     []
                                   |),
                                   [ M.read (| slice |) ]
-                                |))
+                                |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3374,7 +3606,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3395,6 +3627,265 @@ Module slice.
           ].
     End Impl_core_slice_index_SliceIndex_slice_T_for_core_ops_range_RangeFrom_usize.
     
+    Module Impl_core_slice_index_SliceIndex_slice_T_for_core_range_RangeFrom_usize.
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ].
+      
+      (*     type Output = [T]; *)
+      Definition _Output (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
+      
+      (*
+          fn get(self, slice: &[T]) -> Option<&[T]> {
+              ops::RangeFrom::from(self).get(slice)
+          }
+      *)
+      Definition get (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "get",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn get_mut(self, slice: &mut [T]) -> Option<&mut [T]> {
+              ops::RangeFrom::from(self).get_mut(slice)
+          }
+      *)
+      Definition get_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "get_mut",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          unsafe fn get_unchecked(self, slice: *const [T]) -> *const [T] {
+              // SAFETY: the caller has to uphold the safety contract for `get_unchecked`.
+              unsafe { ops::RangeFrom::from(self).get_unchecked(slice) }
+          }
+      *)
+      Definition get_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "get_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          unsafe fn get_unchecked_mut(self, slice: *mut [T]) -> *mut [T] {
+              // SAFETY: the caller has to uphold the safety contract for `get_unchecked_mut`.
+              unsafe { ops::RangeFrom::from(self).get_unchecked_mut(slice) }
+          }
+      *)
+      Definition get_unchecked_mut
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "get_unchecked_mut",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn index(self, slice: &[T]) -> &[T] {
+              ops::RangeFrom::from(self).index(slice)
+          }
+      *)
+      Definition index (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "index",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn index_mut(self, slice: &mut [T]) -> &mut [T] {
+              ops::RangeFrom::from(self).index_mut(slice)
+          }
+      *)
+      Definition index_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "index_mut",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::RangeFrom") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::slice::index::SliceIndex"
+          (Self T)
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
+          (* Instance *)
+          [
+            ("Output", InstanceField.Ty (_Output T));
+            ("get", InstanceField.Method (get T));
+            ("get_mut", InstanceField.Method (get_mut T));
+            ("get_unchecked", InstanceField.Method (get_unchecked T));
+            ("get_unchecked_mut", InstanceField.Method (get_unchecked_mut T));
+            ("index", InstanceField.Method (index T));
+            ("index_mut", InstanceField.Method (index_mut T))
+          ].
+    End Impl_core_slice_index_SliceIndex_slice_T_for_core_range_RangeFrom_usize.
+    
     Module Impl_core_slice_index_SliceIndex_slice_T_for_core_ops_range_RangeFull.
       Definition Self (T : Ty.t) : Ty.t := Ty.path "core::ops::range::RangeFull".
       
@@ -3414,7 +3905,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             Value.StructTuple "core::option::Option::Some" [ M.read (| slice |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3430,7 +3921,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             Value.StructTuple "core::option::Option::Some" [ M.read (| slice |) ]))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3451,7 +3942,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3472,7 +3963,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3488,7 +3979,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3504,7 +3995,7 @@ Module slice.
             (let self := M.alloc (| self |) in
             let slice := M.alloc (| slice |) in
             M.read (| slice |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3553,8 +4044,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -3566,8 +4057,9 @@ Module slice.
                                   |),
                                   [ self ]
                                 |)
-                              |))
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |),
+                              M.read (| M.get_constant (| "core::num::MAX" |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -3601,7 +4093,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3625,8 +4117,8 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.Pure.eq
-                              (M.read (|
+                            BinOp.eq (|
+                              M.read (|
                                 M.call_closure (|
                                   M.get_associated_function (|
                                     Ty.apply
@@ -3638,8 +4130,9 @@ Module slice.
                                   |),
                                   [ self ]
                                 |)
-                              |))
-                              (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                              |),
+                              M.read (| M.get_constant (| "core::num::MAX" |) |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
@@ -3673,7 +4166,7 @@ Module slice.
                 ]
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3714,7 +4207,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3755,7 +4248,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3783,8 +4276,8 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.eq (|
+                                M.read (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -3796,8 +4289,9 @@ Module slice.
                                     |),
                                     [ self ]
                                   |)
-                                |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3841,7 +4335,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -3869,8 +4363,8 @@ Module slice.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.Pure.eq
-                                (M.read (|
+                              BinOp.eq (|
+                                M.read (|
                                   M.call_closure (|
                                     M.get_associated_function (|
                                       Ty.apply
@@ -3882,8 +4376,9 @@ Module slice.
                                     |),
                                     [ self ]
                                   |)
-                                |))
-                                (M.read (| M.get_constant (| "core::num::MAX" |) |))
+                                |),
+                                M.read (| M.get_constant (| "core::num::MAX" |) |)
+                              |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3927,7 +4422,7 @@ Module slice.
                 |)
               |)
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -3947,6 +4442,265 @@ Module slice.
             ("index_mut", InstanceField.Method (index_mut T))
           ].
     End Impl_core_slice_index_SliceIndex_slice_T_for_core_ops_range_RangeInclusive_usize.
+    
+    Module Impl_core_slice_index_SliceIndex_slice_T_for_core_range_RangeInclusive_usize.
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ].
+      
+      (*     type Output = [T]; *)
+      Definition _Output (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
+      
+      (*
+          fn get(self, slice: &[T]) -> Option<&[T]> {
+              ops::RangeInclusive::from(self).get(slice)
+          }
+      *)
+      Definition get (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "get",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn get_mut(self, slice: &mut [T]) -> Option<&mut [T]> {
+              ops::RangeInclusive::from(self).get_mut(slice)
+          }
+      *)
+      Definition get_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "get_mut",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          unsafe fn get_unchecked(self, slice: *const [T]) -> *const [T] {
+              // SAFETY: the caller has to uphold the safety contract for `get_unchecked`.
+              unsafe { ops::RangeInclusive::from(self).get_unchecked(slice) }
+          }
+      *)
+      Definition get_unchecked
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "get_unchecked",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          unsafe fn get_unchecked_mut(self, slice: *mut [T]) -> *mut [T] {
+              // SAFETY: the caller has to uphold the safety contract for `get_unchecked_mut`.
+              unsafe { ops::RangeInclusive::from(self).get_unchecked_mut(slice) }
+          }
+      *)
+      Definition get_unchecked_mut
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "get_unchecked_mut",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn index(self, slice: &[T]) -> &[T] {
+              ops::RangeInclusive::from(self).index(slice)
+          }
+      *)
+      Definition index (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "index",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn index_mut(self, slice: &mut [T]) -> &mut [T] {
+              ops::RangeInclusive::from(self).index_mut(slice)
+          }
+      *)
+      Definition index_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; slice ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let slice := M.alloc (| slice |) in
+            M.call_closure (|
+              M.get_trait_method (|
+                "core::slice::index::SliceIndex",
+                Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                "index_mut",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "core::convert::From",
+                    Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Ty.path "usize" ],
+                    [ Ty.apply (Ty.path "core::range::RangeInclusive") [] [ Ty.path "usize" ] ],
+                    "from",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.read (| slice |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::slice::index::SliceIndex"
+          (Self T)
+          (* Trait polymorphic types *) [ (* T *) Ty.apply (Ty.path "slice") [] [ T ] ]
+          (* Instance *)
+          [
+            ("Output", InstanceField.Ty (_Output T));
+            ("get", InstanceField.Method (get T));
+            ("get_mut", InstanceField.Method (get_mut T));
+            ("get_unchecked", InstanceField.Method (get_unchecked T));
+            ("get_unchecked_mut", InstanceField.Method (get_unchecked_mut T));
+            ("index", InstanceField.Method (index T));
+            ("index_mut", InstanceField.Method (index_mut T))
+          ].
+    End Impl_core_slice_index_SliceIndex_slice_T_for_core_range_RangeInclusive_usize.
     
     Module Impl_core_slice_index_SliceIndex_slice_T_for_core_ops_range_RangeToInclusive_usize.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -3983,7 +4737,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -3996,7 +4750,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4027,7 +4781,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -4040,7 +4794,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4077,7 +4831,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -4090,7 +4844,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4127,7 +4881,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -4140,7 +4894,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4171,7 +4925,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -4184,7 +4938,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -4215,7 +4969,7 @@ Module slice.
                     []
                   |),
                   [
-                    Value.Integer 0;
+                    Value.Integer IntegerKind.Usize 0;
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         self,
@@ -4228,7 +4982,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :
@@ -4256,8 +5010,7 @@ Module slice.
     {
         let len = bounds.end;
     
-        let start: ops::Bound<&usize> = range.start_bound();
-        let start = match start {
+        let start = match range.start_bound() {
             ops::Bound::Included(&start) => start,
             ops::Bound::Excluded(start) => {
                 start.checked_add(1).unwrap_or_else(|| slice_start_index_overflow_fail())
@@ -4265,8 +5018,7 @@ Module slice.
             ops::Bound::Unbounded => 0,
         };
     
-        let end: ops::Bound<&usize> = range.end_bound();
-        let end = match end {
+        let end = match range.end_bound() {
             ops::Bound::Included(end) => {
                 end.checked_add(1).unwrap_or_else(|| slice_end_index_overflow_fail())
             }
@@ -4300,22 +5052,20 @@ Module slice.
                 |)
               |) in
             let~ start :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::range::RangeBounds",
-                    R,
-                    [ Ty.path "usize" ],
-                    "start_bound",
-                    []
-                  |),
-                  [ range ]
-                |)
-              |) in
-            let~ start :=
               M.copy (|
                 M.match_operator (|
-                  start,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::range::RangeBounds",
+                        R,
+                        [ Ty.path "usize" ],
+                        "start_bound",
+                        []
+                      |),
+                      [ range ]
+                    |)
+                  |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -4347,30 +5097,32 @@ Module slice.
                             [
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
-                                [ M.read (| M.read (| start |) |); Value.Integer 1 ]
+                                [ M.read (| M.read (| start |) |); Value.Integer IntegerKind.Usize 1
+                                ]
                               |);
                               M.closure
                                 (fun γ =>
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.never_to_any (|
-                                                M.call_closure (|
-                                                  M.get_function (|
-                                                    "core::slice::index::slice_start_index_overflow_fail",
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.never_to_any (|
+                                                  M.call_closure (|
+                                                    M.get_function (|
+                                                      "core::slice::index::slice_start_index_overflow_fail",
+                                                      []
+                                                    |),
                                                     []
-                                                  |),
-                                                  []
-                                                |)
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                                  |)
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -4378,27 +5130,25 @@ Module slice.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ := M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                        M.alloc (| Value.Integer 0 |)))
+                        M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                   ]
-                |)
-              |) in
-            let~ end_ :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::range::RangeBounds",
-                    R,
-                    [ Ty.path "usize" ],
-                    "end_bound",
-                    []
-                  |),
-                  [ range ]
                 |)
               |) in
             let~ end_ :=
               M.copy (|
                 M.match_operator (|
-                  end_,
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::range::RangeBounds",
+                        R,
+                        [ Ty.path "usize" ],
+                        "end_bound",
+                        []
+                      |),
+                      [ range ]
+                    |)
+                  |),
                   [
                     fun γ =>
                       ltac:(M.monadic
@@ -4419,30 +5169,32 @@ Module slice.
                             [
                               M.call_closure (|
                                 M.get_associated_function (| Ty.path "usize", "checked_add", [] |),
-                                [ M.read (| M.read (| end_ |) |); Value.Integer 1 ]
+                                [ M.read (| M.read (| end_ |) |); Value.Integer IntegerKind.Usize 1
+                                ]
                               |);
                               M.closure
                                 (fun γ =>
                                   ltac:(M.monadic
                                     match γ with
                                     | [ α0 ] =>
-                                      M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.never_to_any (|
-                                                M.call_closure (|
-                                                  M.get_function (|
-                                                    "core::slice::index::slice_end_index_overflow_fail",
+                                      ltac:(M.monadic
+                                        (M.match_operator (|
+                                          M.alloc (| α0 |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (M.never_to_any (|
+                                                  M.call_closure (|
+                                                    M.get_function (|
+                                                      "core::slice::index::slice_end_index_overflow_fail",
+                                                      []
+                                                    |),
                                                     []
-                                                  |),
-                                                  []
-                                                |)
-                                              |)))
-                                        ]
-                                      |)
-                                    | _ => M.impossible (||)
+                                                  |)
+                                                |)))
+                                          ]
+                                        |)))
+                                    | _ => M.impossible "wrong number of arguments"
                                     end))
                             ]
                           |)
@@ -4473,7 +5225,7 @@ Module slice.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.Pure.gt (M.read (| start |)) (M.read (| end_ |)) |)) in
+                          (M.alloc (| BinOp.gt (| M.read (| start |), M.read (| end_ |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -4493,8 +5245,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use
-                          (M.alloc (| BinOp.Pure.gt (M.read (| end_ |)) (M.read (| len |)) |)) in
+                        M.use (M.alloc (| BinOp.gt (| M.read (| end_ |), M.read (| len |) |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
@@ -4513,10 +5264,336 @@ Module slice.
                 [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
             |)
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_range : M.IsFunction "core::slice::index::range" range.
+    
+    (*
+    pub fn try_range<R>(range: R, bounds: ops::RangeTo<usize>) -> Option<ops::Range<usize>>
+    where
+        R: ops::RangeBounds<usize>,
+    {
+        let len = bounds.end;
+    
+        let start = match range.start_bound() {
+            ops::Bound::Included(&start) => start,
+            ops::Bound::Excluded(start) => start.checked_add(1)?,
+            ops::Bound::Unbounded => 0,
+        };
+    
+        let end = match range.end_bound() {
+            ops::Bound::Included(end) => end.checked_add(1)?,
+            ops::Bound::Excluded(&end) => end,
+            ops::Bound::Unbounded => len,
+        };
+    
+        if start > end || end > len { None } else { Some(ops::Range { start, end }) }
+    }
+    *)
+    Definition try_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [ R ], [ range; bounds ] =>
+        ltac:(M.monadic
+          (let range := M.alloc (| range |) in
+          let bounds := M.alloc (| bounds |) in
+          M.catch_return (|
+            ltac:(M.monadic
+              (M.read (|
+                let~ len :=
+                  M.copy (|
+                    M.SubPointer.get_struct_record_field (|
+                      bounds,
+                      "core::ops::range::RangeTo",
+                      "end"
+                    |)
+                  |) in
+                let~ start :=
+                  M.copy (|
+                    M.match_operator (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::range::RangeBounds",
+                            R,
+                            [ Ty.path "usize" ],
+                            "start_bound",
+                            []
+                          |),
+                          [ range ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::range::Bound::Included",
+                                0
+                              |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let start := M.copy (| γ0_0 |) in
+                            start));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::range::Bound::Excluded",
+                                0
+                              |) in
+                            let start := M.copy (| γ0_0 |) in
+                            M.match_operator (|
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::Try",
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
+                                    [],
+                                    "branch",
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "usize",
+                                        "checked_add",
+                                        []
+                                      |),
+                                      [
+                                        M.read (| M.read (| start |) |);
+                                        Value.Integer IntegerKind.Usize 1
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Break",
+                                        0
+                                      |) in
+                                    let residual := M.copy (| γ0_0 |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::try_trait::FromResidual",
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::ops::range::Range")
+                                                      []
+                                                      [ Ty.path "usize" ]
+                                                  ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::convert::Infallible" ]
+                                                ],
+                                                "from_residual",
+                                                []
+                                              |),
+                                              [ M.read (| residual |) ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Continue",
+                                        0
+                                      |) in
+                                    let val := M.copy (| γ0_0 |) in
+                                    val))
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                      ]
+                    |)
+                  |) in
+                let~ end_ :=
+                  M.copy (|
+                    M.match_operator (|
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::range::RangeBounds",
+                            R,
+                            [ Ty.path "usize" ],
+                            "end_bound",
+                            []
+                          |),
+                          [ range ]
+                        |)
+                      |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::range::Bound::Included",
+                                0
+                              |) in
+                            let end_ := M.copy (| γ0_0 |) in
+                            M.match_operator (|
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::try_trait::Try",
+                                    Ty.apply
+                                      (Ty.path "core::option::Option")
+                                      []
+                                      [ Ty.path "usize" ],
+                                    [],
+                                    "branch",
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "usize",
+                                        "checked_add",
+                                        []
+                                      |),
+                                      [
+                                        M.read (| M.read (| end_ |) |);
+                                        Value.Integer IntegerKind.Usize 1
+                                      ]
+                                    |)
+                                  ]
+                                |)
+                              |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Break",
+                                        0
+                                      |) in
+                                    let residual := M.copy (| γ0_0 |) in
+                                    M.alloc (|
+                                      M.never_to_any (|
+                                        M.read (|
+                                          M.return_ (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "core::ops::try_trait::FromResidual",
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "core::ops::range::Range")
+                                                      []
+                                                      [ Ty.path "usize" ]
+                                                  ],
+                                                [
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "core::convert::Infallible" ]
+                                                ],
+                                                "from_residual",
+                                                []
+                                              |),
+                                              [ M.read (| residual |) ]
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    |)));
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (let γ0_0 :=
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        γ,
+                                        "core::ops::control_flow::ControlFlow::Continue",
+                                        0
+                                      |) in
+                                    let val := M.copy (| γ0_0 |) in
+                                    val))
+                              ]
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::ops::range::Bound::Excluded",
+                                0
+                              |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let end_ := M.copy (| γ0_0 |) in
+                            end_));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let _ :=
+                              M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
+                            len))
+                      ]
+                    |)
+                  |) in
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              LogicalOp.or (|
+                                BinOp.gt (| M.read (| start |), M.read (| end_ |) |),
+                                ltac:(M.monadic
+                                  (BinOp.gt (| M.read (| end_ |), M.read (| len |) |)))
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              Value.StructRecord
+                                "core::ops::range::Range"
+                                [ ("start", M.read (| start |)); ("end_", M.read (| end_ |)) ]
+                            ]
+                        |)))
+                  ]
+                |)
+              |)))
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_try_range : M.IsFunction "core::slice::index::try_range" try_range.
     
     (*
     pub(crate) fn into_range_unchecked(
@@ -4578,13 +5655,16 @@ Module slice.
                                   |) in
                                 let i := M.copy (| γ0_0 |) in
                                 M.alloc (|
-                                  BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    M.read (| i |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (let _ :=
                                   M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                                M.alloc (| Value.Integer 0 |)))
+                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                           ]
                         |)
                       |) in
@@ -4603,7 +5683,10 @@ Module slice.
                                   |) in
                                 let i := M.copy (| γ0_0 |) in
                                 M.alloc (|
-                                  BinOp.Wrap.add Integer.Usize (M.read (| i |)) (Value.Integer 1)
+                                  BinOp.Wrap.add (|
+                                    M.read (| i |),
+                                    Value.Integer IntegerKind.Usize 1
+                                  |)
                                 |)));
                             fun γ =>
                               ltac:(M.monadic
@@ -4631,7 +5714,7 @@ Module slice.
                   |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_into_range_unchecked :
@@ -4723,7 +5806,10 @@ Module slice.
                                                 "checked_add",
                                                 []
                                               |),
-                                              [ M.read (| start |); Value.Integer 1 ]
+                                              [
+                                                M.read (| start |);
+                                                Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -4788,7 +5874,7 @@ Module slice.
                                         γ,
                                         "core::ops::range::Bound::Unbounded"
                                       |) in
-                                    M.alloc (| Value.Integer 0 |)))
+                                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                               ]
                             |)
                           |) in
@@ -4826,7 +5912,8 @@ Module slice.
                                                 "checked_add",
                                                 []
                                               |),
-                                              [ M.read (| end_ |); Value.Integer 1 ]
+                                              [ M.read (| end_ |); Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -4918,7 +6005,7 @@ Module slice.
                   |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_into_range : M.IsFunction "core::slice::index::into_range" into_range.
@@ -5008,30 +6095,31 @@ Module slice.
                                           "checked_add",
                                           []
                                         |),
-                                        [ M.read (| start |); Value.Integer 1 ]
+                                        [ M.read (| start |); Value.Integer IntegerKind.Usize 1 ]
                                       |);
                                       M.closure
                                         (fun γ =>
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (M.never_to_any (|
-                                                        M.call_closure (|
-                                                          M.get_function (|
-                                                            "core::slice::index::slice_start_index_overflow_fail",
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.never_to_any (|
+                                                          M.call_closure (|
+                                                            M.get_function (|
+                                                              "core::slice::index::slice_start_index_overflow_fail",
+                                                              []
+                                                            |),
                                                             []
-                                                          |),
-                                                          []
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                                          |)
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |)
@@ -5040,7 +6128,7 @@ Module slice.
                               ltac:(M.monadic
                                 (let _ :=
                                   M.is_struct_tuple (| γ, "core::ops::range::Bound::Unbounded" |) in
-                                M.alloc (| Value.Integer 0 |)))
+                                M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
                           ]
                         |)
                       |) in
@@ -5075,30 +6163,31 @@ Module slice.
                                           "checked_add",
                                           []
                                         |),
-                                        [ M.read (| end_ |); Value.Integer 1 ]
+                                        [ M.read (| end_ |); Value.Integer IntegerKind.Usize 1 ]
                                       |);
                                       M.closure
                                         (fun γ =>
                                           ltac:(M.monadic
                                             match γ with
                                             | [ α0 ] =>
-                                              M.match_operator (|
-                                                M.alloc (| α0 |),
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic
-                                                      (M.never_to_any (|
-                                                        M.call_closure (|
-                                                          M.get_function (|
-                                                            "core::slice::index::slice_end_index_overflow_fail",
+                                              ltac:(M.monadic
+                                                (M.match_operator (|
+                                                  M.alloc (| α0 |),
+                                                  [
+                                                    fun γ =>
+                                                      ltac:(M.monadic
+                                                        (M.never_to_any (|
+                                                          M.call_closure (|
+                                                            M.get_function (|
+                                                              "core::slice::index::slice_end_index_overflow_fail",
+                                                              []
+                                                            |),
                                                             []
-                                                          |),
-                                                          []
-                                                        |)
-                                                      |)))
-                                                ]
-                                              |)
-                                            | _ => M.impossible (||)
+                                                          |)
+                                                        |)))
+                                                  ]
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
                                             end))
                                     ]
                                   |)
@@ -5129,7 +6218,7 @@ Module slice.
                   |)))
             ]
           |)))
-      | _, _, _ => M.impossible
+      | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Axiom Function_into_slice_range :
@@ -5264,7 +6353,7 @@ Module slice.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5385,7 +6474,7 @@ Module slice.
                   ]
                 |)))
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5432,7 +6521,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5479,7 +6568,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5520,7 +6609,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       (*
@@ -5561,7 +6650,7 @@ Module slice.
                 M.read (| slice |)
               ]
             |)))
-        | _, _, _ => M.impossible
+        | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Axiom Implements :

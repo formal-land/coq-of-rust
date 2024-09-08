@@ -62,7 +62,7 @@ Module bytecode.
                     ]
                   |)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -104,7 +104,7 @@ Module bytecode.
                     []
                   |)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -177,7 +177,7 @@ Module bytecode.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -187,17 +187,6 @@ Module bytecode.
             (* Trait polymorphic types *) []
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
       End Impl_core_cmp_PartialEq_for_revm_primitives_bytecode_legacy_jump_map_JumpTable.
-      
-      Module Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_legacy_jump_map_JumpTable.
-        Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::jump_map::JumpTable".
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::marker::StructuralEq"
-            Self
-            (* Trait polymorphic types *) []
-            (* Instance *) [].
-      End Impl_core_marker_StructuralEq_for_revm_primitives_bytecode_legacy_jump_map_JumpTable.
       
       Module Impl_core_cmp_Eq_for_revm_primitives_bytecode_legacy_jump_map_JumpTable.
         Definition Self : Ty.t := Ty.path "revm_primitives::bytecode::legacy::jump_map::JumpTable".
@@ -218,7 +207,7 @@ Module bytecode.
                   [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                 |)
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -266,7 +255,7 @@ Module bytecode.
                   M.read (| state |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -318,65 +307,63 @@ Module bytecode.
                         |)
                       |);
                       M.read (| Value.String "map" |);
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          M.call_closure (|
-                            M.get_function (|
-                              "const_hex::encode",
-                              [
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
-                              ]
-                            |),
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_function (|
+                            "const_hex::encode",
                             [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "bitvec::vec::BitVec")
-                                    []
-                                    [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
-                                  "as_raw_slice",
-                                  []
-                                |),
-                                [
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.apply
-                                        (Ty.path "alloc::sync::Arc")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "bitvec::vec::BitVec")
-                                            []
-                                            [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
-                                          Ty.path "alloc::alloc::Global"
-                                        ],
-                                      [],
-                                      "deref",
-                                      []
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_tuple_field (|
-                                        M.read (| self |),
-                                        "revm_primitives::bytecode::legacy::jump_map::JumpTable",
-                                        0
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                              |)
+                              Ty.apply
+                                (Ty.path "&")
+                                []
+                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                             ]
-                          |)
-                        |))
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "bitvec::vec::BitVec")
+                                  []
+                                  [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
+                                "as_raw_slice",
+                                []
+                              |),
+                              [
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "alloc::sync::Arc")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "bitvec::vec::BitVec")
+                                          []
+                                          [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    [],
+                                    "deref",
+                                    []
+                                  |),
+                                  [
+                                    M.SubPointer.get_struct_tuple_field (|
+                                      M.read (| self |),
+                                      "revm_primitives::bytecode::legacy::jump_map::JumpTable",
+                                      0
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          ]
+                        |)
+                      |)
                     ]
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom Implements :
@@ -437,7 +424,7 @@ Module bytecode.
                   |)
                 ]
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_as_slice : M.IsAssociatedFunction Self "as_slice" as_slice.
@@ -485,7 +472,7 @@ Module bytecode.
                     ]
                   |)
                 ]))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_from_slice : M.IsAssociatedFunction Self "from_slice" from_slice.
@@ -502,9 +489,9 @@ Module bytecode.
               (let self := M.alloc (| self |) in
               let pc := M.alloc (| pc |) in
               LogicalOp.and (|
-                BinOp.Pure.lt
-                  (M.read (| pc |))
-                  (M.call_closure (|
+                BinOp.lt (|
+                  M.read (| pc |),
+                  M.call_closure (|
                     M.get_associated_function (|
                       Ty.apply
                         (Ty.path "bitvec::vec::BitVec")
@@ -540,7 +527,8 @@ Module bytecode.
                         ]
                       |)
                     ]
-                  |)),
+                  |)
+                |),
                 ltac:(M.monadic
                   (M.read (|
                     M.call_closure (|
@@ -585,7 +573,7 @@ Module bytecode.
                     |)
                   |)))
               |)))
-          | _, _, _ => M.impossible
+          | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
         Axiom AssociatedFunction_is_valid : M.IsAssociatedFunction Self "is_valid" is_valid.

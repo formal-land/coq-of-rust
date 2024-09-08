@@ -43,7 +43,7 @@ Module Impl_core_clone_Clone_for_scoping_rules_borrowing_mutablity_Book.
             ]
           |)
         |)))
-    | _, _, _ => M.impossible
+    | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Axiom Implements :
@@ -84,52 +84,48 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "I immutably borrowed " |);
-                              M.read (| Value.String " - " |);
-                              M.read (| Value.String " edition
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "I immutably borrowed " |);
+                            M.read (| Value.String " - " |);
+                            M.read (| Value.String " edition
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| book |),
-                                    "scoping_rules_borrowing_mutablity::Book",
-                                    "title"
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u32" ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| book |),
-                                    "scoping_rules_borrowing_mutablity::Book",
-                                    "year"
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| book |),
+                                  "scoping_rules_borrowing_mutablity::Book",
+                                  "title"
+                                |)
+                              ]
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "u32" ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| book |),
+                                  "scoping_rules_borrowing_mutablity::Book",
+                                  "year"
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -138,7 +134,7 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_borrow_book :
@@ -163,7 +159,7 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
               "scoping_rules_borrowing_mutablity::Book",
               "year"
             |),
-            Value.Integer 2014
+            Value.Integer IntegerKind.U32 2014
           |) in
         let~ _ :=
           let~ _ :=
@@ -174,52 +170,48 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                   M.call_closure (|
                     M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_v1", [] |),
                     [
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "I mutably borrowed " |);
-                              M.read (| Value.String " - " |);
-                              M.read (| Value.String " edition
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.read (| Value.String "I mutably borrowed " |);
+                            M.read (| Value.String " - " |);
+                            M.read (| Value.String " edition
 " |)
-                            ]
-                        |));
-                      (* Unsize *)
-                      M.pointer_coercion
-                        (M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| book |),
-                                    "scoping_rules_borrowing_mutablity::Book",
-                                    "title"
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [ Ty.path "u32" ]
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| book |),
-                                    "scoping_rules_borrowing_mutablity::Book",
-                                    "year"
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |))
+                          ]
+                      |);
+                      M.alloc (|
+                        Value.Array
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| book |),
+                                  "scoping_rules_borrowing_mutablity::Book",
+                                  "title"
+                                |)
+                              ]
+                            |);
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::rt::Argument",
+                                "new_display",
+                                [ Ty.path "u32" ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| book |),
+                                  "scoping_rules_borrowing_mutablity::Book",
+                                  "year"
+                                |)
+                              ]
+                            |)
+                          ]
+                      |)
                     ]
                   |)
                 ]
@@ -228,7 +220,7 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
           M.alloc (| Value.Tuple [] |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_new_edition :
@@ -274,7 +266,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 ("author", M.read (| Value.String "Douglas Hofstadter" |));
                 ("title",
                   M.read (| Value.String ("G" ++ (String.String "246" "del, Escher, Bach")) |));
-                ("year", Value.Integer 1979)
+                ("year", Value.Integer IntegerKind.U32 1979)
               ]
           |) in
         let~ mutabook := M.copy (| immutabook |) in
@@ -301,7 +293,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))
-  | _, _, _ => M.impossible
+  | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
 Axiom Function_main : M.IsFunction "scoping_rules_borrowing_mutablity::main" main.
