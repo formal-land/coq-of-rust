@@ -19,28 +19,26 @@
               {
                 "name": "Ok",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Var",
-                        "name": "T"
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Var",
+                      "name": "T"
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "Err",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Var",
-                        "name": "E"
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Var",
+                      "name": "E"
+                    }
+                  ]
                 },
                 "discriminant": null
               }

@@ -91,6 +91,7 @@ struct TraitBound {
 type TraitTyParamValue = FieldWithDefault<Rc<CoqType>>;
 
 #[derive(Debug, Serialize)]
+#[serde(tag = "type")]
 pub(crate) enum VariantItem {
     Struct { fields: Vec<(String, Rc<CoqType>)> },
     Tuple { tys: Vec<Rc<CoqType>> },

@@ -26180,54 +26180,48 @@
                     {
                       "name": "Ip",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Ipv4",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Ipv6",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Socket",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "SocketV4",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "SocketV6",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     }

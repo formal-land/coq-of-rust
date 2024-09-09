@@ -25,28 +25,26 @@
                     {
                       "name": "Continue",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Var",
-                              "name": "C"
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "C"
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Break",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Var",
-                              "name": "B"
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "B"
+                          }
+                        ]
                       },
                       "discriminant": null
                     }

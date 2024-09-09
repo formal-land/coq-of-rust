@@ -16,46 +16,44 @@
               {
                 "name": "TransactionScript",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Application",
-                        "func": {
-                          "type": "Path",
-                          "path": [
-                            "move_core_types",
-                            "abi",
-                            "TransactionScriptABI"
-                          ]
-                        },
-                        "consts": [],
-                        "tys": []
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "move_core_types",
+                          "abi",
+                          "TransactionScriptABI"
+                        ]
+                      },
+                      "consts": [],
+                      "tys": []
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "ScriptFunction",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Application",
-                        "func": {
-                          "type": "Path",
-                          "path": [
-                            "move_core_types",
-                            "abi",
-                            "ScriptFunctionABI"
-                          ]
-                        },
-                        "consts": [],
-                        "tys": []
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "move_core_types",
+                          "abi",
+                          "ScriptFunctionABI"
+                        ]
+                      },
+                      "consts": [],
+                      "tys": []
+                    }
+                  ]
                 },
                 "discriminant": null
               }

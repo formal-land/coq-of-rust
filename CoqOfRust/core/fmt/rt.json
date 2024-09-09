@@ -760,36 +760,32 @@
                     {
                       "name": "Left",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Right",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Center",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Unknown",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     }
@@ -1461,41 +1457,38 @@
                     {
                       "name": "Is",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Path",
-                              "path": [
-                                "usize"
-                              ]
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "usize"
+                            ]
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Param",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Path",
-                              "path": [
-                                "usize"
-                              ]
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "usize"
+                            ]
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Implied",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     }
@@ -1706,54 +1699,48 @@
                     {
                       "name": "SignPlus",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "SignMinus",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Alternate",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "SignAwareZeroPad",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "DebugLowerHex",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "DebugUpperHex",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     }
@@ -1943,88 +1930,44 @@
                     {
                       "name": "Placeholder",
                       "item": {
-                        "Struct": {
-                          "fields": [
-                            [
-                              "value",
-                              {
-                                "type": "Application",
-                                "func": {
-                                  "type": "Path",
-                                  "path": [
-                                    "core",
-                                    "ptr",
-                                    "non_null",
-                                    "NonNull"
-                                  ]
-                                },
-                                "consts": [],
-                                "tys": [
-                                  {
-                                    "type": "Tuple",
-                                    "tys": []
-                                  }
+                        "type": "Struct",
+                        "fields": [
+                          [
+                            "value",
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "core",
+                                  "ptr",
+                                  "non_null",
+                                  "NonNull"
                                 ]
-                              }
-                            ],
-                            [
-                              "formatter",
-                              {
-                                "type": "Function",
-                                "args": [
-                                  {
-                                    "type": "Application",
-                                    "func": {
-                                      "type": "Path",
-                                      "path": [
-                                        "core",
-                                        "ptr",
-                                        "non_null",
-                                        "NonNull"
-                                      ]
-                                    },
-                                    "consts": [],
-                                    "tys": [
-                                      {
-                                        "type": "Tuple",
-                                        "tys": []
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "type": "Application",
-                                    "func": {
-                                      "type": "Path",
-                                      "path": [
-                                        "&mut"
-                                      ]
-                                    },
-                                    "consts": [],
-                                    "tys": [
-                                      {
-                                        "type": "Application",
-                                        "func": {
-                                          "type": "Path",
-                                          "path": [
-                                            "core",
-                                            "fmt",
-                                            "Formatter"
-                                          ]
-                                        },
-                                        "consts": [],
-                                        "tys": []
-                                      }
-                                    ]
-                                  }
-                                ],
-                                "ret": {
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Tuple",
+                                  "tys": []
+                                }
+                              ]
+                            }
+                          ],
+                          [
+                            "formatter",
+                            {
+                              "type": "Function",
+                              "args": [
+                                {
                                   "type": "Application",
                                   "func": {
                                     "type": "Path",
                                     "path": [
                                       "core",
-                                      "result",
-                                      "Result"
+                                      "ptr",
+                                      "non_null",
+                                      "NonNull"
                                     ]
                                   },
                                   "consts": [],
@@ -2032,7 +1975,19 @@
                                     {
                                       "type": "Tuple",
                                       "tys": []
-                                    },
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "&mut"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
                                     {
                                       "type": "Application",
                                       "func": {
@@ -2040,7 +1995,7 @@
                                         "path": [
                                           "core",
                                           "fmt",
-                                          "Error"
+                                          "Formatter"
                                         ]
                                       },
                                       "consts": [],
@@ -2048,59 +2003,89 @@
                                     }
                                   ]
                                 }
-                              }
-                            ],
-                            [
-                              "_lifetime",
-                              {
+                              ],
+                              "ret": {
                                 "type": "Application",
                                 "func": {
                                   "type": "Path",
                                   "path": [
                                     "core",
-                                    "marker",
-                                    "PhantomData"
+                                    "result",
+                                    "Result"
                                   ]
                                 },
                                 "consts": [],
                                 "tys": [
                                   {
+                                    "type": "Tuple",
+                                    "tys": []
+                                  },
+                                  {
                                     "type": "Application",
                                     "func": {
                                       "type": "Path",
                                       "path": [
-                                        "&"
+                                        "core",
+                                        "fmt",
+                                        "Error"
                                       ]
                                     },
                                     "consts": [],
-                                    "tys": [
-                                      {
-                                        "type": "Tuple",
-                                        "tys": []
-                                      }
-                                    ]
+                                    "tys": []
                                   }
                                 ]
                               }
-                            ]
+                            }
+                          ],
+                          [
+                            "_lifetime",
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "core",
+                                  "marker",
+                                  "PhantomData"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "&"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Tuple",
+                                      "tys": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
                           ]
-                        }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Count",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Path",
-                              "path": [
-                                "usize"
-                              ]
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "usize"
+                            ]
+                          }
+                        ]
                       },
                       "discriminant": null
                     }

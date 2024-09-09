@@ -94,26 +94,24 @@
                           {
                             "name": "A",
                             "item": {
-                              "Tuple": {
-                                "tys": [
-                                  {
-                                    "type": "Associated"
-                                  }
-                                ]
-                              }
+                              "type": "Tuple",
+                              "tys": [
+                                {
+                                  "type": "Associated"
+                                }
+                              ]
                             },
                             "discriminant": null
                           },
                           {
                             "name": "B",
                             "item": {
-                              "Tuple": {
-                                "tys": [
-                                  {
-                                    "type": "Associated"
-                                  }
-                                ]
-                              }
+                              "type": "Tuple",
+                              "tys": [
+                                {
+                                  "type": "Associated"
+                                }
+                              ]
                             },
                             "discriminant": null
                           }

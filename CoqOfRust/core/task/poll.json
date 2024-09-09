@@ -24,23 +24,21 @@
                     {
                       "name": "Ready",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Var",
-                              "name": "T"
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Pending",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     }

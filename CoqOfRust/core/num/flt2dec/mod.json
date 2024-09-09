@@ -10320,18 +10320,16 @@
                     {
                       "name": "Minus",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "MinusPlus",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     }

@@ -22,27 +22,24 @@
                     {
                       "name": "Unavailable",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "MaybeAvailable",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Available",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     }

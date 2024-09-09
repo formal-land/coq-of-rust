@@ -5,9 +5,9 @@ Require Import links.M.
 Import Run.
 
 Module PhantomData.
-  Inductive t (T: Set) `{Link T} : Set :=
+  Inductive t (T: Set) : Set :=
   | Make : t T.
-  Arguments Make {_ _}.
+  Arguments Make {_}.
 
   Global Instance IsLink (T: Set) `{Link T} : Link (t T) := {
     to_ty := Ty.path "core::marker::PhantomData";

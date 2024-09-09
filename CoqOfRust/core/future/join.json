@@ -24,36 +24,33 @@
                     {
                       "name": "Future",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Var",
-                              "name": "F"
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "F"
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Done",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Associated"
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Associated"
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Taken",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     }

@@ -157,32 +157,30 @@
               {
                 "name": "Undefined",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "Module",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Application",
-                        "func": {
-                          "type": "Path",
-                          "path": [
-                            "move_core_types",
-                            "language_storage",
-                            "ModuleId"
-                          ]
-                        },
-                        "consts": [],
-                        "tys": []
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "move_core_types",
+                          "language_storage",
+                          "ModuleId"
+                        ]
+                      },
+                      "consts": [],
+                      "tys": []
+                    }
+                  ]
                 },
                 "discriminant": null
               }

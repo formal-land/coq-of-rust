@@ -223,7 +223,7 @@ End TupleIsLink.
 Module Ref.
   (** A general type for references. Can be used for mutable or non-mutable references, as well as
       for unsafe pointers (we assume that the `unsafe` code is safe). *)
-  Inductive t (kind : Pointer.Kind.t) (A : Set) `{Link A} : Set :=
+  Inductive t (kind : Pointer.Kind.t) (A : Set) : Set :=
   | Immediate (value : A)
   | Mutable {Address Big_A : Set}
     (address : Address)
@@ -231,8 +231,8 @@ Module Ref.
     (big_to_value : Big_A -> Value.t)
     (projection : Big_A -> option A)
     (injection : Big_A -> A -> option Big_A).
-  Arguments Immediate _ {_ _}.
-  Arguments Mutable _ {_ _ _ _}.
+  Arguments Immediate _ {_}.
+  Arguments Mutable _ {_ _ _}.
 
   Definition to_core {kind : Pointer.Kind.t} {A : Set} `{Link A} (ref : t kind A) :
       Pointer.Core.t Value.t A :=
@@ -380,38 +380,31 @@ Module Run.
     value' = to_value value ->
     {{ k (to_value (Ref.Immediate kind value)) ⇓ output_to_value }} ->
     {{ LowM.CallPrimitive (Primitive.StateAlloc value') k ⇓ output_to_value }}
-  | CallPrimitiveStateRead {kind : Pointer.Kind.t} {A : Set}
-      (* We make the [ty] and [to_value] explicit instead of using the class to avoid inference
-         problems. *)
-      (ty : Ty.t) (to_value : A -> Value.t)
-      (ref : @Ref.t kind A {| to_ty := ty; to_value := to_value |})
+  | CallPrimitiveStateRead {kind : Pointer.Kind.t} {A : Set} `{Link A}
+      (ref : Ref.t kind A)
       (pointer_core : Pointer.Core.t Value.t A)
       (k : Value.t -> M) :
-    let pointer := Pointer.Make kind ty to_value pointer_core in
+    let pointer := Pointer.Make kind (to_ty A) to_value pointer_core in
     pointer_core = Ref.to_core ref ->
     (forall (value : A),
       {{ k (to_value value) ⇓ output_to_value }}
     ) ->
     {{ LowM.CallPrimitive (Primitive.StateRead pointer) k ⇓ output_to_value }}
-  | CallPrimitiveStateReadImmediate {kind : Pointer.Kind.t} {A : Set}
-      (* Same as with read, we make the [Link] class explicit. *)
-      (ty : Ty.t) (to_value : A -> Value.t)
+  | CallPrimitiveStateReadImmediate {kind : Pointer.Kind.t} {A : Set} `{Link A}
       (value : A)
       (pointer_core : Pointer.Core.t Value.t A)
       (k : Value.t -> M) :
-    let pointer := Pointer.Make kind ty to_value pointer_core in
-    let ref := @Ref.Immediate kind A {| to_ty := ty; to_value := to_value |} value in
+    let pointer := Pointer.Make kind (to_ty A) to_value pointer_core in
+    let ref := Ref.Immediate kind value in
     pointer_core = Ref.to_core ref ->
     {{ k (to_value value) ⇓ output_to_value }} ->
     {{ LowM.CallPrimitive (Primitive.StateRead pointer) k ⇓ output_to_value }}
-  | CallPrimitiveStateWrite {kind : Pointer.Kind.t} {A : Set}
-      (* Same as with read, we make the [Link] class explicit. *)
-      (ty : Ty.t) (to_value : A -> Value.t)
-      (ref : @Ref.t kind A {| to_ty := ty; to_value := to_value |})
+  | CallPrimitiveStateWrite {kind : Pointer.Kind.t} {A : Set} `{Link A}
+      (ref : Ref.t kind A)
       (pointer_core : Pointer.Core.t Value.t A)
       (value : A) (value' : Value.t)
       (k : Value.t -> M) :
-    let pointer := Pointer.Make kind ty to_value pointer_core in
+    let pointer := Pointer.Make kind (to_ty A) to_value pointer_core in
     pointer_core = Ref.to_core ref ->
     value' = to_value value ->
     {{ k (Value.Tuple []) ⇓ output_to_value }} ->

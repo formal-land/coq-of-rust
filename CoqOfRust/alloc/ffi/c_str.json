@@ -2971,25 +2971,23 @@
                     {
                       "name": "InteriorNul",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Path",
-                              "path": [
-                                "usize"
-                              ]
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "usize"
+                            ]
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "NotNulTerminated",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     }

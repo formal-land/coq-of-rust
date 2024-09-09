@@ -6630,49 +6630,47 @@
               {
                 "name": "Bytes",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Application",
-                        "func": {
-                          "type": "Path",
-                          "path": [
-                            "core",
-                            "escape",
-                            "EscapeIterInner"
-                          ]
-                        },
-                        "consts": [
-                          {
-                            "Literal": {
-                              "Integer": {
-                                "kind": "Usize",
-                                "negative_sign": false,
-                                "value": 10
-                              }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "core",
+                          "escape",
+                          "EscapeIterInner"
+                        ]
+                      },
+                      "consts": [
+                        {
+                          "Literal": {
+                            "Integer": {
+                              "kind": "Usize",
+                              "negative_sign": false,
+                              "value": 10
                             }
                           }
-                        ],
-                        "tys": []
-                      }
-                    ]
-                  }
+                        }
+                      ],
+                      "tys": []
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "Char",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Path",
-                        "path": [
-                          "char"
-                        ]
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Path",
+                      "path": [
+                        "char"
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               }

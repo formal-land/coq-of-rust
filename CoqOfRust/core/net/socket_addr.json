@@ -22,48 +22,46 @@
                     {
                       "name": "V4",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Application",
-                              "func": {
-                                "type": "Path",
-                                "path": [
-                                  "core",
-                                  "net",
-                                  "socket_addr",
-                                  "SocketAddrV4"
-                                ]
-                              },
-                              "consts": [],
-                              "tys": []
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "net",
+                                "socket_addr",
+                                "SocketAddrV4"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "V6",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Application",
-                              "func": {
-                                "type": "Path",
-                                "path": [
-                                  "core",
-                                  "net",
-                                  "socket_addr",
-                                  "SocketAddrV6"
-                                ]
-                              },
-                              "consts": [],
-                              "tys": []
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "net",
+                                "socket_addr",
+                                "SocketAddrV6"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        ]
                       },
                       "discriminant": null
                     }

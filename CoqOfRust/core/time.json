@@ -28565,18 +28565,16 @@
               {
                 "name": "Negative",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "OverflowOrNan",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               }

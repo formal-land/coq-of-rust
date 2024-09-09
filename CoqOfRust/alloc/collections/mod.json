@@ -1128,43 +1128,41 @@
               {
                 "name": "CapacityOverflow",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "AllocError",
                 "item": {
-                  "Struct": {
-                    "fields": [
-                      [
-                        "layout",
-                        {
-                          "type": "Application",
-                          "func": {
-                            "type": "Path",
-                            "path": [
-                              "core",
-                              "alloc",
-                              "layout",
-                              "Layout"
-                            ]
-                          },
-                          "consts": [],
-                          "tys": []
-                        }
-                      ],
-                      [
-                        "non_exhaustive",
-                        {
-                          "type": "Tuple",
-                          "tys": []
-                        }
-                      ]
+                  "type": "Struct",
+                  "fields": [
+                    [
+                      "layout",
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "alloc",
+                            "layout",
+                            "Layout"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      }
+                    ],
+                    [
+                      "non_exhaustive",
+                      {
+                        "type": "Tuple",
+                        "tys": []
+                      }
                     ]
-                  }
+                  ]
                 },
                 "discriminant": null
               }

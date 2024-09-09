@@ -22,72 +22,69 @@
                     {
                       "name": "Zero",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Path",
-                              "path": [
-                                "usize"
-                              ]
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "usize"
+                            ]
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Num",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Path",
-                              "path": [
-                                "u16"
-                              ]
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "u16"
+                            ]
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Copy",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Application",
-                              "func": {
-                                "type": "Path",
-                                "path": [
-                                  "&"
-                                ]
-                              },
-                              "consts": [],
-                              "tys": [
-                                {
-                                  "type": "Application",
-                                  "func": {
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "slice"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
                                     "type": "Path",
                                     "path": [
-                                      "slice"
+                                      "u8"
                                     ]
-                                  },
-                                  "consts": [],
-                                  "tys": [
-                                    {
-                                      "type": "Path",
-                                      "path": [
-                                        "u8"
-                                      ]
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
                       },
                       "discriminant": null
                     }

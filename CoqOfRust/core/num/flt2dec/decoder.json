@@ -1641,52 +1641,48 @@
                           {
                             "name": "Nan",
                             "item": {
-                              "Tuple": {
-                                "tys": []
-                              }
+                              "type": "Tuple",
+                              "tys": []
                             },
                             "discriminant": null
                           },
                           {
                             "name": "Infinite",
                             "item": {
-                              "Tuple": {
-                                "tys": []
-                              }
+                              "type": "Tuple",
+                              "tys": []
                             },
                             "discriminant": null
                           },
                           {
                             "name": "Zero",
                             "item": {
-                              "Tuple": {
-                                "tys": []
-                              }
+                              "type": "Tuple",
+                              "tys": []
                             },
                             "discriminant": null
                           },
                           {
                             "name": "Finite",
                             "item": {
-                              "Tuple": {
-                                "tys": [
-                                  {
-                                    "type": "Application",
-                                    "func": {
-                                      "type": "Path",
-                                      "path": [
-                                        "core",
-                                        "num",
-                                        "flt2dec",
-                                        "decoder",
-                                        "Decoded"
-                                      ]
-                                    },
-                                    "consts": [],
-                                    "tys": []
-                                  }
-                                ]
-                              }
+                              "type": "Tuple",
+                              "tys": [
+                                {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "num",
+                                      "flt2dec",
+                                      "decoder",
+                                      "Decoded"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": []
+                                }
+                              ]
                             },
                             "discriminant": null
                           }

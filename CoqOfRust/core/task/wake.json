@@ -3094,47 +3094,45 @@
                     {
                       "name": "Some",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Application",
-                              "func": {
-                                "type": "Path",
-                                "path": [
-                                  "&mut"
-                                ]
-                              },
-                              "consts": [],
-                              "tys": [
-                                {
-                                  "type": "Dyn",
-                                  "traits": [
-                                    [
-                                      "core",
-                                      "any",
-                                      "Any",
-                                      "Trait"
-                                    ]
-                                  ]
-                                }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&mut"
                               ]
-                            }
-                          ]
-                        }
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Dyn",
+                                "traits": [
+                                  [
+                                    "core",
+                                    "any",
+                                    "Any",
+                                    "Trait"
+                                  ]
+                                ]
+                              }
+                            ]
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "None",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Tuple",
-                              "tys": []
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Tuple",
+                            "tys": []
+                          }
+                        ]
                       },
                       "discriminant": null
                     }

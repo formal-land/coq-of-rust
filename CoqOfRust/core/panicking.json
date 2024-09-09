@@ -5966,27 +5966,24 @@
               {
                 "name": "Eq",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "Ne",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "Match",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               }

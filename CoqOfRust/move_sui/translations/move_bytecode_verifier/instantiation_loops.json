@@ -1148,44 +1148,42 @@
               {
                 "name": "Identity",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "TyConApp",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Application",
-                        "func": {
-                          "type": "Path",
-                          "path": [
-                            "&"
-                          ]
-                        },
-                        "consts": [],
-                        "tys": [
-                          {
-                            "type": "Application",
-                            "func": {
-                              "type": "Path",
-                              "path": [
-                                "move_binary_format",
-                                "file_format",
-                                "SignatureToken"
-                              ]
-                            },
-                            "consts": [],
-                            "tys": []
-                          }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "&"
                         ]
-                      }
-                    ]
-                  }
+                      },
+                      "consts": [],
+                      "tys": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "move_binary_format",
+                              "file_format",
+                              "SignatureToken"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        }
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               }
