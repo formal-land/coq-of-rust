@@ -6,6 +6,7 @@ Import simulations.M.Notations.
 
 Require Import CoqOfRust.core.simulations.eq.
 
+Require CoqOfRust.move_sui.simulations.move_binary_format.file_format_common.
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
@@ -868,6 +869,41 @@ Module FieldDefinition.
   }.
 End FieldDefinition.
 
+(*
+pub enum Visibility {
+    /// Accessible within its defining module only.
+    #[default]
+    Private = 0x0,
+    /// Accessible by any module or script outside of its declaring module.
+    Public = 0x1,
+    // DEPRECATED for separate entry modifier
+    // Accessible by any script or other `Script` functions from any module
+    // Script = 0x2,
+    /// Accessible by this module as well as modules declared in the friend list.
+    Friend = 0x3,
+}
+*)
+Module Visibility.
+  Inductive t : Set :=
+  | Private
+  | Public
+  | Friend
+  .
+
+  Definition to_Z (x : t) : Z :=
+    match x with
+    | Private => 0x0
+    | Public  => 0x1
+    | Friend  => 0x3
+    end.
+
+  Definition of_Z (x : Z) : t :=
+    if      x =? 0x0 then Private
+    else if x =? 0x1 then Public
+    else if x =? 0x3 then Friend
+    else Private. (* NOTE: This should never arrive *)
+End Visibility.
+
 (* 
 #[derive(Clone, Debug, Eq, PartialEq)]
 #[cfg_attr(any(test, feature = "fuzzing"), derive(proptest_derive::Arbitrary))]
@@ -1040,7 +1076,57 @@ Module CodeUnit.
     locals  : SignatureIndex.t;
     code    : list Bytecode.t;
   }.
+
+  Definition default : t := {|
+    locals := SignatureIndex.Build_t 0;
+    code   := [];
+  |}.
 End CodeUnit.
+
+(*
+pub struct FunctionDefinition {
+    /// The prototype of the function (module, name, signature).
+    pub function: FunctionHandleIndex,
+    /// The visibility of this function.
+    pub visibility: Visibility,
+    /// Marker if the function is intended as an entry function. That is
+    pub is_entry: bool,
+    /// List of locally defined types (declared in this module) with the `Key` ability
+    /// that the procedure might access, either through: BorrowGlobal, MoveFrom, or transitively
+    /// through another procedure
+    /// This list of acquires grants the borrow checker the ability to statically verify the safety
+    /// of references into global storage
+    ///
+    /// Not in the signature as it is not needed outside of the declaring module
+    ///
+    /// Note, there is no SignatureIndex with each struct definition index, so all instantiations of
+    /// that type are considered as being acquired
+    pub acquires_global_resources: Vec<StructDefinitionIndex>,
+    /// Code for this function.
+    #[cfg_attr(
+        any(test, feature = "fuzzing"),
+        proptest(strategy = "any_with::<CodeUnit>(params).prop_map(Some)")
+    )]
+    pub code: Option<CodeUnit>,
+}
+*)
+Module FunctionDefinition.
+  Record t : Set := {
+    function                  : FunctionHandleIndex.t;
+    visibility                : Visibility.t;
+    is_entry                  : bool;
+    acquires_global_resources : list StructDefinitionIndex.t;
+    code                      : option CodeUnit.t;
+  }.
+
+  Definition default : t := {|
+    function                  := FunctionHandleIndex.Build_t 0;
+    visibility                := Visibility.Private;
+    is_entry                  := false;
+    acquires_global_resources := [];
+    code                      := None
+  |}.
+End FunctionDefinition.
 
 (* 
 pub struct CompiledModule {
@@ -1102,7 +1188,7 @@ Module CompiledModule.
     constant_pool : ConstantPool.t;
     (* metadata : list Metadata; *)
     struct_defs : list StructDefinition.t;
-    (* function_defs : list FunctionDefinition; *)
+    function_defs : list FunctionDefinition.t;
   }.
   Module Impl_CompiledModule.
     Definition Self := move_sui.simulations.move_binary_format.file_format.CompiledModule.t.
@@ -1327,3 +1413,50 @@ Module CompiledModule.
 
   End Impl_CompiledModule.
 End CompiledModule.
+
+(*
+pub fn empty_module() -> CompiledModule {
+    CompiledModule {
+        version: file_format_common::VERSION_MAX,
+        module_handles: vec![ModuleHandle {
+            address: AddressIdentifierIndex(0),
+            name: IdentifierIndex(0),
+        }],
+        self_module_handle_idx: ModuleHandleIndex(0),
+        identifiers: vec![self_module_name().to_owned()],
+        address_identifiers: vec![AccountAddress::ZERO],
+        constant_pool: vec![],
+        metadata: vec![],
+        function_defs: vec![],
+        struct_defs: vec![],
+        struct_handles: vec![],
+        function_handles: vec![],
+        field_handles: vec![],
+        friend_decls: vec![],
+        struct_def_instantiations: vec![],
+        function_instantiations: vec![],
+        field_instantiations: vec![],
+        signatures: vec![Signature(vec![])],
+    }
+}
+*)
+Definition empty_module : CompiledModule.t :=
+  {|
+    CompiledModule.version := file_format_common.VERSION_MAX;
+    (* CompiledModule.module_handles := ...; *)
+    (* CompiledModule.self_module_handle_idx := ModuleHandleIndex.Make 0; *)
+    (* CompiledModule.identifiers := [self_module_name]; *)
+    (* CompiledModule.address_identifiers := [AccountAddress.ZERO]; *)
+    CompiledModule.constant_pool := [];
+    (* CompiledModule.metadata := []; *)
+    CompiledModule.function_defs := [];
+    CompiledModule.struct_defs := [];
+    CompiledModule.struct_handles := [];
+    CompiledModule.function_handles := [];
+    CompiledModule.field_handles := [];
+    (* CompiledModule.friend_decls := []; *)
+    CompiledModule.struct_def_instantiations := [];
+    CompiledModule.function_instantiations := [];
+    CompiledModule.field_instantiations := [];
+    CompiledModule.signatures := [Signature.Build_t []];
+  |}.

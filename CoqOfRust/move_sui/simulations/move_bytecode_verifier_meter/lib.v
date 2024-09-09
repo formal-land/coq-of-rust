@@ -169,7 +169,8 @@ Module Meter.
   Class Trait (Self : Set) : Set := { }.
 
   Module DummyMeter.
-    Record t : Set := { }.
+    Inductive t : Set :=
+    | Make.
 
     (* impl Meter for DummyMeter  *)
     Module Impl_DummyMeter.

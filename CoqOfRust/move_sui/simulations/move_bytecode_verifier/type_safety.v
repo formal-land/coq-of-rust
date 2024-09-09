@@ -178,8 +178,8 @@ Module TypeSafetyChecker.
       Locals.Impl_Locals.local_at self.(locals) i.
 
     Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
-      let result := CompiledModule.Impl_CompiledModule.abilities self.(module) t $ 
-        FunctionContext.Impl_FunctionContext.type_parameters self.(function_context) in
+      let result := CompiledModule.Impl_CompiledModule.abilities self.(module) t $
+        FunctionContext.type_parameters self.(function_context) in
       (* NOTE(MUTUAL DEPENDENCY ISSUE): Since we're just using a stub in the `file_format`, 
         here we convert the stub into actual PartialVMError... *)
       match result with
@@ -2241,7 +2241,7 @@ Definition verify
     (function_context : FunctionContext.t) :
     MS? Meter.t string (PartialVMResult.t unit) :=
   let verifier := TypeSafetyChecker.Impl_TypeSafetyChecker.new module function_context in
-  let cfg := FunctionContext.Impl_FunctionContext.cfg function_context in
+  let cfg := function_context.(FunctionContext.cfg) in
   letS? _ :=
     borrowS? (fun meter => (verifier, meter)) (fun '(verifier, meter) => (meter, verifier)) (
       foldS? (Result.Ok tt) (control_flow_graph.Impl_VMControlFlowGraph.blocks cfg) (fun _ block_id =>
