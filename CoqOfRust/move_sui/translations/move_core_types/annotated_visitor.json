@@ -5529,41 +5529,38 @@
               {
                 "name": "UnexpectedEof",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "UnexpectedByte",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Path",
-                        "path": [
-                          "u8"
-                        ]
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Path",
+                      "path": [
+                        "u8"
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "TrailingBytes",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Path",
-                        "path": [
-                          "usize"
-                        ]
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Path",
+                      "path": [
+                        "usize"
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               }

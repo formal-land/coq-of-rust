@@ -9470,27 +9470,24 @@
         {
           "name": "ElementNotEqual",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "Underflow",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "Overflow",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         }

@@ -10,36 +10,32 @@
         {
           "name": "Transaction",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "Package",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "Module",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "Function",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         }

@@ -828,39 +828,37 @@
               {
                 "name": "Borrowed",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Application",
-                        "func": {
-                          "type": "Path",
-                          "path": [
-                            "&"
-                          ]
-                        },
-                        "consts": [],
-                        "tys": [
-                          {
-                            "type": "Var",
-                            "name": "B"
-                          }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "&"
                         ]
-                      }
-                    ]
-                  }
+                      },
+                      "consts": [],
+                      "tys": [
+                        {
+                          "type": "Var",
+                          "name": "B"
+                        }
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "Owned",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Associated"
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Associated"
+                    }
+                  ]
                 },
                 "discriminant": null
               }

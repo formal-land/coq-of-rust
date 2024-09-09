@@ -16,185 +16,176 @@
               {
                 "name": "U8",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Path",
-                        "path": [
-                          "u8"
-                        ]
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Path",
+                      "path": [
+                        "u8"
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "U64",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Path",
-                        "path": [
-                          "u64"
-                        ]
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Path",
+                      "path": [
+                        "u64"
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "U128",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Path",
-                        "path": [
-                          "u128"
-                        ]
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Path",
+                      "path": [
+                        "u128"
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "Address",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Application",
-                        "func": {
-                          "type": "Path",
-                          "path": [
-                            "move_core_types",
-                            "account_address",
-                            "AccountAddress"
-                          ]
-                        },
-                        "consts": [],
-                        "tys": []
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "move_core_types",
+                          "account_address",
+                          "AccountAddress"
+                        ]
+                      },
+                      "consts": [],
+                      "tys": []
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "U8Vector",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Application",
-                        "func": {
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "alloc",
+                          "vec",
+                          "Vec"
+                        ]
+                      },
+                      "consts": [],
+                      "tys": [
+                        {
                           "type": "Path",
                           "path": [
-                            "alloc",
-                            "vec",
-                            "Vec"
+                            "u8"
                           ]
                         },
-                        "consts": [],
-                        "tys": [
-                          {
+                        {
+                          "type": "Application",
+                          "func": {
                             "type": "Path",
                             "path": [
-                              "u8"
+                              "alloc",
+                              "alloc",
+                              "Global"
                             ]
                           },
-                          {
-                            "type": "Application",
-                            "func": {
-                              "type": "Path",
-                              "path": [
-                                "alloc",
-                                "alloc",
-                                "Global"
-                              ]
-                            },
-                            "consts": [],
-                            "tys": []
-                          }
-                        ]
-                      }
-                    ]
-                  }
+                          "consts": [],
+                          "tys": []
+                        }
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "Bool",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Path",
-                        "path": [
-                          "bool"
-                        ]
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Path",
+                      "path": [
+                        "bool"
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "U16",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Path",
-                        "path": [
-                          "u16"
-                        ]
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Path",
+                      "path": [
+                        "u16"
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "U32",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Path",
-                        "path": [
-                          "u32"
-                        ]
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Path",
+                      "path": [
+                        "u32"
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "U256",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Application",
-                        "func": {
-                          "type": "Path",
-                          "path": [
-                            "move_core_types",
-                            "u256",
-                            "U256"
-                          ]
-                        },
-                        "consts": [],
-                        "tys": []
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "move_core_types",
+                          "u256",
+                          "U256"
+                        ]
+                      },
+                      "consts": [],
+                      "tys": []
+                    }
+                  ]
                 },
                 "discriminant": null
               }

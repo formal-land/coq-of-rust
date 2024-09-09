@@ -376,54 +376,48 @@
               {
                 "name": "Validation",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "Verification",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "InvariantViolation",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "Deserialization",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "Execution",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "Unknown",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               }
@@ -2471,1863 +2465,1656 @@
               {
                 "name": "UNKNOWN_VALIDATION_STATUS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 0
               },
               {
                 "name": "INVALID_SIGNATURE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1
               },
               {
                 "name": "INVALID_AUTH_KEY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2
               },
               {
                 "name": "SEQUENCE_NUMBER_TOO_OLD",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3
               },
               {
                 "name": "SEQUENCE_NUMBER_TOO_NEW",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4
               },
               {
                 "name": "INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 5
               },
               {
                 "name": "TRANSACTION_EXPIRED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 6
               },
               {
                 "name": "SENDING_ACCOUNT_DOES_NOT_EXIST",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 7
               },
               {
                 "name": "REJECTED_WRITE_SET",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 8
               },
               {
                 "name": "INVALID_WRITE_SET",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 9
               },
               {
                 "name": "EXCEEDED_MAX_TRANSACTION_SIZE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 10
               },
               {
                 "name": "UNKNOWN_SCRIPT",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 11
               },
               {
                 "name": "UNKNOWN_MODULE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 12
               },
               {
                 "name": "MAX_GAS_UNITS_EXCEEDS_MAX_GAS_UNITS_BOUND",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 13
               },
               {
                 "name": "MAX_GAS_UNITS_BELOW_MIN_TRANSACTION_GAS_UNITS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 14
               },
               {
                 "name": "GAS_UNIT_PRICE_BELOW_MIN_BOUND",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 15
               },
               {
                 "name": "GAS_UNIT_PRICE_ABOVE_MAX_BOUND",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 16
               },
               {
                 "name": "INVALID_GAS_SPECIFIER",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 17
               },
               {
                 "name": "SENDING_ACCOUNT_FROZEN",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 18
               },
               {
                 "name": "UNABLE_TO_DESERIALIZE_ACCOUNT",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 19
               },
               {
                 "name": "CURRENCY_INFO_DOES_NOT_EXIST",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 20
               },
               {
                 "name": "INVALID_MODULE_PUBLISHER",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 21
               },
               {
                 "name": "NO_ACCOUNT_ROLE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 22
               },
               {
                 "name": "BAD_CHAIN_ID",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 23
               },
               {
                 "name": "SEQUENCE_NUMBER_TOO_BIG",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 24
               },
               {
                 "name": "BAD_TRANSACTION_FEE_CURRENCY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 25
               },
               {
                 "name": "FEATURE_UNDER_GATING",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 26
               },
               {
                 "name": "SECONDARY_KEYS_ADDRESSES_COUNT_MISMATCH",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 27
               },
               {
                 "name": "SIGNERS_CONTAIN_DUPLICATES",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 28
               },
               {
                 "name": "SEQUENCE_NONCE_INVALID",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 29
               },
               {
                 "name": "CHAIN_ACCOUNT_INFO_DOES_NOT_EXIST",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 30
               },
               {
                 "name": "UNKNOWN_VERIFICATION_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1000
               },
               {
                 "name": "INDEX_OUT_OF_BOUNDS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1001
               },
               {
                 "name": "INVALID_SIGNATURE_TOKEN",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1003
               },
               {
                 "name": "RECURSIVE_STRUCT_DEFINITION",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1005
               },
               {
                 "name": "FIELD_MISSING_TYPE_ABILITY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1006
               },
               {
                 "name": "INVALID_FALL_THROUGH",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1007
               },
               {
                 "name": "NEGATIVE_STACK_SIZE_WITHIN_BLOCK",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1009
               },
               {
                 "name": "INVALID_MAIN_FUNCTION_SIGNATURE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1011
               },
               {
                 "name": "DUPLICATE_ELEMENT",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1012
               },
               {
                 "name": "INVALID_MODULE_HANDLE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1013
               },
               {
                 "name": "UNIMPLEMENTED_HANDLE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1014
               },
               {
                 "name": "LOOKUP_FAILED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1017
               },
               {
                 "name": "TYPE_MISMATCH",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1020
               },
               {
                 "name": "MISSING_DEPENDENCY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1021
               },
               {
                 "name": "POP_WITHOUT_DROP_ABILITY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1023
               },
               {
                 "name": "BR_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1025
               },
               {
                 "name": "ABORT_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1026
               },
               {
                 "name": "STLOC_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1027
               },
               {
                 "name": "STLOC_UNSAFE_TO_DESTROY_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1028
               },
               {
                 "name": "UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1029
               },
               {
                 "name": "RET_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1030
               },
               {
                 "name": "RET_BORROWED_MUTABLE_REFERENCE_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1031
               },
               {
                 "name": "FREEZEREF_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1032
               },
               {
                 "name": "FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1033
               },
               {
                 "name": "BORROWFIELD_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1034
               },
               {
                 "name": "BORROWFIELD_BAD_FIELD_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1035
               },
               {
                 "name": "BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1036
               },
               {
                 "name": "COPYLOC_UNAVAILABLE_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1037
               },
               {
                 "name": "COPYLOC_WITHOUT_COPY_ABILITY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1038
               },
               {
                 "name": "COPYLOC_EXISTS_BORROW_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1039
               },
               {
                 "name": "MOVELOC_UNAVAILABLE_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1040
               },
               {
                 "name": "MOVELOC_EXISTS_BORROW_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1041
               },
               {
                 "name": "BORROWLOC_REFERENCE_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1042
               },
               {
                 "name": "BORROWLOC_UNAVAILABLE_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1043
               },
               {
                 "name": "BORROWLOC_EXISTS_BORROW_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1044
               },
               {
                 "name": "CALL_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1045
               },
               {
                 "name": "CALL_BORROWED_MUTABLE_REFERENCE_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1046
               },
               {
                 "name": "PACK_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1047
               },
               {
                 "name": "UNPACK_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1048
               },
               {
                 "name": "READREF_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1049
               },
               {
                 "name": "READREF_WITHOUT_COPY_ABILITY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1050
               },
               {
                 "name": "READREF_EXISTS_MUTABLE_BORROW_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1051
               },
               {
                 "name": "WRITEREF_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1052
               },
               {
                 "name": "WRITEREF_WITHOUT_DROP_ABILITY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1053
               },
               {
                 "name": "WRITEREF_EXISTS_BORROW_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1054
               },
               {
                 "name": "WRITEREF_NO_MUTABLE_REFERENCE_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1055
               },
               {
                 "name": "INTEGER_OP_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1056
               },
               {
                 "name": "BOOLEAN_OP_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1057
               },
               {
                 "name": "EQUALITY_OP_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1058
               },
               {
                 "name": "EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1059
               },
               {
                 "name": "BORROWGLOBAL_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1060
               },
               {
                 "name": "BORROWGLOBAL_WITHOUT_KEY_ABILITY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1061
               },
               {
                 "name": "MOVEFROM_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1062
               },
               {
                 "name": "MOVEFROM_WITHOUT_KEY_ABILITY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1063
               },
               {
                 "name": "MOVETO_TYPE_MISMATCH_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1064
               },
               {
                 "name": "MOVETO_WITHOUT_KEY_ABILITY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1065
               },
               {
                 "name": "MODULE_ADDRESS_DOES_NOT_MATCH_SENDER",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1067
               },
               {
                 "name": "NO_MODULE_HANDLES",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1068
               },
               {
                 "name": "POSITIVE_STACK_SIZE_AT_BLOCK_END",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1069
               },
               {
                 "name": "MISSING_ACQUIRES_ANNOTATION",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1070
               },
               {
                 "name": "EXTRANEOUS_ACQUIRES_ANNOTATION",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1071
               },
               {
                 "name": "DUPLICATE_ACQUIRES_ANNOTATION",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1072
               },
               {
                 "name": "INVALID_ACQUIRES_ANNOTATION",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1073
               },
               {
                 "name": "GLOBAL_REFERENCE_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1074
               },
               {
                 "name": "CONSTRAINT_NOT_SATISFIED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1075
               },
               {
                 "name": "NUMBER_OF_TYPE_ARGUMENTS_MISMATCH",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1076
               },
               {
                 "name": "LOOP_IN_INSTANTIATION_GRAPH",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1077
               },
               {
                 "name": "ZERO_SIZED_STRUCT",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1080
               },
               {
                 "name": "LINKER_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1081
               },
               {
                 "name": "INVALID_CONSTANT_TYPE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1082
               },
               {
                 "name": "MALFORMED_CONSTANT_DATA",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1083
               },
               {
                 "name": "EMPTY_CODE_UNIT",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1084
               },
               {
                 "name": "INVALID_LOOP_SPLIT",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1085
               },
               {
                 "name": "INVALID_LOOP_BREAK",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1086
               },
               {
                 "name": "INVALID_LOOP_CONTINUE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1087
               },
               {
                 "name": "UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1088
               },
               {
                 "name": "TOO_MANY_LOCALS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1089
               },
               {
                 "name": "GENERIC_MEMBER_OPCODE_MISMATCH",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1090
               },
               {
                 "name": "FUNCTION_RESOLUTION_FAILURE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1091
               },
               {
                 "name": "INVALID_OPERATION_IN_SCRIPT",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1094
               },
               {
                 "name": "DUPLICATE_MODULE_NAME",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1095
               },
               {
                 "name": "BACKWARD_INCOMPATIBLE_MODULE_UPDATE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1096
               },
               {
                 "name": "CYCLIC_MODULE_DEPENDENCY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1097
               },
               {
                 "name": "NUMBER_OF_ARGUMENTS_MISMATCH",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1098
               },
               {
                 "name": "INVALID_PARAM_TYPE_FOR_DESERIALIZATION",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1099
               },
               {
                 "name": "FAILED_TO_DESERIALIZE_ARGUMENT",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1100
               },
               {
                 "name": "NUMBER_OF_SIGNER_ARGUMENTS_MISMATCH",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1101
               },
               {
                 "name": "CALLED_SCRIPT_VISIBLE_FROM_NON_SCRIPT_VISIBLE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1102
               },
               {
                 "name": "EXECUTE_ENTRY_FUNCTION_CALLED_ON_NON_ENTRY_FUNCTION",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1103
               },
               {
                 "name": "INVALID_FRIEND_DECL_WITH_SELF",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1104
               },
               {
                 "name": "INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1105
               },
               {
                 "name": "INVALID_FRIEND_DECL_WITH_MODULES_IN_DEPENDENCIES",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1106
               },
               {
                 "name": "CYCLIC_MODULE_FRIENDSHIP",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1107
               },
               {
                 "name": "INVALID_PHANTOM_TYPE_PARAM_POSITION",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1108
               },
               {
                 "name": "VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1109
               },
               {
                 "name": "VEC_BORROW_ELEMENT_EXISTS_MUTABLE_BORROW_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1110
               },
               {
                 "name": "LOOP_MAX_DEPTH_REACHED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1111
               },
               {
                 "name": "TOO_MANY_TYPE_PARAMETERS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1112
               },
               {
                 "name": "TOO_MANY_PARAMETERS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1113
               },
               {
                 "name": "TOO_MANY_BASIC_BLOCKS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1114
               },
               {
                 "name": "VALUE_STACK_OVERFLOW",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1115
               },
               {
                 "name": "TOO_MANY_TYPE_NODES",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1116
               },
               {
                 "name": "VALUE_STACK_PUSH_OVERFLOW",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1117
               },
               {
                 "name": "MAX_DEPENDENCY_DEPTH_REACHED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1118
               },
               {
                 "name": "MAX_FUNCTION_DEFINITIONS_REACHED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1119
               },
               {
                 "name": "MAX_STRUCT_DEFINITIONS_REACHED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1120
               },
               {
                 "name": "MAX_FIELD_DEFINITIONS_REACHED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1121
               },
               {
                 "name": "TOO_MANY_BACK_EDGES",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1122
               },
               {
                 "name": "RESERVED_VERIFICATION_ERROR_1",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1123
               },
               {
                 "name": "RESERVED_VERIFICATION_ERROR_2",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1124
               },
               {
                 "name": "RESERVED_VERIFICATION_ERROR_3",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1125
               },
               {
                 "name": "RESERVED_VERIFICATION_ERROR_4",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1126
               },
               {
                 "name": "RESERVED_VERIFICATION_ERROR_5",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1127
               },
               {
                 "name": "TOO_MANY_VECTOR_ELEMENTS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1128
               },
               {
                 "name": "IDENTIFIER_TOO_LONG",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1129
               },
               {
                 "name": "PROGRAM_TOO_COMPLEX",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 1130
               },
               {
                 "name": "UNKNOWN_INVARIANT_VIOLATION_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2000
               },
               {
                 "name": "EMPTY_VALUE_STACK",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2003
               },
               {
                 "name": "PC_OVERFLOW",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2005
               },
               {
                 "name": "VERIFICATION_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2006
               },
               {
                 "name": "STORAGE_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2008
               },
               {
                 "name": "INTERNAL_TYPE_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2009
               },
               {
                 "name": "EVENT_KEY_MISMATCH",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2010
               },
               {
                 "name": "UNREACHABLE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2011
               },
               {
                 "name": "VM_STARTUP_FAILURE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2012
               },
               {
                 "name": "UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2015
               },
               {
                 "name": "VERIFIER_INVARIANT_VIOLATION",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2016
               },
               {
                 "name": "UNEXPECTED_VERIFIER_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2017
               },
               {
                 "name": "UNEXPECTED_DESERIALIZATION_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2018
               },
               {
                 "name": "FAILED_TO_SERIALIZE_WRITE_SET_CHANGES",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2019
               },
               {
                 "name": "FAILED_TO_DESERIALIZE_RESOURCE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2020
               },
               {
                 "name": "TYPE_RESOLUTION_FAILURE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2021
               },
               {
                 "name": "DUPLICATE_NATIVE_FUNCTION",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2022
               },
               {
                 "name": "ARITHMETIC_OVERFLOW",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 2023
               },
               {
                 "name": "UNKNOWN_BINARY_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3000
               },
               {
                 "name": "MALFORMED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3001
               },
               {
                 "name": "BAD_MAGIC",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3002
               },
               {
                 "name": "UNKNOWN_VERSION",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3003
               },
               {
                 "name": "UNKNOWN_TABLE_TYPE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3004
               },
               {
                 "name": "UNKNOWN_SIGNATURE_TYPE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3005
               },
               {
                 "name": "UNKNOWN_SERIALIZED_TYPE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3006
               },
               {
                 "name": "UNKNOWN_OPCODE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3007
               },
               {
                 "name": "BAD_HEADER_TABLE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3008
               },
               {
                 "name": "UNEXPECTED_SIGNATURE_TYPE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3009
               },
               {
                 "name": "DUPLICATE_TABLE",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3010
               },
               {
                 "name": "UNKNOWN_ABILITY",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3013
               },
               {
                 "name": "UNKNOWN_NATIVE_STRUCT_FLAG",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3014
               },
               {
                 "name": "BAD_U16",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3017
               },
               {
                 "name": "BAD_U32",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3018
               },
               {
                 "name": "BAD_U64",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3019
               },
               {
                 "name": "BAD_U128",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3020
               },
               {
                 "name": "BAD_U256",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3021
               },
               {
                 "name": "VALUE_SERIALIZATION_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3022
               },
               {
                 "name": "VALUE_DESERIALIZATION_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3023
               },
               {
                 "name": "CODE_DESERIALIZATION_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3024
               },
               {
                 "name": "INVALID_FLAG_BITS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3025
               },
               {
                 "name": "TRAILING_BYTES",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 3026
               },
               {
                 "name": "UNKNOWN_RUNTIME_STATUS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4000
               },
               {
                 "name": "EXECUTED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4001
               },
               {
                 "name": "OUT_OF_GAS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4002
               },
               {
                 "name": "RESOURCE_DOES_NOT_EXIST",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4003
               },
               {
                 "name": "RESOURCE_ALREADY_EXISTS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4004
               },
               {
                 "name": "MISSING_DATA",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4008
               },
               {
                 "name": "DATA_FORMAT_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4009
               },
               {
                 "name": "ABORTED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4016
               },
               {
                 "name": "ARITHMETIC_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4017
               },
               {
                 "name": "VECTOR_OPERATION_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4018
               },
               {
                 "name": "EXECUTION_STACK_OVERFLOW",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4020
               },
               {
                 "name": "CALL_STACK_OVERFLOW",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4021
               },
               {
                 "name": "VM_MAX_TYPE_DEPTH_REACHED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4024
               },
               {
                 "name": "VM_MAX_VALUE_DEPTH_REACHED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4025
               },
               {
                 "name": "VM_EXTENSION_ERROR",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4026
               },
               {
                 "name": "STORAGE_WRITE_LIMIT_REACHED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4027
               },
               {
                 "name": "MEMORY_LIMIT_EXCEEDED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4028
               },
               {
                 "name": "VM_MAX_TYPE_NODES_REACHED",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 4029
               },
               {
                 "name": "UNKNOWN_STATUS",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": 18446744073709551615
               }

@@ -30,46 +30,42 @@
                           {
                             "name": "Included",
                             "item": {
-                              "Tuple": {
-                                "tys": [
-                                  {
-                                    "type": "Var",
-                                    "name": "T"
-                                  }
-                                ]
-                              }
+                              "type": "Tuple",
+                              "tys": [
+                                {
+                                  "type": "Var",
+                                  "name": "T"
+                                }
+                              ]
                             },
                             "discriminant": null
                           },
                           {
                             "name": "Excluded",
                             "item": {
-                              "Tuple": {
-                                "tys": [
-                                  {
-                                    "type": "Var",
-                                    "name": "T"
-                                  }
-                                ]
-                              }
+                              "type": "Tuple",
+                              "tys": [
+                                {
+                                  "type": "Var",
+                                  "name": "T"
+                                }
+                              ]
                             },
                             "discriminant": null
                           },
                           {
                             "name": "AllIncluded",
                             "item": {
-                              "Tuple": {
-                                "tys": []
-                              }
+                              "type": "Tuple",
+                              "tys": []
                             },
                             "discriminant": null
                           },
                           {
                             "name": "AllExcluded",
                             "item": {
-                              "Tuple": {
-                                "tys": []
-                              }
+                              "type": "Tuple",
+                              "tys": []
                             },
                             "discriminant": null
                           }
@@ -473,148 +469,146 @@
                           {
                             "name": "Found",
                             "item": {
-                              "Tuple": {
-                                "tys": [
-                                  {
-                                    "type": "Application",
-                                    "func": {
-                                      "type": "Path",
-                                      "path": [
-                                        "alloc",
-                                        "collections",
-                                        "btree",
-                                        "node",
-                                        "Handle"
-                                      ]
-                                    },
-                                    "consts": [],
-                                    "tys": [
-                                      {
-                                        "type": "Application",
-                                        "func": {
-                                          "type": "Path",
-                                          "path": [
-                                            "alloc",
-                                            "collections",
-                                            "btree",
-                                            "node",
-                                            "NodeRef"
-                                          ]
-                                        },
-                                        "consts": [],
-                                        "tys": [
-                                          {
-                                            "type": "Var",
-                                            "name": "BorrowType"
-                                          },
-                                          {
-                                            "type": "Var",
-                                            "name": "K"
-                                          },
-                                          {
-                                            "type": "Var",
-                                            "name": "V"
-                                          },
-                                          {
-                                            "type": "Var",
-                                            "name": "FoundType"
-                                          }
+                              "type": "Tuple",
+                              "tys": [
+                                {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "alloc",
+                                      "collections",
+                                      "btree",
+                                      "node",
+                                      "Handle"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "alloc",
+                                          "collections",
+                                          "btree",
+                                          "node",
+                                          "NodeRef"
                                         ]
                                       },
-                                      {
-                                        "type": "Application",
-                                        "func": {
-                                          "type": "Path",
-                                          "path": [
-                                            "alloc",
-                                            "collections",
-                                            "btree",
-                                            "node",
-                                            "marker",
-                                            "KV"
-                                          ]
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "BorrowType"
                                         },
-                                        "consts": [],
-                                        "tys": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
+                                        {
+                                          "type": "Var",
+                                          "name": "K"
+                                        },
+                                        {
+                                          "type": "Var",
+                                          "name": "V"
+                                        },
+                                        {
+                                          "type": "Var",
+                                          "name": "FoundType"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "alloc",
+                                          "collections",
+                                          "btree",
+                                          "node",
+                                          "marker",
+                                          "KV"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             "discriminant": null
                           },
                           {
                             "name": "GoDown",
                             "item": {
-                              "Tuple": {
-                                "tys": [
-                                  {
-                                    "type": "Application",
-                                    "func": {
-                                      "type": "Path",
-                                      "path": [
-                                        "alloc",
-                                        "collections",
-                                        "btree",
-                                        "node",
-                                        "Handle"
-                                      ]
-                                    },
-                                    "consts": [],
-                                    "tys": [
-                                      {
-                                        "type": "Application",
-                                        "func": {
-                                          "type": "Path",
-                                          "path": [
-                                            "alloc",
-                                            "collections",
-                                            "btree",
-                                            "node",
-                                            "NodeRef"
-                                          ]
-                                        },
-                                        "consts": [],
-                                        "tys": [
-                                          {
-                                            "type": "Var",
-                                            "name": "BorrowType"
-                                          },
-                                          {
-                                            "type": "Var",
-                                            "name": "K"
-                                          },
-                                          {
-                                            "type": "Var",
-                                            "name": "V"
-                                          },
-                                          {
-                                            "type": "Var",
-                                            "name": "GoDownType"
-                                          }
+                              "type": "Tuple",
+                              "tys": [
+                                {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "alloc",
+                                      "collections",
+                                      "btree",
+                                      "node",
+                                      "Handle"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "alloc",
+                                          "collections",
+                                          "btree",
+                                          "node",
+                                          "NodeRef"
                                         ]
                                       },
-                                      {
-                                        "type": "Application",
-                                        "func": {
-                                          "type": "Path",
-                                          "path": [
-                                            "alloc",
-                                            "collections",
-                                            "btree",
-                                            "node",
-                                            "marker",
-                                            "Edge"
-                                          ]
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "BorrowType"
                                         },
-                                        "consts": [],
-                                        "tys": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
+                                        {
+                                          "type": "Var",
+                                          "name": "K"
+                                        },
+                                        {
+                                          "type": "Var",
+                                          "name": "V"
+                                        },
+                                        {
+                                          "type": "Var",
+                                          "name": "GoDownType"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "alloc",
+                                          "collections",
+                                          "btree",
+                                          "node",
+                                          "marker",
+                                          "Edge"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             "discriminant": null
                           }
@@ -632,32 +626,30 @@
                           {
                             "name": "KV",
                             "item": {
-                              "Tuple": {
-                                "tys": [
-                                  {
-                                    "type": "Path",
-                                    "path": [
-                                      "usize"
-                                    ]
-                                  }
-                                ]
-                              }
+                              "type": "Tuple",
+                              "tys": [
+                                {
+                                  "type": "Path",
+                                  "path": [
+                                    "usize"
+                                  ]
+                                }
+                              ]
                             },
                             "discriminant": null
                           },
                           {
                             "name": "Edge",
                             "item": {
-                              "Tuple": {
-                                "tys": [
-                                  {
-                                    "type": "Path",
-                                    "path": [
-                                      "usize"
-                                    ]
-                                  }
-                                ]
-                              }
+                              "type": "Tuple",
+                              "tys": [
+                                {
+                                  "type": "Path",
+                                  "path": [
+                                    "usize"
+                                  ]
+                                }
+                              ]
                             },
                             "discriminant": null
                           }

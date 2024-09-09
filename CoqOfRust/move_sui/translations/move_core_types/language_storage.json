@@ -366,181 +366,170 @@
               {
                 "name": "Bool",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "U8",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "U64",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "U128",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "Address",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "Signer",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "Vector",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Application",
-                        "func": {
-                          "type": "Path",
-                          "path": [
-                            "alloc",
-                            "boxed",
-                            "Box"
-                          ]
-                        },
-                        "consts": [],
-                        "tys": [
-                          {
-                            "type": "Application",
-                            "func": {
-                              "type": "Path",
-                              "path": [
-                                "move_core_types",
-                                "language_storage",
-                                "TypeTag"
-                              ]
-                            },
-                            "consts": [],
-                            "tys": []
-                          },
-                          {
-                            "type": "Application",
-                            "func": {
-                              "type": "Path",
-                              "path": [
-                                "alloc",
-                                "alloc",
-                                "Global"
-                              ]
-                            },
-                            "consts": [],
-                            "tys": []
-                          }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "alloc",
+                          "boxed",
+                          "Box"
                         ]
-                      }
-                    ]
-                  }
+                      },
+                      "consts": [],
+                      "tys": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "move_core_types",
+                              "language_storage",
+                              "TypeTag"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        },
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "alloc",
+                              "Global"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        }
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "Struct",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Application",
-                        "func": {
-                          "type": "Path",
-                          "path": [
-                            "alloc",
-                            "boxed",
-                            "Box"
-                          ]
-                        },
-                        "consts": [],
-                        "tys": [
-                          {
-                            "type": "Application",
-                            "func": {
-                              "type": "Path",
-                              "path": [
-                                "move_core_types",
-                                "language_storage",
-                                "StructTag"
-                              ]
-                            },
-                            "consts": [],
-                            "tys": []
-                          },
-                          {
-                            "type": "Application",
-                            "func": {
-                              "type": "Path",
-                              "path": [
-                                "alloc",
-                                "alloc",
-                                "Global"
-                              ]
-                            },
-                            "consts": [],
-                            "tys": []
-                          }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "alloc",
+                          "boxed",
+                          "Box"
                         ]
-                      }
-                    ]
-                  }
+                      },
+                      "consts": [],
+                      "tys": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "move_core_types",
+                              "language_storage",
+                              "StructTag"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        },
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "alloc",
+                              "Global"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        }
+                      ]
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "U16",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "U32",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               },
               {
                 "name": "U256",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               }

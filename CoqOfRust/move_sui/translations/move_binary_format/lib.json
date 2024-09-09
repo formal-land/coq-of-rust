@@ -10,171 +10,152 @@
         {
           "name": "ModuleHandle",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "StructHandle",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "FunctionHandle",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "FieldHandle",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "FriendDeclaration",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "FunctionInstantiation",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "FieldInstantiation",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "StructDefinition",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "StructDefInstantiation",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "FunctionDefinition",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "FieldDefinition",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "Signature",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "Identifier",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "AddressIdentifier",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "ConstantPool",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "LocalPool",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "CodeDefinition",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "TypeParameter",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "MemberCount",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         }
@@ -5575,27 +5556,24 @@
         {
           "name": "Value",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "Reference",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         },
         {
           "name": "MutableReference",
           "item": {
-            "Tuple": {
-              "tys": []
-            }
+            "type": "Tuple",
+            "tys": []
           },
           "discriminant": null
         }

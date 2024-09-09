@@ -1751,28 +1751,26 @@
               {
                 "name": "Loop",
                 "item": {
-                  "Struct": {
-                    "fields": [
-                      [
-                        "last_continue",
-                        {
-                          "type": "Path",
-                          "path": [
-                            "u16"
-                          ]
-                        }
-                      ]
+                  "type": "Struct",
+                  "fields": [
+                    [
+                      "last_continue",
+                      {
+                        "type": "Path",
+                        "path": [
+                          "u16"
+                        ]
+                      }
                     ]
-                  }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "Code",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               }

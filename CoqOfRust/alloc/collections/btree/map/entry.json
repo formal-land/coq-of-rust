@@ -38,78 +38,76 @@
                                 {
                                   "name": "Vacant",
                                   "item": {
-                                    "Tuple": {
-                                      "tys": [
-                                        {
-                                          "type": "Application",
-                                          "func": {
-                                            "type": "Path",
-                                            "path": [
-                                              "alloc",
-                                              "collections",
-                                              "btree",
-                                              "map",
-                                              "entry",
-                                              "VacantEntry"
-                                            ]
-                                          },
-                                          "consts": [],
-                                          "tys": [
-                                            {
-                                              "type": "Var",
-                                              "name": "K"
-                                            },
-                                            {
-                                              "type": "Var",
-                                              "name": "V"
-                                            },
-                                            {
-                                              "type": "Var",
-                                              "name": "A"
-                                            }
+                                    "type": "Tuple",
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "alloc",
+                                            "collections",
+                                            "btree",
+                                            "map",
+                                            "entry",
+                                            "VacantEntry"
                                           ]
-                                        }
-                                      ]
-                                    }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "K"
+                                          },
+                                          {
+                                            "type": "Var",
+                                            "name": "V"
+                                          },
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          }
+                                        ]
+                                      }
+                                    ]
                                   },
                                   "discriminant": null
                                 },
                                 {
                                   "name": "Occupied",
                                   "item": {
-                                    "Tuple": {
-                                      "tys": [
-                                        {
-                                          "type": "Application",
-                                          "func": {
-                                            "type": "Path",
-                                            "path": [
-                                              "alloc",
-                                              "collections",
-                                              "btree",
-                                              "map",
-                                              "entry",
-                                              "OccupiedEntry"
-                                            ]
-                                          },
-                                          "consts": [],
-                                          "tys": [
-                                            {
-                                              "type": "Var",
-                                              "name": "K"
-                                            },
-                                            {
-                                              "type": "Var",
-                                              "name": "V"
-                                            },
-                                            {
-                                              "type": "Var",
-                                              "name": "A"
-                                            }
+                                    "type": "Tuple",
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "alloc",
+                                            "collections",
+                                            "btree",
+                                            "map",
+                                            "entry",
+                                            "OccupiedEntry"
                                           ]
-                                        }
-                                      ]
-                                    }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "K"
+                                          },
+                                          {
+                                            "type": "Var",
+                                            "name": "V"
+                                          },
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          }
+                                        ]
+                                      }
+                                    ]
                                   },
                                   "discriminant": null
                                 }

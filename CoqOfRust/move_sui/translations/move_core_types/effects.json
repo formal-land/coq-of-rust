@@ -18,37 +18,34 @@
               {
                 "name": "New",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Var",
-                        "name": "T"
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Var",
+                      "name": "T"
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "Modify",
                 "item": {
-                  "Tuple": {
-                    "tys": [
-                      {
-                        "type": "Var",
-                        "name": "T"
-                      }
-                    ]
-                  }
+                  "type": "Tuple",
+                  "tys": [
+                    {
+                      "type": "Var",
+                      "name": "T"
+                    }
+                  ]
                 },
                 "discriminant": null
               },
               {
                 "name": "Delete",
                 "item": {
-                  "Tuple": {
-                    "tys": []
-                  }
+                  "type": "Tuple",
+                  "tys": []
                 },
                 "discriminant": null
               }

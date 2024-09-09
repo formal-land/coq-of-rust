@@ -25,37 +25,34 @@
                     {
                       "name": "Uninit",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Var",
-                              "name": "F"
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "F"
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Init",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Var",
-                              "name": "T"
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Poisoned",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     }

@@ -16245,37 +16245,34 @@
                     {
                       "name": "Included",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Var",
-                              "name": "T"
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Excluded",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Var",
-                              "name": "T"
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Unbounded",
                       "item": {
-                        "Tuple": {
-                          "tys": []
-                        }
+                        "type": "Tuple",
+                        "tys": []
                       },
                       "discriminant": null
                     }

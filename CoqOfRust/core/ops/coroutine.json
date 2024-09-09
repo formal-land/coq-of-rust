@@ -25,28 +25,26 @@
                     {
                       "name": "Yielded",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Var",
-                              "name": "Y"
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "Y"
+                          }
+                        ]
                       },
                       "discriminant": null
                     },
                     {
                       "name": "Complete",
                       "item": {
-                        "Tuple": {
-                          "tys": [
-                            {
-                              "type": "Var",
-                              "name": "R"
-                            }
-                          ]
-                        }
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "R"
+                          }
+                        ]
                       },
                       "discriminant": null
                     }

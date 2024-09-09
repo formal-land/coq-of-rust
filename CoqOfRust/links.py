@@ -70,41 +70,68 @@ def pp_type(with_paren: bool, item) -> str:
             with_paren and len(item["tys"]) > 0,
             " ".join(pp_type(True, ty) for ty in [item["func"]] + item["tys"])
         )
+    if item["type"] == "Tuple":
+        return paren(
+            with_paren,
+            " * ".join(pp_type(True, ty) for ty in item["tys"])
+        )
     return "Unknown type " + item["type"]
 
 
 def pp_type_struct_struct(prefix: list[str], item) -> str:
-    if len(item["ty_params"]) != 0:
-        ty_params = "(" + " ".join(item["ty_params"]) + ": Set) "
-    else:
-        ty_params = ""
+    def get_ty_params(is_implicit: bool) -> str:
+        if len(item["ty_params"]) != 0:
+            return \
+                ("{" if is_implicit else "(") + \
+                " ".join(item["ty_params"]) + \
+                ": Set" + \
+                ("}" if is_implicit else ")") + \
+                " "
+        else:
+            return ""
+
+    def get_applied_ty() -> str:
+        if len(item["ty_params"]) != 0:
+            return "t" + "".join(" " + ty_param for ty_param in item["ty_params"])
+        else:
+            return "t"
+
     ty_params_links = "".join("`{Link " + ty_param + "} " for ty_param in item["ty_params"])
+    full_name = "::".join(prefix + [item["name"]])
     return pp_module(item["name"],
-        "Record t " + ty_params + ty_params_links + ": Set := {\n" +
+        "Record t " + get_ty_params(True) + ": Set := {\n" +
         indent("".join(
             field[0] + ": " + pp_type(False, field[1]) + ";\n"
             for field in item["fields"]
         )) +
         "}.\n" +
-        ("Arguments Build_t {" + " ".join(["_ _"] * len(item["ty_params"])) + "}.\n"
+        ("Arguments Build_t {" + " ".join(["_"] * len(item["ty_params"])) + "}.\n" +
+        "Arguments t : clear implicits.\n"
         if len(item["ty_params"]) > 0
         else ""
         ) +
         "\n" +
-        "Global Instance IsLink " + ty_params + ty_params_links + ": Link " +
-        paren(len(item["ty_params"]) > 0, " ".join(["t"] + item["ty_params"])) +
-        " := {\n" +
+        f"Definition current_to_value {get_ty_params(True)}(x: {get_applied_ty()}) : Value.t :=\n" +
         indent(
-            "to_ty := Ty.path \"" + "::".join(prefix + [item["name"]]) + "\";\n" +
-            "to_value '(Build_t" + "".join(" " + field[0] for field in item["fields"]) + ") :=\n" +
+            "match x with\n" +
+            "| Build_t" + "".join(" " + field[0] for field in item["fields"]) + " =>\n" +
             indent(
-                "Value.StructRecord \"" + "::".join(prefix + [item["name"]]) + "\" [\n" +
+                f"Value.StructRecord \"{full_name}\" [\n" +
                 indent(";\n".join(
                     "(\"" + field[0] + "\", to_value " + field[0] + ")"
                     for field in item["fields"]
                 )) + "\n" +
-                "];\n"
-            )
+                "]\n"
+            ) +
+            "end.\n"
+        ) +
+        "\n" +
+        "Global Instance IsLink " + get_ty_params(True) + ty_params_links + ": Link " +
+        paren(len(item["ty_params"]) > 0, " ".join(["t"] + item["ty_params"])) +
+        " := {\n" +
+        indent(
+            "to_ty := Ty.path \"" + full_name + "\";\n" +
+            "to_value := to_value\n"
         ) +
         "}."
     )
@@ -117,14 +144,14 @@ def pp_type_struct_tuple(prefix: list[str], item) -> str:
         ty_params = ""
     ty_params_links = "".join("`{Link " + ty_param + "} " for ty_param in item["ty_params"])
     return pp_module(item["name"],
-        "Inductive t " + ty_params + ty_params_links + ": Set :=\n" +
+        "Inductive t " + ty_params + ": Set :=\n" +
         "| Make :" +
         "".join(
             " " + pp_type(False, field) + " ->"
             for field in item["fields"]
         ) +
         " t" + "".join(" " + ty_param for ty_param in item["ty_params"]) + ".\n" +
-        ("Arguments Make {" + " ".join(["_ _"] * len(item["ty_params"])) + "}.\n"
+        ("Arguments Make {" + " ".join(["_"] * len(item["ty_params"])) + "}.\n"
         if len(item["ty_params"]) > 0
         else ""
         ) +
@@ -144,11 +171,72 @@ def pp_type_struct_tuple(prefix: list[str], item) -> str:
     )
 
 
+def pp_type_enum(prefix: list[str], item) -> str:
+    name = item["name"]
+    variants = item["variants"]
+
+    if len(item["ty_params"]) != 0:
+        ty_params = "(" + " ".join(item["ty_params"]) + ": Set) "
+        ty_params_args = "".join(" " + ty_param for ty_param in item["ty_params"])
+    else:
+        ty_params = ""
+        ty_params_args = ""
+
+    ty_params_links = "".join("`{Link " + ty_param + "} " for ty_param in item["ty_params"])
+
+    # Generate the inductive type definition
+    inductive_def = f"Inductive t {ty_params}: Set :=\n"
+    for variant in variants:
+        variant_name = variant["name"]
+        if variant["item"]["type"] == "Tuple" and len(variant["item"]["tys"]) == 0:
+            inductive_def += f"| {variant_name}\n"
+        else:
+            tys = variant["item"]["tys"]
+            inductive_def += f"| {variant_name} : {' -> '.join(pp_type(False, ty) for ty in tys)} -> t{ty_params_args}\n"
+    inductive_def += ".\n"
+
+    # Generate the Arguments line if there are type parameters
+    arguments_line = (f"Arguments {' '.join(variant['name'] for variant in variants)} " +
+                      "{" + " ".join(["_"] * len(item["ty_params"])) + "}.\n"
+                     ) if len(item["ty_params"]) > 0 else ""
+
+    # Generate the IsLink instance
+    is_link_instance = (
+        "Global Instance IsLink " + ty_params + ty_params_links + ": Link " +
+        paren(len(item["ty_params"]) > 0, " ".join(["t"] + item["ty_params"])) + " := {\n" +
+        indent("to_ty := Ty.path \"" + "::".join(prefix + [name]) + "\";\n" +
+            "to_value x :=\n" +
+            indent(
+                "match x with\n" +
+                "".join(
+                    "| " + variant['name'] +
+                    (" " if variant['item']['type'] != 'Tuple' or len(variant['item']['tys']) > 0 else "") +
+                    "".join(" x" + str(i) for i in range(len(variant['item']['tys']))) +
+                    " => Value.StructTuple \"" + "::".join(prefix + [name, variant['name']]) +
+                    "\" [" + "; ".join("to_value x" + str(i) for i in range(len(variant['item']['tys']))) + "]\n"
+                    for variant in variants
+                ) +
+                "end\n"
+            )
+        ) +
+        "}."
+    )
+
+    return pp_module(name,
+        inductive_def +
+        "\n" +
+        arguments_line +
+        is_link_instance
+    )
+
+
 def pp_top_level_item(prefix: list[str], item) -> str:
     if item["type"] == "TypeStructStruct":
         return pp_type_struct_struct(prefix, item)
     if item["type"] == "TypeStructTuple":
         return pp_type_struct_tuple(prefix, item)
+    if item["type"] == "TypeEnum":
+        return pp_type_enum(prefix, item)
     return "Unknown item type " + item["type"]
 
 
