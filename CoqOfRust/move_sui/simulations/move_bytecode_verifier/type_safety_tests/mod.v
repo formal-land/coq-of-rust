@@ -89,7 +89,7 @@ fn get_fun_context(module: &CompiledModule) -> FunctionContext {
 }
 *)
 Definition get_fun_context (module : file_format.CompiledModule.t) :
-    Panic.t string type_safety.FunctionContext.t :=
+    Panic.t type_safety.FunctionContext.t :=
   match
     module.(file_format.CompiledModule.function_defs),
     module.(file_format.CompiledModule.function_handles)
@@ -113,7 +113,7 @@ Definition get_fun_context (module : file_format.CompiledModule.t) :
 Definition test_verify
     (module : file_format.CompiledModule.t)
     (fun_context : type_safety.FunctionContext.t) :
-    M!? string (type_safety.PartialVMResult.t unit) :=
+    M!? (type_safety.PartialVMResult.t unit) :=
   let dummy_bounds := move_bytecode_verifier_meter.lib.Bounds.Build_t "dummy" 0 None in
   let dummy_meter :=
     move_bytecode_verifier_meter.lib.Meter.BoundMeter.Build_t
@@ -148,7 +148,7 @@ fn test_br_true_false_correct_type() {
 *)
 (** This function should return [Panic.Value tt] if the test succeeds, or an error message which
     is the reason of the failure in case of error. *)
-Definition test_br_true_false_correct_type_BrTrue : Panic.t string unit :=
+Definition test_br_true_false_correct_type_BrTrue : Panic.t unit :=
   let code := [file_format.Bytecode.LdTrue; file_format.Bytecode.BrTrue 0] in
   let module := make_module code in
   let!? fun_context := get_fun_context module in

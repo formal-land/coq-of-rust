@@ -4,7 +4,7 @@ Import simulations.M.Notations.
 Require Import CoqOfRust.core.simulations.eq.
 
 Module Bool.
-  Definition and {State Error} (x y : MS? State Error bool) : MS? State Error bool :=
+  Definition and {State} (x y : MS? State bool) : MS? State bool :=
     letS? a := x in
     if negb a
     then
@@ -13,7 +13,7 @@ Module Bool.
       letS? b := y in
       returnS? b.
 
-  Definition or {State Error} (x y : MS? State Error bool) : MS? State Error bool :=
+  Definition or {State} (x y : MS? State bool) : MS? State bool :=
     letS? a := x in
     if a
     then returnS? true
@@ -21,15 +21,15 @@ Module Bool.
       letS? b := y in
       returnS? (a && b)%bool.
 
-  Definition not {State Error} (x : MS? State Error bool) : MS? State Error bool :=
+  Definition not {State} (x : MS? State bool) : MS? State bool :=
     letS? a := x in
     returnS? (negb a).
 
   Definition if_then_else
-        {State Error A}
-        (b : MS? State Error bool)
-        (x y : MS? State Error A) :
-        MS? State Error A :=
+        {State A}
+        (b : MS? State bool)
+        (x y : MS? State A) :
+        MS? State A :=
     letS? b := b in
     if b
     then x

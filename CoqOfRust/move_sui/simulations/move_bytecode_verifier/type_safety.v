@@ -86,7 +86,7 @@ Definition unknown_err := PartialVMError.Impl_PartialVMError
   .new (StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR).
 
 Definition safe_unwrap_err {State A Error : Set} (value : Result.t A Error)
-  : MS? State string (Result.t A PartialVMError.t) :=
+  : MS? State (Result.t A PartialVMError.t) :=
   match value with
   | Result.Ok x => returnS? $ Result.Ok x
   | Result.Err _ => returnS? $ Result.Err unknown_err
@@ -221,7 +221,7 @@ Module TypeSafetyChecker.
       }
     *)
     Definition charge_ty_ (ty : SignatureToken.t) (n : Z) 
-      : MS? Meter.t string (PartialVMResult.t unit) :=
+      : MS? Meter.t (PartialVMResult.t unit) :=
       letS? meter := readS? in
       Meter.Impl_BoundMeter.add_items Scope.Function TYPE_NODE_COST $
         Z.mul (SignatureToken.Impl_SignatureToken.preorder_traversal_count ty) n.
@@ -236,7 +236,7 @@ Module TypeSafetyChecker.
       }
     *)
     Definition charge_ty (ty : SignatureToken.t) : 
-      MS? Meter.t string (PartialVMResult.t unit) :=
+      MS? Meter.t (PartialVMResult.t unit) :=
       charge_ty_ ty 1.
 
     (* 
@@ -252,7 +252,7 @@ Module TypeSafetyChecker.
       }
     *)
     Fixpoint charge_tys (tys : list SignatureToken.t)
-    : MS? Meter.t string (PartialVMResult.t unit) :=
+    : MS? Meter.t (PartialVMResult.t unit) :=
       match tys with
       | ty :: tys => 
         letS?? ty_result := charge_ty ty in charge_tys tys
@@ -271,7 +271,7 @@ Module TypeSafetyChecker.
     }
     *)
     Definition push (ty : SignatureToken.t) : 
-      MS? (Self * Meter.t) string (PartialVMResult.t unit) :=
+      MS? (Self * Meter.t) (PartialVMResult.t unit) :=
       letS?? result := liftS? lens_self_meter_meter $ charge_ty ty in
       letS? result := liftS? lens_self_meter_self (
         liftS? lens_self_stack $ AbstractStack.push ty) in
@@ -291,7 +291,7 @@ Module TypeSafetyChecker.
       }
     *)
     Definition push_n (ty : SignatureToken.t) (n : Z)
-      : MS? (Self * Meter.t) string (PartialVMResult.t unit) :=
+      : MS? (Self * Meter.t) (PartialVMResult.t unit) :=
       letS?? _ := liftS? lens_self_meter_meter $ charge_ty ty in
       letS? result := liftS? lens_self_meter_self (
         liftS? lens_self_stack $ AbstractStack.push_n ty n) in
@@ -441,7 +441,7 @@ fn borrow_field(
 *)
 Definition borrow_field (offset : CodeOffset.t)
   (mut_ : bool) (field_handle_index : FieldHandleIndex.t) (type_args : Signature.t)
-  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
     letS? '(verifier, _) := readS? in
     letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
       liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -516,7 +516,7 @@ fn borrow_loc(
 }
 *)
 Definition borrow_loc (offset : CodeOffset.t) (mut_ : bool) (idx : LocalIndex.t)
-  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
   letS? '(verifier, _) := readS? in
   let loc_signature := TypeSafetyChecker.Impl_TypeSafetyChecker.local_at verifier idx in
   if SignatureToken.Impl_SignatureToken.is_reference loc_signature
@@ -562,7 +562,7 @@ fn borrow_global(
 *)
 Definition borrow_global (offset : CodeOffset.t) (mut_ : bool) (idx : StructDefinitionIndex.t) 
   (type_args : Signature.t) 
-  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
   letS? '(verifier, _) := readS? in
   letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
     liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -609,14 +609,14 @@ fn call(
 *)
 Definition call (offset : CodeOffset.t) (function_handle : FunctionHandle.t) 
   (type_actuals : Signature.t) 
-  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
   letS? '(verifier, _) := readS? in
   let parameters := CompiledModule.Impl_CompiledModule.signature_at 
     verifier.(TypeSafetyChecker.module) function_handle.(FunctionHandle.parameters) in
   let parameters := List.rev parameters.(Signature.a0) in
   let fold :=
   (fix fold (l : list SignatureToken.t) 
-    : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+    : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
     match l with
     | [] => returnS? $ Result.Ok tt
     | parameter :: ls => 
@@ -639,7 +639,7 @@ Definition call (offset : CodeOffset.t) (function_handle : FunctionHandle.t)
   let return_types := Signature.a0 return_types in
   let fold :=
   (fix fold (l : list SignatureToken.t)
-    : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+    : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
     match l with
     | [] => returnS? $ Result.Ok tt
     | return_type :: ls =>
@@ -719,7 +719,7 @@ fn pack(
 *)
 Definition pack (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
   (type_args : Signature.t) 
-  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
   letS? '(verifier, _) := readS? in
   let struct_type := materialize_type 
     struct_def.(StructDefinition.struct_handle) type_args in
@@ -727,7 +727,7 @@ Definition pack (offset : CodeOffset.t) (struct_def : StructDefinition.t)
   let field_sig := List.rev field_sig.(Signature.a0) in
   let fold :=
   (fix fold (l : list SignatureToken.t) 
-    : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+    : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
     match l with
     | [] => returnS? $ Result.Ok tt
     | sig :: ls =>
@@ -769,7 +769,7 @@ fn unpack(
 *)
 Definition unpack (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
   (type_args : Signature.t) 
-  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
     letS? '(verifier, meter) := readS? in
     let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
     letS? arg := liftS? TypeSafetyChecker.lens_self_meter_self (
@@ -783,7 +783,7 @@ Definition unpack (offset : CodeOffset.t) (struct_def : StructDefinition.t)
         let field_sig := field_sig.(Signature.a0) in
         let fold :=
           (fix fold (l : list SignatureToken.t) 
-            : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+            : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
             match l with
             | [] => returnS? $ Result.Ok tt
             | sig :: ls => letS?? result := TypeSafetyChecker.Impl_TypeSafetyChecker.push sig 
@@ -822,7 +822,7 @@ fn exists(
 *)
 Definition _exists (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
   (type_args : Signature.t) 
-  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
   letS? '(verifier, _) := readS? in
   let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
   letS?? abilities := returnS? $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -864,7 +864,7 @@ fn move_from(
 *)
 Definition move_from (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
   (type_args : Signature.t)
-  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
   letS? '(verifier, _) := readS? in
   let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
   letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
@@ -905,7 +905,7 @@ fn move_to(
 *)
 Definition move_to (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
   (type_args : Signature.t) 
-  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
   letS? '(verifier, _) := readS? in
   let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
   letS?? abilities := returnS? $ TypeSafetyChecker.Impl_TypeSafetyChecker.abilities verifier struct_type in
@@ -1015,7 +1015,7 @@ fn borrow_vector_element(
 *)
 Definition borrow_vector_element (declared_element_type : SignatureToken.t) 
   (offset : CodeOffset.t) (mut_ref_only : bool)
-  : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
   letS? '(verifier, _) := readS? in
   letS? operand_idx := liftS? TypeSafetyChecker.lens_self_meter_self (
     liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
@@ -1053,7 +1053,7 @@ fn verify_instr(
 }
 *)
 Definition debug_verify_instr (bytecode : Bytecode.t) 
-(offset : CodeOffset.t) : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+(offset : CodeOffset.t) : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
 letS? '(verifier, _) := readS? in
 match bytecode with
 (* NOTE: This is a function that is intended to test the cases for `verify_instr`
@@ -1073,8 +1073,8 @@ end.
   to propagate the error.
 *)
 Definition verify_instr (bytecode : Bytecode.t) 
-  (offset : CodeOffset.t) : 
-  MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+  (offset : CodeOffset.t) :
+  MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
   (* NOTE: Here we directly return the `match` clause since every cases return
     a `Result` value. In original code, these cases either `()`s or `Err`s,
     eventually return `Ok` after everything has been checked. *)
@@ -1177,7 +1177,7 @@ Definition verify_instr (bytecode : Bytecode.t)
       let return_ := List.rev return_ in
       let fold :=
       (fix fold (l : list SignatureToken.t) 
-        : MS? (TypeSafetyChecker.t * Meter.t) string (PartialVMResult.t unit) :=
+        : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
         match l with
         | [] => returnS? $ Result.Ok tt
         | return_type ::ls =>
@@ -2239,7 +2239,7 @@ pub(crate) fn verify<'a>(
 Definition verify
     (module : CompiledModule.t)
     (function_context : FunctionContext.t) :
-    MS? Meter.t string (PartialVMResult.t unit) :=
+    MS? Meter.t (PartialVMResult.t unit) :=
   let verifier := TypeSafetyChecker.Impl_TypeSafetyChecker.new module function_context in
   let cfg := function_context.(FunctionContext.cfg) in
   letS? _ :=

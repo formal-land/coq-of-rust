@@ -260,7 +260,7 @@ Module Stack.
         }
     }
     *)
-    Definition push (value : Value.t) : MS? Self string (PartialVMResult.t unit) :=
+    Definition push (value : Value.t) : MS? Self (PartialVMResult.t unit) :=
       letS? self := readS? in
       let '(Build_t self_value) := self in
       if (Z.of_nat $ List.length self_value) <? OPERAND_STACK_SIZE_LIMIT
@@ -279,7 +279,7 @@ Module Stack.
             .ok_or_else(|| PartialVMError::new(StatusCode::EMPTY_VALUE_STACK))
     }
     *)
-    Definition pop : MS? Self string (PartialVMResult.t Value.t) :=
+    Definition pop : MS? Self (PartialVMResult.t Value.t) :=
       letS? self := readS? in
       (* We check manually if we can pop an element *)
       let '(Build_t self_value) := self in 
@@ -305,7 +305,7 @@ Module Stack.
     *)
     Definition pop_as (result_type : Set)
       `{!VMValueCast.Trait Value.t result_type}
-      : MS? Self string (PartialVMResult.t result_type) :=
+      : MS? Self (PartialVMResult.t result_type) :=
       letS?? v := pop in
       returnS? $ (VMValueCast.cast v).
 
@@ -321,7 +321,7 @@ Module Stack.
         Ok(args)
     }
     *)
-    Definition pop_n : MS? Self string (PartialVMResult.t (list Value.t)). Admitted.
+    Definition pop_n : MS? Self (PartialVMResult.t (list Value.t)). Admitted.
 
   End Impl_Stack.
 End Stack.
@@ -612,7 +612,7 @@ Definition debug_execute_instruction (pc : Z)
   (function : Function.t) (resolver : Resolver.t)
   (interpreter : Interpreter.t) (* (gas_meter : GasMeter.t) *) (* NOTE: We ignore gas since it's never implemented *)
   (instruction : Bytecode.t)
-  : MS? State string (PartialVMResult.t InstrRet.t) :=
+  : MS? State (PartialVMResult.t InstrRet.t) :=
   letS? '(pc, locals, interpreter) := readS? in
   match instruction with
   (* fill debugging content here *)
@@ -634,7 +634,7 @@ Definition execute_instruction (pc : Z)
   (function : Function.t) (resolver : Resolver.t)
   (interpreter : Interpreter.t) (* (gas_meter : GasMeter.t) *) (* NOTE: We ignore gas since it's never implemented *)
   (instruction : Bytecode.t)
-  : MS? State string (PartialVMResult.t InstrRet.t) :=
+  : MS? State (PartialVMResult.t InstrRet.t) :=
   letS? '(pc, locals, interpreter) := readS? in
   (* NOTE: We ignore the macro since it' only used for charging gas
   macro_rules! make_ty {

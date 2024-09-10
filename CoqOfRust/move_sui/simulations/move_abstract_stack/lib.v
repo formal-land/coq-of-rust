@@ -65,11 +65,11 @@ Module AbstractStack.
   End Lens.
 
   Definition self_values {A : Set} :
-      MS? (t A) string (list (Z * A)) :=
+      MS? (t A) (list (Z * A)) :=
     liftS? Lens.values readS?.
 
   Definition self_len {A : Set} :
-      MS? (t A) string Z :=
+      MS? (t A) Z :=
     liftS? Lens.len readS?.
 
   (*
@@ -105,12 +105,12 @@ Module AbstractStack.
     end.
 
   Definition self_is_empty {A : Set} :
-      MS? (t A) string bool :=
+      MS? (t A) bool :=
     letS? s := readS? in
     returnS? (is_empty s).
 
   Definition self_is_not_empty {A : Set} :
-      MS? (t A) string bool :=
+      MS? (t A) bool :=
     letS? s := readS? in
     returnS? (negb (is_empty s)).
 
@@ -137,7 +137,7 @@ Module AbstractStack.
   *)
 
   Definition push_n {A : Set} (item : A) `{Eq.Trait A} (n : Z) :
-      MS? (t A) string (Result.t unit AbsStackError.t) :=
+      MS? (t A) (Result.t unit AbsStackError.t) :=
     if n =? 0
     then returnS? (Result.Ok tt)
     else
@@ -174,7 +174,7 @@ Module AbstractStack.
   *)
 
   Definition push {A : Set} (item : A) `{Eq.Trait A} :
-      MS? (t A) string (Result.t unit AbsStackError.t) :=
+      MS? (t A) (Result.t unit AbsStackError.t) :=
     push_n item 1.
 
   (*
@@ -204,7 +204,7 @@ Module AbstractStack.
   *)
 
   Definition pop_eq_n {A : Set} (n : Z) :
-      MS? (t A) string (Result.t A AbsStackError.t) :=
+      MS? (t A) (Result.t A AbsStackError.t) :=
     letS? self := readS? in
     if (is_empty self || (n >? len self))%bool 
     then returnS? (Result.Err AbsStackError.Underflow)
@@ -235,7 +235,7 @@ Module AbstractStack.
   *)
 
   Definition pop {A : Set} :
-      MS? (t A) string (Result.t A AbsStackError.t) :=
+      MS? (t A) (Result.t A AbsStackError.t) :=
     pop_eq_n 1.
 
   (*
@@ -266,7 +266,7 @@ Module AbstractStack.
   *)
 
   Fixpoint pop_any_n_helper {A : Set} (l : nat) (rem : Z) :
-      MS? (list (Z * A)) string unit :=
+      MS? (list (Z * A)) unit :=
     if rem >? 0
     then
       letS? '(count, last) := Option.unwrap (liftS?of? Vector.first_mut readS?) in
@@ -283,7 +283,7 @@ Module AbstractStack.
     else returnS? tt.
 
   Definition pop_any_n {A : Set} (n : Z) :
-      MS? (t A) string (Result.t unit AbsStackError.t) :=
+      MS? (t A) (Result.t unit AbsStackError.t) :=
     letS? self := readS? in
     if (is_empty self || (n >? len self))%bool 
     then returnS? (Result.Err AbsStackError.Underflow)
@@ -316,7 +316,7 @@ Module AbstractStack.
   *)
 
   Definition assert_run_lengths {A : Set} (lengths : list Z) :
-      MS? (t A) string unit :=
+      MS? (t A) unit :=
     letS? self := readS? in
     letS? _ := assert_eqS? (List.length (values self)) (List.length lengths) in
     letS? sum :=

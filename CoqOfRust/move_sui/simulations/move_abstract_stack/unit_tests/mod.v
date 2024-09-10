@@ -25,7 +25,7 @@ Import simulations.assert.Notations.
 *)
 
 Definition test_empty_stack :
-    MS? (AbstractStack.t Z) string unit :=
+    MS? (AbstractStack.t Z) unit :=
   letS? empty := readS? in
   letS? _ := assertS?ofS? AbstractStack.self_is_empty in
   letS? _ :=
@@ -149,7 +149,7 @@ Qed.
 *)
 
 Definition test_simple_push_pop :
-    MS? (AbstractStack.t Z) string unit :=
+    MS? (AbstractStack.t Z) unit :=
 
   letS? s := readS? in
   letS? _ := AbstractStack.push 1 in
@@ -266,7 +266,7 @@ Qed.
 *)
 
 Definition test_not_eq :
-    MS? (AbstractStack.t Z) string unit :=
+    MS? (AbstractStack.t Z) unit :=
   letS? s := readS? in
   letS? _ := AbstractStack.push 1 in
   letS? _ := AbstractStack.push 2 in
@@ -313,7 +313,7 @@ Qed.
 *)
 
 Definition test_not_enough_values :
-    MS? (AbstractStack.t Z) string unit :=
+    MS? (AbstractStack.t Z) unit :=
   letS? s := readS? in
   letS? _ := AbstractStack.push 1 in
   letS? _ := AbstractStack.push 2 in

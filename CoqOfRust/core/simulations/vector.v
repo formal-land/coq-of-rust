@@ -31,7 +31,7 @@ Module Vector.
         end
     |}.
 
-  Definition pop_front {A : Set} : MS? (list A) string (option A) :=
+  Definition pop_front {A : Set} : MS? (list A) (option A) :=
     letS? l := readS? in
     match l with
     | [] => returnS? None
@@ -40,7 +40,7 @@ Module Vector.
       returnS? (Some x)
     end.
 
-  Definition pop {A : Set} : MS? (list A) string (option A) :=
+  Definition pop {A : Set} : MS? (list A) (option A) :=
     letS? l := readS? in
     match last_error l with
     | None => returnS? None

@@ -560,7 +560,7 @@ Module Locals.
       end.
 
     Definition swap_loc (idx : Z) (violation_check : bool) 
-      : MS? (Self * Value.t) string (PartialVMResult.t Value.t) :=
+      : MS? (Self * Value.t) (PartialVMResult.t Value.t) :=
       letS? '(v, x) := readS? in
       if Z.of_nat $ List.length v <=? idx
       then returnS? $ Result.Err $ 
@@ -588,7 +588,7 @@ Module Locals.
     }
     *)
     Definition move_loc (idx : Z) (violation_check : bool) 
-      : MS? Self string (PartialVMResult.t Value.t) :=
+      : MS? Self (PartialVMResult.t Value.t) :=
       letS?? result := liftS? (Lens.lens_self_self_value ValueImpl.Invalid) 
         $ swap_loc idx violation_check in
       match result with
@@ -609,7 +609,7 @@ Module Locals.
     }
     *)
     Definition store_loc (idx : Z) (violation_check : bool) 
-      : MS? (Self * Value.t) string (PartialVMResult.t unit) :=
+      : MS? (Self * Value.t) (PartialVMResult.t unit) :=
       letS?? result := swap_loc idx violation_check in
         returnS? $ Result.Ok tt.
 

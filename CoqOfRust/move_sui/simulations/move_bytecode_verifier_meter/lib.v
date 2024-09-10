@@ -98,7 +98,7 @@ Module Bounds.
     }
     *)
 
-    Definition add (units : Z) : MS? State string (PartialVMResult.t unit) :=
+    Definition add (units : Z) : MS? State (PartialVMResult.t unit) :=
       letS? self := readS? in
       match self.(max) with
       | Some max => 
@@ -257,7 +257,7 @@ Module Meter.
       }
       *)
       Definition get_bounds_mut (scope : Scope.t) :
-        LensPanic.t string State Bounds.State := {|
+        LensPanic.t State Bounds.State := {|
           LensPanic.read boundmeter := 
             match scope with
             | Scope.Package     => return!? (boundmeter.(pkg_bounds))
@@ -281,7 +281,7 @@ Module Meter.
           bounds.units = 0;
       }
       *)
-      Definition enter_scope (name : string) (scope : Scope.t) : MS? State string unit :=
+      Definition enter_scope (name : string) (scope : Scope.t) : MS? State unit :=
         liftS?of!? (get_bounds_mut scope) (
           letS? bounds := readS? in
           let   bounds := bounds <| Bounds.name  := name |> in
@@ -296,7 +296,7 @@ Module Meter.
       }
       *)
       Definition add (scope : Scope.t) (units : Z) 
-        : MS? State string (PartialVMResult.t unit) :=
+        : MS? State (PartialVMResult.t unit) :=
         liftS?of!? (get_bounds_mut scope) (
           letS? bounds := readS? in
           Bounds.Impl_Bounds.add 
@@ -310,7 +310,7 @@ Module Meter.
       }
       *)
       Definition transfer (from : Scope.t) (to : Scope.t) (factor : Z) 
-        : MS? State string (PartialVMResult.t unit) :=
+        : MS? State (PartialVMResult.t unit) :=
         letS? bounds := liftS?of!? (get_bounds_mut from) (readS?) in 
         letS? self := readS? in
         let units := Z.mul bounds.(Bounds.units) factor in
@@ -332,12 +332,11 @@ Module Meter.
       }
       *)
       Definition add_items (scope : Scope.t) (units_per_item items : Z) 
-        : MS? State string (PartialVMResult.t unit) :=
+        : MS? State (PartialVMResult.t unit) :=
         if items =? 0
         then returnS? $ Result.Ok tt
         else letS? self := readS? in
         add scope $ saturating_mul units_per_item items.
-      
     End Impl_BoundMeter.
   End BoundMeter.
 End Meter.
