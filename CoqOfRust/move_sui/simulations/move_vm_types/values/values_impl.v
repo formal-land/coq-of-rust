@@ -12,7 +12,12 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress): 
+- (FOCUS)Implement `deserialize_constant` and related structs:
+  - Implement `Constant`
+  - Implement `MoveTypeLayout`
+  - Investigate `bool::deserialize(deserializer).map(Value::bool)`
 - Implement `Locals`
+- Bonus: investigate the usage of `Box` in `Vec` 
 *)
 
 (* NOTE(STUB): Only implement if necessary *)
@@ -171,6 +176,84 @@ Module Value.
   End cast.
 
   Module Impl_Value.
+
+    (* 
+    #[derive(Clone)]
+    struct SeedWrapper<L> {
+        layout: L,
+    }
+
+    impl<'d> serde::de::DeserializeSeed<'d> for SeedWrapper<&MoveTypeLayout> {
+        type Value = Value;
+
+        fn deserialize<D: serde::de::Deserializer<'d>>(
+            self,
+            deserializer: D,
+        ) -> Result<Self::Value, D::Error> {
+            use MoveTypeLayout as L;
+
+            match self.layout {
+                L::Bool => bool::deserialize(deserializer).map(Value::bool),
+                L::U8 => u8::deserialize(deserializer).map(Value::u8),
+                L::U16 => u16::deserialize(deserializer).map(Value::u16),
+                L::U32 => u32::deserialize(deserializer).map(Value::u32),
+                L::U64 => u64::deserialize(deserializer).map(Value::u64),
+                L::U128 => u128::deserialize(deserializer).map(Value::u128),
+                L::U256 => u256::U256::deserialize(deserializer).map(Value::u256),
+                L::Address => AccountAddress::deserialize(deserializer).map(Value::address),
+                L::Signer => AccountAddress::deserialize(deserializer).map(Value::signer),
+
+                L::Struct(struct_layout) => Ok(Value::struct_(
+                    SeedWrapper {
+                        layout: struct_layout,
+                    }
+                    .deserialize(deserializer)?,
+                )),
+
+                L::Vector(layout) => {
+                    let container = match &**layout {
+                        L::U8 => {
+                            Container::VecU8(Rc::new(RefCell::new(Vec::deserialize(deserializer)?)))
+                        }
+                        L::U16 => {
+                            Container::VecU16(Rc::new(RefCell::new(Vec::deserialize(deserializer)?)))
+                        }
+                        L::U32 => {
+                            Container::VecU32(Rc::new(RefCell::new(Vec::deserialize(deserializer)?)))
+                        }
+                        L::U64 => {
+                            Container::VecU64(Rc::new(RefCell::new(Vec::deserialize(deserializer)?)))
+                        }
+                        L::U128 => {
+                            Container::VecU128(Rc::new(RefCell::new(Vec::deserialize(deserializer)?)))
+                        }
+                        L::U256 => {
+                            Container::VecU256(Rc::new(RefCell::new(Vec::deserialize(deserializer)?)))
+                        }
+                        L::Bool => {
+                            Container::VecBool(Rc::new(RefCell::new(Vec::deserialize(deserializer)?)))
+                        }
+                        L::Address => Container::VecAddress(Rc::new(RefCell::new(Vec::deserialize(
+                            deserializer,
+                        )?))),
+                        layout => {
+                            let v = deserializer
+                                .deserialize_seq(VectorElementVisitor(SeedWrapper { layout }))?;
+                            Container::Vec(Rc::new(RefCell::new(v)))
+                        }
+                    };
+                    Ok(Value(ValueImpl::Container(container)))
+                }
+            }
+        }
+    }
+    *)
+    (* 
+    pub fn simple_deserialize(blob: &[u8], layout: &MoveTypeLayout) -> Option<Value> {
+        bcs::from_bytes_seed(SeedWrapper { layout }, blob).ok()
+    }
+    *)
+
     (* 
     fn constant_sig_token_to_layout(constant_signature: &SignatureToken) -> Option<MoveTypeLayout> {
         use MoveTypeLayout as L;
@@ -199,5 +282,18 @@ Module Value.
         Value::simple_deserialize(&constant.data, &layout)
     }
     *)
+    (* NOTE:
+    the whold process should be:
+    - resolver gets a constant and we get its type of SignatureToken
+    - preprocess the type from SignatureToken into a almost identical "layout" and return None if the type is wrong 
+    - Now that we're provided the raw data of [u8] in constant and the processed layout type, we use the deserializer
+      to eventually get a `Result` of `Value`
+    *)
+    (* NOTE: `MoveTypeLayout` seems to just reformat the code and delete unrelated items. 
+      We might be able to simplify here *)
+    Definition (* Fixpoint *) constant_sig_token_to_layout (constant_signature : SignatureToken.t) 
+      : option MoveTypeLayout.t. Admitted.
+
+    Definition deserialize_constant (constant : Constant.t) : option Value.t. Admitted.
   End Impl_Value.
 End Value.

@@ -29,10 +29,10 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
+- (paused)Investigate `Value::deserialize_constant`
+- (FOCUS)Implement `Resolver::constant_at`
 - Implement `Callstack` for Interpreter
 - Implement `Interpreter::binop_int`
-- Implement `Value::deserialize_constant`
-- Implement `Resolver::constant_at`
 - (Enhancement) Redesign `cast` functions with Class and simplify `pop_as` code
 *)
 
