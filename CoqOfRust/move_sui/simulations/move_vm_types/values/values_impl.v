@@ -12,19 +12,15 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress): 
-- (FOCUS)Implement `deserialize_constant` and related structs:
+- (paused)Implement `deserialize_constant` and related structs:
   - Implement `Constant`
-  - Implement `MoveTypeLayout`
   - Investigate `bool::deserialize(deserializer).map(Value::bool)`
 - Implement `Locals`
+  - (FOCUS)Implement `copy_loc`
 - Bonus: investigate the usage of `Box` in `Vec` 
 *)
 
 (* NOTE(STUB): Only implement if necessary *)
-Module Locals.
-  Parameter t : Set.
-End Locals.
-
 Module AccountAddress.
   Parameter t : Set.
 End AccountAddress.
@@ -42,7 +38,6 @@ Module IndexedRef.
 End IndexedRef.
 
 (* **************** *)
-
 (* 
 enum ValueImpl {
     Invalid,
@@ -78,6 +73,32 @@ Module ValueImpl.
   | IndexedRef : IndexedRef.t -> t
   .
 End ValueImpl.
+
+
+(* pub struct Locals(Rc<RefCell<Vec<ValueImpl>>>); *)
+Module Locals.
+  Definition t := list ValueImpl.t.
+
+  Module Impl_Locals.
+  (* 
+  pub fn copy_loc(&self, idx: usize) -> PartialVMResult<Value> {
+      let v = self.0.borrow();
+      match v.get(idx) {
+          Some(ValueImpl::Invalid) => Err(PartialVMError::new(
+              StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
+          )
+          .with_message(format!("cannot copy invalid value at index {}", idx))),
+          Some(v) => Ok(Value(v.copy_value()?)),
+          None => Err(
+              PartialVMError::new(StatusCode::VERIFIER_INVARIANT_VIOLATION).with_message(
+                  format!("local index out of bounds: got {}, len: {}", idx, v.len()),
+              ),
+          ),
+      }
+  }
+  *)
+  End Impl_Locals.
+End Locals.
 
 (* pub struct Value(ValueImpl); *)
 Module Value.

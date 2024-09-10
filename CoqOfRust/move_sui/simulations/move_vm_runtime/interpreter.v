@@ -31,6 +31,7 @@ Module StatusCode := vm_status.StatusCode.
 (* TODO(progress):
 - (paused)Investigate `Value::deserialize_constant`
 - (FOCUS)Implement `Resolver::constant_at`
+- (FOCUS)Implement `copy_loc`
 - Implement `Callstack` for Interpreter
 - Implement `Interpreter::binop_int`
 - (Enhancement) Redesign `cast` functions with Class and simplify `pop_as` code
@@ -417,12 +418,6 @@ End Frame.
 
         match instruction {
 
-            Bytecode::CopyLoc(idx) => {
-                // TODO(Gas): We should charge gas before copying the value.
-                let local = locals.copy_loc(*idx as usize)?; //*)
-                gas_meter.charge_copy_loc(&local)?;
-                interpreter.operand_stack.push(local)?;
-            }
             Bytecode::MoveLoc(idx) => {
                 let local = locals.move_loc(
                     *idx as usize,
@@ -993,6 +988,23 @@ Definition execute_instruction (pc : Z)
     letS?? _ := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.Bool false) in 
     returnS? $ Result.Ok InstrRet.Ok
+
+  (* 
+  Bytecode::CopyLoc(idx) => {
+      // TODO(Gas): We should charge gas before copying the value.
+      let local = locals.copy_loc(*idx as usize)?; //*)
+      gas_meter.charge_copy_loc(&local)?;
+      interpreter.operand_stack.push(local)?;
+  }
+  *)
+  | Bytecode.CopyLoc idx =>
+    (* TODO: figure out what does copy_loc do *)
+    (* letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.Bool false) in  *)
+    returnS? $ Result.Ok InstrRet.Ok
+
+
+
 
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
