@@ -31,7 +31,6 @@ Module StatusCode := vm_status.StatusCode.
 (* TODO(progress):
 - (paused)Investigate `Value::deserialize_constant`
 - (FOCUS)Implement `Resolver::constant_at`
-- (FOCUS)Implement `copy_loc`
 - Implement `Callstack` for Interpreter
 - Implement `Interpreter::binop_int`
 - (Enhancement) Redesign `cast` functions with Class and simplify `pop_as` code
@@ -417,19 +416,6 @@ End Frame.
         use SimpleInstruction as S;
 
         match instruction {
-            Bytecode::ImmBorrowFieldGeneric(fi_idx) | Bytecode::MutBorrowFieldGeneric(fi_idx) => {
-                let instr = match instruction {
-                    Bytecode::MutBorrowField(_) => S::MutBorrowFieldGeneric,
-                    _ => S::ImmBorrowFieldGeneric,
-                };
-                gas_meter.charge_simple_instr(instr)?;
-
-                let reference = interpreter.operand_stack.pop_as::<StructRef>()?;
-
-                let offset = resolver.field_instantiation_offset(*fi_idx); //*)
-                let field_ref = reference.borrow_field(offset)?;
-                interpreter.operand_stack.push(field_ref)?;
-            }
             Bytecode::Pack(sd_idx) => {
                 let field_count = resolver.field_count(*sd_idx); //*)
                 let struct_type = resolver.get_struct_type(*sd_idx); //*)
@@ -944,9 +930,9 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.CopyLoc idx =>
-    (* TODO: figure out what does copy_loc do *)
-    (* letS?? _ := liftS? Interpreter.Lens.lens_state_self (
-      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.Bool false) in  *)
+    letS?? local := Locals.copy_loc locals in
+    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push local) in 
     returnS? $ Result.Ok InstrRet.Ok
 
   (* 
@@ -978,15 +964,19 @@ Definition execute_instruction (pc : Z)
       )?;
   }
   *)
-
   (* 
   Bytecode::Call(idx) => {
       return Ok(InstrRet::ExitCode(ExitCode::Call(*idx))); //*)
   }
+  *)
+  | Bytecode.CopyLoc idx => returnS? $ Result.Ok $ InstrRet.ExitCode $ ExitCode.Call idx
+
+  (*
   Bytecode::CallGeneric(idx) => {
       return Ok(InstrRet::ExitCode(ExitCode::CallGeneric(*idx))); //*)
   }
   *)
+  | Bytecode.CallGeneric idx => returnS? $ Result.Ok $ InstrRet.ExitCode $ ExitCode.CallGeneric idx
 
   (* 
   Bytecode::MutBorrowLoc(idx) | Bytecode::ImmBorrowLoc(idx) => {
@@ -1014,8 +1004,21 @@ Definition execute_instruction (pc : Z)
   }
   *)
 
+  (* 
+  Bytecode::ImmBorrowFieldGeneric(fi_idx) | Bytecode::MutBorrowFieldGeneric(fi_idx) => {
+      let instr = match instruction {
+          Bytecode::MutBorrowField(_) => S::MutBorrowFieldGeneric,
+          _ => S::ImmBorrowFieldGeneric,
+      };
+      gas_meter.charge_simple_instr(instr)?;
 
+      let reference = interpreter.operand_stack.pop_as::<StructRef>()?;
 
+      let offset = resolver.field_instantiation_offset(*fi_idx); //*)
+      let field_ref = reference.borrow_field(offset)?;
+      interpreter.operand_stack.push(field_ref)?;
+  }
+  *)
 
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
