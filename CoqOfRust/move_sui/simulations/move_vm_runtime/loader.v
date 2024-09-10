@@ -8,6 +8,14 @@ Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Bytecode := file_format.Bytecode.
 Module CompiledModule := file_format.CompiledModule.
 
+(* TODO(progress):
+- Implement `Resolver`'s func chain:
+  - resolver
+      .loader()
+      .vm_config()
+      .enable_invariant_violation_check_in_swap_loc
+*)
+
 (* NOTE(STUB): only implement if necessary *)
 Module Function.
   Parameter t : Set.
