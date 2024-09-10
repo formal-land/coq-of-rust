@@ -160,3 +160,42 @@ Definition test_br_true_false_correct_type_BrTrue : Panic.t string unit :=
 
 Goal test_br_true_false_correct_type_BrTrue = return!? tt.
 Proof. reflexivity. Qed.
+
+(*
+#[test]
+fn test_ld_integers_ok() {
+    for instr in vec![
+        Bytecode::LdU8(42),
+        Bytecode::LdU16(257),
+        Bytecode::LdU32(89),
+        Bytecode::LdU64(94),
+        Bytecode::LdU128(Box::new(9999)),
+        Bytecode::LdU256(Box::new(U256::from(745_u32))),
+    ] {
+        let code = vec![instr];
+        let module = make_module(code);
+        let fun_context = get_fun_context(&module);
+        let result = type_safety::verify(&module, &fun_context, &mut DummyMeter);
+        assert!(result.is_ok());
+    }
+}
+*)
+
+Definition test_ld_all_integers_size : Panic.t string unit :=
+  let code := [
+    file_format.Bytecode.LdU8(42);
+    file_format.Bytecode.LdU16(257);
+    file_format.Bytecode.LdU32(89);
+    file_format.Bytecode.LdU64(94);
+    file_format.Bytecode.LdU128(9999);
+    file_format.Bytecode.LdU256(745)] in
+    let module := make_module code in
+    let!? fun_context := get_fun_context module in
+    let result := test_verify module fun_context in
+    match result with
+    | Panic.Value (Result.Ok _) => return!? tt
+    | _ => panic!? "assert failed"
+    end.
+
+Goal test_ld_all_integers_size = return!? tt.
+Proof. reflexivity. Qed.
