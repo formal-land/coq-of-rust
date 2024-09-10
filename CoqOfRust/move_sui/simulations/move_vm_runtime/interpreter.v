@@ -969,19 +969,30 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(val)?
   }
   *)
-  (* TODO: Finish below *)
-  | Bytecode.LdConst idx => 
+  (* NOTE: paused from investigation *)
+  | Bytecode.LdConst idx => returnS? $ Result.Ok InstrRet.Ok
 
+  (* TODO: Finish below *)
   (* 
   Bytecode::LdTrue => {
       gas_meter.charge_simple_instr(S::LdTrue)?;
       interpreter.operand_stack.push(Value::bool(true))?;
   }
+  *)
+  | Bytecode.LdTrue => 
+    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.Bool true) in 
+    returnS? $ Result.Ok InstrRet.Ok
+  (*
   Bytecode::LdFalse => {
       gas_meter.charge_simple_instr(S::LdFalse)?;
       interpreter.operand_stack.push(Value::bool(false))?;
   }
   *)
+  | Bytecode.LdFalse => 
+    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.Bool false) in 
+    returnS? $ Result.Ok InstrRet.Ok
 
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
