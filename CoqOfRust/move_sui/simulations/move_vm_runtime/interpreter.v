@@ -417,60 +417,6 @@ End Frame.
         use SimpleInstruction as S;
 
         match instruction {
-
-            Bytecode::MoveLoc(idx) => {
-                let local = locals.move_loc(
-                    *idx as usize,
-                    resolver
-                        .loader()
-                        .vm_config()
-                        .enable_invariant_violation_check_in_swap_loc,
-                )?;
-                gas_meter.charge_move_loc(&local)?;
-
-                interpreter.operand_stack.push(local)?;
-            }
-            Bytecode::StLoc(idx) => {
-                let value_to_store = interpreter.operand_stack.pop()?;
-                gas_meter.charge_store_loc(&value_to_store)?;
-                locals.store_loc(
-                    *idx as usize,
-                    value_to_store,
-                    resolver
-                        .loader()
-                        .vm_config()
-                        .enable_invariant_violation_check_in_swap_loc,
-                )?;
-            }
-            Bytecode::Call(idx) => {
-                return Ok(InstrRet::ExitCode(ExitCode::Call(*idx))); //*)
-            }
-            Bytecode::CallGeneric(idx) => {
-                return Ok(InstrRet::ExitCode(ExitCode::CallGeneric(*idx))); //*)
-            }
-            Bytecode::MutBorrowLoc(idx) | Bytecode::ImmBorrowLoc(idx) => {
-                let instr = match instruction {
-                    Bytecode::MutBorrowLoc(_) => S::MutBorrowLoc,
-                    _ => S::ImmBorrowLoc,
-                };
-                gas_meter.charge_simple_instr(instr)?;
-                interpreter
-                    .operand_stack
-                    .push(locals.borrow_loc(*idx as usize)?)?; //*)
-            }
-            Bytecode::ImmBorrowField(fh_idx) | Bytecode::MutBorrowField(fh_idx) => {
-                let instr = match instruction {
-                    Bytecode::MutBorrowField(_) => S::MutBorrowField,
-                    _ => S::ImmBorrowField,
-                };
-                gas_meter.charge_simple_instr(instr)?;
-
-                let reference = interpreter.operand_stack.pop_as::<StructRef>()?;
-
-                let offset = resolver.field_offset(*fh_idx); //*)
-                let field_ref = reference.borrow_field(offset)?;
-                interpreter.operand_stack.push(field_ref)?;
-            }
             Bytecode::ImmBorrowFieldGeneric(fi_idx) | Bytecode::MutBorrowFieldGeneric(fi_idx) => {
                 let instr = match instruction {
                     Bytecode::MutBorrowField(_) => S::MutBorrowFieldGeneric,
@@ -1002,6 +948,71 @@ Definition execute_instruction (pc : Z)
     (* letS?? _ := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.Bool false) in  *)
     returnS? $ Result.Ok InstrRet.Ok
+
+  (* 
+  Bytecode::MoveLoc(idx) => {
+      let local = locals.move_loc(
+          *idx as usize,
+          resolver
+              .loader()
+              .vm_config()
+              .enable_invariant_violation_check_in_swap_loc,
+      )?;
+      gas_meter.charge_move_loc(&local)?;
+
+      interpreter.operand_stack.push(local)?;
+  }
+  *)
+
+  (* 
+  Bytecode::StLoc(idx) => {
+      let value_to_store = interpreter.operand_stack.pop()?;
+      gas_meter.charge_store_loc(&value_to_store)?;
+      locals.store_loc(
+          *idx as usize,
+          value_to_store,
+          resolver
+              .loader()
+              .vm_config()
+              .enable_invariant_violation_check_in_swap_loc,
+      )?;
+  }
+  *)
+
+  (* 
+  Bytecode::Call(idx) => {
+      return Ok(InstrRet::ExitCode(ExitCode::Call(*idx))); //*)
+  }
+  Bytecode::CallGeneric(idx) => {
+      return Ok(InstrRet::ExitCode(ExitCode::CallGeneric(*idx))); //*)
+  }
+  *)
+
+  (* 
+  Bytecode::MutBorrowLoc(idx) | Bytecode::ImmBorrowLoc(idx) => {
+      let instr = match instruction {
+          Bytecode::MutBorrowLoc(_) => S::MutBorrowLoc,
+          _ => S::ImmBorrowLoc,
+      };
+      gas_meter.charge_simple_instr(instr)?;
+      interpreter
+          .operand_stack
+          .push(locals.borrow_loc(*idx as usize)?)?; //*)
+  }
+  Bytecode::ImmBorrowField(fh_idx) | Bytecode::MutBorrowField(fh_idx) => {
+      let instr = match instruction {
+          Bytecode::MutBorrowField(_) => S::MutBorrowField,
+          _ => S::ImmBorrowField,
+      };
+      gas_meter.charge_simple_instr(instr)?;
+
+      let reference = interpreter.operand_stack.pop_as::<StructRef>()?;
+
+      let offset = resolver.field_offset(*fh_idx); //*)
+      let field_ref = reference.borrow_field(offset)?;
+      interpreter.operand_stack.push(field_ref)?;
+  }
+  *)
 
 
 

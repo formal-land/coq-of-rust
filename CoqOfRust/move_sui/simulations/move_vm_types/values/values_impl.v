@@ -16,7 +16,6 @@ Module StatusCode := vm_status.StatusCode.
   - Implement `Constant`
   - Investigate `bool::deserialize(deserializer).map(Value::bool)`
 - Implement `Locals`
-  - (FOCUS)Implement `copy_loc`
 - Bonus: investigate the usage of `Box` in `Vec` 
 *)
 
@@ -72,33 +71,9 @@ Module ValueImpl.
   | ContainerRef : ContainerRef.t -> t
   | IndexedRef : IndexedRef.t -> t
   .
+
+  Scheme Boolean Equality for t.
 End ValueImpl.
-
-
-(* pub struct Locals(Rc<RefCell<Vec<ValueImpl>>>); *)
-Module Locals.
-  Definition t := list ValueImpl.t.
-
-  Module Impl_Locals.
-  (* 
-  pub fn copy_loc(&self, idx: usize) -> PartialVMResult<Value> {
-      let v = self.0.borrow();
-      match v.get(idx) {
-          Some(ValueImpl::Invalid) => Err(PartialVMError::new(
-              StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
-          )
-          .with_message(format!("cannot copy invalid value at index {}", idx))),
-          Some(v) => Ok(Value(v.copy_value()?)),
-          None => Err(
-              PartialVMError::new(StatusCode::VERIFIER_INVARIANT_VIOLATION).with_message(
-                  format!("local index out of bounds: got {}, len: {}", idx, v.len()),
-              ),
-          ),
-      }
-  }
-  *)
-  End Impl_Locals.
-End Locals.
 
 (* pub struct Value(ValueImpl); *)
 Module Value.
@@ -318,3 +293,45 @@ Module Value.
     Definition deserialize_constant (constant : Constant.t) : option Value.t. Admitted.
   End Impl_Value.
 End Value.
+
+(* pub struct Locals(Rc<RefCell<Vec<ValueImpl>>>); *)
+Module Locals.
+  Definition t := list ValueImpl.t.
+
+  Module Impl_Locals.
+    Definition Self : Set := CoqOfRust.move_sui.simulations.move_vm_types.values.values_impl.Locals.
+
+    Definition default_valueimpl := ValueImpl.Invalid.
+
+    (* 
+    pub fn copy_loc(&self, idx: usize) -> PartialVMResult<Value> {
+        let v = self.0.borrow();
+        match v.get(idx) {
+            Some(ValueImpl::Invalid) => Err(PartialVMError::new(
+                StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
+            )
+            .with_message(format!("cannot copy invalid value at index {}", idx))),
+            Some(v) => Ok(Value(v.copy_value()?)),
+            None => Err(
+                PartialVMError::new(StatusCode::VERIFIER_INVARIANT_VIOLATION).with_message(
+                    format!("local index out of bounds: got {}, len: {}", idx, v.len()),
+                ),
+            ),
+        }
+    }
+    *)
+    Definition copy_loc (self : Self) (idx : Z) : PartialVMResult.t Value.t :=
+      (* idx is out of range, which is the 3rd case for the match clause *)
+      if Datatype.Length self <=? (Z.to_nat idx)
+      then Result.Err $ PartialVMError.Impl_PartialVMError.new
+        StatusCode.VERIFIER_INVARIANT_VIOLATION
+      else
+      (* Now we deal with the former 2 cases *)
+        let v := List.nth self idx default_valueimpl in
+        match v with
+        | ValueImpl.Invalid => Result.Err $ PartialVMError.Impl_PartialVMError.new
+          StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
+        | _ => Result.Ok $ Value v
+        end.
+  End Impl_Locals.
+End Locals.
