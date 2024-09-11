@@ -27,6 +27,10 @@ End SignatureToken.
 *)
 
 (* NOTE(STUB): Only implement if necessary *)
+Module Constant.
+  Parameter t : Set.
+End Constant.
+
 Module AccountAddress.
   Parameter t : Set.
 End AccountAddress.
@@ -289,14 +293,11 @@ Module Value.
     - preprocess the type from SignatureToken into a almost identical "layout" and return None if the type is wrong 
     - Now that we're provided the raw data of [u8] in constant and the processed layout type, we use the deserializer
       to eventually get a `Result` of `Value`
+    
+    Since eventually we involves external libray, here we just axiomatize the serialize/deserialize function
     *)
-    (* NOTE: `MoveTypeLayout` seems to just reformat the code and delete unrelated items. 
-      We might be able to simplify here *)
-    Definition (* Fixpoint *) constant_sig_token_to_layout (constant_signature : SignatureToken.t) 
-      (* : option MoveTypeLayout.t. Admitted. *)
-      : option Set. Admitted.
-
     Definition deserialize_constant (constant : Constant.t) : option Value.t. Admitted.
+    
   End Impl_Value.
 End Value.
 
