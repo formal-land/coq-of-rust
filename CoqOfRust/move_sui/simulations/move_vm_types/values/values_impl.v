@@ -17,9 +17,6 @@ Module SignatureToken.
 End SignatureToken.
 
 (* TODO(progress): 
-- (paused)Implement `deserialize_constant` and related structs:
-  - Implement `Constant`
-  - Investigate `bool::deserialize(deserializer).map(Value::bool)`
 - Implement `Locals`
   - Implement `move_loc`
   - Implement `store_loc`
@@ -297,7 +294,7 @@ Module Value.
     Since eventually we involves external libray, here we just axiomatize the serialize/deserialize function
     *)
     Definition deserialize_constant (constant : Constant.t) : option Value.t. Admitted.
-    
+
   End Impl_Value.
 End Value.
 
@@ -368,36 +365,22 @@ Module Locals.
         }
     }
     *)
-    Definition swap_loc (idx : Z) (x : Value.t) (violation_check : bool) 
-      : MS? Self string (PartialVMResult.t Value.t) :=
-      letS? v := readS? in
+    Definition swap_loc (idx : Z) (violation_check : bool) 
+      : MS? (Self, Value.t) string (PartialVMResult.t Value.t) :=
+      letS? (v, x) := readS? in
       if Datatype.Length v <=? Z.to_nat idx
       then returnS? $ Result.Err $ 
         PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
       else
-        let v := List.nth v (Z.to_nat idx) default_valueimpl in
-        (* TODO: check the logic from here *)
+        let vv := List.nth v (Z.to_nat idx) default_valueimpl in
         let result := if violation_check
         then
-          (* 
-          if let ValueImpl::Container(c) = v {
-              if c.rc_count() > 1 {
-                  return Err(PartialVMError::new(
-                      StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
-                  )
-                  .with_message(
-                      "moving container with dangling references".to_string(),
-                  ));
-              }
-          }
-          *)
-          let result1 := match v with
-          | ValueImpl.Container v => 
-            (* TODO: Implement `rc_count` for `Rc` ???? *)
-            (* returnS? $ Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR *)
-          | _ => _
-          end in
-          (* Ok(Value(std::mem::replace(v, x.0))) *)
+        (* NOTE: we ignore the case where rc_counter is greater than 1. Might find a way to deal with it in the future *)
+        (* TODO: swap the nth list element to x *)
+        (* Ok(Value(std::mem::replace(v, x.0))) *)
+          _
+        else
+          returnS? $ Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION.
 
 
 

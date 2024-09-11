@@ -29,7 +29,6 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
-- (paused)Investigate `Value::deserialize_constant`
 - (FOCUS)Implement `Resolver::constant_at`
 - Implement `Callstack` for Interpreter
 - Implement `Interpreter::binop_int`
@@ -416,41 +415,6 @@ End Frame.
         use SimpleInstruction as S;
 
         match instruction {
-            Bytecode::Pack(sd_idx) => {
-                let field_count = resolver.field_count(*sd_idx); //*)
-                let struct_type = resolver.get_struct_type(*sd_idx); //*)
-                Self::check_depth_of_type(resolver, &struct_type)?;
-                gas_meter.charge_pack(
-                    false,
-                    interpreter.operand_stack.last_n(field_count as usize)?,
-                )?;
-                let args = interpreter.operand_stack.popn(field_count)?;
-                interpreter
-                    .operand_stack
-                    .push(Value::struct_(Struct::pack(args)))?;
-            }
-            Bytecode::PackGeneric(si_idx) => {
-                let field_count = resolver.field_instantiation_count(*si_idx); //*)
-                let ty = resolver.instantiate_generic_type(*si_idx, ty_args)?; //*)
-                Self::check_depth_of_type(resolver, &ty)?;
-                gas_meter.charge_pack(
-                    true,
-                    interpreter.operand_stack.last_n(field_count as usize)?,
-                )?;
-                let args = interpreter.operand_stack.popn(field_count)?;
-                interpreter
-                    .operand_stack
-                    .push(Value::struct_(Struct::pack(args)))?;
-            }
-            Bytecode::Unpack(_sd_idx) => {
-                let struct_ = interpreter.operand_stack.pop_as::<Struct>()?;
-
-                gas_meter.charge_unpack(false, struct_.field_views())?;
-
-                for value in struct_.unpack()? {
-                    interpreter.operand_stack.push(value)?;
-                }
-            }
             Bytecode::UnpackGeneric(_si_idx) => {
                 let struct_ = interpreter.operand_stack.pop_as::<Struct>()?;
 
@@ -899,7 +863,6 @@ Definition execute_instruction (pc : Z)
   (* NOTE: paused from investigation *)
   | Bytecode.LdConst idx => returnS? $ Result.Ok InstrRet.Ok
 
-  (* TODO: Finish below *)
   (* 
   Bytecode::LdTrue => {
       gas_meter.charge_simple_instr(S::LdTrue)?;
@@ -967,8 +930,8 @@ Definition execute_instruction (pc : Z)
       )?;
   }
   *)
-  | Bytecode.StoreLoc idx => 
-    returnS? $ Result.Ok InstrRet.Ok
+  (* NOTE: paused from investigation *)
+  | Bytecode.StoreLoc idx => returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::Call(idx) => {
@@ -984,6 +947,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.CallGeneric idx => returnS? $ Result.Ok $ InstrRet.ExitCode $ ExitCode.CallGeneric idx
 
+  (* TODO: Finish below *)
   (* 
   Bytecode::MutBorrowLoc(idx) | Bytecode::ImmBorrowLoc(idx) => {
       let instr = match instruction {
@@ -1031,6 +995,50 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.ImmBorrowFieldGeneric fi_idx =>
+
+  (* 
+  Bytecode::Pack(sd_idx) => {
+      let field_count = resolver.field_count(*sd_idx); //*)
+      let struct_type = resolver.get_struct_type(*sd_idx); //*)
+      Self::check_depth_of_type(resolver, &struct_type)?;
+      gas_meter.charge_pack(
+          false,
+          interpreter.operand_stack.last_n(field_count as usize)?,
+      )?;
+      let args = interpreter.operand_stack.popn(field_count)?;
+      interpreter
+          .operand_stack
+          .push(Value::struct_(Struct::pack(args)))?;
+  }
+  *)
+
+  (* 
+  Bytecode::PackGeneric(si_idx) => {
+      let field_count = resolver.field_instantiation_count(*si_idx); //*)
+      let ty = resolver.instantiate_generic_type(*si_idx, ty_args)?; //*)
+      Self::check_depth_of_type(resolver, &ty)?;
+      gas_meter.charge_pack(
+          true,
+          interpreter.operand_stack.last_n(field_count as usize)?,
+      )?;
+      let args = interpreter.operand_stack.popn(field_count)?;
+      interpreter
+          .operand_stack
+          .push(Value::struct_(Struct::pack(args)))?;
+  }
+  *)
+
+  (* 
+  Bytecode::Unpack(_sd_idx) => {
+      let struct_ = interpreter.operand_stack.pop_as::<Struct>()?;
+
+      gas_meter.charge_unpack(false, struct_.field_views())?;
+
+      for value in struct_.unpack()? {
+          interpreter.operand_stack.push(value)?;
+      }
+  }
+  *)
 
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
