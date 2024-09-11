@@ -949,6 +949,9 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(local)?;
   }
   *)
+  (* NOTE: paused from investigation *)
+  | Bytecode.MoveLoc idx => 
+    returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::StLoc(idx) => {
@@ -964,6 +967,9 @@ Definition execute_instruction (pc : Z)
       )?;
   }
   *)
+  | Bytecode.StoreLoc idx => 
+    returnS? $ Result.Ok InstrRet.Ok
+
   (* 
   Bytecode::Call(idx) => {
       return Ok(InstrRet::ExitCode(ExitCode::Call(*idx))); //*)
@@ -989,6 +995,10 @@ Definition execute_instruction (pc : Z)
           .operand_stack
           .push(locals.borrow_loc(*idx as usize)?)?; //*)
   }
+  *)
+  | Bytecode.MutBorrowLoc idx =>
+
+  (*
   Bytecode::ImmBorrowField(fh_idx) | Bytecode::MutBorrowField(fh_idx) => {
       let instr = match instruction {
           Bytecode::MutBorrowField(_) => S::MutBorrowField,
@@ -1003,6 +1013,7 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(field_ref)?;
   }
   *)
+  | Bytecode.ImmBorrowField fh_idx =>
 
   (* 
   Bytecode::ImmBorrowFieldGeneric(fi_idx) | Bytecode::MutBorrowFieldGeneric(fi_idx) => {
@@ -1019,6 +1030,7 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(field_ref)?;
   }
   *)
+  | Bytecode.ImmBorrowFieldGeneric fi_idx =>
 
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.

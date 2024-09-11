@@ -11,6 +11,11 @@ Module PartialVMError := errors.PartialVMError.
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
+Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
+Module SignatureToken.
+  Include file_format.SignatureToken.
+End SignatureToken.
+
 (* TODO(progress): 
 - (paused)Implement `deserialize_constant` and related structs:
   - Implement `Constant`
@@ -73,8 +78,6 @@ Module ValueImpl.
   | ContainerRef : ContainerRef.t -> t
   | IndexedRef : IndexedRef.t -> t
   .
-
-  Scheme Boolean Equality for t.
 End ValueImpl.
 
 (* pub struct Value(ValueImpl); *)
@@ -281,8 +284,8 @@ Module Value.
     }
     *)
     (* NOTE:
-    the whold process should be:
-    - resolver gets a constant and we get its type of SignatureToken
+    The whole process should be:
+    - resolver gets a `Constant` and we get its type of SignatureToken
     - preprocess the type from SignatureToken into a almost identical "layout" and return None if the type is wrong 
     - Now that we're provided the raw data of [u8] in constant and the processed layout type, we use the deserializer
       to eventually get a `Result` of `Value`
@@ -290,7 +293,8 @@ Module Value.
     (* NOTE: `MoveTypeLayout` seems to just reformat the code and delete unrelated items. 
       We might be able to simplify here *)
     Definition (* Fixpoint *) constant_sig_token_to_layout (constant_signature : SignatureToken.t) 
-      : option MoveTypeLayout.t. Admitted.
+      (* : option MoveTypeLayout.t. Admitted. *)
+      : option Set. Admitted.
 
     Definition deserialize_constant (constant : Constant.t) : option Value.t. Admitted.
   End Impl_Value.
@@ -362,7 +366,41 @@ Module Locals.
             ),
         }
     }
+    *)
+    Definition swap_loc (idx : Z) (x : Value.t) (violation_check : bool) 
+      : MS? Self string (PartialVMResult.t Value.t) :=
+      letS? v := readS? in
+      if Datatype.Length v <=? Z.to_nat idx
+      then returnS? $ Result.Err $ 
+        PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
+      else
+        let v := List.nth v (Z.to_nat idx) default_valueimpl in
+        (* TODO: check the logic from here *)
+        let result := if violation_check
+        then
+          (* 
+          if let ValueImpl::Container(c) = v {
+              if c.rc_count() > 1 {
+                  return Err(PartialVMError::new(
+                      StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
+                  )
+                  .with_message(
+                      "moving container with dangling references".to_string(),
+                  ));
+              }
+          }
+          *)
+          let result1 := match v with
+          | ValueImpl.Container v => 
+            (* TODO: Implement `rc_count` for `Rc` ???? *)
+            (* returnS? $ Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR *)
+          | _ => _
+          end in
+          (* Ok(Value(std::mem::replace(v, x.0))) *)
 
+
+
+    (*
     pub fn move_loc(&mut self, idx: usize, violation_check: bool) -> PartialVMResult<Value> {
         match self.swap_loc(idx, Value(ValueImpl::Invalid), violation_check)? {
             Value(ValueImpl::Invalid) => Err(PartialVMError::new(
@@ -373,6 +411,9 @@ Module Locals.
         }
     }
     *)
+    Definition move_loc (idx : Z) (violation_check : bool) 
+      : MS? Self string (PartialVMResult.t Value.t). Admitted. 
+
     (* 
     pub fn store_loc(
         &mut self,
@@ -384,7 +425,6 @@ Module Locals.
         Ok(())
     }
     *)
-    Definition swap_loc : Set. Admitted.
     Definition copy_loc : Set. Admitted.
   End Impl_Locals.
 End Locals.
