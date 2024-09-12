@@ -302,6 +302,9 @@ End Value.
 Module Locals.
   Definition t := list ValueImpl.t.
 
+  Module Lens.
+  End Lens.
+
   Module Impl_Locals.
     Definition Self := move_sui.simulations.move_vm_types.values.values_impl.Locals.t.
 
