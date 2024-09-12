@@ -18,9 +18,9 @@ End SignatureToken.
 
 (* TODO(progress): 
 - Implement `Locals`
-  - Implement `move_loc`
+  - (FOCUS)Implement `move_loc`
   - Implement `store_loc`
-- Bonus: investigate the usage of `Box` in `Vec` 
+  - Implement `borrow_loc`
 *)
 
 (* NOTE(STUB): Only implement if necessary *)
@@ -303,7 +303,7 @@ Module Locals.
   Definition t := list ValueImpl.t.
 
   Module Impl_Locals.
-    Definition Self : Set := CoqOfRust.move_sui.simulations.move_vm_types.values.values_impl.Locals.
+    Definition Self := move_sui.simulations.move_vm_types.values.values_impl.Locals.t.
 
     Definition default_valueimpl := ValueImpl.Invalid.
 
@@ -326,16 +326,16 @@ Module Locals.
     *)
     Definition copy_loc (self : Self) (idx : Z) : PartialVMResult.t Value.t :=
       (* idx is out of range, which is the 3rd case for the match clause *)
-      if Datatype.Length self <=? (Z.to_nat idx)
+      if Z.of_nat $ List.length self <=? idx
       then Result.Err $ PartialVMError.Impl_PartialVMError.new
         StatusCode.VERIFIER_INVARIANT_VIOLATION
       else
       (* Now we deal with the former 2 cases *)
-        let v := List.nth self idx default_valueimpl in
+        let v := List.nth (Z.to_nat idx) self default_valueimpl in
         match v with
         | ValueImpl.Invalid => Result.Err $ PartialVMError.Impl_PartialVMError.new
           StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
-        | _ => Result.Ok $ Value v
+        | _ => Result.Ok $ v
         end.
 
     (* 
@@ -365,24 +365,32 @@ Module Locals.
         }
     }
     *)
+    (* Helper function for `swap_loc`. Assumptions has been made that the idx never out ranges *)
+    Fixpoint swap_list_nth {A : Set} (l : list A) (a : A) (idx : nat) : list A :=
+      match idx with
+      | O => a :: List.tl l
+      | S idx => match List.head l with
+        | Some h => h :: swap_list_nth (List.tl l) a idx
+        | None => []
+        end
+      end.
+
     Definition swap_loc (idx : Z) (violation_check : bool) 
-      : MS? (Self, Value.t) string (PartialVMResult.t Value.t) :=
-      letS? (v, x) := readS? in
-      if Datatype.Length v <=? Z.to_nat idx
+      : MS? (Self * Value.t) string (PartialVMResult.t Value.t) :=
+      letS? '(v, x) := readS? in
+      if Z.of_nat $ List.length v <=? idx
       then returnS? $ Result.Err $ 
         PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
       else
-        let vv := List.nth v (Z.to_nat idx) default_valueimpl in
-        let result := if violation_check
+        let v_nth := List.nth (Z.to_nat idx) v default_valueimpl in
+        if violation_check
         then
         (* NOTE: we ignore the case where rc_counter is greater than 1. Might find a way to deal with it in the future *)
-        (* TODO: swap the nth list element to x *)
-        (* Ok(Value(std::mem::replace(v, x.0))) *)
-          _
+        let v_new := swap_list_nth v x (Z.to_nat idx) in
+        letS? _ := writeS? (v_new, v_nth) in
+          returnS? $ Result.Ok $ v_nth
         else
           returnS? $ Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION.
-
-
 
     (*
     pub fn move_loc(&mut self, idx: usize, violation_check: bool) -> PartialVMResult<Value> {
@@ -395,8 +403,10 @@ Module Locals.
         }
     }
     *)
+    (* TODO: Define lens of Self to Self * Value *)
     Definition move_loc (idx : Z) (violation_check : bool) 
-      : MS? Self string (PartialVMResult.t Value.t). Admitted. 
+      : MS? Self string (PartialVMResult.t Value.t). Admitted.
+        
 
     (* 
     pub fn store_loc(
@@ -409,6 +419,50 @@ Module Locals.
         Ok(())
     }
     *)
-    Definition copy_loc : Set. Admitted.
+    Definition store_loc : Set. Admitted.
+
+    (* 
+      pub fn borrow_loc(&self, idx: usize) -> PartialVMResult<Value> {
+        // TODO: this is very similar to SharedContainer::borrow_elem. Find a way to
+        // reuse that code?
+
+        let v = self.0.borrow();
+        if idx >= v.len() {
+            return Err(
+                PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR).with_message(
+                    format!(
+                        "index out of bounds when borrowing local: got: {}, len: {}",
+                        idx,
+                        v.len()
+                    ),
+                ),
+            );
+        }
+
+        match &v[idx] {
+            ValueImpl::Container(c) => Ok(Value(ValueImpl::ContainerRef(ContainerRef::Local(
+                c.copy_by_ref(),
+            )))),
+
+            ValueImpl::U8(_)
+            | ValueImpl::U16(_)
+            | ValueImpl::U32(_)
+            | ValueImpl::U64(_)
+            | ValueImpl::U128(_)
+            | ValueImpl::U256(_)
+            | ValueImpl::Bool(_)
+            | ValueImpl::Address(_) => Ok(Value(ValueImpl::IndexedRef(IndexedRef {
+                container_ref: ContainerRef::Local(Container::Locals(Rc::clone(&self.0))),
+                idx,
+            }))),
+
+            ValueImpl::ContainerRef(_) | ValueImpl::Invalid | ValueImpl::IndexedRef(_) => Err(
+                PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                    .with_message(format!("cannot borrow local {:?}", &v[idx])),
+            ),
+        }
+    }
+    *)
+    Definition borrow_loc : Set. Admitted.
   End Impl_Locals.
 End Locals.
