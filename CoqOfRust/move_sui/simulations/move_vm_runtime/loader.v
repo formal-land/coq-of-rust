@@ -7,9 +7,10 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Bytecode := file_format.Bytecode.
 Module CompiledModule := file_format.CompiledModule.
+Module Constant := file_format.Constant.
 
 (* TODO(progress):
-- Implement `Resolver`'s func chain:
+- Implement `Resolver`'s funcs:
   - resolver
       .loader() <- Just a getter
       .vm_config() <- Just a getter
@@ -89,4 +90,16 @@ Module Resolver.
     loader : Loader.t;
     binary : BinaryType.t;
   }.
+
+  Module Impl_Resolver.
+    Definition Self := move_sui.simulations.move_vm_runtime.loader.Resolver.t.
+    (* 
+    pub(crate) fn constant_at(&self, idx: ConstantPoolIndex) -> &Constant {
+        self.binary.compiled.constant_at(idx)
+    }
+    *)
+    Definition constant_at (self : Self) (idx : ConstantPoolIndex.t) : Constant.t :=
+      CompiledModule.Impl_CompiledModule.constant_at self.(Resolver.binary).(BinaryType.compiled) idx.
+
+  End Impl_Resolver.
 End Resolver.
