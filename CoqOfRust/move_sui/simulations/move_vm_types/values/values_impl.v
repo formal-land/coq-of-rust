@@ -18,7 +18,6 @@ End SignatureToken.
 
 (* TODO(progress): 
 - Implement `Locals`
-  - (FOCUS)Implement `move_loc`
   - Implement `store_loc`
   - Implement `borrow_loc`
 *)
@@ -303,6 +302,10 @@ Module Locals.
   Definition t := list ValueImpl.t.
 
   Module Lens.
+    Definition lens_self_self_value (v : Value.t) : Lens.t t (t * Value.t) := {|
+      Lens.read self := (self, v);
+      Lens.write self state := fst state;
+    |}.
   End Lens.
 
   Module Impl_Locals.
@@ -406,10 +409,15 @@ Module Locals.
         }
     }
     *)
-    (* TODO: Define lens of Self to Self * Value *)
     Definition move_loc (idx : Z) (violation_check : bool) 
-      : MS? Self string (PartialVMResult.t Value.t). Admitted.
-        
+      : MS? Self string (PartialVMResult.t Value.t) :=
+      letS?? result := liftS? (Lens.lens_self_self_value ValueImpl.Invalid) 
+        $ swap_loc idx violation_check in
+      match result with
+      | ValueImpl.Invalid => returnS? $ Result.Err $ 
+        PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
+      | v => returnS? $ Result.Ok v
+      end.
 
     (* 
     pub fn store_loc(
