@@ -17,8 +17,8 @@ Module SignatureToken.
 End SignatureToken.
 
 (* TODO(progress): 
+- (FOCUS)Implement `ContainerRef`
 - Implement `Locals`
-  - Implement `store_loc`
   - Implement `borrow_loc`
 *)
 
@@ -35,15 +35,28 @@ Module Container.
   Parameter t : Set.
 End Container.
 
-Module ContainerRef.
-  Parameter t : Set.
-End ContainerRef.
-
 Module IndexedRef.
   Parameter t : Set.
 End IndexedRef.
 
 (* **************** *)
+(* 
+/// A ContainerRef is a direct reference to a container, which could live either in the frame
+/// or in global storage. In the latter case, it also keeps a status flag indicating whether
+/// the container has been possibly modified.
+#[derive(Debug)]
+enum ContainerRef {
+    Local(Container),
+    Global {
+        status: Rc<RefCell<GlobalDataStatus>>,
+        container: Container,
+    },
+}
+*)
+Module ContainerRef.
+  Parameter t : Set.
+End ContainerRef.
+
 (* 
 enum ValueImpl {
     Invalid,
@@ -430,7 +443,11 @@ Module Locals.
         Ok(())
     }
     *)
-    Definition store_loc : Set. Admitted.
+    Definition store_loc (idx : Z) (violation_check : bool)
+      : MS? Self string (PartialVMResult.t unit) :=
+      letS?? result := liftS? (Lens.lens_self_self_value ValueImpl.Invalid) 
+      $ swap_loc idx violation_check in
+        returnS? $ Result.Ok tt.
 
     (* 
       pub fn borrow_loc(&self, idx: usize) -> PartialVMResult<Value> {
@@ -474,6 +491,20 @@ Module Locals.
         }
     }
     *)
-    Definition borrow_loc : Set. Admitted.
+    Definition borrow_loc (self : Self) (idx : Z) : PartialVMResult.t Value.t :=
+      let v := self in
+      if List.length self >=? idx
+      then returnS? $ PartialVMError.Impl_PartialVMError.new 
+        StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
+      else
+        let v_nth := List.nth (Z.to_nat idx) self default_valueimpl in
+        match v_nth with
+        | ValueImpl.Container c =>
+          returnS? $ Result.Ok $ ValueImpl.ContainerRef _ (* TODO: implement this *)
+        (* TODO: Implement rest of the case *)
+        end
+        .
+
+
   End Impl_Locals.
 End Locals.

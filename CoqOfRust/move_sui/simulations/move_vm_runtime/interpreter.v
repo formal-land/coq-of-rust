@@ -29,9 +29,11 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 (* TODO(progress):
-- (FOCUS)Implement `Resolver::constant_at`
-- Implement `Callstack` for Interpreter
+- (FOCUS)Implement `StructRef::borrow_field`
+- (FOCUS)Implement `enable_invariant_violation_check_in_swap_loc` for `Resolver`
 - Implement `Interpreter::binop_int`
+  - Investigate `IntegerValue`'s operations
+- Implement `Callstack` for Interpreter
 - (Enhancement) Redesign `cast` functions with Class and simplify `pop_as` code
 *)
 
@@ -382,6 +384,41 @@ Module Interpreter.
       Lens.write self stack := self <| Interpreter.operand_stack := stack |>;
     |}.
   End Lens.
+
+  Module Impl_Interpreter.
+    Definition Self : Set. Admitted.
+
+    (* 
+        /// Perform a binary operation to two values at the top of the stack.
+    fn binop<F, T>(&mut self, f: F) -> PartialVMResult<()>
+    where
+        Value: VMValueCast<T>,
+        F: FnOnce(T, T) -> PartialVMResult<Value>,
+    {
+        let rhs = self.operand_stack.pop_as::<T>()?;
+        let lhs = self.operand_stack.pop_as::<T>()?;
+        let result = f(lhs, rhs)?;
+        self.operand_stack.push(result)
+    }
+
+    /// Perform a binary operation for integer values.
+    fn binop_int<F>(&mut self, f: F) -> PartialVMResult<()>
+    where
+        F: FnOnce(IntegerValue, IntegerValue) -> PartialVMResult<IntegerValue>,
+    {
+        self.binop(|lhs, rhs| {
+            Ok(match f(lhs, rhs)? {
+                IntegerValue::U8(x) => Value::u8(x),
+                IntegerValue::U16(x) => Value::u16(x),
+                IntegerValue::U32(x) => Value::u32(x),
+                IntegerValue::U64(x) => Value::u64(x),
+                IntegerValue::U128(x) => Value::u128(x),
+                IntegerValue::U256(x) => Value::u256(x),
+            })
+        })
+    }
+    *)
+  End Impl_Interpreter.
 End Interpreter.
 
 (* 
@@ -415,37 +452,6 @@ End Frame.
         use SimpleInstruction as S;
 
         match instruction {
-            Bytecode::UnpackGeneric(_si_idx) => {
-                let struct_ = interpreter.operand_stack.pop_as::<Struct>()?;
-
-                gas_meter.charge_unpack(true, struct_.field_views())?;
-
-                // TODO: Whether or not we want this gas metering in the loop is
-                // questionable.  However, if we don't have it in the loop we could wind up
-                // doing a fair bit of work before charging for it.
-                for value in struct_.unpack()? {
-                    interpreter.operand_stack.push(value)?;
-                }
-            }
-            Bytecode::ReadRef => {
-                let reference = interpreter.operand_stack.pop_as::<Reference>()?;
-                gas_meter.charge_read_ref(reference.value_view())?;
-                let value = reference.read_ref()?;
-                interpreter.operand_stack.push(value)?;
-            }
-            Bytecode::WriteRef => {
-                let reference = interpreter.operand_stack.pop_as::<Reference>()?;
-                let value = interpreter.operand_stack.pop()?;
-                gas_meter.charge_write_ref(&value, reference.value_view())?;
-                reference.write_ref(value)?;
-            }
-            Bytecode::CastU8 => {
-                gas_meter.charge_simple_instr(S::CastU8)?;
-                let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
-                interpreter
-                    .operand_stack
-                    .push(Value::u8(integer_value.cast_u8()?))?;
-            }
             Bytecode::CastU16 => {
                 gas_meter.charge_simple_instr(S::CastU16)?;
                 let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
@@ -695,12 +701,6 @@ Definition debug_execute_instruction (pc : Z)
   match instruction with
   (* fill debugging content here *)
 
-  (* TODO: figure out how to push a value *)
-  | Bytecode.LdU8 int_const => 
-    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
-      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U8 int_const) in 
-    returnS? $ Result.Ok InstrRet.Ok
-
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
 
@@ -793,6 +793,7 @@ Definition execute_instruction (pc : Z)
     letS?? _ := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U8 int_const) in 
     returnS? $ Result.Ok InstrRet.Ok
+
   (*
   Bytecode::LdU16(int_const) => {
       gas_meter.charge_simple_instr(S::LdU16)?;
@@ -803,6 +804,7 @@ Definition execute_instruction (pc : Z)
     letS?? _ := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U16 int_const) in 
     returnS? $ Result.Ok InstrRet.Ok
+
   (*
   Bytecode::LdU32(int_const) => {
       gas_meter.charge_simple_instr(S::LdU32)?;
@@ -813,6 +815,7 @@ Definition execute_instruction (pc : Z)
     letS?? _ := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U32 int_const) in 
     returnS? $ Result.Ok InstrRet.Ok
+
   (*
   Bytecode::LdU64(int_const) => {
       gas_meter.charge_simple_instr(S::LdU64)?;
@@ -823,6 +826,7 @@ Definition execute_instruction (pc : Z)
     letS?? _ := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U64 int_const) in 
     returnS? $ Result.Ok InstrRet.Ok
+
   (*
   Bytecode::LdU128(int_const) => {
       gas_meter.charge_simple_instr(S::LdU128)?;
@@ -833,6 +837,7 @@ Definition execute_instruction (pc : Z)
     letS?? _ := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U128 int_const) in 
     returnS? $ Result.Ok InstrRet.Ok
+
   (*
   Bytecode::LdU256(int_const) => {
       gas_meter.charge_simple_instr(S::LdU256)?;
@@ -860,8 +865,16 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(val)?
   }
   *)
-  (* NOTE: paused from investigation *)
-  | Bytecode.LdConst idx => returnS? $ Result.Ok InstrRet.Ok
+  | Bytecode.LdConst idx => 
+    let constant := Resolver.constant_at resolver idx in
+    let val := Value.Impl_Value.deserialize_constant constant in
+    let val := match val with
+    | Some v => v
+    | None => PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
+    end in
+    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push val) in 
+    returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::LdTrue => {
@@ -873,6 +886,7 @@ Definition execute_instruction (pc : Z)
     letS?? _ := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.Bool true) in 
     returnS? $ Result.Ok InstrRet.Ok
+
   (*
   Bytecode::LdFalse => {
       gas_meter.charge_simple_instr(S::LdFalse)?;
@@ -912,8 +926,10 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(local)?;
   }
   *)
-  (* NOTE: paused from investigation *)
   | Bytecode.MoveLoc idx => 
+    (* TODO: Implement `enable_invariant_violation_check_in_swap_loc` *)
+    _
+
     returnS? $ Result.Ok InstrRet.Ok
 
   (* 
@@ -960,6 +976,7 @@ Definition execute_instruction (pc : Z)
           .push(locals.borrow_loc(*idx as usize)?)?; //*)
   }
   *)
+  (* NOTE: paused from investigation *)
   | Bytecode.MutBorrowLoc idx => returnS? $ Result.Ok InstrRet.Ok
 
   (*
@@ -1037,6 +1054,49 @@ Definition execute_instruction (pc : Z)
       for value in struct_.unpack()? {
           interpreter.operand_stack.push(value)?;
       }
+  }
+  *)
+
+  (* 
+  Bytecode::UnpackGeneric(_si_idx) => {
+      let struct_ = interpreter.operand_stack.pop_as::<Struct>()?;
+
+      gas_meter.charge_unpack(true, struct_.field_views())?;
+
+      // TODO: Whether or not we want this gas metering in the loop is
+      // questionable.  However, if we don't have it in the loop we could wind up
+      // doing a fair bit of work before charging for it.
+      for value in struct_.unpack()? {
+          interpreter.operand_stack.push(value)?;
+      }
+  }
+  *)
+
+  (* 
+  Bytecode::ReadRef => {
+      let reference = interpreter.operand_stack.pop_as::<Reference>()?;
+      gas_meter.charge_read_ref(reference.value_view())?;
+      let value = reference.read_ref()?;
+      interpreter.operand_stack.push(value)?;
+  }
+  *)
+
+  (* 
+  Bytecode::WriteRef => {
+      let reference = interpreter.operand_stack.pop_as::<Reference>()?;
+      let value = interpreter.operand_stack.pop()?;
+      gas_meter.charge_write_ref(&value, reference.value_view())?;
+      reference.write_ref(value)?;
+  }
+  *)
+
+  (* 
+  Bytecode::CastU8 => {
+      gas_meter.charge_simple_instr(S::CastU8)?;
+      let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
+      interpreter
+          .operand_stack
+          .push(Value::u8(integer_value.cast_u8()?))?;
   }
   *)
 
