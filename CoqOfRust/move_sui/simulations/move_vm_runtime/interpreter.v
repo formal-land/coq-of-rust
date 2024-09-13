@@ -893,7 +893,7 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.CopyLoc idx =>
-    letS?? local := Locals.copy_loc locals in
+    letS?? local := Locals.Impl_Locals.copy_loc locals in
     letS?? _ := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push local) in 
     returnS? $ Result.Ok InstrRet.Ok
@@ -960,7 +960,7 @@ Definition execute_instruction (pc : Z)
           .push(locals.borrow_loc(*idx as usize)?)?; //*)
   }
   *)
-  | Bytecode.MutBorrowLoc idx =>
+  | Bytecode.MutBorrowLoc idx => returnS? $ Result.Ok InstrRet.Ok
 
   (*
   Bytecode::ImmBorrowField(fh_idx) | Bytecode::MutBorrowField(fh_idx) => {
@@ -977,7 +977,7 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(field_ref)?;
   }
   *)
-  | Bytecode.ImmBorrowField fh_idx =>
+  | Bytecode.ImmBorrowField fh_idx => returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::ImmBorrowFieldGeneric(fi_idx) | Bytecode::MutBorrowFieldGeneric(fi_idx) => {
@@ -994,7 +994,7 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(field_ref)?;
   }
   *)
-  | Bytecode.ImmBorrowFieldGeneric fi_idx =>
+  | Bytecode.ImmBorrowFieldGeneric fi_idx => returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::Pack(sd_idx) => {

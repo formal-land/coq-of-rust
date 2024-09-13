@@ -11,8 +11,8 @@ Module CompiledModule := file_format.CompiledModule.
 (* TODO(progress):
 - Implement `Resolver`'s func chain:
   - resolver
-      .loader()
-      .vm_config()
+      .loader() <- Just a getter
+      .vm_config() <- Just a getter
       .enable_invariant_violation_check_in_swap_loc
 *)
 
