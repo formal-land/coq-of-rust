@@ -9,12 +9,11 @@ Module Bytecode := file_format.Bytecode.
 Module CompiledModule := file_format.CompiledModule.
 Module Constant := file_format.Constant.
 
+Require CoqOfRust.move_sui.simulations.move_vm_config.runtime.
+Module VMConfig := runtime.VMConfig.
+
 (* TODO(progress):
-- Implement `Resolver`'s funcs:
-  - resolver
-      .loader() <- Just a getter
-      .vm_config() <- Just a getter
-      .enable_invariant_violation_check_in_swap_loc
+- None
 *)
 
 (* NOTE(STUB): only implement if necessary *)
@@ -33,10 +32,6 @@ End TypeCache.
 Module NativeFunctions.
   Parameter t : Set.
 End NativeFunctions.
-
-Module VMConfig.
-  Parameter t : Set.
-End VMConfig.
 
 (* 
 pub(crate) struct Loader {

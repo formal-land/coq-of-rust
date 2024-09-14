@@ -56,35 +56,33 @@ enum ContainerRef {
 }
 *)
 Module ContainerRef.
-  Record _Global : Set := {
+  Record __Global : Set := {
     status : GlobalDataStatus.t;
     container: Container.t;
   }
 
   Inductive t : Set :=
   | Local : Container.t -> t
-  | Global : _Global -> t;
+  | _Global : __Global -> t;
   .
 
-  (* NOTE: This function is ignoreds
+  (* NOTE: This function is ignored
   fn copy_by_ref(&self) -> Self {
-    match self {
-        Self::Vec(r) => Self::Vec(Rc::clone(r)),
-        Self::Struct(r) => Self::Struct(Rc::clone(r)),
-        Self::VecU8(r) => Self::VecU8(Rc::clone(r)),
-        Self::VecU16(r) => Self::VecU16(Rc::clone(r)),
-        Self::VecU32(r) => Self::VecU32(Rc::clone(r)),
-        Self::VecU64(r) => Self::VecU64(Rc::clone(r)),
-        Self::VecU128(r) => Self::VecU128(Rc::clone(r)),
-        Self::VecU256(r) => Self::VecU256(Rc::clone(r)),
-        Self::VecBool(r) => Self::VecBool(Rc::clone(r)),
-        Self::VecAddress(r) => Self::VecAddress(Rc::clone(r)),
-        Self::Locals(r) => Self::Locals(Rc::clone(r)),
-    }
-}
+      match self {
+          Self::Vec(r) => Self::Vec(Rc::clone(r)),
+          Self::Struct(r) => Self::Struct(Rc::clone(r)),
+          Self::VecU8(r) => Self::VecU8(Rc::clone(r)),
+          Self::VecU16(r) => Self::VecU16(Rc::clone(r)),
+          Self::VecU32(r) => Self::VecU32(Rc::clone(r)),
+          Self::VecU64(r) => Self::VecU64(Rc::clone(r)),
+          Self::VecU128(r) => Self::VecU128(Rc::clone(r)),
+          Self::VecU256(r) => Self::VecU256(Rc::clone(r)),
+          Self::VecBool(r) => Self::VecBool(Rc::clone(r)),
+          Self::VecAddress(r) => Self::VecAddress(Rc::clone(r)),
+          Self::Locals(r) => Self::Locals(Rc::clone(r)),
+      }
+  }
   *)
-
-
 End ContainerRef.
 
 (* 
