@@ -17,9 +17,7 @@ Module SignatureToken.
 End SignatureToken.
 
 (* TODO(progress): 
-- (FOCUS)Implement `ContainerRef`
-- Implement `Locals`
-  - Implement `borrow_loc`
+  - None
 *)
 
 (* NOTE(STUB): Only implement if necessary *)
@@ -39,6 +37,10 @@ Module IndexedRef.
   Parameter t : Set.
 End IndexedRef.
 
+Module GlobalDataStatus.
+  Parameter t : Set.
+End GlobalDataStatus.
+
 (* **************** *)
 (* 
 /// A ContainerRef is a direct reference to a container, which could live either in the frame
@@ -54,8 +56,52 @@ enum ContainerRef {
 }
 *)
 Module ContainerRef.
-  Parameter t : Set.
+  Record _Global : Set := {
+    status : GlobalDataStatus.t;
+    container: Container.t;
+  }
+
+  Inductive t : Set :=
+  | Local : Container.t -> t
+  | Global : _Global -> t;
+  .
+
+  (* NOTE: This function is ignoreds
+  fn copy_by_ref(&self) -> Self {
+    match self {
+        Self::Vec(r) => Self::Vec(Rc::clone(r)),
+        Self::Struct(r) => Self::Struct(Rc::clone(r)),
+        Self::VecU8(r) => Self::VecU8(Rc::clone(r)),
+        Self::VecU16(r) => Self::VecU16(Rc::clone(r)),
+        Self::VecU32(r) => Self::VecU32(Rc::clone(r)),
+        Self::VecU64(r) => Self::VecU64(Rc::clone(r)),
+        Self::VecU128(r) => Self::VecU128(Rc::clone(r)),
+        Self::VecU256(r) => Self::VecU256(Rc::clone(r)),
+        Self::VecBool(r) => Self::VecBool(Rc::clone(r)),
+        Self::VecAddress(r) => Self::VecAddress(Rc::clone(r)),
+        Self::Locals(r) => Self::Locals(Rc::clone(r)),
+    }
+}
+  *)
+
+
 End ContainerRef.
+
+(* 
+/// A Move reference pointing to an element in a container.
+#[derive(Debug)]
+struct IndexedRef {
+    idx: usize,
+    container_ref: ContainerRef,
+}
+*)
+Module IndexedRef.
+  Record t : Set := {
+    idx : Z;
+    container_ref : ContainerRef.t;
+  }
+End IndexedRef.
+
 
 (* 
 enum ValueImpl {
@@ -498,13 +544,27 @@ Module Locals.
         StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
       else
         let v_nth := List.nth (Z.to_nat idx) self default_valueimpl in
+        let result_1 := Result.Ok $ ValueImpl.IndexedRef $ 
+          IndexedRef.Build_t 
+            (ContainerRef.Local $ Container.Locals self)
+            idx in
+        let result_2 := Result.Err $ PartialVMError.Impl_PartialVMError.new 
+          StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR in
         match v_nth with
         | ValueImpl.Container c =>
-          returnS? $ Result.Ok $ ValueImpl.ContainerRef _ (* TODO: implement this *)
-        (* TODO: Implement rest of the case *)
+          returnS? $ Result.Ok $ ValueImpl.ContainerRef $ ContainerRef.Local c
+        | ValueImpl.U8 _ => returnS? result_1
+        | ValueImpl.U16 _ => returnS? result_1
+        | ValueImpl.U32 _ => returnS? result_1
+        | ValueImpl.U64 _ => returnS? result_1
+        | ValueImpl.U128 _ => returnS? result_1
+        | ValueImpl.U256 _ => returnS? result_1
+        | ValueImpl.Bool _ => returnS? result_1
+        | ValueImpl.Address _ => returnS? result_1
+        | ValueImpl.ContainerRef _ => result_2
+        | ValueImpl.Invalid => result_2
+        | ValueImpl.IndexedRef _ => result_2
         end
         .
-
-
   End Impl_Locals.
 End Locals.
