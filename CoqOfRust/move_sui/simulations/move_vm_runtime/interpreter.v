@@ -812,6 +812,7 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(val)?
   }
   *)
+  (* NOTE: paused from investigation *)
   | Bytecode.LdConst idx => returnS? $ Result.Ok InstrRet.Ok
     (* let constant := Resolver.Impl_Resolver.constant_at resolver idx in
     (* TODO: 
@@ -902,7 +903,6 @@ Definition execute_instruction (pc : Z)
       )?;
   }
   *)
-  (* NOTE: paused from investigation *)
   | Bytecode.StLoc idx => 
   letS?? value_to_store := liftS? Interpreter.Lens.lens_state_self (
     liftS? Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop) in 
