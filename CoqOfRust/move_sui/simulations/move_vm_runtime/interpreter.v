@@ -869,9 +869,11 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(val)?
   }
   *)
-  | Bytecode.LdConst idx => 
-    let constant := Resolver.Impl_Resolver.constant_at resolver idx in
-    (* TOOD: resolve mutual dependency issue *)
+  | Bytecode.LdConst idx => returnS? $ Result.Ok InstrRet.Ok
+    (* let constant := Resolver.Impl_Resolver.constant_at resolver idx in
+    (* TOOD: 
+      - resolve mutual dependency issue 
+      - figure out the logic to load a constant *)
     let val := Value.Impl_Value.deserialize_constant constant in
     let val := match val with
     | Some v => v
@@ -879,7 +881,7 @@ Definition execute_instruction (pc : Z)
     end in
     letS?? _ := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push val) in 
-    returnS? $ Result.Ok InstrRet.Ok
+    returnS? $ Result.Ok InstrRet.Ok *)
 
   (* 
   Bytecode::LdTrue => {
@@ -912,10 +914,14 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.CopyLoc idx =>
-    letS?? local := Locals.Impl_Locals.copy_loc locals in
-    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
-      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push local) in 
-    returnS? $ Result.Ok InstrRet.Ok
+    let local := Locals.Impl_Locals.copy_loc locals idx in
+    match local with
+    | Result.Err e => returnS? $ Result.Err e
+    | Result.Ok local =>
+      letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+        liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push local) in 
+      returnS? $ Result.Ok InstrRet.Ok
+    end
 
   (* 
   Bytecode::MoveLoc(idx) => {
@@ -959,7 +965,7 @@ Definition execute_instruction (pc : Z)
       return Ok(InstrRet::ExitCode(ExitCode::Call(*idx))); //*)
   }
   *)
-  | Bytecode.CopyLoc idx => returnS? $ Result.Ok $ InstrRet.ExitCode $ ExitCode.Call idx
+  | Bytecode.Call idx => returnS? $ Result.Ok $ InstrRet.ExitCode $ ExitCode.Call idx
 
   (*
   Bytecode::CallGeneric(idx) => {
