@@ -430,6 +430,7 @@ Module Value.
   End Impl_Value.
 
   Definition coerce_Container_Locals (c : Container.ValueImpl.t) : t. Admitted.
+  Definition coerce_Locals_Container (self : t) : Container.ValueImpl.t Admitted.
 End Value.
 
 (* pub struct Locals(Rc<RefCell<Vec<ValueImpl>>>); *)
