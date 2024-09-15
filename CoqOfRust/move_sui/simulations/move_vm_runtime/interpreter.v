@@ -8,6 +8,9 @@ Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Bytecode := file_format.Bytecode.
 Module FunctionHandleIndex := file_format.FunctionHandleIndex.
 Module FunctionInstantiationIndex := file_format.FunctionInstantiationIndex.
+Module SignatureToken.
+  Include file_format.SignatureToken.
+End SignatureToken.
 
 Require CoqOfRust.move_sui.simulations.move_vm_types.values.values_impl.
 Module Locals := values_impl.Locals.
@@ -33,6 +36,7 @@ Require CoqOfRust.move_sui.simulations.move_vm_config.runtime.
 Module VMConfig := runtime.VMConfig.
 
 (* TODO(progress):
+- (FOCUS)Implement `gas::SimpleInstruction` as `S`
 - (FOCUS)Implement functions in `Resolver`
 - Implement `Reference`
   - (FOCUS)Implement `StructRef::borrow_field`
@@ -959,10 +963,10 @@ Definition execute_instruction (pc : Z)
   *)
   (* NOTE: paused for mutual dependency issue *)
   | Bytecode.ImmBorrowField fh_idx => 
-    let instr := match instruction with
-    | Bytecode.MutBorrowField => SignatureToken.MutBorrowField
-    | _ => SignatureToken.ImmBorrowField
-    end in
+    (* let instr := match instruction with
+    | Bytecode.MutBorrowField _ => SimpleInstruction.MutBorrowField
+    | _ => SimpleInstruction.ImmBorrowField
+    end in *)
     letS?? reference := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop_as.bool) in 
     (* let offset := (* TODO: Implement `borrow_field` *) *)
@@ -1004,7 +1008,7 @@ Definition execute_instruction (pc : Z)
   *)
   (* TODO: Implement check_depth_of_type *)
   | Bytecode.Pack sd_idx => 
-    let field_count := Resolver.field_count resolver sd_idx in
+    let field_count := Resolver.Impl_Resolver.field_count resolver sd_idx in
     
   
   returnS? $ Result.Ok InstrRet.Ok
