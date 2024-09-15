@@ -24,13 +24,17 @@ Module PartialVMError := errors.PartialVMError.
 Require CoqOfRust.move_sui.simulations.move_vm_runtime.loader.
 Module Function := loader.Function.
 Module Resolver := loader.Resolver.
+Module Loader := loader.Loader.
 
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
+Require CoqOfRust.move_sui.simulations.move_vm_config.runtime.
+Module VMConfig := runtime.VMConfig.
+
 (* TODO(progress):
 - (FOCUS)Implement `StructRef::borrow_field`
-- (FOCUS)Implement `enable_invariant_violation_check_in_swap_loc` for `Resolver`
+- Implement `Reference`
 - Implement `Interpreter::binop_int`
   - Investigate `IntegerValue`'s operations
 - Implement `Callstack` for Interpreter
@@ -866,7 +870,8 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.LdConst idx => 
-    let constant := Resolver.constant_at resolver idx in
+    let constant := Resolver.Impl_Resolver.constant_at resolver idx in
+    (* TOOD: resolve mutual dependency issue *)
     let val := Value.Impl_Value.deserialize_constant constant in
     let val := match val with
     | Some v => v
@@ -927,9 +932,9 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.MoveLoc idx => 
-    (* TODO: Implement `enable_invariant_violation_check_in_swap_loc` *)
-    _
-
+    let v := resolver.(Resolver.loader).(Loader.vm_config)
+      .(VMConfig.enable_invariant_violation_check_in_swap_loc) in
+    (* TODO: Implement Lens of state to locals *)
     returnS? $ Result.Ok InstrRet.Ok
 
   (* 
@@ -947,7 +952,7 @@ Definition execute_instruction (pc : Z)
   }
   *)
   (* NOTE: paused from investigation *)
-  | Bytecode.StoreLoc idx => returnS? $ Result.Ok InstrRet.Ok
+  | Bytecode.StLoc idx => returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::Call(idx) => {

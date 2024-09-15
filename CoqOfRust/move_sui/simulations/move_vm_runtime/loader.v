@@ -8,6 +8,7 @@ Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Module Bytecode := file_format.Bytecode.
 Module CompiledModule := file_format.CompiledModule.
 Module Constant := file_format.Constant.
+Module ConstantPoolIndex := file_format.ConstantPoolIndex.
 
 Require CoqOfRust.move_sui.simulations.move_vm_config.runtime.
 Module VMConfig := runtime.VMConfig.
