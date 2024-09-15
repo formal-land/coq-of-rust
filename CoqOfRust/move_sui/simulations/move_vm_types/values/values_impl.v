@@ -430,7 +430,7 @@ Module Value.
   End Impl_Value.
 
   Definition coerce_Container_Locals (c : Container.ValueImpl.t) : t. Admitted.
-  Definition coerce_Locals_Container (self : t) : Container.ValueImpl.t Admitted.
+  Definition coerce_Locals_Container (self : t) : Container.ValueImpl.t. Admitted.
 End Value.
 
 (* pub struct Locals(Rc<RefCell<Vec<ValueImpl>>>); *)
@@ -566,10 +566,9 @@ Module Locals.
         Ok(())
     }
     *)
-    Definition store_loc (idx : Z) (violation_check : bool)
-      : MS? Self string (PartialVMResult.t unit) :=
-      letS?? result := liftS? (Lens.lens_self_self_value ValueImpl.Invalid) 
-      $ swap_loc idx violation_check in
+    Definition store_loc (idx : Z) (violation_check : bool) 
+      : MS? (Self * Value.t) string (PartialVMResult.t unit) :=
+      letS?? result := swap_loc idx violation_check in
         returnS? $ Result.Ok tt.
 
     (* 
