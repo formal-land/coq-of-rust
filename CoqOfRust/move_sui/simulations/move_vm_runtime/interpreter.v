@@ -641,6 +641,17 @@ Definition debug_execute_instruction (pc : Z)
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
 
+Definition lens_state_locals : Lens.t (Z * Locals.t * Interpreter.t) Locals.t := {|
+    Lens.read state := let '(_, locals, _) := state in locals;
+    Lens.write state locals := let '(pc, _, intr) := state in (pc, locals, intr);
+  |}.
+
+Definition lens_state_store_loc_state (v : Value.t) 
+  : Lens.t (Z * Locals.t * Interpreter.t) (Locals.t * Value.t) := {|
+  Lens.read state := let '(_, locals, _) := state in (locals, v);
+  Lens.write state '(locals, v) := let '(pc, _, intr) := state in (pc, locals, intr);
+|}.
+
 (* NOTE: this function is of `impl Frame` (but doesn't involve `Frame` item?) *)
 Definition execute_instruction (pc : Z) 
   (locals : Locals.t) (ty_args : list _Type.t)
@@ -804,7 +815,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.LdConst idx => returnS? $ Result.Ok InstrRet.Ok
     (* let constant := Resolver.Impl_Resolver.constant_at resolver idx in
-    (* TOOD: 
+    (* TODO: 
       - resolve mutual dependency issue 
       - figure out the logic to load a constant *)
     let val := Value.Impl_Value.deserialize_constant constant in
@@ -871,9 +882,11 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.MoveLoc idx => 
-    let v := resolver.(Resolver.loader).(Loader.vm_config)
+    let config := resolver.(Resolver.loader).(Loader.vm_config)
       .(VMConfig.enable_invariant_violation_check_in_swap_loc) in
-    (* TODO: Implement Lens of state to locals *)
+    letS?? local := liftS? lens_state_locals $ Locals.Impl_Locals.move_loc idx config in
+    letS?? _ := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push local) in 
     returnS? $ Result.Ok InstrRet.Ok
 
   (* 
@@ -891,7 +904,13 @@ Definition execute_instruction (pc : Z)
   }
   *)
   (* NOTE: paused from investigation *)
-  | Bytecode.StLoc idx => returnS? $ Result.Ok InstrRet.Ok
+  | Bytecode.StLoc idx => 
+  letS?? value_to_store := liftS? Interpreter.Lens.lens_state_self (
+    liftS? Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop) in 
+  let config := resolver.(Resolver.loader).(Loader.vm_config)
+    .(VMConfig.enable_invariant_violation_check_in_swap_loc) in
+  letS?? local := liftS? (lens_state_store_loc_state value_to_store) $ Locals.Impl_Locals.store_loc idx config in
+  returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::Call(idx) => {
