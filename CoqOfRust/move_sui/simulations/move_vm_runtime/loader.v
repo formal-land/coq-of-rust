@@ -209,7 +209,7 @@ Module Resolver.
         Type::Struct(struct_def)
     }
     *)
-    Definition get_struct_type (self : Self) (idx : StructDefinitionIndex) : _Type. Admitted.
+    (* Definition get_struct_type (self : Self) (idx : StructDefinitionIndex.t) : _Type.t. Admitted. *)
 
   End Impl_Resolver.
 End Resolver.
