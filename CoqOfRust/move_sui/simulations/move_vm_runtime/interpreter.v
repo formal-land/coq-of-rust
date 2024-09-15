@@ -38,7 +38,6 @@ Module VMConfig := runtime.VMConfig.
   - (FOCUS)Implement `StructRef::borrow_field`
 - Implement `Interpreter::binop_int`
   - Investigate `IntegerValue`'s operations
-- Implement `Callstack` for Interpreter
 - (Enhancement) Redesign `cast` functions with Class and simplify `pop_as` code
 *)
 
