@@ -9,6 +9,7 @@ Module Bytecode := file_format.Bytecode.
 Module CompiledModule := file_format.CompiledModule.
 Module Constant := file_format.Constant.
 Module ConstantPoolIndex := file_format.ConstantPoolIndex.
+Module StructDefinitionIndex := file_format.StructDefinitionIndex.
 
 Require CoqOfRust.move_sui.simulations.move_vm_config.runtime.
 Module VMConfig := runtime.VMConfig.
@@ -34,6 +35,24 @@ Module NativeFunctions.
   Parameter t : Set.
 End NativeFunctions.
 
+(* **************** *)
+
+(* 
+#[derive(Debug)]
+struct StructDef {
+    // struct field count
+    field_count: u16,
+    // `ModuleCache::structs` global table index
+    idx: CachedStructIndex,
+}
+*)
+Module StructDef.
+  Record t : Set := {
+    field_count: Z;
+    (* idx: CachedStructIndex.t; *)
+  }.
+End StructDef.
+
 (* 
 pub(crate) struct Loader {
     module_cache: RwLock<ModuleCache>,
@@ -52,11 +71,88 @@ Module Loader.
   }.
 End Loader.
 
-Module LoadedModule.
-  Parameter t : Set.
-End LoadedModule.
+(* 
+// A LoadedModule is very similar to a CompiledModule but data is "transformed" to a representation
+// more appropriate to execution.
+// When code executes indexes in instructions are resolved against those runtime structure
+// so that any data needed for execution is immediately available
+#[derive(Debug)]
+pub(crate) struct LoadedModule {
+    #[allow(dead_code)]
+    id: ModuleId,
 
-(* **************** *)
+    //
+    // types as indexes into the Loader type list
+    //
+
+    // struct references carry the index into the global vector of types.
+    // That is effectively an indirection over the ref table:
+    // the instruction carries an index into this table which contains the index into the
+    // glabal table of types. No instantiation of generic types is saved into the global table.
+    #[allow(dead_code)]
+    struct_refs: Vec<CachedStructIndex>,
+    structs: Vec<StructDef>,
+    // materialized instantiations, whether partial or not
+    struct_instantiations: Vec<StructInstantiation>,
+
+    // functions as indexes into the Loader function list
+    // That is effectively an indirection over the ref table:
+    // the instruction carries an index into this table which contains the index into the
+    // glabal table of functions. No instantiation of generic functions is saved into
+    // the global table.
+    function_refs: Vec<usize>,
+    // materialized instantiations, whether partial or not
+    function_instantiations: Vec<FunctionInstantiation>,
+
+    // fields as a pair of index, first to the type, second to the field position in that type
+    field_handles: Vec<FieldHandle>,
+    // materialized instantiations, whether partial or not
+    field_instantiations: Vec<FieldInstantiation>,
+
+    // function name to index into the Loader function list.
+    // This allows a direct access from function name to `Function`
+    function_map: HashMap<Identifier, usize>,
+
+    // a map of single-token signature indices to type.
+    // Single-token signatures are usually indexed by the `SignatureIndex` in bytecode. For example,
+    // `VecMutBorrow(SignatureIndex)`, the `SignatureIndex` maps to a single `SignatureToken`, and
+    // hence, a single type.
+    single_signature_token_map: BTreeMap<SignatureIndex, Type>,
+
+    // a map from signatures in instantiations to the `Vec<Type>` that reperesent it.
+    instantiation_signatures: BTreeMap<SignatureIndex, Vec<Type>>,
+}
+*)
+Module LoadedModule.
+  Record t : Set := {
+    (* id: ModuleId, *)
+    (* struct_refs: Vec<CachedStructIndex>, *)
+    structs: list StructDef.t;
+    (* struct_instantiations: Vec<StructInstantiation>, *)
+    (* function_refs: Vec<usize>, *)
+    (* function_instantiations: Vec<FunctionInstantiation>, *)
+    (* field_handles: Vec<FieldHandle>, *)
+    (* field_instantiations: Vec<FieldInstantiation>, *)
+    (* function_map: HashMap<Identifier, usize>, *)
+    (* single_signature_token_map: BTreeMap<SignatureIndex, Type>, *)
+    (* instantiation_signatures: BTreeMap<SignatureIndex, Vec<Type>>, *)
+  }.
+
+  Module Impl_LoadedModule.
+    Definition Self := move_sui.simulations.move_vm_runtime.loader.LoadedModule.t.
+
+    (* 
+    fn field_count(&self, idx: u16) -> u16 {
+        self.structs[idx as usize].field_count
+    }
+    *)
+    Definition default_structdef : StructDef.t. Admitted.
+    Definition field_count (self : Self) (idx : Z) : Z :=
+      let _struct := List.nth (Z.to_nat idx) self.(LoadedModule.structs) default_structdef in
+      _struct.(StructDef.field_count).
+  End Impl_LoadedModule.
+
+End LoadedModule.
 
 (* 
 // A simple wrapper for a `Module` in the `Resolver`
@@ -102,7 +198,10 @@ Module Resolver.
         self.binary.loaded.field_count(idx.0)
     }
     *)
-    Definition field_count : Set. Admitted.
+    Definition field_count (self : Self) (idx : StructDefinitionIndex.t) : Z :=
+      let idx := idx.(StructDefinitionIndex.a0) in
+      LoadedModule.Impl_LoadedModule.field_count
+        self.(Resolver.binary).(BinaryType.loaded) idx.
 
   End Impl_Resolver.
 End Resolver.
