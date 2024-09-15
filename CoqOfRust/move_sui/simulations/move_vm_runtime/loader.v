@@ -97,5 +97,12 @@ Module Resolver.
     Definition constant_at (self : Self) (idx : ConstantPoolIndex.t) : Constant.t :=
       CompiledModule.Impl_CompiledModule.constant_at self.(Resolver.binary).(BinaryType.compiled) idx.
 
+    (* 
+    pub(crate) fn field_count(&self, idx: StructDefinitionIndex) -> u16 {
+        self.binary.loaded.field_count(idx.0)
+    }
+    *)
+    Definition field_count : Set. Admitted.
+
   End Impl_Resolver.
 End Resolver.

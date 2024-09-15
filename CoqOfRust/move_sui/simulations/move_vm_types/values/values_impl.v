@@ -24,6 +24,14 @@ End SignatureToken.
     - read_ref
 *)
 
+(* 
+impl StructRef {
+    pub fn borrow_field(&self, idx: usize) -> PartialVMResult<Value> {
+        Ok(Value(self.0.borrow_elem(idx)?))
+    }
+}
+*)
+
 (* NOTE(STUB): Only implement if necessary *)
 Module Constant.
   Parameter t : Set.

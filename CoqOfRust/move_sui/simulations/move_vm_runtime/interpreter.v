@@ -33,8 +33,9 @@ Require CoqOfRust.move_sui.simulations.move_vm_config.runtime.
 Module VMConfig := runtime.VMConfig.
 
 (* TODO(progress):
-- (FOCUS)Implement `StructRef::borrow_field`
+- (FOCUS)Implement functions in `Resolver`
 - Implement `Reference`
+  - (FOCUS)Implement `StructRef::borrow_field`
 - Implement `Interpreter::binop_int`
   - Investigate `IntegerValue`'s operations
 - Implement `Callstack` for Interpreter
@@ -456,74 +457,6 @@ End Frame.
         use SimpleInstruction as S;
 
         match instruction {
-            Bytecode::CastU16 => {
-                gas_meter.charge_simple_instr(S::CastU16)?;
-                let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
-                interpreter
-                    .operand_stack
-                    .push(Value::u16(integer_value.cast_u16()?))?;
-            }
-            Bytecode::CastU32 => {
-                gas_meter.charge_simple_instr(S::CastU16)?;
-                let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
-                interpreter
-                    .operand_stack
-                    .push(Value::u32(integer_value.cast_u32()?))?;
-            }
-            Bytecode::CastU64 => {
-                gas_meter.charge_simple_instr(S::CastU64)?;
-                let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
-                interpreter
-                    .operand_stack
-                    .push(Value::u64(integer_value.cast_u64()?))?;
-            }
-            Bytecode::CastU128 => {
-                gas_meter.charge_simple_instr(S::CastU128)?;
-                let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
-                interpreter
-                    .operand_stack
-                    .push(Value::u128(integer_value.cast_u128()?))?;
-            }
-            Bytecode::CastU256 => {
-                gas_meter.charge_simple_instr(S::CastU16)?;
-                let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
-                interpreter
-                    .operand_stack
-                    .push(Value::u256(integer_value.cast_u256()?))?;
-            }
-            // Arithmetic Operations
-            Bytecode::Add => {
-                gas_meter.charge_simple_instr(S::Add)?;
-                interpreter.binop_int(IntegerValue::add_checked)?
-            }
-            Bytecode::Sub => {
-                gas_meter.charge_simple_instr(S::Sub)?;
-                interpreter.binop_int(IntegerValue::sub_checked)?
-            }
-            Bytecode::Mul => {
-                gas_meter.charge_simple_instr(S::Mul)?;
-                interpreter.binop_int(IntegerValue::mul_checked)?
-            }
-            Bytecode::Mod => {
-                gas_meter.charge_simple_instr(S::Mod)?;
-                interpreter.binop_int(IntegerValue::rem_checked)?
-            }
-            Bytecode::Div => {
-                gas_meter.charge_simple_instr(S::Div)?;
-                interpreter.binop_int(IntegerValue::div_checked)?
-            }
-            Bytecode::BitOr => {
-                gas_meter.charge_simple_instr(S::BitOr)?;
-                interpreter.binop_int(IntegerValue::bit_or)?
-            }
-            Bytecode::BitAnd => {
-                gas_meter.charge_simple_instr(S::BitAnd)?;
-                interpreter.binop_int(IntegerValue::bit_and)?
-            }
-            Bytecode::Xor => {
-                gas_meter.charge_simple_instr(S::Xor)?;
-                interpreter.binop_int(IntegerValue::bit_xor)?
-            }
             Bytecode::Shl => {
                 gas_meter.charge_simple_instr(S::Shl)?;
                 let rhs = interpreter.operand_stack.pop_as::<u8>()?;
@@ -987,7 +920,7 @@ Definition execute_instruction (pc : Z)
           .push(locals.borrow_loc(*idx as usize)?)?; //*)
   }
   *)
-  (* NOTE: paused from investigation *)
+  (* NOTE: paused from investigation: mutual dependency issue for `borrow_loc` *)
   | Bytecode.MutBorrowLoc idx => returnS? $ Result.Ok InstrRet.Ok
 
   (*
@@ -1039,6 +972,7 @@ Definition execute_instruction (pc : Z)
           .push(Value::struct_(Struct::pack(args)))?;
   }
   *)
+  | Bytecode.Pack sd_idx => returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::PackGeneric(si_idx) => {
@@ -1055,6 +989,7 @@ Definition execute_instruction (pc : Z)
           .push(Value::struct_(Struct::pack(args)))?;
   }
   *)
+  | Bytecode.PackGeneric si_idx => returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::Unpack(_sd_idx) => {
@@ -1067,6 +1002,7 @@ Definition execute_instruction (pc : Z)
       }
   }
   *)
+  | Bytecode.Unpack _ => returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::UnpackGeneric(_si_idx) => {
@@ -1082,6 +1018,7 @@ Definition execute_instruction (pc : Z)
       }
   }
   *)
+  | Bytecode.UnpackGeneric _ => returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::ReadRef => {
@@ -1091,6 +1028,7 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(value)?;
   }
   *)
+  | Bytecode.ReadRef => returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::WriteRef => {
@@ -1100,8 +1038,9 @@ Definition execute_instruction (pc : Z)
       reference.write_ref(value)?;
   }
   *)
+  | Bytecode.WriteRef => returnS? $ Result.Ok InstrRet.Ok
 
-  (* 
+  (*
   Bytecode::CastU8 => {
       gas_meter.charge_simple_instr(S::CastU8)?;
       let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
@@ -1110,6 +1049,126 @@ Definition execute_instruction (pc : Z)
           .push(Value::u8(integer_value.cast_u8()?))?;
   }
   *)
+  | Bytecode.CastU8 => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::CastU16 => {
+      gas_meter.charge_simple_instr(S::CastU16)?;
+      let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
+      interpreter
+          .operand_stack
+          .push(Value::u16(integer_value.cast_u16()?))?;
+  }
+  *)
+  | Bytecode.CastU16 => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::CastU32 => {
+      gas_meter.charge_simple_instr(S::CastU16)?;
+      let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
+      interpreter
+          .operand_stack
+          .push(Value::u32(integer_value.cast_u32()?))?;
+  }
+  *)
+  | Bytecode.CastU32 => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::CastU64 => {
+      gas_meter.charge_simple_instr(S::CastU64)?;
+      let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
+      interpreter
+          .operand_stack
+          .push(Value::u64(integer_value.cast_u64()?))?;
+  }
+  *)
+  | Bytecode.CastU64 => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::CastU128 => {
+      gas_meter.charge_simple_instr(S::CastU128)?;
+      let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
+      interpreter
+          .operand_stack
+          .push(Value::u128(integer_value.cast_u128()?))?;
+  }
+  *)
+  | Bytecode.CastU128 => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::CastU256 => {
+      gas_meter.charge_simple_instr(S::CastU16)?;
+      let integer_value = interpreter.operand_stack.pop_as::<IntegerValue>()?;
+      interpreter
+          .operand_stack
+          .push(Value::u256(integer_value.cast_u256()?))?;
+  }
+  *)
+  | Bytecode.CastU256 => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::Add => {
+      gas_meter.charge_simple_instr(S::Add)?;
+      interpreter.binop_int(IntegerValue::add_checked)?
+  }
+  *)
+  | Bytecode.Add => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::Sub => {
+      gas_meter.charge_simple_instr(S::Sub)?;
+      interpreter.binop_int(IntegerValue::sub_checked)?
+  }
+  *)
+  | Bytecode.Sub => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::Mul => {
+      gas_meter.charge_simple_instr(S::Mul)?;
+      interpreter.binop_int(IntegerValue::mul_checked)?
+  }
+  *)
+  | Bytecode.Mul => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::Mod => {
+      gas_meter.charge_simple_instr(S::Mod)?;
+      interpreter.binop_int(IntegerValue::rem_checked)?
+  }
+  *)
+  | Bytecode.Mod => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::Div => {
+      gas_meter.charge_simple_instr(S::Div)?;
+      interpreter.binop_int(IntegerValue::div_checked)?
+  }
+  *)
+  | Bytecode.Div => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::BitOr => {
+      gas_meter.charge_simple_instr(S::BitOr)?;
+      interpreter.binop_int(IntegerValue::bit_or)?
+  }
+  *)
+  | Bytecode.BitOr => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::BitAnd => {
+      gas_meter.charge_simple_instr(S::BitAnd)?;
+      interpreter.binop_int(IntegerValue::bit_and)?
+  }
+  *)
+  | Bytecode.BitAnd => returnS? $ Result.Ok InstrRet.Ok
+
+  (*
+  Bytecode::Xor => {
+      gas_meter.charge_simple_instr(S::Xor)?;
+      interpreter.binop_int(IntegerValue::bit_xor)?
+  }
+  *)
+  | Bytecode.Xor => returnS? $ Result.Ok InstrRet.Ok
 
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
