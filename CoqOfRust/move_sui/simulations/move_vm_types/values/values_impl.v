@@ -17,7 +17,11 @@ Module SignatureToken.
 End SignatureToken.
 
 (* TODO(progress): 
-  - None
+  - Implement `Reference`:
+    - borrow_field
+    - value_view
+    - write_ref
+    - read_ref
 *)
 
 (* NOTE(STUB): Only implement if necessary *)
@@ -29,19 +33,59 @@ Module AccountAddress.
   Parameter t : Set.
 End AccountAddress.
 
-Module Container.
-  Parameter t : Set.
-End Container.
-
-Module IndexedRef.
-  Parameter t : Set.
-End IndexedRef.
-
 Module GlobalDataStatus.
   Parameter t : Set.
 End GlobalDataStatus.
 
 (* **************** *)
+
+(* 
+/// A container is a collection of values. It is used to represent data structures like a
+/// Move vector or struct.
+///
+/// There is one general container that can be used to store an array of any values, same
+/// type or not, and a few specialized flavors to offer compact memory layout for small
+/// primitive types.
+///
+/// Except when not owned by the VM stack, a container always lives inside an Rc<RefCell<>>,
+/// making it possible to be shared by references.
+#[derive(Debug, Clone)]
+enum Container {
+    Locals(Rc<RefCell<Vec<ValueImpl>>>),
+    Vec(Rc<RefCell<Vec<ValueImpl>>>),
+    Struct(Rc<RefCell<Vec<ValueImpl>>>),
+    VecU8(Rc<RefCell<Vec<u8>>>),
+    VecU64(Rc<RefCell<Vec<u64>>>),
+    VecU128(Rc<RefCell<Vec<u128>>>),
+    VecBool(Rc<RefCell<Vec<bool>>>),
+    VecAddress(Rc<RefCell<Vec<AccountAddress>>>),
+    VecU16(Rc<RefCell<Vec<u16>>>),
+    VecU32(Rc<RefCell<Vec<u32>>>),
+    VecU256(Rc<RefCell<Vec<u256::U256>>>),
+}
+*)
+Module Container.
+
+  Module ValueImpl.
+    Parameter t : Set.
+  End ValueImpl.
+
+  Inductive t : Set :=
+  (* TODO: Resolve mutual dependency issue below *)
+  | Locals : list ValueImpl.t -> t
+  | Vec : list ValueImpl.t -> t
+  | Struct : list ValueImpl.t -> t
+  | VecU8 : list Z -> t
+  | VecU64 : list Z -> t
+  | VecU128 : list Z -> t
+  | VecBool : list bool -> t
+  | VecAddress : list AccountAddress.t -> t
+  | VecU16 : list Z -> t
+  | VecU32 : list Z -> t
+  | VecU256 : list Z -> t
+  .
+End Container.
+
 (* 
 /// A ContainerRef is a direct reference to a container, which could live either in the frame
 /// or in global storage. In the latter case, it also keeps a status flag indicating whether
@@ -59,11 +103,11 @@ Module ContainerRef.
   Record __Global : Set := {
     status : GlobalDataStatus.t;
     container: Container.t;
-  }
+  }.
 
   Inductive t : Set :=
   | Local : Container.t -> t
-  | _Global : __Global -> t;
+  | _Global : __Global -> t
   .
 
   (* NOTE: This function is ignored
@@ -97,9 +141,33 @@ Module IndexedRef.
   Record t : Set := {
     idx : Z;
     container_ref : ContainerRef.t;
-  }
+  }.
 End IndexedRef.
 
+(* 
+/// An umbrella enum for references. It is used to hide the internals of the public type
+/// Reference.
+#[derive(Debug)]
+enum ReferenceImpl {
+    IndexedRef(IndexedRef),
+    ContainerRef(ContainerRef),
+}
+*)
+Module ReferenceImpl.
+  Inductive t : Set :=
+  | IndexedRef : IndexedRef.t -> t
+  | ContainerRef : ContainerRef.t -> t
+  .
+End ReferenceImpl.
+
+(* 
+/// A generic Move reference that offers two functionalities: read_ref & write_ref.
+#[derive(Debug)]
+pub struct Reference(ReferenceImpl);
+*)
+Module Reference.
+  Definition t := ReferenceImpl.t.
+End Reference.
 
 (* 
 enum ValueImpl {
@@ -352,6 +420,8 @@ Module Value.
     Definition deserialize_constant (constant : Constant.t) : option Value.t. Admitted.
 
   End Impl_Value.
+
+  Definition coerce_Container_Locals (c : Container.ValueImpl.t) : t. Admitted.
 End Value.
 
 (* pub struct Locals(Rc<RefCell<Vec<ValueImpl>>>); *)
@@ -535,16 +605,19 @@ Module Locals.
         }
     }
     *)
-    Definition borrow_loc (self : Self) (idx : Z) : PartialVMResult.t Value.t :=
+    Definition borrow_loc (self : Self) (idx : Z) : PartialVMResult.t Value.t. Admitted.
+    (* Definition borrow_loc (self : Self) (idx : Z) : PartialVMResult.t Value.t :=
       let v := self in
-      if List.length self >=? idx
-      then returnS? $ PartialVMError.Impl_PartialVMError.new 
+      if Z.of_nat $ List.length self >=? idx
+      then Result.Err $ PartialVMError.Impl_PartialVMError.new 
         StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
       else
         let v_nth := List.nth (Z.to_nat idx) self default_valueimpl in
         let result_1 := Result.Ok $ ValueImpl.IndexedRef $ 
           IndexedRef.Build_t 
-            (ContainerRef.Local $ Container.Locals self)
+            (* TODO: resolve here the mutual dependency issue *)
+            (* NOTE: How should we directly construct a mutual dependent item? *)
+            (ContainerRef.Local $ Container.Locals (Value.coerce_Container_Locals self))
             idx in
         let result_2 := Result.Err $ PartialVMError.Impl_PartialVMError.new 
           StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR in
@@ -563,6 +636,6 @@ Module Locals.
         | ValueImpl.Invalid => result_2
         | ValueImpl.IndexedRef _ => result_2
         end
-        .
+        . *)
   End Impl_Locals.
 End Locals.
