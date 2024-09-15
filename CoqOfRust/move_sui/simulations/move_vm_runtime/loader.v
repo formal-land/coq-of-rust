@@ -15,7 +15,7 @@ Require CoqOfRust.move_sui.simulations.move_vm_config.runtime.
 Module VMConfig := runtime.VMConfig.
 
 (* TODO(progress):
-- None
+- Implement `get_struct_type`
 *)
 
 (* NOTE(STUB): only implement if necessary *)
@@ -202,6 +202,14 @@ Module Resolver.
       let idx := idx.(StructDefinitionIndex.a0) in
       LoadedModule.Impl_LoadedModule.field_count
         self.(Resolver.binary).(BinaryType.loaded) idx.
+    
+    (* 
+    pub(crate) fn get_struct_type(&self, idx: StructDefinitionIndex) -> Type {
+        let struct_def = self.binary.loaded.struct_at(idx);
+        Type::Struct(struct_def)
+    }
+    *)
+    Definition get_struct_type (self : Self) (idx : StructDefinitionIndex) : _Type. Admitted.
 
   End Impl_Resolver.
 End Resolver.

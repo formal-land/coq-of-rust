@@ -1003,7 +1003,11 @@ Definition execute_instruction (pc : Z)
   }
   *)
   (* TODO: Implement check_depth_of_type *)
-  | Bytecode.Pack sd_idx => returnS? $ Result.Ok InstrRet.Ok
+  | Bytecode.Pack sd_idx => 
+    let field_count := Resolver.field_count resolver sd_idx in
+    
+  
+  returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::PackGeneric(si_idx) => {
