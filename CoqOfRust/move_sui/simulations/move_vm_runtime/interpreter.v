@@ -38,6 +38,7 @@ Module VMConfig := runtime.VMConfig.
   - (FOCUS)Implement `StructRef::borrow_field`
 - Implement `Interpreter::binop_int`
   - Investigate `IntegerValue`'s operations
+- Resolve mutual dependency issue for `Container`s
 - (Enhancement) Redesign `cast` functions with Class and simplify `pop_as` code
 *)
 
@@ -956,7 +957,17 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(field_ref)?;
   }
   *)
-  | Bytecode.ImmBorrowField fh_idx => returnS? $ Result.Ok InstrRet.Ok
+  (* NOTE: paused for mutual dependency issue *)
+  | Bytecode.ImmBorrowField fh_idx => 
+    let instr := match instruction with
+    | Bytecode.MutBorrowField => SignatureToken.MutBorrowField
+    | _ => SignatureToken.ImmBorrowField
+    end in
+    letS?? reference := liftS? Interpreter.Lens.lens_state_self (
+      liftS? Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop_as.bool) in 
+    (* let offset := (* TODO: Implement `borrow_field` *) *)
+
+  returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::ImmBorrowFieldGeneric(fi_idx) | Bytecode::MutBorrowFieldGeneric(fi_idx) => {
@@ -973,6 +984,7 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(field_ref)?;
   }
   *)
+  (* NOTE: paused for mutual dependency issue *)
   | Bytecode.ImmBorrowFieldGeneric fi_idx => returnS? $ Result.Ok InstrRet.Ok
 
   (* 
@@ -990,6 +1002,7 @@ Definition execute_instruction (pc : Z)
           .push(Value::struct_(Struct::pack(args)))?;
   }
   *)
+  (* TODO: Implement check_depth_of_type *)
   | Bytecode.Pack sd_idx => returnS? $ Result.Ok InstrRet.Ok
 
   (* 

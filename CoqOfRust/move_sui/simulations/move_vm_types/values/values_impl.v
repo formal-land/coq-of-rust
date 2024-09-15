@@ -24,14 +24,6 @@ End SignatureToken.
     - read_ref
 *)
 
-(* 
-impl StructRef {
-    pub fn borrow_field(&self, idx: usize) -> PartialVMResult<Value> {
-        Ok(Value(self.0.borrow_elem(idx)?))
-    }
-}
-*)
-
 (* NOTE(STUB): Only implement if necessary *)
 Module Constant.
   Parameter t : Set.
@@ -136,6 +128,22 @@ Module ContainerRef.
   }
   *)
 End ContainerRef.
+
+(* pub struct StructRef(ContainerRef); *)
+Module StructRef.
+  Definition t := ContainerRef.t.
+
+  Module Impl_StructRef.
+    Definition Self := move_sui.simulations.move_vm_types.values.values_impl.StructRef.t.
+    (* 
+    impl StructRef {
+        pub fn borrow_field(&self, idx: usize) -> PartialVMResult<Value> {
+            Ok(Value(self.0.borrow_elem(idx)?))
+        }
+    }
+    *)
+  End Impl_StructRef.
+End StructRef.
 
 (* 
 /// A Move reference pointing to an element in a container.
