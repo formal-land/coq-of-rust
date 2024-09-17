@@ -221,6 +221,17 @@ Module ValueImpl.
   .
 End ValueImpl.
 
+(* 
+pub trait VMValueCast<T> {
+  fn cast(self) -> PartialVMResult<T>;
+}
+*)
+Module VMValueCast.
+  Class Trait (Self T : Set) {A : Set} (to_value : A -> ValueImpl.t) : Set := { 
+    cast : Self -> PartialVMResult.t T;
+  }.
+End VMValueCast.
+
 (* pub struct Value(ValueImpl); *)
 Module Value.
   Definition t : Set := ValueImpl.t.
@@ -255,69 +266,79 @@ Module Value.
   impl_vm_value_cast!(ContainerRef, ContainerRef);
   impl_vm_value_cast!(IndexedRef, IndexedRef);
   *)
-  Module cast.
-    Definition cast_u8 (self : t) : PartialVMResult.t Z := 
-      match self with
-      | ValueImpl.U8 x => Result.Ok x
-      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
-      end.
-
-    Definition cast_u16 (self : t) : PartialVMResult.t Z := 
-      match self with
-      | ValueImpl.U16 x => Result.Ok x
-      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
-      end.
-
-    Definition cast_u32 (self : t) : PartialVMResult.t Z := 
-      match self with
-      | ValueImpl.U32 x => Result.Ok x
-      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
-      end.
-
-    Definition cast_u64 (self : t) : PartialVMResult.t Z := 
-      match self with
-      | ValueImpl.U64 x => Result.Ok x
-      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
-      end.
-
-    Definition cast_u128 (self : t) : PartialVMResult.t Z := 
-      match self with
-      | ValueImpl.U128 x => Result.Ok x
-      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
-      end.
-
-    Definition cast_u256 (self : t) : PartialVMResult.t Z := 
-      match self with
-      | ValueImpl.U256 x => Result.Ok x
-      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
-      end.
-
-    Definition cast_bool (self : t) : PartialVMResult.t bool := 
-      match self with
-      | ValueImpl.Bool x => Result.Ok x
-      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
-      end.
-
-    Definition cast_AccountAddress (self : t) : PartialVMResult.t AccountAddress.t := 
-      match self with
-      | ValueImpl.Address x => Result.Ok x
-      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
-      end.
-
-    Definition cast_ContainerRef (self : t) : PartialVMResult.t ContainerRef.t := 
-      match self with
-      | ValueImpl.ContainerRef x => Result.Ok x
-      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
-      end.
-
-    Definition cast_IndexedRef (self : t) : PartialVMResult.t IndexedRef.t := 
-      match self with
-      | ValueImpl.IndexedRef x => Result.Ok x
-      | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
-      end.
-  End cast.
-
   Module Impl_Value.
+    Definition Self := move_sui.simulations.move_vm_types.values.values_impl.Value.t.
+    Module cast.
+      Global Instance cast_u8 : VMValueCast.Trait Self Z ValueImpl.U8 : Set := {
+        cast (self : Self) := match self with
+          | ValueImpl.U8 x => Result.Ok x
+          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          end;
+      }.
+
+      Global Instance cast_u16 : VMValueCast.Trait Self Z ValueImpl.U16 : Set := {
+        cast (self : Self) := match self with
+          | ValueImpl.U16 x => Result.Ok x
+          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          end;
+      }.
+
+      Global Instance cast_u32 : VMValueCast.Trait Self Z ValueImpl.U32 : Set := {
+        cast (self : Self) := match self with
+          | ValueImpl.U32 x => Result.Ok x
+          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          end;
+      }.
+
+      Global Instance cast_u64 : VMValueCast.Trait Self Z ValueImpl.U64 : Set := {
+        cast (self : Self) := match self with
+          | ValueImpl.U64 x => Result.Ok x
+          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          end;
+      }.
+
+      Global Instance cast_u128 : VMValueCast.Trait Self Z ValueImpl.U128 : Set := {
+        cast (self : Self) := match self with
+          | ValueImpl.U128 x => Result.Ok x
+          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          end;
+      }.
+
+      Global Instance cast_u256 : VMValueCast.Trait Self Z ValueImpl.U256 : Set := {
+        cast (self : Self) := match self with
+          | ValueImpl.U256 x => Result.Ok x
+          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          end;
+      }.
+
+      Global Instance cast_bool : VMValueCast.Trait Self bool ValueImpl.Bool : Set := {
+        cast (self : Self) := match self with
+          | ValueImpl.Bool x => Result.Ok x
+          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          end;
+      }.
+
+      Global Instance cast_AccountAddress : VMValueCast.Trait Self AccountAddress.t ValueImpl.Address : Set := {
+        cast (self : Self) := match self with
+          | ValueImpl.Address x => Result.Ok x
+          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          end;
+      }.
+
+      Global Instance cast_ContainerRef : VMValueCast.Trait Self ContainerRef.t ValueImpl.ContainerRef : Set := {
+        cast (self : Self) := match self with
+          | ValueImpl.ContainerRef x => Result.Ok x
+          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          end;
+      }.
+
+      Global Instance cast_IndexedRef : VMValueCast.Trait Self IndexedRef.t ValueImpl.IndexedRef : Set := {
+        cast (self : Self) := match self with
+          | ValueImpl.IndexedRef x => Result.Ok x
+          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          end;
+      }.
+    End cast.
 
     (* 
     #[derive(Clone)]
