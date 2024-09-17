@@ -45,7 +45,6 @@ Module VMConfig := runtime.VMConfig.
 - Implement `Interpreter::binop_int`
   - Investigate `IntegerValue`'s operations
 - Resolve mutual dependency issue for `Container`s
-- (Enhancement) Redesign `cast` functions with Class and simplify `pop_as` code
 *)
 
 (* NOTE: In the future when lens are more frequently defined, we might want to stub the lens into 
