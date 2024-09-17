@@ -129,22 +129,6 @@ Module ContainerRef.
   *)
 End ContainerRef.
 
-(* pub struct StructRef(ContainerRef); *)
-Module StructRef.
-  Definition t := ContainerRef.t.
-
-  Module Impl_StructRef.
-    Definition Self := move_sui.simulations.move_vm_types.values.values_impl.StructRef.t.
-    (* 
-    impl StructRef {
-        pub fn borrow_field(&self, idx: usize) -> PartialVMResult<Value> {
-            Ok(Value(self.0.borrow_elem(idx)?))
-        }
-    }
-    *)
-  End Impl_StructRef.
-End StructRef.
-
 (* 
 /// A Move reference pointing to an element in a container.
 #[derive(Debug)]
@@ -227,7 +211,9 @@ pub trait VMValueCast<T> {
 }
 *)
 Module VMValueCast.
-  Class Trait (Self T : Set) {A : Set} (to_value : A -> ValueImpl.t) : Set := { 
+  (* NOTE: The `TT` here is bc the return type could be more general than
+    ValueImpl items of type `A -> ValueImpl.t` *)
+  Class Trait {TT: Type} (Self T : Set) (to_value : TT) : Set := { 
     cast : Self -> PartialVMResult.t T;
   }.
 End VMValueCast.
@@ -461,6 +447,36 @@ Module Value.
   Definition coerce_Container_Locals (c : Container.ValueImpl.t) : t. Admitted.
   Definition coerce_Locals_Container (self : t) : Container.ValueImpl.t. Admitted.
 End Value.
+
+(* pub struct StructRef(ContainerRef); *)
+Module StructRef.
+  Definition t := ContainerRef.t.
+
+  Module Impl_StructRef.
+    Definition Self := move_sui.simulations.move_vm_types.values.values_impl.StructRef.t.
+    (* 
+    impl StructRef {
+        pub fn borrow_field(&self, idx: usize) -> PartialVMResult<Value> {
+            Ok(Value(self.0.borrow_elem(idx)?))
+        }
+    }
+    *)
+    Definition borrow_field : Set. Admitted.
+
+    (* 
+    impl VMValueCast<StructRef> for Value {
+        fn cast(self) -> PartialVMResult<StructRef> {
+            Ok(StructRef(VMValueCast::cast(self)?))
+        }
+    }
+    *)
+    Global Instance cast_StructRef : VMValueCast.Trait Self StructRef.t ValueImpl.ContainerRef : Set := {
+      cast (self : Self) := 
+        let self := ValueImpl.ContainerRef self in
+        VMValueCast.cast self;
+    }.
+  End Impl_StructRef.
+End StructRef.
 
 (* pub struct Locals(Rc<RefCell<Vec<ValueImpl>>>); *)
 Module Locals.
