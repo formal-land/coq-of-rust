@@ -384,7 +384,6 @@ Module Interpreter.
   }.
 
   Module Lens.
-    (* Definition State := (Z * Locals.t * Interpreter.t). *)
     Definition lens_state_self : Lens.t (Z * Locals.t * t) t :={|
       Lens.read state := let '(_, _, self) := state in self;
       Lens.write state self := let '(a, b, _) := state in (a, b, self);
