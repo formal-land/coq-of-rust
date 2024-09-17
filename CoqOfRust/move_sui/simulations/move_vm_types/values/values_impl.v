@@ -212,9 +212,9 @@ pub trait VMValueCast<T> {
 *)
 Module VMValueCast.
   (* NOTE: The `TT` here is bc the return type could be more general than
-    ValueImpl items of type `A -> ValueImpl.t` *)
-  Class Trait {TT: Type} (Self T : Set) (to_value : TT) : Set := { 
-    cast : Self -> PartialVMResult.t T;
+    ValueImpl items of type `A -> ValueImpl.t`. See case for `StructRef` *)
+  Class Trait {TT: Type} (Self result_type : Set) (item : TT) : Set := { 
+    cast : Self -> PartialVMResult.t result_type;
   }.
 End VMValueCast.
 
