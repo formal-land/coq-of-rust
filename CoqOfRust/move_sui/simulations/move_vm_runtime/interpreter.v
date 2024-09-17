@@ -19,6 +19,8 @@ Module ValueImpl := values_impl.ValueImpl.
 Module AccountAddress := values_impl.AccountAddress.
 Module ContainerRef := values_impl.ContainerRef.
 Module IndexedRef := values_impl.IndexedRef.
+Module VMValueCast := values_impl.VMValueCast.
+Module StructRef := values_impl.StructRef.
 
 Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult.
@@ -302,48 +304,11 @@ Module Stack.
         self.pop()?.value_as()
     }
     *)
-    (* NOTE: `pop_as` will always be used explicitly with a type, so we can just treat it as a collection of functions *)
-    Module pop_as.
-      Definition u8 : MS? Self string (PartialVMResult.t Z) := 
-        letS?? v := pop in
-        returnS? $ Value.cast.cast_u8 v.
-
-      Definition u16 : MS? Self string (PartialVMResult.t Z) := 
-        letS?? v := pop in
-        returnS? $ Value.cast.cast_u16 v.
-
-      Definition u32 : MS? Self string (PartialVMResult.t Z) := 
-        letS?? v := pop in
-        returnS? $ Value.cast.cast_u32 v.
-
-      Definition u64 : MS? Self string (PartialVMResult.t Z) := 
-        letS?? v := pop in
-        returnS? $ Value.cast.cast_u64 v.
-
-      Definition u128 : MS? Self string (PartialVMResult.t Z) := 
-        letS?? v := pop in
-        returnS? $ Value.cast.cast_u128 v.
-
-      Definition u256 : MS? Self string (PartialVMResult.t Z) := 
-        letS?? v := pop in
-        returnS? $ Value.cast.cast_u256 v.
-
-      Definition bool : MS? Self string (PartialVMResult.t bool) := 
-        letS?? v := pop in
-        returnS? $ Value.cast.cast_bool v.
-
-      Definition AccountAddress : MS? Self string (PartialVMResult.t AccountAddress.t) := 
-        letS?? v := pop in
-        returnS? $ Value.cast.cast_AccountAddress v.
-
-      Definition ContainerRef : MS? Self string (PartialVMResult.t ContainerRef.t) := 
-        letS?? v := pop in
-        returnS? $ Value.cast.cast_ContainerRef v.
-
-      Definition IndexedRef : MS? Self string (PartialVMResult.t IndexedRef.t) := 
-        letS?? v := pop in
-        returnS? $ Value.cast.cast_IndexedRef v.
-    End pop_as.
+    Definition pop_as {TT : Type} {return_type : Set} (item : TT)
+      `{!VMValueCast.Trait Value.t return_type item}
+      : MS? Self string (PartialVMResult.t return_type) :=
+      letS?? v := pop in
+      returnS? $ (VMValueCast.cast v).
 
     (* 
     /// Pop n values off the stack.
@@ -628,6 +593,16 @@ End Frame.
         Ok(InstrRet::Ok)
     }
 *)
+Definition lens_state_locals : Lens.t (Z * Locals.t * Interpreter.t) Locals.t := {|
+    Lens.read state := let '(_, locals, _) := state in locals;
+    Lens.write state locals := let '(pc, _, intr) := state in (pc, locals, intr);
+  |}.
+
+Definition lens_state_store_loc_state (v : Value.t) 
+    : Lens.t (Z * Locals.t * Interpreter.t) (Locals.t * Value.t) := {|
+    Lens.read state := let '(_, locals, _) := state in (locals, v);
+    Lens.write state '(locals, v) := let '(pc, _, intr) := state in (pc, locals, intr);
+  |}.
 
 (* NOTE: State designed for `execute_instruction` *)
 Definition State := (Z * Locals.t * Interpreter.t).
@@ -643,19 +618,16 @@ Definition debug_execute_instruction (pc : Z)
   match instruction with
   (* fill debugging content here *)
 
+  | Bytecode.ImmBorrowField fh_idx => 
+  letS?? reference := liftS? Interpreter.Lens.lens_state_self (
+    liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as ValueImpl.ContainerRef) in 
+  let offset := Resolver.Impl_Resolver.field_offset resolver in
+  (* TODO: Implement `borrow_field` *)
+
+  returnS? $ Result.Ok InstrRet.Ok
+
   | _ => returnS? $ Result.Ok InstrRet.Ok
   end.
-
-Definition lens_state_locals : Lens.t (Z * Locals.t * Interpreter.t) Locals.t := {|
-    Lens.read state := let '(_, locals, _) := state in locals;
-    Lens.write state locals := let '(pc, _, intr) := state in (pc, locals, intr);
-  |}.
-
-Definition lens_state_store_loc_state (v : Value.t) 
-  : Lens.t (Z * Locals.t * Interpreter.t) (Locals.t * Value.t) := {|
-  Lens.read state := let '(_, locals, _) := state in (locals, v);
-  Lens.write state '(locals, v) := let '(pc, _, intr) := state in (pc, locals, intr);
-|}.
 
 (* NOTE: this function is of `impl Frame` (but doesn't involve `Frame` item?) *)
 Definition execute_instruction (pc : Z) 
@@ -706,7 +678,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.BrTrue offset => 
     letS?? popped_val := liftS? Interpreter.Lens.lens_state_self (
-      liftS? Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop_as.bool) in 
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as ValueImpl.Bool) in 
     letS? _ := writeS? (offset, locals, interpreter) in
     returnS? $ Result.Ok InstrRet.Branch
 
@@ -721,7 +693,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.BrFalse offset => 
     letS?? popped_val := liftS? Interpreter.Lens.lens_state_self (
-      liftS? Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop_as.bool) in 
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as ValueImpl.Bool) in 
     letS? _ := writeS? (offset, locals, interpreter) in
     returnS? $ Result.Ok InstrRet.Branch
 
@@ -965,7 +937,12 @@ Definition execute_instruction (pc : Z)
   (* NOTE: paused for mutual dependency issue *)
   | Bytecode.ImmBorrowField fh_idx => 
     letS?? reference := liftS? Interpreter.Lens.lens_state_self (
-      liftS? Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop_as.bool) in 
+      (* NOTE: Notice that since we identify the instance by the `ValueImpl`
+      item, here we have to apply the `StructRef` instance indirectly *)
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as ValueImpl.ContainerRef) in 
+    (* NOTE: below is a test clause to show that the popped value is indeed `StructRef`
+    let reference : StructRef.t := reference in
+    *)
     let offset := Resolver.Impl_Resolver.field_offset resolver in
     (* TODO: Implement `borrow_field` *)
 
