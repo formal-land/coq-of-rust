@@ -15,6 +15,10 @@ Require CoqOfRust.move_sui.simulations.move_vm_config.runtime.
 Module VMConfig := runtime.VMConfig.
 
 (* TODO(progress):
+- Implement `Resolver`'s function:
+  - instantiate_generic_type
+  - field_instantiation_count
+  
 - Implement `get_struct_type`
 *)
 
@@ -36,6 +40,22 @@ Module NativeFunctions.
 End NativeFunctions.
 
 (* **************** *)
+
+(* 
+// A field handle. The offset is the only used information when operating on a field
+#[derive(Debug)]
+struct FieldHandle {
+    offset: usize,
+    // `ModuleCache::structs` global table index. It is the generic type.
+    owner: CachedStructIndex,
+}
+*)
+Module FieldHandle.
+  Record t : Set := {
+    offset : Z;
+    (* owner : CachedStructIndex.t *)
+  }.
+End FieldHandle.
 
 (* 
 #[derive(Debug)]
@@ -131,7 +151,7 @@ Module LoadedModule.
     (* struct_instantiations: Vec<StructInstantiation>, *)
     (* function_refs: Vec<usize>, *)
     (* function_instantiations: Vec<FunctionInstantiation>, *)
-    (* field_handles: Vec<FieldHandle>, *)
+    field_handles: list FieldHandle.t;
     (* field_instantiations: Vec<FieldInstantiation>, *)
     (* function_map: HashMap<Identifier, usize>, *)
     (* single_signature_token_map: BTreeMap<SignatureIndex, Type>, *)
@@ -150,6 +170,17 @@ Module LoadedModule.
     Definition field_count (self : Self) (idx : Z) : Z :=
       let _struct := List.nth (Z.to_nat idx) self.(LoadedModule.structs) default_structdef in
       _struct.(StructDef.field_count).
+
+    (* 
+    fn field_offset(&self, idx: FieldHandleIndex) -> usize {
+        self.field_handles[idx.0 as usize].offset
+    }
+    *)
+    Definition default_field_handle : FieldHandle.t. Admitted.
+    Definition field_offset (self : Self) (idx : FieldHandleIndex.t) : Z :=
+      let field_handle := List.nth (Z.to_nat idx) self.(LoadedModule.field_handles) default_structdef in
+      field_handle.(FieldHandle.offset).
+
   End Impl_LoadedModule.
 
 End LoadedModule.
@@ -201,6 +232,16 @@ Module Resolver.
     Definition field_count (self : Self) (idx : StructDefinitionIndex.t) : Z :=
       let idx := idx.(StructDefinitionIndex.a0) in
       LoadedModule.Impl_LoadedModule.field_count
+        self.(Resolver.binary).(BinaryType.loaded) idx.
+
+    (* 
+    pub(crate) fn field_offset(&self, idx: FieldHandleIndex) -> usize {
+        self.binary.loaded.field_offset(idx)
+    }
+    *)
+    Definition field_offset (self : Self) (idx : FieldHandleIndex.t) : Z :=
+      let idx := idx.(FieldHandleIndex.a0) in
+      LoadedModule.Impl_LoadedModule.field_offset
         self.(Resolver.binary).(BinaryType.loaded) idx.
     
     (* 

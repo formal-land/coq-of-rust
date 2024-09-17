@@ -36,10 +36,10 @@ Require CoqOfRust.move_sui.simulations.move_vm_config.runtime.
 Module VMConfig := runtime.VMConfig.
 
 (* TODO(progress):
-- (FOCUS)Implement `gas::SimpleInstruction` as `S`
-- (FOCUS)Implement functions in `Resolver`
+- Investigate `unpack`
+- Implement functions in `Resolver`
 - Implement `Reference`
-  - (FOCUS)Implement `StructRef::borrow_field`
+  - (MUTUAL DEPENDENCY)Implement `StructRef::borrow_field`
 - Implement `Interpreter::binop_int`
   - Investigate `IntegerValue`'s operations
 - Resolve mutual dependency issue for `Container`s
@@ -227,18 +227,6 @@ Module Stack.
   Record t := { value : list Value.t }.
   (* 
   impl Stack {
-
-      /// Pop n values off the stack.
-      fn popn(&mut self, n: u16) -> PartialVMResult<Vec<Value>> {
-          let remaining_stack_size = self
-              .value
-              .len()
-              .checked_sub(n as usize)
-              .ok_or_else(|| PartialVMError::new(StatusCode::EMPTY_VALUE_STACK))?;
-          let args = self.value.split_off(remaining_stack_size);
-          Ok(args)
-      }
-
       fn last_n(&self, n: usize) -> PartialVMResult<impl ExactSizeIterator<Item = &Value>> {
           if self.value.len() < n {
               return Err(PartialVMError::new(StatusCode::EMPTY_VALUE_STACK)
@@ -356,6 +344,20 @@ Module Stack.
         letS?? v := pop in
         returnS? $ Value.cast.cast_IndexedRef v.
     End pop_as.
+
+    (* 
+    /// Pop n values off the stack.
+    fn popn(&mut self, n: u16) -> PartialVMResult<Vec<Value>> {
+        let remaining_stack_size = self
+            .value
+            .len()
+            .checked_sub(n as usize)
+            .ok_or_else(|| PartialVMError::new(StatusCode::EMPTY_VALUE_STACK))?;
+        let args = self.value.split_off(remaining_stack_size);
+        Ok(args)
+    }
+    *)
+    Definition pop_n : MS? Self string (PartialVMResult.t (list Value.t)). Admitted.
 
   End Impl_Stack.
 End Stack.
@@ -963,13 +965,10 @@ Definition execute_instruction (pc : Z)
   *)
   (* NOTE: paused for mutual dependency issue *)
   | Bytecode.ImmBorrowField fh_idx => 
-    (* let instr := match instruction with
-    | Bytecode.MutBorrowField _ => SimpleInstruction.MutBorrowField
-    | _ => SimpleInstruction.ImmBorrowField
-    end in *)
     letS?? reference := liftS? Interpreter.Lens.lens_state_self (
       liftS? Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop_as.bool) in 
-    (* let offset := (* TODO: Implement `borrow_field` *) *)
+    let offset := Resolver.Impl_Resolver.field_offset resolver in
+    (* TODO: Implement `borrow_field` *)
 
   returnS? $ Result.Ok InstrRet.Ok
 
@@ -1006,9 +1005,10 @@ Definition execute_instruction (pc : Z)
           .push(Value::struct_(Struct::pack(args)))?;
   }
   *)
-  (* TODO: Implement check_depth_of_type *)
+  (* NOTE: Should we ignore `check_depth_of_type`? *)
   | Bytecode.Pack sd_idx => 
     let field_count := Resolver.Impl_Resolver.field_count resolver sd_idx in
+    (* TODO: Implement pop_n *)
     
   
   returnS? $ Result.Ok InstrRet.Ok
@@ -1041,7 +1041,8 @@ Definition execute_instruction (pc : Z)
       }
   }
   *)
-  | Bytecode.Unpack _ => returnS? $ Result.Ok InstrRet.Ok
+  | Bytecode.Unpack _ => 
+  returnS? $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::UnpackGeneric(_si_idx) => {
