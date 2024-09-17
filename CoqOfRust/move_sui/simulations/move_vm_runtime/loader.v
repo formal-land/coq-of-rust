@@ -10,6 +10,7 @@ Module CompiledModule := file_format.CompiledModule.
 Module Constant := file_format.Constant.
 Module ConstantPoolIndex := file_format.ConstantPoolIndex.
 Module StructDefinitionIndex := file_format.StructDefinitionIndex.
+Module FieldHandleIndex := file_format.FieldHandleIndex.
 
 Require CoqOfRust.move_sui.simulations.move_vm_config.runtime.
 Module VMConfig := runtime.VMConfig.
@@ -178,7 +179,8 @@ Module LoadedModule.
     *)
     Definition default_field_handle : FieldHandle.t. Admitted.
     Definition field_offset (self : Self) (idx : FieldHandleIndex.t) : Z :=
-      let field_handle := List.nth (Z.to_nat idx) self.(LoadedModule.field_handles) default_structdef in
+      let idx := FieldHandleIndex.a0 idx in
+      let field_handle := List.nth (Z.to_nat idx) self.(LoadedModule.field_handles) default_field_handle in
       field_handle.(FieldHandle.offset).
 
   End Impl_LoadedModule.
@@ -240,7 +242,6 @@ Module Resolver.
     }
     *)
     Definition field_offset (self : Self) (idx : FieldHandleIndex.t) : Z :=
-      let idx := idx.(FieldHandleIndex.a0) in
       LoadedModule.Impl_LoadedModule.field_offset
         self.(Resolver.binary).(BinaryType.loaded) idx.
     
