@@ -211,10 +211,8 @@ pub trait VMValueCast<T> {
 }
 *)
 Module VMValueCast.
-  (* NOTE: The `TT` here is bc the return type could be more general than
-      ValueImpl items of type `A -> ValueImpl.t`. See case for `StructRef` 
-      Should `TT` just be type `ValueImpl`?*)
-  Class Trait {TT: Type} (Self result_type : Set) (item : TT) : Set := { 
+  (* We can ignore `Self`, but for ordering issue a `Value.t` type should be provided *)
+  Class Trait (Self result_type : Set) : Set := { 
     cast : Self -> PartialVMResult.t result_type;
   }.
 End VMValueCast.
@@ -256,70 +254,70 @@ Module Value.
   Module Impl_Value.
     Definition Self := move_sui.simulations.move_vm_types.values.values_impl.Value.t.
     Module cast.
-      Global Instance cast_u8 : VMValueCast.Trait Self Z ValueImpl.U8 : Set := {
+      Global Instance cast_u8 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U8 x => Result.Ok x
           | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_u16 : VMValueCast.Trait Self Z ValueImpl.U16 : Set := {
+      Global Instance cast_u16 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U16 x => Result.Ok x
           | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_u32 : VMValueCast.Trait Self Z ValueImpl.U32 : Set := {
+      Global Instance cast_u32 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U32 x => Result.Ok x
           | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_u64 : VMValueCast.Trait Self Z ValueImpl.U64 : Set := {
+      Global Instance cast_u64 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U64 x => Result.Ok x
           | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_u128 : VMValueCast.Trait Self Z ValueImpl.U128 : Set := {
+      Global Instance cast_u128 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U128 x => Result.Ok x
           | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_u256 : VMValueCast.Trait Self Z ValueImpl.U256 : Set := {
+      Global Instance cast_u256 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U256 x => Result.Ok x
           | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_bool : VMValueCast.Trait Self bool ValueImpl.Bool : Set := {
+      Global Instance cast_bool : VMValueCast.Trait Self bool : Set := {
         cast (self : Self) := match self with
           | ValueImpl.Bool x => Result.Ok x
           | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_AccountAddress : VMValueCast.Trait Self AccountAddress.t ValueImpl.Address : Set := {
+      Global Instance cast_AccountAddress : VMValueCast.Trait Self AccountAddress.t : Set := {
         cast (self : Self) := match self with
           | ValueImpl.Address x => Result.Ok x
           | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_ContainerRef : VMValueCast.Trait Self ContainerRef.t ValueImpl.ContainerRef : Set := {
+      Global Instance cast_ContainerRef : VMValueCast.Trait Self ContainerRef.t : Set := {
         cast (self : Self) := match self with
           | ValueImpl.ContainerRef x => Result.Ok x
           | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
-      Global Instance cast_IndexedRef : VMValueCast.Trait Self IndexedRef.t ValueImpl.IndexedRef : Set := {
+      Global Instance cast_IndexedRef : VMValueCast.Trait Self IndexedRef.t : Set := {
         cast (self : Self) := match self with
           | ValueImpl.IndexedRef x => Result.Ok x
           | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
@@ -471,10 +469,8 @@ Module StructRef.
         }
     }
     *)
-    Global Instance cast_StructRef : VMValueCast.Trait Self StructRef.t ValueImpl.ContainerRef : Set := {
-      cast (self : Self) := 
-        let self := ValueImpl.ContainerRef self in
-        VMValueCast.cast self;
+    Global Instance cast_StructRef : VMValueCast.Trait Value.t StructRef.t : Set := {
+      cast self := VMValueCast.cast self;
     }.
   End Impl_StructRef.
 End StructRef.

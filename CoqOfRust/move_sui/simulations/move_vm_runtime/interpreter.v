@@ -303,9 +303,9 @@ Module Stack.
         self.pop()?.value_as()
     }
     *)
-    Definition pop_as {TT : Type} {return_type : Set} (item : TT)
-      `{!VMValueCast.Trait Value.t return_type item}
-      : MS? Self string (PartialVMResult.t return_type) :=
+    Definition pop_as (result_type : Set)
+      `{!VMValueCast.Trait Value.t result_type}
+      : MS? Self string (PartialVMResult.t result_type) :=
       letS?? v := pop in
       returnS? $ (VMValueCast.cast v).
 
@@ -619,7 +619,7 @@ Definition debug_execute_instruction (pc : Z)
 
   | Bytecode.ImmBorrowField fh_idx => 
   letS?? reference := liftS? Interpreter.Lens.lens_state_self (
-    liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as ValueImpl.ContainerRef) in 
+    liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as StructRef.t) in 
   let offset := Resolver.Impl_Resolver.field_offset resolver in
   (* TODO: Implement `borrow_field` *)
 
@@ -677,7 +677,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.BrTrue offset => 
     letS?? popped_val := liftS? Interpreter.Lens.lens_state_self (
-      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as ValueImpl.Bool) in 
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as bool) in 
     letS? _ := writeS? (offset, locals, interpreter) in
     returnS? $ Result.Ok InstrRet.Branch
 
@@ -692,7 +692,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.BrFalse offset => 
     letS?? popped_val := liftS? Interpreter.Lens.lens_state_self (
-      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as ValueImpl.Bool) in 
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as bool) in 
     letS? _ := writeS? (offset, locals, interpreter) in
     returnS? $ Result.Ok InstrRet.Branch
 
@@ -938,7 +938,7 @@ Definition execute_instruction (pc : Z)
     letS?? reference := liftS? Interpreter.Lens.lens_state_self (
       (* NOTE: Notice that since we identify the instance by the `ValueImpl`
       item, here we have to apply the `StructRef` instance indirectly *)
-      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as ValueImpl.ContainerRef) in 
+      liftS? Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as ContainerRef.t) in 
     (* NOTE: below is a test clause to show that the popped value is indeed `StructRef`
     let reference : StructRef.t := reference in
     *)
