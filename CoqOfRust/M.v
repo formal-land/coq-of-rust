@@ -6,10 +6,14 @@ Require Export Coq.ZArith.ZArith.
 Require Export Lia.
 From Hammer Require Export Tactics.
 
-Import List.ListNotations.
+Export List.ListNotations.
 
-Local Open Scope list.
-Local Open Scope string.
+Global Open Scope char_scope.
+Global Open Scope string_scope.
+Global Open Scope list_scope.
+Global Open Scope type_scope.
+Global Open Scope Z_scope.
+Global Open Scope bool_scope.
 
 (** Activate the handling of modulo in `lia`. *)
 Ltac Zify.zify_post_hook ::= Z.to_euclidean_division_equations.
@@ -268,7 +272,6 @@ Module Primitive.
   | StateAlloc (value : Value.t)
   | StateRead (pointer : Pointer.t Value.t)
   | StateWrite (pointer : Pointer.t Value.t) (value : Value.t)
-  | GetSubPointer (pointer : Pointer.t Value.t) (index : Pointer.Index.t)
   | AreEqual (value1 value2 : Value.t)
   | GetFunction (path : string) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
@@ -284,12 +287,17 @@ Module LowM.
   Inductive t (A : Set) : Set :=
   | Pure (value : A)
   | CallPrimitive (primitive : Primitive.t) (k : Value.t -> t A)
+  | CallGetSubPointer
+    (pointer : Pointer.t Value.t)
+    (index : Pointer.Index.t)
+    (k : option (Pointer.t Value.t) -> t A)
   | CallClosure (closure : Value.t) (args : list Value.t) (k : A -> t A)
   | Let (e : t A) (k : A -> t A)
   | Loop (body : t A) (k : A -> t A)
   | Impossible (message : string).
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
+  Arguments CallGetSubPointer {_}.
   Arguments CallClosure {_}.
   Arguments Let {_}.
   Arguments Loop {_}.
@@ -300,6 +308,8 @@ Module LowM.
     | Pure v => e2 v
     | CallPrimitive primitive k =>
       CallPrimitive primitive (fun v => let_ (k v) e2)
+    | CallGetSubPointer pointer index k =>
+      CallGetSubPointer pointer index (fun v => let_ (k v) e2)
     | CallClosure f args k =>
       CallClosure f args (fun v => let_ (k v) e2)
     | Let e k =>
@@ -599,7 +609,11 @@ Arguments copy /.
 Definition get_sub_pointer (r : Value.t) (index : Pointer.Index.t) : M :=
   match r with
   | Value.Pointer pointer =>
-    call_primitive (Primitive.GetSubPointer pointer index)
+    LowM.CallGetSubPointer pointer index (fun result =>
+    match result with
+    | Some sub_pointer => pure (Value.Pointer sub_pointer)
+    | None => break_match
+    end)
   | _ => impossible "cannot get sub-pointer"
   end.
 

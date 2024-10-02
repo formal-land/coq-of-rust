@@ -1,10 +1,4 @@
-Require Import Coq.Strings.String.
 Require Import CoqOfRust.M.
-
-Import List.ListNotations.
-
-Local Open Scope list.
-Local Open Scope type.
 
 Module Stack.
   Definition t : Set :=
@@ -21,7 +15,7 @@ Module Stack.
   End HasAllocWith.
 
   Module HasReadWith.
-    Inductive t (stack_in : Stack.t) (value : Value.t) : Pointer.t Value.t -> Prop :=
+    Inductive t (stack_in : Stack.t) (value : Value.t) : Pointer.t Value.t -> Set :=
     | Immediate : t stack_in value (Pointer.Immediate value)
     | Mutable (address : nat) (path : Pointer.Path.t) (big_value : Value.t) :
       let pointer := Pointer.Mutable address path in
@@ -38,14 +32,32 @@ Module Stack.
       t stack_in value pointer stack_out.
   End HasWriteWith.
 
-  Module HasSubPointerWith.
-    Inductive t (index : Pointer.Index.t) : Pointer.t Value.t -> Pointer.t Value.t -> Prop :=
+  Definition get_sub_pointer
+      (stack_in : Stack.t)
+      (pointer : Pointer.t Value.t)
+      (index : Pointer.Index.t)
+      (value : Value.t)
+      (H_read : HasReadWith.t stack_in value pointer) :
+      option (Pointer.t Value.t) :=
+    match Value.read_index value index with
+    | Some sub_value =>
+      Some match pointer with
+      | Pointer.Immediate _ => Pointer.Immediate sub_value
+      | Pointer.Mutable address path =>
+        Pointer.Mutable address (path ++ [index])
+      end
+    | None => None
+    end.
+
+  (* Module HasSubPointerWith.
+    Inductive t (index : Pointer.Index.t) :
+        Pointer.t Value.t -> option (Pointer.t Value.t) -> Prop :=
     | Immediate (value sub_value : Value.t) :
       Value.read_index value index = Some sub_value ->
       t index (Pointer.Immediate value) (Pointer.Immediate sub_value)
     | Mutable (address : nat) (path : Pointer.Path.t) :
       t index (Pointer.Mutable address path) (Pointer.Mutable address (path ++ [index])).
-  End HasSubPointerWith.
+  End HasSubPointerWith. *)
 End Stack.
 
 Module Run.
@@ -79,16 +91,6 @@ Module Run.
     Stack.HasWriteWith.t stack_in value pointer stack_in' ->
     {{ stack_in' | k (Value.Tuple []) ⇓ output | stack_out }} ->
     {{ stack_in | LowM.CallPrimitive (Primitive.StateWrite pointer value) k ⇓ output | stack_out }}
-  | CallPrimitiveGetSubPointer
-      (index : Pointer.Index.t)
-      (pointer pointer' : Pointer.t Value.t)
-      (k : Value.t -> M)
-      (stack_in : Stack.t) :
-    Stack.HasSubPointerWith.t index pointer pointer' ->
-    {{ stack_in | k (Value.Pointer pointer') ⇓ output | stack_out }} ->
-    {{ stack_in |
-      LowM.CallPrimitive (Primitive.GetSubPointer pointer index) k ⇓ output
-    | stack_out }}
   | CallPrimitiveGetFunction
       (name : string) (generic_consts : list Value.t) (generic_tys : list Ty.t)
       (function : PolymorphicFunction.t)
@@ -133,6 +135,16 @@ Module Run.
         k ⇓
       output
     | stack_out }}
+  | CallGetSubPointer
+      (index : Pointer.Index.t)
+      (pointer : Pointer.t Value.t)
+      (value : Value.t)
+      (k : option (Pointer.t Value.t) -> M)
+      (stack_in : Stack.t)
+      (H_read : Stack.HasReadWith.t stack_in value pointer) :
+    let result := Stack.get_sub_pointer stack_in pointer index value H_read in
+    {{ stack_in | k result ⇓ output | stack_out }} ->
+    {{ stack_in | LowM.CallGetSubPointer pointer index k ⇓ output | stack_out }}
   | CallClosure
       (output_inter : Value.t + Exception.t)
       (f : list Value.t -> M) (args : list Value.t)

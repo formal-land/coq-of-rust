@@ -604,7 +604,7 @@ Definition lens_state_store_loc_state (v : Value.t)
   |}.
 
 (* NOTE: State designed for `execute_instruction` *)
-Definition State := (Z * Locals.t * Interpreter.t).
+Definition State : Set := Z * Locals.t * Interpreter.t.
 
 (* NOTE: This function is for debugging purpose *)
 Definition debug_execute_instruction (pc : Z) 
