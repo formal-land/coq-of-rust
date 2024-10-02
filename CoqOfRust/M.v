@@ -6,10 +6,14 @@ Require Export Coq.ZArith.ZArith.
 Require Export Lia.
 From Hammer Require Export Tactics.
 
-Import List.ListNotations.
+Export List.ListNotations.
 
-Local Open Scope list.
-Local Open Scope string.
+Global Open Scope char_scope.
+Global Open Scope string_scope.
+Global Open Scope list_scope.
+Global Open Scope type_scope.
+Global Open Scope Z_scope.
+Global Open Scope bool_scope.
 
 (** Activate the handling of modulo in `lia`. *)
 Ltac Zify.zify_post_hook ::= Z.to_euclidean_division_equations.
@@ -60,6 +64,17 @@ Module List.
       match index with
       | O => update :: l
       | S index => x :: replace_at l index update
+      end
+    end.
+
+  Fixpoint replace_at_error {A : Set} (l : list A) (index : nat) (update : A) :
+      option (list A) :=
+    match l with
+    | [] => None
+    | x :: l =>
+      match index with
+      | O => Some (update :: l)
+      | S index => option_map (cons x) (replace_at_error l index update)
       end
     end.
 End List.
@@ -120,44 +135,11 @@ Module Pointer.
     Definition t : Set := list Index.t.
   End Path.
 
-  Module Mutable.
-    Inductive t (Value A : Set) : Set :=
-    | Make {Address Big_A : Set}
-      (address : Address)
-      (path : Path.t)
-      (big_to_value : Big_A -> Value)
-      (projection : Big_A -> option A)
-      (injection : Big_A -> A -> option Big_A).
-    Arguments Make {_ _ _ _}.
-  End Mutable.
-
-  Module Core.
-    Inductive t (Value A : Set) : Set :=
-    | Immediate (value : Value)
-    | Mutable (mutable : Mutable.t Value A).
-    Arguments Immediate {_ _}.
-    Arguments Mutable {_ _}.
-  End Core.
-
-  Module Kind.
-    Inductive t : Set :=
-    | Ref
-    | MutRef
-    | ConstPointer
-    | MutPointer.
-
-    Definition to_ty_path (kind : t) : string :=
-      match kind with
-      | Ref => "&"
-      | MutRef => "&mut"
-      | ConstPointer => "*const"
-      | MutPointer => "*mut"
-      end.
-  End Kind.
-
   Inductive t (Value : Set) : Set :=
-  | Make {A : Set} (kind : Kind.t) (ty : Ty.t) (to_value : A -> Value) (core : Core.t Value A).
-  Arguments Make {_ _}.
+  | Immediate (value : Value)
+  | Mutable (address : nat) (path : Path.t).
+  Arguments Immediate {_}.
+  Arguments Mutable {_}.
 End Pointer.
 
 Module Value.
@@ -222,6 +204,16 @@ Module Value.
       end
     end.
 
+  Fixpoint read_path (value : Value.t) (path : Pointer.Path.t) : option Value.t :=
+    match path with
+    | [] => Some value
+    | index :: path =>
+      match read_index value index with
+      | Some value => read_path value path
+      | None => None
+      end
+    end.
+
   (** Update the part of a value at a certain [index], and return [None] if the index is of invalid
       shape. *)
   Definition write_index
@@ -257,6 +249,22 @@ Module Value.
       | _ => None
       end
     end.
+
+  Fixpoint write_path
+      (value : Value.t) (path : Pointer.Path.t) (update : Value.t) :
+      option Value.t :=
+    match path with
+    | [] => Some update
+    | index :: path =>
+      match read_index value index with
+      | Some sub_value =>
+        match write_path sub_value path update with
+        | Some sub_value => write_index value index sub_value
+        | None => None
+        end
+      | None => None
+      end
+    end.
 End Value.
 
 Module Primitive.
@@ -264,7 +272,6 @@ Module Primitive.
   | StateAlloc (value : Value.t)
   | StateRead (pointer : Pointer.t Value.t)
   | StateWrite (pointer : Pointer.t Value.t) (value : Value.t)
-  | GetSubPointer (pointer : Pointer.t Value.t) (index : Pointer.Index.t)
   | AreEqual (value1 value2 : Value.t)
   | GetFunction (path : string) (generic_tys : list Ty.t)
   | GetAssociatedFunction (ty : Ty.t) (name : string) (generic_tys : list Ty.t)
@@ -280,12 +287,17 @@ Module LowM.
   Inductive t (A : Set) : Set :=
   | Pure (value : A)
   | CallPrimitive (primitive : Primitive.t) (k : Value.t -> t A)
+  | CallGetSubPointer
+    (pointer : Pointer.t Value.t)
+    (index : Pointer.Index.t)
+    (k : option (Pointer.t Value.t) -> t A)
   | CallClosure (closure : Value.t) (args : list Value.t) (k : A -> t A)
   | Let (e : t A) (k : A -> t A)
   | Loop (body : t A) (k : A -> t A)
   | Impossible (message : string).
   Arguments Pure {_}.
   Arguments CallPrimitive {_}.
+  Arguments CallGetSubPointer {_}.
   Arguments CallClosure {_}.
   Arguments Let {_}.
   Arguments Loop {_}.
@@ -296,6 +308,8 @@ Module LowM.
     | Pure v => e2 v
     | CallPrimitive primitive k =>
       CallPrimitive primitive (fun v => let_ (k v) e2)
+    | CallGetSubPointer pointer index k =>
+      CallGetSubPointer pointer index (fun v => let_ (k v) e2)
     | CallClosure f args k =>
       CallClosure f args (fun v => let_ (k v) e2)
     | Let e k =>
@@ -595,7 +609,11 @@ Arguments copy /.
 Definition get_sub_pointer (r : Value.t) (index : Pointer.Index.t) : M :=
   match r with
   | Value.Pointer pointer =>
-    call_primitive (Primitive.GetSubPointer pointer index)
+    LowM.CallGetSubPointer pointer index (fun result =>
+    match result with
+    | Some sub_pointer => pure (Value.Pointer sub_pointer)
+    | None => break_match
+    end)
   | _ => impossible "cannot get sub-pointer"
   end.
 

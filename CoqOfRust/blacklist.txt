@@ -19,3 +19,4 @@ token-2022
 # Links that are not working yet
 core/links/cmp.v
 move_sui/links/
+links/
