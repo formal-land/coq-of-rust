@@ -135,10 +135,10 @@ fn create_translation_to_coq(opts: &CliOptions) -> String {
     println!("Starting to translate {filename:?}...");
 
     let now = std::time::Instant::now();
-    let result = rustc_interface::run_compiler(config, |compiler| {
+    let translation = rustc_interface::run_compiler(config, |compiler| {
         compiler.enter(|queries| {
             queries.global_ctxt().unwrap().enter(|ctxt| {
-                top_level_to_coq(
+                translate_top_level(
                     &ctxt,
                     TopLevelOptions {
                         axiomatize: opts.axiomatize,
@@ -154,8 +154,8 @@ fn create_translation_to_coq(opts: &CliOptions) -> String {
         filename
     );
 
-    match &result.iter().next() {
-        Some((_, result)) => result.to_string(),
+    match translation.iter().next() {
+        Some((_, (coq_translation, _json_translation))) => coq_translation.clone(),
         None => {
             eprintln!("No result from the compiler");
 

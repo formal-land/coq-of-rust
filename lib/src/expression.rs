@@ -6,11 +6,12 @@ use crate::ty::*;
 use core::panic;
 use itertools::Itertools;
 use rustc_middle::query::plumbing::IntoQueryParam;
+use serde::Serialize;
 use std::rc::Rc;
 
 /// Struct [MatchArm] represents a pattern-matching branch: [pat] is the
 /// matched pattern and [body] the expression on which it is mapped
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub(crate) struct MatchArm {
     pub(crate) pattern: Rc<Pattern>,
     /// We represent a boolean guard as an if-let guard with a pattern
@@ -24,13 +25,13 @@ pub(crate) struct MatchArm {
 
 /// [LoopControlFlow] represents the expressions responsible for
 /// the flow of control in a loop
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 pub(crate) enum LoopControlFlow {
     Continue,
     Break,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 pub(crate) enum CallKind {
     /// Pure call of a function, written with a space following the syntax
     /// of Coq.
@@ -41,14 +42,14 @@ pub(crate) enum CallKind {
     Closure,
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Serialize)]
 pub(crate) struct LiteralInteger {
     pub(crate) kind: String,
     pub(crate) negative_sign: bool,
     pub(crate) value: u128,
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Serialize)]
 pub(crate) enum Literal {
     Bool(bool),
     Integer(LiteralInteger),
@@ -58,7 +59,7 @@ pub(crate) enum Literal {
 }
 
 /// Enum [Expr] represents the AST of rust terms.
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, Serialize)]
 pub(crate) enum Expr {
     LocalVar(String),
     GetConst(Rc<Path>),

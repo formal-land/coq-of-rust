@@ -1,0 +1,931 @@
+[
+  {
+    "file_name": "core/src/borrow.rs",
+    "item": {
+      "type": "Module",
+      "name": "borrow",
+      "body": [
+        {
+          "file_name": "core/src/borrow.rs",
+          "item": {
+            "type": "Trait",
+            "name": "Borrow",
+            "path": [
+              "core",
+              "borrow",
+              "Borrow"
+            ],
+            "const_params": [],
+            "ty_params": [
+              "Borrowed"
+            ],
+            "body": [
+              [
+                "borrow",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "Self"
+                            }
+                          ]
+                        }
+                      ],
+                      "ret": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "&"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "Borrowed"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/borrow.rs",
+          "item": {
+            "type": "Trait",
+            "name": "BorrowMut",
+            "path": [
+              "core",
+              "borrow",
+              "BorrowMut"
+            ],
+            "const_params": [],
+            "ty_params": [
+              "Borrowed"
+            ],
+            "body": [
+              [
+                "borrow_mut",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "Self"
+                            }
+                          ]
+                        }
+                      ],
+                      "ret": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "&mut"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "Borrowed"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/borrow.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Var",
+              "name": "T"
+            },
+            "of_trait": [
+              "core",
+              "borrow",
+              "Borrow"
+            ],
+            "trait_ty_params": [
+              [
+                "Borrowed",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "T"
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "borrow",
+                "snippet": [
+                  "    fn borrow(&self) -> &T {",
+                  "        self",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "T"
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "T"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.read"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/borrow.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Var",
+              "name": "T"
+            },
+            "of_trait": [
+              "core",
+              "borrow",
+              "BorrowMut"
+            ],
+            "trait_ty_params": [
+              [
+                "Borrowed",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "T"
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "borrow_mut",
+                "snippet": [
+                  "    fn borrow_mut(&mut self) -> &mut T {",
+                  "        self",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "T"
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&mut"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "T"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.read"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/borrow.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "&"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "T"
+                }
+              ]
+            },
+            "of_trait": [
+              "core",
+              "borrow",
+              "Borrow"
+            ],
+            "trait_ty_params": [
+              [
+                "Borrowed",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "T"
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "borrow",
+                "snippet": [
+                  "    fn borrow(&self) -> &T {",
+                  "        &**self",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "T"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.read"
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/borrow.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "&mut"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "T"
+                }
+              ]
+            },
+            "of_trait": [
+              "core",
+              "borrow",
+              "Borrow"
+            ],
+            "trait_ty_params": [
+              [
+                "Borrowed",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "T"
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "borrow",
+                "snippet": [
+                  "    fn borrow(&self) -> &T {",
+                  "        &**self",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "T"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.read"
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/borrow.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Sized"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "&mut"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "T"
+                }
+              ]
+            },
+            "of_trait": [
+              "core",
+              "borrow",
+              "BorrowMut"
+            ],
+            "trait_ty_params": [
+              [
+                "Borrowed",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "T"
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "borrow_mut",
+                "snippet": [
+                  "    fn borrow_mut(&mut self) -> &mut T {",
+                  "        &mut **self",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "T"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&mut"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "T"
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.read"
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

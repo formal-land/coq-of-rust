@@ -1,0 +1,162 @@
+[
+  {
+    "file_name": "core/src/ops/index.rs",
+    "item": {
+      "type": "Module",
+      "name": "ops",
+      "body": [
+        {
+          "file_name": "core/src/ops/index.rs",
+          "item": {
+            "type": "Module",
+            "name": "index",
+            "body": [
+              {
+                "file_name": "core/src/ops/index.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "Index",
+                  "path": [
+                    "core",
+                    "ops",
+                    "index",
+                    "Index"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "Idx"
+                  ],
+                  "body": [
+                    [
+                      "Output",
+                      {
+                        "Type": []
+                      }
+                    ],
+                    [
+                      "index",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "Self"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Var",
+                                "name": "Idx"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "&"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Associated"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/index.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "IndexMut",
+                  "path": [
+                    "core",
+                    "ops",
+                    "index",
+                    "IndexMut"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "Idx"
+                  ],
+                  "body": [
+                    [
+                      "index_mut",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "Self"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Var",
+                                "name": "Idx"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "&mut"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Associated"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

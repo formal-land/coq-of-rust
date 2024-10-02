@@ -1,0 +1,334 @@
+[
+  {
+    "file_name": "core/src/num/flt2dec/estimator.rs",
+    "item": {
+      "type": "Module",
+      "name": "num",
+      "body": [
+        {
+          "file_name": "core/src/num/flt2dec/estimator.rs",
+          "item": {
+            "type": "Module",
+            "name": "flt2dec",
+            "body": [
+              {
+                "file_name": "core/src/num/flt2dec/estimator.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "estimator",
+                  "body": [
+                    {
+                      "file_name": "core/src/num/flt2dec/estimator.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "estimate_scaling_factor",
+                        "path": [
+                          "core",
+                          "num",
+                          "flt2dec",
+                          "estimator",
+                          "estimate_scaling_factor"
+                        ],
+                        "snippet": [
+                          "pub fn estimate_scaling_factor(mant: u64, exp: i16) -> i16 {",
+                          "    // 2^(nbits-1) < mant <= 2^nbits if mant > 0",
+                          "    let nbits = 64 - (mant - 1).leading_zeros() as i64;",
+                          "    // 1292913986 = floor(2^32 * log_10 2)",
+                          "    // therefore this always underestimates (or is exact), but not much.",
+                          "    (((nbits + exp as i64) * 1292913986) >> 32) as i16",
+                          "}"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "signature_and_body": {
+                            "args": [
+                              [
+                                "mant",
+                                {
+                                  "type": "Path",
+                                  "path": [
+                                    "u64"
+                                  ]
+                                },
+                                null
+                              ],
+                              [
+                                "exp",
+                                {
+                                  "type": "Path",
+                                  "path": [
+                                    "i16"
+                                  ]
+                                },
+                                null
+                              ]
+                            ],
+                            "ret_ty": {
+                              "type": "Path",
+                              "path": [
+                                "i16"
+                              ]
+                            },
+                            "body": {
+                              "Let": {
+                                "name": "mant",
+                                "is_user": false,
+                                "init": {
+                                  "Call": {
+                                    "func": {
+                                      "LocalVar": "M.alloc"
+                                    },
+                                    "args": [
+                                      {
+                                        "LocalVar": "mant"
+                                      }
+                                    ],
+                                    "kind": "Effectful"
+                                  }
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "exp",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "exp"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.read"
+                                        },
+                                        "args": [
+                                          {
+                                            "Let": {
+                                              "name": "nbits",
+                                              "is_user": true,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "BinOp.Wrap.sub"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Literal": {
+                                                              "Integer": {
+                                                                "kind": "I64",
+                                                                "negative_sign": false,
+                                                                "value": 64
+                                                              }
+                                                            }
+                                                          },
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.rust_cast"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "GetAssociatedFunction": {
+                                                                        "ty": {
+                                                                          "type": "Path",
+                                                                          "path": [
+                                                                            "u64"
+                                                                          ]
+                                                                        },
+                                                                        "func": "leading_zeros",
+                                                                        "generic_tys": []
+                                                                      }
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "BinOp.Wrap.sub"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "Call": {
+                                                                                "func": {
+                                                                                  "LocalVar": "M.read"
+                                                                                },
+                                                                                "args": [
+                                                                                  {
+                                                                                    "LocalVar": "mant"
+                                                                                  }
+                                                                                ],
+                                                                                "kind": "Effectful"
+                                                                              }
+                                                                            },
+                                                                            {
+                                                                              "Literal": {
+                                                                                "Integer": {
+                                                                                  "kind": "U64",
+                                                                                  "negative_sign": false,
+                                                                                  "value": 1
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Closure"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Pure"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.rust_cast"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "BinOp.Wrap.shr"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "BinOp.Wrap.mul"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "BinOp.Wrap.add"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "Call": {
+                                                                                "func": {
+                                                                                  "LocalVar": "M.read"
+                                                                                },
+                                                                                "args": [
+                                                                                  {
+                                                                                    "LocalVar": "nbits"
+                                                                                  }
+                                                                                ],
+                                                                                "kind": "Effectful"
+                                                                              }
+                                                                            },
+                                                                            {
+                                                                              "Call": {
+                                                                                "func": {
+                                                                                  "LocalVar": "M.rust_cast"
+                                                                                },
+                                                                                "args": [
+                                                                                  {
+                                                                                    "Call": {
+                                                                                      "func": {
+                                                                                        "LocalVar": "M.read"
+                                                                                      },
+                                                                                      "args": [
+                                                                                        {
+                                                                                          "LocalVar": "exp"
+                                                                                        }
+                                                                                      ],
+                                                                                      "kind": "Effectful"
+                                                                                    }
+                                                                                  }
+                                                                                ],
+                                                                                "kind": "Pure"
+                                                                              }
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "Literal": {
+                                                                          "Integer": {
+                                                                            "kind": "I64",
+                                                                            "negative_sign": false,
+                                                                            "value": 1292913986
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "Literal": {
+                                                                    "Integer": {
+                                                                      "kind": "I32",
+                                                                      "negative_sign": false,
+                                                                      "value": 32
+                                                                    }
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Pure"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

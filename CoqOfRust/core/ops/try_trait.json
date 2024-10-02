@@ -1,0 +1,1687 @@
+[
+  {
+    "file_name": "core/src/ops/try_trait.rs",
+    "item": {
+      "type": "Module",
+      "name": "ops",
+      "body": [
+        {
+          "file_name": "core/src/ops/try_trait.rs",
+          "item": {
+            "type": "Module",
+            "name": "try_trait",
+            "body": [
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "Try",
+                  "path": [
+                    "core",
+                    "ops",
+                    "try_trait",
+                    "Try"
+                  ],
+                  "const_params": [],
+                  "ty_params": [],
+                  "body": [
+                    [
+                      "Output",
+                      {
+                        "Type": []
+                      }
+                    ],
+                    [
+                      "Residual",
+                      {
+                        "Type": []
+                      }
+                    ],
+                    [
+                      "from_output",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Associated"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Var",
+                              "name": "Self"
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    [
+                      "branch",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Var",
+                                "name": "Self"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "core",
+                                  "ops",
+                                  "control_flow",
+                                  "ControlFlow"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Associated"
+                                },
+                                {
+                                  "type": "Associated"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "FromResidual",
+                  "path": [
+                    "core",
+                    "ops",
+                    "try_trait",
+                    "FromResidual"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "R"
+                  ],
+                  "body": [
+                    [
+                      "from_residual",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Var",
+                                "name": "R"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Var",
+                              "name": "Self"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "from_yeet",
+                  "path": [
+                    "core",
+                    "ops",
+                    "try_trait",
+                    "from_yeet"
+                  ],
+                  "snippet": [
+                    "pub fn from_yeet<T, Y>(yeeted: Y) -> T",
+                    "where",
+                    "    T: FromResidual<Yeet<Y>>,",
+                    "{",
+                    "    FromResidual::from_residual(Yeet(yeeted))",
+                    "}"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "Y"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "yeeted",
+                          {
+                            "type": "Var",
+                            "name": "Y"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Var",
+                        "name": "T"
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "yeeted",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "yeeted"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "GetTraitMethod": {
+                                  "trait_name": [
+                                    "core",
+                                    "ops",
+                                    "try_trait",
+                                    "FromResidual"
+                                  ],
+                                  "self_ty": {
+                                    "type": "Var",
+                                    "name": "T"
+                                  },
+                                  "trait_tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "ops",
+                                          "try_trait",
+                                          "Yeet"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "Y"
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "method_name": "from_residual",
+                                  "generic_tys": []
+                                }
+                              },
+                              "args": [
+                                {
+                                  "StructTuple": {
+                                    "path": [
+                                      "core",
+                                      "ops",
+                                      "try_trait",
+                                      "Yeet"
+                                    ],
+                                    "fields": [
+                                      {
+                                        "Call": {
+                                          "func": {
+                                            "LocalVar": "M.read"
+                                          },
+                                          "args": [
+                                            {
+                                              "LocalVar": "yeeted"
+                                            }
+                                          ],
+                                          "kind": "Effectful"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ],
+                              "kind": "Closure"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "Residual",
+                  "path": [
+                    "core",
+                    "ops",
+                    "try_trait",
+                    "Residual"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "O"
+                  ],
+                  "body": [
+                    [
+                      "TryType",
+                      {
+                        "Type": []
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "TypeAlias",
+                  "name": "ChangeOutputType",
+                  "path": [
+                    "core",
+                    "ops",
+                    "try_trait",
+                    "ChangeOutputType"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "T",
+                    "V"
+                  ],
+                  "ty": {
+                    "type": "Associated"
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "TypeStructTuple",
+                  "name": "NeverShortCircuit",
+                  "const_params": [],
+                  "ty_params": [
+                    "T"
+                  ],
+                  "fields": [
+                    {
+                      "type": "Var",
+                      "name": "T"
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "Impl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ops",
+                        "try_trait",
+                        "NeverShortCircuit"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "items": [
+                    {
+                      "name": "wrap_mut_1",
+                      "snippet": [
+                        "    pub fn wrap_mut_1<A>(mut f: impl FnMut(A) -> T) -> impl FnMut(A) -> NeverShortCircuit<T> {",
+                        "        move |a| NeverShortCircuit(f(a))",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [
+                              "A",
+                              "impl_FnMut_A__arrow_T"
+                            ],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "f",
+                                  {
+                                    "type": "Var",
+                                    "name": "impl_FnMut_A__arrow_T"
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Associated"
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "f",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "f"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Lambda": {
+                                      "args": [
+                                        [
+                                          "α0",
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          }
+                                        ]
+                                      ],
+                                      "body": {
+                                        "Match": {
+                                          "scrutinee": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "α0"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "arms": [
+                                            {
+                                              "Lambda": {
+                                                "args": [
+                                                  [
+                                                    "γ",
+                                                    null
+                                                  ]
+                                                ],
+                                                "body": {
+                                                  "Let": {
+                                                    "name": "a",
+                                                    "is_user": false,
+                                                    "init": {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.copy"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "γ"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    "body": {
+                                                      "StructTuple": {
+                                                        "path": [
+                                                          "core",
+                                                          "ops",
+                                                          "try_trait",
+                                                          "NeverShortCircuit"
+                                                        ],
+                                                        "fields": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "GetTraitMethod": {
+                                                                  "trait_name": [
+                                                                    "core",
+                                                                    "ops",
+                                                                    "function",
+                                                                    "FnMut"
+                                                                  ],
+                                                                  "self_ty": {
+                                                                    "type": "Var",
+                                                                    "name": "impl_FnMut_A__arrow_T"
+                                                                  },
+                                                                  "trait_tys": [
+                                                                    {
+                                                                      "type": "Tuple",
+                                                                      "tys": [
+                                                                        {
+                                                                          "type": "Var",
+                                                                          "name": "A"
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  ],
+                                                                  "method_name": "call_mut",
+                                                                  "generic_tys": []
+                                                                }
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "f"
+                                                                },
+                                                                {
+                                                                  "Tuple": {
+                                                                    "elements": [
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.read"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "LocalVar": "a"
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Closure"
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                "is_for_match": true,
+                                                "is_internal": true
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "is_for_match": false,
+                                      "is_internal": false
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "wrap_mut_2",
+                      "snippet": [
+                        "    pub fn wrap_mut_2<A, B>(mut f: impl FnMut(A, B) -> T) -> impl FnMut(A, B) -> Self {",
+                        "        move |a, b| NeverShortCircuit(f(a, b))",
+                        "    }"
+                      ],
+                      "kind": {
+                        "Definition": {
+                          "definition": {
+                            "const_params": [],
+                            "ty_params": [
+                              "A",
+                              "B",
+                              "impl_FnMut_A__B__arrow_T"
+                            ],
+                            "signature_and_body": {
+                              "args": [
+                                [
+                                  "f",
+                                  {
+                                    "type": "Var",
+                                    "name": "impl_FnMut_A__B__arrow_T"
+                                  },
+                                  null
+                                ]
+                              ],
+                              "ret_ty": {
+                                "type": "Associated"
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "f",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "f"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Lambda": {
+                                      "args": [
+                                        [
+                                          "α0",
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          }
+                                        ],
+                                        [
+                                          "α1",
+                                          {
+                                            "type": "Var",
+                                            "name": "B"
+                                          }
+                                        ]
+                                      ],
+                                      "body": {
+                                        "Match": {
+                                          "scrutinee": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "α0"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "arms": [
+                                            {
+                                              "Lambda": {
+                                                "args": [
+                                                  [
+                                                    "γ",
+                                                    null
+                                                  ]
+                                                ],
+                                                "body": {
+                                                  "Let": {
+                                                    "name": "a",
+                                                    "is_user": false,
+                                                    "init": {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.copy"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "γ"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    "body": {
+                                                      "Match": {
+                                                        "scrutinee": {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.alloc"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "α1"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        "arms": [
+                                                          {
+                                                            "Lambda": {
+                                                              "args": [
+                                                                [
+                                                                  "γ",
+                                                                  null
+                                                                ]
+                                                              ],
+                                                              "body": {
+                                                                "Let": {
+                                                                  "name": "b",
+                                                                  "is_user": false,
+                                                                  "init": {
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "LocalVar": "M.copy"
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "LocalVar": "γ"
+                                                                        }
+                                                                      ],
+                                                                      "kind": "Effectful"
+                                                                    }
+                                                                  },
+                                                                  "body": {
+                                                                    "StructTuple": {
+                                                                      "path": [
+                                                                        "core",
+                                                                        "ops",
+                                                                        "try_trait",
+                                                                        "NeverShortCircuit"
+                                                                      ],
+                                                                      "fields": [
+                                                                        {
+                                                                          "Call": {
+                                                                            "func": {
+                                                                              "GetTraitMethod": {
+                                                                                "trait_name": [
+                                                                                  "core",
+                                                                                  "ops",
+                                                                                  "function",
+                                                                                  "FnMut"
+                                                                                ],
+                                                                                "self_ty": {
+                                                                                  "type": "Var",
+                                                                                  "name": "impl_FnMut_A__B__arrow_T"
+                                                                                },
+                                                                                "trait_tys": [
+                                                                                  {
+                                                                                    "type": "Tuple",
+                                                                                    "tys": [
+                                                                                      {
+                                                                                        "type": "Var",
+                                                                                        "name": "A"
+                                                                                      },
+                                                                                      {
+                                                                                        "type": "Var",
+                                                                                        "name": "B"
+                                                                                      }
+                                                                                    ]
+                                                                                  }
+                                                                                ],
+                                                                                "method_name": "call_mut",
+                                                                                "generic_tys": []
+                                                                              }
+                                                                            },
+                                                                            "args": [
+                                                                              {
+                                                                                "LocalVar": "f"
+                                                                              },
+                                                                              {
+                                                                                "Tuple": {
+                                                                                  "elements": [
+                                                                                    {
+                                                                                      "Call": {
+                                                                                        "func": {
+                                                                                          "LocalVar": "M.read"
+                                                                                        },
+                                                                                        "args": [
+                                                                                          {
+                                                                                            "LocalVar": "a"
+                                                                                          }
+                                                                                        ],
+                                                                                        "kind": "Effectful"
+                                                                                      }
+                                                                                    },
+                                                                                    {
+                                                                                      "Call": {
+                                                                                        "func": {
+                                                                                          "LocalVar": "M.read"
+                                                                                        },
+                                                                                        "args": [
+                                                                                          {
+                                                                                            "LocalVar": "b"
+                                                                                          }
+                                                                                        ],
+                                                                                        "kind": "Effectful"
+                                                                                      }
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              }
+                                                                            ],
+                                                                            "kind": "Closure"
+                                                                          }
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  }
+                                                                }
+                                                              },
+                                                              "is_for_match": true,
+                                                              "is_internal": true
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                "is_for_match": true,
+                                                "is_internal": true
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "is_for_match": false,
+                                      "is_internal": false
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "TypeEnum",
+                  "name": "NeverShortCircuitResidual",
+                  "const_params": [],
+                  "ty_params": [],
+                  "variants": []
+                }
+              },
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ops",
+                        "try_trait",
+                        "NeverShortCircuit"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "try_trait",
+                    "Try"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "Output",
+                      "snippet": [
+                        "    type Output = T;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Var",
+                              "name": "T"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "Residual",
+                      "snippet": [
+                        "    type Residual = NeverShortCircuitResidual;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "core",
+                                  "ops",
+                                  "try_trait",
+                                  "NeverShortCircuitResidual"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": []
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "branch",
+                      "snippet": [
+                        "    fn branch(self) -> ControlFlow<NeverShortCircuitResidual, T> {",
+                        "        ControlFlow::Continue(self.0)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "ops",
+                                          "try_trait",
+                                          "NeverShortCircuit"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "ops",
+                                      "control_flow",
+                                      "ControlFlow"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "ops",
+                                          "try_trait",
+                                          "NeverShortCircuitResidual"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    },
+                                    {
+                                      "type": "Var",
+                                      "name": "T"
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "StructTuple": {
+                                        "path": [
+                                          "core",
+                                          "ops",
+                                          "control_flow",
+                                          "ControlFlow",
+                                          "Continue"
+                                        ],
+                                        "fields": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.SubPointer.get_struct_tuple_field"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "LocalVar": "self"
+                                                      },
+                                                      {
+                                                        "InternalString": "core::ops::try_trait::NeverShortCircuit"
+                                                      },
+                                                      {
+                                                        "LocalVar": "0"
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "name": "from_output",
+                      "snippet": [
+                        "    fn from_output(x: T) -> Self {",
+                        "        NeverShortCircuit(x)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "x",
+                                    {
+                                      "type": "Var",
+                                      "name": "T"
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "ops",
+                                      "try_trait",
+                                      "NeverShortCircuit"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Var",
+                                      "name": "T"
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "x",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "x"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "StructTuple": {
+                                        "path": [
+                                          "core",
+                                          "ops",
+                                          "try_trait",
+                                          "NeverShortCircuit"
+                                        ],
+                                        "fields": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "x"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ops",
+                        "try_trait",
+                        "NeverShortCircuit"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "try_trait",
+                    "FromResidual"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "R",
+                      "Default"
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "from_residual",
+                      "snippet": [
+                        "    fn from_residual(never: NeverShortCircuitResidual) -> Self {",
+                        "        match never {}",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "never",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "ops",
+                                          "try_trait",
+                                          "NeverShortCircuitResidual"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "ops",
+                                      "try_trait",
+                                      "NeverShortCircuit"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Var",
+                                      "name": "T"
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "never",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "never"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.never_to_any"
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Match": {
+                                                    "scrutinee": {
+                                                      "LocalVar": "never"
+                                                    },
+                                                    "arms": []
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ops",
+                        "try_trait",
+                        "NeverShortCircuitResidual"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "ops",
+                    "try_trait",
+                    "Residual"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "O",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "T"
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "TryType",
+                      "snippet": [
+                        "    type TryType = NeverShortCircuit<T>;"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Type": {
+                            "ty": {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "core",
+                                  "ops",
+                                  "try_trait",
+                                  "NeverShortCircuit"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Var",
+                                  "name": "T"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "TypeStructTuple",
+                  "name": "Yeet",
+                  "const_params": [],
+                  "ty_params": [
+                    "T"
+                  ],
+                  "fields": [
+                    {
+                      "type": "Var",
+                      "name": "T"
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/try_trait.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "fmt",
+                          "Debug"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "ops",
+                        "try_trait",
+                        "Yeet"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "fmt",
+                    "Debug"
+                  ],
+                  "trait_ty_params": [],
+                  "items": [
+                    {
+                      "name": "fmt",
+                      "snippet": [
+                        "Debug"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "self",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "ops",
+                                              "try_trait",
+                                              "Yeet"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ],
+                                  [
+                                    "f",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "core",
+                                              "fmt",
+                                              "Formatter"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "result",
+                                      "Result"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Tuple",
+                                      "tys": []
+                                    },
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Error"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "self",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "self"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "f",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "f"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetAssociatedFunction": {
+                                                "ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "core",
+                                                      "fmt",
+                                                      "Formatter"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                },
+                                                "func": "debug_tuple_field1_finish",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "f"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "Yeet"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_tuple_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          },
+                                                          {
+                                                            "InternalString": "core::ops::try_trait::Yeet"
+                                                          },
+                                                          {
+                                                            "LocalVar": "0"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,1280 @@
+[
+  {
+    "file_name": "alloc/src/vec/cow.rs",
+    "item": {
+      "type": "Module",
+      "name": "vec",
+      "body": [
+        {
+          "file_name": "alloc/src/vec/cow.rs",
+          "item": {
+            "type": "Module",
+            "name": "cow",
+            "body": [
+              {
+                "file_name": "alloc/src/vec/cow.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "clone",
+                          "Clone"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "borrow",
+                        "Cow"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "slice"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "convert",
+                    "From"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "slice"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Var",
+                                  "name": "T"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "from",
+                      "snippet": [
+                        "    fn from(s: &'a [T]) -> Cow<'a, [T]> {",
+                        "        Cow::Borrowed(s)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "s",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "slice"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "alloc",
+                                      "borrow",
+                                      "Cow"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "slice"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "s",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "s"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "StructTuple": {
+                                        "path": [
+                                          "alloc",
+                                          "borrow",
+                                          "Cow",
+                                          "Borrowed"
+                                        ],
+                                        "fields": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "s"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/cow.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [
+                    "N"
+                  ],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "clone",
+                          "Clone"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "borrow",
+                        "Cow"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "slice"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "convert",
+                    "From"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "array"
+                                ]
+                              },
+                              "consts": [
+                                {
+                                  "LocalVar": "N"
+                                }
+                              ],
+                              "tys": [
+                                {
+                                  "type": "Var",
+                                  "name": "T"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "from",
+                      "snippet": [
+                        "    fn from(s: &'a [T; N]) -> Cow<'a, [T]> {",
+                        "        Cow::Borrowed(s as &[_])",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "s",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "array"
+                                            ]
+                                          },
+                                          "consts": [
+                                            {
+                                              "LocalVar": "N"
+                                            }
+                                          ],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "alloc",
+                                      "borrow",
+                                      "Cow"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "slice"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "s",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "s"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "StructTuple": {
+                                        "path": [
+                                          "alloc",
+                                          "borrow",
+                                          "Cow",
+                                          "Borrowed"
+                                        ],
+                                        "fields": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Use": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "s"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/cow.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "clone",
+                          "Clone"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "borrow",
+                        "Cow"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "slice"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "convert",
+                    "From"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "vec",
+                              "Vec"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "T"
+                            },
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "alloc",
+                                  "alloc",
+                                  "Global"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": []
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "from",
+                      "snippet": [
+                        "    fn from(v: Vec<T>) -> Cow<'a, [T]> {",
+                        "        Cow::Owned(v)",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "v",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "alloc",
+                                          "vec",
+                                          "Vec"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        },
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "alloc",
+                                              "Global"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "alloc",
+                                      "borrow",
+                                      "Cow"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "slice"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "v",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "v"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "StructTuple": {
+                                        "path": [
+                                          "alloc",
+                                          "borrow",
+                                          "Cow",
+                                          "Owned"
+                                        ],
+                                        "fields": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "v"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/cow.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "clone",
+                          "Clone"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "borrow",
+                        "Cow"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "slice"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "convert",
+                    "From"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "T",
+                      {
+                        "RequiredValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "alloc",
+                                  "vec",
+                                  "Vec"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Var",
+                                  "name": "T"
+                                },
+                                {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "alloc",
+                                      "alloc",
+                                      "Global"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "from",
+                      "snippet": [
+                        "    fn from(v: &'a Vec<T>) -> Cow<'a, [T]> {",
+                        "        Cow::Borrowed(v.as_slice())",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "v",
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "vec",
+                                              "Vec"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            },
+                                            {
+                                              "type": "Application",
+                                              "func": {
+                                                "type": "Path",
+                                                "path": [
+                                                  "alloc",
+                                                  "alloc",
+                                                  "Global"
+                                                ]
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "alloc",
+                                      "borrow",
+                                      "Cow"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "slice"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "v",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "v"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "StructTuple": {
+                                        "path": [
+                                          "alloc",
+                                          "borrow",
+                                          "Cow",
+                                          "Borrowed"
+                                        ],
+                                        "fields": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "GetAssociatedFunction": {
+                                                  "ty": {
+                                                    "type": "Application",
+                                                    "func": {
+                                                      "type": "Path",
+                                                      "path": [
+                                                        "alloc",
+                                                        "vec",
+                                                        "Vec"
+                                                      ]
+                                                    },
+                                                    "consts": [],
+                                                    "tys": [
+                                                      {
+                                                        "type": "Var",
+                                                        "name": "T"
+                                                      },
+                                                      {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "alloc",
+                                                            "alloc",
+                                                            "Global"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": []
+                                                      }
+                                                    ]
+                                                  },
+                                                  "func": "as_slice",
+                                                  "generic_tys": []
+                                                }
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "LocalVar": "v"
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Closure"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "alloc/src/vec/cow.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "clone",
+                          "Clone"
+                        ],
+                        "ty_params": []
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "alloc",
+                        "borrow",
+                        "Cow"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "slice"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "iter",
+                    "traits",
+                    "collect",
+                    "FromIterator"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "A",
+                      {
+                        "RequiredValue": {
+                          "type": "Var",
+                          "name": "T"
+                        }
+                      }
+                    ]
+                  ],
+                  "items": [
+                    {
+                      "name": "from_iter",
+                      "snippet": [
+                        "    fn from_iter<I: IntoIterator<Item = T>>(it: I) -> Cow<'a, [T]> {",
+                        "        Cow::Owned(FromIterator::from_iter(it))",
+                        "    }"
+                      ],
+                      "kind": {
+                        "RequiredValue": {
+                          "Definition": {
+                            "definition": {
+                              "const_params": [],
+                              "ty_params": [
+                                "I"
+                              ],
+                              "signature_and_body": {
+                                "args": [
+                                  [
+                                    "it",
+                                    {
+                                      "type": "Var",
+                                      "name": "I"
+                                    },
+                                    null
+                                  ]
+                                ],
+                                "ret_ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "alloc",
+                                      "borrow",
+                                      "Cow"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "slice"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "body": {
+                                  "Let": {
+                                    "name": "it",
+                                    "is_user": false,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "LocalVar": "it"
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "StructTuple": {
+                                        "path": [
+                                          "alloc",
+                                          "borrow",
+                                          "Cow",
+                                          "Owned"
+                                        ],
+                                        "fields": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "GetTraitMethod": {
+                                                  "trait_name": [
+                                                    "core",
+                                                    "iter",
+                                                    "traits",
+                                                    "collect",
+                                                    "FromIterator"
+                                                  ],
+                                                  "self_ty": {
+                                                    "type": "Application",
+                                                    "func": {
+                                                      "type": "Path",
+                                                      "path": [
+                                                        "alloc",
+                                                        "vec",
+                                                        "Vec"
+                                                      ]
+                                                    },
+                                                    "consts": [],
+                                                    "tys": [
+                                                      {
+                                                        "type": "Var",
+                                                        "name": "T"
+                                                      },
+                                                      {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "alloc",
+                                                            "alloc",
+                                                            "Global"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": []
+                                                      }
+                                                    ]
+                                                  },
+                                                  "trait_tys": [
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "T"
+                                                    }
+                                                  ],
+                                                  "method_name": "from_iter",
+                                                  "generic_tys": [
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "I"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "LocalVar": "it"
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Closure"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

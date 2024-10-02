@@ -1,0 +1,1629 @@
+[
+  {
+    "file_name": "core/src/ops/async_function.rs",
+    "item": {
+      "type": "Module",
+      "name": "ops",
+      "body": [
+        {
+          "file_name": "core/src/ops/async_function.rs",
+          "item": {
+            "type": "Module",
+            "name": "async_function",
+            "body": [
+              {
+                "file_name": "core/src/ops/async_function.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "AsyncFn",
+                  "path": [
+                    "core",
+                    "ops",
+                    "async_function",
+                    "AsyncFn"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "Args"
+                  ],
+                  "body": [
+                    [
+                      "async_call",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "Self"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Var",
+                                "name": "Args"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/async_function.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "AsyncFnMut",
+                  "path": [
+                    "core",
+                    "ops",
+                    "async_function",
+                    "AsyncFnMut"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "Args"
+                  ],
+                  "body": [
+                    [
+                      "CallRefFuture",
+                      {
+                        "Type": []
+                      }
+                    ],
+                    [
+                      "async_call_mut",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "Self"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Var",
+                                "name": "Args"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/async_function.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "AsyncFnOnce",
+                  "path": [
+                    "core",
+                    "ops",
+                    "async_function",
+                    "AsyncFnOnce"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "Args"
+                  ],
+                  "body": [
+                    [
+                      "CallOnceFuture",
+                      {
+                        "Type": []
+                      }
+                    ],
+                    [
+                      "Output",
+                      {
+                        "Type": []
+                      }
+                    ],
+                    [
+                      "async_call_once",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Var",
+                                "name": "Self"
+                              },
+                              {
+                                "type": "Var",
+                                "name": "Args"
+                              }
+                            ],
+                            "ret": {
+                              "type": "Associated"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/async_function.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "impls",
+                  "body": [
+                    {
+                      "file_name": "core/src/ops/async_function.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A",
+                          "F"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Tuple"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "ops",
+                                "async_function",
+                                "AsyncFn"
+                              ],
+                              "ty_params": [
+                                [
+                                  "Args",
+                                  {
+                                    "RequiredValue": {
+                                      "type": "Var",
+                                      "name": "A"
+                                    }
+                                  }
+                                ]
+                              ]
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "ops",
+                          "async_function",
+                          "AsyncFn"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "A"
+                              }
+                            }
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "async_call",
+                            "snippet": [
+                              "        extern \"rust-call\" fn async_call(&self, args: A) -> Self::CallRefFuture<'_> {",
+                              "            F::async_call(*self, args)",
+                              "        }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "F"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "args",
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Associated"
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "args",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetTraitMethod": {
+                                                      "trait_name": [
+                                                        "core",
+                                                        "ops",
+                                                        "async_function",
+                                                        "AsyncFn"
+                                                      ],
+                                                      "self_ty": {
+                                                        "type": "Var",
+                                                        "name": "F"
+                                                      },
+                                                      "trait_tys": [
+                                                        {
+                                                          "type": "Var",
+                                                          "name": "A"
+                                                        }
+                                                      ],
+                                                      "method_name": "async_call",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "args"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/ops/async_function.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A",
+                          "F"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Tuple"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "ops",
+                                "async_function",
+                                "AsyncFn"
+                              ],
+                              "ty_params": [
+                                [
+                                  "Args",
+                                  {
+                                    "RequiredValue": {
+                                      "type": "Var",
+                                      "name": "A"
+                                    }
+                                  }
+                                ]
+                              ]
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "ops",
+                          "async_function",
+                          "AsyncFnMut"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "A"
+                              }
+                            }
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "CallRefFuture",
+                            "snippet": [
+                              "        type CallRefFuture<'a> = F::CallRefFuture<'a> where Self: 'a;"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Type": {
+                                  "ty": {
+                                    "type": "Associated"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "async_call_mut",
+                            "snippet": [
+                              "        extern \"rust-call\" fn async_call_mut(&mut self, args: A) -> Self::CallRefFuture<'_> {",
+                              "            F::async_call(*self, args)",
+                              "        }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "F"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "args",
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Associated"
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "args",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetTraitMethod": {
+                                                      "trait_name": [
+                                                        "core",
+                                                        "ops",
+                                                        "async_function",
+                                                        "AsyncFn"
+                                                      ],
+                                                      "self_ty": {
+                                                        "type": "Var",
+                                                        "name": "F"
+                                                      },
+                                                      "trait_tys": [
+                                                        {
+                                                          "type": "Var",
+                                                          "name": "A"
+                                                        }
+                                                      ],
+                                                      "method_name": "async_call",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "args"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/ops/async_function.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A",
+                          "F"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Tuple"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "ops",
+                                "async_function",
+                                "AsyncFn"
+                              ],
+                              "ty_params": [
+                                [
+                                  "Args",
+                                  {
+                                    "RequiredValue": {
+                                      "type": "Var",
+                                      "name": "A"
+                                    }
+                                  }
+                                ]
+                              ]
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "ops",
+                          "async_function",
+                          "AsyncFnOnce"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "A"
+                              }
+                            }
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "Output",
+                            "snippet": [
+                              "        type Output = F::Output;"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Type": {
+                                  "ty": {
+                                    "type": "Associated"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "CallOnceFuture",
+                            "snippet": [
+                              "        type CallOnceFuture = F::CallRefFuture<'a>;"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Type": {
+                                  "ty": {
+                                    "type": "Associated"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "async_call_once",
+                            "snippet": [
+                              "        extern \"rust-call\" fn async_call_once(self, args: A) -> Self::CallOnceFuture {",
+                              "            F::async_call(self, args)",
+                              "        }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Var",
+                                                "name": "F"
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "args",
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Associated"
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "args",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetTraitMethod": {
+                                                      "trait_name": [
+                                                        "core",
+                                                        "ops",
+                                                        "async_function",
+                                                        "AsyncFn"
+                                                      ],
+                                                      "self_ty": {
+                                                        "type": "Var",
+                                                        "name": "F"
+                                                      },
+                                                      "trait_tys": [
+                                                        {
+                                                          "type": "Var",
+                                                          "name": "A"
+                                                        }
+                                                      ],
+                                                      "method_name": "async_call",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "args"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/ops/async_function.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A",
+                          "F"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Tuple"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "ops",
+                                "async_function",
+                                "AsyncFnMut"
+                              ],
+                              "ty_params": [
+                                [
+                                  "Args",
+                                  {
+                                    "RequiredValue": {
+                                      "type": "Var",
+                                      "name": "A"
+                                    }
+                                  }
+                                ]
+                              ]
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "ops",
+                          "async_function",
+                          "AsyncFnMut"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "A"
+                              }
+                            }
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "CallRefFuture",
+                            "snippet": [
+                              "        type CallRefFuture<'a> = F::CallRefFuture<'a> where Self: 'a;"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Type": {
+                                  "ty": {
+                                    "type": "Associated"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "async_call_mut",
+                            "snippet": [
+                              "        extern \"rust-call\" fn async_call_mut(&mut self, args: A) -> Self::CallRefFuture<'_> {",
+                              "            F::async_call_mut(*self, args)",
+                              "        }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "&mut"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "F"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "args",
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Associated"
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "args",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetTraitMethod": {
+                                                      "trait_name": [
+                                                        "core",
+                                                        "ops",
+                                                        "async_function",
+                                                        "AsyncFnMut"
+                                                      ],
+                                                      "self_ty": {
+                                                        "type": "Var",
+                                                        "name": "F"
+                                                      },
+                                                      "trait_tys": [
+                                                        {
+                                                          "type": "Var",
+                                                          "name": "A"
+                                                        }
+                                                      ],
+                                                      "method_name": "async_call_mut",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "args"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/ops/async_function.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A",
+                          "F"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Tuple"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "ops",
+                                "async_function",
+                                "AsyncFnMut"
+                              ],
+                              "ty_params": [
+                                [
+                                  "Args",
+                                  {
+                                    "RequiredValue": {
+                                      "type": "Var",
+                                      "name": "A"
+                                    }
+                                  }
+                                ]
+                              ]
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "F"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "ops",
+                          "async_function",
+                          "AsyncFnOnce"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Args",
+                            {
+                              "RequiredValue": {
+                                "type": "Var",
+                                "name": "A"
+                              }
+                            }
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "Output",
+                            "snippet": [
+                              "        type Output = F::Output;"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Type": {
+                                  "ty": {
+                                    "type": "Associated"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "CallOnceFuture",
+                            "snippet": [
+                              "        type CallOnceFuture = F::CallRefFuture<'a>;"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Type": {
+                                  "ty": {
+                                    "type": "Associated"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "async_call_once",
+                            "snippet": [
+                              "        extern \"rust-call\" fn async_call_once(self, args: A) -> Self::CallOnceFuture {",
+                              "            F::async_call_mut(self, args)",
+                              "        }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Var",
+                                                "name": "F"
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "args",
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Associated"
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "args",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetTraitMethod": {
+                                                      "trait_name": [
+                                                        "core",
+                                                        "ops",
+                                                        "async_function",
+                                                        "AsyncFnMut"
+                                                      ],
+                                                      "self_ty": {
+                                                        "type": "Var",
+                                                        "name": "F"
+                                                      },
+                                                      "trait_tys": [
+                                                        {
+                                                          "type": "Var",
+                                                          "name": "A"
+                                                        }
+                                                      ],
+                                                      "method_name": "async_call_mut",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "args"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/async_function.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "internal_implementation_detail",
+                  "body": [
+                    {
+                      "file_name": "core/src/ops/async_function.rs",
+                      "item": {
+                        "type": "Trait",
+                        "name": "AsyncFnKindHelper",
+                        "path": [
+                          "core",
+                          "ops",
+                          "async_function",
+                          "internal_implementation_detail",
+                          "AsyncFnKindHelper"
+                        ],
+                        "const_params": [],
+                        "ty_params": [
+                          "GoalKind"
+                        ],
+                        "body": [
+                          [
+                            "Upvars",
+                            {
+                              "Type": []
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

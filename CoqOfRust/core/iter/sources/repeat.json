@@ -1,0 +1,2864 @@
+[
+  {
+    "file_name": "core/src/iter/sources/repeat.rs",
+    "item": {
+      "type": "Module",
+      "name": "iter",
+      "body": [
+        {
+          "file_name": "core/src/iter/sources/repeat.rs",
+          "item": {
+            "type": "Module",
+            "name": "sources",
+            "body": [
+              {
+                "file_name": "core/src/iter/sources/repeat.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "repeat",
+                  "body": [
+                    {
+                      "file_name": "core/src/iter/sources/repeat.rs",
+                      "item": {
+                        "type": "Definition",
+                        "name": "repeat",
+                        "path": [
+                          "core",
+                          "iter",
+                          "sources",
+                          "repeat",
+                          "repeat"
+                        ],
+                        "snippet": [
+                          "pub fn repeat<T: Clone>(elt: T) -> Repeat<T> {",
+                          "    Repeat { element: elt }",
+                          "}"
+                        ],
+                        "definition": {
+                          "const_params": [],
+                          "ty_params": [
+                            "T"
+                          ],
+                          "signature_and_body": {
+                            "args": [
+                              [
+                                "elt",
+                                {
+                                  "type": "Var",
+                                  "name": "T"
+                                },
+                                null
+                              ]
+                            ],
+                            "ret_ty": {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "core",
+                                  "iter",
+                                  "sources",
+                                  "repeat",
+                                  "Repeat"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Var",
+                                  "name": "T"
+                                }
+                              ]
+                            },
+                            "body": {
+                              "Let": {
+                                "name": "elt",
+                                "is_user": false,
+                                "init": {
+                                  "Call": {
+                                    "func": {
+                                      "LocalVar": "M.alloc"
+                                    },
+                                    "args": [
+                                      {
+                                        "LocalVar": "elt"
+                                      }
+                                    ],
+                                    "kind": "Effectful"
+                                  }
+                                },
+                                "body": {
+                                  "StructStruct": {
+                                    "path": [
+                                      "core",
+                                      "iter",
+                                      "sources",
+                                      "repeat",
+                                      "Repeat"
+                                    ],
+                                    "fields": [
+                                      [
+                                        "element",
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "elt"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ]
+                                    ],
+                                    "base": null
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/sources/repeat.rs",
+                      "item": {
+                        "type": "TypeStructStruct",
+                        "name": "Repeat",
+                        "const_params": [],
+                        "ty_params": [
+                          "A"
+                        ],
+                        "fields": [
+                          [
+                            "element",
+                            {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          ]
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/sources/repeat.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "clone",
+                                "Clone"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "core",
+                              "iter",
+                              "sources",
+                              "repeat",
+                              "Repeat"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "clone",
+                          "Clone"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "clone",
+                            "snippet": [
+                              "Clone"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "core",
+                                                    "iter",
+                                                    "sources",
+                                                    "repeat",
+                                                    "Repeat"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "A"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "iter",
+                                            "sources",
+                                            "repeat",
+                                            "Repeat"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          }
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "StructStruct": {
+                                              "path": [
+                                                "core",
+                                                "iter",
+                                                "sources",
+                                                "repeat",
+                                                "Repeat"
+                                              ],
+                                              "fields": [
+                                                [
+                                                  "element",
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "core",
+                                                            "clone",
+                                                            "Clone"
+                                                          ],
+                                                          "self_ty": {
+                                                            "type": "Var",
+                                                            "name": "A"
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "clone",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "InternalString": "core::iter::sources::repeat::Repeat"
+                                                              },
+                                                              {
+                                                                "InternalString": "element"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                ]
+                                              ],
+                                              "base": null
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "clone_from",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/sources/repeat.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "fmt",
+                                "Debug"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "core",
+                              "iter",
+                              "sources",
+                              "repeat",
+                              "Repeat"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "fmt",
+                          "Debug"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "fmt",
+                            "snippet": [
+                              "Debug"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "core",
+                                                    "iter",
+                                                    "sources",
+                                                    "repeat",
+                                                    "Repeat"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "A"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "f",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "core",
+                                                    "fmt",
+                                                    "Formatter"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "result",
+                                            "Result"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Tuple",
+                                            "tys": []
+                                          },
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "fmt",
+                                                "Error"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": []
+                                          }
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "f",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "f"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "core",
+                                                            "fmt",
+                                                            "Formatter"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": []
+                                                      },
+                                                      "func": "debug_struct_field1_finish",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "f"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Literal": {
+                                                              "String": "Repeat"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Literal": {
+                                                              "String": "element"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.alloc"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "self"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "InternalString": "core::iter::sources::repeat::Repeat"
+                                                                },
+                                                                {
+                                                                  "InternalString": "element"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/sources/repeat.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "clone",
+                                "Clone"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "core",
+                              "iter",
+                              "sources",
+                              "repeat",
+                              "Repeat"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "iterator",
+                          "Iterator"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "Item",
+                            "snippet": [
+                              "    type Item = A;"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Type": {
+                                  "ty": {
+                                    "type": "Var",
+                                    "name": "A"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "next",
+                            "snippet": [
+                              "    fn next(&mut self) -> Option<A> {",
+                              "        Some(self.element.clone())",
+                              "    }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "core",
+                                                    "iter",
+                                                    "sources",
+                                                    "repeat",
+                                                    "Repeat"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "A"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "option",
+                                            "Option"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          }
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "StructTuple": {
+                                              "path": [
+                                                "core",
+                                                "option",
+                                                "Option",
+                                                "Some"
+                                              ],
+                                              "fields": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "GetTraitMethod": {
+                                                        "trait_name": [
+                                                          "core",
+                                                          "clone",
+                                                          "Clone"
+                                                        ],
+                                                        "self_ty": {
+                                                          "type": "Var",
+                                                          "name": "A"
+                                                        },
+                                                        "trait_tys": [],
+                                                        "method_name": "clone",
+                                                        "generic_tys": []
+                                                      }
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.read"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "self"
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            },
+                                                            {
+                                                              "InternalString": "core::iter::sources::repeat::Repeat"
+                                                            },
+                                                            {
+                                                              "InternalString": "element"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Closure"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "size_hint",
+                            "snippet": [
+                              "    fn size_hint(&self) -> (usize, Option<usize>) {",
+                              "        (usize::MAX, None)",
+                              "    }"
+                            ],
+                            "kind": {
+                              "OptionalValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "core",
+                                                    "iter",
+                                                    "sources",
+                                                    "repeat",
+                                                    "Repeat"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "A"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Tuple",
+                                        "tys": [
+                                          {
+                                            "type": "Path",
+                                            "path": [
+                                              "usize"
+                                            ]
+                                          },
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "option",
+                                                "Option"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Path",
+                                                "path": [
+                                                  "usize"
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Tuple": {
+                                              "elements": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "GetConst": [
+                                                          "core",
+                                                          "num",
+                                                          "MAX"
+                                                        ]
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                },
+                                                {
+                                                  "StructTuple": {
+                                                    "path": [
+                                                      "core",
+                                                      "option",
+                                                      "Option",
+                                                      "None"
+                                                    ],
+                                                    "fields": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "advance_by",
+                            "snippet": [
+                              "    fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {",
+                              "        // Advancing an infinite iterator of a single element is a no-op.",
+                              "        let _ = n;",
+                              "        Ok(())",
+                              "    }"
+                            ],
+                            "kind": {
+                              "OptionalValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "core",
+                                                    "iter",
+                                                    "sources",
+                                                    "repeat",
+                                                    "Repeat"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "A"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "n",
+                                          {
+                                            "type": "Path",
+                                            "path": [
+                                              "usize"
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "result",
+                                            "Result"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Tuple",
+                                            "tys": []
+                                          },
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "num",
+                                                "nonzero",
+                                                "NonZero"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Path",
+                                                "path": [
+                                                  "usize"
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "n",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "n"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Match": {
+                                                        "scrutinee": {
+                                                          "LocalVar": "n"
+                                                        },
+                                                        "arms": [
+                                                          {
+                                                            "Lambda": {
+                                                              "args": [
+                                                                [
+                                                                  "γ",
+                                                                  null
+                                                                ]
+                                                              ],
+                                                              "body": {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.alloc"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "StructTuple": {
+                                                                        "path": [
+                                                                          "core",
+                                                                          "result",
+                                                                          "Result",
+                                                                          "Ok"
+                                                                        ],
+                                                                        "fields": [
+                                                                          {
+                                                                            "Tuple": {
+                                                                              "elements": []
+                                                                            }
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              "is_for_match": true,
+                                                              "is_internal": true
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "nth",
+                            "snippet": [
+                              "    fn nth(&mut self, n: usize) -> Option<A> {",
+                              "        let _ = n;",
+                              "        Some(self.element.clone())",
+                              "    }"
+                            ],
+                            "kind": {
+                              "OptionalValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "core",
+                                                    "iter",
+                                                    "sources",
+                                                    "repeat",
+                                                    "Repeat"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "A"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "n",
+                                          {
+                                            "type": "Path",
+                                            "path": [
+                                              "usize"
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "option",
+                                            "Option"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          }
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "n",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "n"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Match": {
+                                                        "scrutinee": {
+                                                          "LocalVar": "n"
+                                                        },
+                                                        "arms": [
+                                                          {
+                                                            "Lambda": {
+                                                              "args": [
+                                                                [
+                                                                  "γ",
+                                                                  null
+                                                                ]
+                                                              ],
+                                                              "body": {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.alloc"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "StructTuple": {
+                                                                        "path": [
+                                                                          "core",
+                                                                          "option",
+                                                                          "Option",
+                                                                          "Some"
+                                                                        ],
+                                                                        "fields": [
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "GetTraitMethod": {
+                                                                                  "trait_name": [
+                                                                                    "core",
+                                                                                    "clone",
+                                                                                    "Clone"
+                                                                                  ],
+                                                                                  "self_ty": {
+                                                                                    "type": "Var",
+                                                                                    "name": "A"
+                                                                                  },
+                                                                                  "trait_tys": [],
+                                                                                  "method_name": "clone",
+                                                                                  "generic_tys": []
+                                                                                }
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "Call": {
+                                                                                    "func": {
+                                                                                      "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                                    },
+                                                                                    "args": [
+                                                                                      {
+                                                                                        "Call": {
+                                                                                          "func": {
+                                                                                            "LocalVar": "M.read"
+                                                                                          },
+                                                                                          "args": [
+                                                                                            {
+                                                                                              "LocalVar": "self"
+                                                                                            }
+                                                                                          ],
+                                                                                          "kind": "Effectful"
+                                                                                        }
+                                                                                      },
+                                                                                      {
+                                                                                        "InternalString": "core::iter::sources::repeat::Repeat"
+                                                                                      },
+                                                                                      {
+                                                                                        "InternalString": "element"
+                                                                                      }
+                                                                                    ],
+                                                                                    "kind": "Effectful"
+                                                                                  }
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Closure"
+                                                                            }
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              "is_for_match": true,
+                                                              "is_internal": true
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "last",
+                            "snippet": [
+                              "    fn last(self) -> Option<A> {",
+                              "        loop {}",
+                              "    }"
+                            ],
+                            "kind": {
+                              "OptionalValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "iter",
+                                                "sources",
+                                                "repeat",
+                                                "Repeat"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Var",
+                                                "name": "A"
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "option",
+                                            "Option"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          }
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.never_to_any"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Loop": {
+                                                          "body": {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.alloc"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Tuple": {
+                                                                    "elements": []
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "count",
+                            "snippet": [
+                              "    fn count(self) -> usize {",
+                              "        loop {}",
+                              "    }"
+                            ],
+                            "kind": {
+                              "OptionalValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "iter",
+                                                "sources",
+                                                "repeat",
+                                                "Repeat"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Var",
+                                                "name": "A"
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Path",
+                                        "path": [
+                                          "usize"
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.never_to_any"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Loop": {
+                                                          "body": {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.alloc"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Tuple": {
+                                                                    "elements": []
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "next_chunk",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "step_by",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "chain",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "zip",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "intersperse",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "intersperse_with",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "map",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "for_each",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "filter",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "filter_map",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "enumerate",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "peekable",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "skip_while",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "take_while",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "map_while",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "skip",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "take",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "scan",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "flat_map",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "flatten",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "map_windows",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "fuse",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "inspect",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "by_ref",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "collect",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "try_collect",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "collect_into",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "partition",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "partition_in_place",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "is_partitioned",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "try_fold",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "try_for_each",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "fold",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "reduce",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "try_reduce",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "all",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "any",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "find",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "find_map",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "try_find",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "position",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "rposition",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "max",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "min",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "max_by_key",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "max_by",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "min_by_key",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "min_by",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "rev",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "unzip",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "copied",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "cloned",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "cycle",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "array_chunks",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "sum",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "product",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "cmp",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "cmp_by",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "partial_cmp",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "partial_cmp_by",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "eq",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "eq_by",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "ne",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "lt",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "le",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "gt",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "ge",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "is_sorted",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "is_sorted_by",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "is_sorted_by_key",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "__iterator_get_unchecked",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/sources/repeat.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "clone",
+                                "Clone"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "core",
+                              "iter",
+                              "sources",
+                              "repeat",
+                              "Repeat"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "double_ended",
+                          "DoubleEndedIterator"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "next_back",
+                            "snippet": [
+                              "    fn next_back(&mut self) -> Option<A> {",
+                              "        Some(self.element.clone())",
+                              "    }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "core",
+                                                    "iter",
+                                                    "sources",
+                                                    "repeat",
+                                                    "Repeat"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "A"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "option",
+                                            "Option"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          }
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "StructTuple": {
+                                              "path": [
+                                                "core",
+                                                "option",
+                                                "Option",
+                                                "Some"
+                                              ],
+                                              "fields": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "GetTraitMethod": {
+                                                        "trait_name": [
+                                                          "core",
+                                                          "clone",
+                                                          "Clone"
+                                                        ],
+                                                        "self_ty": {
+                                                          "type": "Var",
+                                                          "name": "A"
+                                                        },
+                                                        "trait_tys": [],
+                                                        "method_name": "clone",
+                                                        "generic_tys": []
+                                                      }
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "LocalVar": "M.read"
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "LocalVar": "self"
+                                                                  }
+                                                                ],
+                                                                "kind": "Effectful"
+                                                              }
+                                                            },
+                                                            {
+                                                              "InternalString": "core::iter::sources::repeat::Repeat"
+                                                            },
+                                                            {
+                                                              "InternalString": "element"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Closure"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "advance_back_by",
+                            "snippet": [
+                              "    fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {",
+                              "        // Advancing an infinite iterator of a single element is a no-op.",
+                              "        let _ = n;",
+                              "        Ok(())",
+                              "    }"
+                            ],
+                            "kind": {
+                              "OptionalValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "core",
+                                                    "iter",
+                                                    "sources",
+                                                    "repeat",
+                                                    "Repeat"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "A"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "n",
+                                          {
+                                            "type": "Path",
+                                            "path": [
+                                              "usize"
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "result",
+                                            "Result"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Tuple",
+                                            "tys": []
+                                          },
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "num",
+                                                "nonzero",
+                                                "NonZero"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Path",
+                                                "path": [
+                                                  "usize"
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "n",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "n"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Match": {
+                                                        "scrutinee": {
+                                                          "LocalVar": "n"
+                                                        },
+                                                        "arms": [
+                                                          {
+                                                            "Lambda": {
+                                                              "args": [
+                                                                [
+                                                                  "γ",
+                                                                  null
+                                                                ]
+                                                              ],
+                                                              "body": {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.alloc"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "StructTuple": {
+                                                                        "path": [
+                                                                          "core",
+                                                                          "result",
+                                                                          "Result",
+                                                                          "Ok"
+                                                                        ],
+                                                                        "fields": [
+                                                                          {
+                                                                            "Tuple": {
+                                                                              "elements": []
+                                                                            }
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              "is_for_match": true,
+                                                              "is_internal": true
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "nth_back",
+                            "snippet": [
+                              "    fn nth_back(&mut self, n: usize) -> Option<A> {",
+                              "        let _ = n;",
+                              "        Some(self.element.clone())",
+                              "    }"
+                            ],
+                            "kind": {
+                              "OptionalValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "core",
+                                                    "iter",
+                                                    "sources",
+                                                    "repeat",
+                                                    "Repeat"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": [
+                                                  {
+                                                    "type": "Var",
+                                                    "name": "A"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "n",
+                                          {
+                                            "type": "Path",
+                                            "path": [
+                                              "usize"
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "option",
+                                            "Option"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "A"
+                                          }
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "n",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "n"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Match": {
+                                                        "scrutinee": {
+                                                          "LocalVar": "n"
+                                                        },
+                                                        "arms": [
+                                                          {
+                                                            "Lambda": {
+                                                              "args": [
+                                                                [
+                                                                  "γ",
+                                                                  null
+                                                                ]
+                                                              ],
+                                                              "body": {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.alloc"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "StructTuple": {
+                                                                        "path": [
+                                                                          "core",
+                                                                          "option",
+                                                                          "Option",
+                                                                          "Some"
+                                                                        ],
+                                                                        "fields": [
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "GetTraitMethod": {
+                                                                                  "trait_name": [
+                                                                                    "core",
+                                                                                    "clone",
+                                                                                    "Clone"
+                                                                                  ],
+                                                                                  "self_ty": {
+                                                                                    "type": "Var",
+                                                                                    "name": "A"
+                                                                                  },
+                                                                                  "trait_tys": [],
+                                                                                  "method_name": "clone",
+                                                                                  "generic_tys": []
+                                                                                }
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "Call": {
+                                                                                    "func": {
+                                                                                      "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                                    },
+                                                                                    "args": [
+                                                                                      {
+                                                                                        "Call": {
+                                                                                          "func": {
+                                                                                            "LocalVar": "M.read"
+                                                                                          },
+                                                                                          "args": [
+                                                                                            {
+                                                                                              "LocalVar": "self"
+                                                                                            }
+                                                                                          ],
+                                                                                          "kind": "Effectful"
+                                                                                        }
+                                                                                      },
+                                                                                      {
+                                                                                        "InternalString": "core::iter::sources::repeat::Repeat"
+                                                                                      },
+                                                                                      {
+                                                                                        "InternalString": "element"
+                                                                                      }
+                                                                                    ],
+                                                                                    "kind": "Effectful"
+                                                                                  }
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Closure"
+                                                                            }
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              "is_for_match": true,
+                                                              "is_internal": true
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "try_rfold",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "rfold",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "rfind",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/sources/repeat.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "clone",
+                                "Clone"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "core",
+                              "iter",
+                              "sources",
+                              "repeat",
+                              "Repeat"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "marker",
+                          "FusedIterator"
+                        ],
+                        "trait_ty_params": [],
+                        "items": []
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/sources/repeat.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "A"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "clone",
+                                "Clone"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "core",
+                              "iter",
+                              "sources",
+                              "repeat",
+                              "Repeat"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "A"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "marker",
+                          "TrustedLen"
+                        ],
+                        "trait_ty_params": [],
+                        "items": []
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

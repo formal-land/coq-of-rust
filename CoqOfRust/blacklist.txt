@@ -18,4 +18,5 @@ core/iter/adapters/flatten.v
 token-2022
 # Links that are not working yet
 core/links/cmp.v
-move_sui/links/
+links/move_sui/move_binary_format/file_format.v
+links/move_sui/move_bytecode_verifier/type_safety.v

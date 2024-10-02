@@ -1,0 +1,72 @@
+[
+  {
+    "file_name": "crates/move-binary-format/src/internals.rs",
+    "item": {
+      "type": "Module",
+      "name": "internals",
+      "body": [
+        {
+          "file_name": "crates/move-binary-format/src/internals.rs",
+          "item": {
+            "type": "Trait",
+            "name": "ModuleIndex",
+            "path": [
+              "move_binary_format",
+              "internals",
+              "ModuleIndex"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "body": [
+              [
+                "value_KIND",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "move_binary_format",
+                          "IndexKind"
+                        ]
+                      },
+                      "consts": [],
+                      "tys": []
+                    }
+                  }
+                }
+              ],
+              [
+                "into_index",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Var",
+                          "name": "Self"
+                        }
+                      ],
+                      "ret": {
+                        "type": "Path",
+                        "path": [
+                          "usize"
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  }
+]
