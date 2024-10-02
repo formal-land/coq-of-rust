@@ -62,6 +62,17 @@ Module List.
       | S index => x :: replace_at l index update
       end
     end.
+
+  Fixpoint replace_at_error {A : Set} (l : list A) (index : nat) (update : A) :
+      option (list A) :=
+    match l with
+    | [] => None
+    | x :: l =>
+      match index with
+      | O => Some (update :: l)
+      | S index => option_map (cons x) (replace_at_error l index update)
+      end
+    end.
 End List.
 
 Module IntegerKind.
@@ -120,44 +131,11 @@ Module Pointer.
     Definition t : Set := list Index.t.
   End Path.
 
-  Module Mutable.
-    Inductive t (Value A : Set) : Set :=
-    | Make {Address Big_A : Set}
-      (address : Address)
-      (path : Path.t)
-      (big_to_value : Big_A -> Value)
-      (projection : Big_A -> option A)
-      (injection : Big_A -> A -> option Big_A).
-    Arguments Make {_ _ _ _}.
-  End Mutable.
-
-  Module Core.
-    Inductive t (Value A : Set) : Set :=
-    | Immediate (value : Value)
-    | Mutable (mutable : Mutable.t Value A).
-    Arguments Immediate {_ _}.
-    Arguments Mutable {_ _}.
-  End Core.
-
-  Module Kind.
-    Inductive t : Set :=
-    | Ref
-    | MutRef
-    | ConstPointer
-    | MutPointer.
-
-    Definition to_ty_path (kind : t) : string :=
-      match kind with
-      | Ref => "&"
-      | MutRef => "&mut"
-      | ConstPointer => "*const"
-      | MutPointer => "*mut"
-      end.
-  End Kind.
-
   Inductive t (Value : Set) : Set :=
-  | Make {A : Set} (kind : Kind.t) (ty : Ty.t) (to_value : A -> Value) (core : Core.t Value A).
-  Arguments Make {_ _}.
+  | Immediate (value : Value)
+  | Mutable (address : nat) (path : Path.t).
+  Arguments Immediate {_}.
+  Arguments Mutable {_}.
 End Pointer.
 
 Module Value.
@@ -222,6 +200,16 @@ Module Value.
       end
     end.
 
+  Fixpoint read_path (value : Value.t) (path : Pointer.Path.t) : option Value.t :=
+    match path with
+    | [] => Some value
+    | index :: path =>
+      match read_index value index with
+      | Some value => read_path value path
+      | None => None
+      end
+    end.
+
   (** Update the part of a value at a certain [index], and return [None] if the index is of invalid
       shape. *)
   Definition write_index
@@ -255,6 +243,22 @@ Module Value.
         else
           None
       | _ => None
+      end
+    end.
+
+  Fixpoint write_path
+      (value : Value.t) (path : Pointer.Path.t) (update : Value.t) :
+      option Value.t :=
+    match path with
+    | [] => Some update
+    | index :: path =>
+      match read_index value index with
+      | Some sub_value =>
+        match write_path sub_value path update with
+        | Some sub_value => write_index value index sub_value
+        | None => None
+        end
+      | None => None
       end
     end.
 End Value.
