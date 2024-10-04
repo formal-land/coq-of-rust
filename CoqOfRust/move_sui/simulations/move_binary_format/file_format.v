@@ -1069,6 +1069,13 @@ Module Bytecode.
   | CastU16
   | CastU32
   | CastU256.
+
+  Definition offset (self : Bytecode.t) : option Z :=
+  match self with
+  | Bytecode.BrFalse offset | Bytecode.BrTrue offset | Bytecode.Branch offset
+    => Some offset
+  | _ => None
+  end.
 End Bytecode.
 
 Module CodeUnit.
