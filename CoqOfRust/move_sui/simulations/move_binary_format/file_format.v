@@ -1086,11 +1086,10 @@ Module Bytecode.
     is_conditional_branch self || is_unconditional_branch self.
 
   Definition offset (self : Bytecode.t) : option Z :=
-  match self with
-  | Bytecode.BrFalse offset | Bytecode.BrTrue offset | Bytecode.Branch offset
-    => Some offset
-  | _ => None
-  end.
+    match self with
+    | Bytecode.BrFalse offset | Bytecode.BrTrue offset | Bytecode.Branch offset => Some offset
+    | _ => None
+    end.
 End Bytecode.
 
 Module CodeUnit.
