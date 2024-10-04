@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust.move_sui.simulations.mutual.lib.
+Require Import Coq.Lists.List.
 
 Import simulations.M.Notations.
 
@@ -64,7 +65,7 @@ Module Impl_VMControlFlowGraph.
    *)
 
   Definition code_len (code : list Bytecode.t) : CodeOffset.t :=
-  Z.of_nat (List.length code).
+    Z.of_nat (List.length code).
 
   (*
   Definition new (code : list Bytecode.t) : VMControlFlowGraph.t :=
@@ -91,13 +92,19 @@ Module Impl_VMControlFlowGraph.
                             (block_ids : Set_.t BlockId.t) : Set_.t BlockId.t :=
   match List.nth_error code (Z.to_nat pc) with
   | Some bytecode =>
+    let block_ids :=
       match Bytecode.offset bytecode with
       | Some offset => Set_.add offset block_ids
       | None => block_ids
-      end
+      end in
+    if andb (Bytecode.is_branch bytecode) ((pc + 1) <? Z.of_nat (length code)) then
+      Set_.add (pc + 1)%Z block_ids
+    else
+      block_ids
   | None => block_ids
-  (* Need to add branch (if statement) *)
   end.
+
+    
 
   (* We put here the functions from the trait [ControlFlowGraph] as it is used only once. *)
   (*
