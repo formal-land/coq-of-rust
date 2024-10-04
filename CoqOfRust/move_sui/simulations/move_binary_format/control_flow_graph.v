@@ -14,6 +14,11 @@ Module BlockId.
   Definition t : Set := CodeOffset.t.
 End BlockId.
 
+(*
+const ENTRY_BLOCK_ID: BlockId = 0;
+*)
+Definition ENTRY_BLOCK_ID : BlockId.t := 0.
+
 (* pub trait ControlFlowGraph { *)
 (* We do not implement this trait as it is used only once. *)
 
@@ -50,7 +55,46 @@ Module VMControlFlowGraph.
 End VMControlFlowGraph.
 
 Module Impl_VMControlFlowGraph.
-  Definition new (code : list Bytecode.t) : VMControlFlowGraph.t. Admitted.
+  (* Admitted:
+   * Definition new (code : list Bytecode.t) : VMControlFlowGraph.t. Admitted.
+   *)
+
+  (*
+   * Beginning of the `new` function:
+   *)
+
+  Definition code_len (code : list Bytecode.t) : CodeOffset.t :=
+  Z.of_nat (List.length code).
+
+  Definition new (code : list Bytecode.t) : VMControlFlowGraph.t :=
+    let code_length := code_len code in
+    let block_ids := BlockIdSet.add ENTRY_BLOCK_ID BlockIdSet.empty in
+  (*
+  fn record_block_ids(pc: CodeOffset, code: &[Bytecode], block_ids: &mut Set<BlockId>) {
+      let bytecode = &code[pc as usize];
+
+      if let Some(offset) = bytecode.offset() {
+          block_ids.insert(*offset); (* Dereferencing syntax *)*)
+      }
+
+      if bytecode.is_branch() && pc + 1 < (code.len() as CodeOffset) {
+          block_ids.insert(pc + 1);
+      }
+  }
+  *)
+
+  Definition record_block_ids (pc : CodeOffset.t)
+                            (code : list Bytecode.t)
+                            (block_ids : Set_.t BlockId.t) : Set_.t BlockId.t :=
+  match List.nth_error code (Z.to_nat pc) with
+  | Some bytecode =>
+      match Bytecode.offset bytecode with
+      | Some offset => Set_.add offset block_ids
+      | None => block_ids
+      end
+  | None => block_ids
+  (* Need to add branch (if statement) *)
+  end.
 
   (* We put here the functions from the trait [ControlFlowGraph] as it is used only once. *)
   (*
