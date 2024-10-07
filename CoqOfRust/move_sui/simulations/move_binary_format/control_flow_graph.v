@@ -56,9 +56,8 @@ Module VMControlFlowGraph.
 End VMControlFlowGraph.
 
 Module Impl_VMControlFlowGraph.
-  (* Admitted:
-   * Definition new (code : list Bytecode.t) : VMControlFlowGraph.t. Admitted.
-   *)
+  (* TODO: complete *)
+  Definition new (code : list Bytecode.t) : VMControlFlowGraph.t. Admitted.
 
   (*
    * Beginning of the `new` function:
@@ -87,24 +86,24 @@ Module Impl_VMControlFlowGraph.
   }
   *)
 
-  Definition record_block_ids (pc : CodeOffset.t)
-                            (code : list Bytecode.t)
-                            (block_ids : Set_.t BlockId.t) : Set_.t BlockId.t :=
-  match List.nth_error code (Z.to_nat pc) with
-  | Some bytecode =>
-    let block_ids :=
-      match Bytecode.offset bytecode with
-      | Some offset => Set_.add offset block_ids
-      | None => block_ids
-      end in
-    if andb (Bytecode.is_branch bytecode) ((pc + 1) <? Z.of_nat (length code)) then
-      Set_.add (pc + 1)%Z block_ids
-    else
-      block_ids
-  | None => block_ids
-  end.
-
-    
+  Definition record_block_ids
+      (pc : CodeOffset.t)
+      (code : list Bytecode.t)
+      (block_ids : Set_.t BlockId.t) :
+      Set_.t BlockId.t :=
+    match List.nth_error code (Z.to_nat pc) with
+    | Some bytecode =>
+      let block_ids :=
+        match Bytecode.offset bytecode with
+        | Some offset => Set_.add offset block_ids
+        | None => block_ids
+        end in
+      if andb (Bytecode.is_branch bytecode) ((pc + 1) <? Z.of_nat (length code)) then
+        Set_.add (pc + 1)%Z block_ids
+      else
+        block_ids
+    | None => block_ids
+    end.
 
   (* We put here the functions from the trait [ControlFlowGraph] as it is used only once. *)
   (*

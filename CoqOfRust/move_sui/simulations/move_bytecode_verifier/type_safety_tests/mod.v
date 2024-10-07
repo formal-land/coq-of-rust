@@ -97,7 +97,7 @@ Definition get_fun_context (module : file_format.CompiledModule.t) :
   | function_def :: _, function_handle :: _ =>
     match function_def.(file_format.FunctionDefinition.code) with
     | Some code =>
-      return!? $ type_safety.FunctionContext.new
+      return!? $ absint.Impl_FunctionContext.new
         module
         (file_format.FunctionDefinitionIndex.Build_t 0)
         code
