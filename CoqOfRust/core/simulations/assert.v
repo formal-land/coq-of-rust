@@ -8,15 +8,15 @@ Import simulations.eq.Notations.
 
 Module Assert.
   Module Stateful.
-    Definition assert {State : Set} (b : MS? State string bool) :
-        MS? State string unit :=
+    Definition assert {State : Set} (b : MS? State bool) :
+        MS? State unit :=
       ifS? b
       then returnS? tt
       else panicS? "assertion failed".
 
     Definition assert_eq
-        {State A : Set} (x y :  MS? State string A) `{Eq.Trait A} :
-        MS? State string unit :=
+        {State A : Set} (x y :  MS? State A) `{Eq.Trait A} :
+        MS? State unit :=
       assert (
         letS? x := x in
         letS? y := y in
@@ -25,15 +25,15 @@ Module Assert.
   End Stateful.
 
   Definition assert {State : Set} (b : bool) :
-      MS? State string unit :=
+      MS? State unit :=
     Stateful.assert (returnS? b).
 
   Definition assert_eq
       {State A : Set} (x y : A) `{Eq.Trait A} :
-      MS? State string unit :=
+      MS? State unit :=
     Stateful.assert_eq (returnS? x) (returnS? y).
 
-  Definition test {State : Set} (x : MS? State string unit) (s : State) : Prop :=
+  Definition test {State : Set} (x : MS? State unit) (s : State) : Prop :=
     fst (x s) = return!? tt.
 End Assert.
 

@@ -18,8 +18,8 @@ Module Option.
     end.
 
   Definition expect {State A : Set}
-      (self : MS? State string (option A)) (msg : string) :
-      MS? State string A :=
+      (self : MS? State (option A)) (msg : string) :
+      MS? State A :=
     letS? value := self in
     match value with
     | None => panicS? msg
@@ -27,7 +27,7 @@ Module Option.
     end.
 
   Definition unwrap {State A : Set}
-    (self : MS? State string (option A)) : MS? State string A :=
+    (self : MS? State (option A)) : MS? State A :=
     expect self "".
 End Option.
 
