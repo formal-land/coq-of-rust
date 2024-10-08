@@ -33,7 +33,13 @@ Module slice.
               let min_idx = min_index(v, &mut is_less).unwrap();
               v.swap(min_idx, index);
           } else {
-              partition_at_index_loop(v, index, None, &mut is_less);
+              cfg_if! {
+                  if #[cfg(feature = "optimize_for_size")] {
+                      median_of_medians(v, &mut is_less, index);
+                  } else {
+                      partition_at_index_loop(v, index, None, &mut is_less);
+                  }
+              }
           }
       
           let (left, right) = v.split_at_mut(index);
@@ -1356,6 +1362,7 @@ Module slice.
                   if v.len() >= 2 {
                       insertion_sort_shift_left(v, 1, is_less);
                   }
+      
                   return;
               }
       

@@ -12171,8 +12171,8 @@ Module collections.
       
       (*
           pub const fn new() -> VecDeque<T> {
-              // FIXME: This should just be `VecDeque::new_in(Global)` once that hits stable.
-              VecDeque { head: 0, len: 0, buf: RawVec::NEW }
+              // FIXME(const-hack): This should just be `VecDeque::new_in(Global)` once that hits stable.
+              VecDeque { head: 0, len: 0, buf: RawVec::new() }
           }
       *)
       Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -12185,7 +12185,18 @@ Module collections.
               [
                 ("head", Value.Integer IntegerKind.Usize 0);
                 ("len", Value.Integer IntegerKind.Usize 0);
-                ("buf", M.read (| M.get_constant (| "alloc::raw_vec::NEW" |) |))
+                ("buf",
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "alloc::raw_vec::RawVec")
+                        []
+                        [ T; Ty.path "alloc::alloc::Global" ],
+                      "new",
+                      []
+                    |),
+                    []
+                  |))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

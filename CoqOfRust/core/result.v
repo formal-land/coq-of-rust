@@ -2278,11 +2278,16 @@ Module result.
       Ty.apply (Ty.path "core::result::Result") [] [ Ty.apply (Ty.path "&") [] [ T ]; E ].
     
     (*
-        pub fn copied(self) -> Result<T, E>
+        pub const fn copied(self) -> Result<T, E>
         where
             T: Copy,
         {
-            self.map(|&t| t)
+            // FIXME(const-hack): this implementation, which sidesteps using `Result::map` since it's not const
+            // ready yet, should be reverted when possible to avoid code repetition
+            match self {
+                Ok(&v) => Ok(v),
+                Err(e) => Err(e),
+            }
         }
     *)
     Definition copied (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2291,33 +2296,25 @@ Module result.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply (Ty.path "core::result::Result") [] [ Ty.apply (Ty.path "&") [] [ T ]; E ],
-              "map",
-              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ] T ]
-            |),
-            [
-              M.read (| self |);
-              M.closure
-                (fun γ =>
+          M.read (|
+            M.match_operator (|
+              self,
+              [
+                fun γ =>
                   ltac:(M.monadic
-                    match γ with
-                    | [ α0 ] =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
-                                let t := M.copy (| γ |) in
-                                M.read (| t |)))
-                          ]
-                        |)))
-                    | _ => M.impossible "wrong number of arguments"
-                    end))
-            ]
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+                    let γ0_0 := M.read (| γ0_0 |) in
+                    let v := M.copy (| γ0_0 |) in
+                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| v |) ] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+                    let e := M.copy (| γ0_0 |) in
+                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+              ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2383,11 +2380,16 @@ Module result.
       Ty.apply (Ty.path "core::result::Result") [] [ Ty.apply (Ty.path "&mut") [] [ T ]; E ].
     
     (*
-        pub fn copied(self) -> Result<T, E>
+        pub const fn copied(self) -> Result<T, E>
         where
             T: Copy,
         {
-            self.map(|&mut t| t)
+            // FIXME(const-hack): this implementation, which sidesteps using `Result::map` since it's not const
+            // ready yet, should be reverted when possible to avoid code repetition
+            match self {
+                Ok(&mut v) => Ok(v),
+                Err(e) => Err(e),
+            }
         }
     *)
     Definition copied (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2396,36 +2398,25 @@ Module result.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.apply (Ty.path "&mut") [] [ T ]; E ],
-              "map",
-              [ T; Ty.function [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ] T ]
-            |),
-            [
-              M.read (| self |);
-              M.closure
-                (fun γ =>
+          M.read (|
+            M.match_operator (|
+              self,
+              [
+                fun γ =>
                   ltac:(M.monadic
-                    match γ with
-                    | [ α0 ] =>
-                      ltac:(M.monadic
-                        (M.match_operator (|
-                          M.alloc (| α0 |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := M.read (| γ |) in
-                                let t := M.copy (| γ |) in
-                                M.read (| t |)))
-                          ]
-                        |)))
-                    | _ => M.impossible "wrong number of arguments"
-                    end))
-            ]
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+                    let γ0_0 := M.read (| γ0_0 |) in
+                    let v := M.copy (| γ0_0 |) in
+                    M.alloc (| Value.StructTuple "core::result::Result::Ok" [ M.read (| v |) ] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+                    let e := M.copy (| γ0_0 |) in
+                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
+              ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2566,8 +2557,12 @@ Module result.
         [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ]; E ].
     
     (*
-        pub fn flatten(self) -> Result<T, E> {
-            self.and_then(convert::identity)
+        pub const fn flatten(self) -> Result<T, E> {
+            // FIXME(const-hack): could be written with `and_then`
+            match self {
+                Ok(inner) => inner,
+                Err(e) => Err(e),
+            }
         }
     *)
     Definition flatten (T E : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2576,27 +2571,24 @@ Module result.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ]; E ],
-              "and_then",
+          M.read (|
+            M.match_operator (|
+              self,
               [
-                T;
-                Ty.function
-                  [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
-                  (Ty.apply (Ty.path "core::result::Result") [] [ T; E ])
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Ok", 0 |) in
+                    let inner := M.copy (| γ0_0 |) in
+                    inner));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "core::result::Result::Err", 0 |) in
+                    let e := M.copy (| γ0_0 |) in
+                    M.alloc (| Value.StructTuple "core::result::Result::Err" [ M.read (| e |) ] |)))
               ]
-            |),
-            [
-              M.read (| self |);
-              M.get_function (|
-                "core::convert::identity",
-                [ Ty.apply (Ty.path "core::result::Result") [] [ T; E ] ]
-              |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

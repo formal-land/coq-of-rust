@@ -4514,31 +4514,14 @@ Module num.
       
       (*
               pub const fn isqrt(self) -> Self {
-                  // The algorithm is based on the one presented in
-                  // <https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_(base_2)>
-                  // which cites as source the following C code:
-                  // <https://web.archive.org/web/20120306040058/http://medialab.freaknet.org/martin/src/sqrt/sqrt.c>.
+                  let result = self.get().isqrt();
       
-                  let mut op = self.get();
-                  let mut res = 0;
-                  let mut one = 1 << (self.ilog2() & !1);
-      
-                  while one != 0 {
-                      if op >= res + one {
-                          op -= res + one;
-                          res = (res >> 1) + one;
-                      } else {
-                          res >>= 1;
-                      }
-                      one >>= 2;
-                  }
-      
-                  // SAFETY: The result fits in an integer with half as many bits.
-                  // Inform the optimizer about it.
-                  unsafe { hint::assert_unchecked(res < 1 << (Self::BITS / 2)) };
-      
-                  // SAFETY: The square root of an integer >= 1 is always >= 1.
-                  unsafe { Self::new_unchecked(res) }
+                  // SAFETY: Integer square root is a monotonically nondecreasing
+                  // function, which means that increasing the input will never cause
+                  // the output to decrease. Thus, since the input for nonzero
+                  // unsigned integers has a lower bound of 1, the lower bound of the
+                  // results will be sqrt(1), which is 1, so a result can't be zero.
+                  unsafe { Self::new_unchecked(result) }
               }
       *)
       Definition isqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4547,141 +4530,18 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ op :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                      "get",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ res := M.alloc (| Value.Integer IntegerKind.U8 0 |) in
-              let~ one :=
-                M.alloc (|
-                  BinOp.Wrap.shl (|
-                    Value.Integer IntegerKind.U8 1,
-                    BinOp.bit_and
-                      (M.call_closure (|
+                    M.get_associated_function (| Ty.path "u8", "isqrt", [] |),
+                    [
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "ilog2",
+                          "get",
                           []
                         |),
                         [ M.read (| self |) ]
-                      |))
-                      (UnOp.not (| Value.Integer IntegerKind.U32 1 |))
-                  |)
-                |) in
-              let~ _ :=
-                M.loop (|
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.ne (| M.read (| one |), Value.Integer IntegerKind.U8 0 |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
-                              M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            BinOp.ge (|
-                                              M.read (| op |),
-                                              BinOp.Wrap.add (|
-                                                M.read (| res |),
-                                                M.read (| one |)
-                                              |)
-                                            |)
-                                          |)) in
-                                      let _ :=
-                                        M.is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      let~ _ :=
-                                        let β := op in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.sub (|
-                                            M.read (| β |),
-                                            BinOp.Wrap.add (| M.read (| res |), M.read (| one |) |)
-                                          |)
-                                        |) in
-                                      let~ _ :=
-                                        M.write (|
-                                          res,
-                                          BinOp.Wrap.add (|
-                                            BinOp.Wrap.shr (|
-                                              M.read (| res |),
-                                              Value.Integer IntegerKind.I32 1
-                                            |),
-                                            M.read (| one |)
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let~ _ :=
-                                        let β := res in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.shr (|
-                                            M.read (| β |),
-                                            Value.Integer IntegerKind.I32 1
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            let~ _ :=
-                              let β := one in
-                              M.write (|
-                                β,
-                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ _ :=
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |)))
-                |) in
-              let~ _ :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
-                    [
-                      BinOp.lt (|
-                        M.read (| res |),
-                        BinOp.Wrap.shl (|
-                          Value.Integer IntegerKind.U8 1,
-                          BinOp.Wrap.div (|
-                            M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                            Value.Integer IntegerKind.U32 2
-                          |)
-                        |)
                       |)
                     ]
                   |)
@@ -4693,7 +4553,7 @@ Module num.
                     "new_unchecked",
                     []
                   |),
-                  [ M.read (| res |) ]
+                  [ M.read (| result |) ]
                 |)
               |)
             |)))
@@ -6308,31 +6168,14 @@ Module num.
       
       (*
               pub const fn isqrt(self) -> Self {
-                  // The algorithm is based on the one presented in
-                  // <https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_(base_2)>
-                  // which cites as source the following C code:
-                  // <https://web.archive.org/web/20120306040058/http://medialab.freaknet.org/martin/src/sqrt/sqrt.c>.
+                  let result = self.get().isqrt();
       
-                  let mut op = self.get();
-                  let mut res = 0;
-                  let mut one = 1 << (self.ilog2() & !1);
-      
-                  while one != 0 {
-                      if op >= res + one {
-                          op -= res + one;
-                          res = (res >> 1) + one;
-                      } else {
-                          res >>= 1;
-                      }
-                      one >>= 2;
-                  }
-      
-                  // SAFETY: The result fits in an integer with half as many bits.
-                  // Inform the optimizer about it.
-                  unsafe { hint::assert_unchecked(res < 1 << (Self::BITS / 2)) };
-      
-                  // SAFETY: The square root of an integer >= 1 is always >= 1.
-                  unsafe { Self::new_unchecked(res) }
+                  // SAFETY: Integer square root is a monotonically nondecreasing
+                  // function, which means that increasing the input will never cause
+                  // the output to decrease. Thus, since the input for nonzero
+                  // unsigned integers has a lower bound of 1, the lower bound of the
+                  // results will be sqrt(1), which is 1, so a result can't be zero.
+                  unsafe { Self::new_unchecked(result) }
               }
       *)
       Definition isqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -6341,141 +6184,18 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ op :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                      "get",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ res := M.alloc (| Value.Integer IntegerKind.U16 0 |) in
-              let~ one :=
-                M.alloc (|
-                  BinOp.Wrap.shl (|
-                    Value.Integer IntegerKind.U16 1,
-                    BinOp.bit_and
-                      (M.call_closure (|
+                    M.get_associated_function (| Ty.path "u16", "isqrt", [] |),
+                    [
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "ilog2",
+                          "get",
                           []
                         |),
                         [ M.read (| self |) ]
-                      |))
-                      (UnOp.not (| Value.Integer IntegerKind.U32 1 |))
-                  |)
-                |) in
-              let~ _ :=
-                M.loop (|
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.ne (| M.read (| one |), Value.Integer IntegerKind.U16 0 |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
-                              M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            BinOp.ge (|
-                                              M.read (| op |),
-                                              BinOp.Wrap.add (|
-                                                M.read (| res |),
-                                                M.read (| one |)
-                                              |)
-                                            |)
-                                          |)) in
-                                      let _ :=
-                                        M.is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      let~ _ :=
-                                        let β := op in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.sub (|
-                                            M.read (| β |),
-                                            BinOp.Wrap.add (| M.read (| res |), M.read (| one |) |)
-                                          |)
-                                        |) in
-                                      let~ _ :=
-                                        M.write (|
-                                          res,
-                                          BinOp.Wrap.add (|
-                                            BinOp.Wrap.shr (|
-                                              M.read (| res |),
-                                              Value.Integer IntegerKind.I32 1
-                                            |),
-                                            M.read (| one |)
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let~ _ :=
-                                        let β := res in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.shr (|
-                                            M.read (| β |),
-                                            Value.Integer IntegerKind.I32 1
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            let~ _ :=
-                              let β := one in
-                              M.write (|
-                                β,
-                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ _ :=
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |)))
-                |) in
-              let~ _ :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
-                    [
-                      BinOp.lt (|
-                        M.read (| res |),
-                        BinOp.Wrap.shl (|
-                          Value.Integer IntegerKind.U16 1,
-                          BinOp.Wrap.div (|
-                            M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                            Value.Integer IntegerKind.U32 2
-                          |)
-                        |)
                       |)
                     ]
                   |)
@@ -6487,7 +6207,7 @@ Module num.
                     "new_unchecked",
                     []
                   |),
-                  [ M.read (| res |) ]
+                  [ M.read (| result |) ]
                 |)
               |)
             |)))
@@ -8102,31 +7822,14 @@ Module num.
       
       (*
               pub const fn isqrt(self) -> Self {
-                  // The algorithm is based on the one presented in
-                  // <https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_(base_2)>
-                  // which cites as source the following C code:
-                  // <https://web.archive.org/web/20120306040058/http://medialab.freaknet.org/martin/src/sqrt/sqrt.c>.
+                  let result = self.get().isqrt();
       
-                  let mut op = self.get();
-                  let mut res = 0;
-                  let mut one = 1 << (self.ilog2() & !1);
-      
-                  while one != 0 {
-                      if op >= res + one {
-                          op -= res + one;
-                          res = (res >> 1) + one;
-                      } else {
-                          res >>= 1;
-                      }
-                      one >>= 2;
-                  }
-      
-                  // SAFETY: The result fits in an integer with half as many bits.
-                  // Inform the optimizer about it.
-                  unsafe { hint::assert_unchecked(res < 1 << (Self::BITS / 2)) };
-      
-                  // SAFETY: The square root of an integer >= 1 is always >= 1.
-                  unsafe { Self::new_unchecked(res) }
+                  // SAFETY: Integer square root is a monotonically nondecreasing
+                  // function, which means that increasing the input will never cause
+                  // the output to decrease. Thus, since the input for nonzero
+                  // unsigned integers has a lower bound of 1, the lower bound of the
+                  // results will be sqrt(1), which is 1, so a result can't be zero.
+                  unsafe { Self::new_unchecked(result) }
               }
       *)
       Definition isqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -8135,141 +7838,18 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ op :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                      "get",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ res := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
-              let~ one :=
-                M.alloc (|
-                  BinOp.Wrap.shl (|
-                    Value.Integer IntegerKind.U32 1,
-                    BinOp.bit_and
-                      (M.call_closure (|
+                    M.get_associated_function (| Ty.path "u32", "isqrt", [] |),
+                    [
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "ilog2",
+                          "get",
                           []
                         |),
                         [ M.read (| self |) ]
-                      |))
-                      (UnOp.not (| Value.Integer IntegerKind.U32 1 |))
-                  |)
-                |) in
-              let~ _ :=
-                M.loop (|
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.ne (| M.read (| one |), Value.Integer IntegerKind.U32 0 |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
-                              M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            BinOp.ge (|
-                                              M.read (| op |),
-                                              BinOp.Wrap.add (|
-                                                M.read (| res |),
-                                                M.read (| one |)
-                                              |)
-                                            |)
-                                          |)) in
-                                      let _ :=
-                                        M.is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      let~ _ :=
-                                        let β := op in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.sub (|
-                                            M.read (| β |),
-                                            BinOp.Wrap.add (| M.read (| res |), M.read (| one |) |)
-                                          |)
-                                        |) in
-                                      let~ _ :=
-                                        M.write (|
-                                          res,
-                                          BinOp.Wrap.add (|
-                                            BinOp.Wrap.shr (|
-                                              M.read (| res |),
-                                              Value.Integer IntegerKind.I32 1
-                                            |),
-                                            M.read (| one |)
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let~ _ :=
-                                        let β := res in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.shr (|
-                                            M.read (| β |),
-                                            Value.Integer IntegerKind.I32 1
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            let~ _ :=
-                              let β := one in
-                              M.write (|
-                                β,
-                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ _ :=
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |)))
-                |) in
-              let~ _ :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
-                    [
-                      BinOp.lt (|
-                        M.read (| res |),
-                        BinOp.Wrap.shl (|
-                          Value.Integer IntegerKind.U32 1,
-                          BinOp.Wrap.div (|
-                            M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                            Value.Integer IntegerKind.U32 2
-                          |)
-                        |)
                       |)
                     ]
                   |)
@@ -8281,7 +7861,7 @@ Module num.
                     "new_unchecked",
                     []
                   |),
-                  [ M.read (| res |) ]
+                  [ M.read (| result |) ]
                 |)
               |)
             |)))
@@ -9896,31 +9476,14 @@ Module num.
       
       (*
               pub const fn isqrt(self) -> Self {
-                  // The algorithm is based on the one presented in
-                  // <https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_(base_2)>
-                  // which cites as source the following C code:
-                  // <https://web.archive.org/web/20120306040058/http://medialab.freaknet.org/martin/src/sqrt/sqrt.c>.
+                  let result = self.get().isqrt();
       
-                  let mut op = self.get();
-                  let mut res = 0;
-                  let mut one = 1 << (self.ilog2() & !1);
-      
-                  while one != 0 {
-                      if op >= res + one {
-                          op -= res + one;
-                          res = (res >> 1) + one;
-                      } else {
-                          res >>= 1;
-                      }
-                      one >>= 2;
-                  }
-      
-                  // SAFETY: The result fits in an integer with half as many bits.
-                  // Inform the optimizer about it.
-                  unsafe { hint::assert_unchecked(res < 1 << (Self::BITS / 2)) };
-      
-                  // SAFETY: The square root of an integer >= 1 is always >= 1.
-                  unsafe { Self::new_unchecked(res) }
+                  // SAFETY: Integer square root is a monotonically nondecreasing
+                  // function, which means that increasing the input will never cause
+                  // the output to decrease. Thus, since the input for nonzero
+                  // unsigned integers has a lower bound of 1, the lower bound of the
+                  // results will be sqrt(1), which is 1, so a result can't be zero.
+                  unsafe { Self::new_unchecked(result) }
               }
       *)
       Definition isqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -9929,141 +9492,18 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ op :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                      "get",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ res := M.alloc (| Value.Integer IntegerKind.U64 0 |) in
-              let~ one :=
-                M.alloc (|
-                  BinOp.Wrap.shl (|
-                    Value.Integer IntegerKind.U64 1,
-                    BinOp.bit_and
-                      (M.call_closure (|
+                    M.get_associated_function (| Ty.path "u64", "isqrt", [] |),
+                    [
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "ilog2",
+                          "get",
                           []
                         |),
                         [ M.read (| self |) ]
-                      |))
-                      (UnOp.not (| Value.Integer IntegerKind.U32 1 |))
-                  |)
-                |) in
-              let~ _ :=
-                M.loop (|
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.ne (| M.read (| one |), Value.Integer IntegerKind.U64 0 |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
-                              M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            BinOp.ge (|
-                                              M.read (| op |),
-                                              BinOp.Wrap.add (|
-                                                M.read (| res |),
-                                                M.read (| one |)
-                                              |)
-                                            |)
-                                          |)) in
-                                      let _ :=
-                                        M.is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      let~ _ :=
-                                        let β := op in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.sub (|
-                                            M.read (| β |),
-                                            BinOp.Wrap.add (| M.read (| res |), M.read (| one |) |)
-                                          |)
-                                        |) in
-                                      let~ _ :=
-                                        M.write (|
-                                          res,
-                                          BinOp.Wrap.add (|
-                                            BinOp.Wrap.shr (|
-                                              M.read (| res |),
-                                              Value.Integer IntegerKind.I32 1
-                                            |),
-                                            M.read (| one |)
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let~ _ :=
-                                        let β := res in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.shr (|
-                                            M.read (| β |),
-                                            Value.Integer IntegerKind.I32 1
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            let~ _ :=
-                              let β := one in
-                              M.write (|
-                                β,
-                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ _ :=
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |)))
-                |) in
-              let~ _ :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
-                    [
-                      BinOp.lt (|
-                        M.read (| res |),
-                        BinOp.Wrap.shl (|
-                          Value.Integer IntegerKind.U64 1,
-                          BinOp.Wrap.div (|
-                            M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                            Value.Integer IntegerKind.U32 2
-                          |)
-                        |)
                       |)
                     ]
                   |)
@@ -10075,7 +9515,7 @@ Module num.
                     "new_unchecked",
                     []
                   |),
-                  [ M.read (| res |) ]
+                  [ M.read (| result |) ]
                 |)
               |)
             |)))
@@ -11690,31 +11130,14 @@ Module num.
       
       (*
               pub const fn isqrt(self) -> Self {
-                  // The algorithm is based on the one presented in
-                  // <https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_(base_2)>
-                  // which cites as source the following C code:
-                  // <https://web.archive.org/web/20120306040058/http://medialab.freaknet.org/martin/src/sqrt/sqrt.c>.
+                  let result = self.get().isqrt();
       
-                  let mut op = self.get();
-                  let mut res = 0;
-                  let mut one = 1 << (self.ilog2() & !1);
-      
-                  while one != 0 {
-                      if op >= res + one {
-                          op -= res + one;
-                          res = (res >> 1) + one;
-                      } else {
-                          res >>= 1;
-                      }
-                      one >>= 2;
-                  }
-      
-                  // SAFETY: The result fits in an integer with half as many bits.
-                  // Inform the optimizer about it.
-                  unsafe { hint::assert_unchecked(res < 1 << (Self::BITS / 2)) };
-      
-                  // SAFETY: The square root of an integer >= 1 is always >= 1.
-                  unsafe { Self::new_unchecked(res) }
+                  // SAFETY: Integer square root is a monotonically nondecreasing
+                  // function, which means that increasing the input will never cause
+                  // the output to decrease. Thus, since the input for nonzero
+                  // unsigned integers has a lower bound of 1, the lower bound of the
+                  // results will be sqrt(1), which is 1, so a result can't be zero.
+                  unsafe { Self::new_unchecked(result) }
               }
       *)
       Definition isqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -11723,141 +11146,18 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ op :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                      "get",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ res := M.alloc (| Value.Integer IntegerKind.U128 0 |) in
-              let~ one :=
-                M.alloc (|
-                  BinOp.Wrap.shl (|
-                    Value.Integer IntegerKind.U128 1,
-                    BinOp.bit_and
-                      (M.call_closure (|
+                    M.get_associated_function (| Ty.path "u128", "isqrt", [] |),
+                    [
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "ilog2",
+                          "get",
                           []
                         |),
                         [ M.read (| self |) ]
-                      |))
-                      (UnOp.not (| Value.Integer IntegerKind.U32 1 |))
-                  |)
-                |) in
-              let~ _ :=
-                M.loop (|
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.ne (| M.read (| one |), Value.Integer IntegerKind.U128 0 |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
-                              M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            BinOp.ge (|
-                                              M.read (| op |),
-                                              BinOp.Wrap.add (|
-                                                M.read (| res |),
-                                                M.read (| one |)
-                                              |)
-                                            |)
-                                          |)) in
-                                      let _ :=
-                                        M.is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      let~ _ :=
-                                        let β := op in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.sub (|
-                                            M.read (| β |),
-                                            BinOp.Wrap.add (| M.read (| res |), M.read (| one |) |)
-                                          |)
-                                        |) in
-                                      let~ _ :=
-                                        M.write (|
-                                          res,
-                                          BinOp.Wrap.add (|
-                                            BinOp.Wrap.shr (|
-                                              M.read (| res |),
-                                              Value.Integer IntegerKind.I32 1
-                                            |),
-                                            M.read (| one |)
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let~ _ :=
-                                        let β := res in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.shr (|
-                                            M.read (| β |),
-                                            Value.Integer IntegerKind.I32 1
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            let~ _ :=
-                              let β := one in
-                              M.write (|
-                                β,
-                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ _ :=
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |)))
-                |) in
-              let~ _ :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
-                    [
-                      BinOp.lt (|
-                        M.read (| res |),
-                        BinOp.Wrap.shl (|
-                          Value.Integer IntegerKind.U128 1,
-                          BinOp.Wrap.div (|
-                            M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                            Value.Integer IntegerKind.U32 2
-                          |)
-                        |)
                       |)
                     ]
                   |)
@@ -11869,7 +11169,7 @@ Module num.
                     "new_unchecked",
                     []
                   |),
-                  [ M.read (| res |) ]
+                  [ M.read (| result |) ]
                 |)
               |)
             |)))
@@ -13484,31 +12784,14 @@ Module num.
       
       (*
               pub const fn isqrt(self) -> Self {
-                  // The algorithm is based on the one presented in
-                  // <https://en.wikipedia.org/wiki/Methods_of_computing_square_roots#Binary_numeral_system_(base_2)>
-                  // which cites as source the following C code:
-                  // <https://web.archive.org/web/20120306040058/http://medialab.freaknet.org/martin/src/sqrt/sqrt.c>.
+                  let result = self.get().isqrt();
       
-                  let mut op = self.get();
-                  let mut res = 0;
-                  let mut one = 1 << (self.ilog2() & !1);
-      
-                  while one != 0 {
-                      if op >= res + one {
-                          op -= res + one;
-                          res = (res >> 1) + one;
-                      } else {
-                          res >>= 1;
-                      }
-                      one >>= 2;
-                  }
-      
-                  // SAFETY: The result fits in an integer with half as many bits.
-                  // Inform the optimizer about it.
-                  unsafe { hint::assert_unchecked(res < 1 << (Self::BITS / 2)) };
-      
-                  // SAFETY: The square root of an integer >= 1 is always >= 1.
-                  unsafe { Self::new_unchecked(res) }
+                  // SAFETY: Integer square root is a monotonically nondecreasing
+                  // function, which means that increasing the input will never cause
+                  // the output to decrease. Thus, since the input for nonzero
+                  // unsigned integers has a lower bound of 1, the lower bound of the
+                  // results will be sqrt(1), which is 1, so a result can't be zero.
+                  unsafe { Self::new_unchecked(result) }
               }
       *)
       Definition isqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -13517,141 +12800,18 @@ Module num.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ op :=
+              let~ result :=
                 M.alloc (|
                   M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                      "get",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                |) in
-              let~ res := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-              let~ one :=
-                M.alloc (|
-                  BinOp.Wrap.shl (|
-                    Value.Integer IntegerKind.Usize 1,
-                    BinOp.bit_and
-                      (M.call_closure (|
+                    M.get_associated_function (| Ty.path "usize", "isqrt", [] |),
+                    [
+                      M.call_closure (|
                         M.get_associated_function (|
                           Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "ilog2",
+                          "get",
                           []
                         |),
                         [ M.read (| self |) ]
-                      |))
-                      (UnOp.not (| Value.Integer IntegerKind.U32 1 |))
-                  |)
-                |) in
-              let~ _ :=
-                M.loop (|
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.ne (| M.read (| one |), Value.Integer IntegerKind.Usize 0 |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ :=
-                              M.match_operator (|
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            BinOp.ge (|
-                                              M.read (| op |),
-                                              BinOp.Wrap.add (|
-                                                M.read (| res |),
-                                                M.read (| one |)
-                                              |)
-                                            |)
-                                          |)) in
-                                      let _ :=
-                                        M.is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      let~ _ :=
-                                        let β := op in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.sub (|
-                                            M.read (| β |),
-                                            BinOp.Wrap.add (| M.read (| res |), M.read (| one |) |)
-                                          |)
-                                        |) in
-                                      let~ _ :=
-                                        M.write (|
-                                          res,
-                                          BinOp.Wrap.add (|
-                                            BinOp.Wrap.shr (|
-                                              M.read (| res |),
-                                              Value.Integer IntegerKind.I32 1
-                                            |),
-                                            M.read (| one |)
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let~ _ :=
-                                        let β := res in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.shr (|
-                                            M.read (| β |),
-                                            Value.Integer IntegerKind.I32 1
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            let~ _ :=
-                              let β := one in
-                              M.write (|
-                                β,
-                                BinOp.Wrap.shr (| M.read (| β |), Value.Integer IntegerKind.I32 2 |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ _ :=
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |)))
-                |) in
-              let~ _ :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_function (| "core::hint::assert_unchecked", [] |),
-                    [
-                      BinOp.lt (|
-                        M.read (| res |),
-                        BinOp.Wrap.shl (|
-                          Value.Integer IntegerKind.Usize 1,
-                          BinOp.Wrap.div (|
-                            M.read (| M.get_constant (| "core::num::nonzero::BITS" |) |),
-                            Value.Integer IntegerKind.U32 2
-                          |)
-                        |)
                       |)
                     ]
                   |)
@@ -13663,7 +12823,7 @@ Module num.
                     "new_unchecked",
                     []
                   |),
-                  [ M.read (| res |) ]
+                  [ M.read (| result |) ]
                 |)
               |)
             |)))

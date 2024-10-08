@@ -1436,18 +1436,18 @@ Module net.
               max_digits: Option<usize>,
               allow_zero_prefix: bool,
           ) -> Option<T> {
-              // If max_digits.is_some(), then we are parsing a `u8` or `u16` and
-              // don't need to use checked arithmetic since it fits within a `u32`.
-              if let Some(max_digits) = max_digits {
-                  // u32::MAX = 4_294_967_295u32, which is 10 digits long.
-                  // `max_digits` must be less than 10 to not overflow a `u32`.
-                  debug_assert!(max_digits < 10);
+              self.read_atomically(move |p| {
+                  let mut digit_count = 0;
+                  let has_leading_zero = p.peek_char() == Some('0');
       
-                  self.read_atomically(move |p| {
+                  // If max_digits.is_some(), then we are parsing a `u8` or `u16` and
+                  // don't need to use checked arithmetic since it fits within a `u32`.
+                  let result = if let Some(max_digits) = max_digits {
+                      // u32::MAX = 4_294_967_295u32, which is 10 digits long.
+                      // `max_digits` must be less than 10 to not overflow a `u32`.
+                      debug_assert!(max_digits < 10);
+      
                       let mut result = 0_u32;
-                      let mut digit_count = 0;
-                      let has_leading_zero = p.peek_char() == Some('0');
-      
                       while let Some(digit) = p.read_atomically(|p| p.read_char()?.to_digit(radix)) {
                           result *= radix;
                           result += digit;
@@ -1458,19 +1458,9 @@ Module net.
                           }
                       }
       
-                      if digit_count == 0 {
-                          None
-                      } else if !allow_zero_prefix && has_leading_zero && digit_count > 1 {
-                          None
-                      } else {
-                          result.try_into().ok()
-                      }
-                  })
-              } else {
-                  self.read_atomically(move |p| {
+                      result.try_into().ok()
+                  } else {
                       let mut result = T::ZERO;
-                      let mut digit_count = 0;
-                      let has_leading_zero = p.peek_char() == Some('0');
       
                       while let Some(digit) = p.read_atomically(|p| p.read_char()?.to_digit(radix)) {
                           result = result.checked_mul(radix)?;
@@ -1478,15 +1468,17 @@ Module net.
                           digit_count += 1;
                       }
       
-                      if digit_count == 0 {
-                          None
-                      } else if !allow_zero_prefix && has_leading_zero && digit_count > 1 {
-                          None
-                      } else {
-                          Some(result)
-                      }
-                  })
-              }
+                      Some(result)
+                  };
+      
+                  if digit_count == 0 {
+                      None
+                  } else if !allow_zero_prefix && has_leading_zero && digit_count > 1 {
+                      None
+                  } else {
+                      result
+                  }
+              })
           }
       *)
       Definition read_number (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1497,148 +1489,156 @@ Module net.
             let radix := M.alloc (| radix |) in
             let max_digits := M.alloc (| max_digits |) in
             let allow_zero_prefix := M.alloc (| allow_zero_prefix |) in
-            M.read (|
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "core::net::parser::Parser",
+                "read_atomically",
                 [
-                  fun γ =>
+                  T;
+                  Ty.function
+                    [
+                      Ty.tuple
+                        [ Ty.apply (Ty.path "&mut") [] [ Ty.path "core::net::parser::Parser" ] ]
+                    ]
+                    (Ty.apply (Ty.path "core::option::Option") [] [ T ])
+                ]
+              |),
+              [
+                M.read (| self |);
+                M.closure
+                  (fun γ =>
                     ltac:(M.monadic
-                      (let γ := max_digits in
-                      let γ0_0 :=
-                        M.SubPointer.get_struct_tuple_field (|
-                          γ,
-                          "core::option::Option::Some",
-                          0
-                        |) in
-                      let max_digits := M.copy (| γ0_0 |) in
-                      let~ _ :=
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                let~ _ :=
-                                  M.match_operator (|
-                                    M.alloc (| Value.Tuple [] |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ :=
-                                            M.use
-                                              (M.alloc (|
-                                                UnOp.not (|
-                                                  BinOp.lt (|
-                                                    M.read (| max_digits |),
-                                                    Value.Integer IntegerKind.Usize 10
-                                                  |)
-                                                |)
-                                              |)) in
-                                          let _ :=
-                                            M.is_constant_or_break_match (|
-                                              M.read (| γ |),
-                                              Value.Bool true
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (|
-                                              M.call_closure (|
-                                                M.get_function (| "core::panicking::panic", [] |),
-                                                [
-                                                  M.read (|
-                                                    Value.String "assertion failed: max_digits < 10"
-                                                  |)
-                                                ]
-                                              |)
-                                            |)
-                                          |)));
-                                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |) in
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::net::parser::Parser",
-                            "read_atomically",
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
                             [
-                              T;
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&mut")
-                                        []
-                                        [ Ty.path "core::net::parser::Parser" ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "core::option::Option") [] [ T ])
-                            ]
-                          |),
-                          [
-                            M.read (| self |);
-                            M.closure
-                              (fun γ =>
+                              fun γ =>
                                 ltac:(M.monadic
-                                  match γ with
-                                  | [ α0 ] =>
-                                    ltac:(M.monadic
-                                      (M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let p := M.copy (| γ |) in
-                                              M.read (|
+                                  (let p := M.copy (| γ |) in
+                                  M.read (|
+                                    let~ digit_count :=
+                                      M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+                                    let~ has_leading_zero :=
+                                      M.alloc (|
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "core::cmp::PartialEq",
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "char" ],
+                                            [
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "char" ]
+                                            ],
+                                            "eq",
+                                            []
+                                          |),
+                                          [
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::net::parser::Parser",
+                                                  "peek_char",
+                                                  []
+                                                |),
+                                                [ M.read (| p |) ]
+                                              |)
+                                            |);
+                                            M.alloc (|
+                                              Value.StructTuple
+                                                "core::option::Option::Some"
+                                                [ Value.UnicodeChar 48 ]
+                                            |)
+                                          ]
+                                        |)
+                                      |) in
+                                    let~ result :=
+                                      M.copy (|
+                                        M.match_operator (|
+                                          M.alloc (| Value.Tuple [] |),
+                                          [
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let γ := max_digits in
+                                                let γ0_0 :=
+                                                  M.SubPointer.get_struct_tuple_field (|
+                                                    γ,
+                                                    "core::option::Option::Some",
+                                                    0
+                                                  |) in
+                                                let max_digits := M.copy (| γ0_0 |) in
+                                                let~ _ :=
+                                                  M.match_operator (|
+                                                    M.alloc (| Value.Tuple [] |),
+                                                    [
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (let γ :=
+                                                            M.use (M.alloc (| Value.Bool true |)) in
+                                                          let _ :=
+                                                            M.is_constant_or_break_match (|
+                                                              M.read (| γ |),
+                                                              Value.Bool true
+                                                            |) in
+                                                          let~ _ :=
+                                                            M.match_operator (|
+                                                              M.alloc (| Value.Tuple [] |),
+                                                              [
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (let γ :=
+                                                                      M.use
+                                                                        (M.alloc (|
+                                                                          UnOp.not (|
+                                                                            BinOp.lt (|
+                                                                              M.read (|
+                                                                                max_digits
+                                                                              |),
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                10
+                                                                            |)
+                                                                          |)
+                                                                        |)) in
+                                                                    let _ :=
+                                                                      M.is_constant_or_break_match (|
+                                                                        M.read (| γ |),
+                                                                        Value.Bool true
+                                                                      |) in
+                                                                    M.alloc (|
+                                                                      M.never_to_any (|
+                                                                        M.call_closure (|
+                                                                          M.get_function (|
+                                                                            "core::panicking::panic",
+                                                                            []
+                                                                          |),
+                                                                          [
+                                                                            M.read (|
+                                                                              Value.String
+                                                                                "assertion failed: max_digits < 10"
+                                                                            |)
+                                                                          ]
+                                                                        |)
+                                                                      |)
+                                                                    |)));
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    (M.alloc (| Value.Tuple [] |)))
+                                                              ]
+                                                            |) in
+                                                          M.alloc (| Value.Tuple [] |)));
+                                                      fun γ =>
+                                                        ltac:(M.monadic
+                                                          (M.alloc (| Value.Tuple [] |)))
+                                                    ]
+                                                  |) in
                                                 let~ result :=
                                                   M.alloc (| Value.Integer IntegerKind.U32 0 |) in
-                                                let~ digit_count :=
-                                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-                                                let~ has_leading_zero :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::cmp::PartialEq",
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [ Ty.path "char" ],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [ Ty.path "char" ]
-                                                        ],
-                                                        "eq",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::net::parser::Parser",
-                                                              "peek_char",
-                                                              []
-                                                            |),
-                                                            [ M.read (| p |) ]
-                                                          |)
-                                                        |);
-                                                        M.alloc (|
-                                                          Value.StructTuple
-                                                            "core::option::Option::Some"
-                                                            [ Value.UnicodeChar 48 ]
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |) in
                                                 let~ _ :=
                                                   M.loop (|
                                                     ltac:(M.monadic
@@ -1917,191 +1917,36 @@ Module net.
                                                         ]
                                                       |)))
                                                   |) in
-                                                M.match_operator (|
-                                                  M.alloc (| Value.Tuple [] |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ :=
-                                                          M.use
-                                                            (M.alloc (|
-                                                              BinOp.eq (|
-                                                                M.read (| digit_count |),
-                                                                Value.Integer IntegerKind.Usize 0
-                                                              |)
-                                                            |)) in
-                                                        let _ :=
-                                                          M.is_constant_or_break_match (|
-                                                            M.read (| γ |),
-                                                            Value.Bool true
-                                                          |) in
-                                                        M.alloc (|
-                                                          Value.StructTuple
-                                                            "core::option::Option::None"
-                                                            []
-                                                        |)));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (M.match_operator (|
-                                                          M.alloc (| Value.Tuple [] |),
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (let γ :=
-                                                                  M.use
-                                                                    (M.alloc (|
-                                                                      LogicalOp.and (|
-                                                                        LogicalOp.and (|
-                                                                          UnOp.not (|
-                                                                            M.read (|
-                                                                              allow_zero_prefix
-                                                                            |)
-                                                                          |),
-                                                                          ltac:(M.monadic
-                                                                            (M.read (|
-                                                                              has_leading_zero
-                                                                            |)))
-                                                                        |),
-                                                                        ltac:(M.monadic
-                                                                          (BinOp.gt (|
-                                                                            M.read (|
-                                                                              digit_count
-                                                                            |),
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              1
-                                                                          |)))
-                                                                      |)
-                                                                    |)) in
-                                                                let _ :=
-                                                                  M.is_constant_or_break_match (|
-                                                                    M.read (| γ |),
-                                                                    Value.Bool true
-                                                                  |) in
-                                                                M.alloc (|
-                                                                  Value.StructTuple
-                                                                    "core::option::Option::None"
-                                                                    []
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
-                                                                  M.call_closure (|
-                                                                    M.get_associated_function (|
-                                                                      Ty.apply
-                                                                        (Ty.path
-                                                                          "core::result::Result")
-                                                                        []
-                                                                        [ T; Ty.associated ],
-                                                                      "ok",
-                                                                      []
-                                                                    |),
-                                                                    [
-                                                                      M.call_closure (|
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::TryInto",
-                                                                          Ty.path "u32",
-                                                                          [ T ],
-                                                                          "try_into",
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| result |) ]
-                                                                      |)
-                                                                    ]
-                                                                  |)
-                                                                |)))
-                                                          ]
-                                                        |)))
-                                                  ]
-                                                |)
-                                              |)))
-                                        ]
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
-                          ]
-                        |)
-                      |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.path "core::net::parser::Parser",
-                            "read_atomically",
-                            [
-                              T;
-                              Ty.function
-                                [
-                                  Ty.tuple
-                                    [
-                                      Ty.apply
-                                        (Ty.path "&mut")
-                                        []
-                                        [ Ty.path "core::net::parser::Parser" ]
-                                    ]
-                                ]
-                                (Ty.apply (Ty.path "core::option::Option") [] [ T ])
-                            ]
-                          |),
-                          [
-                            M.read (| self |);
-                            M.closure
-                              (fun γ =>
-                                ltac:(M.monadic
-                                  match γ with
-                                  | [ α0 ] =>
-                                    ltac:(M.monadic
-                                      (M.match_operator (|
-                                        M.alloc (| α0 |),
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (let p := M.copy (| γ |) in
-                                              M.read (|
-                                                let~ result :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.apply
+                                                        (Ty.path "core::result::Result")
+                                                        []
+                                                        [ T; Ty.associated ],
+                                                      "ok",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "core::convert::TryInto",
+                                                          Ty.path "u32",
+                                                          [ T ],
+                                                          "try_into",
+                                                          []
+                                                        |),
+                                                        [ M.read (| result |) ]
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (let~ result :=
                                                   M.copy (|
                                                     M.get_constant (|
                                                       "core::net::parser::ReadNumberHelper::ZERO"
-                                                    |)
-                                                  |) in
-                                                let~ digit_count :=
-                                                  M.alloc (| Value.Integer IntegerKind.I32 0 |) in
-                                                let~ has_leading_zero :=
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_trait_method (|
-                                                        "core::cmp::PartialEq",
-                                                        Ty.apply
-                                                          (Ty.path "core::option::Option")
-                                                          []
-                                                          [ Ty.path "char" ],
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "core::option::Option")
-                                                            []
-                                                            [ Ty.path "char" ]
-                                                        ],
-                                                        "eq",
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.alloc (|
-                                                          M.call_closure (|
-                                                            M.get_associated_function (|
-                                                              Ty.path "core::net::parser::Parser",
-                                                              "peek_char",
-                                                              []
-                                                            |),
-                                                            [ M.read (| p |) ]
-                                                          |)
-                                                        |);
-                                                        M.alloc (|
-                                                          Value.StructTuple
-                                                            "core::option::Option::Some"
-                                                            [ Value.UnicodeChar 48 ]
-                                                        |)
-                                                      ]
                                                     |)
                                                   |) in
                                                 let~ _ :=
@@ -2493,7 +2338,9 @@ Module net.
                                                                   β,
                                                                   BinOp.Wrap.add (|
                                                                     M.read (| β |),
-                                                                    Value.Integer IntegerKind.I32 1
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      1
                                                                   |)
                                                                 |) in
                                                               M.alloc (| Value.Tuple [] |)));
@@ -2515,93 +2362,81 @@ Module net.
                                                         ]
                                                       |)))
                                                   |) in
-                                                M.match_operator (|
-                                                  M.alloc (| Value.Tuple [] |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ :=
-                                                          M.use
-                                                            (M.alloc (|
-                                                              BinOp.eq (|
+                                                M.alloc (|
+                                                  Value.StructTuple
+                                                    "core::option::Option::Some"
+                                                    [ M.read (| result |) ]
+                                                |)))
+                                          ]
+                                        |)
+                                      |) in
+                                    M.match_operator (|
+                                      M.alloc (| Value.Tuple [] |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ :=
+                                              M.use
+                                                (M.alloc (|
+                                                  BinOp.eq (|
+                                                    M.read (| digit_count |),
+                                                    Value.Integer IntegerKind.Usize 0
+                                                  |)
+                                                |)) in
+                                            let _ :=
+                                              M.is_constant_or_break_match (|
+                                                M.read (| γ |),
+                                                Value.Bool true
+                                              |) in
+                                            M.alloc (|
+                                              Value.StructTuple "core::option::Option::None" []
+                                            |)));
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          LogicalOp.and (|
+                                                            LogicalOp.and (|
+                                                              UnOp.not (|
+                                                                M.read (| allow_zero_prefix |)
+                                                              |),
+                                                              ltac:(M.monadic
+                                                                (M.read (| has_leading_zero |)))
+                                                            |),
+                                                            ltac:(M.monadic
+                                                              (BinOp.gt (|
                                                                 M.read (| digit_count |),
-                                                                Value.Integer IntegerKind.I32 0
-                                                              |)
-                                                            |)) in
-                                                        let _ :=
-                                                          M.is_constant_or_break_match (|
-                                                            M.read (| γ |),
-                                                            Value.Bool true
-                                                          |) in
-                                                        M.alloc (|
-                                                          Value.StructTuple
-                                                            "core::option::Option::None"
-                                                            []
-                                                        |)));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (M.match_operator (|
-                                                          M.alloc (| Value.Tuple [] |),
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (let γ :=
-                                                                  M.use
-                                                                    (M.alloc (|
-                                                                      LogicalOp.and (|
-                                                                        LogicalOp.and (|
-                                                                          UnOp.not (|
-                                                                            M.read (|
-                                                                              allow_zero_prefix
-                                                                            |)
-                                                                          |),
-                                                                          ltac:(M.monadic
-                                                                            (M.read (|
-                                                                              has_leading_zero
-                                                                            |)))
-                                                                        |),
-                                                                        ltac:(M.monadic
-                                                                          (BinOp.gt (|
-                                                                            M.read (|
-                                                                              digit_count
-                                                                            |),
-                                                                            Value.Integer
-                                                                              IntegerKind.I32
-                                                                              1
-                                                                          |)))
-                                                                      |)
-                                                                    |)) in
-                                                                let _ :=
-                                                                  M.is_constant_or_break_match (|
-                                                                    M.read (| γ |),
-                                                                    Value.Bool true
-                                                                  |) in
-                                                                M.alloc (|
-                                                                  Value.StructTuple
-                                                                    "core::option::Option::None"
-                                                                    []
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
-                                                                  Value.StructTuple
-                                                                    "core::option::Option::Some"
-                                                                    [ M.read (| result |) ]
-                                                                |)))
-                                                          ]
-                                                        |)))
-                                                  ]
-                                                |)
-                                              |)))
-                                        ]
-                                      |)))
-                                  | _ => M.impossible "wrong number of arguments"
-                                  end))
-                          ]
-                        |)
-                      |)))
-                ]
-              |)
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              |)))
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      Value.StructTuple
+                                                        "core::option::Option::None"
+                                                        []
+                                                    |)));
+                                                fun γ => ltac:(M.monadic result)
+                                              ]
+                                            |)))
+                                      ]
+                                    |)
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

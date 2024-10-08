@@ -156,50 +156,6 @@ Module task.
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
       
       (*
-          pub fn data(&self) -> *const () {
-              self.data
-          }
-      *)
-      Definition data (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::task::wake::RawWaker",
-                "data"
-              |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
-      
-      (*
-          pub fn vtable(&self) -> &'static RawWakerVTable {
-              self.vtable
-          }
-      *)
-      Definition vtable (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.read (| self |),
-                "core::task::wake::RawWaker",
-                "vtable"
-              |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_vtable : M.IsAssociatedFunction Self "vtable" vtable.
-      
-      (*
           const NOOP: RawWaker = {
               const VTABLE: RawWakerVTable = RawWakerVTable::new(
                   // Cloning just returns a new no-op raw waker
@@ -1477,6 +1433,30 @@ Module task.
       Axiom AssociatedFunction_will_wake : M.IsAssociatedFunction Self "will_wake" will_wake.
       
       (*
+          pub const unsafe fn new(data: *const (), vtable: &'static RawWakerVTable) -> Self {
+              Waker { waker: RawWaker { data, vtable } }
+          }
+      *)
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ data; vtable ] =>
+          ltac:(M.monadic
+            (let data := M.alloc (| data |) in
+            let vtable := M.alloc (| vtable |) in
+            Value.StructRecord
+              "core::task::wake::Waker"
+              [
+                ("waker",
+                  Value.StructRecord
+                    "core::task::wake::RawWaker"
+                    [ ("data", M.read (| data |)); ("vtable", M.read (| vtable |)) ])
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      
+      (*
           pub const unsafe fn from_raw(waker: RawWaker) -> Waker {
               Waker { waker }
           }
@@ -1508,24 +1488,56 @@ Module task.
       Axiom AssociatedFunction_noop : M.IsAssociatedFunction Self "noop" noop.
       
       (*
-          pub fn as_raw(&self) -> &RawWaker {
-              &self.waker
+          pub fn data(&self) -> *const () {
+              self.waker.data
           }
       *)
-      Definition as_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition data (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "core::task::wake::Waker",
-              "waker"
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::Waker",
+                  "waker"
+                |),
+                "core::task::wake::RawWaker",
+                "data"
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_raw : M.IsAssociatedFunction Self "as_raw" as_raw.
+      Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
+      
+      (*
+          pub fn vtable(&self) -> &'static RawWakerVTable {
+              self.waker.vtable
+          }
+      *)
+      Definition vtable (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::Waker",
+                  "waker"
+                |),
+                "core::task::wake::RawWaker",
+                "vtable"
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_vtable : M.IsAssociatedFunction Self "vtable" vtable.
     End Impl_core_task_wake_Waker.
     
     Module Impl_core_clone_Clone_for_core_task_wake_Waker.
@@ -2069,6 +2081,30 @@ Module task.
       Axiom AssociatedFunction_will_wake : M.IsAssociatedFunction Self "will_wake" will_wake.
       
       (*
+          pub const unsafe fn new(data: *const (), vtable: &'static RawWakerVTable) -> Self {
+              LocalWaker { waker: RawWaker { data, vtable } }
+          }
+      *)
+      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ data; vtable ] =>
+          ltac:(M.monadic
+            (let data := M.alloc (| data |) in
+            let vtable := M.alloc (| vtable |) in
+            Value.StructRecord
+              "core::task::wake::LocalWaker"
+              [
+                ("waker",
+                  Value.StructRecord
+                    "core::task::wake::RawWaker"
+                    [ ("data", M.read (| data |)); ("vtable", M.read (| vtable |)) ])
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      
+      (*
           pub const unsafe fn from_raw(waker: RawWaker) -> LocalWaker {
               Self { waker }
           }
@@ -2100,24 +2136,56 @@ Module task.
       Axiom AssociatedFunction_noop : M.IsAssociatedFunction Self "noop" noop.
       
       (*
-          pub fn as_raw(&self) -> &RawWaker {
-              &self.waker
+          pub fn data(&self) -> *const () {
+              self.waker.data
           }
       *)
-      Definition as_raw (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition data (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.SubPointer.get_struct_record_field (|
-              M.read (| self |),
-              "core::task::wake::LocalWaker",
-              "waker"
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::LocalWaker",
+                  "waker"
+                |),
+                "core::task::wake::RawWaker",
+                "data"
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_as_raw : M.IsAssociatedFunction Self "as_raw" as_raw.
+      Axiom AssociatedFunction_data : M.IsAssociatedFunction Self "data" data.
+      
+      (*
+          pub fn vtable(&self) -> &'static RawWakerVTable {
+              self.waker.vtable
+          }
+      *)
+      Definition vtable (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "core::task::wake::LocalWaker",
+                  "waker"
+                |),
+                "core::task::wake::RawWaker",
+                "vtable"
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_vtable : M.IsAssociatedFunction Self "vtable" vtable.
     End Impl_core_task_wake_LocalWaker.
     
     Module Impl_core_clone_Clone_for_core_task_wake_LocalWaker.

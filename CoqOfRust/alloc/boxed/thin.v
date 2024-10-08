@@ -250,7 +250,7 @@ Module boxed.
       (*
           fn with_header(&self) -> &WithHeader<<T as Pointee>::Metadata> {
               // SAFETY: both types are transparent to `NonNull<u8>`
-              unsafe { &*(core::ptr::addr_of!(self.ptr) as *const WithHeader<_>) }
+              unsafe { &*((&raw const self.ptr) as *const WithHeader<_>) }
           }
       *)
       Definition with_header (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=

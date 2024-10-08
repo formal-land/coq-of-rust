@@ -1119,7 +1119,7 @@ Module str.
     Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
     
     (*
-        pub unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
+        pub const unsafe fn as_bytes_mut(&mut self) -> &mut [u8] {
             // SAFETY: the cast from `&str` to `&[u8]` is safe since `str`
             // has the same layout as `&[u8]` (only std can make this guarantee).
             // The pointer dereference is safe since it comes from a mutable reference which
@@ -1155,7 +1155,7 @@ Module str.
     Axiom AssociatedFunction_as_ptr : M.IsAssociatedFunction Self "as_ptr" as_ptr.
     
     (*
-        pub fn as_mut_ptr(&mut self) -> *mut u8 {
+        pub const fn as_mut_ptr(&mut self) -> *mut u8 {
             self as *mut str as *mut u8
         }
     *)
@@ -3701,7 +3701,7 @@ Module str.
       M.IsAssociatedFunction Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
     
     (*
-        pub fn make_ascii_uppercase(&mut self) {
+        pub const fn make_ascii_uppercase(&mut self) {
             // SAFETY: changing ASCII letters only does not invalidate UTF-8.
             let me = unsafe { self.as_bytes_mut() };
             me.make_ascii_uppercase()
@@ -3738,7 +3738,7 @@ Module str.
       M.IsAssociatedFunction Self "make_ascii_uppercase" make_ascii_uppercase.
     
     (*
-        pub fn make_ascii_lowercase(&mut self) {
+        pub const fn make_ascii_lowercase(&mut self) {
             // SAFETY: changing ASCII letters only does not invalidate UTF-8.
             let me = unsafe { self.as_bytes_mut() };
             me.make_ascii_lowercase()
@@ -4153,6 +4153,22 @@ Module str.
       end.
     
     Axiom AssociatedFunction_substr_range : M.IsAssociatedFunction Self "substr_range" substr_range.
+    
+    (*
+        pub fn as_str(&self) -> &str {
+            self
+        }
+    *)
+    Definition as_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (| self |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_as_str : M.IsAssociatedFunction Self "as_str" as_str.
   End Impl_str.
   
   Module Impl_core_convert_AsRef_slice_u8_for_str.

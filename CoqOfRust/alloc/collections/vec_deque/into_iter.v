@@ -798,8 +798,6 @@ Module collections.
             {
                 match self.try_fold(init, |b, item| Ok::<B, !>(f(b, item))) {
                     Ok(b) => b,
-                    #[cfg(bootstrap)]
-                    Err(e) => match e {},
                 }
             }
         *)
@@ -2104,8 +2102,6 @@ Module collections.
             {
                 match self.try_rfold(init, |b, item| Ok::<B, !>(f(b, item))) {
                     Ok(b) => b,
-                    #[cfg(bootstrap)]
-                    Err(e) => match e {},
                 }
             }
         *)

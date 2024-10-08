@@ -18,7 +18,7 @@ Module vec.
     
     (*
         pub const fn new() -> Self {
-            Vec { buf: RawVec::NEW, len: 0 }
+            Vec { buf: RawVec::new(), len: 0 }
         }
     *)
     Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -29,7 +29,18 @@ Module vec.
           (Value.StructRecord
             "alloc::vec::Vec"
             [
-              ("buf", M.read (| M.get_constant (| "alloc::raw_vec::NEW" |) |));
+              ("buf",
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::raw_vec::RawVec")
+                      []
+                      [ T; Ty.path "alloc::alloc::Global" ],
+                    "new",
+                    []
+                  |),
+                  []
+                |));
               ("len", Value.Integer IntegerKind.Usize 0)
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -133,11 +144,11 @@ Module vec.
       M.IsAssociatedFunction (Self T) "from_raw_parts" (from_raw_parts T).
     
     (*
-        pub(crate) unsafe fn from_nonnull(ptr: NonNull<T>, length: usize, capacity: usize) -> Self {
-            unsafe { Self::from_nonnull_in(ptr, length, capacity, Global) }
+        pub unsafe fn from_parts(ptr: NonNull<T>, length: usize, capacity: usize) -> Self {
+            unsafe { Self::from_parts_in(ptr, length, capacity, Global) }
         }
     *)
-    Definition from_nonnull (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    Definition from_parts (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
       match ε, τ, α with
       | [], [], [ ptr; length; capacity ] =>
@@ -148,7 +159,7 @@ Module vec.
           M.call_closure (|
             M.get_associated_function (|
               Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
-              "from_nonnull_in",
+              "from_parts_in",
               []
             |),
             [
@@ -161,9 +172,9 @@ Module vec.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_nonnull :
+    Axiom AssociatedFunction_from_parts :
       forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "from_nonnull" (from_nonnull T).
+      M.IsAssociatedFunction (Self T) "from_parts" (from_parts T).
   End Impl_alloc_vec_Vec_T_alloc_alloc_Global.
   
   Module Impl_alloc_vec_Vec_T_A.
@@ -401,16 +412,11 @@ Module vec.
       M.IsAssociatedFunction (Self T A) "from_raw_parts_in" (from_raw_parts_in T A).
     
     (*
-        pub(crate) unsafe fn from_nonnull_in(
-            ptr: NonNull<T>,
-            length: usize,
-            capacity: usize,
-            alloc: A,
-        ) -> Self {
+        pub unsafe fn from_parts_in(ptr: NonNull<T>, length: usize, capacity: usize, alloc: A) -> Self {
             unsafe { Vec { buf: RawVec::from_nonnull_in(ptr, capacity, alloc), len: length } }
         }
     *)
-    Definition from_nonnull_in
+    Definition from_parts_in
         (T A : Ty.t)
         (ε : list Value.t)
         (τ : list Ty.t)
@@ -441,9 +447,9 @@ Module vec.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Axiom AssociatedFunction_from_nonnull_in :
+    Axiom AssociatedFunction_from_parts_in :
       forall (T A : Ty.t),
-      M.IsAssociatedFunction (Self T A) "from_nonnull_in" (from_nonnull_in T A).
+      M.IsAssociatedFunction (Self T A) "from_parts_in" (from_parts_in T A).
     
     (*
         pub fn into_raw_parts(self) -> ( *mut T, usize, usize) {
@@ -555,6 +561,65 @@ Module vec.
     Axiom AssociatedFunction_into_raw_parts :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_raw_parts" (into_raw_parts T A).
+    
+    (*
+        pub fn into_parts(self) -> (NonNull<T>, usize, usize) {
+            let (ptr, len, capacity) = self.into_raw_parts();
+            // SAFETY: A `Vec` always has a non-null pointer.
+            (unsafe { NonNull::new_unchecked(ptr) }, len, capacity)
+        }
+    *)
+    Definition into_parts (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self T A in
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    "into_raw_parts",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let ptr := M.copy (| γ0_0 |) in
+                    let len := M.copy (| γ0_1 |) in
+                    let capacity := M.copy (| γ0_2 |) in
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              "new_unchecked",
+                              []
+                            |),
+                            [ M.read (| ptr |) ]
+                          |);
+                          M.read (| len |);
+                          M.read (| capacity |)
+                        ]
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_into_parts :
+      forall (T A : Ty.t),
+      M.IsAssociatedFunction (Self T A) "into_parts" (into_parts T A).
     
     (*
         pub fn into_raw_parts_with_alloc(self) -> ( *mut T, usize, usize, A) {
@@ -708,6 +773,73 @@ Module vec.
     Axiom AssociatedFunction_into_raw_parts_with_alloc :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "into_raw_parts_with_alloc" (into_raw_parts_with_alloc T A).
+    
+    (*
+        pub fn into_parts_with_alloc(self) -> (NonNull<T>, usize, usize, A) {
+            let (ptr, len, capacity, alloc) = self.into_raw_parts_with_alloc();
+            // SAFETY: A `Vec` always has a non-null pointer.
+            (unsafe { NonNull::new_unchecked(ptr) }, len, capacity, alloc)
+        }
+    *)
+    Definition into_parts_with_alloc
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self T A in
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    "into_raw_parts_with_alloc",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
+                    let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
+                    let ptr := M.copy (| γ0_0 |) in
+                    let len := M.copy (| γ0_1 |) in
+                    let capacity := M.copy (| γ0_2 |) in
+                    let alloc := M.copy (| γ0_3 |) in
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              "new_unchecked",
+                              []
+                            |),
+                            [ M.read (| ptr |) ]
+                          |);
+                          M.read (| len |);
+                          M.read (| capacity |);
+                          M.read (| alloc |)
+                        ]
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_into_parts_with_alloc :
+      forall (T A : Ty.t),
+      M.IsAssociatedFunction (Self T A) "into_parts_with_alloc" (into_parts_with_alloc T A).
     
     (*
         pub fn capacity(&self) -> usize {
@@ -1479,6 +1611,42 @@ Module vec.
       M.IsAssociatedFunction (Self T A) "as_mut_ptr" (as_mut_ptr T A).
     
     (*
+        pub fn as_non_null(&mut self) -> NonNull<T> {
+            // SAFETY: A `Vec` always has a non-null pointer.
+            unsafe { NonNull::new_unchecked(self.as_mut_ptr()) }
+        }
+    *)
+    Definition as_non_null (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self T A in
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+              "new_unchecked",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                  "as_mut_ptr",
+                  []
+                |),
+                [ M.read (| self |) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_as_non_null :
+      forall (T A : Ty.t),
+      M.IsAssociatedFunction (Self T A) "as_non_null" (as_non_null T A).
+    
+    (*
         pub fn allocator(&self) -> &A {
             self.buf.allocator()
         }
@@ -1599,6 +1767,7 @@ Module vec.
             #[cold]
             #[cfg_attr(not(feature = "panic_immediate_abort"), inline(never))]
             #[track_caller]
+            #[optimize(size)]
             fn assert_failed(index: usize, len: usize) -> ! {
                 panic!("swap_remove index (is {index}) should be < len (is {len})");
             }
@@ -1749,6 +1918,7 @@ Module vec.
             #[cold]
             #[cfg_attr(not(feature = "panic_immediate_abort"), inline(never))]
             #[track_caller]
+            #[optimize(size)]
             fn assert_failed(index: usize, len: usize) -> ! {
                 panic!("insertion index (is {index}) should be <= len (is {len})");
             }
@@ -1957,6 +2127,7 @@ Module vec.
             #[cold]
             #[cfg_attr(not(feature = "panic_immediate_abort"), inline(never))]
             #[track_caller]
+            #[optimize(size)]
             fn assert_failed(index: usize, len: usize) -> ! {
                 panic!("removal index (is {index}) should be < len (is {len})");
             }
@@ -4052,6 +4223,7 @@ Module vec.
             #[cold]
             #[cfg_attr(not(feature = "panic_immediate_abort"), inline(never))]
             #[track_caller]
+            #[optimize(size)]
             fn assert_failed(at: usize, len: usize) -> ! {
                 panic!("`at` split index (is {at}) should be <= len (is {len})");
             }

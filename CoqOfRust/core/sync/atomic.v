@@ -529,7 +529,7 @@ Module sync.
       
       (*
           pub const fn into_inner(self) -> bool {
-              self.v.primitive_into_inner() != 0
+              self.v.into_inner() != 0
           }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -541,7 +541,7 @@ Module sync.
               M.call_closure (|
                 M.get_associated_function (|
                   Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                  "primitive_into_inner",
+                  "into_inner",
                   []
                 |),
                 [
@@ -1929,7 +1929,7 @@ Module sync.
       
       (*
           pub const fn into_inner(self) -> *mut T {
-              self.p.primitive_into_inner()
+              self.p.into_inner()
           }
       *)
       Definition into_inner (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1944,7 +1944,7 @@ Module sync.
                   (Ty.path "core::cell::UnsafeCell")
                   []
                   [ Ty.apply (Ty.path "*mut") [] [ T ] ],
-                "primitive_into_inner",
+                "into_inner",
                 []
               |),
               [
@@ -3234,7 +3234,7 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.primitive_into_inner()
+                      self.v.into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3245,7 +3245,7 @@ Module sync.
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ],
-                "primitive_into_inner",
+                "into_inner",
                 []
               |),
               [
@@ -4331,7 +4331,7 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.primitive_into_inner()
+                      self.v.into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4342,7 +4342,7 @@ Module sync.
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                "primitive_into_inner",
+                "into_inner",
                 []
               |),
               [
@@ -5428,7 +5428,7 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.primitive_into_inner()
+                      self.v.into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -5439,7 +5439,7 @@ Module sync.
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ],
-                "primitive_into_inner",
+                "into_inner",
                 []
               |),
               [
@@ -6525,7 +6525,7 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.primitive_into_inner()
+                      self.v.into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -6536,7 +6536,7 @@ Module sync.
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ],
-                "primitive_into_inner",
+                "into_inner",
                 []
               |),
               [
@@ -7622,7 +7622,7 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.primitive_into_inner()
+                      self.v.into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -7633,7 +7633,7 @@ Module sync.
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ],
-                "primitive_into_inner",
+                "into_inner",
                 []
               |),
               [
@@ -8719,7 +8719,7 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.primitive_into_inner()
+                      self.v.into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -8730,7 +8730,7 @@ Module sync.
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ],
-                "primitive_into_inner",
+                "into_inner",
                 []
               |),
               [
@@ -9816,7 +9816,7 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.primitive_into_inner()
+                      self.v.into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -9827,7 +9827,7 @@ Module sync.
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ],
-                "primitive_into_inner",
+                "into_inner",
                 []
               |),
               [
@@ -10913,7 +10913,7 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.primitive_into_inner()
+                      self.v.into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -10924,7 +10924,7 @@ Module sync.
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ],
-                "primitive_into_inner",
+                "into_inner",
                 []
               |),
               [
@@ -12010,7 +12010,7 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.primitive_into_inner()
+                      self.v.into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -12021,7 +12021,7 @@ Module sync.
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ],
-                "primitive_into_inner",
+                "into_inner",
                 []
               |),
               [
@@ -13110,7 +13110,7 @@ Module sync.
       
       (*
                   pub const fn into_inner(self) -> $int_type {
-                      self.v.primitive_into_inner()
+                      self.v.into_inner()
                   }
       *)
       Definition into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -13121,7 +13121,7 @@ Module sync.
             M.call_closure (|
               M.get_associated_function (|
                 Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ],
-                "primitive_into_inner",
+                "into_inner",
                 []
               |),
               [

@@ -242,6 +242,41 @@ Module boxed.
     Axiom AssociatedFunction_from_raw :
       forall (T : Ty.t),
       M.IsAssociatedFunction (Self T) "from_raw" (from_raw T).
+    
+    (*
+        pub unsafe fn from_non_null(ptr: NonNull<T>) -> Self {
+            unsafe { Self::from_raw(ptr.as_ptr()) }
+        }
+    *)
+    Definition from_non_null (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      let Self : Ty.t := Self T in
+      match ε, τ, α with
+      | [], [], [ ptr ] =>
+        ltac:(M.monadic
+          (let ptr := M.alloc (| ptr |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; Ty.path "alloc::alloc::Global" ],
+              "from_raw",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                  "as_ptr",
+                  []
+                |),
+                [ M.read (| ptr |) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_from_non_null :
+      forall (T : Ty.t),
+      M.IsAssociatedFunction (Self T) "from_non_null" (from_non_null T).
   End Impl_alloc_boxed_Box_T_alloc_alloc_Global.
   
   Module Impl_alloc_boxed_Box_T_A.
@@ -1261,9 +1296,52 @@ Module boxed.
       M.IsAssociatedFunction (Self T A) "from_raw_in" (from_raw_in T A).
     
     (*
+        pub const unsafe fn from_non_null_in(raw: NonNull<T>, alloc: A) -> Self {
+            // SAFETY: guaranteed by the caller.
+            unsafe { Box::from_raw_in(raw.as_ptr(), alloc) }
+        }
+    *)
+    Definition from_non_null_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self T A in
+      match ε, τ, α with
+      | [], [], [ raw; alloc ] =>
+        ltac:(M.monadic
+          (let raw := M.alloc (| raw |) in
+          let alloc := M.alloc (| alloc |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+              "from_raw_in",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                  "as_ptr",
+                  []
+                |),
+                [ M.read (| raw |) ]
+              |);
+              M.read (| alloc |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_from_non_null_in :
+      forall (T A : Ty.t),
+      M.IsAssociatedFunction (Self T A) "from_non_null_in" (from_non_null_in T A).
+    
+    (*
         pub fn into_raw(b: Self) -> *mut T {
             // Make sure Miri realizes that we transition from a noalias pointer to a raw pointer here.
-            unsafe { addr_of_mut!( *&mut *Self::into_raw_with_allocator(b).0) }
+            unsafe { &raw mut *&mut *Self::into_raw_with_allocator(b).0 }
         }
     *)
     Definition into_raw (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1295,6 +1373,47 @@ Module boxed.
       M.IsAssociatedFunction (Self T A) "into_raw" (into_raw T A).
     
     (*
+        pub fn into_non_null(b: Self) -> NonNull<T> {
+            // SAFETY: `Box` is guaranteed to be non-null.
+            unsafe { NonNull::new_unchecked(Self::into_raw(b)) }
+        }
+    *)
+    Definition into_non_null
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self T A in
+      match ε, τ, α with
+      | [], [], [ b ] =>
+        ltac:(M.monadic
+          (let b := M.alloc (| b |) in
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+              "new_unchecked",
+              []
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                  "into_raw",
+                  []
+                |),
+                [ M.read (| b |) ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_into_non_null :
+      forall (T A : Ty.t),
+      M.IsAssociatedFunction (Self T A) "into_non_null" (into_non_null T A).
+    
+    (*
         pub fn into_raw_with_allocator(b: Self) -> ( *mut T, A) {
             let mut b = mem::ManuallyDrop::new(b);
             // We carefully get the raw pointer out in a way that Miri's aliasing model understands what
@@ -1302,7 +1421,7 @@ Module boxed.
             // want *no* aliasing requirements here!
             // In case `A` *is* `Global`, this does not quite have the right behavior; `into_raw`
             // works around that.
-            let ptr = addr_of_mut!( **b);
+            let ptr = &raw mut **b;
             let alloc = unsafe { ptr::read(&b.1) };
             (ptr, alloc)
         }
@@ -1386,6 +1505,70 @@ Module boxed.
       M.IsAssociatedFunction (Self T A) "into_raw_with_allocator" (into_raw_with_allocator T A).
     
     (*
+        pub fn into_non_null_with_allocator(b: Self) -> (NonNull<T>, A) {
+            let (ptr, alloc) = Box::into_raw_with_allocator(b);
+            // SAFETY: `Box` is guaranteed to be non-null.
+            unsafe { (NonNull::new_unchecked(ptr), alloc) }
+        }
+    *)
+    Definition into_non_null_with_allocator
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self T A in
+      match ε, τ, α with
+      | [], [], [ b ] =>
+        ltac:(M.monadic
+          (let b := M.alloc (| b |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::boxed::Box") [] [ T; A ],
+                    "into_raw_with_allocator",
+                    []
+                  |),
+                  [ M.read (| b |) ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let ptr := M.copy (| γ0_0 |) in
+                    let alloc := M.copy (| γ0_1 |) in
+                    M.alloc (|
+                      Value.Tuple
+                        [
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                              "new_unchecked",
+                              []
+                            |),
+                            [ M.read (| ptr |) ]
+                          |);
+                          M.read (| alloc |)
+                        ]
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_into_non_null_with_allocator :
+      forall (T A : Ty.t),
+      M.IsAssociatedFunction
+        (Self T A)
+        "into_non_null_with_allocator"
+        (into_non_null_with_allocator T A).
+    
+    (*
         pub fn into_unique(b: Self) -> (Unique<T>, A) {
             let (ptr, alloc) = Box::into_raw_with_allocator(b);
             unsafe { (Unique::from(&mut *ptr), alloc) }
@@ -1446,7 +1629,7 @@ Module boxed.
         pub fn as_mut_ptr(b: &mut Self) -> *mut T {
             // This is a primitive deref, not going through `DerefMut`, and therefore not materializing
             // any references.
-            ptr::addr_of_mut!( **b)
+            &raw mut **b
         }
     *)
     Definition as_mut_ptr (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1467,7 +1650,7 @@ Module boxed.
         pub fn as_ptr(b: &Self) -> *const T {
             // This is a primitive deref, not going through `DerefMut`, and therefore not materializing
             // any references.
-            ptr::addr_of!( **b)
+            &raw const **b
         }
     *)
     Definition as_ptr (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -6425,7 +6608,12 @@ Module boxed.
   Module Impl_core_ops_async_function_AsyncFnMut_where_core_marker_Tuple_Args_where_core_ops_async_function_AsyncFnMut_F_Args_where_core_marker_Sized_F_where_core_alloc_Allocator_A_Args_for_alloc_boxed_Box_F_A.
     Definition Self (Args F A : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::boxed::Box") [] [ F; A ].
     
-    (*     type CallRefFuture<'a> = F::CallRefFuture<'a> where Self: 'a; *)
+    (*
+        type CallRefFuture<'a>
+            = F::CallRefFuture<'a>
+        where
+            Self: 'a;
+    *)
     Definition _CallRefFuture (Args F A : Ty.t) : Ty.t := Ty.associated.
     
     (*

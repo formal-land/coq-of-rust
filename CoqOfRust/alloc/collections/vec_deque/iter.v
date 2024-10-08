@@ -371,7 +371,7 @@ Module collections.
             fn advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 let remaining = self.i1.advance_by(n);
                 match remaining {
-                    Ok(()) => return Ok(()),
+                    Ok(()) => Ok(()),
                     Err(n) => {
                         mem::swap(&mut self.i1, &mut self.i2);
                         self.i1.advance_by(n.get())
@@ -391,111 +391,102 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
-              M.catch_return (|
-                ltac:(M.monadic
-                  (M.read (|
-                    let~ remaining :=
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::iter::traits::iterator::Iterator",
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                            [],
-                            "advance_by",
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::vec_deque::iter::Iter",
-                              "i1"
-                            |);
-                            M.read (| n |)
-                          ]
-                        |)
-                      |) in
-                    M.match_operator (|
-                      remaining,
+              M.read (|
+                let~ remaining :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::iterator::Iterator",
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                        [],
+                        "advance_by",
+                        []
+                      |),
                       [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let n := M.copy (| γ0_0 |) in
-                            let~ _ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (|
-                                    "core::mem::swap",
-                                    [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::vec_deque::iter::Iter",
-                                      "i1"
-                                    |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::vec_deque::iter::Iter",
-                                      "i2"
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::iterator::Iterator",
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                                  [],
-                                  "advance_by",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::vec_deque::iter::Iter",
-                                    "i1"
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::num::nonzero::NonZero")
-                                        []
-                                        [ Ty.path "usize" ],
-                                      "get",
-                                      []
-                                    |),
-                                    [ M.read (| n |) ]
-                                  |)
-                                ]
-                              |)
-                            |)))
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::iter::Iter",
+                          "i1"
+                        |);
+                        M.read (| n |)
                       ]
                     |)
-                  |)))
+                  |) in
+                M.match_operator (|
+                  remaining,
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Ok",
+                            0
+                          |) in
+                        M.alloc (|
+                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Err",
+                            0
+                          |) in
+                        let n := M.copy (| γ0_0 |) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::mem::swap",
+                                [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i1"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i2"
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::traits::iterator::Iterator",
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                              [],
+                              "advance_by",
+                              []
+                            |),
+                            [
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::iter::Iter",
+                                "i1"
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ],
+                                  "get",
+                                  []
+                                |),
+                                [ M.read (| n |) ]
+                              |)
+                            ]
+                          |)
+                        |)))
+                  ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -980,7 +971,7 @@ Module collections.
         (*
             fn advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
                 match self.i2.advance_back_by(n) {
-                    Ok(()) => return Ok(()),
+                    Ok(()) => Ok(()),
                     Err(n) => {
                         mem::swap(&mut self.i1, &mut self.i2);
                         self.i2.advance_back_by(n.get())
@@ -1000,109 +991,100 @@ Module collections.
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
               let n := M.alloc (| n |) in
-              M.catch_return (|
-                ltac:(M.monadic
-                  (M.read (|
-                    M.match_operator (|
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::iter::traits::double_ended::DoubleEndedIterator",
-                            Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                            [],
-                            "advance_back_by",
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "alloc::collections::vec_deque::iter::Iter",
-                              "i2"
-                            |);
-                            M.read (| n |)
-                          ]
-                        |)
+              M.read (|
+                M.match_operator (|
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::double_ended::DoubleEndedIterator",
+                        Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                        [],
+                        "advance_back_by",
+                        []
                       |),
                       [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let n := M.copy (| γ0_0 |) in
-                            let~ _ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_function (|
-                                    "core::mem::swap",
-                                    [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
-                                  |),
-                                  [
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::vec_deque::iter::Iter",
-                                      "i1"
-                                    |);
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| self |),
-                                      "alloc::collections::vec_deque::iter::Iter",
-                                      "i2"
-                                    |)
-                                  ]
-                                |)
-                              |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::iter::traits::double_ended::DoubleEndedIterator",
-                                  Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                                  [],
-                                  "advance_back_by",
-                                  []
-                                |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "alloc::collections::vec_deque::iter::Iter",
-                                    "i2"
-                                  |);
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::num::nonzero::NonZero")
-                                        []
-                                        [ Ty.path "usize" ],
-                                      "get",
-                                      []
-                                    |),
-                                    [ M.read (| n |) ]
-                                  |)
-                                ]
-                              |)
-                            |)))
+                        M.SubPointer.get_struct_record_field (|
+                          M.read (| self |),
+                          "alloc::collections::vec_deque::iter::Iter",
+                          "i2"
+                        |);
+                        M.read (| n |)
                       ]
                     |)
-                  |)))
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Ok",
+                            0
+                          |) in
+                        M.alloc (|
+                          Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 :=
+                          M.SubPointer.get_struct_tuple_field (|
+                            γ,
+                            "core::result::Result::Err",
+                            0
+                          |) in
+                        let n := M.copy (| γ0_0 |) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::mem::swap",
+                                [ Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ] ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i1"
+                                |);
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "alloc::collections::vec_deque::iter::Iter",
+                                  "i2"
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::iter::traits::double_ended::DoubleEndedIterator",
+                              Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                              [],
+                              "advance_back_by",
+                              []
+                            |),
+                            [
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| self |),
+                                "alloc::collections::vec_deque::iter::Iter",
+                                "i2"
+                              |);
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ],
+                                  "get",
+                                  []
+                                |),
+                                [ M.read (| n |) ]
+                              |)
+                            ]
+                          |)
+                        |)))
+                  ]
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

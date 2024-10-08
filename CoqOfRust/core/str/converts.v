@@ -5,7 +5,7 @@ Module str.
   Module converts.
     (*
     pub const fn from_utf8(v: &[u8]) -> Result<&str, Utf8Error> {
-        // FIXME: This should use `?` again, once it's `const`
+        // FIXME(const-hack): This should use `?` again, once it's `const`
         match run_utf8_validation(v) {
             Ok(_) => {
                 // SAFETY: validation succeeded.
@@ -61,7 +61,7 @@ Module str.
     
     (*
     pub const fn from_utf8_mut(v: &mut [u8]) -> Result<&mut str, Utf8Error> {
-        // This should use `?` again, once it's `const`
+        // FIXME(const-hack): This should use `?` again, once it's `const`
         match run_utf8_validation(v) {
             Ok(_) => {
                 // SAFETY: validation succeeded.

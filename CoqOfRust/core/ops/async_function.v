@@ -58,7 +58,12 @@ Module ops.
       Module Impl_core_ops_async_function_AsyncFnMut_where_core_marker_Tuple_A_where_core_marker_Sized_F_where_core_ops_async_function_AsyncFn_F_A_A_for_ref__F.
         Definition Self (A F : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ F ].
         
-        (*         type CallRefFuture<'a> = F::CallRefFuture<'a> where Self: 'a; *)
+        (*
+                type CallRefFuture<'a>
+                    = F::CallRefFuture<'a>
+                where
+                    Self: 'a;
+        *)
         Definition _CallRefFuture (A F : Ty.t) : Ty.t := Ty.associated.
         
         (*
@@ -160,7 +165,12 @@ Module ops.
       Module Impl_core_ops_async_function_AsyncFnMut_where_core_marker_Tuple_A_where_core_marker_Sized_F_where_core_ops_async_function_AsyncFnMut_F_A_A_for_ref_mut_F.
         Definition Self (A F : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ F ].
         
-        (*         type CallRefFuture<'a> = F::CallRefFuture<'a> where Self: 'a; *)
+        (*
+                type CallRefFuture<'a>
+                    = F::CallRefFuture<'a>
+                where
+                    Self: 'a;
+        *)
         Definition _CallRefFuture (A F : Ty.t) : Ty.t := Ty.associated.
         
         (*

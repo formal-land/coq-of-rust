@@ -1236,6 +1236,81 @@ Module string.
       M.IsAssociatedFunction Self "from_utf8_lossy" from_utf8_lossy.
     
     (*
+        pub fn from_utf8_lossy_owned(v: Vec<u8>) -> String {
+            if let Cow::Owned(string) = String::from_utf8_lossy(&v) {
+                string
+            } else {
+                // SAFETY: `String::from_utf8_lossy`'s contract ensures that if
+                // it returns a `Cow::Borrowed`, it is a valid UTF-8 string.
+                // Otherwise, it returns a new allocation of an owned `String`, with
+                // replacement characters for invalid sequences, which is returned
+                // above.
+                unsafe { String::from_utf8_unchecked(v) }
+            }
+        }
+    *)
+    Definition from_utf8_lossy_owned (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ v ] =>
+        ltac:(M.monadic
+          (let v := M.alloc (| v |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "alloc::string::String",
+                            "from_utf8_lossy",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_trait_method (|
+                                "core::ops::deref::Deref",
+                                Ty.apply
+                                  (Ty.path "alloc::vec::Vec")
+                                  []
+                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                [],
+                                "deref",
+                                []
+                              |),
+                              [ v ]
+                            |)
+                          ]
+                        |)
+                      |) in
+                    let γ0_0 :=
+                      M.SubPointer.get_struct_tuple_field (| γ, "alloc::borrow::Cow::Owned", 0 |) in
+                    let string := M.copy (| γ0_0 |) in
+                    string));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "alloc::string::String",
+                          "from_utf8_unchecked",
+                          []
+                        |),
+                        [ M.read (| v |) ]
+                      |)
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_from_utf8_lossy_owned :
+      M.IsAssociatedFunction Self "from_utf8_lossy_owned" from_utf8_lossy_owned.
+    
+    (*
         pub fn from_utf16(v: &[u16]) -> Result<String, FromUtf16Error> {
             // This isn't done via collect::<Result<_, _>>() for performance reasons.
             // FIXME: the function can be simplified again when #48994 is closed.
@@ -6672,6 +6747,336 @@ Module string.
     Axiom AssociatedFunction_as_bytes : M.IsAssociatedFunction Self "as_bytes" as_bytes.
     
     (*
+        pub fn into_utf8_lossy(self) -> String {
+            const REPLACEMENT: &str = "\u{FFFD}";
+    
+            let mut res = {
+                let mut v = Vec::with_capacity(self.bytes.len());
+    
+                // `Utf8Error::valid_up_to` returns the maximum index of validated
+                // UTF-8 bytes. Copy the valid bytes into the output buffer.
+                v.extend_from_slice(&self.bytes[..self.error.valid_up_to()]);
+    
+                // SAFETY: This is safe because the only bytes present in the buffer
+                // were validated as UTF-8 by the call to `String::from_utf8` which
+                // produced this `FromUtf8Error`.
+                unsafe { String::from_utf8_unchecked(v) }
+            };
+    
+            let iter = self.bytes[self.error.valid_up_to()..].utf8_chunks();
+    
+            for chunk in iter {
+                res.push_str(chunk.valid());
+                if !chunk.invalid().is_empty() {
+                    res.push_str(REPLACEMENT);
+                }
+            }
+    
+            res
+        }
+    *)
+    Definition into_utf8_lossy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            let~ res :=
+              M.copy (|
+                let~ v :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                        "with_capacity",
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                            "len",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::string::FromUtf8Error",
+                              "bytes"
+                            |)
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                let~ _ :=
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                        "extend_from_slice",
+                        []
+                      |),
+                      [
+                        v;
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::index::Index",
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
+                              []
+                              [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                            [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Ty.path "usize" ]
+                            ],
+                            "index",
+                            []
+                          |),
+                          [
+                            M.SubPointer.get_struct_record_field (|
+                              self,
+                              "alloc::string::FromUtf8Error",
+                              "bytes"
+                            |);
+                            Value.StructRecord
+                              "core::ops::range::RangeTo"
+                              [
+                                ("end_",
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::str::error::Utf8Error",
+                                      "valid_up_to",
+                                      []
+                                    |),
+                                    [
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "alloc::string::FromUtf8Error",
+                                        "error"
+                                      |)
+                                    ]
+                                  |))
+                              ]
+                          ]
+                        |)
+                      ]
+                    |)
+                  |) in
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "alloc::string::String",
+                      "from_utf8_unchecked",
+                      []
+                    |),
+                    [ M.read (| v |) ]
+                  |)
+                |)
+              |) in
+            let~ iter :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                    "utf8_chunks",
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::index::Index",
+                        Ty.apply
+                          (Ty.path "alloc::vec::Vec")
+                          []
+                          [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                        [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Ty.path "usize" ] ],
+                        "index",
+                        []
+                      |),
+                      [
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "alloc::string::FromUtf8Error",
+                          "bytes"
+                        |);
+                        Value.StructRecord
+                          "core::ops::range::RangeFrom"
+                          [
+                            ("start",
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::str::error::Utf8Error",
+                                  "valid_up_to",
+                                  []
+                                |),
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    self,
+                                    "alloc::string::FromUtf8Error",
+                                    "error"
+                                  |)
+                                ]
+                              |))
+                          ]
+                      ]
+                    |)
+                  ]
+                |)
+              |) in
+            let~ _ :=
+              M.use
+                (M.match_operator (|
+                  M.alloc (|
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::iter::traits::collect::IntoIterator",
+                        Ty.path "core::str::lossy::Utf8Chunks",
+                        [],
+                        "into_iter",
+                        []
+                      |),
+                      [ M.read (| iter |) ]
+                    |)
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let iter := M.copy (| γ |) in
+                        M.loop (|
+                          ltac:(M.monadic
+                            (let~ _ :=
+                              M.match_operator (|
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_trait_method (|
+                                      "core::iter::traits::iterator::Iterator",
+                                      Ty.path "core::str::lossy::Utf8Chunks",
+                                      [],
+                                      "next",
+                                      []
+                                    |),
+                                    [ iter ]
+                                  |)
+                                |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
+                                      M.alloc (|
+                                        M.never_to_any (| M.read (| M.break (||) |) |)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::option::Option::Some",
+                                          0
+                                        |) in
+                                      let chunk := M.copy (| γ0_0 |) in
+                                      let~ _ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            M.get_associated_function (|
+                                              Ty.path "alloc::string::String",
+                                              "push_str",
+                                              []
+                                            |),
+                                            [
+                                              res;
+                                              M.call_closure (|
+                                                M.get_associated_function (|
+                                                  Ty.path "core::str::lossy::Utf8Chunk",
+                                                  "valid",
+                                                  []
+                                                |),
+                                                [ chunk ]
+                                              |)
+                                            ]
+                                          |)
+                                        |) in
+                                      M.match_operator (|
+                                        M.alloc (| Value.Tuple [] |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let γ :=
+                                                M.use
+                                                  (M.alloc (|
+                                                    UnOp.not (|
+                                                      M.call_closure (|
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ],
+                                                          "is_empty",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.call_closure (|
+                                                            M.get_associated_function (|
+                                                              Ty.path "core::str::lossy::Utf8Chunk",
+                                                              "invalid",
+                                                              []
+                                                            |),
+                                                            [ chunk ]
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  |)) in
+                                              let _ :=
+                                                M.is_constant_or_break_match (|
+                                                  M.read (| γ |),
+                                                  Value.Bool true
+                                                |) in
+                                              let~ _ :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_associated_function (|
+                                                      Ty.path "alloc::string::String",
+                                                      "push_str",
+                                                      []
+                                                    |),
+                                                    [
+                                                      res;
+                                                      M.read (|
+                                                        M.get_constant (|
+                                                          "alloc::string::into_utf8_lossy::REPLACEMENT"
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |) in
+                                              M.alloc (| Value.Tuple [] |)));
+                                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                        ]
+                                      |)))
+                                ]
+                              |) in
+                            M.alloc (| Value.Tuple [] |)))
+                        |)))
+                  ]
+                |)) in
+            res
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_into_utf8_lossy :
+      M.IsAssociatedFunction Self "into_utf8_lossy" into_utf8_lossy.
+    
+    (*
         pub fn into_bytes(self) -> Vec<u8> {
             self.bytes
         }
@@ -8276,7 +8681,7 @@ Module string.
       end.
     
     (*
-        fn strip_suffix_of<'a>(self, haystack: &'a str) -> Option<&str>
+        fn strip_suffix_of<'a>(self, haystack: &'a str) -> Option<&'a str>
         where
             Self::Searcher<'a>: core::str::pattern::ReverseSearcher<'a>,
         {

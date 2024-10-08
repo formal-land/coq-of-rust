@@ -378,42 +378,13 @@ Module f16.
     
     (*
         pub const fn classify(self) -> FpCategory {
-            // A previous implementation for f32/f64 tried to only use bitmask-based checks,
-            // using `to_bits` to transmute the float to its bit repr and match on that.
-            // If we only cared about being "technically" correct, that's an entirely legit
-            // implementation.
-            //
-            // Unfortunately, there are platforms out there that do not correctly implement the IEEE
-            // float semantics Rust relies on: some hardware flushes denormals to zero, and some
-            // platforms convert to `f32` to perform operations without properly rounding back (e.g.
-            // WASM, see llvm/llvm-project#96437). These are platforms bugs, and Rust will misbehave on
-            // such platforms, but we can at least try to make things seem as sane as possible by being
-            // careful here.
-            if self.is_infinite() {
-                // Thus, a value may compare unequal to infinity, despite having a "full" exponent mask.
-                FpCategory::Infinite
-            } else if self.is_nan() {
-                // And it may not be NaN, as it can simply be an "overextended" finite value.
-                FpCategory::Nan
-            } else {
-                // However, std can't simply compare to zero to check for zero, either,
-                // as correctness requires avoiding equality tests that may be Subnormal == -0.0
-                // because it may be wrong under "denormals are zero" and "flush to zero" modes.
-                // Most of std's targets don't use those, but they are used for thumbv7neon.
-                // So, this does use bitpattern matching for the rest. On x87, due to the incorrect
-                // float codegen on this hardware, this doesn't actually return a right answer for NaN
-                // because it cannot correctly discern between a floating point NaN, and some normal
-                // floating point numbers truncated from an x87 FPU -- but we took care of NaN above, so
-                // we are fine.
-                // FIXME(jubilee): This probably could at least answer things correctly for Infinity,
-                // like the f64 version does, but I need to run more checks on how things go on x86.
-                // I fear losing mantissa data that would have answered that differently.
-                let b = self.to_bits();
-                match (b & Self::MAN_MASK, b & Self::EXP_MASK) {
-                    (0, 0) => FpCategory::Zero,
-                    (_, 0) => FpCategory::Subnormal,
-                    _ => FpCategory::Normal,
-                }
+            let b = self.to_bits();
+            match (b & Self::MAN_MASK, b & Self::EXP_MASK) {
+                (0, Self::EXP_MASK) => FpCategory::Infinite,
+                (_, Self::EXP_MASK) => FpCategory::Nan,
+                (0, 0) => FpCategory::Zero,
+                (_, 0) => FpCategory::Subnormal,
+                _ => FpCategory::Normal,
             }
         }
     *)
@@ -423,99 +394,79 @@ Module f16.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
+            let~ b :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "f16", "to_bits", [] |),
+                  [ M.read (| self |) ]
+                |)
+              |) in
             M.match_operator (|
-              M.alloc (| Value.Tuple [] |),
+              M.alloc (|
+                Value.Tuple
+                  [
+                    BinOp.bit_and
+                      (M.read (| b |))
+                      (M.read (| M.get_constant (| "core::f16::MAN_MASK" |) |));
+                    BinOp.bit_and
+                      (M.read (| b |))
+                      (M.read (| M.get_constant (| "core::f16::EXP_MASK" |) |))
+                  ]
+              |),
               [
                 fun γ =>
                   ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          M.call_closure (|
-                            M.get_associated_function (| Ty.path "f16", "is_infinite", [] |),
-                            [ M.read (| self |) ]
-                          |)
-                        |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ0_0 |),
+                        Value.Integer IntegerKind.U16 0
+                      |) in
+                    let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ0_1 |),
+                        Value.Integer IntegerKind.U16 31744
+                      |) in
                     M.alloc (| Value.StructTuple "core::num::FpCategory::Infinite" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (| Ty.path "f16", "is_nan", [] |),
-                                    [ M.read (| self |) ]
-                                  |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (| Value.StructTuple "core::num::FpCategory::Nan" [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let~ b :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (| Ty.path "f16", "to_bits", [] |),
-                                  [ M.read (| self |) ]
-                                |)
-                              |) in
-                            M.match_operator (|
-                              M.alloc (|
-                                Value.Tuple
-                                  [
-                                    BinOp.bit_and
-                                      (M.read (| b |))
-                                      (M.read (| M.get_constant (| "core::f16::MAN_MASK" |) |));
-                                    BinOp.bit_and
-                                      (M.read (| b |))
-                                      (M.read (| M.get_constant (| "core::f16::EXP_MASK" |) |))
-                                  ]
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ0_0 |),
-                                        Value.Integer IntegerKind.U16 0
-                                      |) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ0_1 |),
-                                        Value.Integer IntegerKind.U16 0
-                                      |) in
-                                    M.alloc (|
-                                      Value.StructTuple "core::num::FpCategory::Zero" []
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let _ :=
-                                      M.is_constant_or_break_match (|
-                                        M.read (| γ0_1 |),
-                                        Value.Integer IntegerKind.U16 0
-                                      |) in
-                                    M.alloc (|
-                                      Value.StructTuple "core::num::FpCategory::Subnormal" []
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.alloc (|
-                                      Value.StructTuple "core::num::FpCategory::Normal" []
-                                    |)))
-                              ]
-                            |)))
-                      ]
-                    |)))
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ0_1 |),
+                        Value.Integer IntegerKind.U16 31744
+                      |) in
+                    M.alloc (| Value.StructTuple "core::num::FpCategory::Nan" [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ0_0 |),
+                        Value.Integer IntegerKind.U16 0
+                      |) in
+                    let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ0_1 |),
+                        Value.Integer IntegerKind.U16 0
+                      |) in
+                    M.alloc (| Value.StructTuple "core::num::FpCategory::Zero" [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let _ :=
+                      M.is_constant_or_break_match (|
+                        M.read (| γ0_1 |),
+                        Value.Integer IntegerKind.U16 0
+                      |) in
+                    M.alloc (| Value.StructTuple "core::num::FpCategory::Subnormal" [] |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (| Value.StructTuple "core::num::FpCategory::Normal" [] |)))
               ]
             |)
           |)))

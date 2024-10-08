@@ -112,7 +112,7 @@ fn create_translation_to_coq(opts: &CliOptions) -> String {
         file_loader: None,
         input: config::Input::File(input_file_name),
         lint_caps: rustc_hash::FxHashMap::default(),
-        locale_resources: rustc_driver::DEFAULT_LOCALE_RESOURCES,
+        locale_resources: rustc_driver::DEFAULT_LOCALE_RESOURCES.to_vec(),
         make_codegen_backend: None,
         opts: config::Options {
             maybe_sysroot: Some(path::PathBuf::from(sysroot)),

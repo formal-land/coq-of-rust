@@ -595,7 +595,11 @@ pub(crate) fn compile_expr<'a>(
             })
             .alloc()
         }
-        thir::ExprKind::PointerCoercion { source, cast } => {
+        thir::ExprKind::PointerCoercion {
+            source,
+            cast,
+            is_from_as_cast: _,
+        } => {
             let func = Expr::local_var("M.pointer_coercion");
             let source = compile_expr(env, generics, thir, source).read();
 

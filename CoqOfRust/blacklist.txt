@@ -13,8 +13,9 @@ revm/translations/precompile/utilities.v
 # This file works but is taking a very long time (ten minutes)
 revm/translations/interpreter/opcode.v
 core/array/mod.v
-core/net/ip_addr.v
 core/iter/adapters/flatten.v
+core/net/ip_addr.v
+core/num/int_sqrt.v
 token-2022
 # Links that are not working yet
 core/links/cmp.v

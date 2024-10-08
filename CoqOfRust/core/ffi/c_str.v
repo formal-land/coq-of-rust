@@ -1838,7 +1838,7 @@ Module ffi.
           pub const fn to_bytes_with_nul(&self) -> &[u8] {
               // SAFETY: Transmuting a slice of `c_char`s to a slice of `u8`s
               // is safe on all supported targets.
-              unsafe { &*(addr_of!(self.inner) as *const [u8]) }
+              unsafe { &*((&raw const self.inner) as *const [u8]) }
           }
       *)
       Definition to_bytes_with_nul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=

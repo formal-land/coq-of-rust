@@ -6,23 +6,25 @@ Module slice.
     Module unstable.
       Module heapsort.
         (*
-        pub(crate) unsafe fn heapsort<T, F>(v: &mut [T], is_less: &mut F)
+        pub(crate) fn heapsort<T, F>(v: &mut [T], is_less: &mut F)
         where
             F: FnMut(&T, &T) -> bool,
         {
-            // SAFETY: See function safety.
-            unsafe {
-                intrinsics::assume(v.len() >= 2);
+            let len = v.len();
         
-                // Build the heap in linear time.
-                for i in (0..v.len() / 2).rev() {
-                    sift_down(v, i, is_less);
-                }
-        
-                // Pop maximal elements from the heap.
-                for i in (1..v.len()).rev() {
+            for i in (0..len + len / 2).rev() {
+                let sift_idx = if i >= len {
+                    i - len
+                } else {
                     v.swap(0, i);
-                    sift_down(&mut v[..i], 0, is_less);
+                    0
+                };
+        
+                // SAFETY: The above calculation ensures that `sift_idx` is either 0 or
+                // `(len..(len + (len / 2))) - len`, which simplifies to `0..(len / 2)`.
+                // This guarantees the required `sift_idx <= len`.
+                unsafe {
+                    sift_down(&mut v[..cmp::min(i, len)], sift_idx, is_less);
                 }
             }
         }
@@ -34,142 +36,17 @@ Module slice.
               (let v := M.alloc (| v |) in
               let is_less := M.alloc (| is_less |) in
               M.read (|
-                let~ _ :=
+                let~ len :=
                   M.alloc (|
                     M.call_closure (|
-                      M.get_function (| "core::intrinsics::assume", [] |),
-                      [
-                        BinOp.ge (|
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [] [ T ],
-                              "len",
-                              []
-                            |),
-                            [ M.read (| v |) ]
-                          |),
-                          Value.Integer IntegerKind.Usize 2
-                        |)
-                      ]
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "slice") [] [ T ],
+                        "len",
+                        []
+                      |),
+                      [ M.read (| v |) ]
                     |)
                   |) in
-                let~ _ :=
-                  M.use
-                    (M.match_operator (|
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_trait_method (|
-                            "core::iter::traits::collect::IntoIterator",
-                            Ty.apply
-                              (Ty.path "core::iter::adapters::rev::Rev")
-                              []
-                              [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ]
-                              ],
-                            [],
-                            "into_iter",
-                            []
-                          |),
-                          [
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::iter::traits::iterator::Iterator",
-                                Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                                [],
-                                "rev",
-                                []
-                              |),
-                              [
-                                Value.StructRecord
-                                  "core::ops::range::Range"
-                                  [
-                                    ("start", Value.Integer IntegerKind.Usize 0);
-                                    ("end_",
-                                      BinOp.Wrap.div (|
-                                        M.call_closure (|
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ T ],
-                                            "len",
-                                            []
-                                          |),
-                                          [ M.read (| v |) ]
-                                        |),
-                                        Value.Integer IntegerKind.Usize 2
-                                      |))
-                                  ]
-                              ]
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let iter := M.copy (| γ |) in
-                            M.loop (|
-                              ltac:(M.monadic
-                                (let~ _ :=
-                                  M.match_operator (|
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::iter::traits::iterator::Iterator",
-                                          Ty.apply
-                                            (Ty.path "core::iter::adapters::rev::Rev")
-                                            []
-                                            [
-                                              Ty.apply
-                                                (Ty.path "core::ops::range::Range")
-                                                []
-                                                [ Ty.path "usize" ]
-                                            ],
-                                          [],
-                                          "next",
-                                          []
-                                        |),
-                                        [ iter ]
-                                      |)
-                                    |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let _ :=
-                                            M.is_struct_tuple (|
-                                              γ,
-                                              "core::option::Option::None"
-                                            |) in
-                                          M.alloc (|
-                                            M.never_to_any (| M.read (| M.break (||) |) |)
-                                          |)));
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::option::Option::Some",
-                                              0
-                                            |) in
-                                          let i := M.copy (| γ0_0 |) in
-                                          let~ _ :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                M.get_function (|
-                                                  "core::slice::sort::unstable::heapsort::sift_down",
-                                                  [ T; F ]
-                                                |),
-                                                [
-                                                  M.read (| v |);
-                                                  M.read (| i |);
-                                                  M.read (| is_less |)
-                                                ]
-                                              |)
-                                            |) in
-                                          M.alloc (| Value.Tuple [] |)))
-                                    ]
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)))
-                            |)))
-                      ]
-                    |)) in
                 M.use
                   (M.match_operator (|
                     M.alloc (|
@@ -197,15 +74,14 @@ Module slice.
                               Value.StructRecord
                                 "core::ops::range::Range"
                                 [
-                                  ("start", Value.Integer IntegerKind.Usize 1);
+                                  ("start", Value.Integer IntegerKind.Usize 0);
                                   ("end_",
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ T ],
-                                        "len",
-                                        []
-                                      |),
-                                      [ M.read (| v |) ]
+                                    BinOp.Wrap.add (|
+                                      M.read (| len |),
+                                      BinOp.Wrap.div (|
+                                        M.read (| len |),
+                                        Value.Integer IntegerKind.Usize 2
+                                      |)
                                     |))
                                 ]
                             ]
@@ -258,18 +134,52 @@ Module slice.
                                             0
                                           |) in
                                         let i := M.copy (| γ0_0 |) in
-                                        let~ _ :=
-                                          M.alloc (|
-                                            M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "slice") [] [ T ],
-                                                "swap",
-                                                []
-                                              |),
+                                        let~ sift_idx :=
+                                          M.copy (|
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
                                               [
-                                                M.read (| v |);
-                                                Value.Integer IntegerKind.Usize 0;
-                                                M.read (| i |)
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          BinOp.ge (|
+                                                            M.read (| i |),
+                                                            M.read (| len |)
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      BinOp.Wrap.sub (|
+                                                        M.read (| i |),
+                                                        M.read (| len |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let~ _ :=
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          M.get_associated_function (|
+                                                            Ty.apply (Ty.path "slice") [] [ T ],
+                                                            "swap",
+                                                            []
+                                                          |),
+                                                          [
+                                                            M.read (| v |);
+                                                            Value.Integer IntegerKind.Usize 0;
+                                                            M.read (| i |)
+                                                          ]
+                                                        |)
+                                                      |) in
+                                                    M.alloc (|
+                                                      Value.Integer IntegerKind.Usize 0
+                                                    |)))
                                               ]
                                             |)
                                           |) in
@@ -298,10 +208,19 @@ Module slice.
                                                     M.read (| v |);
                                                     Value.StructRecord
                                                       "core::ops::range::RangeTo"
-                                                      [ ("end_", M.read (| i |)) ]
+                                                      [
+                                                        ("end_",
+                                                          M.call_closure (|
+                                                            M.get_function (|
+                                                              "core::cmp::min",
+                                                              [ Ty.path "usize" ]
+                                                            |),
+                                                            [ M.read (| i |); M.read (| len |) ]
+                                                          |))
+                                                      ]
                                                   ]
                                                 |);
-                                                Value.Integer IntegerKind.Usize 0;
+                                                M.read (| sift_idx |);
                                                 M.read (| is_less |)
                                               ]
                                             |)
@@ -327,7 +246,7 @@ Module slice.
         {
             // SAFETY: See function safety.
             unsafe {
-                intrinsics::assume(node < v.len());
+                intrinsics::assume(node <= v.len());
             }
         
             let len = v.len();
@@ -356,9 +275,7 @@ Module slice.
                         break;
                     }
         
-                    // Swap `node` with the greater child, move one step down, and continue sifting. This
-                    // could be ptr::swap_nonoverlapping but that adds a significant amount of binary-size.
-                    ptr::swap(v_base.add(node), v_base.add(child));
+                    ptr::swap_nonoverlapping(v_base.add(node), v_base.add(child), 1);
                 }
         
                 node = child;
@@ -379,7 +296,7 @@ Module slice.
                       M.call_closure (|
                         M.get_function (| "core::intrinsics::assume", [] |),
                         [
-                          BinOp.lt (|
+                          BinOp.le (|
                             M.read (| node |),
                             M.call_closure (|
                               M.get_associated_function (|
@@ -585,7 +502,7 @@ Module slice.
                       let~ _ :=
                         M.alloc (|
                           M.call_closure (|
-                            M.get_function (| "core::ptr::swap", [ T ] |),
+                            M.get_function (| "core::ptr::swap_nonoverlapping", [ T ] |),
                             [
                               M.call_closure (|
                                 M.get_associated_function (|
@@ -602,7 +519,8 @@ Module slice.
                                   []
                                 |),
                                 [ M.read (| v_base |); M.read (| child |) ]
-                              |)
+                              |);
+                              Value.Integer IntegerKind.Usize 1
                             ]
                           |)
                         |) in

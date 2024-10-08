@@ -1427,7 +1427,7 @@ Module intrinsics.
   
   (*
   pub const fn ub_checks() -> bool {
-      cfg!(debug_assertions)
+      cfg!(ub_checks)
   }
   *)
   Definition ub_checks (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1765,7 +1765,7 @@ Module intrinsics.
   (*
   pub const unsafe fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize) {
       extern "rust-intrinsic" {
-          #[rustc_const_unstable(feature = "const_intrinsic_copy", issue = "80697")]
+          #[rustc_const_stable(feature = "const_intrinsic_copy", since = "CURRENT_RUSTC_VERSION")]
           #[rustc_nounwind]
           pub fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize);
       }
@@ -1866,7 +1866,7 @@ Module intrinsics.
   (*
   pub const unsafe fn copy<T>(src: *const T, dst: *mut T, count: usize) {
       extern "rust-intrinsic" {
-          #[rustc_const_unstable(feature = "const_intrinsic_copy", issue = "80697")]
+          #[rustc_const_stable(feature = "const_intrinsic_copy", since = "CURRENT_RUSTC_VERSION")]
           #[rustc_nounwind]
           fn copy<T>(src: *const T, dst: *mut T, count: usize);
       }

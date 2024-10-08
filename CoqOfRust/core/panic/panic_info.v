@@ -10,7 +10,7 @@ Module panic.
         ty_params := [];
         fields :=
           [
-            ("message", Ty.path "core::fmt::Arguments");
+            ("message", Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::Arguments" ]);
             ("location", Ty.apply (Ty.path "&") [] [ Ty.path "core::panic::location::Location" ]);
             ("can_unwind", Ty.path "bool");
             ("force_no_backtrace", Ty.path "bool")
@@ -80,7 +80,7 @@ Module panic.
         name := "PanicMessage";
         const_params := [];
         ty_params := [];
-        fields := [ ("message", Ty.path "core::fmt::Arguments") ];
+        fields := [ ("message", Ty.apply (Ty.path "&") [] [ Ty.path "core::fmt::Arguments" ]) ];
       } *)
     
     Module Impl_core_panic_panic_info_PanicInfo.
@@ -88,7 +88,7 @@ Module panic.
       
       (*
           pub(crate) fn new(
-              message: fmt::Arguments<'a>,
+              message: &'a fmt::Arguments<'a>,
               location: &'a Location<'a>,
               can_unwind: bool,
               force_no_backtrace: bool,
@@ -243,7 +243,7 @@ Module panic.
               formatter.write_str("panicked at ")?;
               self.location.fmt(formatter)?;
               formatter.write_str(":\n")?;
-              formatter.write_fmt(self.message)?;
+              formatter.write_fmt( *self.message)?;
               Ok(())
           }
       *)
@@ -523,10 +523,12 @@ Module panic.
                               [
                                 M.read (| formatter |);
                                 M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::panic::panic_info::PanicInfo",
-                                    "message"
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.read (| self |),
+                                      "core::panic::panic_info::PanicInfo",
+                                      "message"
+                                    |)
                                   |)
                                 |)
                               ]
@@ -615,10 +617,12 @@ Module panic.
             M.call_closure (|
               M.get_associated_function (| Ty.path "core::fmt::Arguments", "as_str", [] |),
               [
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| self |),
-                  "core::panic::panic_info::PanicMessage",
-                  "message"
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "core::panic::panic_info::PanicMessage",
+                    "message"
+                  |)
                 |)
               ]
             |)))
@@ -633,7 +637,7 @@ Module panic.
       
       (*
           fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-              formatter.write_fmt(self.message)
+              formatter.write_fmt( *self.message)
           }
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -647,10 +651,12 @@ Module panic.
               [
                 M.read (| formatter |);
                 M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::panic::panic_info::PanicMessage",
-                    "message"
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::panic::panic_info::PanicMessage",
+                      "message"
+                    |)
                   |)
                 |)
               ]
@@ -671,7 +677,7 @@ Module panic.
       
       (*
           fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-              formatter.write_fmt(self.message)
+              formatter.write_fmt( *self.message)
           }
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -685,10 +691,12 @@ Module panic.
               [
                 M.read (| formatter |);
                 M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::panic::panic_info::PanicMessage",
-                    "message"
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.read (| self |),
+                      "core::panic::panic_info::PanicMessage",
+                      "message"
+                    |)
                   |)
                 |)
               ]

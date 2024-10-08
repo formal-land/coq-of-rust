@@ -825,6 +825,7 @@ Module time.
                 // SAFETY: nanos < NANOS_PER_SEC, therefore nanos is within the valid range
                 Duration { secs, nanos: unsafe { Nanoseconds(nanos) } }
             } else {
+                // FIXME(const-hack): use `.expect` once that is possible.
                 let secs = match secs.checked_add((nanos / NANOS_PER_SEC) as u64) {
                     Some(secs) => secs,
                     None => panic!("overflow in Duration::new"),
@@ -2444,6 +2445,7 @@ Module time.
             let total_nanos = self.nanos.0 as u64 * rhs as u64;
             let extra_secs = total_nanos / (NANOS_PER_SEC as u64);
             let nanos = (total_nanos % (NANOS_PER_SEC as u64)) as u32;
+            // FIXME(const-hack): use `and_then` once that is possible.
             if let Some(s) = self.secs.checked_mul(rhs as u64) {
                 if let Some(secs) = s.checked_add(extra_secs) {
                     debug_assert!(nanos < NANOS_PER_SEC);

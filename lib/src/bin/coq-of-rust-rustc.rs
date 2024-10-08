@@ -50,9 +50,9 @@ fn setup_plugin() {
     let user_asked_for = !is_wrapper || primary_package;
 
     if normal_rustc || !user_asked_for {
-        return RunCompiler::new(&args, &mut DefaultCallbacks {})
+        RunCompiler::new(&args, &mut DefaultCallbacks {})
             .run()
-            .unwrap();
+            .unwrap()
     } else {
         let opts = Options::from_args(coq_of_rust);
         let mut callbacks = ToCoq::new(opts);

@@ -4,7 +4,64 @@ Require Import CoqOfRust.CoqOfRust.
 Module mem.
   Module transmutability.
     (* Trait *)
-    (* Empty module 'BikeshedIntrinsicFrom' *)
+    Module TransmuteFrom.
+      Definition transmute
+          (ASSUME : Value.t)
+          (Src Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ src ] =>
+          ltac:(M.monadic
+            (let src := M.alloc (| src |) in
+            M.read (|
+              let~ transmute :=
+                M.alloc (|
+                  Value.StructRecord
+                    "core::mem::transmutability::TransmuteFrom::transmute::Transmute"
+                    [
+                      ("src",
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Src ],
+                            "new",
+                            []
+                          |),
+                          [ M.read (| src |) ]
+                        |))
+                    ]
+                |) in
+              let~ dst :=
+                M.copy (|
+                  M.SubPointer.get_struct_record_field (|
+                    transmute,
+                    "core::mem::transmutability::TransmuteFrom::transmute::Transmute",
+                    "dst"
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ Self ],
+                    "into_inner",
+                    []
+                  |),
+                  [ M.read (| dst |) ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom ProvidedMethod_transmute :
+        forall (ASSUME : Value.t) (Src : Ty.t),
+        M.IsProvidedMethod
+          "core::mem::transmutability::TransmuteFrom"
+          "transmute"
+          (transmute ASSUME Src).
+    End TransmuteFrom.
     
     (* StructRecord
       {

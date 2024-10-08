@@ -242,7 +242,7 @@ Module str.
       
       (*
           pub const fn error_len(&self) -> Option<usize> {
-              // FIXME: This should become `map` again, once it's `const`
+              // FIXME(const-hack): This should become `map` again, once it's `const`
               match self.error_len {
                   Some(len) => Some(len as usize),
                   None => None,

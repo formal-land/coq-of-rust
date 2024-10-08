@@ -614,6 +614,31 @@ Module intrinsics.
 End intrinsics.
 
 Module panic.
+  (*
+  pub fn abort_unwind<F: FnOnce() -> R, R>(f: F) -> R {
+      f()
+  }
+  *)
+  Definition abort_unwind (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ F; R ], [ f ] =>
+      ltac:(M.monadic
+        (let f := M.alloc (| f |) in
+        M.call_closure (|
+          M.get_trait_method (|
+            "core::ops::function::FnOnce",
+            F,
+            [ Ty.tuple [] ],
+            "call_once",
+            []
+          |),
+          [ M.read (| f |); Value.Tuple [] ]
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
+  
+  Axiom Function_abort_unwind : M.IsFunction "core::panic::abort_unwind" abort_unwind.
+  
   (* Trait *)
   Module PanicPayload.
     Definition as_str (Self : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=

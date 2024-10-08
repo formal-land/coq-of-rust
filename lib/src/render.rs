@@ -1,12 +1,5 @@
 use pretty::RcDoc;
 
-/// provides the instance of the Struct.Trait typeclass
-/// for definitions of functions and constants
-/// which types utilize the M monad constructor
-// pub(crate) fn monadic_typeclass_parameter<'a>() -> Doc<'a> {
-//     coq::ArgDecl::monadic_typeclass_parameter().to_doc()
-// }
-
 /// Insert a Doc block when the predicate(usually is_empty()) doesn't satisfy.
 pub(crate) fn optional_insert(when_not: bool, insert_doc: RcDoc<()>) -> RcDoc<()> {
     if when_not {

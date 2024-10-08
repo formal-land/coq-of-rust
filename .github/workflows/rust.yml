@@ -58,6 +58,9 @@ jobs:
           #   ./generate_ink_example.sh
           #   cd ..
           # endGroup
+          startGroup "Save space"
+            cargo clean
+          endGroup
           startGroup "Translate the alloc library"
             cd third-party/rust/library/alloc
             cp ../../../../rust-toolchain ./
@@ -74,6 +77,14 @@ jobs:
             touch src/lib.rs
             cargo coq-of-rust
             rsync -acv src/ ../../../../CoqOfRust/core/ --include='*/' --include='*.v' --exclude='*'
+            cd ../../../..
+          endGroup
+          startGroup "Save space"
+          cd third-party/rust/library/alloc
+            cargo clean
+            cd ../../../..
+            cd third-party/rust/library/core
+            cargo clean
             cd ../../../..
           endGroup
           startGroup "Translate Revm"

@@ -87,7 +87,7 @@ Module cell.
               match this.state.into_inner() {
                   State::Init(data) => Ok(data),
                   State::Uninit(f) => Err(f),
-                  State::Poisoned => panic!("LazyCell instance has previously been poisoned"),
+                  State::Poisoned => panic_poisoned(),
               }
           }
       *)
@@ -156,27 +156,8 @@ Module cell.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  []
-                                |),
-                                [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "LazyCell instance has previously been poisoned"
-                                        |)
-                                      ]
-                                  |)
-                                ]
-                              |)
-                            ]
+                            M.get_function (| "core::cell::lazy::panic_poisoned", [] |),
+                            []
                           |)
                         |)
                       |)))
@@ -202,7 +183,7 @@ Module cell.
                   State::Init(data) => data,
                   // SAFETY: The state is uninitialized.
                   State::Uninit(_) => unsafe { LazyCell::really_init(this) },
-                  State::Poisoned => panic!("LazyCell has previously been poisoned"),
+                  State::Poisoned => panic_poisoned(),
               }
           }
       *)
@@ -273,26 +254,8 @@ Module cell.
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
-                            M.get_function (| "core::panicking::panic_fmt", [] |),
-                            [
-                              M.call_closure (|
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  []
-                                |),
-                                [
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "LazyCell has previously been poisoned"
-                                        |)
-                                      ]
-                                  |)
-                                ]
-                              |)
-                            ]
+                            M.get_function (| "core::cell::lazy::panic_poisoned", [] |),
+                            []
                           |)
                         |)
                       |)))
@@ -305,6 +268,136 @@ Module cell.
       Axiom AssociatedFunction_force :
         forall (T F : Ty.t),
         M.IsAssociatedFunction (Self T F) "force" (force T F).
+      
+      (*
+          pub fn force_mut(this: &mut LazyCell<T, F>) -> &mut T {
+              #[cold]
+              /// # Safety
+              /// May only be called when the state is `Uninit`.
+              unsafe fn really_init_mut<T, F: FnOnce() -> T>(state: &mut State<T, F>) -> &mut T {
+                  // INVARIANT: Always valid, but the value may not be dropped.
+                  struct PoisonOnPanic<T, F>( *mut State<T, F>);
+                  impl<T, F> Drop for PoisonOnPanic<T, F> {
+                      #[inline]
+                      fn drop(&mut self) {
+                          // SAFETY: Invariant states it is valid, and we don't drop the old value.
+                          unsafe {
+                              self.0.write(State::Poisoned);
+                          }
+                      }
+                  }
+      
+                  let State::Uninit(f) = state else {
+                      // `unreachable!()` here won't optimize out because the function is cold.
+                      // SAFETY: Precondition.
+                      unsafe { unreachable_unchecked() };
+                  };
+                  // SAFETY: We never drop the state after we read `f`, and we write a valid value back
+                  // in any case, panic or success. `f` can't access the `LazyCell` because it is mutably
+                  // borrowed.
+                  let f = unsafe { core::ptr::read(f) };
+                  // INVARIANT: Initiated from mutable reference, don't drop because we read it.
+                  let guard = PoisonOnPanic(state);
+                  let data = f();
+                  // SAFETY: `PoisonOnPanic` invariant, and we don't drop the old value.
+                  unsafe {
+                      core::ptr::write(guard.0, State::Init(data));
+                  }
+                  core::mem::forget(guard);
+                  let State::Init(data) = state else { unreachable!() };
+                  data
+              }
+      
+              let state = this.state.get_mut();
+              match state {
+                  State::Init(data) => data,
+                  // SAFETY: `state` is `Uninit`.
+                  State::Uninit(_) => unsafe { really_init_mut(state) },
+                  State::Poisoned => panic_poisoned(),
+              }
+          }
+      *)
+      Definition force_mut (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T F in
+        match ε, τ, α with
+        | [], [], [ this ] =>
+          ltac:(M.monadic
+            (let this := M.alloc (| this |) in
+            M.read (|
+              let~ state :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::cell::UnsafeCell")
+                        []
+                        [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
+                      "get_mut",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| this |),
+                        "core::cell::lazy::LazyCell",
+                        "state"
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (|
+                M.read (|
+                  M.match_operator (|
+                    state,
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let γ1_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::cell::lazy::State::Init",
+                              0
+                            |) in
+                          let data := M.alloc (| γ1_0 |) in
+                          M.alloc (| M.read (| data |) |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let γ1_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::cell::lazy::State::Uninit",
+                              0
+                            |) in
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (| Self, "really_init_mut.force_mut", [] |),
+                              [ M.read (| state |) ]
+                            |)
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.read (| γ |) in
+                          let _ := M.is_struct_tuple (| γ, "core::cell::lazy::State::Poisoned" |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.call_closure (|
+                                M.get_function (| "core::cell::lazy::panic_poisoned", [] |),
+                                []
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_force_mut :
+        forall (T F : Ty.t),
+        M.IsAssociatedFunction (Self T F) "force_mut" (force_mut T F).
       
       (*
           unsafe fn really_init(this: &LazyCell<T, F>) -> &T {
@@ -482,12 +575,77 @@ Module cell.
         forall (T F : Ty.t),
         M.IsAssociatedFunction (Self T F) "really_init" (really_init T F).
       (*
-          fn get(&self) -> Option<&T> {
+          pub fn get_mut(this: &mut LazyCell<T, F>) -> Option<&mut T> {
+              let state = this.state.get_mut();
+              match state {
+                  State::Init(data) => Some(data),
+                  _ => None,
+              }
+          }
+      *)
+      Definition get_mut (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T F in
+        match ε, τ, α with
+        | [], [], [ this ] =>
+          ltac:(M.monadic
+            (let this := M.alloc (| this |) in
+            M.read (|
+              let~ state :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "core::cell::UnsafeCell")
+                        []
+                        [ Ty.apply (Ty.path "core::cell::lazy::State") [] [ T; F ] ],
+                      "get_mut",
+                      []
+                    |),
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| this |),
+                        "core::cell::lazy::LazyCell",
+                        "state"
+                      |)
+                    ]
+                  |)
+                |) in
+              M.match_operator (|
+                state,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::cell::lazy::State::Init",
+                          0
+                        |) in
+                      let data := M.alloc (| γ1_0 |) in
+                      M.alloc (|
+                        Value.StructTuple "core::option::Option::Some" [ M.read (| data |) ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_get_mut :
+        forall (T F : Ty.t),
+        M.IsAssociatedFunction (Self T F) "get_mut" (get_mut T F).
+      
+      (*
+          pub fn get(this: &LazyCell<T, F>) -> Option<&T> {
               // SAFETY:
               // This is sound for the same reason as in `force`: once the state is
               // initialized, it will not be mutably accessed again, so this reference
               // will stay valid for the duration of the borrow to `self`.
-              let state = unsafe { &*self.state.get() };
+              let state = unsafe { &*this.state.get() };
               match state {
                   State::Init(data) => Some(data),
                   _ => None,
@@ -497,9 +655,9 @@ Module cell.
       Definition get (T F : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T F in
         match ε, τ, α with
-        | [], [], [ self ] =>
+        | [], [], [ this ] =>
           ltac:(M.monadic
-            (let self := M.alloc (| self |) in
+            (let this := M.alloc (| this |) in
             M.read (|
               let~ state :=
                 M.alloc (|
@@ -514,7 +672,7 @@ Module cell.
                     |),
                     [
                       M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
+                        M.read (| this |),
                         "core::cell::lazy::LazyCell",
                         "state"
                       |)
@@ -637,7 +795,7 @@ Module cell.
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               let mut d = f.debug_tuple("LazyCell");
-              match self.get() {
+              match LazyCell::get(self) {
                   Some(data) => d.field(data),
                   None => d.field(&format_args!("<uninit>")),
               };
@@ -748,5 +906,33 @@ Module cell.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T F)) ].
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_cell_lazy_LazyCell_T_F.
+    
+    (*
+    fn panic_poisoned() -> ! {
+        panic!("LazyCell instance has previously been poisoned")
+    }
+    *)
+    Definition panic_poisoned (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.call_closure (|
+            M.get_function (| "core::panicking::panic_fmt", [] |),
+            [
+              M.call_closure (|
+                M.get_associated_function (| Ty.path "core::fmt::Arguments", "new_const", [] |),
+                [
+                  M.alloc (|
+                    Value.Array
+                      [ M.read (| Value.String "LazyCell instance has previously been poisoned" |) ]
+                  |)
+                ]
+              |)
+            ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Function_panic_poisoned : M.IsFunction "core::cell::lazy::panic_poisoned" panic_poisoned.
   End lazy.
 End cell.
