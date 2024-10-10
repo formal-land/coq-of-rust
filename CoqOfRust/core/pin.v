@@ -646,12 +646,8 @@ Module pin.
     Axiom AssociatedFunction_as_ref :
       forall (Ptr : Ty.t),
       M.IsAssociatedFunction (Self Ptr) "as_ref" (as_ref Ptr).
-    
     (*
-        pub fn as_mut(&mut self) -> Pin<&mut Ptr::Target>
-        where
-            Ptr: DerefMut,
-        {
+        pub fn as_mut(&mut self) -> Pin<&mut Ptr::Target> {
             // SAFETY: see documentation on this function
             unsafe { Pin::new_unchecked(&mut *self.__pointer) }
         }
@@ -692,10 +688,7 @@ Module pin.
       M.IsAssociatedFunction (Self Ptr) "as_mut" (as_mut Ptr).
     
     (*
-        pub fn as_deref_mut(self: Pin<&mut Pin<Ptr>>) -> Pin<&mut Ptr::Target>
-        where
-            Ptr: DerefMut,
-        {
+        pub fn as_deref_mut(self: Pin<&mut Pin<Ptr>>) -> Pin<&mut Ptr::Target> {
             // SAFETY: What we're asserting here is that going from
             //
             //     Pin<&mut Pin<Ptr>>
@@ -769,7 +762,6 @@ Module pin.
     (*
         pub fn set(&mut self, value: Ptr::Target)
         where
-            Ptr: DerefMut,
             Ptr::Target: Sized,
         {
             *(self.__pointer) = value;
@@ -805,7 +797,6 @@ Module pin.
     Axiom AssociatedFunction_set :
       forall (Ptr : Ty.t),
       M.IsAssociatedFunction (Self Ptr) "set" (set Ptr).
-    
     (*
         pub const unsafe fn into_inner_unchecked(pin: Pin<Ptr>) -> Ptr {
             pin.__pointer
@@ -832,6 +823,8 @@ Module pin.
       forall (Ptr : Ty.t),
       M.IsAssociatedFunction (Self Ptr) "into_inner_unchecked" (into_inner_unchecked Ptr).
   End Impl_core_pin_Pin_Ptr.
+  
+  
   
   
   Module Impl_core_pin_Pin_ref__T.

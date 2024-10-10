@@ -8,22 +8,7 @@ Module ptr.
       
       (*
           pub const fn is_null(self) -> bool {
-              #[inline]
-              fn runtime_impl(ptr: *mut u8) -> bool {
-                  ptr.addr() == 0
-              }
-      
-              #[inline]
-              const fn const_impl(ptr: *mut u8) -> bool {
-                  // Compare via a cast to a thin pointer, so fat pointers are only
-                  // considering their "data" part for null-ness.
-                  match (ptr).guaranteed_eq(null_mut()) {
-                      None => false,
-                      Some(res) => res,
-                  }
-              }
-      
-              const_eval_select((self as *mut u8,), const_impl, runtime_impl)
+              self.cast_const().is_null()
           }
       *)
       Definition is_null (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -33,19 +18,16 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.call_closure (|
-              M.get_function (|
-                "core::intrinsics::const_eval_select",
-                [
-                  Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ];
-                  Ty.function [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] (Ty.path "bool");
-                  Ty.function [ Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] ] (Ty.path "bool");
-                  Ty.path "bool"
-                ]
-              |),
+              M.get_associated_function (| Ty.apply (Ty.path "*const") [] [ T ], "is_null", [] |),
               [
-                Value.Tuple [ M.rust_cast (M.read (| self |)) ];
-                M.get_associated_function (| Self, "const_impl.is_null", [] |);
-                M.get_associated_function (| Self, "runtime_impl.is_null", [] |)
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    "cast_const",
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

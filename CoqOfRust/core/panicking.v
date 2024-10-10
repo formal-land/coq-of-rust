@@ -16,7 +16,7 @@ Module panicking.
       }
   
       let pi = PanicInfo::new(
-          fmt,
+          &fmt,
           Location::caller(),
           /* can_unwind */ true,
           /* force_no_backtrace */ false,
@@ -57,7 +57,7 @@ Module panicking.
                   []
                 |),
                 [
-                  M.read (| fmt |);
+                  fmt;
                   M.call_closure (|
                     M.get_associated_function (|
                       Ty.path "core::panic::location::Location",
@@ -107,7 +107,7 @@ Module panicking.
   
           // PanicInfo with the `can_unwind` flag set to false forces an abort.
           let pi = PanicInfo::new(
-              fmt,
+              &fmt,
               Location::caller(),
               /* can_unwind */ false,
               force_no_backtrace,
@@ -171,7 +171,7 @@ Module panicking.
     
             // PanicInfo with the `can_unwind` flag set to false forces an abort.
             let pi = PanicInfo::new(
-                fmt,
+                &fmt,
                 Location::caller(),
                 /* can_unwind */ false,
                 force_no_backtrace,
@@ -216,7 +216,7 @@ Module panicking.
                     []
                   |),
                   [
-                    M.read (| fmt |);
+                    fmt;
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "core::panic::location::Location",

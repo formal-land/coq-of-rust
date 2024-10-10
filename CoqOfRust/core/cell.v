@@ -3621,10 +3621,10 @@ Module cell.
         {
             let (a, b) = f(&*orig);
             let borrow = orig.borrow.clone();
-            (
-                Ref { value: NonNull::from(a), borrow },
-                Ref { value: NonNull::from(b), borrow: orig.borrow },
-            )
+            (Ref { value: NonNull::from(a), borrow }, Ref {
+                value: NonNull::from(b),
+                borrow: orig.borrow,
+            })
         }
     *)
     Definition map_split (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4046,10 +4046,11 @@ Module cell.
         {
             let borrow = orig.borrow.clone();
             let (a, b) = f(&mut *orig);
-            (
-                RefMut { value: NonNull::from(a), borrow, marker: PhantomData },
-                RefMut { value: NonNull::from(b), borrow: orig.borrow, marker: PhantomData },
-            )
+            (RefMut { value: NonNull::from(a), borrow, marker: PhantomData }, RefMut {
+                value: NonNull::from(b),
+                borrow: orig.borrow,
+                marker: PhantomData,
+            })
         }
     *)
     Definition map_split (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4992,267 +4993,6 @@ Module cell.
         [ (* T *) Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ U ] ]
         (* Instance *) [].
   End Impl_core_ops_unsize_DispatchFromDyn_where_core_ops_unsize_DispatchFromDyn_T_U_core_cell_UnsafeCell_U_for_core_cell_UnsafeCell_T.
-  
-  Module Impl_core_cell_UnsafeCell_i8.
-    Definition Self : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i8" ].
-    
-    (*
-                    pub(crate) const fn primitive_into_inner(self) -> $primitive {
-                        self.value
-                    }
-    *)
-    Definition primitive_into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_primitive_into_inner :
-      M.IsAssociatedFunction Self "primitive_into_inner" primitive_into_inner.
-  End Impl_core_cell_UnsafeCell_i8.
-  
-  Module Impl_core_cell_UnsafeCell_u8.
-    Definition Self : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ].
-    
-    (*
-                    pub(crate) const fn primitive_into_inner(self) -> $primitive {
-                        self.value
-                    }
-    *)
-    Definition primitive_into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_primitive_into_inner :
-      M.IsAssociatedFunction Self "primitive_into_inner" primitive_into_inner.
-  End Impl_core_cell_UnsafeCell_u8.
-  
-  Module Impl_core_cell_UnsafeCell_i16.
-    Definition Self : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i16" ].
-    
-    (*
-                    pub(crate) const fn primitive_into_inner(self) -> $primitive {
-                        self.value
-                    }
-    *)
-    Definition primitive_into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_primitive_into_inner :
-      M.IsAssociatedFunction Self "primitive_into_inner" primitive_into_inner.
-  End Impl_core_cell_UnsafeCell_i16.
-  
-  Module Impl_core_cell_UnsafeCell_u16.
-    Definition Self : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u16" ].
-    
-    (*
-                    pub(crate) const fn primitive_into_inner(self) -> $primitive {
-                        self.value
-                    }
-    *)
-    Definition primitive_into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_primitive_into_inner :
-      M.IsAssociatedFunction Self "primitive_into_inner" primitive_into_inner.
-  End Impl_core_cell_UnsafeCell_u16.
-  
-  Module Impl_core_cell_UnsafeCell_i32.
-    Definition Self : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i32" ].
-    
-    (*
-                    pub(crate) const fn primitive_into_inner(self) -> $primitive {
-                        self.value
-                    }
-    *)
-    Definition primitive_into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_primitive_into_inner :
-      M.IsAssociatedFunction Self "primitive_into_inner" primitive_into_inner.
-  End Impl_core_cell_UnsafeCell_i32.
-  
-  Module Impl_core_cell_UnsafeCell_u32.
-    Definition Self : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u32" ].
-    
-    (*
-                    pub(crate) const fn primitive_into_inner(self) -> $primitive {
-                        self.value
-                    }
-    *)
-    Definition primitive_into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_primitive_into_inner :
-      M.IsAssociatedFunction Self "primitive_into_inner" primitive_into_inner.
-  End Impl_core_cell_UnsafeCell_u32.
-  
-  Module Impl_core_cell_UnsafeCell_i64.
-    Definition Self : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "i64" ].
-    
-    (*
-                    pub(crate) const fn primitive_into_inner(self) -> $primitive {
-                        self.value
-                    }
-    *)
-    Definition primitive_into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_primitive_into_inner :
-      M.IsAssociatedFunction Self "primitive_into_inner" primitive_into_inner.
-  End Impl_core_cell_UnsafeCell_i64.
-  
-  Module Impl_core_cell_UnsafeCell_u64.
-    Definition Self : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u64" ].
-    
-    (*
-                    pub(crate) const fn primitive_into_inner(self) -> $primitive {
-                        self.value
-                    }
-    *)
-    Definition primitive_into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_primitive_into_inner :
-      M.IsAssociatedFunction Self "primitive_into_inner" primitive_into_inner.
-  End Impl_core_cell_UnsafeCell_u64.
-  
-  Module Impl_core_cell_UnsafeCell_isize.
-    Definition Self : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "isize" ].
-    
-    (*
-                    pub(crate) const fn primitive_into_inner(self) -> $primitive {
-                        self.value
-                    }
-    *)
-    Definition primitive_into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_primitive_into_inner :
-      M.IsAssociatedFunction Self "primitive_into_inner" primitive_into_inner.
-  End Impl_core_cell_UnsafeCell_isize.
-  
-  Module Impl_core_cell_UnsafeCell_usize.
-    Definition Self : Ty.t := Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "usize" ].
-    
-    (*
-                    pub(crate) const fn primitive_into_inner(self) -> $primitive {
-                        self.value
-                    }
-    *)
-    Definition primitive_into_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_primitive_into_inner :
-      M.IsAssociatedFunction Self "primitive_into_inner" primitive_into_inner.
-  End Impl_core_cell_UnsafeCell_usize.
-  
-  Module Impl_core_cell_UnsafeCell_pointer_mut_T.
-    Definition Self (T : Ty.t) : Ty.t :=
-      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.apply (Ty.path "*mut") [] [ T ] ].
-    
-    (*
-        pub(crate) const fn primitive_into_inner(self) -> *mut T {
-            self.value
-        }
-    *)
-    Definition primitive_into_inner
-        (T : Ty.t)
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      let Self : Ty.t := Self T in
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.read (|
-            M.SubPointer.get_struct_record_field (| self, "core::cell::UnsafeCell", "value" |)
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_primitive_into_inner :
-      forall (T : Ty.t),
-      M.IsAssociatedFunction (Self T) "primitive_into_inner" (primitive_into_inner T).
-  End Impl_core_cell_UnsafeCell_pointer_mut_T.
   
   (* StructRecord
     {

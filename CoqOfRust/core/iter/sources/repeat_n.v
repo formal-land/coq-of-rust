@@ -6,14 +6,12 @@ Module iter.
     Module repeat_n.
       (*
       pub fn repeat_n<T: Clone>(element: T, count: usize) -> RepeatN<T> {
-          let mut element = ManuallyDrop::new(element);
-      
-          if count == 0 {
-              // SAFETY: we definitely haven't dropped it yet, since we only just got
-              // passed it in, and because the count is zero the instance we're about
-              // to create won't drop it, so to avoid leaking we need to now.
-              unsafe { ManuallyDrop::drop(&mut element) };
-          }
+          let element = if count == 0 {
+              // `element` gets dropped eagerly.
+              MaybeUninit::uninit()
+          } else {
+              MaybeUninit::new(element)
+          };
       
           RepeatN { element, count }
       }
@@ -26,46 +24,43 @@ Module iter.
             let count := M.alloc (| count |) in
             M.read (|
               let~ element :=
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ T ],
-                      "new",
-                      []
-                    |),
-                    [ M.read (| element |) ]
-                  |)
-                |) in
-              let~ _ :=
-                M.match_operator (|
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.eq (| M.read (| count |), Value.Integer IntegerKind.Usize 0 |)
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ :=
+                M.copy (|
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                BinOp.eq (| M.read (| count |), Value.Integer IntegerKind.Usize 0 |)
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                  []
-                                  [ T ],
-                                "drop",
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                                "uninit",
                                 []
                               |),
-                              [ element ]
+                              []
                             |)
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
+                          |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+                                "new",
+                                []
+                              |),
+                              [ M.read (| element |) ]
+                            |)
+                          |)))
+                    ]
+                  |)
                 |) in
               M.alloc (|
                 Value.StructRecord
@@ -86,131 +81,101 @@ Module iter.
           fields :=
             [
               ("count", Ty.path "usize");
-              ("element", Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ])
+              ("element", Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ])
             ];
         } *)
-      
-      Module Impl_core_clone_Clone_where_core_clone_Clone_A_for_core_iter_sources_repeat_n_RepeatN_A.
-        Definition Self (A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ].
-        
-        (* Clone *)
-        Definition clone (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self A in
-          match ε, τ, α with
-          | [], [], [ self ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              Value.StructRecord
-                "core::iter::sources::repeat_n::RepeatN"
-                [
-                  ("count",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.path "usize",
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::repeat_n::RepeatN",
-                          "count"
-                        |)
-                      ]
-                    |));
-                  ("element",
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::clone::Clone",
-                        Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
-                        [],
-                        "clone",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "core::iter::sources::repeat_n::RepeatN",
-                          "element"
-                        |)
-                      ]
-                    |))
-                ]))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          forall (A : Ty.t),
-          M.IsTraitInstance
-            "core::clone::Clone"
-            (Self A)
-            (* Trait polymorphic types *) []
-            (* Instance *) [ ("clone", InstanceField.Method (clone A)) ].
-      End Impl_core_clone_Clone_where_core_clone_Clone_A_for_core_iter_sources_repeat_n_RepeatN_A.
-      
-      Module Impl_core_fmt_Debug_where_core_fmt_Debug_A_for_core_iter_sources_repeat_n_RepeatN_A.
-        Definition Self (A : Ty.t) : Ty.t :=
-          Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ].
-        
-        (* Debug *)
-        Definition fmt (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          let Self : Ty.t := Self A in
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_struct_field2_finish",
-                  []
-                |),
-                [
-                  M.read (| f |);
-                  M.read (| Value.String "RepeatN" |);
-                  M.read (| Value.String "count" |);
-                  M.SubPointer.get_struct_record_field (|
-                    M.read (| self |),
-                    "core::iter::sources::repeat_n::RepeatN",
-                    "count"
-                  |);
-                  M.read (| Value.String "element" |);
-                  M.alloc (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.read (| self |),
-                      "core::iter::sources::repeat_n::RepeatN",
-                      "element"
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          forall (A : Ty.t),
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (Self A)
-            (* Trait polymorphic types *) []
-            (* Instance *) [ ("fmt", InstanceField.Method (fmt A)) ].
-      End Impl_core_fmt_Debug_where_core_fmt_Debug_A_for_core_iter_sources_repeat_n_RepeatN_A.
       
       Module Impl_core_iter_sources_repeat_n_RepeatN_A.
         Definition Self (A : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ].
         
         (*
+            fn element_ref(&self) -> Option<&A> {
+                if self.count > 0 {
+                    // SAFETY: The count is non-zero, so it must be initialized.
+                    Some(unsafe { self.element.assume_init_ref() })
+                } else {
+                    None
+                }
+            }
+        *)
+        Definition element_ref
+            (A : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          let Self : Ty.t := Self A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              M.read (|
+                M.match_operator (|
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              BinOp.gt (|
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::sources::repeat_n::RepeatN",
+                                    "count"
+                                  |)
+                                |),
+                                Value.Integer IntegerKind.Usize 0
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                          Value.StructTuple
+                            "core::option::Option::Some"
+                            [
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ A ],
+                                  "assume_init_ref",
+                                  []
+                                |),
+                                [
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.read (| self |),
+                                    "core::iter::sources::repeat_n::RepeatN",
+                                    "element"
+                                  |)
+                                ]
+                              |)
+                            ]
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                  ]
+                |)
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom AssociatedFunction_element_ref :
+          forall (A : Ty.t),
+          M.IsAssociatedFunction (Self A) "element_ref" (element_ref A).
+        
+        (*
             fn take_element(&mut self) -> Option<A> {
                 if self.count > 0 {
                     self.count = 0;
+                    let element = mem::replace(&mut self.element, MaybeUninit::uninit());
                     // SAFETY: We just set count to zero so it won't be dropped again,
                     // and it used to be non-zero so it hasn't already been dropped.
-                    unsafe { Some(ManuallyDrop::take(&mut self.element)) }
+                    unsafe { Some(element.assume_init()) }
                 } else {
                     None
                 }
@@ -258,6 +223,34 @@ Module iter.
                             |),
                             Value.Integer IntegerKind.Usize 0
                           |) in
+                        let~ element :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_function (|
+                                "core::mem::replace",
+                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ]
+                                ]
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::sources::repeat_n::RepeatN",
+                                  "element"
+                                |);
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ A ],
+                                    "uninit",
+                                    []
+                                  |),
+                                  []
+                                |)
+                              ]
+                            |)
+                          |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
@@ -265,19 +258,13 @@ Module iter.
                               M.call_closure (|
                                 M.get_associated_function (|
                                   Ty.apply
-                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                                     []
                                     [ A ],
-                                  "take",
+                                  "assume_init",
                                   []
                                 |),
-                                [
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.read (| self |),
-                                    "core::iter::sources::repeat_n::RepeatN",
-                                    "element"
-                                  |)
-                                ]
+                                [ M.read (| element |) ]
                               |)
                             ]
                         |)));
@@ -294,6 +281,184 @@ Module iter.
           forall (A : Ty.t),
           M.IsAssociatedFunction (Self A) "take_element" (take_element A).
       End Impl_core_iter_sources_repeat_n_RepeatN_A.
+      
+      Module Impl_core_clone_Clone_where_core_clone_Clone_A_for_core_iter_sources_repeat_n_RepeatN_A.
+        Definition Self (A : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ].
+        
+        (*
+            fn clone(&self) -> RepeatN<A> {
+                RepeatN {
+                    count: self.count,
+                    element: self.element_ref().cloned().map_or_else(MaybeUninit::uninit, MaybeUninit::new),
+                }
+            }
+        *)
+        Definition clone (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self A in
+          match ε, τ, α with
+          | [], [], [ self ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              Value.StructRecord
+                "core::iter::sources::repeat_n::RepeatN"
+                [
+                  ("count",
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "core::iter::sources::repeat_n::RepeatN",
+                        "count"
+                      |)
+                    |));
+                  ("element",
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::option::Option") [] [ A ],
+                        "map_or_else",
+                        [
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ];
+                          Ty.function
+                            []
+                            (Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ]);
+                          Ty.function
+                            [ A ]
+                            (Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ])
+                        ]
+                      |),
+                      [
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [ Ty.apply (Ty.path "&") [] [ A ] ],
+                            "cloned",
+                            []
+                          |),
+                          [
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::iter::sources::repeat_n::RepeatN")
+                                  []
+                                  [ A ],
+                                "element_ref",
+                                []
+                              |),
+                              [ M.read (| self |) ]
+                            |)
+                          ]
+                        |);
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ],
+                          "uninit",
+                          []
+                        |);
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ],
+                          "new",
+                          []
+                        |)
+                      ]
+                    |))
+                ]))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom Implements :
+          forall (A : Ty.t),
+          M.IsTraitInstance
+            "core::clone::Clone"
+            (Self A)
+            (* Trait polymorphic types *) []
+            (* Instance *) [ ("clone", InstanceField.Method (clone A)) ].
+      End Impl_core_clone_Clone_where_core_clone_Clone_A_for_core_iter_sources_repeat_n_RepeatN_A.
+      
+      Module Impl_core_fmt_Debug_where_core_fmt_Debug_A_for_core_iter_sources_repeat_n_RepeatN_A.
+        Definition Self (A : Ty.t) : Ty.t :=
+          Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ].
+        
+        (*
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                f.debug_struct("RepeatN")
+                    .field("count", &self.count)
+                    .field("element", &self.element_ref())
+                    .finish()
+            }
+        *)
+        Definition fmt (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          let Self : Ty.t := Self A in
+          match ε, τ, α with
+          | [], [], [ self; f ] =>
+            ltac:(M.monadic
+              (let self := M.alloc (| self |) in
+              let f := M.alloc (| f |) in
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.path "core::fmt::builders::DebugStruct",
+                  "finish",
+                  []
+                |),
+                [
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "core::fmt::builders::DebugStruct",
+                      "field",
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::builders::DebugStruct",
+                          "field",
+                          []
+                        |),
+                        [
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.path "core::fmt::Formatter",
+                                "debug_struct",
+                                []
+                              |),
+                              [ M.read (| f |); M.read (| Value.String "RepeatN" |) ]
+                            |)
+                          |);
+                          M.read (| Value.String "count" |);
+                          M.SubPointer.get_struct_record_field (|
+                            M.read (| self |),
+                            "core::iter::sources::repeat_n::RepeatN",
+                            "count"
+                          |)
+                        ]
+                      |);
+                      M.read (| Value.String "element" |);
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ A ],
+                            "element_ref",
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |)
+                      |)
+                    ]
+                  |)
+                ]
+              |)))
+          | _, _, _ => M.impossible "wrong number of arguments"
+          end.
+        
+        Axiom Implements :
+          forall (A : Ty.t),
+          M.IsTraitInstance
+            "core::fmt::Debug"
+            (Self A)
+            (* Trait polymorphic types *) []
+            (* Instance *) [ ("fmt", InstanceField.Method (fmt A)) ].
+      End Impl_core_fmt_Debug_where_core_fmt_Debug_A_for_core_iter_sources_repeat_n_RepeatN_A.
       
       Module Impl_core_ops_drop_Drop_for_core_iter_sources_repeat_n_RepeatN_A.
         Definition Self (A : Ty.t) : Ty.t :=
@@ -792,9 +957,11 @@ Module iter.
                     // SAFETY: the check above ensured that the count used to be non-zero,
                     // so element hasn't been dropped yet, and we just lowered the count to
                     // zero so it won't be dropped later, and thus it's okay to take it here.
-                    unsafe { ManuallyDrop::take(&mut self.element) }
+                    unsafe { mem::replace(&mut self.element, MaybeUninit::uninit()).assume_init() }
                 } else {
-                    A::clone(&self.element)
+                    // SAFETY: the count is non-zero, so it must have not been dropped yet.
+                    let element = unsafe { self.element.assume_init_ref() };
+                    A::clone(element)
                 }
             }
         *)
@@ -855,45 +1022,66 @@ Module iter.
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
-                              Ty.apply (Ty.path "core::mem::manually_drop::ManuallyDrop") [] [ A ],
-                              "take",
+                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ],
+                              "assume_init",
                               []
                             |),
                             [
-                              M.SubPointer.get_struct_record_field (|
-                                M.read (| self |),
-                                "core::iter::sources::repeat_n::RepeatN",
-                                "element"
-                              |)
-                            ]
-                          |)
-                        |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
-                          M.call_closure (|
-                            M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
-                            [
                               M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
-                                  Ty.apply
-                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                    []
-                                    [ A ],
-                                  [],
-                                  "deref",
-                                  []
+                                M.get_function (|
+                                  "core::mem::replace",
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ A ]
+                                  ]
                                 |),
                                 [
                                   M.SubPointer.get_struct_record_field (|
                                     M.read (| self |),
                                     "core::iter::sources::repeat_n::RepeatN",
                                     "element"
+                                  |);
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ A ],
+                                      "uninit",
+                                      []
+                                    |),
+                                    []
                                   |)
                                 ]
                               |)
                             ]
+                          |)
+                        |)));
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let~ element :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ A ],
+                                "assume_init_ref",
+                                []
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| self |),
+                                  "core::iter::sources::repeat_n::RepeatN",
+                                  "element"
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_trait_method (| "core::clone::Clone", A, [], "clone", [] |),
+                            [ M.read (| element |) ]
                           |)
                         |)))
                   ]

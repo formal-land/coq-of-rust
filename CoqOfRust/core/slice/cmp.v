@@ -1275,26 +1275,96 @@ Module slice.
           (* Instance *) [ ("compare", InstanceField.Method (compare A)) ].
     End Impl_core_slice_cmp_SliceOrd_where_core_cmp_Ord_A_for_A.
     
-    Module Impl_core_slice_cmp_SliceOrd_for_u8.
+    (* Trait *)
+    (* Empty module 'UnsignedBytewiseOrd' *)
+    
+    Module Impl_core_slice_cmp_UnsignedBytewiseOrd_for_bool.
+      Definition Self : Ty.t := Ty.path "bool".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::slice::cmp::UnsignedBytewiseOrd"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_slice_cmp_UnsignedBytewiseOrd_for_bool.
+    
+    Module Impl_core_slice_cmp_UnsignedBytewiseOrd_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::slice::cmp::UnsignedBytewiseOrd"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_slice_cmp_UnsignedBytewiseOrd_for_u8.
+    
+    Module Impl_core_slice_cmp_UnsignedBytewiseOrd_for_core_num_nonzero_NonZero_u8.
+      Definition Self : Ty.t :=
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::slice::cmp::UnsignedBytewiseOrd"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_slice_cmp_UnsignedBytewiseOrd_for_core_num_nonzero_NonZero_u8.
+    
+    Module Impl_core_slice_cmp_UnsignedBytewiseOrd_for_core_option_Option_core_num_nonzero_NonZero_u8.
+      Definition Self : Ty.t :=
+        Ty.apply
+          (Ty.path "core::option::Option")
+          []
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ].
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::slice::cmp::UnsignedBytewiseOrd"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_slice_cmp_UnsignedBytewiseOrd_for_core_option_Option_core_num_nonzero_NonZero_u8.
+    
+    Module Impl_core_slice_cmp_UnsignedBytewiseOrd_for_core_ascii_ascii_char_AsciiChar.
+      Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::slice::cmp::UnsignedBytewiseOrd"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_slice_cmp_UnsignedBytewiseOrd_for_core_ascii_ascii_char_AsciiChar.
+    
+    Module Impl_core_slice_cmp_SliceOrd_where_core_cmp_Ord_A_where_core_slice_cmp_UnsignedBytewiseOrd_A_for_A.
+      Definition Self (A : Ty.t) : Ty.t := A.
       
       (*
           fn compare(left: &[Self], right: &[Self]) -> Ordering {
-              // Since the length of a slice is always less than or equal to isize::MAX, this never underflows.
+              // Since the length of a slice is always less than or equal to
+              // isize::MAX, this never underflows.
               let diff = left.len() as isize - right.len() as isize;
-              // This comparison gets optimized away (on x86_64 and ARM) because the subtraction updates flags.
+              // This comparison gets optimized away (on x86_64 and ARM) because the
+              // subtraction updates flags.
               let len = if left.len() < right.len() { left.len() } else { right.len() };
-              // SAFETY: `left` and `right` are references and are thus guaranteed to be valid.
-              // We use the minimum of both lengths which guarantees that both regions are
-              // valid for reads in that interval.
-              let mut order = unsafe { compare_bytes(left.as_ptr(), right.as_ptr(), len) as isize };
+              let left = left.as_ptr().cast();
+              let right = right.as_ptr().cast();
+              // SAFETY: `left` and `right` are references and are thus guaranteed to
+              // be valid. `UnsignedBytewiseOrd` is only implemented for types that
+              // are valid u8s and can be compared the same way. We use the minimum
+              // of both lengths which guarantees that both regions are valid for
+              // reads in that interval.
+              let mut order = unsafe { compare_bytes(left, right, len) as isize };
               if order == 0 {
                   order = diff;
               }
               order.cmp(&0)
           }
       *)
-      Definition compare (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition compare (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self A in
         match ε, τ, α with
         | [], [], [ _ as left; _ as right ] =>
           ltac:(M.monadic
@@ -1307,7 +1377,7 @@ Module slice.
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ A ],
                           "len",
                           []
                         |),
@@ -1316,7 +1386,7 @@ Module slice.
                     M.rust_cast
                       (M.call_closure (|
                         M.get_associated_function (|
-                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                          Ty.apply (Ty.path "slice") [] [ A ],
                           "len",
                           []
                         |),
@@ -1337,7 +1407,7 @@ Module slice.
                                 BinOp.lt (|
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ A ],
                                       "len",
                                       []
                                     |),
@@ -1345,7 +1415,7 @@ Module slice.
                                   |),
                                   M.call_closure (|
                                     M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      Ty.apply (Ty.path "slice") [] [ A ],
                                       "len",
                                       []
                                     |),
@@ -1358,7 +1428,7 @@ Module slice.
                           M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ A ],
                                 "len",
                                 []
                               |),
@@ -1370,7 +1440,7 @@ Module slice.
                           (M.alloc (|
                             M.call_closure (|
                               M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                Ty.apply (Ty.path "slice") [] [ A ],
                                 "len",
                                 []
                               |),
@@ -1380,30 +1450,52 @@ Module slice.
                     ]
                   |)
                 |) in
+              let~ left :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "*const") [] [ A ],
+                      "cast",
+                      [ Ty.path "u8" ]
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ A ],
+                          "as_ptr",
+                          []
+                        |),
+                        [ M.read (| left |) ]
+                      |)
+                    ]
+                  |)
+                |) in
+              let~ right :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "*const") [] [ A ],
+                      "cast",
+                      [ Ty.path "u8" ]
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ A ],
+                          "as_ptr",
+                          []
+                        |),
+                        [ M.read (| right |) ]
+                      |)
+                    ]
+                  |)
+                |) in
               let~ order :=
                 M.alloc (|
                   M.rust_cast
                     (M.call_closure (|
                       M.get_function (| "core::intrinsics::compare_bytes", [] |),
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                            "as_ptr",
-                            []
-                          |),
-                          [ M.read (| left |) ]
-                        |);
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                            "as_ptr",
-                            []
-                          |),
-                          [ M.read (| right |) ]
-                        |);
-                        M.read (| len |)
-                      ]
+                      [ M.read (| left |); M.read (| right |); M.read (| len |) ]
                     |))
                 |) in
               let~ _ :=
@@ -1435,12 +1527,13 @@ Module slice.
         end.
       
       Axiom Implements :
+        forall (A : Ty.t),
         M.IsTraitInstance
           "core::slice::cmp::SliceOrd"
-          Self
+          (Self A)
           (* Trait polymorphic types *) []
-          (* Instance *) [ ("compare", InstanceField.Method compare) ].
-    End Impl_core_slice_cmp_SliceOrd_for_u8.
+          (* Instance *) [ ("compare", InstanceField.Method (compare A)) ].
+    End Impl_core_slice_cmp_SliceOrd_where_core_cmp_Ord_A_where_core_slice_cmp_UnsignedBytewiseOrd_A_for_A.
     
     (* Trait *)
     (* Empty module 'SliceContains' *)

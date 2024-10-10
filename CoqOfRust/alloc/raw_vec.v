@@ -130,33 +130,9 @@ Module raw_vec.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ].
     
-    (*     pub const NEW: Self = Self::new(); *)
-    (* Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ] *)
-    Definition value_NEW (T : Ty.t) : Value.t :=
-      let Self : Ty.t := Self T in
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::raw_vec::RawVec")
-                  []
-                  [ T; Ty.path "alloc::alloc::Global" ],
-                "new",
-                []
-              |),
-              []
-            |)
-          |))).
-    
-    Axiom AssociatedConstant_value_NEW :
-      forall (T : Ty.t),
-      M.IsAssociatedConstant (Self T) "value_NEW" (value_NEW T).
-    
     (*
         pub const fn new() -> Self {
-            Self { inner: RawVecInner::new::<T>(), _marker: PhantomData }
+            Self::new_in(Global)
         }
     *)
     Definition new (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -164,23 +140,14 @@ Module raw_vec.
       match ε, τ, α with
       | [], [], [] =>
         ltac:(M.monadic
-          (Value.StructRecord
-            "alloc::raw_vec::RawVec"
-            [
-              ("inner",
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::raw_vec::RawVecInner")
-                      []
-                      [ Ty.path "alloc::alloc::Global" ],
-                    "new",
-                    [ T ]
-                  |),
-                  []
-                |));
-              ("_marker", Value.StructTuple "core::marker::PhantomData" [])
-            ]))
+          (M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "alloc::raw_vec::RawVec") [] [ T; Ty.path "alloc::alloc::Global" ],
+              "new_in",
+              []
+            |),
+            [ Value.StructTuple "alloc::alloc::Global" [] ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -275,34 +242,6 @@ Module raw_vec.
   Module Impl_alloc_raw_vec_RawVecInner_alloc_alloc_Global.
     Definition Self : Ty.t :=
       Ty.apply (Ty.path "alloc::raw_vec::RawVecInner") [] [ Ty.path "alloc::alloc::Global" ].
-    
-    (*
-        const fn new<T>() -> Self {
-            Self::new_in(Global, core::mem::align_of::<T>())
-        }
-    *)
-    Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [ T ], [] =>
-        ltac:(M.monadic
-          (M.call_closure (|
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "alloc::raw_vec::RawVecInner")
-                []
-                [ Ty.path "alloc::alloc::Global" ],
-              "new_in",
-              []
-            |),
-            [
-              Value.StructTuple "alloc::alloc::Global" [];
-              M.call_closure (| M.get_function (| "core::mem::align_of", [ T ] |), [] |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
     
     (*
         fn with_capacity(capacity: usize, elem_layout: Layout) -> Self {

@@ -1347,7 +1347,7 @@ Module slice.
                 None
             } else {
                 // SAFETY: We manually verified the bounds of the slice.
-                // FIXME: Without const traits, we need this instead of `get_unchecked`.
+                // FIXME(const-hack): Without const traits, we need this instead of `get_unchecked`.
                 let last = unsafe { self.split_at_unchecked(self.len() - N).1 };
     
                 // SAFETY: We explicitly check for the correct number of elements,
@@ -1455,7 +1455,7 @@ Module slice.
                 None
             } else {
                 // SAFETY: We manually verified the bounds of the slice.
-                // FIXME: Without const traits, we need this instead of `get_unchecked`.
+                // FIXME(const-hack): Without const traits, we need this instead of `get_unchecked`.
                 let last = unsafe { self.split_at_mut_unchecked(self.len() - N).1 };
     
                 // SAFETY: We explicitly check for the correct number of elements,
@@ -1875,8 +1875,8 @@ Module slice.
         pub const fn swap(&mut self, a: usize, b: usize) {
             // FIXME: use swap_unchecked here (https://github.com/rust-lang/rust/pull/88540#issuecomment-944344343)
             // Can't take two mutable loans from one vector, so instead use raw pointers.
-            let pa = ptr::addr_of_mut!(self[a]);
-            let pb = ptr::addr_of_mut!(self[b]);
+            let pa = &raw mut self[a];
+            let pb = &raw mut self[b];
             // SAFETY: `pa` and `pb` have been created from safe mutable references and refer
             // to elements in the slice and therefore are guaranteed to be valid and aligned.
             // Note that accessing the elements behind `a` and `b` is checked and will
@@ -4038,7 +4038,7 @@ Module slice.
     
     (*
         pub const unsafe fn split_at_unchecked(&self, mid: usize) -> (&[T], &[T]) {
-            // HACK: the const function `from_raw_parts` is used to make this
+            // FIXME(const-hack): the const function `from_raw_parts` is used to make this
             // function const; previously the implementation used
             // `(self.get_unchecked(..mid), self.get_unchecked(mid..))`
     
@@ -7578,8 +7578,8 @@ Module slice.
         {
             // The panic code path was put into a cold function to not bloat the
             // call site.
-            #[inline(never)]
-            #[cold]
+            #[cfg_attr(not(feature = "panic_immediate_abort"), inline(never), cold)]
+            #[cfg_attr(feature = "panic_immediate_abort", inline)]
             #[track_caller]
             fn len_mismatch_fail(dst_len: usize, src_len: usize) -> ! {
                 panic!(

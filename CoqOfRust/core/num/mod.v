@@ -1956,6 +1956,54 @@ Module num.
       M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
     
     (*
+            pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shl(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i8", "unchecked_shl", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I8 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
+    
+    (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
                 // Not using overflowing_shr as that's a wrapping shift
                 if rhs < Self::BITS {
@@ -2129,6 +2177,71 @@ Module num.
     
     Axiom AssociatedFunction_unchecked_shr :
       M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
+    
+    (*
+            pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shr(rhs) }
+                } else {
+                    // A shift by `Self::BITS-1` suffices for signed integers, because the sign bit is copied for each of the shifted bits.
+    
+                    // SAFETY:
+                    // `Self::BITS-1` is guaranteed to be less than `Self::BITS`
+                    unsafe { self.unchecked_shr(Self::BITS - 1) }
+                }
+            }
+    *)
+    Definition unbounded_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i8", "unchecked_shr", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i8", "unchecked_shr", [] |),
+                        [
+                          M.read (| self |);
+                          BinOp.Wrap.sub (|
+                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            Value.Integer IntegerKind.U32 1
+                          |)
+                        ]
+                      |)
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
     
     (*
             pub const fn checked_abs(self) -> Option<Self> {
@@ -2602,7 +2715,33 @@ Module num.
                 if self < 0 {
                     None
                 } else {
-                    Some((self as $UnsignedT).isqrt() as Self)
+                    // SAFETY: Input is nonnegative in this `else` branch.
+                    let result = unsafe {
+                        crate::num::int_sqrt::$ActualT(self as $ActualT) as $SelfT
+                    };
+    
+                    // Inform the optimizer what the range of outputs is. If
+                    // testing `core` crashes with no panic message and a
+                    // `num::int_sqrt::i*` test failed, it's because your edits
+                    // caused these assertions to become false.
+                    //
+                    // SAFETY: Integer square root is a monotonically nondecreasing
+                    // function, which means that increasing the input will never
+                    // cause the output to decrease. Thus, since the input for
+                    // nonnegative signed integers is bounded by
+                    // `[0, <$ActualT>::MAX]`, sqrt(n) will be bounded by
+                    // `[sqrt(0), sqrt(<$ActualT>::MAX)]`.
+                    unsafe {
+                        // SAFETY: `<$ActualT>::MAX` is nonnegative.
+                        const MAX_RESULT: $SelfT = unsafe {
+                            crate::num::int_sqrt::$ActualT(<$ActualT>::MAX) as $SelfT
+                        };
+    
+                        crate::hint::assert_unchecked(result >= 0);
+                        crate::hint::assert_unchecked(result <= MAX_RESULT);
+                    }
+    
+                    Some(result)
                 }
             }
     *)
@@ -2626,16 +2765,41 @@ Module num.
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.rust_cast
-                            (M.call_closure (|
-                              M.get_associated_function (| Ty.path "u8", "isqrt", [] |),
-                              [ M.rust_cast (M.read (| self |)) ]
-                            |))
-                        ]
+                    (let~ result :=
+                      M.copy (|
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_function (| "core::num::int_sqrt::i8", [] |),
+                              [ M.read (| M.use self |) ]
+                            |)
+                          |))
+                      |) in
+                    let~ _ :=
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [ BinOp.ge (| M.read (| result |), Value.Integer IntegerKind.I8 0 |) ]
+                          |)
+                        |) in
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [
+                              BinOp.le (|
+                                M.read (| result |),
+                                M.read (|
+                                  M.get_constant (| "core::num::checked_isqrt::MAX_RESULT" |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |) in
+                    M.alloc (|
+                      Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ]
                     |)))
               ]
             |)
@@ -4847,14 +5011,9 @@ Module num.
     
     (*
             pub const fn isqrt(self) -> Self {
-                // I would like to implement it as
-                // ```
-                // self.checked_isqrt().expect("argument of integer square root must be non-negative")
-                // ```
-                // but `expect` is not yet stable as a `const fn`.
                 match self.checked_isqrt() {
                     Some(sqrt) => sqrt,
-                    None => panic!("argument of integer square root must be non-negative"),
+                    None => crate::num::int_sqrt::panic_for_negative_argument(),
                 }
             }
     *)
@@ -4888,27 +5047,11 @@ Module num.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                              [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "argument of integer square root must be non-negative"
-                                      |)
-                                    ]
-                                |)
-                              ]
-                            |)
-                          ]
+                          M.get_function (|
+                            "core::num::int_sqrt::panic_for_negative_argument",
+                            []
+                          |),
+                          []
                         |)
                       |)
                     |)))
@@ -5072,8 +5215,16 @@ Module num.
             pub const fn div_floor(self, rhs: Self) -> Self {
                 let d = self / rhs;
                 let r = self % rhs;
-                if (r > 0 && rhs < 0) || (r < 0 && rhs > 0) {
-                    d - 1
+    
+                // If the remainder is non-zero, we need to subtract one if the
+                // signs of self and rhs differ, as this means we rounded upwards
+                // instead of downwards. We do this branchlessly by creating a mask
+                // which is all-ones iff the signs differ, and 0 otherwise. Then by
+                // adding this mask (which corresponds to the signed value -1), we
+                // get our correction.
+                let correction = (self ^ rhs) >> (Self::BITS - 1);
+                if r != 0 {
+                    d + correction
                 } else {
                     d
                 }
@@ -5088,6 +5239,16 @@ Module num.
           M.read (|
             let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| self |), M.read (| rhs |) |) |) in
             let~ r := M.alloc (| BinOp.Wrap.rem (| M.read (| self |), M.read (| rhs |) |) |) in
+            let~ correction :=
+              M.alloc (|
+                BinOp.Wrap.shr (|
+                  BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
+                  BinOp.Wrap.sub (|
+                    M.read (| M.get_constant (| "core::num::BITS" |) |),
+                    Value.Integer IntegerKind.U32 1
+                  |)
+                |)
+              |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -5096,24 +5257,10 @@ Module num.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          LogicalOp.or (|
-                            LogicalOp.and (|
-                              BinOp.gt (| M.read (| r |), Value.Integer IntegerKind.I8 0 |),
-                              ltac:(M.monadic
-                                (BinOp.lt (| M.read (| rhs |), Value.Integer IntegerKind.I8 0 |)))
-                            |),
-                            ltac:(M.monadic
-                              (LogicalOp.and (|
-                                BinOp.lt (| M.read (| r |), Value.Integer IntegerKind.I8 0 |),
-                                ltac:(M.monadic
-                                  (BinOp.gt (| M.read (| rhs |), Value.Integer IntegerKind.I8 0 |)))
-                              |)))
-                          |)
+                          BinOp.ne (| M.read (| r |), Value.Integer IntegerKind.I8 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      BinOp.Wrap.sub (| M.read (| d |), Value.Integer IntegerKind.I8 1 |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.add (| M.read (| d |), M.read (| correction |) |) |)));
                 fun γ => ltac:(M.monadic d)
               ]
             |)
@@ -5127,8 +5274,12 @@ Module num.
             pub const fn div_ceil(self, rhs: Self) -> Self {
                 let d = self / rhs;
                 let r = self % rhs;
-                if (r > 0 && rhs > 0) || (r < 0 && rhs < 0) {
-                    d + 1
+    
+                // When remainder is non-zero we have a.div_ceil(b) == 1 + a.div_floor(b),
+                // so we can re-use the algorithm from div_floor, just adding 1.
+                let correction = 1 + ((self ^ rhs) >> (Self::BITS - 1));
+                if r != 0 {
+                    d + correction
                 } else {
                     d
                 }
@@ -5143,6 +5294,19 @@ Module num.
           M.read (|
             let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| self |), M.read (| rhs |) |) |) in
             let~ r := M.alloc (| BinOp.Wrap.rem (| M.read (| self |), M.read (| rhs |) |) |) in
+            let~ correction :=
+              M.alloc (|
+                BinOp.Wrap.add (|
+                  Value.Integer IntegerKind.I8 1,
+                  BinOp.Wrap.shr (|
+                    BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
+                    BinOp.Wrap.sub (|
+                      M.read (| M.get_constant (| "core::num::BITS" |) |),
+                      Value.Integer IntegerKind.U32 1
+                    |)
+                  |)
+                |)
+              |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -5151,24 +5315,10 @@ Module num.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          LogicalOp.or (|
-                            LogicalOp.and (|
-                              BinOp.gt (| M.read (| r |), Value.Integer IntegerKind.I8 0 |),
-                              ltac:(M.monadic
-                                (BinOp.gt (| M.read (| rhs |), Value.Integer IntegerKind.I8 0 |)))
-                            |),
-                            ltac:(M.monadic
-                              (LogicalOp.and (|
-                                BinOp.lt (| M.read (| r |), Value.Integer IntegerKind.I8 0 |),
-                                ltac:(M.monadic
-                                  (BinOp.lt (| M.read (| rhs |), Value.Integer IntegerKind.I8 0 |)))
-                              |)))
-                          |)
+                          BinOp.ne (| M.read (| r |), Value.Integer IntegerKind.I8 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      BinOp.Wrap.add (| M.read (| d |), Value.Integer IntegerKind.I8 1 |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.add (| M.read (| d |), M.read (| correction |) |) |)));
                 fun γ => ltac:(M.monadic d)
               ]
             |)
@@ -9257,6 +9407,54 @@ Module num.
       M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
     
     (*
+            pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shl(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i16", "unchecked_shl", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I16 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
+    
+    (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
                 // Not using overflowing_shr as that's a wrapping shift
                 if rhs < Self::BITS {
@@ -9430,6 +9628,71 @@ Module num.
     
     Axiom AssociatedFunction_unchecked_shr :
       M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
+    
+    (*
+            pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shr(rhs) }
+                } else {
+                    // A shift by `Self::BITS-1` suffices for signed integers, because the sign bit is copied for each of the shifted bits.
+    
+                    // SAFETY:
+                    // `Self::BITS-1` is guaranteed to be less than `Self::BITS`
+                    unsafe { self.unchecked_shr(Self::BITS - 1) }
+                }
+            }
+    *)
+    Definition unbounded_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i16", "unchecked_shr", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i16", "unchecked_shr", [] |),
+                        [
+                          M.read (| self |);
+                          BinOp.Wrap.sub (|
+                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            Value.Integer IntegerKind.U32 1
+                          |)
+                        ]
+                      |)
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
     
     (*
             pub const fn checked_abs(self) -> Option<Self> {
@@ -9903,7 +10166,33 @@ Module num.
                 if self < 0 {
                     None
                 } else {
-                    Some((self as $UnsignedT).isqrt() as Self)
+                    // SAFETY: Input is nonnegative in this `else` branch.
+                    let result = unsafe {
+                        crate::num::int_sqrt::$ActualT(self as $ActualT) as $SelfT
+                    };
+    
+                    // Inform the optimizer what the range of outputs is. If
+                    // testing `core` crashes with no panic message and a
+                    // `num::int_sqrt::i*` test failed, it's because your edits
+                    // caused these assertions to become false.
+                    //
+                    // SAFETY: Integer square root is a monotonically nondecreasing
+                    // function, which means that increasing the input will never
+                    // cause the output to decrease. Thus, since the input for
+                    // nonnegative signed integers is bounded by
+                    // `[0, <$ActualT>::MAX]`, sqrt(n) will be bounded by
+                    // `[sqrt(0), sqrt(<$ActualT>::MAX)]`.
+                    unsafe {
+                        // SAFETY: `<$ActualT>::MAX` is nonnegative.
+                        const MAX_RESULT: $SelfT = unsafe {
+                            crate::num::int_sqrt::$ActualT(<$ActualT>::MAX) as $SelfT
+                        };
+    
+                        crate::hint::assert_unchecked(result >= 0);
+                        crate::hint::assert_unchecked(result <= MAX_RESULT);
+                    }
+    
+                    Some(result)
                 }
             }
     *)
@@ -9927,16 +10216,41 @@ Module num.
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.rust_cast
-                            (M.call_closure (|
-                              M.get_associated_function (| Ty.path "u16", "isqrt", [] |),
-                              [ M.rust_cast (M.read (| self |)) ]
-                            |))
-                        ]
+                    (let~ result :=
+                      M.copy (|
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_function (| "core::num::int_sqrt::i16", [] |),
+                              [ M.read (| M.use self |) ]
+                            |)
+                          |))
+                      |) in
+                    let~ _ :=
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [ BinOp.ge (| M.read (| result |), Value.Integer IntegerKind.I16 0 |) ]
+                          |)
+                        |) in
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [
+                              BinOp.le (|
+                                M.read (| result |),
+                                M.read (|
+                                  M.get_constant (| "core::num::checked_isqrt::MAX_RESULT" |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |) in
+                    M.alloc (|
+                      Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ]
                     |)))
               ]
             |)
@@ -12159,14 +12473,9 @@ Module num.
     
     (*
             pub const fn isqrt(self) -> Self {
-                // I would like to implement it as
-                // ```
-                // self.checked_isqrt().expect("argument of integer square root must be non-negative")
-                // ```
-                // but `expect` is not yet stable as a `const fn`.
                 match self.checked_isqrt() {
                     Some(sqrt) => sqrt,
-                    None => panic!("argument of integer square root must be non-negative"),
+                    None => crate::num::int_sqrt::panic_for_negative_argument(),
                 }
             }
     *)
@@ -12200,27 +12509,11 @@ Module num.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                              [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "argument of integer square root must be non-negative"
-                                      |)
-                                    ]
-                                |)
-                              ]
-                            |)
-                          ]
+                          M.get_function (|
+                            "core::num::int_sqrt::panic_for_negative_argument",
+                            []
+                          |),
+                          []
                         |)
                       |)
                     |)))
@@ -12384,8 +12677,16 @@ Module num.
             pub const fn div_floor(self, rhs: Self) -> Self {
                 let d = self / rhs;
                 let r = self % rhs;
-                if (r > 0 && rhs < 0) || (r < 0 && rhs > 0) {
-                    d - 1
+    
+                // If the remainder is non-zero, we need to subtract one if the
+                // signs of self and rhs differ, as this means we rounded upwards
+                // instead of downwards. We do this branchlessly by creating a mask
+                // which is all-ones iff the signs differ, and 0 otherwise. Then by
+                // adding this mask (which corresponds to the signed value -1), we
+                // get our correction.
+                let correction = (self ^ rhs) >> (Self::BITS - 1);
+                if r != 0 {
+                    d + correction
                 } else {
                     d
                 }
@@ -12400,6 +12701,16 @@ Module num.
           M.read (|
             let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| self |), M.read (| rhs |) |) |) in
             let~ r := M.alloc (| BinOp.Wrap.rem (| M.read (| self |), M.read (| rhs |) |) |) in
+            let~ correction :=
+              M.alloc (|
+                BinOp.Wrap.shr (|
+                  BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
+                  BinOp.Wrap.sub (|
+                    M.read (| M.get_constant (| "core::num::BITS" |) |),
+                    Value.Integer IntegerKind.U32 1
+                  |)
+                |)
+              |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -12408,27 +12719,10 @@ Module num.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          LogicalOp.or (|
-                            LogicalOp.and (|
-                              BinOp.gt (| M.read (| r |), Value.Integer IntegerKind.I16 0 |),
-                              ltac:(M.monadic
-                                (BinOp.lt (| M.read (| rhs |), Value.Integer IntegerKind.I16 0 |)))
-                            |),
-                            ltac:(M.monadic
-                              (LogicalOp.and (|
-                                BinOp.lt (| M.read (| r |), Value.Integer IntegerKind.I16 0 |),
-                                ltac:(M.monadic
-                                  (BinOp.gt (|
-                                    M.read (| rhs |),
-                                    Value.Integer IntegerKind.I16 0
-                                  |)))
-                              |)))
-                          |)
+                          BinOp.ne (| M.read (| r |), Value.Integer IntegerKind.I16 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      BinOp.Wrap.sub (| M.read (| d |), Value.Integer IntegerKind.I16 1 |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.add (| M.read (| d |), M.read (| correction |) |) |)));
                 fun γ => ltac:(M.monadic d)
               ]
             |)
@@ -12442,8 +12736,12 @@ Module num.
             pub const fn div_ceil(self, rhs: Self) -> Self {
                 let d = self / rhs;
                 let r = self % rhs;
-                if (r > 0 && rhs > 0) || (r < 0 && rhs < 0) {
-                    d + 1
+    
+                // When remainder is non-zero we have a.div_ceil(b) == 1 + a.div_floor(b),
+                // so we can re-use the algorithm from div_floor, just adding 1.
+                let correction = 1 + ((self ^ rhs) >> (Self::BITS - 1));
+                if r != 0 {
+                    d + correction
                 } else {
                     d
                 }
@@ -12458,6 +12756,19 @@ Module num.
           M.read (|
             let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| self |), M.read (| rhs |) |) |) in
             let~ r := M.alloc (| BinOp.Wrap.rem (| M.read (| self |), M.read (| rhs |) |) |) in
+            let~ correction :=
+              M.alloc (|
+                BinOp.Wrap.add (|
+                  Value.Integer IntegerKind.I16 1,
+                  BinOp.Wrap.shr (|
+                    BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
+                    BinOp.Wrap.sub (|
+                      M.read (| M.get_constant (| "core::num::BITS" |) |),
+                      Value.Integer IntegerKind.U32 1
+                    |)
+                  |)
+                |)
+              |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -12466,27 +12777,10 @@ Module num.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          LogicalOp.or (|
-                            LogicalOp.and (|
-                              BinOp.gt (| M.read (| r |), Value.Integer IntegerKind.I16 0 |),
-                              ltac:(M.monadic
-                                (BinOp.gt (| M.read (| rhs |), Value.Integer IntegerKind.I16 0 |)))
-                            |),
-                            ltac:(M.monadic
-                              (LogicalOp.and (|
-                                BinOp.lt (| M.read (| r |), Value.Integer IntegerKind.I16 0 |),
-                                ltac:(M.monadic
-                                  (BinOp.lt (|
-                                    M.read (| rhs |),
-                                    Value.Integer IntegerKind.I16 0
-                                  |)))
-                              |)))
-                          |)
+                          BinOp.ne (| M.read (| r |), Value.Integer IntegerKind.I16 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      BinOp.Wrap.add (| M.read (| d |), Value.Integer IntegerKind.I16 1 |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.add (| M.read (| d |), M.read (| correction |) |) |)));
                 fun γ => ltac:(M.monadic d)
               ]
             |)
@@ -16581,6 +16875,54 @@ Module num.
       M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
     
     (*
+            pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shl(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i32", "unchecked_shl", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
+    
+    (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
                 // Not using overflowing_shr as that's a wrapping shift
                 if rhs < Self::BITS {
@@ -16754,6 +17096,71 @@ Module num.
     
     Axiom AssociatedFunction_unchecked_shr :
       M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
+    
+    (*
+            pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shr(rhs) }
+                } else {
+                    // A shift by `Self::BITS-1` suffices for signed integers, because the sign bit is copied for each of the shifted bits.
+    
+                    // SAFETY:
+                    // `Self::BITS-1` is guaranteed to be less than `Self::BITS`
+                    unsafe { self.unchecked_shr(Self::BITS - 1) }
+                }
+            }
+    *)
+    Definition unbounded_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i32", "unchecked_shr", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i32", "unchecked_shr", [] |),
+                        [
+                          M.read (| self |);
+                          BinOp.Wrap.sub (|
+                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            Value.Integer IntegerKind.U32 1
+                          |)
+                        ]
+                      |)
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
     
     (*
             pub const fn checked_abs(self) -> Option<Self> {
@@ -17227,7 +17634,33 @@ Module num.
                 if self < 0 {
                     None
                 } else {
-                    Some((self as $UnsignedT).isqrt() as Self)
+                    // SAFETY: Input is nonnegative in this `else` branch.
+                    let result = unsafe {
+                        crate::num::int_sqrt::$ActualT(self as $ActualT) as $SelfT
+                    };
+    
+                    // Inform the optimizer what the range of outputs is. If
+                    // testing `core` crashes with no panic message and a
+                    // `num::int_sqrt::i*` test failed, it's because your edits
+                    // caused these assertions to become false.
+                    //
+                    // SAFETY: Integer square root is a monotonically nondecreasing
+                    // function, which means that increasing the input will never
+                    // cause the output to decrease. Thus, since the input for
+                    // nonnegative signed integers is bounded by
+                    // `[0, <$ActualT>::MAX]`, sqrt(n) will be bounded by
+                    // `[sqrt(0), sqrt(<$ActualT>::MAX)]`.
+                    unsafe {
+                        // SAFETY: `<$ActualT>::MAX` is nonnegative.
+                        const MAX_RESULT: $SelfT = unsafe {
+                            crate::num::int_sqrt::$ActualT(<$ActualT>::MAX) as $SelfT
+                        };
+    
+                        crate::hint::assert_unchecked(result >= 0);
+                        crate::hint::assert_unchecked(result <= MAX_RESULT);
+                    }
+    
+                    Some(result)
                 }
             }
     *)
@@ -17251,16 +17684,41 @@ Module num.
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.rust_cast
-                            (M.call_closure (|
-                              M.get_associated_function (| Ty.path "u32", "isqrt", [] |),
-                              [ M.rust_cast (M.read (| self |)) ]
-                            |))
-                        ]
+                    (let~ result :=
+                      M.copy (|
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_function (| "core::num::int_sqrt::i32", [] |),
+                              [ M.read (| M.use self |) ]
+                            |)
+                          |))
+                      |) in
+                    let~ _ :=
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [ BinOp.ge (| M.read (| result |), Value.Integer IntegerKind.I32 0 |) ]
+                          |)
+                        |) in
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [
+                              BinOp.le (|
+                                M.read (| result |),
+                                M.read (|
+                                  M.get_constant (| "core::num::checked_isqrt::MAX_RESULT" |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |) in
+                    M.alloc (|
+                      Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ]
                     |)))
               ]
             |)
@@ -19483,14 +19941,9 @@ Module num.
     
     (*
             pub const fn isqrt(self) -> Self {
-                // I would like to implement it as
-                // ```
-                // self.checked_isqrt().expect("argument of integer square root must be non-negative")
-                // ```
-                // but `expect` is not yet stable as a `const fn`.
                 match self.checked_isqrt() {
                     Some(sqrt) => sqrt,
-                    None => panic!("argument of integer square root must be non-negative"),
+                    None => crate::num::int_sqrt::panic_for_negative_argument(),
                 }
             }
     *)
@@ -19524,27 +19977,11 @@ Module num.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                              [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "argument of integer square root must be non-negative"
-                                      |)
-                                    ]
-                                |)
-                              ]
-                            |)
-                          ]
+                          M.get_function (|
+                            "core::num::int_sqrt::panic_for_negative_argument",
+                            []
+                          |),
+                          []
                         |)
                       |)
                     |)))
@@ -19708,8 +20145,16 @@ Module num.
             pub const fn div_floor(self, rhs: Self) -> Self {
                 let d = self / rhs;
                 let r = self % rhs;
-                if (r > 0 && rhs < 0) || (r < 0 && rhs > 0) {
-                    d - 1
+    
+                // If the remainder is non-zero, we need to subtract one if the
+                // signs of self and rhs differ, as this means we rounded upwards
+                // instead of downwards. We do this branchlessly by creating a mask
+                // which is all-ones iff the signs differ, and 0 otherwise. Then by
+                // adding this mask (which corresponds to the signed value -1), we
+                // get our correction.
+                let correction = (self ^ rhs) >> (Self::BITS - 1);
+                if r != 0 {
+                    d + correction
                 } else {
                     d
                 }
@@ -19724,6 +20169,16 @@ Module num.
           M.read (|
             let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| self |), M.read (| rhs |) |) |) in
             let~ r := M.alloc (| BinOp.Wrap.rem (| M.read (| self |), M.read (| rhs |) |) |) in
+            let~ correction :=
+              M.alloc (|
+                BinOp.Wrap.shr (|
+                  BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
+                  BinOp.Wrap.sub (|
+                    M.read (| M.get_constant (| "core::num::BITS" |) |),
+                    Value.Integer IntegerKind.U32 1
+                  |)
+                |)
+              |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -19732,27 +20187,10 @@ Module num.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          LogicalOp.or (|
-                            LogicalOp.and (|
-                              BinOp.gt (| M.read (| r |), Value.Integer IntegerKind.I32 0 |),
-                              ltac:(M.monadic
-                                (BinOp.lt (| M.read (| rhs |), Value.Integer IntegerKind.I32 0 |)))
-                            |),
-                            ltac:(M.monadic
-                              (LogicalOp.and (|
-                                BinOp.lt (| M.read (| r |), Value.Integer IntegerKind.I32 0 |),
-                                ltac:(M.monadic
-                                  (BinOp.gt (|
-                                    M.read (| rhs |),
-                                    Value.Integer IntegerKind.I32 0
-                                  |)))
-                              |)))
-                          |)
+                          BinOp.ne (| M.read (| r |), Value.Integer IntegerKind.I32 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      BinOp.Wrap.sub (| M.read (| d |), Value.Integer IntegerKind.I32 1 |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.add (| M.read (| d |), M.read (| correction |) |) |)));
                 fun γ => ltac:(M.monadic d)
               ]
             |)
@@ -19766,8 +20204,12 @@ Module num.
             pub const fn div_ceil(self, rhs: Self) -> Self {
                 let d = self / rhs;
                 let r = self % rhs;
-                if (r > 0 && rhs > 0) || (r < 0 && rhs < 0) {
-                    d + 1
+    
+                // When remainder is non-zero we have a.div_ceil(b) == 1 + a.div_floor(b),
+                // so we can re-use the algorithm from div_floor, just adding 1.
+                let correction = 1 + ((self ^ rhs) >> (Self::BITS - 1));
+                if r != 0 {
+                    d + correction
                 } else {
                     d
                 }
@@ -19782,6 +20224,19 @@ Module num.
           M.read (|
             let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| self |), M.read (| rhs |) |) |) in
             let~ r := M.alloc (| BinOp.Wrap.rem (| M.read (| self |), M.read (| rhs |) |) |) in
+            let~ correction :=
+              M.alloc (|
+                BinOp.Wrap.add (|
+                  Value.Integer IntegerKind.I32 1,
+                  BinOp.Wrap.shr (|
+                    BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
+                    BinOp.Wrap.sub (|
+                      M.read (| M.get_constant (| "core::num::BITS" |) |),
+                      Value.Integer IntegerKind.U32 1
+                    |)
+                  |)
+                |)
+              |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -19790,27 +20245,10 @@ Module num.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          LogicalOp.or (|
-                            LogicalOp.and (|
-                              BinOp.gt (| M.read (| r |), Value.Integer IntegerKind.I32 0 |),
-                              ltac:(M.monadic
-                                (BinOp.gt (| M.read (| rhs |), Value.Integer IntegerKind.I32 0 |)))
-                            |),
-                            ltac:(M.monadic
-                              (LogicalOp.and (|
-                                BinOp.lt (| M.read (| r |), Value.Integer IntegerKind.I32 0 |),
-                                ltac:(M.monadic
-                                  (BinOp.lt (|
-                                    M.read (| rhs |),
-                                    Value.Integer IntegerKind.I32 0
-                                  |)))
-                              |)))
-                          |)
+                          BinOp.ne (| M.read (| r |), Value.Integer IntegerKind.I32 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      BinOp.Wrap.add (| M.read (| d |), Value.Integer IntegerKind.I32 1 |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.add (| M.read (| d |), M.read (| correction |) |) |)));
                 fun γ => ltac:(M.monadic d)
               ]
             |)
@@ -23905,6 +24343,54 @@ Module num.
       M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
     
     (*
+            pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shl(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i64", "unchecked_shl", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
+    
+    (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
                 // Not using overflowing_shr as that's a wrapping shift
                 if rhs < Self::BITS {
@@ -24078,6 +24564,71 @@ Module num.
     
     Axiom AssociatedFunction_unchecked_shr :
       M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
+    
+    (*
+            pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shr(rhs) }
+                } else {
+                    // A shift by `Self::BITS-1` suffices for signed integers, because the sign bit is copied for each of the shifted bits.
+    
+                    // SAFETY:
+                    // `Self::BITS-1` is guaranteed to be less than `Self::BITS`
+                    unsafe { self.unchecked_shr(Self::BITS - 1) }
+                }
+            }
+    *)
+    Definition unbounded_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i64", "unchecked_shr", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i64", "unchecked_shr", [] |),
+                        [
+                          M.read (| self |);
+                          BinOp.Wrap.sub (|
+                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            Value.Integer IntegerKind.U32 1
+                          |)
+                        ]
+                      |)
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
     
     (*
             pub const fn checked_abs(self) -> Option<Self> {
@@ -24551,7 +25102,33 @@ Module num.
                 if self < 0 {
                     None
                 } else {
-                    Some((self as $UnsignedT).isqrt() as Self)
+                    // SAFETY: Input is nonnegative in this `else` branch.
+                    let result = unsafe {
+                        crate::num::int_sqrt::$ActualT(self as $ActualT) as $SelfT
+                    };
+    
+                    // Inform the optimizer what the range of outputs is. If
+                    // testing `core` crashes with no panic message and a
+                    // `num::int_sqrt::i*` test failed, it's because your edits
+                    // caused these assertions to become false.
+                    //
+                    // SAFETY: Integer square root is a monotonically nondecreasing
+                    // function, which means that increasing the input will never
+                    // cause the output to decrease. Thus, since the input for
+                    // nonnegative signed integers is bounded by
+                    // `[0, <$ActualT>::MAX]`, sqrt(n) will be bounded by
+                    // `[sqrt(0), sqrt(<$ActualT>::MAX)]`.
+                    unsafe {
+                        // SAFETY: `<$ActualT>::MAX` is nonnegative.
+                        const MAX_RESULT: $SelfT = unsafe {
+                            crate::num::int_sqrt::$ActualT(<$ActualT>::MAX) as $SelfT
+                        };
+    
+                        crate::hint::assert_unchecked(result >= 0);
+                        crate::hint::assert_unchecked(result <= MAX_RESULT);
+                    }
+    
+                    Some(result)
                 }
             }
     *)
@@ -24575,16 +25152,41 @@ Module num.
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.rust_cast
-                            (M.call_closure (|
-                              M.get_associated_function (| Ty.path "u64", "isqrt", [] |),
-                              [ M.rust_cast (M.read (| self |)) ]
-                            |))
-                        ]
+                    (let~ result :=
+                      M.copy (|
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_function (| "core::num::int_sqrt::i64", [] |),
+                              [ M.read (| M.use self |) ]
+                            |)
+                          |))
+                      |) in
+                    let~ _ :=
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [ BinOp.ge (| M.read (| result |), Value.Integer IntegerKind.I64 0 |) ]
+                          |)
+                        |) in
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [
+                              BinOp.le (|
+                                M.read (| result |),
+                                M.read (|
+                                  M.get_constant (| "core::num::checked_isqrt::MAX_RESULT" |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |) in
+                    M.alloc (|
+                      Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ]
                     |)))
               ]
             |)
@@ -26807,14 +27409,9 @@ Module num.
     
     (*
             pub const fn isqrt(self) -> Self {
-                // I would like to implement it as
-                // ```
-                // self.checked_isqrt().expect("argument of integer square root must be non-negative")
-                // ```
-                // but `expect` is not yet stable as a `const fn`.
                 match self.checked_isqrt() {
                     Some(sqrt) => sqrt,
-                    None => panic!("argument of integer square root must be non-negative"),
+                    None => crate::num::int_sqrt::panic_for_negative_argument(),
                 }
             }
     *)
@@ -26848,27 +27445,11 @@ Module num.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                              [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "argument of integer square root must be non-negative"
-                                      |)
-                                    ]
-                                |)
-                              ]
-                            |)
-                          ]
+                          M.get_function (|
+                            "core::num::int_sqrt::panic_for_negative_argument",
+                            []
+                          |),
+                          []
                         |)
                       |)
                     |)))
@@ -27032,8 +27613,16 @@ Module num.
             pub const fn div_floor(self, rhs: Self) -> Self {
                 let d = self / rhs;
                 let r = self % rhs;
-                if (r > 0 && rhs < 0) || (r < 0 && rhs > 0) {
-                    d - 1
+    
+                // If the remainder is non-zero, we need to subtract one if the
+                // signs of self and rhs differ, as this means we rounded upwards
+                // instead of downwards. We do this branchlessly by creating a mask
+                // which is all-ones iff the signs differ, and 0 otherwise. Then by
+                // adding this mask (which corresponds to the signed value -1), we
+                // get our correction.
+                let correction = (self ^ rhs) >> (Self::BITS - 1);
+                if r != 0 {
+                    d + correction
                 } else {
                     d
                 }
@@ -27048,6 +27637,16 @@ Module num.
           M.read (|
             let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| self |), M.read (| rhs |) |) |) in
             let~ r := M.alloc (| BinOp.Wrap.rem (| M.read (| self |), M.read (| rhs |) |) |) in
+            let~ correction :=
+              M.alloc (|
+                BinOp.Wrap.shr (|
+                  BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
+                  BinOp.Wrap.sub (|
+                    M.read (| M.get_constant (| "core::num::BITS" |) |),
+                    Value.Integer IntegerKind.U32 1
+                  |)
+                |)
+              |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -27056,27 +27655,10 @@ Module num.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          LogicalOp.or (|
-                            LogicalOp.and (|
-                              BinOp.gt (| M.read (| r |), Value.Integer IntegerKind.I64 0 |),
-                              ltac:(M.monadic
-                                (BinOp.lt (| M.read (| rhs |), Value.Integer IntegerKind.I64 0 |)))
-                            |),
-                            ltac:(M.monadic
-                              (LogicalOp.and (|
-                                BinOp.lt (| M.read (| r |), Value.Integer IntegerKind.I64 0 |),
-                                ltac:(M.monadic
-                                  (BinOp.gt (|
-                                    M.read (| rhs |),
-                                    Value.Integer IntegerKind.I64 0
-                                  |)))
-                              |)))
-                          |)
+                          BinOp.ne (| M.read (| r |), Value.Integer IntegerKind.I64 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      BinOp.Wrap.sub (| M.read (| d |), Value.Integer IntegerKind.I64 1 |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.add (| M.read (| d |), M.read (| correction |) |) |)));
                 fun γ => ltac:(M.monadic d)
               ]
             |)
@@ -27090,8 +27672,12 @@ Module num.
             pub const fn div_ceil(self, rhs: Self) -> Self {
                 let d = self / rhs;
                 let r = self % rhs;
-                if (r > 0 && rhs > 0) || (r < 0 && rhs < 0) {
-                    d + 1
+    
+                // When remainder is non-zero we have a.div_ceil(b) == 1 + a.div_floor(b),
+                // so we can re-use the algorithm from div_floor, just adding 1.
+                let correction = 1 + ((self ^ rhs) >> (Self::BITS - 1));
+                if r != 0 {
+                    d + correction
                 } else {
                     d
                 }
@@ -27106,6 +27692,19 @@ Module num.
           M.read (|
             let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| self |), M.read (| rhs |) |) |) in
             let~ r := M.alloc (| BinOp.Wrap.rem (| M.read (| self |), M.read (| rhs |) |) |) in
+            let~ correction :=
+              M.alloc (|
+                BinOp.Wrap.add (|
+                  Value.Integer IntegerKind.I64 1,
+                  BinOp.Wrap.shr (|
+                    BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
+                    BinOp.Wrap.sub (|
+                      M.read (| M.get_constant (| "core::num::BITS" |) |),
+                      Value.Integer IntegerKind.U32 1
+                    |)
+                  |)
+                |)
+              |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -27114,27 +27713,10 @@ Module num.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          LogicalOp.or (|
-                            LogicalOp.and (|
-                              BinOp.gt (| M.read (| r |), Value.Integer IntegerKind.I64 0 |),
-                              ltac:(M.monadic
-                                (BinOp.gt (| M.read (| rhs |), Value.Integer IntegerKind.I64 0 |)))
-                            |),
-                            ltac:(M.monadic
-                              (LogicalOp.and (|
-                                BinOp.lt (| M.read (| r |), Value.Integer IntegerKind.I64 0 |),
-                                ltac:(M.monadic
-                                  (BinOp.lt (|
-                                    M.read (| rhs |),
-                                    Value.Integer IntegerKind.I64 0
-                                  |)))
-                              |)))
-                          |)
+                          BinOp.ne (| M.read (| r |), Value.Integer IntegerKind.I64 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      BinOp.Wrap.add (| M.read (| d |), Value.Integer IntegerKind.I64 1 |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.add (| M.read (| d |), M.read (| correction |) |) |)));
                 fun γ => ltac:(M.monadic d)
               ]
             |)
@@ -31229,6 +31811,54 @@ Module num.
       M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
     
     (*
+            pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shl(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i128", "unchecked_shl", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I128 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
+    
+    (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
                 // Not using overflowing_shr as that's a wrapping shift
                 if rhs < Self::BITS {
@@ -31402,6 +32032,71 @@ Module num.
     
     Axiom AssociatedFunction_unchecked_shr :
       M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
+    
+    (*
+            pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shr(rhs) }
+                } else {
+                    // A shift by `Self::BITS-1` suffices for signed integers, because the sign bit is copied for each of the shifted bits.
+    
+                    // SAFETY:
+                    // `Self::BITS-1` is guaranteed to be less than `Self::BITS`
+                    unsafe { self.unchecked_shr(Self::BITS - 1) }
+                }
+            }
+    *)
+    Definition unbounded_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i128", "unchecked_shr", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "i128", "unchecked_shr", [] |),
+                        [
+                          M.read (| self |);
+                          BinOp.Wrap.sub (|
+                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            Value.Integer IntegerKind.U32 1
+                          |)
+                        ]
+                      |)
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
     
     (*
             pub const fn checked_abs(self) -> Option<Self> {
@@ -31875,7 +32570,33 @@ Module num.
                 if self < 0 {
                     None
                 } else {
-                    Some((self as $UnsignedT).isqrt() as Self)
+                    // SAFETY: Input is nonnegative in this `else` branch.
+                    let result = unsafe {
+                        crate::num::int_sqrt::$ActualT(self as $ActualT) as $SelfT
+                    };
+    
+                    // Inform the optimizer what the range of outputs is. If
+                    // testing `core` crashes with no panic message and a
+                    // `num::int_sqrt::i*` test failed, it's because your edits
+                    // caused these assertions to become false.
+                    //
+                    // SAFETY: Integer square root is a monotonically nondecreasing
+                    // function, which means that increasing the input will never
+                    // cause the output to decrease. Thus, since the input for
+                    // nonnegative signed integers is bounded by
+                    // `[0, <$ActualT>::MAX]`, sqrt(n) will be bounded by
+                    // `[sqrt(0), sqrt(<$ActualT>::MAX)]`.
+                    unsafe {
+                        // SAFETY: `<$ActualT>::MAX` is nonnegative.
+                        const MAX_RESULT: $SelfT = unsafe {
+                            crate::num::int_sqrt::$ActualT(<$ActualT>::MAX) as $SelfT
+                        };
+    
+                        crate::hint::assert_unchecked(result >= 0);
+                        crate::hint::assert_unchecked(result <= MAX_RESULT);
+                    }
+    
+                    Some(result)
                 }
             }
     *)
@@ -31899,16 +32620,41 @@ Module num.
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.rust_cast
-                            (M.call_closure (|
-                              M.get_associated_function (| Ty.path "u128", "isqrt", [] |),
-                              [ M.rust_cast (M.read (| self |)) ]
-                            |))
-                        ]
+                    (let~ result :=
+                      M.copy (|
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              M.get_function (| "core::num::int_sqrt::i128", [] |),
+                              [ M.read (| M.use self |) ]
+                            |)
+                          |))
+                      |) in
+                    let~ _ :=
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [ BinOp.ge (| M.read (| result |), Value.Integer IntegerKind.I128 0 |) ]
+                          |)
+                        |) in
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [
+                              BinOp.le (|
+                                M.read (| result |),
+                                M.read (|
+                                  M.get_constant (| "core::num::checked_isqrt::MAX_RESULT" |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |) in
+                    M.alloc (|
+                      Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ]
                     |)))
               ]
             |)
@@ -34134,14 +34880,9 @@ Module num.
     
     (*
             pub const fn isqrt(self) -> Self {
-                // I would like to implement it as
-                // ```
-                // self.checked_isqrt().expect("argument of integer square root must be non-negative")
-                // ```
-                // but `expect` is not yet stable as a `const fn`.
                 match self.checked_isqrt() {
                     Some(sqrt) => sqrt,
-                    None => panic!("argument of integer square root must be non-negative"),
+                    None => crate::num::int_sqrt::panic_for_negative_argument(),
                 }
             }
     *)
@@ -34175,27 +34916,11 @@ Module num.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                              [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "argument of integer square root must be non-negative"
-                                      |)
-                                    ]
-                                |)
-                              ]
-                            |)
-                          ]
+                          M.get_function (|
+                            "core::num::int_sqrt::panic_for_negative_argument",
+                            []
+                          |),
+                          []
                         |)
                       |)
                     |)))
@@ -34359,8 +35084,16 @@ Module num.
             pub const fn div_floor(self, rhs: Self) -> Self {
                 let d = self / rhs;
                 let r = self % rhs;
-                if (r > 0 && rhs < 0) || (r < 0 && rhs > 0) {
-                    d - 1
+    
+                // If the remainder is non-zero, we need to subtract one if the
+                // signs of self and rhs differ, as this means we rounded upwards
+                // instead of downwards. We do this branchlessly by creating a mask
+                // which is all-ones iff the signs differ, and 0 otherwise. Then by
+                // adding this mask (which corresponds to the signed value -1), we
+                // get our correction.
+                let correction = (self ^ rhs) >> (Self::BITS - 1);
+                if r != 0 {
+                    d + correction
                 } else {
                     d
                 }
@@ -34375,6 +35108,16 @@ Module num.
           M.read (|
             let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| self |), M.read (| rhs |) |) |) in
             let~ r := M.alloc (| BinOp.Wrap.rem (| M.read (| self |), M.read (| rhs |) |) |) in
+            let~ correction :=
+              M.alloc (|
+                BinOp.Wrap.shr (|
+                  BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
+                  BinOp.Wrap.sub (|
+                    M.read (| M.get_constant (| "core::num::BITS" |) |),
+                    Value.Integer IntegerKind.U32 1
+                  |)
+                |)
+              |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -34383,27 +35126,10 @@ Module num.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          LogicalOp.or (|
-                            LogicalOp.and (|
-                              BinOp.gt (| M.read (| r |), Value.Integer IntegerKind.I128 0 |),
-                              ltac:(M.monadic
-                                (BinOp.lt (| M.read (| rhs |), Value.Integer IntegerKind.I128 0 |)))
-                            |),
-                            ltac:(M.monadic
-                              (LogicalOp.and (|
-                                BinOp.lt (| M.read (| r |), Value.Integer IntegerKind.I128 0 |),
-                                ltac:(M.monadic
-                                  (BinOp.gt (|
-                                    M.read (| rhs |),
-                                    Value.Integer IntegerKind.I128 0
-                                  |)))
-                              |)))
-                          |)
+                          BinOp.ne (| M.read (| r |), Value.Integer IntegerKind.I128 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      BinOp.Wrap.sub (| M.read (| d |), Value.Integer IntegerKind.I128 1 |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.add (| M.read (| d |), M.read (| correction |) |) |)));
                 fun γ => ltac:(M.monadic d)
               ]
             |)
@@ -34417,8 +35143,12 @@ Module num.
             pub const fn div_ceil(self, rhs: Self) -> Self {
                 let d = self / rhs;
                 let r = self % rhs;
-                if (r > 0 && rhs > 0) || (r < 0 && rhs < 0) {
-                    d + 1
+    
+                // When remainder is non-zero we have a.div_ceil(b) == 1 + a.div_floor(b),
+                // so we can re-use the algorithm from div_floor, just adding 1.
+                let correction = 1 + ((self ^ rhs) >> (Self::BITS - 1));
+                if r != 0 {
+                    d + correction
                 } else {
                     d
                 }
@@ -34433,6 +35163,19 @@ Module num.
           M.read (|
             let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| self |), M.read (| rhs |) |) |) in
             let~ r := M.alloc (| BinOp.Wrap.rem (| M.read (| self |), M.read (| rhs |) |) |) in
+            let~ correction :=
+              M.alloc (|
+                BinOp.Wrap.add (|
+                  Value.Integer IntegerKind.I128 1,
+                  BinOp.Wrap.shr (|
+                    BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
+                    BinOp.Wrap.sub (|
+                      M.read (| M.get_constant (| "core::num::BITS" |) |),
+                      Value.Integer IntegerKind.U32 1
+                    |)
+                  |)
+                |)
+              |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -34441,27 +35184,10 @@ Module num.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          LogicalOp.or (|
-                            LogicalOp.and (|
-                              BinOp.gt (| M.read (| r |), Value.Integer IntegerKind.I128 0 |),
-                              ltac:(M.monadic
-                                (BinOp.gt (| M.read (| rhs |), Value.Integer IntegerKind.I128 0 |)))
-                            |),
-                            ltac:(M.monadic
-                              (LogicalOp.and (|
-                                BinOp.lt (| M.read (| r |), Value.Integer IntegerKind.I128 0 |),
-                                ltac:(M.monadic
-                                  (BinOp.lt (|
-                                    M.read (| rhs |),
-                                    Value.Integer IntegerKind.I128 0
-                                  |)))
-                              |)))
-                          |)
+                          BinOp.ne (| M.read (| r |), Value.Integer IntegerKind.I128 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      BinOp.Wrap.add (| M.read (| d |), Value.Integer IntegerKind.I128 1 |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.add (| M.read (| d |), M.read (| correction |) |) |)));
                 fun γ => ltac:(M.monadic d)
               ]
             |)
@@ -38556,6 +39282,54 @@ Module num.
       M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
     
     (*
+            pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shl(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "isize", "unchecked_shl", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Isize 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
+    
+    (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
                 // Not using overflowing_shr as that's a wrapping shift
                 if rhs < Self::BITS {
@@ -38729,6 +39503,71 @@ Module num.
     
     Axiom AssociatedFunction_unchecked_shr :
       M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
+    
+    (*
+            pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shr(rhs) }
+                } else {
+                    // A shift by `Self::BITS-1` suffices for signed integers, because the sign bit is copied for each of the shifted bits.
+    
+                    // SAFETY:
+                    // `Self::BITS-1` is guaranteed to be less than `Self::BITS`
+                    unsafe { self.unchecked_shr(Self::BITS - 1) }
+                }
+            }
+    *)
+    Definition unbounded_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "isize", "unchecked_shr", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "isize", "unchecked_shr", [] |),
+                        [
+                          M.read (| self |);
+                          BinOp.Wrap.sub (|
+                            M.read (| M.get_constant (| "core::num::BITS" |) |),
+                            Value.Integer IntegerKind.U32 1
+                          |)
+                        ]
+                      |)
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
     
     (*
             pub const fn checked_abs(self) -> Option<Self> {
@@ -39202,7 +40041,33 @@ Module num.
                 if self < 0 {
                     None
                 } else {
-                    Some((self as $UnsignedT).isqrt() as Self)
+                    // SAFETY: Input is nonnegative in this `else` branch.
+                    let result = unsafe {
+                        crate::num::int_sqrt::$ActualT(self as $ActualT) as $SelfT
+                    };
+    
+                    // Inform the optimizer what the range of outputs is. If
+                    // testing `core` crashes with no panic message and a
+                    // `num::int_sqrt::i*` test failed, it's because your edits
+                    // caused these assertions to become false.
+                    //
+                    // SAFETY: Integer square root is a monotonically nondecreasing
+                    // function, which means that increasing the input will never
+                    // cause the output to decrease. Thus, since the input for
+                    // nonnegative signed integers is bounded by
+                    // `[0, <$ActualT>::MAX]`, sqrt(n) will be bounded by
+                    // `[sqrt(0), sqrt(<$ActualT>::MAX)]`.
+                    unsafe {
+                        // SAFETY: `<$ActualT>::MAX` is nonnegative.
+                        const MAX_RESULT: $SelfT = unsafe {
+                            crate::num::int_sqrt::$ActualT(<$ActualT>::MAX) as $SelfT
+                        };
+    
+                        crate::hint::assert_unchecked(result >= 0);
+                        crate::hint::assert_unchecked(result <= MAX_RESULT);
+                    }
+    
+                    Some(result)
                 }
             }
     *)
@@ -39226,16 +40091,40 @@ Module num.
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                 fun γ =>
                   ltac:(M.monadic
-                    (M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.rust_cast
-                            (M.call_closure (|
-                              M.get_associated_function (| Ty.path "usize", "isqrt", [] |),
-                              [ M.rust_cast (M.read (| self |)) ]
-                            |))
-                        ]
+                    (let~ result :=
+                      M.alloc (|
+                        M.rust_cast
+                          (M.call_closure (|
+                            M.get_function (| "core::num::int_sqrt::i64", [] |),
+                            [ M.rust_cast (M.read (| self |)) ]
+                          |))
+                      |) in
+                    let~ _ :=
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [ BinOp.ge (| M.read (| result |), Value.Integer IntegerKind.Isize 0 |)
+                            ]
+                          |)
+                        |) in
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_function (| "core::hint::assert_unchecked", [] |),
+                            [
+                              BinOp.le (|
+                                M.read (| result |),
+                                M.read (|
+                                  M.get_constant (| "core::num::checked_isqrt::MAX_RESULT" |)
+                                |)
+                              |)
+                            ]
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |) in
+                    M.alloc (|
+                      Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ]
                     |)))
               ]
             |)
@@ -41466,14 +42355,9 @@ Module num.
     
     (*
             pub const fn isqrt(self) -> Self {
-                // I would like to implement it as
-                // ```
-                // self.checked_isqrt().expect("argument of integer square root must be non-negative")
-                // ```
-                // but `expect` is not yet stable as a `const fn`.
                 match self.checked_isqrt() {
                     Some(sqrt) => sqrt,
-                    None => panic!("argument of integer square root must be non-negative"),
+                    None => crate::num::int_sqrt::panic_for_negative_argument(),
                 }
             }
     *)
@@ -41507,27 +42391,11 @@ Module num.
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
-                          M.get_function (| "core::panicking::panic_fmt", [] |),
-                          [
-                            M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                []
-                              |),
-                              [
-                                M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "argument of integer square root must be non-negative"
-                                      |)
-                                    ]
-                                |)
-                              ]
-                            |)
-                          ]
+                          M.get_function (|
+                            "core::num::int_sqrt::panic_for_negative_argument",
+                            []
+                          |),
+                          []
                         |)
                       |)
                     |)))
@@ -41691,8 +42559,16 @@ Module num.
             pub const fn div_floor(self, rhs: Self) -> Self {
                 let d = self / rhs;
                 let r = self % rhs;
-                if (r > 0 && rhs < 0) || (r < 0 && rhs > 0) {
-                    d - 1
+    
+                // If the remainder is non-zero, we need to subtract one if the
+                // signs of self and rhs differ, as this means we rounded upwards
+                // instead of downwards. We do this branchlessly by creating a mask
+                // which is all-ones iff the signs differ, and 0 otherwise. Then by
+                // adding this mask (which corresponds to the signed value -1), we
+                // get our correction.
+                let correction = (self ^ rhs) >> (Self::BITS - 1);
+                if r != 0 {
+                    d + correction
                 } else {
                     d
                 }
@@ -41707,6 +42583,16 @@ Module num.
           M.read (|
             let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| self |), M.read (| rhs |) |) |) in
             let~ r := M.alloc (| BinOp.Wrap.rem (| M.read (| self |), M.read (| rhs |) |) |) in
+            let~ correction :=
+              M.alloc (|
+                BinOp.Wrap.shr (|
+                  BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
+                  BinOp.Wrap.sub (|
+                    M.read (| M.get_constant (| "core::num::BITS" |) |),
+                    Value.Integer IntegerKind.U32 1
+                  |)
+                |)
+              |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -41715,30 +42601,10 @@ Module num.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          LogicalOp.or (|
-                            LogicalOp.and (|
-                              BinOp.gt (| M.read (| r |), Value.Integer IntegerKind.Isize 0 |),
-                              ltac:(M.monadic
-                                (BinOp.lt (|
-                                  M.read (| rhs |),
-                                  Value.Integer IntegerKind.Isize 0
-                                |)))
-                            |),
-                            ltac:(M.monadic
-                              (LogicalOp.and (|
-                                BinOp.lt (| M.read (| r |), Value.Integer IntegerKind.Isize 0 |),
-                                ltac:(M.monadic
-                                  (BinOp.gt (|
-                                    M.read (| rhs |),
-                                    Value.Integer IntegerKind.Isize 0
-                                  |)))
-                              |)))
-                          |)
+                          BinOp.ne (| M.read (| r |), Value.Integer IntegerKind.Isize 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      BinOp.Wrap.sub (| M.read (| d |), Value.Integer IntegerKind.Isize 1 |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.add (| M.read (| d |), M.read (| correction |) |) |)));
                 fun γ => ltac:(M.monadic d)
               ]
             |)
@@ -41752,8 +42618,12 @@ Module num.
             pub const fn div_ceil(self, rhs: Self) -> Self {
                 let d = self / rhs;
                 let r = self % rhs;
-                if (r > 0 && rhs > 0) || (r < 0 && rhs < 0) {
-                    d + 1
+    
+                // When remainder is non-zero we have a.div_ceil(b) == 1 + a.div_floor(b),
+                // so we can re-use the algorithm from div_floor, just adding 1.
+                let correction = 1 + ((self ^ rhs) >> (Self::BITS - 1));
+                if r != 0 {
+                    d + correction
                 } else {
                     d
                 }
@@ -41768,6 +42638,19 @@ Module num.
           M.read (|
             let~ d := M.alloc (| BinOp.Wrap.div (| M.read (| self |), M.read (| rhs |) |) |) in
             let~ r := M.alloc (| BinOp.Wrap.rem (| M.read (| self |), M.read (| rhs |) |) |) in
+            let~ correction :=
+              M.alloc (|
+                BinOp.Wrap.add (|
+                  Value.Integer IntegerKind.Isize 1,
+                  BinOp.Wrap.shr (|
+                    BinOp.bit_xor (M.read (| self |)) (M.read (| rhs |)),
+                    BinOp.Wrap.sub (|
+                      M.read (| M.get_constant (| "core::num::BITS" |) |),
+                      Value.Integer IntegerKind.U32 1
+                    |)
+                  |)
+                |)
+              |) in
             M.match_operator (|
               M.alloc (| Value.Tuple [] |),
               [
@@ -41776,30 +42659,10 @@ Module num.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          LogicalOp.or (|
-                            LogicalOp.and (|
-                              BinOp.gt (| M.read (| r |), Value.Integer IntegerKind.Isize 0 |),
-                              ltac:(M.monadic
-                                (BinOp.gt (|
-                                  M.read (| rhs |),
-                                  Value.Integer IntegerKind.Isize 0
-                                |)))
-                            |),
-                            ltac:(M.monadic
-                              (LogicalOp.and (|
-                                BinOp.lt (| M.read (| r |), Value.Integer IntegerKind.Isize 0 |),
-                                ltac:(M.monadic
-                                  (BinOp.lt (|
-                                    M.read (| rhs |),
-                                    Value.Integer IntegerKind.Isize 0
-                                  |)))
-                              |)))
-                          |)
+                          BinOp.ne (| M.read (| r |), Value.Integer IntegerKind.Isize 0 |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      BinOp.Wrap.add (| M.read (| d |), Value.Integer IntegerKind.Isize 1 |)
-                    |)));
+                    M.alloc (| BinOp.Wrap.add (| M.read (| d |), M.read (| correction |) |) |)));
                 fun γ => ltac:(M.monadic d)
               ]
             |)
@@ -45175,6 +46038,54 @@ Module num.
       M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
     
     (*
+            pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shl(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u8", "unchecked_shl", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
+    
+    (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
                 // Not using overflowing_shr as that's a wrapping shift
                 if rhs < Self::BITS {
@@ -45348,6 +46259,54 @@ Module num.
     
     Axiom AssociatedFunction_unchecked_shr :
       M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
+    
+    (*
+            pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shr(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u8", "unchecked_shr", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -47486,10 +48445,24 @@ Module num.
     
     (*
             pub const fn isqrt(self) -> Self {
-                match NonZero::new(self) {
-                    Some(x) => x.isqrt().get(),
-                    None => 0,
+                let result = crate::num::int_sqrt::$ActualT(self as $ActualT) as $SelfT;
+    
+                // Inform the optimizer what the range of outputs is. If testing
+                // `core` crashes with no panic message and a `num::int_sqrt::u*`
+                // test failed, it's because your edits caused these assertions or
+                // the assertions in `fn isqrt` of `nonzero.rs` to become false.
+                //
+                // SAFETY: Integer square root is a monotonically nondecreasing
+                // function, which means that increasing the input will never
+                // cause the output to decrease. Thus, since the input for unsigned
+                // integers is bounded by `[0, <$ActualT>::MAX]`, sqrt(n) will be
+                // bounded by `[sqrt(0), sqrt(<$ActualT>::MAX)]`.
+                unsafe {
+                    const MAX_RESULT: $SelfT = crate::num::int_sqrt::$ActualT(<$ActualT>::MAX) as $SelfT;
+                    crate::hint::assert_unchecked(result <= MAX_RESULT);
                 }
+    
+                result
             }
     *)
     Definition isqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -47498,52 +48471,31 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                          "get",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                              "isqrt",
-                              []
-                            |),
-                            [ M.read (| x |) ]
-                          |)
-                        ]
+            let~ result :=
+              M.copy (|
+                M.use
+                  (M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "core::num::int_sqrt::u8", [] |),
+                      [ M.read (| M.use self |) ]
+                    |)
+                  |))
+              |) in
+            let~ _ :=
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    [
+                      BinOp.le (|
+                        M.read (| result |),
+                        M.read (| M.get_constant (| "core::num::isqrt::MAX_RESULT" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.Integer IntegerKind.U8 0 |)))
-              ]
-            |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |) in
+            result
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -48410,7 +49362,7 @@ Module num.
       M.IsAssociatedFunction Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
     
     (*
-        pub fn make_ascii_uppercase(&mut self) {
+        pub const fn make_ascii_uppercase(&mut self) {
             *self = self.to_ascii_uppercase();
         }
     *)
@@ -48437,7 +49389,7 @@ Module num.
       M.IsAssociatedFunction Self "make_ascii_uppercase" make_ascii_uppercase.
     
     (*
-        pub fn make_ascii_lowercase(&mut self) {
+        pub const fn make_ascii_lowercase(&mut self) {
             *self = self.to_ascii_lowercase();
         }
     *)
@@ -52225,6 +53177,54 @@ Module num.
       M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
     
     (*
+            pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shl(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u16", "unchecked_shl", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
+    
+    (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
                 // Not using overflowing_shr as that's a wrapping shift
                 if rhs < Self::BITS {
@@ -52398,6 +53398,54 @@ Module num.
     
     Axiom AssociatedFunction_unchecked_shr :
       M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
+    
+    (*
+            pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shr(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u16", "unchecked_shr", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -54541,10 +55589,24 @@ Module num.
     
     (*
             pub const fn isqrt(self) -> Self {
-                match NonZero::new(self) {
-                    Some(x) => x.isqrt().get(),
-                    None => 0,
+                let result = crate::num::int_sqrt::$ActualT(self as $ActualT) as $SelfT;
+    
+                // Inform the optimizer what the range of outputs is. If testing
+                // `core` crashes with no panic message and a `num::int_sqrt::u*`
+                // test failed, it's because your edits caused these assertions or
+                // the assertions in `fn isqrt` of `nonzero.rs` to become false.
+                //
+                // SAFETY: Integer square root is a monotonically nondecreasing
+                // function, which means that increasing the input will never
+                // cause the output to decrease. Thus, since the input for unsigned
+                // integers is bounded by `[0, <$ActualT>::MAX]`, sqrt(n) will be
+                // bounded by `[sqrt(0), sqrt(<$ActualT>::MAX)]`.
+                unsafe {
+                    const MAX_RESULT: $SelfT = crate::num::int_sqrt::$ActualT(<$ActualT>::MAX) as $SelfT;
+                    crate::hint::assert_unchecked(result <= MAX_RESULT);
                 }
+    
+                result
             }
     *)
     Definition isqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -54553,52 +55615,31 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                          "get",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                              "isqrt",
-                              []
-                            |),
-                            [ M.read (| x |) ]
-                          |)
-                        ]
+            let~ result :=
+              M.copy (|
+                M.use
+                  (M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "core::num::int_sqrt::u16", [] |),
+                      [ M.read (| M.use self |) ]
+                    |)
+                  |))
+              |) in
+            let~ _ :=
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    [
+                      BinOp.le (|
+                        M.read (| result |),
+                        M.read (| M.get_constant (| "core::num::isqrt::MAX_RESULT" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.Integer IntegerKind.U16 0 |)))
-              ]
-            |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |) in
+            result
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -58641,6 +59682,54 @@ Module num.
       M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
     
     (*
+            pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shl(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u32", "unchecked_shl", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
+    
+    (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
                 // Not using overflowing_shr as that's a wrapping shift
                 if rhs < Self::BITS {
@@ -58814,6 +59903,54 @@ Module num.
     
     Axiom AssociatedFunction_unchecked_shr :
       M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
+    
+    (*
+            pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shr(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u32", "unchecked_shr", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -60957,10 +62094,24 @@ Module num.
     
     (*
             pub const fn isqrt(self) -> Self {
-                match NonZero::new(self) {
-                    Some(x) => x.isqrt().get(),
-                    None => 0,
+                let result = crate::num::int_sqrt::$ActualT(self as $ActualT) as $SelfT;
+    
+                // Inform the optimizer what the range of outputs is. If testing
+                // `core` crashes with no panic message and a `num::int_sqrt::u*`
+                // test failed, it's because your edits caused these assertions or
+                // the assertions in `fn isqrt` of `nonzero.rs` to become false.
+                //
+                // SAFETY: Integer square root is a monotonically nondecreasing
+                // function, which means that increasing the input will never
+                // cause the output to decrease. Thus, since the input for unsigned
+                // integers is bounded by `[0, <$ActualT>::MAX]`, sqrt(n) will be
+                // bounded by `[sqrt(0), sqrt(<$ActualT>::MAX)]`.
+                unsafe {
+                    const MAX_RESULT: $SelfT = crate::num::int_sqrt::$ActualT(<$ActualT>::MAX) as $SelfT;
+                    crate::hint::assert_unchecked(result <= MAX_RESULT);
                 }
+    
+                result
             }
     *)
     Definition isqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -60969,52 +62120,31 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                          "get",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                              "isqrt",
-                              []
-                            |),
-                            [ M.read (| x |) ]
-                          |)
-                        ]
+            let~ result :=
+              M.copy (|
+                M.use
+                  (M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "core::num::int_sqrt::u32", [] |),
+                      [ M.read (| M.use self |) ]
+                    |)
+                  |))
+              |) in
+            let~ _ :=
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    [
+                      BinOp.le (|
+                        M.read (| result |),
+                        M.read (| M.get_constant (| "core::num::isqrt::MAX_RESULT" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.Integer IntegerKind.U32 0 |)))
-              ]
-            |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |) in
+            result
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -65028,6 +66158,54 @@ Module num.
       M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
     
     (*
+            pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shl(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u64", "unchecked_shl", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
+    
+    (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
                 // Not using overflowing_shr as that's a wrapping shift
                 if rhs < Self::BITS {
@@ -65201,6 +66379,54 @@ Module num.
     
     Axiom AssociatedFunction_unchecked_shr :
       M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
+    
+    (*
+            pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shr(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u64", "unchecked_shr", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -67344,10 +68570,24 @@ Module num.
     
     (*
             pub const fn isqrt(self) -> Self {
-                match NonZero::new(self) {
-                    Some(x) => x.isqrt().get(),
-                    None => 0,
+                let result = crate::num::int_sqrt::$ActualT(self as $ActualT) as $SelfT;
+    
+                // Inform the optimizer what the range of outputs is. If testing
+                // `core` crashes with no panic message and a `num::int_sqrt::u*`
+                // test failed, it's because your edits caused these assertions or
+                // the assertions in `fn isqrt` of `nonzero.rs` to become false.
+                //
+                // SAFETY: Integer square root is a monotonically nondecreasing
+                // function, which means that increasing the input will never
+                // cause the output to decrease. Thus, since the input for unsigned
+                // integers is bounded by `[0, <$ActualT>::MAX]`, sqrt(n) will be
+                // bounded by `[sqrt(0), sqrt(<$ActualT>::MAX)]`.
+                unsafe {
+                    const MAX_RESULT: $SelfT = crate::num::int_sqrt::$ActualT(<$ActualT>::MAX) as $SelfT;
+                    crate::hint::assert_unchecked(result <= MAX_RESULT);
                 }
+    
+                result
             }
     *)
     Definition isqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -67356,52 +68596,31 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                          "get",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                              "isqrt",
-                              []
-                            |),
-                            [ M.read (| x |) ]
-                          |)
-                        ]
+            let~ result :=
+              M.copy (|
+                M.use
+                  (M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "core::num::int_sqrt::u64", [] |),
+                      [ M.read (| M.use self |) ]
+                    |)
+                  |))
+              |) in
+            let~ _ :=
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    [
+                      BinOp.le (|
+                        M.read (| result |),
+                        M.read (| M.get_constant (| "core::num::isqrt::MAX_RESULT" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.Integer IntegerKind.U64 0 |)))
-              ]
-            |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |) in
+            result
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -71425,6 +72644,54 @@ Module num.
       M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
     
     (*
+            pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shl(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u128", "unchecked_shl", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
+    
+    (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
                 // Not using overflowing_shr as that's a wrapping shift
                 if rhs < Self::BITS {
@@ -71598,6 +72865,54 @@ Module num.
     
     Axiom AssociatedFunction_unchecked_shr :
       M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
+    
+    (*
+            pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shr(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "u128", "unchecked_shr", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -73744,10 +75059,24 @@ Module num.
     
     (*
             pub const fn isqrt(self) -> Self {
-                match NonZero::new(self) {
-                    Some(x) => x.isqrt().get(),
-                    None => 0,
+                let result = crate::num::int_sqrt::$ActualT(self as $ActualT) as $SelfT;
+    
+                // Inform the optimizer what the range of outputs is. If testing
+                // `core` crashes with no panic message and a `num::int_sqrt::u*`
+                // test failed, it's because your edits caused these assertions or
+                // the assertions in `fn isqrt` of `nonzero.rs` to become false.
+                //
+                // SAFETY: Integer square root is a monotonically nondecreasing
+                // function, which means that increasing the input will never
+                // cause the output to decrease. Thus, since the input for unsigned
+                // integers is bounded by `[0, <$ActualT>::MAX]`, sqrt(n) will be
+                // bounded by `[sqrt(0), sqrt(<$ActualT>::MAX)]`.
+                unsafe {
+                    const MAX_RESULT: $SelfT = crate::num::int_sqrt::$ActualT(<$ActualT>::MAX) as $SelfT;
+                    crate::hint::assert_unchecked(result <= MAX_RESULT);
                 }
+    
+                result
             }
     *)
     Definition isqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -73756,55 +75085,31 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                          "get",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::num::nonzero::NonZero")
-                                []
-                                [ Ty.path "u128" ],
-                              "isqrt",
-                              []
-                            |),
-                            [ M.read (| x |) ]
-                          |)
-                        ]
+            let~ result :=
+              M.copy (|
+                M.use
+                  (M.alloc (|
+                    M.call_closure (|
+                      M.get_function (| "core::num::int_sqrt::u128", [] |),
+                      [ M.read (| M.use self |) ]
+                    |)
+                  |))
+              |) in
+            let~ _ :=
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    [
+                      BinOp.le (|
+                        M.read (| result |),
+                        M.read (| M.get_constant (| "core::num::isqrt::MAX_RESULT" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.Integer IntegerKind.U128 0 |)))
-              ]
-            |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |) in
+            result
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -77741,6 +79046,54 @@ Module num.
       M.IsAssociatedFunction Self "unchecked_shl" unchecked_shl.
     
     (*
+            pub const fn unbounded_shl(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shl(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "usize", "unchecked_shl", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shl :
+      M.IsAssociatedFunction Self "unbounded_shl" unbounded_shl.
+    
+    (*
             pub const fn checked_shr(self, rhs: u32) -> Option<Self> {
                 // Not using overflowing_shr as that's a wrapping shift
                 if rhs < Self::BITS {
@@ -77914,6 +79267,54 @@ Module num.
     
     Axiom AssociatedFunction_unchecked_shr :
       M.IsAssociatedFunction Self "unchecked_shr" unchecked_shr.
+    
+    (*
+            pub const fn unbounded_shr(self, rhs: u32) -> $SelfT{
+                if rhs < Self::BITS {
+                    // SAFETY:
+                    // rhs is just checked to be in-range above
+                    unsafe { self.unchecked_shr(rhs) }
+                } else {
+                    0
+                }
+            }
+    *)
+    Definition unbounded_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; rhs ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let rhs := M.alloc (| rhs |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.lt (|
+                            M.read (| rhs |),
+                            M.read (| M.get_constant (| "core::num::BITS" |) |)
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (| Ty.path "usize", "unchecked_shr", [] |),
+                        [ M.read (| self |); M.read (| rhs |) ]
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_unbounded_shr :
+      M.IsAssociatedFunction Self "unbounded_shr" unbounded_shr.
     
     (*
             pub const fn checked_pow(self, mut exp: u32) -> Option<Self> {
@@ -80063,10 +81464,24 @@ Module num.
     
     (*
             pub const fn isqrt(self) -> Self {
-                match NonZero::new(self) {
-                    Some(x) => x.isqrt().get(),
-                    None => 0,
+                let result = crate::num::int_sqrt::$ActualT(self as $ActualT) as $SelfT;
+    
+                // Inform the optimizer what the range of outputs is. If testing
+                // `core` crashes with no panic message and a `num::int_sqrt::u*`
+                // test failed, it's because your edits caused these assertions or
+                // the assertions in `fn isqrt` of `nonzero.rs` to become false.
+                //
+                // SAFETY: Integer square root is a monotonically nondecreasing
+                // function, which means that increasing the input will never
+                // cause the output to decrease. Thus, since the input for unsigned
+                // integers is bounded by `[0, <$ActualT>::MAX]`, sqrt(n) will be
+                // bounded by `[sqrt(0), sqrt(<$ActualT>::MAX)]`.
+                unsafe {
+                    const MAX_RESULT: $SelfT = crate::num::int_sqrt::$ActualT(<$ActualT>::MAX) as $SelfT;
+                    crate::hint::assert_unchecked(result <= MAX_RESULT);
                 }
+    
+                result
             }
     *)
     Definition isqrt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -80075,55 +81490,29 @@ Module num.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           M.read (|
-            M.match_operator (|
+            let~ result :=
               M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                    "new",
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let x := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                          "get",
-                          []
-                        |),
-                        [
-                          M.call_closure (|
-                            M.get_associated_function (|
-                              Ty.apply
-                                (Ty.path "core::num::nonzero::NonZero")
-                                []
-                                [ Ty.path "usize" ],
-                              "isqrt",
-                              []
-                            |),
-                            [ M.read (| x |) ]
-                          |)
-                        ]
+                M.rust_cast
+                  (M.call_closure (|
+                    M.get_function (| "core::num::int_sqrt::u64", [] |),
+                    [ M.rust_cast (M.read (| self |)) ]
+                  |))
+              |) in
+            let~ _ :=
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (| "core::hint::assert_unchecked", [] |),
+                    [
+                      BinOp.le (|
+                        M.read (| result |),
+                        M.read (| M.get_constant (| "core::num::isqrt::MAX_RESULT" |) |)
                       |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
-              ]
-            |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |) in
+            result
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

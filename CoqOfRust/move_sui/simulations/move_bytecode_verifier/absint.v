@@ -37,6 +37,12 @@ Module FunctionContext.
     type_parameters : list AbilitySet.t;
     cfg : VMControlFlowGraph.t;
   }.
+End FunctionContext.
+
+Module Impl_FunctionContext.
+  Definition Self : Set := 
+    move_sui.simulations.move_bytecode_verifier.absint.FunctionContext.t.
+
   (* 
     pub fn new(
         module: &'a CompiledModule,
@@ -60,15 +66,31 @@ Module FunctionContext.
       (index : FunctionDefinitionIndex.t)
       (code : file_format.CodeUnit.t)
       (function_handle : FunctionHandle.t) :
-      t :=
+      Self :=
     let signature_at := CompiledModule.Impl_CompiledModule.signature_at in
+    let result : Self :=
     {|
-      index := Some index;
-      code := code;
-      parameters := signature_at module function_handle.(FunctionHandle.parameters);
-      return_ := signature_at module function_handle.(FunctionHandle.return_);
-      locals := signature_at module code.(file_format.CodeUnit.locals);
-      type_parameters := function_handle.(FunctionHandle.type_parameters);
-      cfg := control_flow_graph.Impl_VMControlFlowGraph.new code.(file_format.CodeUnit.code);
-    |}.
-End FunctionContext.
+      FunctionContext.index := Some index;
+      FunctionContext.code := code;
+      FunctionContext.parameters := signature_at module function_handle.(FunctionHandle.parameters);
+      FunctionContext.return_ := signature_at module function_handle.(FunctionHandle.return_);
+      FunctionContext.locals := signature_at module code.(file_format.CodeUnit.locals);
+      FunctionContext.type_parameters := function_handle.(FunctionHandle.type_parameters);
+      FunctionContext.cfg := control_flow_graph.Impl_VMControlFlowGraph.new code.(file_format.CodeUnit.code);
+    |} in
+    result.
+
+  Definition parameters (self : Self) := self.(FunctionContext.parameters).
+
+  Definition locals (self : Self) := self.(FunctionContext.locals).
+
+  Definition type_parameters (self : Self) := self.(FunctionContext.type_parameters).
+
+  Definition index (self : Self) := self.(FunctionContext.index).
+
+  Definition cfg (self : Self) := self.(FunctionContext.cfg).
+
+  Definition return_ (self : Self) := self.(FunctionContext.return_). 
+
+  Definition code (self : Self) := self.(FunctionContext.code).
+End Impl_FunctionContext.

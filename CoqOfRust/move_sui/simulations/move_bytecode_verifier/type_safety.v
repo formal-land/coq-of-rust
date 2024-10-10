@@ -143,16 +143,6 @@ Module TypeSafetyChecker.
     stack : AbstractStack.t SignatureToken.t;
   }.
 
-  Definition lens_self_meter_self : Lens.t (t * Meter.t) t := {|
-    Lens.read state := fst state;
-    Lens.write state self := (self, snd state);
-  |}.
-
-  Definition lens_self_meter_meter : Lens.t (t * Meter.t) Meter.t :={|
-    Lens.read state := snd state;
-    Lens.write state meter := (fst state, meter);
-  |}.
-
   Definition lens_self_stack : Lens.t t (AbstractStack.t SignatureToken.t) :={|
     Lens.read self := self.(TypeSafetyChecker.stack);
     Lens.write self stack := self <| TypeSafetyChecker.stack := stack |>;
@@ -197,7 +187,8 @@ Module TypeSafetyChecker.
       )
     }
     *)
-    Definition error (self : Self) (status : StatusCode.t) (offset : CodeOffset.t) : PartialVMError.t :=
+    Definition error (self : Self) (status : StatusCode.t) (offset : CodeOffset.t) :
+        PartialVMError.t :=
       let pvme := PartialVMError.Impl_PartialVMError.new status in
       let index := self.(function_context).(FunctionContext.index) in
       let index := match index with
@@ -220,11 +211,7 @@ Module TypeSafetyChecker.
           )
       }
     *)
-    Definition charge_ty_ (ty : SignatureToken.t) (n : Z) 
-      : MS? Meter.t (PartialVMResult.t unit) :=
-      letS? meter := readS? in
-      Meter.Impl_BoundMeter.add_items Scope.Function TYPE_NODE_COST $
-        Z.mul (SignatureToken.Impl_SignatureToken.preorder_traversal_count ty) n.
+    (* We do not implement this function as we ignore the metering *)
 
     (* 
       fn charge_ty(
@@ -235,9 +222,7 @@ Module TypeSafetyChecker.
           self.charge_ty_(meter, ty, 1)
       }
     *)
-    Definition charge_ty (ty : SignatureToken.t) : 
-      MS? Meter.t (PartialVMResult.t unit) :=
-      charge_ty_ ty 1.
+    (* We do not implement this function as we ignore the metering *)
 
     (* 
       fn charge_tys(
@@ -251,15 +236,9 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Fixpoint charge_tys (tys : list SignatureToken.t)
-    : MS? Meter.t (PartialVMResult.t unit) :=
-      match tys with
-      | ty :: tys => 
-        letS?? ty_result := charge_ty ty in charge_tys tys
-      | [] => returnS? $ Result.Ok tt
-      end.
+    (* We do not implement this function as we ignore the metering *)
 
-    (* 
+    (*
     fn push(
         &mut self,
         meter: &mut (impl Meter + ?Sized),
@@ -270,15 +249,12 @@ Module TypeSafetyChecker.
         Ok(())
     }
     *)
-    Definition push (ty : SignatureToken.t) : 
-      MS? (Self * Meter.t) (PartialVMResult.t unit) :=
-      letS?? result := liftS? lens_self_meter_meter $ charge_ty ty in
-      letS? result := liftS? lens_self_meter_self (
-        liftS? lens_self_stack $ AbstractStack.push ty) in
-      letS?? result  := safe_unwrap_err result in
+    Definition push (ty : SignatureToken.t) : MS? Self (PartialVMResult.t unit) :=
+      letS? result := liftS? lens_self_stack $ AbstractStack.push ty in
+      letS? result  := safe_unwrap_err result in
       returnS? $ Result.Ok tt.
 
-    (* 
+    (*
       fn push_n(
           &mut self,
           meter: &mut (impl Meter + ?Sized),
@@ -290,14 +266,12 @@ Module TypeSafetyChecker.
           Ok(())
       }
     *)
-    Definition push_n (ty : SignatureToken.t) (n : Z)
-      : MS? (Self * Meter.t) (PartialVMResult.t unit) :=
-      letS?? _ := liftS? lens_self_meter_meter $ charge_ty ty in
-      letS? result := liftS? lens_self_meter_self (
-        liftS? lens_self_stack $ AbstractStack.push_n ty n) in
-      letS?? result  := safe_unwrap_err result in
+    Definition push_n (ty : SignatureToken.t) (n : Z) :
+        MS? Self (PartialVMResult.t unit) :=
+      letS? result :=
+        liftS? lens_self_stack $ AbstractStack.push_n ty n in
+      letS?? result := safe_unwrap_err result in
       returnS? $ Result.Ok tt.
-
   End Impl_TypeSafetyChecker.
 End TypeSafetyChecker.
 
@@ -358,7 +332,8 @@ fn instantiate(token: &SignatureToken, subst: &Signature) -> SignatureToken {
     }
 }
 *)
-Fixpoint instantiate (token : SignatureToken.t) (subst: Signature.t) : SignatureToken.t :=
+Fixpoint instantiate (token : SignatureToken.t) (subst: Signature.t) :
+    SignatureToken.t :=
   let subst_0 := subst.(Signature.a0) in
   if 0 =? Z.of_nat $ List.length subst_0 
   then token
@@ -439,12 +414,15 @@ fn borrow_field(
     Ok(())
 }
 *)
-Definition borrow_field (offset : CodeOffset.t)
-  (mut_ : bool) (field_handle_index : FieldHandleIndex.t) (type_args : Signature.t)
-  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
-    letS? '(verifier, _) := readS? in
-    letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+Definition borrow_field
+    (offset : CodeOffset.t)
+    (mut_ : bool)
+    (field_handle_index : FieldHandleIndex.t)
+    (type_args : Signature.t) :
+    MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
+    letS? verifier := readS? in
+    letS? operand :=
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
     letS?? operand  := safe_unwrap_err operand in
     if andb mut_ (negb $ SignatureToken.Impl_SignatureToken
       .is_mutable_reference operand)
@@ -516,8 +494,8 @@ fn borrow_loc(
 }
 *)
 Definition borrow_loc (offset : CodeOffset.t) (mut_ : bool) (idx : LocalIndex.t)
-  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
-  letS? '(verifier, _) := readS? in
+  : MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
+  letS? verifier := readS? in
   let loc_signature := TypeSafetyChecker.Impl_TypeSafetyChecker.local_at verifier idx in
   if SignatureToken.Impl_SignatureToken.is_reference loc_signature
   then returnS? $ Result.Err $ 
@@ -560,12 +538,15 @@ fn borrow_global(
     Ok(())
 }
 *)
-Definition borrow_global (offset : CodeOffset.t) (mut_ : bool) (idx : StructDefinitionIndex.t) 
-  (type_args : Signature.t) 
-  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
-  letS? '(verifier, _) := readS? in
-  letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-    liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+Definition borrow_global
+    (offset : CodeOffset.t)
+    (mut_ : bool)
+    (idx : StructDefinitionIndex.t)
+    (type_args : Signature.t) :
+    MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
+  letS? verifier := readS? in
+  letS? operand :=
+    liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
   letS?? operand  := safe_unwrap_err operand in
   if negb $ SignatureToken.t_beq operand SignatureToken.Address
   then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -607,21 +588,22 @@ fn call(
     Ok(())
 }
 *)
-Definition call (offset : CodeOffset.t) (function_handle : FunctionHandle.t) 
-  (type_actuals : Signature.t) 
-  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
-  letS? '(verifier, _) := readS? in
+Definition call
+    (offset : CodeOffset.t)
+    (function_handle : FunctionHandle.t)
+    (type_actuals : Signature.t)
+    : MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
+  letS? verifier := readS? in
   let parameters := CompiledModule.Impl_CompiledModule.signature_at 
     verifier.(TypeSafetyChecker.module) function_handle.(FunctionHandle.parameters) in
   let parameters := List.rev parameters.(Signature.a0) in
   let fold :=
-  (fix fold (l : list SignatureToken.t) 
-    : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
+  (fix fold (l : list SignatureToken.t) : MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
     match l with
     | [] => returnS? $ Result.Ok tt
-    | parameter :: ls => 
-      letS? arg := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    | parameter :: ls =>
+      letS? arg :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? arg := safe_unwrap_err arg in
       if orb ((0 =? Z.of_nat $ List.length type_actuals.(Signature.a0)) 
         && (negb $ SignatureToken.t_beq arg parameter))
@@ -638,8 +620,7 @@ Definition call (offset : CodeOffset.t) (function_handle : FunctionHandle.t)
     verifier.(TypeSafetyChecker.module) function_handle.(FunctionHandle.return_) in
   let return_types := Signature.a0 return_types in
   let fold :=
-  (fix fold (l : list SignatureToken.t)
-    : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
+  (fix fold (l : list SignatureToken.t) : MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
     match l with
     | [] => returnS? $ Result.Ok tt
     | return_type :: ls =>
@@ -717,22 +698,23 @@ fn pack(
     Ok(())
 }
 *)
-Definition pack (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
-  (type_args : Signature.t) 
-  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
-  letS? '(verifier, _) := readS? in
+Definition pack
+    (offset : CodeOffset.t)
+    (struct_def : StructDefinition.t)
+    (type_args : Signature.t) :
+    MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
+  letS? verifier := readS? in
   let struct_type := materialize_type 
     struct_def.(StructDefinition.struct_handle) type_args in
   letS?? field_sig := returnS? $ type_fields_signature verifier offset struct_def type_args in
   let field_sig := List.rev field_sig.(Signature.a0) in
   let fold :=
-  (fix fold (l : list SignatureToken.t) 
-    : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
+  (fix fold (l : list SignatureToken.t)  : MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
     match l with
     | [] => returnS? $ Result.Ok tt
     | sig :: ls =>
-      letS? arg := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? arg :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? arg := safe_unwrap_err arg in
       if negb $ SignatureToken.t_beq arg sig
       then returnS? $ Result.Err $
@@ -769,11 +751,11 @@ fn unpack(
 *)
 Definition unpack (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
   (type_args : Signature.t) 
-  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
-    letS? '(verifier, meter) := readS? in
+  : MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
+    letS? verifier := readS? in
     let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
-    letS? arg := liftS? TypeSafetyChecker.lens_self_meter_self (
-            liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? arg :=
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
     letS?? arg := safe_unwrap_err arg in
     if negb $ SignatureToken.t_beq arg struct_type
       then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -783,7 +765,7 @@ Definition unpack (offset : CodeOffset.t) (struct_def : StructDefinition.t)
         let field_sig := field_sig.(Signature.a0) in
         let fold :=
           (fix fold (l : list SignatureToken.t) 
-            : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
+            : MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
             match l with
             | [] => returnS? $ Result.Ok tt
             | sig :: ls => letS?? result := TypeSafetyChecker.Impl_TypeSafetyChecker.push sig 
@@ -822,8 +804,8 @@ fn exists(
 *)
 Definition _exists (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
   (type_args : Signature.t) 
-  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
-  letS? '(verifier, _) := readS? in
+  : MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
+  letS? verifier := readS? in
   let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
   letS?? abilities := returnS? $ TypeSafetyChecker.Impl_TypeSafetyChecker
     .abilities verifier struct_type in
@@ -831,8 +813,8 @@ Definition _exists (offset : CodeOffset.t) (struct_def : StructDefinition.t)
   then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
     .error verifier (StatusCode.EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT) offset
   else
-    letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? operand :=
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
     letS?? operand := safe_unwrap_err operand in
     if negb $ SignatureToken.t_beq operand SignatureToken.Address
     then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -862,13 +844,15 @@ fn move_from(
     Ok(())
 }
 *)
-Definition move_from (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
-  (type_args : Signature.t)
-  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
-  letS? '(verifier, _) := readS? in
+Definition move_from
+    (offset : CodeOffset.t)
+    (struct_def : StructDefinition.t) 
+    (type_args : Signature.t)
+    : MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
+  letS? verifier := readS? in
   let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
-  letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-    liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+  letS? operand :=
+    liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
   letS?? operand := safe_unwrap_err operand in
   if negb $ SignatureToken.t_beq operand SignatureToken.Address
   then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -903,10 +887,12 @@ fn move_to(
     }
 }
 *)
-Definition move_to (offset : CodeOffset.t) (struct_def : StructDefinition.t) 
-  (type_args : Signature.t) 
-  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
-  letS? '(verifier, _) := readS? in
+Definition move_to
+    (offset : CodeOffset.t)
+    (struct_def : StructDefinition.t) 
+    (type_args : Signature.t) :
+    MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
+  letS? verifier := readS? in
   let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
   letS?? abilities := returnS? $ TypeSafetyChecker.Impl_TypeSafetyChecker.abilities verifier struct_type in
   if negb $ AbilitySet.Impl_AbilitySet.has_key abilities
@@ -914,11 +900,11 @@ Definition move_to (offset : CodeOffset.t) (struct_def : StructDefinition.t)
     .error verifier StatusCode.MOVETO_WITHOUT_KEY_ABILITY offset
   else 
     let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
-    letS? key_struct_operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? key_struct_operand :=
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
     letS?? key_struct_operand := safe_unwrap_err key_struct_operand in
-    letS? signer_reference_operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+    letS? signer_reference_operand :=
+      liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
     letS?? signer_reference_operand := safe_unwrap_err signer_reference_operand in
     if negb $ SignatureToken.t_beq key_struct_operand struct_type
     then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -1015,13 +1001,13 @@ fn borrow_vector_element(
 *)
 Definition borrow_vector_element (declared_element_type : SignatureToken.t) 
   (offset : CodeOffset.t) (mut_ref_only : bool)
-  : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
-  letS? '(verifier, _) := readS? in
-  letS? operand_idx := liftS? TypeSafetyChecker.lens_self_meter_self (
-    liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+  : MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
+  letS? verifier := readS? in
+  letS? operand_idx :=
+    liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
   letS?? operand_idx := safe_unwrap_err operand_idx in
-  letS? operand_vec := liftS? TypeSafetyChecker.lens_self_meter_self (
-    liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+  letS? operand_vec :=
+    liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
   letS?? operand_vec := safe_unwrap_err operand_vec in
   if negb $ SignatureToken.t_beq operand_idx SignatureToken.U64
   then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -1052,33 +1038,19 @@ fn verify_instr(
     Ok(())
 }
 *)
-Definition debug_verify_instr (bytecode : Bytecode.t) 
-(offset : CodeOffset.t) : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
-letS? '(verifier, _) := readS? in
-match bytecode with
-(* NOTE: This is a function that is intended to test the cases for `verify_instr`
-    for better debugging experience. When you need to debug a case just
-    fill it here. THIS FUNCTION SHOULD BE DELETED ONLY AFTER ALL FUNCTIONS ARE
-    IMPLEMENTED IN THE NEW MONAD *)
-
-
-
-  (* END OF DEBUG SECTION *)
-  | _ => returnS? $ Result.Ok tt
-end.
-
 (* NOTE:
 - `CompiledModule.abilities` uses `file_format.PartialVMError` which is not
   `PartialVMError`. For places with these types of error, we cannot use `letS??`
   to propagate the error.
 *)
-Definition verify_instr (bytecode : Bytecode.t) 
-  (offset : CodeOffset.t) :
-  MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
+Definition verify_instr
+    (bytecode : Bytecode.t) 
+    (offset : CodeOffset.t) :
+    MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
   (* NOTE: Here we directly return the `match` clause since every cases return
     a `Result` value. In original code, these cases either `()`s or `Err`s,
     eventually return `Ok` after everything has been checked. *)
-    letS? '(verifier, _) := readS? in
+    letS? verifier := readS? in
     match bytecode with
     (* 
     Bytecode::Pop => {
@@ -1092,8 +1064,8 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.Pop => 
-        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand :=
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
         letS?? operand := safe_unwrap_err operand in
         let abilities := CompiledModule.Impl_CompiledModule
           .abilities verifier.(TypeSafetyChecker.module) operand
@@ -1116,8 +1088,8 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.BrTrue idx | Bytecode.BrFalse idx => 
-        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand :=
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
         letS?? operand := safe_unwrap_err operand in
         if negb $ SignatureToken.t_beq operand SignatureToken.Bool
         then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -1133,8 +1105,8 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.StLoc idx => 
-        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand :=
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
         letS?? operand := safe_unwrap_err operand in
         if negb $ SignatureToken.t_beq operand $ TypeSafetyChecker.Impl_TypeSafetyChecker
           .local_at verifier (LocalIndex.Build_t idx)
@@ -1151,8 +1123,8 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.Abort => 
-        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand :=
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
         letS?? operand := safe_unwrap_err operand in
         if negb $ SignatureToken.t_beq operand SignatureToken.U64
         then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -1176,13 +1148,12 @@ Definition verify_instr (bytecode : Bytecode.t)
         .(FunctionContext.return_).(Signature.a0) in
       let return_ := List.rev return_ in
       let fold :=
-      (fix fold (l : list SignatureToken.t) 
-        : MS? (TypeSafetyChecker.t * Meter.t) (PartialVMResult.t unit) :=
+      (fix fold (l : list SignatureToken.t) : MS? TypeSafetyChecker.t (PartialVMResult.t unit) :=
         match l with
         | [] => returnS? $ Result.Ok tt
         | return_type ::ls =>
-          letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-            liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+          letS? operand :=
+            liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
           letS?? operand := safe_unwrap_err operand in
           if negb $ SignatureToken.t_beq operand return_type
           then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -1205,8 +1176,8 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.FreezeRef => 
-        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand :=
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
         letS?? operand := safe_unwrap_err operand in
         match operand with
         | SignatureToken.MutableReference inner =>
@@ -1243,10 +1214,7 @@ Definition verify_instr (bytecode : Bytecode.t)
       let type_parameters := field_inst.(FieldInstantiation.type_parameters) in
       let type_inst := CompiledModule.Impl_CompiledModule.signature_at
         verifier.(TypeSafetyChecker.module) type_parameters in
-      letS?? result := liftS? TypeSafetyChecker.lens_self_meter_meter $
-        TypeSafetyChecker.Impl_TypeSafetyChecker.charge_tys type_inst.(Signature.a0)
-      in
-        borrow_field offset true field_inst.(FieldInstantiation.handle) type_inst
+      borrow_field offset true field_inst.(FieldInstantiation.handle) type_inst
 
     (* 
     Bytecode::ImmBorrowField(field_handle_index) => borrow_field(
@@ -1275,8 +1243,6 @@ Definition verify_instr (bytecode : Bytecode.t)
       let type_parameters := field_inst.(FieldInstantiation.type_parameters) in
       let type_inst := CompiledModule.Impl_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) type_parameters in
-      letS?? result := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
-        TypeSafetyChecker.Impl_TypeSafetyChecker.charge_tys type_inst.(Signature.a0) in
       borrow_field offset false 
         field_inst.(FieldInstantiation.handle) type_inst
 
@@ -1410,8 +1376,6 @@ Definition verify_instr (bytecode : Bytecode.t)
       let type_args := CompiledModule.Impl_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           func_inst.(FunctionInstantiation.type_parameters) in
-      letS?? result := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
-        TypeSafetyChecker.Impl_TypeSafetyChecker.charge_tys type_args.(Signature.a0) in
       call offset func_handle type_args
 
     (* 
@@ -1448,8 +1412,6 @@ Definition verify_instr (bytecode : Bytecode.t)
         .struct_def_at module struct_inst.(StructDefInstantiation.def) in
       let type_args := CompiledModule.Impl_CompiledModule
         .signature_at module struct_inst.(StructDefInstantiation.type_parameters) in
-      letS?? result := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
-        TypeSafetyChecker.Impl_TypeSafetyChecker.charge_tys type_args.(Signature.a0) in
       pack offset struct_def type_args
 
     (* 
@@ -1486,9 +1448,7 @@ Definition verify_instr (bytecode : Bytecode.t)
       let type_args := CompiledModule.Impl_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.type_parameters) in
-      letS?? _ := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
-        TypeSafetyChecker.Impl_TypeSafetyChecker.charge_tys type_args.(Signature.a0) in
-        unpack offset struct_def type_args
+      unpack offset struct_def type_args
 
     (* 
     Bytecode::ReadRef => {
@@ -1507,8 +1467,8 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.ReadRef => 
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand := safe_unwrap_err operand in
       match operand with
       | SignatureToken.Reference inner =>
@@ -1552,11 +1512,11 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.WriteRef => 
-      letS? ref_operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? ref_operand :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? ref_operand := safe_unwrap_err ref_operand in
-      letS? val_operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? val_operand :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? val_operand := safe_unwrap_err val_operand in
       (* NOTE: This pattern for `ref_inner_signature` is quite different. Maybe 
           useful in future `bind` constructions *)
@@ -1599,24 +1559,24 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.CastU8 => 
-        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand :=
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
         letS?? operand := safe_unwrap_err operand in
         if negb $ SignatureToken.Impl_SignatureToken.is_integer operand
         then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
         else TypeSafetyChecker.Impl_TypeSafetyChecker.push SignatureToken.U8
     | Bytecode.CastU64 => 
-        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand :=
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
         letS?? operand := safe_unwrap_err operand in
         if negb $ SignatureToken.Impl_SignatureToken.is_integer operand
         then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
           .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
         else TypeSafetyChecker.Impl_TypeSafetyChecker.push SignatureToken.U64
     | Bytecode.CastU128 => 
-        letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+        letS? operand :=
+          liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
         letS?? operand := safe_unwrap_err operand in
         if negb $ SignatureToken.Impl_SignatureToken.is_integer operand
         then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -1643,11 +1603,11 @@ Definition verify_instr (bytecode : Bytecode.t)
     *)
     | Bytecode.Add | Bytecode.Sub | Bytecode.Mul | Bytecode.Mod 
     | Bytecode.Div | Bytecode.BitOr | Bytecode.BitAnd | Bytecode.Xor => 
-      letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand1 :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand1 := safe_unwrap_err operand1 in
-      letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand2 :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand2 := safe_unwrap_err operand2 in
       if andb
           (SignatureToken.Impl_SignatureToken.is_integer operand1)
@@ -1669,11 +1629,11 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.Shl | Bytecode.Shr => 
-      letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand1 :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand1 := safe_unwrap_err operand1 in
-      letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand2 :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand2 := safe_unwrap_err operand2 in
       if andb
           (SignatureToken.Impl_SignatureToken.is_integer operand2)
@@ -1695,11 +1655,11 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.Or | Bytecode.And =>
-      letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand1 :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand1 := safe_unwrap_err operand1 in
-      letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand2 :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand2 := safe_unwrap_err operand2 in
       if andb (SignatureToken.t_beq operand1 SignatureToken.Bool)
         (SignatureToken.t_beq operand1 SignatureToken.Bool)
@@ -1719,8 +1679,8 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.Not => 
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand := safe_unwrap_err operand in
       if SignatureToken.t_beq operand SignatureToken.Bool
       then TypeSafetyChecker.Impl_TypeSafetyChecker.push SignatureToken.Bool
@@ -1740,11 +1700,11 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.Eq | Bytecode.Neq => 
-      letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand1 :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand1 := safe_unwrap_err operand1 in
-      letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand2 :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand2 := safe_unwrap_err operand2 in
       let abilities := TypeSafetyChecker.Impl_TypeSafetyChecker.abilities 
         verifier operand1 in
@@ -1769,11 +1729,11 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.Lt | Bytecode.Gt | Bytecode.Le | Bytecode.Ge => 
-      letS? operand1 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand1 :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand1 := safe_unwrap_err operand1 in
-      letS? operand2 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand2 :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand2 := safe_unwrap_err operand2 in
       if andb 
           (SignatureToken.Impl_SignatureToken.is_integer operand1)
@@ -1804,8 +1764,6 @@ Definition verify_instr (bytecode : Bytecode.t)
       let type_inst := CompiledModule.Impl_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.type_parameters) in
-      letS?? _ := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
-        TypeSafetyChecker.Impl_TypeSafetyChecker.charge_tys type_inst.(Signature.a0) in
       borrow_global offset true struct_inst.(StructDefInstantiation.def) type_inst
 
     (* 
@@ -1829,9 +1787,6 @@ Definition verify_instr (bytecode : Bytecode.t)
       let type_inst := CompiledModule.Impl_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.type_parameters) in
-      letS?? _ := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
-        TypeSafetyChecker.Impl_TypeSafetyChecker
-          .charge_tys type_inst.(Signature.a0) in
       borrow_global offset false struct_inst.(StructDefInstantiation.def) type_inst
     
     (* 
@@ -1863,8 +1818,6 @@ Definition verify_instr (bytecode : Bytecode.t)
       let type_args := CompiledModule.Impl_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.type_parameters) in
-      letS?? _ := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
-        TypeSafetyChecker.Impl_TypeSafetyChecker.charge_tys type_args.(Signature.a0) in
       _exists offset struct_def type_args
 
     (* 
@@ -1896,8 +1849,6 @@ Definition verify_instr (bytecode : Bytecode.t)
     let type_args := CompiledModule.Impl_CompiledModule
       .signature_at verifier.(TypeSafetyChecker.module) 
         struct_inst.(StructDefInstantiation.type_parameters) in
-    letS?? _ := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
-      TypeSafetyChecker.Impl_TypeSafetyChecker.charge_tys type_args.(Signature.a0) in
     move_from offset struct_def type_args
 
     (* 
@@ -1929,8 +1880,6 @@ Definition verify_instr (bytecode : Bytecode.t)
       let type_args := CompiledModule.Impl_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.type_parameters) in
-      letS?? _ := liftS? TypeSafetyChecker.lens_self_meter_meter $ 
-        TypeSafetyChecker.Impl_TypeSafetyChecker.charge_tys type_args.(Signature.a0) in
       move_to offset struct_def type_args
 
     (* 
@@ -1958,9 +1907,9 @@ Definition verify_instr (bytecode : Bytecode.t)
       letS?? _ := if num >? 0
         then 
           let num_to_pop := num in
-          letS? is_mismatched := liftS? TypeSafetyChecker.lens_self_meter_self (
-            liftS? TypeSafetyChecker.lens_self_stack $ 
-              AbstractStack.pop_eq_n num_to_pop) in
+          letS? is_mismatched :=
+            liftS? TypeSafetyChecker.lens_self_stack $
+              AbstractStack.pop_eq_n num_to_pop in
           let is_mismatched := match is_mismatched with
           | Result.Err _ => true
           | Result.Ok x => SignatureToken.t_beq x element_type
@@ -1986,8 +1935,8 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.VecLen idx => 
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand := safe_unwrap_err operand in
       let declared_element_type := CompiledModule.Impl_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) idx in
@@ -2010,11 +1959,11 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_vector_element(verifier, meter, declared_element_type, offset, false)?
     }
     *)
-    | Bytecode.VecImmBorrow idx => 
+    | Bytecode.VecImmBorrow idx =>
       let declared_element_type := CompiledModule.Impl_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) idx in
-      let declared_element_type := 
-        List.nth 0 declared_element_type.(Signature.a0) 
+      let declared_element_type :=
+        List.nth 0 declared_element_type.(Signature.a0)
           SignatureToken.Bool (* We should never reach here *) in
       borrow_vector_element declared_element_type offset false
 
@@ -2024,11 +1973,11 @@ Definition verify_instr (bytecode : Bytecode.t)
         borrow_vector_element(verifier, meter, declared_element_type, offset, true)?
     }
     *)
-    | Bytecode.VecMutBorrow idx =>       
+    | Bytecode.VecMutBorrow idx =>
       let declared_element_type := CompiledModule.Impl_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) idx in
-      let declared_element_type := 
-        List.nth 0 declared_element_type.(Signature.a0) 
+      let declared_element_type :=
+        List.nth 0 declared_element_type.(Signature.a0)
           SignatureToken.Bool (* We should never reach here *) in
       borrow_vector_element declared_element_type offset true
 
@@ -2047,11 +1996,11 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.VecPushBack idx => 
-      letS? operand_elem := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_elem :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand_elem := safe_unwrap_err operand_elem in
-      letS? operand_vec := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_vec :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand_vec := safe_unwrap_err operand_vec in
       let declared_element_type := CompiledModule
         .Impl_CompiledModule
@@ -2081,8 +2030,8 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.VecPopBack idx => 
-      letS? operand_vec := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_vec :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand_vec := safe_unwrap_err operand_vec in
       let declared_element_type := CompiledModule.Impl_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) idx in
@@ -2109,8 +2058,8 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.VecUnpack idx num => 
-      letS? operand_vec := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_vec :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand_vec := safe_unwrap_err operand_vec in
       let declared_element_type := CompiledModule.Impl_CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) idx in
@@ -2139,14 +2088,14 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.VecSwap idx => 
-      letS? operand_idx2 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_idx2 :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand_idx2 := safe_unwrap_err operand_idx2 in
-      letS? operand_idx1 := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_idx1 :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand_idx1 := safe_unwrap_err operand_idx1 in
-      letS? operand_vec := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand_vec :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand_vec := safe_unwrap_err operand_vec in
       if andb 
         (negb $ SignatureToken.t_beq operand_idx1 SignatureToken.U64)
@@ -2193,24 +2142,24 @@ Definition verify_instr (bytecode : Bytecode.t)
     }
     *)
     | Bytecode.CastU16 => 
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand := safe_unwrap_err operand in
       if negb $ SignatureToken.Impl_SignatureToken.is_integer operand
       then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
         .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
       else TypeSafetyChecker.Impl_TypeSafetyChecker.push SignatureToken.U16
     | Bytecode.CastU32 => 
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand := safe_unwrap_err operand in
       if negb $ SignatureToken.Impl_SignatureToken.is_integer operand
       then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
         .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
       else TypeSafetyChecker.Impl_TypeSafetyChecker.push SignatureToken.U32
     | Bytecode.CastU256 => 
-      letS? operand := liftS? TypeSafetyChecker.lens_self_meter_self (
-        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop) in
+      letS? operand :=
+        liftS? TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS?? operand := safe_unwrap_err operand in
       if negb $ SignatureToken.Impl_SignatureToken.is_integer operand
       then returnS? $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -2239,23 +2188,25 @@ pub(crate) fn verify<'a>(
 Definition verify
     (module : CompiledModule.t)
     (function_context : FunctionContext.t) :
-    MS? Meter.t (PartialVMResult.t unit) :=
+    M!? (PartialVMResult.t unit) :=
   let verifier := TypeSafetyChecker.Impl_TypeSafetyChecker.new module function_context in
   let cfg := function_context.(FunctionContext.cfg) in
-  letS? _ :=
-    borrowS? (fun meter => (verifier, meter)) (fun '(verifier, meter) => (meter, verifier)) (
-      foldS? (Result.Ok tt) (control_flow_graph.Impl_VMControlFlowGraph.blocks cfg) (fun _ block_id =>
-        foldS? (Result.Ok tt) (control_flow_graph.Impl_VMControlFlowGraph.instr_indexes cfg block_id) (fun _ offset =>
-          let instr :=
-            List.nth
-              (Z.to_nat offset)
-              verifier
-                .(TypeSafetyChecker.function_context)
-                .(FunctionContext.code)
-                .(file_format.CodeUnit.code)
-              Bytecode.Nop in
-          verify_instr instr offset
-        )
+  let '(output, _) :=
+    foldS? (Result.Ok tt) (control_flow_graph.Impl_VMControlFlowGraph.blocks cfg) (fun _ block_id =>
+      foldS? (Result.Ok tt) (control_flow_graph.Impl_VMControlFlowGraph.instr_indexes cfg block_id) (fun _ offset =>
+        let instr :=
+          List.nth
+            (Z.to_nat offset)
+            verifier
+              .(TypeSafetyChecker.function_context)
+              .(FunctionContext.code)
+              .(file_format.CodeUnit.code)
+            Bytecode.Nop in
+        verify_instr instr offset
       )
-    ) in
-  returnS? (Result.Ok tt).
+    )
+    verifier in
+  match output with
+  | Panic.Panic error => panic!? error
+  | Panic.Value value => return!? value
+  end.

@@ -222,9 +222,13 @@ Module slice.
         M.IsAssociatedFunction Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
       
       (*
-          pub fn make_ascii_uppercase(&mut self) {
-              for byte in self {
+          pub const fn make_ascii_uppercase(&mut self) {
+              // FIXME(const-hack): We would like to simply iterate using `for` loops but this isn't currently allowed in constant expressions.
+              let mut i = 0;
+              while i < self.len() {
+                  let byte = &mut self[i];
                   byte.make_ascii_uppercase();
+                  i += 1;
               }
           }
       *)
@@ -234,81 +238,65 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.use
-                (M.match_operator (|
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::IntoIterator",
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                        [],
-                        "into_iter",
-                        []
-                      |),
-                      [ M.read (| self |) ]
-                    |)
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
-                        M.loop (|
-                          ltac:(M.monadic
-                            (let~ _ :=
-                              M.match_operator (|
-                                M.alloc (|
+              let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+              M.loop (|
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                BinOp.lt (|
+                                  M.read (| i |),
                                   M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "core::slice::iter::IterMut")
-                                        []
-                                        [ Ty.path "u8" ],
-                                      [],
-                                      "next",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      "len",
                                       []
                                     |),
-                                    [ iter ]
+                                    [ M.read (| self |) ]
                                   |)
+                                |)
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ byte :=
+                            M.alloc (| M.SubPointer.get_array_field (| M.read (| self |), i |) |) in
+                          let~ _ :=
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "u8",
+                                  "make_ascii_uppercase",
+                                  []
                                 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let _ :=
-                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                      M.alloc (|
-                                        M.never_to_any (| M.read (| M.break (||) |) |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::option::Option::Some",
-                                          0
-                                        |) in
-                                      let byte := M.copy (| γ0_0 |) in
-                                      let~ _ :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "u8",
-                                              "make_ascii_uppercase",
-                                              []
-                                            |),
-                                            [ M.read (| byte |) ]
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            M.alloc (| Value.Tuple [] |)))
-                        |)))
-                  ]
-                |))
+                                [ M.read (| byte |) ]
+                              |)
+                            |) in
+                          let~ _ :=
+                            let β := i in
+                            M.write (|
+                              β,
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                let~ _ :=
+                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
+                                M.alloc (| Value.Tuple [] |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -317,9 +305,13 @@ Module slice.
         M.IsAssociatedFunction Self "make_ascii_uppercase" make_ascii_uppercase.
       
       (*
-          pub fn make_ascii_lowercase(&mut self) {
-              for byte in self {
+          pub const fn make_ascii_lowercase(&mut self) {
+              // FIXME(const-hack): We would like to simply iterate using `for` loops but this isn't currently allowed in constant expressions.
+              let mut i = 0;
+              while i < self.len() {
+                  let byte = &mut self[i];
                   byte.make_ascii_lowercase();
+                  i += 1;
               }
           }
       *)
@@ -329,81 +321,65 @@ Module slice.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              M.use
-                (M.match_operator (|
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::IntoIterator",
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                        [],
-                        "into_iter",
-                        []
-                      |),
-                      [ M.read (| self |) ]
-                    |)
-                  |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let iter := M.copy (| γ |) in
-                        M.loop (|
-                          ltac:(M.monadic
-                            (let~ _ :=
-                              M.match_operator (|
-                                M.alloc (|
+              let~ i := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+              M.loop (|
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                BinOp.lt (|
+                                  M.read (| i |),
                                   M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::iter::traits::iterator::Iterator",
-                                      Ty.apply
-                                        (Ty.path "core::slice::iter::IterMut")
-                                        []
-                                        [ Ty.path "u8" ],
-                                      [],
-                                      "next",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      "len",
                                       []
                                     |),
-                                    [ iter ]
+                                    [ M.read (| self |) ]
                                   |)
+                                |)
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ byte :=
+                            M.alloc (| M.SubPointer.get_array_field (| M.read (| self |), i |) |) in
+                          let~ _ :=
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "u8",
+                                  "make_ascii_lowercase",
+                                  []
                                 |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let _ :=
-                                        M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                      M.alloc (|
-                                        M.never_to_any (| M.read (| M.break (||) |) |)
-                                      |)));
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ0_0 :=
-                                        M.SubPointer.get_struct_tuple_field (|
-                                          γ,
-                                          "core::option::Option::Some",
-                                          0
-                                        |) in
-                                      let byte := M.copy (| γ0_0 |) in
-                                      let~ _ :=
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            M.get_associated_function (|
-                                              Ty.path "u8",
-                                              "make_ascii_lowercase",
-                                              []
-                                            |),
-                                            [ M.read (| byte |) ]
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            M.alloc (| Value.Tuple [] |)))
-                        |)))
-                  ]
-                |))
+                                [ M.read (| byte |) ]
+                              |)
+                            |) in
+                          let~ _ :=
+                            let β := i in
+                            M.write (|
+                              β,
+                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                let~ _ :=
+                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
+                                M.alloc (| Value.Tuple [] |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)))
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

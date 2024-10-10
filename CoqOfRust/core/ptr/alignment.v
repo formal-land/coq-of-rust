@@ -276,7 +276,6 @@ Module ptr.
       
       (*
           pub const unsafe fn new_unchecked(align: usize) -> Self {
-              #[cfg(debug_assertions)]
               assert_unsafe_precondition!(
                   check_language_ub,
                   "Alignment::new_unchecked requires a power of two",
@@ -456,6 +455,56 @@ Module ptr.
         end.
       
       Axiom AssociatedFunction_mask : M.IsAssociatedFunction Self "mask" mask.
+      
+      (*
+          pub(crate) const fn max(a: Self, b: Self) -> Self {
+              if a.as_usize() > b.as_usize() { a } else { b }
+          }
+      *)
+      Definition max (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ a; b ] =>
+          ltac:(M.monadic
+            (let a := M.alloc (| a |) in
+            let b := M.alloc (| b |) in
+            M.read (|
+              M.match_operator (|
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            BinOp.gt (|
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::ptr::alignment::Alignment",
+                                  "as_usize",
+                                  []
+                                |),
+                                [ M.read (| a |) ]
+                              |),
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.path "core::ptr::alignment::Alignment",
+                                  "as_usize",
+                                  []
+                                |),
+                                [ M.read (| b |) ]
+                              |)
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      a));
+                  fun γ => ltac:(M.monadic b)
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_max : M.IsAssociatedFunction Self "max" max.
     End Impl_core_ptr_alignment_Alignment.
     
     Module Impl_core_fmt_Debug_for_core_ptr_alignment_Alignment.

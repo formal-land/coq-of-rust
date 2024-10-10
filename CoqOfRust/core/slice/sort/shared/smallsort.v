@@ -2294,7 +2294,7 @@ Module slice.
             small_sort_network.
         
         (*
-        pub unsafe fn swap_if_less<T, F>(v_base: *mut T, a_pos: usize, b_pos: usize, is_less: &mut F)
+        unsafe fn swap_if_less<T, F>(v_base: *mut T, a_pos: usize, b_pos: usize, is_less: &mut F)
         where
             F: FnMut(&T, &T) -> bool,
         {

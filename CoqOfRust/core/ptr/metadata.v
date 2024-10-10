@@ -152,7 +152,7 @@ Module ptr.
               // Consider a reference like `&(i32, dyn Send)`: the vtable will only store the size of the
               // `Send` part!
               // SAFETY: DynMetadata always contains a valid vtable pointer
-              return unsafe { crate::intrinsics::vtable_size(self.vtable_ptr() as *const ()) };
+              unsafe { crate::intrinsics::vtable_size(self.vtable_ptr() as *const ()) }
           }
       *)
       Definition size_of (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -161,28 +161,19 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (|
-              ltac:(M.monadic
-                (M.never_to_any (|
-                  M.read (|
-                    M.return_ (|
-                      M.call_closure (|
-                        M.get_function (| "core::intrinsics::vtable_size", [] |),
-                        [
-                          M.rust_cast
-                            (M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
-                                "vtable_ptr",
-                                []
-                              |),
-                              [ M.read (| self |) ]
-                            |))
-                        ]
-                      |)
-                    |)
-                  |)
-                |)))
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::vtable_size", [] |),
+              [
+                M.rust_cast
+                  (M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                      "vtable_ptr",
+                      []
+                    |),
+                    [ M.read (| self |) ]
+                  |))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -194,7 +185,7 @@ Module ptr.
       (*
           pub fn align_of(self) -> usize {
               // SAFETY: DynMetadata always contains a valid vtable pointer
-              return unsafe { crate::intrinsics::vtable_align(self.vtable_ptr() as *const ()) };
+              unsafe { crate::intrinsics::vtable_align(self.vtable_ptr() as *const ()) }
           }
       *)
       Definition align_of (Dyn : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -203,28 +194,19 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.catch_return (|
-              ltac:(M.monadic
-                (M.never_to_any (|
-                  M.read (|
-                    M.return_ (|
-                      M.call_closure (|
-                        M.get_function (| "core::intrinsics::vtable_align", [] |),
-                        [
-                          M.rust_cast
-                            (M.call_closure (|
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
-                                "vtable_ptr",
-                                []
-                              |),
-                              [ M.read (| self |) ]
-                            |))
-                        ]
-                      |)
-                    |)
-                  |)
-                |)))
+            M.call_closure (|
+              M.get_function (| "core::intrinsics::vtable_align", [] |),
+              [
+                M.rust_cast
+                  (M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ],
+                      "vtable_ptr",
+                      []
+                    |),
+                    [ M.read (| self |) ]
+                  |))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

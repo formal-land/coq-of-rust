@@ -64,7 +64,7 @@ Module vec.
                       if has_advanced {
                           ptr::copy(it.ptr.as_ptr(), it.buf.as_ptr(), it.len());
                       }
-                      return Vec::from_nonnull(it.buf, it.len(), it.cap);
+                      return Vec::from_parts(it.buf, it.len(), it.cap);
                   }
               }
       
@@ -329,7 +329,7 @@ Module vec.
                                           (Ty.path "alloc::vec::Vec")
                                           []
                                           [ T; Ty.path "alloc::alloc::Global" ],
-                                        "from_nonnull",
+                                        "from_parts",
                                         []
                                       |),
                                       [

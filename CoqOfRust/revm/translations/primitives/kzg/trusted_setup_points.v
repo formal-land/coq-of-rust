@@ -21,7 +21,7 @@ Module kzg.
               [
                 M.unevaluated_const
                   (M.get_constant (|
-                    "revm_primitives::kzg::trusted_setup_points::G1Points::0_discriminant"
+                    "revm_primitives::kzg::trusted_setup_points::G1Points_discriminant"
                   |))
               ]
               [
@@ -30,7 +30,7 @@ Module kzg.
                   [
                     M.unevaluated_const
                       (M.get_constant (|
-                        "revm_primitives::kzg::trusted_setup_points::G1Points::0_discriminant"
+                        "revm_primitives::kzg::trusted_setup_points::G1Points_discriminant"
                       |))
                   ]
                   [ Ty.path "u8" ]
@@ -402,7 +402,7 @@ Module kzg.
               [
                 M.unevaluated_const
                   (M.get_constant (|
-                    "revm_primitives::kzg::trusted_setup_points::G2Points::0_discriminant"
+                    "revm_primitives::kzg::trusted_setup_points::G2Points_discriminant"
                   |))
               ]
               [
@@ -411,7 +411,7 @@ Module kzg.
                   [
                     M.unevaluated_const
                       (M.get_constant (|
-                        "revm_primitives::kzg::trusted_setup_points::G2Points::0_discriminant"
+                        "revm_primitives::kzg::trusted_setup_points::G2Points_discriminant"
                       |))
                   ]
                   [ Ty.path "u8" ]

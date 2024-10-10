@@ -23,10 +23,7 @@ Module slice.
                 // If too many bad pivot choices were made, simply fall back to heapsort in order to
                 // guarantee `O(N x log(N))` worst-case.
                 if limit == 0 {
-                    // SAFETY: We assume the `small_sort` threshold is at least 1.
-                    unsafe {
-                        crate::slice::sort::unstable::heapsort::heapsort(v, is_less);
-                    }
+                    heapsort::heapsort(v, is_less);
                     return;
                 }
         
@@ -166,17 +163,15 @@ Module slice.
                                       M.never_to_any (|
                                         M.read (|
                                           let~ _ :=
-                                            let~ _ :=
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  M.get_function (|
-                                                    "core::slice::sort::unstable::heapsort::heapsort",
-                                                    [ T; F ]
-                                                  |),
-                                                  [ M.read (| v |); M.read (| is_less |) ]
-                                                |)
-                                              |) in
-                                            M.alloc (| Value.Tuple [] |) in
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                M.get_function (|
+                                                  "core::slice::sort::unstable::heapsort::heapsort",
+                                                  [ T; F ]
+                                                |),
+                                                [ M.read (| v |); M.read (| is_less |) ]
+                                              |)
+                                            |) in
                                           M.return_ (| Value.Tuple [] |)
                                         |)
                                       |)
@@ -535,13 +530,15 @@ Module slice.
                 return 0;
             }
         
-            // Allows for panic-free code-gen by proving this property to the compiler.
             if pivot >= len {
                 intrinsics::abort();
             }
         
-            // Place the pivot at the beginning of slice.
-            v.swap(0, pivot);
+            // SAFETY: We checked that `pivot` is in-bounds.
+            unsafe {
+                // Place the pivot at the beginning of slice.
+                v.swap_unchecked(0, pivot);
+            }
             let (pivot, v_without_pivot) = v.split_at_mut(1);
         
             // Assuming that Rust generates noalias LLVM IR we can be sure that a partition function
@@ -555,8 +552,15 @@ Module slice.
             // compile-time by only instantiating the code that is needed. Idea by Frank Steffahn.
             let num_lt = (const { inst_partition::<T, F>() })(v_without_pivot, pivot, is_less);
         
-            // Place the pivot between the two partitions.
-            v.swap(0, num_lt);
+            if num_lt >= len {
+                intrinsics::abort();
+            }
+        
+            // SAFETY: We checked that `num_lt` is in-bounds.
+            unsafe {
+                // Place the pivot between the two partitions.
+                v.swap_unchecked(0, num_lt);
+            }
         
             num_lt
         }
@@ -637,16 +641,19 @@ Module slice.
                         ]
                       |) in
                     let~ _ :=
-                      M.alloc (|
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ T ],
-                            "swap",
-                            []
-                          |),
-                          [ M.read (| v |); Value.Integer IntegerKind.Usize 0; M.read (| pivot |) ]
-                        |)
-                      |) in
+                      let~ _ :=
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "slice") [] [ T ],
+                              "swap_unchecked",
+                              []
+                            |),
+                            [ M.read (| v |); Value.Integer IntegerKind.Usize 0; M.read (| pivot |)
+                            ]
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |) in
                     M.match_operator (|
                       M.alloc (|
                         M.call_closure (|
@@ -688,20 +695,49 @@ Module slice.
                                 |)
                               |) in
                             let~ _ :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "swap",
-                                    []
-                                  |),
-                                  [
-                                    M.read (| v |);
-                                    Value.Integer IntegerKind.Usize 0;
-                                    M.read (| num_lt |)
-                                  ]
-                                |)
+                              M.match_operator (|
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            BinOp.ge (| M.read (| num_lt |), M.read (| len |) |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.call_closure (|
+                                            M.get_function (| "core::intrinsics::abort", [] |),
+                                            []
+                                          |)
+                                        |)
+                                      |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
                               |) in
+                            let~ _ :=
+                              let~ _ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "swap_unchecked",
+                                      []
+                                    |),
+                                    [
+                                      M.read (| v |);
+                                      Value.Integer IntegerKind.Usize 0;
+                                      M.read (| num_lt |)
+                                    ]
+                                  |)
+                                |) in
+                              M.alloc (| Value.Tuple [] |) in
                             num_lt))
                       ]
                     |)
@@ -719,7 +755,13 @@ Module slice.
             if mem::size_of::<T>() <= MAX_BRANCHLESS_PARTITION_SIZE {
                 // Specialize for types that are relatively cheap to copy, where branchless optimizations
                 // have large leverage e.g. `u64` and `String`.
-                partition_lomuto_branchless_cyclic::<T, F>
+                cfg_if! {
+                    if #[cfg(feature = "optimize_for_size")] {
+                        partition_lomuto_branchless_simple::<T, F>
+                    } else {
+                        partition_lomuto_branchless_cyclic::<T, F>
+                    }
+                }
             } else {
                 partition_hoare_branchy_cyclic::<T, F>
             }

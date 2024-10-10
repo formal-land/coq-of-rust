@@ -461,6 +461,7 @@ Module option.
     
     (*
         pub const fn as_pin_ref(self: Pin<&Self>) -> Option<Pin<&T>> {
+            // FIXME(const-hack): use `map` once that is possible
             match Pin::get_ref(self).as_ref() {
                 // SAFETY: `x` is guaranteed to be pinned because it comes from `self`
                 // which is pinned.
@@ -550,6 +551,7 @@ Module option.
             // SAFETY: `get_unchecked_mut` is never used to move the `Option` inside `self`.
             // `x` is guaranteed to be pinned because it comes from `self` which is pinned.
             unsafe {
+                // FIXME(const-hack): use `map` once that is possible
                 match Pin::get_unchecked_mut(self).as_mut() {
                     Some(x) => Some(Pin::new_unchecked(x)),
                     None => None,
@@ -1483,10 +1485,7 @@ Module option.
         where
             T: Deref,
         {
-            match self.as_ref() {
-                Some(t) => Some(t.deref()),
-                None => None,
-            }
+            self.as_ref().map(|t| t.deref())
         }
     *)
     Definition as_deref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1495,44 +1494,53 @@ Module option.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                    "as_ref",
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |),
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&") [] [ T ] ],
+              "map",
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let t := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (| "core::ops::deref::Deref", T, [], "deref", [] |),
-                            [ M.read (| t |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                Ty.apply (Ty.path "&") [] [ Ty.associated ];
+                Ty.function
+                  [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                  (Ty.apply (Ty.path "&") [] [ Ty.associated ])
               ]
-            |)
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                  "as_ref",
+                  []
+                |),
+                [ M.read (| self |) ]
+              |);
+              M.closure
+                (fun γ =>
+                  ltac:(M.monadic
+                    match γ with
+                    | [ α0 ] =>
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let t := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    T,
+                                    [],
+                                    "deref",
+                                    []
+                                  |),
+                                  [ M.read (| t |) ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
+                    end))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1546,10 +1554,7 @@ Module option.
         where
             T: DerefMut,
         {
-            match self.as_mut() {
-                Some(t) => Some(t.deref_mut()),
-                None => None,
-            }
+            self.as_mut().map(|t| t.deref_mut())
         }
     *)
     Definition as_deref_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1558,50 +1563,53 @@ Module option.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (|
-            M.match_operator (|
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                    "as_mut",
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              |),
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "core::option::Option") [] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+              "map",
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 :=
-                      M.SubPointer.get_struct_tuple_field (|
-                        γ,
-                        "core::option::Option::Some",
-                        0
-                      |) in
-                    let t := M.copy (| γ0_0 |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "core::option::Option::Some"
-                        [
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::ops::deref::DerefMut",
-                              T,
-                              [],
-                              "deref_mut",
-                              []
-                            |),
-                            [ M.read (| t |) ]
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                Ty.apply (Ty.path "&mut") [] [ Ty.associated ];
+                Ty.function
+                  [ Ty.tuple [ Ty.apply (Ty.path "&mut") [] [ T ] ] ]
+                  (Ty.apply (Ty.path "&mut") [] [ Ty.associated ])
               ]
-            |)
+            |),
+            [
+              M.call_closure (|
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::option::Option") [] [ T ],
+                  "as_mut",
+                  []
+                |),
+                [ M.read (| self |) ]
+              |);
+              M.closure
+                (fun γ =>
+                  ltac:(M.monadic
+                    match γ with
+                    | [ α0 ] =>
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let t := M.copy (| γ |) in
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::ops::deref::DerefMut",
+                                    T,
+                                    [],
+                                    "deref_mut",
+                                    []
+                                  |),
+                                  [ M.read (| t |) ]
+                                |)))
+                          ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
+                    end))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1611,7 +1619,7 @@ Module option.
       M.IsAssociatedFunction (Self T) "as_deref_mut" (as_deref_mut T).
     
     (*
-        pub const fn iter(&self) -> Iter<'_, T> {
+        pub fn iter(&self) -> Iter<'_, T> {
             Iter { inner: Item { opt: self.as_ref() } }
         }
     *)
@@ -2074,13 +2082,7 @@ Module option.
     
     (*
         pub fn get_or_insert(&mut self, value: T) -> &mut T {
-            if let None = *self {
-                *self = Some(value);
-            }
-    
-            // SAFETY: a `None` variant for `self` would have been replaced by a `Some`
-            // variant in the code above.
-            unsafe { self.as_mut().unwrap_unchecked() }
+            self.get_or_insert_with(|| value)
         }
     *)
     Definition get_or_insert (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2090,46 +2092,27 @@ Module option.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let value := M.alloc (| value |) in
-          M.read (|
-            let~ _ :=
-              M.match_operator (|
-                M.alloc (| Value.Tuple [] |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ := M.read (| self |) in
-                      let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                      let~ _ :=
-                        M.write (|
-                          M.read (| self |),
-                          Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
-                        |) in
-                      M.alloc (| Value.Tuple [] |)));
-                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                ]
-              |) in
-            M.alloc (|
-              M.call_closure (|
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-                  "unwrap_unchecked",
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                      "as_mut",
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                ]
-              |)
-            |)
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "core::option::Option") [] [ T ],
+              "get_or_insert_with",
+              [ Ty.function [ Ty.tuple [] ] T ]
+            |),
+            [
+              M.read (| self |);
+              M.closure
+                (fun γ =>
+                  ltac:(M.monadic
+                    match γ with
+                    | [ α0 ] =>
+                      ltac:(M.monadic
+                        (M.match_operator (|
+                          M.alloc (| α0 |),
+                          [ fun γ => ltac:(M.monadic (M.read (| value |))) ]
+                        |)))
+                    | _ => M.impossible "wrong number of arguments"
+                    end))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2265,7 +2248,7 @@ Module option.
     
     (*
         pub const fn take(&mut self) -> Option<T> {
-            // FIXME replace `mem::replace` by `mem::take` when the latter is const ready
+            // FIXME(const-hack) replace `mem::replace` by `mem::take` when the latter is const ready
             mem::replace(self, None)
         }
     *)
@@ -2581,7 +2564,7 @@ Module option.
         where
             T: Copy,
         {
-            // FIXME: this implementation, which sidesteps using `Option::map` since it's not const
+            // FIXME(const-hack): this implementation, which sidesteps using `Option::map` since it's not const
             // ready yet, should be reverted when possible to avoid code repetition
             match self {
                 Some(&v) => Some(v),
@@ -4942,6 +4925,7 @@ Module option.
     
     (*
         pub const fn flatten(self) -> Option<T> {
+            // FIXME(const-hack): could be written with `and_then`
             match self {
                 Some(inner) => inner,
                 None => None,

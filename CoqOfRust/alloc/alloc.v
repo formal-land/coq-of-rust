@@ -218,7 +218,13 @@ Module alloc.
   
   (*
   pub unsafe fn alloc_zeroed(layout: Layout) -> *mut u8 {
-      unsafe { __rust_alloc_zeroed(layout.size(), layout.align()) }
+      unsafe {
+          // Make sure we don't accidentally allow omitting the allocator shim in
+          // stable code until it is actually stabilized.
+          core::ptr::read_volatile(&__rust_no_alloc_shim_is_unstable);
+  
+          __rust_alloc_zeroed(layout.size(), layout.align())
+      }
   }
   *)
   Definition alloc_zeroed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -226,18 +232,34 @@ Module alloc.
     | [], [], [ layout ] =>
       ltac:(M.monadic
         (let layout := M.alloc (| layout |) in
-        M.call_closure (|
-          M.get_function (| "alloc::alloc::__rust_alloc_zeroed", [] |),
-          [
+        M.read (|
+          let~ _ :=
+            M.alloc (|
+              M.call_closure (|
+                M.get_function (| "core::ptr::read_volatile", [ Ty.path "u8" ] |),
+                [ M.read (| M.get_constant (| "alloc::alloc::__rust_no_alloc_shim_is_unstable" |) |)
+                ]
+              |)
+            |) in
+          M.alloc (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
-              [ layout ]
-            |);
-            M.call_closure (|
-              M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "align", [] |),
-              [ layout ]
+              M.get_function (| "alloc::alloc::__rust_alloc_zeroed", [] |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (| Ty.path "core::alloc::layout::Layout", "size", [] |),
+                  [ layout ]
+                |);
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.path "core::alloc::layout::Layout",
+                    "align",
+                    []
+                  |),
+                  [ layout ]
+                |)
+              ]
             |)
-          ]
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

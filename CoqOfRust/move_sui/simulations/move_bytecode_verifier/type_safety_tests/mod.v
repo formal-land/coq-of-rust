@@ -40,7 +40,6 @@ fn make_module_with_ret(code: Vec<Bytecode>, return_: SignatureToken) -> Compile
     module
 }
 *)
-
 Definition make_module_with_ret
     (code : list file_format.Bytecode.t)
     (return_ : file_format.SignatureToken.t) :
@@ -97,7 +96,7 @@ Definition get_fun_context (module : file_format.CompiledModule.t) :
   | function_def :: _, function_handle :: _ =>
     match function_def.(file_format.FunctionDefinition.code) with
     | Some code =>
-      return!? $ type_safety.FunctionContext.new
+      return!? $ absint.Impl_FunctionContext.new
         module
         (file_format.FunctionDefinitionIndex.Build_t 0)
         code
@@ -106,33 +105,6 @@ Definition get_fun_context (module : file_format.CompiledModule.t) :
     end
   | _, _ => panic!? "cannot get the first function def/handle"
   end.
-
-(** This function replaces the [verify] function in the test which depends on too many definitions
-    to be fully simulated. The only difference is that we give an explicit value for the offset
-    here. *)
-Definition test_verify
-    (module : file_format.CompiledModule.t)
-    (fun_context : type_safety.FunctionContext.t) :
-    M!? (type_safety.PartialVMResult.t unit) :=
-  let dummy_bounds := move_bytecode_verifier_meter.lib.Bounds.Build_t "dummy" 0 None in
-  let dummy_meter :=
-    move_bytecode_verifier_meter.lib.Meter.BoundMeter.Build_t
-      dummy_bounds dummy_bounds dummy_bounds in
-  let verifier :=
-    type_safety.TypeSafetyChecker.Impl_TypeSafetyChecker.new module fun_context in
-  (* Here we take an offset as zero. This is a value that seems to work. Normally the offset is
-     calculated but the function doing that is very complex and would take time to write a
-     simulation for. *)
-  let offset := 0 in
-  let instr :=
-    List.nth
-      (Z.to_nat offset)
-      verifier
-        .(type_safety.TypeSafetyChecker.function_context)
-        .(absint.FunctionContext.code)
-        .(file_format.CodeUnit.code)
-      file_format.Bytecode.Nop in
-  fst $ type_safety.verify_instr instr offset (verifier, dummy_meter).
 
 (*
 #[test]
@@ -152,11 +124,13 @@ Definition test_br_true_false_correct_type_BrTrue : Panic.t unit :=
   let code := [file_format.Bytecode.LdTrue; file_format.Bytecode.BrTrue 0] in
   let module := make_module code in
   let!? fun_context := get_fun_context module in
-  let result := test_verify module fun_context in
+  let!? result := type_safety.verify module fun_context in
   match result with
-  | Panic.Value (Result.Ok _) => return!? tt
+  | Result.Ok _ => return!? tt
   | _ => panic!? "assert failed"
   end.
 
 Goal test_br_true_false_correct_type_BrTrue = return!? tt.
-Proof. reflexivity. Qed.
+Proof.
+  (* We need to make a definition for [control_flow_graph.Impl_VMControlFlowGraph.new] *)
+Admitted.

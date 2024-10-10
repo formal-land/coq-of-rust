@@ -1069,6 +1069,27 @@ Module Bytecode.
   | CastU16
   | CastU32
   | CastU256.
+
+  Definition is_unconditional_branch (self : t) : bool :=
+    match self with
+    | Ret | Abort | Branch _ => true
+    | _ => false
+    end.
+
+  Definition is_conditional_branch (self : t) : bool :=
+    match self with
+    | BrFalse _ | BrTrue _ => true
+    | _ => false
+    end.
+
+  Definition is_branch (self : t) : bool :=
+    is_conditional_branch self || is_unconditional_branch self.
+
+  Definition offset (self : Bytecode.t) : option Z :=
+    match self with
+    | Bytecode.BrFalse offset | Bytecode.BrTrue offset | Bytecode.Branch offset => Some offset
+    | _ => None
+    end.
 End Bytecode.
 
 Module CodeUnit.

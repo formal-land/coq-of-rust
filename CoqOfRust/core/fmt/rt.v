@@ -637,7 +637,7 @@ Module fmt.
       Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
       
       (*
-          pub fn new_display<'b, T: Display>(x: &'b T) -> Argument<'_> {
+          pub fn new_display<'b, T: Display>(x: &'b T) -> Argument<'b> {
               Self::new(x, Display::fmt)
           }
       *)
@@ -660,7 +660,7 @@ Module fmt.
       Axiom AssociatedFunction_new_display : M.IsAssociatedFunction Self "new_display" new_display.
       
       (*
-          pub fn new_debug<'b, T: Debug>(x: &'b T) -> Argument<'_> {
+          pub fn new_debug<'b, T: Debug>(x: &'b T) -> Argument<'b> {
               Self::new(x, Debug::fmt)
           }
       *)
@@ -683,7 +683,56 @@ Module fmt.
       Axiom AssociatedFunction_new_debug : M.IsAssociatedFunction Self "new_debug" new_debug.
       
       (*
-          pub fn new_octal<'b, T: Octal>(x: &'b T) -> Argument<'_> {
+          pub fn new_debug_noop<'b, T: Debug>(x: &'b T) -> Argument<'b> {
+              Self::new(x, |_, _| Ok(()))
+          }
+      *)
+      Definition new_debug_noop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [ T ], [ x ] =>
+          ltac:(M.monadic
+            (let x := M.alloc (| x |) in
+            M.call_closure (|
+              M.get_associated_function (| Ty.path "core::fmt::rt::Argument", "new", [ T ] |),
+              [
+                M.read (| x |);
+                (* ClosureFnPointer(Safe) *)
+                M.pointer_coercion
+                  (M.closure
+                    (fun γ =>
+                      ltac:(M.monadic
+                        match γ with
+                        | [ α0; α1 ] =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              M.alloc (| α0 |),
+                              [
+                                fun γ =>
+                                  ltac:(M.monadic
+                                    (M.match_operator (|
+                                      M.alloc (| α1 |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (Value.StructTuple
+                                              "core::result::Result::Ok"
+                                              [ Value.Tuple [] ]))
+                                      ]
+                                    |)))
+                              ]
+                            |)))
+                        | _ => M.impossible "wrong number of arguments"
+                        end)))
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_new_debug_noop :
+        M.IsAssociatedFunction Self "new_debug_noop" new_debug_noop.
+      
+      (*
+          pub fn new_octal<'b, T: Octal>(x: &'b T) -> Argument<'b> {
               Self::new(x, Octal::fmt)
           }
       *)
@@ -706,7 +755,7 @@ Module fmt.
       Axiom AssociatedFunction_new_octal : M.IsAssociatedFunction Self "new_octal" new_octal.
       
       (*
-          pub fn new_lower_hex<'b, T: LowerHex>(x: &'b T) -> Argument<'_> {
+          pub fn new_lower_hex<'b, T: LowerHex>(x: &'b T) -> Argument<'b> {
               Self::new(x, LowerHex::fmt)
           }
       *)
@@ -731,7 +780,7 @@ Module fmt.
         M.IsAssociatedFunction Self "new_lower_hex" new_lower_hex.
       
       (*
-          pub fn new_upper_hex<'b, T: UpperHex>(x: &'b T) -> Argument<'_> {
+          pub fn new_upper_hex<'b, T: UpperHex>(x: &'b T) -> Argument<'b> {
               Self::new(x, UpperHex::fmt)
           }
       *)
@@ -756,7 +805,7 @@ Module fmt.
         M.IsAssociatedFunction Self "new_upper_hex" new_upper_hex.
       
       (*
-          pub fn new_pointer<'b, T: Pointer>(x: &'b T) -> Argument<'_> {
+          pub fn new_pointer<'b, T: Pointer>(x: &'b T) -> Argument<'b> {
               Self::new(x, Pointer::fmt)
           }
       *)
@@ -779,7 +828,7 @@ Module fmt.
       Axiom AssociatedFunction_new_pointer : M.IsAssociatedFunction Self "new_pointer" new_pointer.
       
       (*
-          pub fn new_binary<'b, T: Binary>(x: &'b T) -> Argument<'_> {
+          pub fn new_binary<'b, T: Binary>(x: &'b T) -> Argument<'b> {
               Self::new(x, Binary::fmt)
           }
       *)
@@ -802,7 +851,7 @@ Module fmt.
       Axiom AssociatedFunction_new_binary : M.IsAssociatedFunction Self "new_binary" new_binary.
       
       (*
-          pub fn new_lower_exp<'b, T: LowerExp>(x: &'b T) -> Argument<'_> {
+          pub fn new_lower_exp<'b, T: LowerExp>(x: &'b T) -> Argument<'b> {
               Self::new(x, LowerExp::fmt)
           }
       *)
@@ -827,7 +876,7 @@ Module fmt.
         M.IsAssociatedFunction Self "new_lower_exp" new_lower_exp.
       
       (*
-          pub fn new_upper_exp<'b, T: UpperExp>(x: &'b T) -> Argument<'_> {
+          pub fn new_upper_exp<'b, T: UpperExp>(x: &'b T) -> Argument<'b> {
               Self::new(x, UpperExp::fmt)
           }
       *)

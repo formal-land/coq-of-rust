@@ -447,7 +447,7 @@ Module iter.
         
                     unsafe {
                         let opt_payload_at: *const MaybeUninit<B> =
-                            addr_of!(val).byte_add(core::mem::offset_of!(Option<B>, Some.0)).cast();
+                            (&raw const val).byte_add(core::mem::offset_of!(Option<B>, Some.0)).cast();
                         let dst = guard.array.as_mut_ptr().add(idx);
                         crate::ptr::copy_nonoverlapping(opt_payload_at, dst, 1);
                         crate::mem::forget(val);

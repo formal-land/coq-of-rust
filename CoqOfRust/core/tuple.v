@@ -307,10 +307,10 @@ Module tuple.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T ].
     
     (*
-                fn from(array: [T; ${count($T)}]) -> Self {
-                    let [$($T,)+] = array;
-                    ($($T,)+)
-                }
+                    fn from(array: [T; ${count($T)}]) -> Self {
+                        let [$($T,)+] = array;
+                        ($($T,)+)
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -348,10 +348,10 @@ Module tuple.
       Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 1 ] [ T ].
     
     (*
-                fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
-                    let ($($T,)+) = tuple;
-                    [$($T,)+]
-                }
+                    fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
+                        let ($($T,)+) = tuple;
+                        [$($T,)+]
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -1103,10 +1103,10 @@ Module tuple.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T ].
     
     (*
-                fn from(array: [T; ${count($T)}]) -> Self {
-                    let [$($T,)+] = array;
-                    ($($T,)+)
-                }
+                    fn from(array: [T; ${count($T)}]) -> Self {
+                        let [$($T,)+] = array;
+                        ($($T,)+)
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -1146,10 +1146,10 @@ Module tuple.
       Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 2 ] [ T ].
     
     (*
-                fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
-                    let ($($T,)+) = tuple;
-                    [$($T,)+]
-                }
+                    fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
+                        let ($($T,)+) = tuple;
+                        [$($T,)+]
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -2346,10 +2346,10 @@ Module tuple.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T ].
     
     (*
-                fn from(array: [T; ${count($T)}]) -> Self {
-                    let [$($T,)+] = array;
-                    ($($T,)+)
-                }
+                    fn from(array: [T; ${count($T)}]) -> Self {
+                        let [$($T,)+] = array;
+                        ($($T,)+)
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -2394,10 +2394,10 @@ Module tuple.
       Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ T ].
     
     (*
-                fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
-                    let ($($T,)+) = tuple;
-                    [$($T,)+]
-                }
+                    fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
+                        let ($($T,)+) = tuple;
+                        [$($T,)+]
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -4045,10 +4045,10 @@ Module tuple.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T ].
     
     (*
-                fn from(array: [T; ${count($T)}]) -> Self {
-                    let [$($T,)+] = array;
-                    ($($T,)+)
-                }
+                    fn from(array: [T; ${count($T)}]) -> Self {
+                        let [$($T,)+] = array;
+                        ($($T,)+)
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -4100,10 +4100,10 @@ Module tuple.
       Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 4 ] [ T ].
     
     (*
-                fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
-                    let ($($T,)+) = tuple;
-                    [$($T,)+]
-                }
+                    fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
+                        let ($($T,)+) = tuple;
+                        [$($T,)+]
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -6278,10 +6278,10 @@ Module tuple.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T ].
     
     (*
-                fn from(array: [T; ${count($T)}]) -> Self {
-                    let [$($T,)+] = array;
-                    ($($T,)+)
-                }
+                    fn from(array: [T; ${count($T)}]) -> Self {
+                        let [$($T,)+] = array;
+                        ($($T,)+)
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -6336,10 +6336,10 @@ Module tuple.
       Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 5 ] [ T ].
     
     (*
-                fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
-                    let ($($T,)+) = tuple;
-                    [$($T,)+]
-                }
+                    fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
+                        let ($($T,)+) = tuple;
+                        [$($T,)+]
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -9027,10 +9027,10 @@ Module tuple.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T ].
     
     (*
-                fn from(array: [T; ${count($T)}]) -> Self {
-                    let [$($T,)+] = array;
-                    ($($T,)+)
-                }
+                    fn from(array: [T; ${count($T)}]) -> Self {
+                        let [$($T,)+] = array;
+                        ($($T,)+)
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -9088,10 +9088,10 @@ Module tuple.
       Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 6 ] [ T ].
     
     (*
-                fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
-                    let ($($T,)+) = tuple;
-                    [$($T,)+]
-                }
+                    fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
+                        let ($($T,)+) = tuple;
+                        [$($T,)+]
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -12377,10 +12377,10 @@ Module tuple.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T; T ].
     
     (*
-                fn from(array: [T; ${count($T)}]) -> Self {
-                    let [$($T,)+] = array;
-                    ($($T,)+)
-                }
+                    fn from(array: [T; ${count($T)}]) -> Self {
+                        let [$($T,)+] = array;
+                        ($($T,)+)
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -12441,10 +12441,10 @@ Module tuple.
       Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 7 ] [ T ].
     
     (*
-                fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
-                    let ($($T,)+) = tuple;
-                    [$($T,)+]
-                }
+                    fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
+                        let ($($T,)+) = tuple;
+                        [$($T,)+]
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -16307,10 +16307,10 @@ Module tuple.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T; T; T ].
     
     (*
-                fn from(array: [T; ${count($T)}]) -> Self {
-                    let [$($T,)+] = array;
-                    ($($T,)+)
-                }
+                    fn from(array: [T; ${count($T)}]) -> Self {
+                        let [$($T,)+] = array;
+                        ($($T,)+)
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -16374,10 +16374,10 @@ Module tuple.
       Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 8 ] [ T ].
     
     (*
-                fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
-                    let ($($T,)+) = tuple;
-                    [$($T,)+]
-                }
+                    fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
+                        let ($($T,)+) = tuple;
+                        [$($T,)+]
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -20841,10 +20841,10 @@ Module tuple.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T; T; T; T ].
     
     (*
-                fn from(array: [T; ${count($T)}]) -> Self {
-                    let [$($T,)+] = array;
-                    ($($T,)+)
-                }
+                    fn from(array: [T; ${count($T)}]) -> Self {
+                        let [$($T,)+] = array;
+                        ($($T,)+)
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -20911,10 +20911,10 @@ Module tuple.
       Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 9 ] [ T ].
     
     (*
-                fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
-                    let ($($T,)+) = tuple;
-                    [$($T,)+]
-                }
+                    fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
+                        let ($($T,)+) = tuple;
+                        [$($T,)+]
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -26011,10 +26011,10 @@ Module tuple.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T; T; T; T; T ].
     
     (*
-                fn from(array: [T; ${count($T)}]) -> Self {
-                    let [$($T,)+] = array;
-                    ($($T,)+)
-                }
+                    fn from(array: [T; ${count($T)}]) -> Self {
+                        let [$($T,)+] = array;
+                        ($($T,)+)
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -26084,10 +26084,10 @@ Module tuple.
       Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 10 ] [ T ].
     
     (*
-                fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
-                    let ($($T,)+) = tuple;
-                    [$($T,)+]
-                }
+                    fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
+                        let ($($T,)+) = tuple;
+                        [$($T,)+]
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -31843,10 +31843,10 @@ Module tuple.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T ].
     
     (*
-                fn from(array: [T; ${count($T)}]) -> Self {
-                    let [$($T,)+] = array;
-                    ($($T,)+)
-                }
+                    fn from(array: [T; ${count($T)}]) -> Self {
+                        let [$($T,)+] = array;
+                        ($($T,)+)
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -31919,10 +31919,10 @@ Module tuple.
       Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 11 ] [ T ].
     
     (*
-                fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
-                    let ($($T,)+) = tuple;
-                    [$($T,)+]
-                }
+                    fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
+                        let ($($T,)+) = tuple;
+                        [$($T,)+]
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -38370,10 +38370,10 @@ Module tuple.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T; T; T; T; T; T; T; T; T; T; T; T ].
     
     (*
-                fn from(array: [T; ${count($T)}]) -> Self {
-                    let [$($T,)+] = array;
-                    ($($T,)+)
-                }
+                    fn from(array: [T; ${count($T)}]) -> Self {
+                        let [$($T,)+] = array;
+                        ($($T,)+)
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in
@@ -38449,10 +38449,10 @@ Module tuple.
       Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ T ].
     
     (*
-                fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
-                    let ($($T,)+) = tuple;
-                    [$($T,)+]
-                }
+                    fn from(tuple: ($(${ignore($T)} T,)+)) -> Self {
+                        let ($($T,)+) = tuple;
+                        [$($T,)+]
+                    }
     *)
     Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let Self : Ty.t := Self T in

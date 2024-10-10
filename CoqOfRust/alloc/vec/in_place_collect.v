@@ -129,7 +129,7 @@ Module vec.
     (*
     const fn needs_realloc<SRC, DEST>(src_cap: usize, dst_cap: usize) -> bool {
         if const { mem::align_of::<SRC>() != mem::align_of::<DEST>() } {
-            // FIXME: use unreachable! once that works in const
+            // FIXME(const-hack): use unreachable! once that works in const
             panic!("in_place_collectible() prevents this");
         }
     
@@ -146,7 +146,7 @@ Module vec.
     
         // type layouts don't guarantee a fit, so do a runtime check to see if
         // the allocations happen to match
-        return src_cap > 0 && src_cap * mem::size_of::<SRC>() != dst_cap * mem::size_of::<DEST>();
+        src_cap > 0 && src_cap * mem::size_of::<SRC>() != dst_cap * mem::size_of::<DEST>()
     }
     *)
     Definition needs_realloc (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -157,90 +157,88 @@ Module vec.
           let dst_cap := M.alloc (| dst_cap |) in
           M.catch_return (|
             ltac:(M.monadic
-              (M.never_to_any (|
-                M.read (|
-                  let~ _ :=
-                    M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.get_constant (|
-                                  "alloc::vec::in_place_collect::needs_realloc_discriminant"
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.call_closure (|
-                                  M.get_function (| "core::panicking::panic_fmt", [] |),
-                                  [
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "core::fmt::Arguments",
-                                        "new_const",
-                                        []
-                                      |),
-                                      [
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "in_place_collectible() prevents this"
-                                              |)
-                                            ]
-                                        |)
-                                      ]
-                                    |)
-                                  ]
-                                |)
+              (M.read (|
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.get_constant (|
+                                "alloc::vec::in_place_collect::needs_realloc_discriminant"
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.alloc (|
+                            M.never_to_any (|
+                              M.call_closure (|
+                                M.get_function (| "core::panicking::panic_fmt", [] |),
+                                [
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path "core::fmt::Arguments",
+                                      "new_const",
+                                      []
+                                    |),
+                                    [
+                                      M.alloc (|
+                                        Value.Array
+                                          [
+                                            M.read (|
+                                              Value.String "in_place_collectible() prevents this"
+                                            |)
+                                          ]
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  let~ _ :=
-                    M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.get_constant (|
-                                  "alloc::vec::in_place_collect::needs_realloc_discriminant"
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
-                  M.return_ (|
-                    LogicalOp.and (|
-                      BinOp.gt (| M.read (| src_cap |), Value.Integer IntegerKind.Usize 0 |),
-                      ltac:(M.monadic
-                        (BinOp.ne (|
-                          BinOp.Wrap.mul (|
-                            M.read (| src_cap |),
-                            M.call_closure (|
-                              M.get_function (| "core::mem::size_of", [ SRC ] |),
-                              []
                             |)
-                          |),
-                          BinOp.Wrap.mul (|
-                            M.read (| dst_cap |),
-                            M.call_closure (|
-                              M.get_function (| "core::mem::size_of", [ DEST ] |),
-                              []
-                            |)
+                          |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |) in
+                let~ _ :=
+                  M.match_operator (|
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.get_constant (|
+                                "alloc::vec::in_place_collect::needs_realloc_discriminant"
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          M.alloc (|
+                            M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
+                          |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |) in
+                M.alloc (|
+                  LogicalOp.and (|
+                    BinOp.gt (| M.read (| src_cap |), Value.Integer IntegerKind.Usize 0 |),
+                    ltac:(M.monadic
+                      (BinOp.ne (|
+                        BinOp.Wrap.mul (|
+                          M.read (| src_cap |),
+                          M.call_closure (|
+                            M.get_function (| "core::mem::size_of", [ SRC ] |),
+                            []
                           |)
-                        |)))
-                    |)
+                        |),
+                        BinOp.Wrap.mul (|
+                          M.read (| dst_cap |),
+                          M.call_closure (|
+                            M.get_function (| "core::mem::size_of", [ DEST ] |),
+                            []
+                          |)
+                        |)
+                      |)))
                   |)
                 |)
               |)))
@@ -398,7 +396,7 @@ Module vec.
     
         mem::forget(dst_guard);
     
-        let vec = unsafe { Vec::from_nonnull(dst_buf, len, dst_cap) };
+        let vec = unsafe { Vec::from_parts(dst_buf, len, dst_cap) };
     
         vec
     }
@@ -1367,7 +1365,7 @@ Module vec.
                               (Ty.path "alloc::vec::Vec")
                               []
                               [ T; Ty.path "alloc::alloc::Global" ],
-                            "from_nonnull",
+                            "from_parts",
                             []
                           |),
                           [ M.read (| dst_buf |); M.read (| len |); M.read (| dst_cap |) ]

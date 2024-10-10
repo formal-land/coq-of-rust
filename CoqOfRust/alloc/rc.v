@@ -354,42 +354,7 @@ Module rc.
         where
             F: FnOnce(&Weak<T>) -> T,
         {
-            // Construct the inner in the "uninitialized" state with a single
-            // weak reference.
-            let uninit_ptr: NonNull<_> = Box::leak(Box::new(RcBox {
-                strong: Cell::new(0),
-                weak: Cell::new(1),
-                value: mem::MaybeUninit::<T>::uninit(),
-            }))
-            .into();
-    
-            let init_ptr: NonNull<RcBox<T>> = uninit_ptr.cast();
-    
-            let weak = Weak { ptr: init_ptr, alloc: Global };
-    
-            // It's important we don't give up ownership of the weak pointer, or
-            // else the memory might be freed by the time `data_fn` returns. If
-            // we really wanted to pass ownership, we could create an additional
-            // weak pointer for ourselves, but this would result in additional
-            // updates to the weak reference count which might not be necessary
-            // otherwise.
-            let data = data_fn(&weak);
-    
-            let strong = unsafe {
-                let inner = init_ptr.as_ptr();
-                ptr::write(ptr::addr_of_mut!(( *inner).value), data);
-    
-                let prev_value = ( *inner).strong.get();
-                debug_assert_eq!(prev_value, 0, "No prior strong references should exist");
-                ( *inner).strong.set(1);
-    
-                Rc::from_inner(init_ptr)
-            };
-    
-            // Strong references should collectively own a shared weak reference,
-            // so don't run the destructor for our old weak reference.
-            mem::forget(weak);
-            strong
+            Self::new_cyclic_in(data_fn, Global)
         }
     *)
     Definition new_cyclic (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -398,355 +363,13 @@ Module rc.
       | [], [ F ], [ data_fn ] =>
         ltac:(M.monadic
           (let data_fn := M.alloc (| data_fn |) in
-          M.read (|
-            let~ uninit_ptr :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::convert::Into",
-                    Ty.apply
-                      (Ty.path "&mut")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::rc::RcBox")
-                          []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                      ],
-                    [
-                      Ty.apply
-                        (Ty.path "core::ptr::non_null::NonNull")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloc::rc::RcBox")
-                            []
-                            [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                        ]
-                    ],
-                    "into",
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloc::boxed::Box")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "alloc::rc::RcBox")
-                              []
-                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
-                              ];
-                            Ty.path "alloc::alloc::Global"
-                          ],
-                        "leak",
-                        []
-                      |),
-                      [
-                        M.call_closure (|
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [
-                                Ty.apply
-                                  (Ty.path "alloc::rc::RcBox")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                      []
-                                      [ T ]
-                                  ];
-                                Ty.path "alloc::alloc::Global"
-                              ],
-                            "new",
-                            []
-                          |),
-                          [
-                            Value.StructRecord
-                              "alloc::rc::RcBox"
-                              [
-                                ("strong",
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
-                                      "new",
-                                      []
-                                    |),
-                                    [ Value.Integer IntegerKind.Usize 0 ]
-                                  |));
-                                ("weak",
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
-                                      "new",
-                                      []
-                                    |),
-                                    [ Value.Integer IntegerKind.Usize 1 ]
-                                  |));
-                                ("value",
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                        []
-                                        [ T ],
-                                      "uninit",
-                                      []
-                                    |),
-                                    []
-                                  |))
-                              ]
-                          ]
-                        |)
-                      ]
-                    |)
-                  ]
-                |)
-              |) in
-            let~ init_ptr :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::ptr::non_null::NonNull")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "alloc::rc::RcBox")
-                          []
-                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                      ],
-                    "cast",
-                    [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
-                  |),
-                  [ M.read (| uninit_ptr |) ]
-                |)
-              |) in
-            let~ weak :=
-              M.alloc (|
-                Value.StructRecord
-                  "alloc::rc::Weak"
-                  [
-                    ("ptr", M.read (| init_ptr |));
-                    ("alloc", Value.StructTuple "alloc::alloc::Global" [])
-                  ]
-              |) in
-            let~ data :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_trait_method (|
-                    "core::ops::function::FnOnce",
-                    F,
-                    [
-                      Ty.tuple
-                        [
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::rc::Weak")
-                                []
-                                [ T; Ty.path "alloc::alloc::Global" ]
-                            ]
-                        ]
-                    ],
-                    "call_once",
-                    []
-                  |),
-                  [ M.read (| data_fn |); Value.Tuple [ weak ] ]
-                |)
-              |) in
-            let~ strong :=
-              M.copy (|
-                let~ inner :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "core::ptr::non_null::NonNull")
-                          []
-                          [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
-                        "as_ptr",
-                        []
-                      |),
-                      [ M.read (| init_ptr |) ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_function (| "core::ptr::write", [ T ] |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| inner |),
-                          "alloc::rc::RcBox",
-                          "value"
-                        |);
-                        M.read (| data |)
-                      ]
-                    |)
-                  |) in
-                let~ prev_value :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
-                        "get",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| inner |),
-                          "alloc::rc::RcBox",
-                          "strong"
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ :=
-                  M.match_operator (|
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          let~ _ :=
-                            M.match_operator (|
-                              M.alloc (|
-                                Value.Tuple
-                                  [ prev_value; M.alloc (| Value.Integer IntegerKind.Usize 0 |) ]
-                              |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                                    let left_val := M.copy (| γ0_0 |) in
-                                    let right_val := M.copy (| γ0_1 |) in
-                                    M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  UnOp.not (|
-                                                    BinOp.eq (|
-                                                      M.read (| M.read (| left_val |) |),
-                                                      M.read (| M.read (| right_val |) |)
-                                                    |)
-                                                  |)
-                                                |)) in
-                                            let _ :=
-                                              M.is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  let~ kind :=
-                                                    M.alloc (|
-                                                      Value.StructTuple
-                                                        "core::panicking::AssertKind::Eq"
-                                                        []
-                                                    |) in
-                                                  M.alloc (|
-                                                    M.call_closure (|
-                                                      M.get_function (|
-                                                        "core::panicking::assert_failed",
-                                                        [ Ty.path "usize"; Ty.path "usize" ]
-                                                      |),
-                                                      [
-                                                        M.read (| kind |);
-                                                        M.read (| left_val |);
-                                                        M.read (| right_val |);
-                                                        Value.StructTuple
-                                                          "core::option::Option::Some"
-                                                          [
-                                                            M.call_closure (|
-                                                              M.get_associated_function (|
-                                                                Ty.path "core::fmt::Arguments",
-                                                                "new_const",
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.alloc (|
-                                                                  Value.Array
-                                                                    [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "No prior strong references should exist"
-                                                                      |)
-                                                                    ]
-                                                                |)
-                                                              ]
-                                                            |)
-                                                          ]
-                                                      ]
-                                                    |)
-                                                  |)
-                                                |)
-                                              |)
-                                            |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                      ]
-                                    |)))
-                              ]
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
-                  |) in
-                let~ _ :=
-                  M.alloc (|
-                    M.call_closure (|
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
-                        "set",
-                        []
-                      |),
-                      [
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| inner |),
-                          "alloc::rc::RcBox",
-                          "strong"
-                        |);
-                        Value.Integer IntegerKind.Usize 1
-                      ]
-                    |)
-                  |) in
-                M.alloc (|
-                  M.call_closure (|
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
-                      "from_inner",
-                      []
-                    |),
-                    [ M.read (| init_ptr |) ]
-                  |)
-                |)
-              |) in
-            let~ _ :=
-              M.alloc (|
-                M.call_closure (|
-                  M.get_function (|
-                    "core::mem::forget",
-                    [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; Ty.path "alloc::alloc::Global" ]
-                    ]
-                  |),
-                  [ M.read (| weak |) ]
-                |)
-              |) in
-            strong
+          M.call_closure (|
+            M.get_associated_function (|
+              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; Ty.path "alloc::alloc::Global" ],
+              "new_cyclic_in",
+              [ F ]
+            |),
+            [ M.read (| data_fn |); Value.StructTuple "alloc::alloc::Global" [] ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1957,8 +1580,8 @@ Module rc.
             unsafe {
                 debug_assert_eq!(Layout::for_value_raw(inner), layout);
     
-                ptr::addr_of_mut!(( *inner).strong).write(Cell::new(1));
-                ptr::addr_of_mut!(( *inner).weak).write(Cell::new(1));
+                (&raw mut ( *inner).strong).write(Cell::new(1));
+                (&raw mut ( *inner).weak).write(Cell::new(1));
             }
     
             Ok(inner)
@@ -2813,6 +2436,450 @@ Module rc.
     Axiom AssociatedFunction_new_zeroed_in :
       forall (T A : Ty.t),
       M.IsAssociatedFunction (Self T A) "new_zeroed_in" (new_zeroed_in T A).
+    
+    (*
+        pub fn new_cyclic_in<F>(data_fn: F, alloc: A) -> Rc<T, A>
+        where
+            F: FnOnce(&Weak<T, A>) -> T,
+        {
+            // Construct the inner in the "uninitialized" state with a single
+            // weak reference.
+            let (uninit_raw_ptr, alloc) = Box::into_raw_with_allocator(Box::new_in(
+                RcBox {
+                    strong: Cell::new(0),
+                    weak: Cell::new(1),
+                    value: mem::MaybeUninit::<T>::uninit(),
+                },
+                alloc,
+            ));
+            let uninit_ptr: NonNull<_> = (unsafe { &mut *uninit_raw_ptr }).into();
+            let init_ptr: NonNull<RcBox<T>> = uninit_ptr.cast();
+    
+            let weak = Weak { ptr: init_ptr, alloc: alloc };
+    
+            // It's important we don't give up ownership of the weak pointer, or
+            // else the memory might be freed by the time `data_fn` returns. If
+            // we really wanted to pass ownership, we could create an additional
+            // weak pointer for ourselves, but this would result in additional
+            // updates to the weak reference count which might not be necessary
+            // otherwise.
+            let data = data_fn(&weak);
+    
+            let strong = unsafe {
+                let inner = init_ptr.as_ptr();
+                ptr::write(&raw mut ( *inner).value, data);
+    
+                let prev_value = ( *inner).strong.get();
+                debug_assert_eq!(prev_value, 0, "No prior strong references should exist");
+                ( *inner).strong.set(1);
+    
+                // Strong references should collectively own a shared weak reference,
+                // so don't run the destructor for our old weak reference.
+                // Calling into_raw_with_allocator has the double effect of giving us back the allocator,
+                // and forgetting the weak reference.
+                let alloc = weak.into_raw_with_allocator().1;
+    
+                Rc::from_inner_in(init_ptr, alloc)
+            };
+    
+            strong
+        }
+    *)
+    Definition new_cyclic_in
+        (T A : Ty.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      let Self : Ty.t := Self T A in
+      match ε, τ, α with
+      | [], [ F ], [ data_fn; alloc ] =>
+        ltac:(M.monadic
+          (let data_fn := M.alloc (| data_fn |) in
+          let alloc := M.alloc (| alloc |) in
+          M.read (|
+            M.match_operator (|
+              M.alloc (|
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::boxed::Box")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::rc::RcBox")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ];
+                        A
+                      ],
+                    "into_raw_with_allocator",
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "alloc::rc::RcBox")
+                              []
+                              [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                              ];
+                            A
+                          ],
+                        "new_in",
+                        []
+                      |),
+                      [
+                        Value.StructRecord
+                          "alloc::rc::RcBox"
+                          [
+                            ("strong",
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
+                                  "new",
+                                  []
+                                |),
+                                [ Value.Integer IntegerKind.Usize 0 ]
+                              |));
+                            ("weak",
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
+                                  "new",
+                                  []
+                                |),
+                                [ Value.Integer IntegerKind.Usize 1 ]
+                              |));
+                            ("value",
+                              M.call_closure (|
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                    []
+                                    [ T ],
+                                  "uninit",
+                                  []
+                                |),
+                                []
+                              |))
+                          ];
+                        M.read (| alloc |)
+                      ]
+                    |)
+                  ]
+                |)
+              |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                    let uninit_raw_ptr := M.copy (| γ0_0 |) in
+                    let alloc := M.copy (| γ0_1 |) in
+                    let~ uninit_ptr :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::convert::Into",
+                            Ty.apply
+                              (Ty.path "&mut")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::rc::RcBox")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                              ],
+                            [
+                              Ty.apply
+                                (Ty.path "core::ptr::non_null::NonNull")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "alloc::rc::RcBox")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                        []
+                                        [ T ]
+                                    ]
+                                ]
+                            ],
+                            "into",
+                            []
+                          |),
+                          [ M.read (| uninit_raw_ptr |) ]
+                        |)
+                      |) in
+                    let~ init_ptr :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.apply
+                              (Ty.path "core::ptr::non_null::NonNull")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::rc::RcBox")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                      []
+                                      [ T ]
+                                  ]
+                              ],
+                            "cast",
+                            [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ]
+                          |),
+                          [ M.read (| uninit_ptr |) ]
+                        |)
+                      |) in
+                    let~ weak :=
+                      M.alloc (|
+                        Value.StructRecord
+                          "alloc::rc::Weak"
+                          [ ("ptr", M.read (| init_ptr |)); ("alloc", M.read (| alloc |)) ]
+                      |) in
+                    let~ data :=
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_trait_method (|
+                            "core::ops::function::FnOnce",
+                            F,
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [ Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ] ]
+                                ]
+                            ],
+                            "call_once",
+                            []
+                          |),
+                          [ M.read (| data_fn |); Value.Tuple [ weak ] ]
+                        |)
+                      |) in
+                    let~ strong :=
+                      M.copy (|
+                        let~ inner :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "core::ptr::non_null::NonNull")
+                                  []
+                                  [ Ty.apply (Ty.path "alloc::rc::RcBox") [] [ T ] ],
+                                "as_ptr",
+                                []
+                              |),
+                              [ M.read (| init_ptr |) ]
+                            |)
+                          |) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_function (| "core::ptr::write", [ T ] |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| inner |),
+                                  "alloc::rc::RcBox",
+                                  "value"
+                                |);
+                                M.read (| data |)
+                              ]
+                            |)
+                          |) in
+                        let~ prev_value :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
+                                "get",
+                                []
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| inner |),
+                                  "alloc::rc::RcBox",
+                                  "strong"
+                                |)
+                              ]
+                            |)
+                          |) in
+                        let~ _ :=
+                          M.match_operator (|
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                                  let _ :=
+                                    M.is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  let~ _ :=
+                                    M.match_operator (|
+                                      M.alloc (|
+                                        Value.Tuple
+                                          [
+                                            prev_value;
+                                            M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                          ]
+                                      |),
+                                      [
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                                            let left_val := M.copy (| γ0_0 |) in
+                                            let right_val := M.copy (| γ0_1 |) in
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          UnOp.not (|
+                                                            BinOp.eq (|
+                                                              M.read (| M.read (| left_val |) |),
+                                                              M.read (| M.read (| right_val |) |)
+                                                            |)
+                                                          |)
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.read (|
+                                                          let~ kind :=
+                                                            M.alloc (|
+                                                              Value.StructTuple
+                                                                "core::panicking::AssertKind::Eq"
+                                                                []
+                                                            |) in
+                                                          M.alloc (|
+                                                            M.call_closure (|
+                                                              M.get_function (|
+                                                                "core::panicking::assert_failed",
+                                                                [ Ty.path "usize"; Ty.path "usize" ]
+                                                              |),
+                                                              [
+                                                                M.read (| kind |);
+                                                                M.read (| left_val |);
+                                                                M.read (| right_val |);
+                                                                Value.StructTuple
+                                                                  "core::option::Option::Some"
+                                                                  [
+                                                                    M.call_closure (|
+                                                                      M.get_associated_function (|
+                                                                        Ty.path
+                                                                          "core::fmt::Arguments",
+                                                                        "new_const",
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.alloc (|
+                                                                          Value.Array
+                                                                            [
+                                                                              M.read (|
+                                                                                Value.String
+                                                                                  "No prior strong references should exist"
+                                                                              |)
+                                                                            ]
+                                                                        |)
+                                                                      ]
+                                                                    |)
+                                                                  ]
+                                                              ]
+                                                            |)
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
+                                            |)))
+                                      ]
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                            ]
+                          |) in
+                        let~ _ :=
+                          M.alloc (|
+                            M.call_closure (|
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.path "usize" ],
+                                "set",
+                                []
+                              |),
+                              [
+                                M.SubPointer.get_struct_record_field (|
+                                  M.read (| inner |),
+                                  "alloc::rc::RcBox",
+                                  "strong"
+                                |);
+                                Value.Integer IntegerKind.Usize 1
+                              ]
+                            |)
+                          |) in
+                        let~ alloc :=
+                          M.copy (|
+                            M.SubPointer.get_tuple_field (|
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "alloc::rc::Weak") [] [ T; A ],
+                                    "into_raw_with_allocator",
+                                    []
+                                  |),
+                                  [ M.read (| weak |) ]
+                                |)
+                              |),
+                              1
+                            |)
+                          |) in
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "alloc::rc::Rc") [] [ T; A ],
+                              "from_inner_in",
+                              []
+                            |),
+                            [ M.read (| init_ptr |); M.read (| alloc |) ]
+                          |)
+                        |)
+                      |) in
+                    strong))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom AssociatedFunction_new_cyclic_in :
+      forall (T A : Ty.t),
+      M.IsAssociatedFunction (Self T A) "new_cyclic_in" (new_cyclic_in T A).
     
     (*
         pub fn try_new_in(value: T, alloc: A) -> Result<Self, AllocError> {
@@ -3978,7 +4045,7 @@ Module rc.
             // SAFETY: This cannot go through Deref::deref or Rc::inner because
             // this is required to retain raw/mut provenance such that e.g. `get_mut` can
             // write through the pointer after the Rc is recovered through `from_raw`.
-            unsafe { ptr::addr_of_mut!(( *ptr).value) }
+            unsafe { &raw mut ( *ptr).value }
         }
     *)
     Definition as_ptr (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -5249,8 +5316,8 @@ Module rc.
     
                 // Copy value as bytes
                 ptr::copy_nonoverlapping(
-                    core::ptr::addr_of!( *src) as *const u8,
-                    ptr::addr_of_mut!(( *ptr).value) as *mut u8,
+                    (&raw const *src) as *const u8,
+                    (&raw mut ( *ptr).value) as *mut u8,
                     value_size,
                 );
     
@@ -5811,11 +5878,7 @@ Module rc.
         unsafe fn copy_from_slice(v: &[T]) -> Rc<[T]> {
             unsafe {
                 let ptr = Self::allocate_for_slice(v.len());
-                ptr::copy_nonoverlapping(
-                    v.as_ptr(),
-                    ptr::addr_of_mut!(( *ptr).value) as *mut T,
-                    v.len(),
-                );
+                ptr::copy_nonoverlapping(v.as_ptr(), (&raw mut ( *ptr).value) as *mut T, v.len());
                 Self::from_ptr(ptr)
             }
         }
@@ -5936,7 +5999,7 @@ Module rc.
                 let layout = Layout::for_value_raw(ptr);
     
                 // Pointer to first element
-                let elems = ptr::addr_of_mut!(( *ptr).value) as *mut T;
+                let elems = (&raw mut ( *ptr).value) as *mut T;
     
                 let mut guard = Guard { mem: NonNull::new_unchecked(mem), elems, layout, n_elems: 0 };
     
@@ -8332,7 +8395,7 @@ Module rc.
     
     (*
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            fmt::Pointer::fmt(&core::ptr::addr_of!( **self), f)
+            fmt::Pointer::fmt(&(&raw const **self), f)
         }
     *)
     Definition fmt (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -8681,7 +8744,7 @@ Module rc.
                 let (vec_ptr, len, cap, alloc) = v.into_raw_parts_with_alloc();
     
                 let rc_ptr = Self::allocate_for_slice_in(len, &alloc);
-                ptr::copy_nonoverlapping(vec_ptr, ptr::addr_of_mut!(( *rc_ptr).value) as *mut T, len);
+                ptr::copy_nonoverlapping(vec_ptr, (&raw mut ( *rc_ptr).value) as *mut T, len);
     
                 // Create a `Vec<T, &A>` with length 0, to deallocate the buffer
                 // without dropping its contents or the allocator
@@ -9691,7 +9754,7 @@ Module rc.
                 // SAFETY: if is_dangling returns false, then the pointer is dereferenceable.
                 // The payload may be dropped at this point, and we have to maintain provenance,
                 // so use raw pointer manipulation.
-                unsafe { ptr::addr_of_mut!(( *ptr).value) }
+                unsafe { &raw mut ( *ptr).value }
             }
         }
     *)

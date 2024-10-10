@@ -1269,7 +1269,7 @@ Module ptr.
       // `dst` cannot overlap `src` because the caller has mutable access
       // to `dst` while `src` is owned by this function.
       unsafe {
-          copy_nonoverlapping(addr_of!(src) as *const u8, dst as *mut u8, mem::size_of::<T>());
+          copy_nonoverlapping((&raw const src) as *const u8, dst as *mut u8, mem::size_of::<T>());
           // We are calling the intrinsic directly to avoid function calls in the generated code.
           intrinsics::forget(src);
       }

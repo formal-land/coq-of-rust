@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.lib.lib.
 Require Import CoqOfRust.move_sui.simulations.mutual.lib.
+Require Import Coq.Lists.List.
 
 Import simulations.M.Notations.
 
@@ -13,6 +14,11 @@ Module CodeOffset := file_format.CodeOffset.
 Module BlockId.
   Definition t : Set := CodeOffset.t.
 End BlockId.
+
+(*
+const ENTRY_BLOCK_ID: BlockId = 0;
+*)
+Definition ENTRY_BLOCK_ID : BlockId.t := 0.
 
 (* pub trait ControlFlowGraph { *)
 (* We do not implement this trait as it is used only once. *)
@@ -50,7 +56,54 @@ Module VMControlFlowGraph.
 End VMControlFlowGraph.
 
 Module Impl_VMControlFlowGraph.
+  (* TODO: complete *)
   Definition new (code : list Bytecode.t) : VMControlFlowGraph.t. Admitted.
+
+  (*
+   * Beginning of the `new` function:
+   *)
+
+  Definition code_len (code : list Bytecode.t) : CodeOffset.t :=
+    Z.of_nat (List.length code).
+
+  (*
+  Definition new (code : list Bytecode.t) : VMControlFlowGraph.t :=
+    let code_length := code_len code in
+    let block_ids := BlockIdSet.add ENTRY_BLOCK_ID BlockIdSet.empty in
+  (* TO BE CONTINUED *)
+  *)
+  (*
+  fn record_block_ids(pc: CodeOffset, code: &[Bytecode], block_ids: &mut Set<BlockId>) {
+      let bytecode = &code[pc as usize];
+
+      if let Some(offset) = bytecode.offset() {
+          block_ids.insert(*offset); (* Dereferencing syntax *)*)
+      }
+
+      if bytecode.is_branch() && pc + 1 < (code.len() as CodeOffset) {
+          block_ids.insert(pc + 1);
+      }
+  }
+  *)
+
+  Definition record_block_ids
+      (pc : CodeOffset.t)
+      (code : list Bytecode.t)
+      (block_ids : Set_.t BlockId.t) :
+      Set_.t BlockId.t :=
+    match List.nth_error code (Z.to_nat pc) with
+    | Some bytecode =>
+      let block_ids :=
+        match Bytecode.offset bytecode with
+        | Some offset => Set_.add offset block_ids
+        | None => block_ids
+        end in
+      if andb (Bytecode.is_branch bytecode) ((pc + 1) <? Z.of_nat (length code)) then
+        Set_.add (pc + 1)%Z block_ids
+      else
+        block_ids
+    | None => block_ids
+    end.
 
   (* We put here the functions from the trait [ControlFlowGraph] as it is used only once. *)
   (*
