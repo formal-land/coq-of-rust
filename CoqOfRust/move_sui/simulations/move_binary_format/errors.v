@@ -65,7 +65,7 @@ End PartialVMError_.
   only return the updated value rather than modifying the original value. *)
 Module PartialVMError.
   Record t : Set := {
-    _ : PartialVMError_.t;
+    error : PartialVMError_.t;
   }.
 
   Module Impl_PartialVMError.

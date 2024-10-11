@@ -20,3 +20,5 @@ token-2022
 # Links that are not working yet
 core/links/cmp.v
 move_sui/links/
+# We ignore the metering for now
+move_sui/simulations/move_bytecode_verifier_meter/lib.v

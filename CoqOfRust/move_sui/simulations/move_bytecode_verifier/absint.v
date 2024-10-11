@@ -66,8 +66,9 @@ Module Impl_FunctionContext.
       (index : FunctionDefinitionIndex.t)
       (code : file_format.CodeUnit.t)
       (function_handle : FunctionHandle.t) :
-      Self :=
+      M! Self :=
     let signature_at := CompiledModule.Impl_CompiledModule.signature_at in
+    let! cfg := control_flow_graph.Impl_VMControlFlowGraph.new code.(file_format.CodeUnit.code) in
     let result : Self :=
     {|
       FunctionContext.index := Some index;
@@ -76,9 +77,9 @@ Module Impl_FunctionContext.
       FunctionContext.return_ := signature_at module function_handle.(FunctionHandle.return_);
       FunctionContext.locals := signature_at module code.(file_format.CodeUnit.locals);
       FunctionContext.type_parameters := function_handle.(FunctionHandle.type_parameters);
-      FunctionContext.cfg := control_flow_graph.Impl_VMControlFlowGraph.new code.(file_format.CodeUnit.code);
+      FunctionContext.cfg := cfg;
     |} in
-    result.
+    return! result.
 
   Definition parameters (self : Self) := self.(FunctionContext.parameters).
 

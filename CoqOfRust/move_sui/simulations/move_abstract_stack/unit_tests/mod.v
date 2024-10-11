@@ -24,35 +24,36 @@ Import simulations.assert.Notations.
   }
 *)
 
-Definition test_empty_stack :
-    MS? (AbstractStack.t Z) unit :=
-  letS? empty := readS? in
-  letS? _ := assertS?ofS? AbstractStack.self_is_empty in
-  letS? _ :=
+Definition test_empty_stack : MS! (AbstractStack.t Z) unit :=
+  letS! empty := readS! in
+  letS! _ := assertS?ofS? AbstractStack.self_is_empty in
+  letS! _ :=
     assert_eqS?ofS?
       (AbstractStack.pop)
-      (returnS? (Result.Err AbsStackError.Underflow)) in
-  letS? _ :=
+      (returnS! (Result.Err AbsStackError.Underflow)) in
+  letS! _ :=
     assert_eqS?ofS?
       (AbstractStack.pop_any_n 1)
-      (returnS? (Result.Err AbsStackError.Underflow)) in
-  letS? _ :=
+      (returnS! (Result.Err AbsStackError.Underflow)) in
+  letS! _ :=
     assert_eqS?ofS?
       (AbstractStack.pop_any_n 100)
-      (returnS? (Result.Err AbsStackError.Underflow)) in
-  letS? _ :=
+      (returnS! (Result.Err AbsStackError.Underflow)) in
+  letS! _ :=
     assert_eqS?ofS?
       (AbstractStack.pop_eq_n 12)
-      (returnS? (Result.Err AbsStackError.Underflow)) in
-  letS? _ :=
+      (returnS! (Result.Err AbsStackError.Underflow)) in
+  letS! _ :=
     assert_eqS?ofS?
       (AbstractStack.pop_eq_n 112)
-      (returnS? (Result.Err AbsStackError.Underflow)) in
+      (returnS! (Result.Err AbsStackError.Underflow)) in
   assertS?ofS? AbstractStack.self_is_empty.
 
 Lemma test_empty_stack_correct :
-  testS? test_empty_stack AbstractStack.new.
+  exists state,
+  test_empty_stack AbstractStack.new = return! (tt, state).
 Proof.
+  eexists.
   reflexivity.
 Qed.
 
@@ -148,101 +149,102 @@ Qed.
   }
 *)
 
-Definition test_simple_push_pop :
-    MS? (AbstractStack.t Z) unit :=
+Definition test_simple_push_pop : MS! (AbstractStack.t Z) unit :=
+  letS! s := readS! in
+  letS! _ := AbstractStack.push 1 in
+  letS! _ := assertS?ofS? AbstractStack.self_is_not_empty in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 1) in
+  letS! _ := AbstractStack.assert_run_lengths [1] in
+  letS! _ := assert_eqS?ofS? AbstractStack.pop (returnS! (Result.Ok 1)) in
+  letS! _ := assertS?ofS? (AbstractStack.self_is_empty) in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 0) in
 
-  letS? s := readS? in
-  letS? _ := AbstractStack.push 1 in
-  letS? _ := assertS?ofS? AbstractStack.self_is_not_empty in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 1) in
-  letS? _ := AbstractStack.assert_run_lengths [1] in
-  letS? _ := assert_eqS?ofS? AbstractStack.pop (returnS? (Result.Ok 1)) in
-  letS? _ := assertS?ofS? (AbstractStack.self_is_empty) in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 0) in
+  letS! _ := AbstractStack.push 1 in
+  letS! _ := AbstractStack.push 2 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := assertS?ofS? AbstractStack.self_is_not_empty in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 3) in
+  letS! _ := AbstractStack.assert_run_lengths [1; 1; 1] in
+  letS! _ := assert_eqS?ofS? AbstractStack.pop (returnS! (Result.Ok 3)) in
+  letS! _ := assert_eqS?ofS? AbstractStack.pop (returnS! (Result.Ok 2)) in
+  letS! _ := assert_eqS?ofS? AbstractStack.pop (returnS! (Result.Ok 1)) in
+  letS! _ := assertS?ofS? (AbstractStack.self_is_empty) in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 0) in
 
-  letS? _ := AbstractStack.push 1 in
-  letS? _ := AbstractStack.push 2 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := assertS?ofS? AbstractStack.self_is_not_empty in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 3) in
-  letS? _ := AbstractStack.assert_run_lengths [1; 1; 1] in
-  letS? _ := assert_eqS?ofS? AbstractStack.pop (returnS? (Result.Ok 3)) in
-  letS? _ := assert_eqS?ofS? AbstractStack.pop (returnS? (Result.Ok 2)) in
-  letS? _ := assert_eqS?ofS? AbstractStack.pop (returnS? (Result.Ok 1)) in
-  letS? _ := assertS?ofS? (AbstractStack.self_is_empty) in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 0) in
+  letS! _ := AbstractStack.push_n 1 1 in
+  letS! _ := AbstractStack.push_n 2 2 in
+  letS! _ := AbstractStack.push_n 3 3 in
+  letS! _ := assertS?ofS? AbstractStack.self_is_not_empty in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 6) in
+  letS! _ := AbstractStack.assert_run_lengths [3; 2; 1] in
+  letS! _ := assert_eqS?ofS? AbstractStack.pop (returnS! (Result.Ok 3)) in
+  letS! _ := assert_eqS?ofS? AbstractStack.pop (returnS! (Result.Ok 3)) in
+  letS! _ := assert_eqS?ofS? AbstractStack.pop (returnS! (Result.Ok 3)) in
+  letS! _ := assert_eqS?ofS? AbstractStack.pop (returnS! (Result.Ok 2)) in
+  letS! _ := assert_eqS?ofS? AbstractStack.pop (returnS! (Result.Ok 2)) in
+  letS! _ := assert_eqS?ofS? AbstractStack.pop (returnS! (Result.Ok 1)) in
+  letS! _ := assertS?ofS? (AbstractStack.self_is_empty) in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 0) in
 
-  letS? _ := AbstractStack.push_n 1 1 in
-  letS? _ := AbstractStack.push_n 2 2 in
-  letS? _ := AbstractStack.push_n 3 3 in
-  letS? _ := assertS?ofS? AbstractStack.self_is_not_empty in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 6) in
-  letS? _ := AbstractStack.assert_run_lengths [3; 2; 1] in
-  letS? _ := assert_eqS?ofS? AbstractStack.pop (returnS? (Result.Ok 3)) in
-  letS? _ := assert_eqS?ofS? AbstractStack.pop (returnS? (Result.Ok 3)) in
-  letS? _ := assert_eqS?ofS? AbstractStack.pop (returnS? (Result.Ok 3)) in
-  letS? _ := assert_eqS?ofS? AbstractStack.pop (returnS? (Result.Ok 2)) in
-  letS? _ := assert_eqS?ofS? AbstractStack.pop (returnS? (Result.Ok 2)) in
-  letS? _ := assert_eqS?ofS? AbstractStack.pop (returnS? (Result.Ok 1)) in
-  letS? _ := assertS?ofS? (AbstractStack.self_is_empty) in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 0) in
+  letS! _ := AbstractStack.push_n 1 1 in
+  letS! _ := AbstractStack.push_n 2 2 in
+  letS! _ := AbstractStack.push_n 3 3 in
+  letS! _ := assertS?ofS? AbstractStack.self_is_not_empty in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 6) in
+  letS! _ := AbstractStack.assert_run_lengths [3; 2; 1] in
+  letS! _ := assert_eqS?ofS? (AbstractStack.pop_eq_n 3) (returnS! (Result.Ok 3)) in
+  letS! _ := assert_eqS?ofS? (AbstractStack.pop_eq_n 2) (returnS! (Result.Ok 2)) in
+  letS! _ := assert_eqS?ofS? (AbstractStack.pop_eq_n 1) (returnS! (Result.Ok 1)) in
+  letS! _ := assertS?ofS? (AbstractStack.self_is_empty) in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 0) in
 
-  letS? _ := AbstractStack.push_n 1 1 in
-  letS? _ := AbstractStack.push_n 2 2 in
-  letS? _ := AbstractStack.push_n 3 3 in
-  letS? _ := assertS?ofS? AbstractStack.self_is_not_empty in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 6) in
-  letS? _ := AbstractStack.assert_run_lengths [3; 2; 1] in
-  letS? _ := assert_eqS?ofS? (AbstractStack.pop_eq_n 3) (returnS? (Result.Ok 3)) in
-  letS? _ := assert_eqS?ofS? (AbstractStack.pop_eq_n 2) (returnS? (Result.Ok 2)) in
-  letS? _ := assert_eqS?ofS? (AbstractStack.pop_eq_n 1) (returnS? (Result.Ok 1)) in
-  letS? _ := assertS?ofS? (AbstractStack.self_is_empty) in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 0) in
+  letS! _ := AbstractStack.push 1 in
+  letS! _ := AbstractStack.push 2 in
+  letS! _ := AbstractStack.push 2 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := assertS?ofS? AbstractStack.self_is_not_empty in
+  letS! _ := AbstractStack.assert_run_lengths [3; 2; 1] in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 6) in
+  letS! _ := assert_eqS?ofS? (AbstractStack.pop_eq_n 3) (returnS! (Result.Ok 3)) in
+  letS! _ := assert_eqS?ofS? (AbstractStack.pop_eq_n 2) (returnS! (Result.Ok 2)) in
+  letS! _ := assert_eqS?ofS? (AbstractStack.pop_eq_n 1) (returnS! (Result.Ok 1)) in
+  letS! _ := assertS?ofS? (AbstractStack.self_is_empty) in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 0) in
 
-  letS? _ := AbstractStack.push 1 in
-  letS? _ := AbstractStack.push 2 in
-  letS? _ := AbstractStack.push 2 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := assertS?ofS? AbstractStack.self_is_not_empty in
-  letS? _ := AbstractStack.assert_run_lengths [3; 2; 1] in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 6) in
-  letS? _ := assert_eqS?ofS? (AbstractStack.pop_eq_n 3) (returnS? (Result.Ok 3)) in
-  letS? _ := assert_eqS?ofS? (AbstractStack.pop_eq_n 2) (returnS? (Result.Ok 2)) in
-  letS? _ := assert_eqS?ofS? (AbstractStack.pop_eq_n 1) (returnS? (Result.Ok 1)) in
-  letS? _ := assertS?ofS? (AbstractStack.self_is_empty) in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 0) in
+  letS! _ := AbstractStack.push_n 1 1 in
+  letS! _ := AbstractStack.push_n 2 2 in
+  letS! _ := AbstractStack.push_n 3 3 in
+  letS! _ := assertS?ofS? AbstractStack.self_is_not_empty in
+  letS! _ := AbstractStack.assert_run_lengths [3; 2; 1] in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 6) in
+  letS! _ := AbstractStack.pop_any_n 6 in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 0) in
+  letS! _ := assertS?ofS? (AbstractStack.self_is_empty) in
 
-  letS? _ := AbstractStack.push_n 1 1 in
-  letS? _ := AbstractStack.push_n 2 2 in
-  letS? _ := AbstractStack.push_n 3 3 in
-  letS? _ := assertS?ofS? AbstractStack.self_is_not_empty in
-  letS? _ := AbstractStack.assert_run_lengths [3; 2; 1] in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 6) in
-  letS? _ := AbstractStack.pop_any_n 6 in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 0) in
-  letS? _ := assertS?ofS? (AbstractStack.self_is_empty) in
+  letS! _ := AbstractStack.push 1 in
+  letS! _ := AbstractStack.push 2 in
+  letS! _ := AbstractStack.push 2 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := assertS?ofS? AbstractStack.self_is_not_empty in
+  letS! _ := AbstractStack.assert_run_lengths [3; 2; 1] in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 6) in
+  letS! _ := AbstractStack.pop_any_n 4 in
+  letS! _ := AbstractStack.pop_any_n 2 in
+  letS! _ := assertS?ofS? (AbstractStack.self_is_empty) in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 0) in
 
-  letS? _ := AbstractStack.push 1 in
-  letS? _ := AbstractStack.push 2 in
-  letS? _ := AbstractStack.push 2 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := assertS?ofS? AbstractStack.self_is_not_empty in
-  letS? _ := AbstractStack.assert_run_lengths [3; 2; 1] in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 6) in
-  letS? _ := AbstractStack.pop_any_n 4 in
-  letS? _ := AbstractStack.pop_any_n 2 in
-  letS? _ := assertS?ofS? (AbstractStack.self_is_empty) in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 0) in
-
-  returnS? tt.
+  returnS! tt.
 
 Lemma test_simple_push_pop_correct :
-  testS? test_simple_push_pop AbstractStack.new.
+  exists state,
+  test_simple_push_pop AbstractStack.new = return! (tt, state).
 Proof.
+  eexists.
+  vm_compute.
   reflexivity.
 Qed.
 
@@ -266,30 +268,32 @@ Qed.
 *)
 
 Definition test_not_eq :
-    MS? (AbstractStack.t Z) unit :=
-  letS? s := readS? in
-  letS? _ := AbstractStack.push 1 in
-  letS? _ := AbstractStack.push 2 in
-  letS? _ := AbstractStack.push 2 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 6) in
-  letS? _ := AbstractStack.assert_run_lengths [3; 2; 1] in
-  letS? _ :=
+    MS! (AbstractStack.t Z) unit :=
+  letS! s := readS! in
+  letS! _ := AbstractStack.push 1 in
+  letS! _ := AbstractStack.push 2 in
+  letS! _ := AbstractStack.push 2 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 6) in
+  letS! _ := AbstractStack.assert_run_lengths [3; 2; 1] in
+  letS! _ :=
     assert_eqS?ofS?
       (AbstractStack.pop_eq_n 4)
-      (returnS? (Result.Err AbsStackError.ElementNotEqual)) in
-  letS? _ :=
+      (returnS! (Result.Err AbsStackError.ElementNotEqual)) in
+  letS! _ :=
     assert_eqS?ofS?
       (AbstractStack.pop_eq_n 4)
-      (returnS? (Result.Err AbsStackError.ElementNotEqual)) in
-  letS? _ := assert_eqS?ofS? (AbstractStack.self_len) (returnS? 6) in
+      (returnS! (Result.Err AbsStackError.ElementNotEqual)) in
+  letS! _ := assert_eqS?ofS? (AbstractStack.self_len) (returnS! 6) in
   AbstractStack.assert_run_lengths [3; 2; 1].
 
 Lemma test_not_eq_correct :
-  testS? test_not_eq AbstractStack.new.
+  exists state,
+  test_not_eq AbstractStack.new = return! (tt, state).
 Proof.
+  eexists.
   reflexivity.
 Qed.
 
@@ -313,29 +317,31 @@ Qed.
 *)
 
 Definition test_not_enough_values :
-    MS? (AbstractStack.t Z) unit :=
-  letS? s := readS? in
-  letS? _ := AbstractStack.push 1 in
-  letS? _ := AbstractStack.push 2 in
-  letS? _ := AbstractStack.push 2 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := AbstractStack.push 3 in
-  letS? _ := assert_eqS?ofS? AbstractStack.self_len (returnS? 6) in
-  letS? _ := AbstractStack.assert_run_lengths [3; 2; 1] in
-  letS? _ :=
+    MS! (AbstractStack.t Z) unit :=
+  letS! s := readS! in
+  letS! _ := AbstractStack.push 1 in
+  letS! _ := AbstractStack.push 2 in
+  letS! _ := AbstractStack.push 2 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := AbstractStack.push 3 in
+  letS! _ := assert_eqS?ofS? AbstractStack.self_len (returnS! 6) in
+  letS! _ := AbstractStack.assert_run_lengths [3; 2; 1] in
+  letS! _ :=
     assert_eqS?ofS?
       (AbstractStack.pop_eq_n 7)
-      (returnS? (Result.Err AbsStackError.Underflow)) in
-  letS? _ :=
+      (returnS! (Result.Err AbsStackError.Underflow)) in
+  letS! _ :=
     assert_eqS?ofS?
       (AbstractStack.pop_any_n 7)
-      (returnS? (Result.Err AbsStackError.Underflow)) in
-  letS? _ := assert_eqS?ofS? (AbstractStack.self_len) (returnS? 6) in
+      (returnS! (Result.Err AbsStackError.Underflow)) in
+  letS! _ := assert_eqS?ofS? (AbstractStack.self_len) (returnS! 6) in
   AbstractStack.assert_run_lengths [3; 2; 1].
 
 Lemma test_not_enough_values_correct :
-  testS? test_not_enough_values AbstractStack.new.
+  exists state,
+  test_not_enough_values AbstractStack.new = return! (tt, state).
 Proof.
+  eexists.
   reflexivity.
 Qed.

@@ -6,7 +6,6 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.absint.
 Require CoqOfRust.move_sui.simulations.move_bytecode_verifier.type_safety.
-Require CoqOfRust.move_sui.simulations.move_bytecode_verifier_meter.lib.
 
 (*
 fn make_module_with_ret(code: Vec<Bytecode>, return_: SignatureToken) -> CompiledModule {
@@ -88,7 +87,7 @@ fn get_fun_context(module: &CompiledModule) -> FunctionContext {
 }
 *)
 Definition get_fun_context (module : file_format.CompiledModule.t) :
-    Panic.t type_safety.FunctionContext.t :=
+    M! type_safety.FunctionContext.t :=
   match
     module.(file_format.CompiledModule.function_defs),
     module.(file_format.CompiledModule.function_handles)
@@ -96,14 +95,14 @@ Definition get_fun_context (module : file_format.CompiledModule.t) :
   | function_def :: _, function_handle :: _ =>
     match function_def.(file_format.FunctionDefinition.code) with
     | Some code =>
-      return!? $ absint.Impl_FunctionContext.new
+      absint.Impl_FunctionContext.new
         module
         (file_format.FunctionDefinitionIndex.Build_t 0)
         code
         function_handle
-    | None => panic!? "function def does not have code"
+    | None => panic! "function def does not have code"
     end
-  | _, _ => panic!? "cannot get the first function def/handle"
+  | _, _ => panic! "cannot get the first function def/handle"
   end.
 
 (*
@@ -118,19 +117,14 @@ fn test_br_true_false_correct_type() {
     }
 }
 *)
-(** This function should return [Panic.Value tt] if the test succeeds, or an error message which
-    is the reason of the failure in case of error. *)
-Definition test_br_true_false_correct_type_BrTrue : Panic.t unit :=
+Definition test_br_true_false_correct_type_BrTrue : M!? errors.PartialVMError.t unit :=
   let code := [file_format.Bytecode.LdTrue; file_format.Bytecode.BrTrue 0] in
   let module := make_module code in
-  let!? fun_context := get_fun_context module in
-  let!? result := type_safety.verify module fun_context in
-  match result with
-  | Result.Ok _ => return!? tt
-  | _ => panic!? "assert failed"
-  end.
+  let! fun_context := get_fun_context module in
+  type_safety.verify module fun_context.
 
 Goal test_br_true_false_correct_type_BrTrue = return!? tt.
 Proof.
-  (* We need to make a definition for [control_flow_graph.Impl_VMControlFlowGraph.new] *)
-Admitted.
+  vm_compute.
+  reflexivity.
+Qed.

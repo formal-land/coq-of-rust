@@ -17,18 +17,14 @@ Module Option.
     | Some x => x
     end.
 
-  Definition expect {State A : Set}
-      (self : MS? State (option A)) (msg : string) :
-      MS? State A :=
-    letS? value := self in
-    match value with
-    | None => panicS? msg
-    | Some x => returnS? x
+  Definition expect {A : Set} (self : option A) (msg : string) : M! A :=
+    match self with
+    | None => panic! msg
+    | Some x => return! x
     end.
 
-  Definition unwrap {State A : Set}
-    (self : MS? State (option A)) : MS? State A :=
-    expect self "".
+  Definition unwrap {A : Set} (self : option A) : M! A :=
+    expect self "unwrap failure".
 End Option.
 
 Module ImplDefault.

@@ -1,8 +1,11 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
-Require Import CoqOfRust.lib.lib.
+Require core.simulations.assert.
+Require core.simulations.integer.
+Require core.simulations.slice.
 
 Import simulations.M.Notations.
+Import simulations.assert.Notations.
 
 Require Import CoqOfRust.core.simulations.eq.
 
@@ -1090,6 +1093,71 @@ Module Bytecode.
     | Bytecode.BrFalse offset | Bytecode.BrTrue offset | Bytecode.Branch offset => Some offset
     | _ => None
     end.
+
+  (*
+  pub fn get_successors(pc: CodeOffset, code: &[Bytecode]) -> Vec<CodeOffset> {
+      assert!(
+          // The program counter must remain within the bounds of the code
+          pc < u16::MAX && (pc as usize) < code.len(),
+          "Program counter out of bounds"
+      );
+
+      let bytecode = &code[pc as usize];
+      let mut v = vec![];
+
+      if let Some(offset) = bytecode.offset() {
+          v.push( *offset);
+      }
+
+      let next_pc = pc + 1;
+      if next_pc >= code.len() as CodeOffset {
+          return v;
+      }
+
+      if !bytecode.is_unconditional_branch() && !v.contains(&next_pc) {
+          // avoid duplicates
+          v.push(pc + 1);
+      }
+
+      // always give successors in ascending order
+      if v.len() > 1 && v[0] > v[1] {
+          v.swap(0, 1);
+      }
+
+      v
+  }
+  *)
+  Definition get_successors (pc : CodeOffset.t) (code : list Bytecode.t) :
+      M! (list CodeOffset.t) :=
+    let! _ :=
+      assert_with_message!
+        ((pc <? 2^16) && (pc <? Z.of_nat (List.length code)))
+        "Program counter out of bounds" in
+    let bytecode := List.nth (Z.to_nat pc) code Nop in
+    let v := [] in
+    let v :=
+      match Bytecode.offset bytecode with
+      | Some offset => [offset]
+      | None => v
+      end in
+    let next_pc := (pc + 1)%Z in
+    if next_pc >=? Z.of_nat (List.length code) then
+      return! v
+    else
+    let v :=
+      if
+        negb (Bytecode.is_unconditional_branch bytecode) &&
+        negb (slice.contains v next_pc)
+      then
+        next_pc :: v
+      else
+        v in
+    let! v :=
+      if (Z.of_nat (List.length v) >? 1) && (List.nth 0 v 0 >? List.nth 1 v 0) then
+        slice.swap v 0 1
+      else
+        return! v in
+    return! v.
 End Bytecode.
 
 Module CodeUnit.
@@ -1192,7 +1260,7 @@ pub struct CompiledModule {
 }
 *)
 Module CompiledModule.
-  Record t : Set := { 
+  Record t : Set := {
     version : Z;
     (* self_module_handle_idx : ModuleHandleIndex; *)
     (* module_handles : list ModuleHandle; *)

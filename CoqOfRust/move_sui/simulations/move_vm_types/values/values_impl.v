@@ -560,10 +560,10 @@ Module Locals.
       end.
 
     Definition swap_loc (idx : Z) (violation_check : bool) 
-      : MS? (Self * Value.t) (PartialVMResult.t Value.t) :=
-      letS? '(v, x) := readS? in
+      : MS! (Self * Value.t) (PartialVMResult.t Value.t) :=
+      letS! (v, x) := readS! in
       if Z.of_nat $ List.length v <=? idx
-      then returnS? $ Result.Err $ 
+      then returnS! $ Result.Err $ 
         PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
       else
         let v_nth := List.nth (Z.to_nat idx) v default_valueimpl in
@@ -571,10 +571,10 @@ Module Locals.
         then
         (* NOTE: we ignore the case where rc_counter is greater than 1. Might find a way to deal with it in the future *)
         let v_new := swap_list_nth v x (Z.to_nat idx) in
-        letS? _ := writeS? (v_new, v_nth) in
-          returnS? $ Result.Ok $ v_nth
+        letS! _ := writeS! (v_new, v_nth) in
+          returnS! $ Result.Ok $ v_nth
         else
-          returnS? $ Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION.
+          returnS! $ Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION.
 
     (*
     pub fn move_loc(&mut self, idx: usize, violation_check: bool) -> PartialVMResult<Value> {
@@ -588,13 +588,13 @@ Module Locals.
     }
     *)
     Definition move_loc (idx : Z) (violation_check : bool) 
-      : MS? Self (PartialVMResult.t Value.t) :=
-      letS?? result := liftS? (Lens.lens_self_self_value ValueImpl.Invalid) 
+      : MS! Self (PartialVMResult.t Value.t) :=
+      letS!? result := liftS! (Lens.lens_self_self_value ValueImpl.Invalid) 
         $ swap_loc idx violation_check in
       match result with
-      | ValueImpl.Invalid => returnS? $ Result.Err $ 
+      | ValueImpl.Invalid => returnS! $ Result.Err $ 
         PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
-      | v => returnS? $ Result.Ok v
+      | v => returnS! $ Result.Ok v
       end.
 
     (* 
@@ -609,9 +609,9 @@ Module Locals.
     }
     *)
     Definition store_loc (idx : Z) (violation_check : bool) 
-      : MS? (Self * Value.t) (PartialVMResult.t unit) :=
-      letS?? result := swap_loc idx violation_check in
-        returnS? $ Result.Ok tt.
+      : MS! (Self * Value.t) (PartialVMResult.t unit) :=
+      letS!? result := swap_loc idx violation_check in
+        returnS! $ Result.Ok tt.
 
     (* 
       pub fn borrow_loc(&self, idx: usize) -> PartialVMResult<Value> {
@@ -673,15 +673,15 @@ Module Locals.
           StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR in
         match v_nth with
         | ValueImpl.Container c =>
-          returnS? $ Result.Ok $ ValueImpl.ContainerRef $ ContainerRef.Local c
-        | ValueImpl.U8 _ => returnS? result_1
-        | ValueImpl.U16 _ => returnS? result_1
-        | ValueImpl.U32 _ => returnS? result_1
-        | ValueImpl.U64 _ => returnS? result_1
-        | ValueImpl.U128 _ => returnS? result_1
-        | ValueImpl.U256 _ => returnS? result_1
-        | ValueImpl.Bool _ => returnS? result_1
-        | ValueImpl.Address _ => returnS? result_1
+          returnS! $ Result.Ok $ ValueImpl.ContainerRef $ ContainerRef.Local c
+        | ValueImpl.U8 _ => returnS! result_1
+        | ValueImpl.U16 _ => returnS! result_1
+        | ValueImpl.U32 _ => returnS! result_1
+        | ValueImpl.U64 _ => returnS! result_1
+        | ValueImpl.U128 _ => returnS! result_1
+        | ValueImpl.U256 _ => returnS! result_1
+        | ValueImpl.Bool _ => returnS! result_1
+        | ValueImpl.Address _ => returnS! result_1
         | ValueImpl.ContainerRef _ => result_2
         | ValueImpl.Invalid => result_2
         | ValueImpl.IndexedRef _ => result_2

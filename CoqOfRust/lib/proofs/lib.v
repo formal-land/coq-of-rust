@@ -11,7 +11,9 @@ Ltac destruct_match_in e :=
     destruct_match_in e
   | context[let? _ := ?e in _] =>
     destruct_match_in e
-  | context[letS? _ := ?e in _] =>
+  | context[let! _ := ?e in _] =>
+    destruct_match_in e
+  | context[letS! _ := ?e in _] =>
     destruct_match_in e
   | _ => destruct e eqn:?
   end.
@@ -23,7 +25,9 @@ Ltac step :=
     destruct_match_in e
   | |- context[let? _ := ?e in _] =>
     destruct_match_in e
-  | |- context[letS? _ := ?e in _] =>
+  | |- context[let! _ := ?e in _] =>
+    destruct_match_in e
+  | |- context[letS! _ := ?e in _] =>
     destruct_match_in e
   end.
 
