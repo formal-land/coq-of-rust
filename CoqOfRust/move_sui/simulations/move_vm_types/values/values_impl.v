@@ -257,70 +257,70 @@ Module Value.
       Global Instance cast_u8 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U8 x => Result.Ok x
-          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_u16 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U16 x => Result.Ok x
-          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_u32 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U32 x => Result.Ok x
-          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_u64 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U64 x => Result.Ok x
-          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_u128 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U128 x => Result.Ok x
-          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_u256 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
           | ValueImpl.U256 x => Result.Ok x
-          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_bool : VMValueCast.Trait Self bool : Set := {
         cast (self : Self) := match self with
           | ValueImpl.Bool x => Result.Ok x
-          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_AccountAddress : VMValueCast.Trait Self AccountAddress.t : Set := {
         cast (self : Self) := match self with
           | ValueImpl.Address x => Result.Ok x
-          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_ContainerRef : VMValueCast.Trait Self ContainerRef.t : Set := {
         cast (self : Self) := match self with
           | ValueImpl.ContainerRef x => Result.Ok x
-          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
 
       Global Instance cast_IndexedRef : VMValueCast.Trait Self IndexedRef.t : Set := {
         cast (self : Self) := match self with
           | ValueImpl.IndexedRef x => Result.Ok x
-          | _ => Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+          | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
           end;
       }.
     End cast.
@@ -511,13 +511,13 @@ Module Locals.
     Definition copy_loc (self : Self) (idx : Z) : PartialVMResult.t Value.t :=
       (* idx is out of range, which is the 3rd case for the match clause *)
       if Z.of_nat $ List.length self <=? idx
-      then Result.Err $ PartialVMError.Impl_PartialVMError.new
+      then Result.Err $ PartialVMError.new
         StatusCode.VERIFIER_INVARIANT_VIOLATION
       else
       (* Now we deal with the former 2 cases *)
         let v := List.nth (Z.to_nat idx) self default_valueimpl in
         match v with
-        | ValueImpl.Invalid => Result.Err $ PartialVMError.Impl_PartialVMError.new
+        | ValueImpl.Invalid => Result.Err $ PartialVMError.new
           StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
         | _ => Result.Ok $ v
         end.
@@ -564,7 +564,7 @@ Module Locals.
       letS! (v, x) := readS! in
       if Z.of_nat $ List.length v <=? idx
       then returnS! $ Result.Err $ 
-        PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
+        PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
       else
         let v_nth := List.nth (Z.to_nat idx) v default_valueimpl in
         if violation_check
@@ -574,7 +574,7 @@ Module Locals.
         letS! _ := writeS! (v_new, v_nth) in
           returnS! $ Result.Ok $ v_nth
         else
-          returnS! $ Result.Err $ PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION.
+          returnS! $ Result.Err $ PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION.
 
     (*
     pub fn move_loc(&mut self, idx: usize, violation_check: bool) -> PartialVMResult<Value> {
@@ -593,7 +593,7 @@ Module Locals.
         $ swap_loc idx violation_check in
       match result with
       | ValueImpl.Invalid => returnS! $ Result.Err $ 
-        PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
+        PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
       | v => returnS! $ Result.Ok v
       end.
 
@@ -659,7 +659,7 @@ Module Locals.
     (* Definition borrow_loc (self : Self) (idx : Z) : PartialVMResult.t Value.t :=
       let v := self in
       if Z.of_nat $ List.length self >=? idx
-      then Result.Err $ PartialVMError.Impl_PartialVMError.new 
+      then Result.Err $ PartialVMError.new 
         StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
       else
         let v_nth := List.nth (Z.to_nat idx) self default_valueimpl in
@@ -669,7 +669,7 @@ Module Locals.
             (* NOTE: How should we directly construct a mutual dependent item? *)
             (ContainerRef.Local $ Container.Locals (Value.coerce_Container_Locals self))
             idx in
-        let result_2 := Result.Err $ PartialVMError.Impl_PartialVMError.new 
+        let result_2 := Result.Err $ PartialVMError.new 
           StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR in
         match v_nth with
         | ValueImpl.Container c =>

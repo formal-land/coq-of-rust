@@ -175,6 +175,7 @@ End StatePanicNotations.
 
 Module StatePanicResult.
   Import ResultNotations.
+  Import PanicNotations.
   Import StatePanicNotations.
 
   Definition t (State Error A : Set) : Set :=
@@ -200,6 +201,10 @@ Module StatePanicResult.
       (f : A -> B -> t State Error A) :
       t State Error A :=
     List.fold_left (fun acc x => bind acc (fun acc => f acc x)) l (return_ init).
+
+  Definition lift_from_panic {State Error A : Set} (value : M! A) : t State Error A :=
+    letS! value := return!toS! value in
+    returnS! (return? value).
 End StatePanicResult.
 
 Module StatePanicResultNotations.
@@ -212,6 +217,8 @@ Module StatePanicResultNotations.
     (at level 200, x pattern, X at level 100, Y at level 200).
 
   Notation "foldS!?" := StatePanicResult.fold_left.
+
+  Notation "return!toS!?" := StatePanicResult.lift_from_panic.
 End StatePanicResultNotations.
 
 (** ** Lens that are useful for the definition of simulations. *)

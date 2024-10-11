@@ -269,7 +269,7 @@ Module Stack.
         letS! _ := writeS! $ self <| Stack.value := List.app self_value [value] |> in
         returnS! $ Result.Ok tt
       else returnS! $ Result.Err $ 
-        PartialVMError.Impl_PartialVMError.new StatusCode.EXECUTION_STACK_OVERFLOW.
+        PartialVMError.new StatusCode.EXECUTION_STACK_OVERFLOW.
 
     (* 
     /// Pop a `Value` off the stack or abort execution if the stack is empty.
@@ -290,7 +290,7 @@ Module Stack.
         letS! _ := writeS! self <| Stack.value := self_value |> in
         returnS! $ Result.Ok x
       | _ => returnS! $ Result.Err $ 
-        PartialVMError.Impl_PartialVMError.new StatusCode.EMPTY_VALUE_STACK
+        PartialVMError.new StatusCode.EMPTY_VALUE_STACK
       end.
 
     (* 
@@ -798,7 +798,7 @@ Definition execute_instruction (pc : Z)
     let val := Value.Impl_Value.deserialize_constant constant in
     let val := match val with
     | Some v => v
-    | None => PartialVMError.Impl_PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
+    | None => PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
     end in
     letS!? _ := liftS! Interpreter.Lens.lens_state_self (
       liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push val) in 
