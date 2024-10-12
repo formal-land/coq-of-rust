@@ -1,20 +1,11 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
-Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
-Require CoqOfRust.move_sui.simulations.move_binary_format.control_flow_graph.
-Module BlockId := control_flow_graph.BlockId.
-Module VMControlFlowGraph := control_flow_graph.VMControlFlowGraph.
-
-Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
-Module AbilitySet := file_format.AbilitySet.
-Module Bytecode := file_format.Bytecode.
-Module CompiledModule := file_format.CompiledModule.
-Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
-Module FunctionHandle := file_format.FunctionHandle.
-Module Signature := file_format.Signature.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.control_flow_graph.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format_index.
 
 (* pub struct FunctionContext<'a> {
     index: Option<FunctionDefinitionIndex>,
@@ -67,7 +58,7 @@ Module Impl_FunctionContext.
       (code : file_format.CodeUnit.t)
       (function_handle : FunctionHandle.t) :
       M! Self :=
-    let signature_at := CompiledModule.Impl_CompiledModule.signature_at in
+    let signature_at := CompiledModule.signature_at in
     let! cfg := control_flow_graph.Impl_VMControlFlowGraph.new code.(file_format.CodeUnit.code) in
     let result : Self :=
     {|

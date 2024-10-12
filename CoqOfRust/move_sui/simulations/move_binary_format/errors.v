@@ -7,18 +7,9 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.lib.
 Module IndexKind := move_binary_format.lib.IndexKind.
 
-(* TODO(progress):
-  - Rewrite `mut` functions with `StatePanic` monads, for example `at_code_offset`. 
-    Maybe implement Lens for `PartialVMError`. See the NOTE there
-*)
-
-Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
-Module TableIndex := file_format.TableIndex.
-Module FunctionDefinitionIndex := file_format.FunctionDefinitionIndex.
-Module CodeOffset := file_format.CodeOffset.
-
-Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
-Module StatusCode := vm_status.StatusCode.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format_index.
+Require Import CoqOfRust.move_sui.simulations.move_core_types.language_storage.
+Require Import CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 
 (* NOTE: STUB: Implement this only if necessary *)
 Module ExecutionState.
@@ -28,7 +19,7 @@ End ExecutionState.
 Module Location.
   Inductive t : Set :=
   | Undefined
-  (* | Module _ : (* language_storage::ModuleId *) *)
+  | Module (_ : ModuleId.t)
   .
 End Location.
 
@@ -58,26 +49,41 @@ Module PartialVMError.
 
   (* 
   impl PartialVMError {
-      pub fn finish(self, location: Location) -> VMError {
-          let PartialVMError_ {
-              major_status,
-              sub_status,
-              message,
-              exec_state,
-              indices,
-              offsets,
-          } = *self.0;
-          VMError(Box::new(VMError_ {
-              major_status,
-              sub_status,
-              message,
-              exec_state,
-              location,
-              indices,
-              offsets,
-          }))
-      }
+  *)
 
+  (*
+  pub fn finish(self, location: Location) -> VMError {
+      let PartialVMError_ {
+          major_status,
+          sub_status,
+          message,
+          exec_state,
+          indices,
+          offsets,
+      } = *self.0;
+      VMError(Box::new(VMError_ {
+          major_status,
+          sub_status,
+          message,
+          exec_state,
+          location,
+          indices,
+          offsets,
+      }))
+  }
+  *)
+  Definition finish (self : t) (location : Location.t) : VMError.t :=
+    {|
+      VMError.major_status  := self.(major_status);
+      VMError.sub_status    := self.(sub_status);
+      VMError.message       := self.(message);
+      VMError.exec_state    := self.(exec_state);
+      VMError.location      := location;
+      VMError.indices       := self.(indices);
+      VMError.offsets       := self.(offsets);
+    |}.
+
+  (*
       pub fn major_status(&self) -> StatusCode {
           self.0.major_status
       }
@@ -99,12 +105,22 @@ Module PartialVMError.
           self.0.exec_state = Some(exec_state);
           self
       }
+      *)
 
+      (*
       pub fn at_index(mut self, kind: IndexKind, index: TableIndex) -> Self {
           self.0.indices.push((kind, index));
           self
       }
+      *)
+      Definition at_index
+          (self : t)
+          (kind : IndexKind.t)
+          (index : TableIndex.t) :
+          t :=
+        self <| indices := self.(indices) ++ [(kind, index)] |>.
 
+      (*
       pub fn at_indices(mut self, additional_indices: Vec<(IndexKind, TableIndex)>) -> Self {
           self.0.indices.extend(additional_indices);
           self
@@ -220,7 +236,24 @@ Module PartialVMError.
     self <| offsets := (function, offset) :: self.(offsets) |>.
 End PartialVMError.
 
+(* pub type VMResult<T> = ::std::result::Result<T, VMError>; *)
+Module VMResult.
+  Definition t (T : Set) := Result.t T VMError.t.
+End VMResult.
+
 (* pub type PartialVMResult<T> = ::std::result::Result<T, PartialVMError>; *)
 Module PartialVMResult.
   Definition t (T : Set) := Result.t T PartialVMError.t.
 End PartialVMResult.
+
+(*
+pub fn verification_error(status: StatusCode, kind: IndexKind, idx: TableIndex) -> PartialVMError {
+    PartialVMError::new(status).at_index(kind, idx)
+}
+*)
+Definition verification_error
+    (status : StatusCode.t)
+    (kind : IndexKind.t)
+    (idx : TableIndex.t) :
+    PartialVMError.t :=
+  PartialVMError.at_index (PartialVMError.new status) kind idx.

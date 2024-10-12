@@ -17,6 +17,10 @@ Module Result.
     | Ok value => f value
     | Err error => Err error
     end.
+
+  Definition fold_left {A B Error : Set} (init : A) (l : list B) (f : A -> B -> t A Error) :
+      t A Error :=
+    List.fold_left (fun acc x => bind acc (fun acc => f acc x)) l (return_ init).
 End Result.
 
 Module ResultNotations.
@@ -29,6 +33,8 @@ Module ResultNotations.
   Notation "'let?' x ':=' X 'in' Y" :=
     (Result.bind X (fun x => Y))
     (at level 200, x pattern, X at level 100, Y at level 200).
+
+  Notation "fold?" := Result.fold_left.
 End ResultNotations.
 
 Module Panic.
@@ -67,6 +73,10 @@ Module PanicNotations.
   Notation "'let!' x ':=' X 'in' Y" :=
     (Panic.bind X (fun x => Y))
     (at level 200, x pattern, X at level 100, Y at level 200).
+
+  Notation "'do!' X 'in' Y" :=
+    (Panic.bind X (fun (_ : unit) => Y))
+    (at level 200, X at level 100, Y at level 200).
 
   Notation "fold!" := Panic.fold_left.
 End PanicNotations.

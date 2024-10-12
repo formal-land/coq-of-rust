@@ -6,9 +6,8 @@ Require Import CoqOfRust.move_sui.simulations.mutual.lib.
 Import simulations.M.Notations.
 Import assert.Notations.
 
-Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
-Module Bytecode := file_format.Bytecode.
-Module CodeOffset := file_format.CodeOffset.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format_index.
 
 (* pub type BlockId = CodeOffset; *)
 Module BlockId.

@@ -6,8 +6,8 @@ Require Export CoqOfRust.RecordUpdate.
 (* Global settings for files importing this file *)
 Global Set Primitive Projections.
 Global Set Printing Projections.
-Global Open Scope list_scope.
 Global Open Scope string_scope.
+Global Open Scope list_scope.
 Global Open Scope Z_scope.
 Global Open Scope type_scope.
 Global Open Scope bool_scope.

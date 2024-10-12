@@ -9,151 +9,11 @@ Import simulations.assert.Notations.
 
 Require Import CoqOfRust.core.simulations.eq.
 
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format_common.
-Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
-Module StatusCode := vm_status.StatusCode.
-
-(* NOTE(MUTUAL DEPENDENCY ISSUE): This is just a stub to fill in needed information
-  to use else where. When other files are using this type, they should have to
-  extract the `StatusCode` and construct the actual PartialVMError by themselves. *)
-Module PartialVMError.
-  Inductive t : Set := 
-  (* A very rough stub here *)
-  | new : StatusCode.t -> t (* Since we only use this function *)
-  .
-End PartialVMError.
-Module PartialVMResult.
-  Definition t (T : Set) := Result.t T PartialVMError.t.
-End PartialVMResult.
-(* **************** *)
-
-(* 
-NOTE: 
-  Structs defined with `define_index` macro are usually represented
-  with `Record t : Set := { a0 : Z; }.`. I name like such because 
-  they might be necessity to access them and t.(a0)is convinient for
-  such functionality. Other structs defined with a `Make` constructor
-  might need to change into this style in the future.
-*)
-
-(* DRAFT: Template for `define_index!` macro
-pub struct $name(pub TableIndex);
-
-/// Returns an instance of the given `Index`.
-impl $name {
-    pub fn new(idx: TableIndex) -> Self {
-        Self(idx)
-    }
-}
-
-impl ::std::fmt::Display for $name {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "{}", self.0)
-    }
-}
-
-impl ::std::fmt::Debug for $name {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        write!(f, "{}({})", stringify!($name), self.0)
-    }
-}
-
-impl ModuleIndex for $name {
-    const KIND: IndexKind = IndexKind::$kind;
-
-    #[inline]
-    fn into_index(self) -> usize {
-        self.0 as usize
-    }
-}
-*)
-Module TableIndex.
-  Record t : Set := { a0 : Z; }.
-End TableIndex.
-
-Module LocalIndex.
-  Record t : Set := { a0 : Z; }.
-End LocalIndex.
-
-Module TypeParameterIndex.
-  Record t : Set := { a0 : Z; }.
-End TypeParameterIndex.
-
-(* pub type CodeOffset = u16; *)
-Module CodeOffset.
-  Definition t : Set := Z.
-End CodeOffset.
-
-Module ModuleHandleIndex.
-  Record t : Set := { a0 : Z; }.
-End ModuleHandleIndex.
-
-Module IdentifierIndex.
-  Record t : Set := { a0 : Z; }.
-End IdentifierIndex.
-
-Module StructHandleIndex.
-  Record t : Set := { a0 : Z; }.
-End StructHandleIndex.
-
-Module StructDefinitionIndex.
-  Record t : Set := { a0 : Z; }.
-End StructDefinitionIndex.
-
-Module FieldHandleIndex.
-  Record t : Set := { a0 : Z; }.
-End FieldHandleIndex.
-
-Module FunctionDefinitionIndex.
-  Record t : Set := { a0 : Z; }.
-End FunctionDefinitionIndex.
-
-Module SignatureIndex.
-  Record t : Set := { a0 : Z; }.
-End SignatureIndex.
-
-Module StructDefInstantiationIndex.
-  Record t : Set := { a0 : Z; }.
-End StructDefInstantiationIndex.
-
-Module ConstantPoolIndex.
-  Record t : Set := { a0 : Z; }.
-End ConstantPoolIndex.
-
-Module FunctionHandleIndex.
-  Record t : Set := { a0 : Z; }.
-End FunctionHandleIndex.
-
-Module FieldInstantiationIndex.
-  Record t : Set := { a0 : Z; }.
-End FieldInstantiationIndex.
-
-Module FunctionInstantiationIndex.
-  Record t : Set := { a0 : Z; }.
-End FunctionInstantiationIndex.
-
-(* **************** *)
-
-Module FieldInstantiation.
-  Record t : Set := {
-    handle : FieldHandleIndex.t;
-    type_parameters : SignatureIndex.t;
-  }.
-End FieldInstantiation.
-
-Module FunctionInstantiation.
-  Record t : Set := {
-    handle : FunctionHandleIndex.t;
-    type_parameters : SignatureIndex.t;
-  }.
-End FunctionInstantiation.
-
-Module StructDefInstantiation.
-  Record t : Set := {
-    def : StructDefinitionIndex.t;
-    type_parameters : SignatureIndex.t;
-  }.
-End StructDefInstantiation.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format_index.
+Require Import CoqOfRust.move_sui.simulations.move_core_types.language_storage.
+Require Import CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 
 (* 
 pub enum Ability {
@@ -288,23 +148,6 @@ Module AbilitySet.
     Build_t $ Z.lor (Ability.to_Z Ability.Copy)
             $ Z.lor (Ability.to_Z Ability.Drop)
             $ Z.lor (Ability.to_Z Ability.Store) (Ability.to_Z Ability.Key).
-
-  (* NOTE: since this relies on `AbilitySet`, I decide to just implement it in this module...
-    to avoid mutual dependency issue *)
-  (* 
-  pub struct StructTypeParameter {
-      /// The type parameter constraints.
-      pub constraints: AbilitySet,
-      /// Whether the parameter is declared as phantom.
-      pub is_phantom: bool,
-  }
-  *)
-  Module StructTypeParameter.
-    Record t : Set := {
-      constraints : AbilitySet.t;
-      is_phantom  : bool;
-    }.
-  End StructTypeParameter.
 
   (* From `Ability`
   pub fn required_by(self) -> AbilitySet {
@@ -478,6 +321,21 @@ Module AbilitySet.
   End Impl_AbilitySet.
 End AbilitySet.
 
+(*
+pub struct StructTypeParameter {
+    /// The type parameter constraints.
+    pub constraints: AbilitySet,
+    /// Whether the parameter is declared as phantom.
+    pub is_phantom: bool,
+}
+*)
+Module StructTypeParameter.
+  Record t : Set := {
+    constraints : AbilitySet.t;
+    is_phantom  : bool;
+  }.
+End StructTypeParameter.
+
 (* 
 pub struct StructHandle {
     /// The module that defines the type.
@@ -493,10 +351,12 @@ pub struct StructHandle {
 }
 *)
 Module StructHandle.
-  Record t : Set := { 
+  Record t : Set := {
+    module          : ModuleHandleIndex.t;
+    name            : IdentifierIndex.t;
     abilities       : AbilitySet.t;
     (* NOTE: Remember that I put `StructTypeParameter` in `AbilitySet`... *)
-    type_parameters : list AbilitySet.StructTypeParameter.t;
+    type_parameters : list StructTypeParameter.t;
   }.
 End StructHandle.
 
@@ -544,6 +404,91 @@ Module FieldHandle.
     field: MemberCount.t;
   }.
 End FieldHandle.
+
+(*
+pub struct SignatureTokenPreorderTraversalIter<'a> {
+    stack: Vec<&'a SignatureToken>,
+}
+*)
+(* NOTE: We keep a draft for this module, since it's related to the `count`
+    functionality for `SignatureToken`. See notes at `preorder_traersal`
+    below. *)
+(* Module SignatureTokenPreorderTraversalIter.
+  Definition t := list SignatureToken.t.
+
+  (* 
+  fn next(&mut self) -> Option<Self::Item> {
+      use SignatureToken::*;
+
+      match self.stack.pop() {
+          Some(tok) => {
+              match tok {
+                  Reference(inner_tok) | MutableReference(inner_tok) | Vector(inner_tok) => {
+                      self.stack.push(inner_tok)
+                  }
+
+                  StructInstantiation(struct_inst) => {
+                      let (_, inner_toks) = &**struct_inst;
+                      self.stack.extend(inner_toks.iter().rev())
+                  }
+
+                  Signer | Bool | Address | U8 | U16 | U32 | U64 | U128 | U256 | Struct(_)
+                  | TypeParameter(_) => (),
+              }
+              Some(tok)
+          }
+          None => None,
+      }
+  }
+  *)
+  (* NOTE: DRAFT: Initial simulation for `next`
+    Definition next (stack : tt) : tt :=
+    match stack with
+    | tok :: xs => 
+      match tok with
+      | SignatureToken.Reference inner_tok
+      | SignatureToken.MutableReference inner_tok
+      | SignatureToken.Vector inner_tok
+          => inner_tok :: xs
+
+      | SignatureToken.StructInstantiation struct_inst =>
+          let (_, inner_toks) := struct_inst in
+            List.app xs (List.rev inner_toks)
+
+      | SignatureToken.Signer | SignatureToken.Bool | SignatureToken.Address 
+        | SignatureToken.U8 | SignatureToken.U16 | SignatureToken.U32 
+        | SignatureToken.U64 | SignatureToken.U128 | SignatureToken.U256 
+        | SignatureToken.Struct _ | SignatureToken.TypeParameter _
+        => xs
+      end
+    | [] => []
+    end. *)
+
+  (* 
+  fn fold<B, F>(mut self, init: B, mut f: F) -> B
+  where
+      Self: Sized,
+      F: FnMut(B, Self::Item) -> B,
+  {
+      let mut accum = init;
+      while let Some(x) = self.next() {
+          accum = f(accum, x);
+      }
+      accum
+  }
+
+  fn count(self) -> usize
+  where
+      Self: Sized,
+  {
+      self.fold(
+          0,
+          #[rustc_inherit_overflow_checks]
+          |count, _| count + 1,
+      )
+  }
+  *)
+End SignatureTokenPreorderTraversalIter. *)
 
 (* 
 pub enum SignatureToken {
@@ -637,7 +582,9 @@ Module SignatureToken.
 
           matches!(self, Signer)
       }
+      *)
 
+      (*
       /// Returns true if the `SignatureToken` can represent a constant (as in representable in
       /// the constants table).
       pub fn is_valid_for_constant(&self) -> bool {
@@ -654,7 +601,15 @@ Module SignatureToken.
               | TypeParameter(_) => false,
           }
       }
+      *)
+      Fixpoint is_valid_for_constant (self : t) : bool :=
+        match self with
+        | Bool | U8 | U16 | U32 | U64 | U128 | U256 | Address => true
+        | Vector inner => is_valid_for_constant inner
+        | Signer | Struct _ | StructInstantiation _ | Reference _ | MutableReference _ | TypeParameter _ => false
+        end.
 
+      (*
       /// Set the index to this one. Useful for random testing.
       ///
       /// Panics if this token doesn't contain a struct handle.
@@ -684,166 +639,77 @@ Module SignatureToken.
   *)
 
   (* 
-  pub struct SignatureTokenPreorderTraversalIter<'a> {
-      stack: Vec<&'a SignatureToken>,
+  /// Returns true if the `SignatureToken` is any kind of reference (mutable and immutable).
+  pub fn is_reference(&self) -> bool {
+      use SignatureToken::*;
+
+      matches!(self, Reference(_) | MutableReference(_))
   }
   *)
-  (* NOTE: We keep a draft for this module, since it's related to the `count`
-     functionality for `SignatureToken`. See notes at `preorder_traersal`
-     below. *)
-  Module SignatureTokenPreorderTraversalIter.
-    Definition t := list SignatureToken.t.
+  Definition is_reference (self : t) : bool :=
+    match self with
+    | Reference _ | MutableReference _ => true
+    | _ => false
+    end.
 
-    (* 
-    fn next(&mut self) -> Option<Self::Item> {
-        use SignatureToken::*;
+  (* 
+  /// Returns true if the `SignatureToken` is a mutable reference.
+  pub fn is_mutable_reference(&self) -> bool {
+      use SignatureToken::*;
 
-        match self.stack.pop() {
-            Some(tok) => {
-                match tok {
-                    Reference(inner_tok) | MutableReference(inner_tok) | Vector(inner_tok) => {
-                        self.stack.push(inner_tok)
-                    }
+      matches!(self, MutableReference(_))
+  }
+  *)
+  Definition is_mutable_reference (self : t) : bool :=
+    match self with
+    | MutableReference _ => true
+    | _ => false
+    end.
 
-                    StructInstantiation(struct_inst) => {
-                        let (_, inner_toks) = &**struct_inst;
-                        self.stack.extend(inner_toks.iter().rev())
-                    }
+  (* 
+  // Returns `true` if the `SignatureToken` is an integer type.
+  pub fn is_integer(&self) -> bool {
+      use SignatureToken::*;
+      match self {
+          U8 | U16 | U32 | U64 | U128 | U256 => true,
+          Bool
+          | Address
+          | Signer
+          | Vector(_)
+          | Struct(_)
+          | StructInstantiation(_)
+          | Reference(_)
+          | MutableReference(_)
+          | TypeParameter(_) => false,
+      }
+  }
+  *)
+  Definition is_integer (self : t) : bool :=
+    match self with
+    | U8 | U16 | U32 | U64 | U128 | U256  => true
+    | _                                   => false
+    end.
 
-                    Signer | Bool | Address | U8 | U16 | U32 | U64 | U128 | U256 | Struct(_)
-                    | TypeParameter(_) => (),
-                }
-                Some(tok)
-            }
-            None => None,
-        }
-    }
-    *)
-    (* NOTE: DRAFT: Initial simulation for `next`
-      Definition next (stack : tt) : tt :=
-      match stack with
-      | tok :: xs => 
-        match tok with
-        | SignatureToken.Reference inner_tok
-        | SignatureToken.MutableReference inner_tok
-        | SignatureToken.Vector inner_tok
-            => inner_tok :: xs
+  (* 
+  pub fn preorder_traversal(&self) -> SignatureTokenPreorderTraversalIter<'_> {
+      SignatureTokenPreorderTraversalIter { stack: vec![self] }
+  }
+  *)
+  (* NOTE: Since for now this is only used for counting the tokens in
+    `SignatureToken`, we pick the easiest way to get over it *)
+  Fixpoint count_nat (self : t) : nat :=
+    match self with
+    | Reference inner_tok | MutableReference inner_tok | Vector inner_tok 
+      => 1 + count_nat inner_tok
+    | StructInstantiation (_, inner_toks) 
+      => Datatypes.S $ List.list_sum $ List.map count_nat inner_toks
+    | Signer | Bool | Address | U8 | U16 | U32 | U64 | U128 | U256 
+    | Struct _ | TypeParameter _ 
+      => 1
+    end.
 
-        | SignatureToken.StructInstantiation struct_inst =>
-            let (_, inner_toks) := struct_inst in
-              List.app xs (List.rev inner_toks)
-
-        | SignatureToken.Signer | SignatureToken.Bool | SignatureToken.Address 
-          | SignatureToken.U8 | SignatureToken.U16 | SignatureToken.U32 
-          | SignatureToken.U64 | SignatureToken.U128 | SignatureToken.U256 
-          | SignatureToken.Struct _ | SignatureToken.TypeParameter _
-          => xs
-        end
-      | [] => []
-      end. *)
-
-    (* 
-    fn fold<B, F>(mut self, init: B, mut f: F) -> B
-    where
-        Self: Sized,
-        F: FnMut(B, Self::Item) -> B,
-    {
-        let mut accum = init;
-        while let Some(x) = self.next() {
-            accum = f(accum, x);
-        }
-        accum
-    }
-
-    fn count(self) -> usize
-    where
-        Self: Sized,
-    {
-        self.fold(
-            0,
-            #[rustc_inherit_overflow_checks]
-            |count, _| count + 1,
-        )
-    }
-    *)
-  End SignatureTokenPreorderTraversalIter.
-
-  Module Impl_SignatureToken.
-    Definition Self := move_sui.simulations.move_binary_format.file_format.SignatureToken.t.
-    (* 
-    /// Returns true if the `SignatureToken` is any kind of reference (mutable and immutable).
-    pub fn is_reference(&self) -> bool {
-        use SignatureToken::*;
-
-        matches!(self, Reference(_) | MutableReference(_))
-    }
-    *)
-    Definition is_reference (self : Self) : bool :=
-      match self with
-      | Reference _ | MutableReference _ => true
-      | _ => false
-      end.
-
-    (* 
-    /// Returns true if the `SignatureToken` is a mutable reference.
-    pub fn is_mutable_reference(&self) -> bool {
-        use SignatureToken::*;
-
-        matches!(self, MutableReference(_))
-    }
-    *)
-    Definition is_mutable_reference (self : Self) : bool :=
-      match self with
-      | MutableReference _ => true
-      | _ => false
-      end.
-
-    (* 
-    // Returns `true` if the `SignatureToken` is an integer type.
-    pub fn is_integer(&self) -> bool {
-        use SignatureToken::*;
-        match self {
-            U8 | U16 | U32 | U64 | U128 | U256 => true,
-            Bool
-            | Address
-            | Signer
-            | Vector(_)
-            | Struct(_)
-            | StructInstantiation(_)
-            | Reference(_)
-            | MutableReference(_)
-            | TypeParameter(_) => false,
-        }
-    }
-    *)
-    Definition is_integer (self : Self) : bool :=
-      match self with
-      | U8 | U16 | U32 | U64 | U128 | U256  => true
-      | _                                   => false
-      end.
-
-    (* 
-    pub fn preorder_traversal(&self) -> SignatureTokenPreorderTraversalIter<'_> {
-        SignatureTokenPreorderTraversalIter { stack: vec![self] }
-    }
-    *)
-    (* NOTE: Since for now this is only used for counting the tokens in
-      `SignatureToken`, we pick the easiest way to get over it *)
-    Fixpoint count_nat (self : t) : nat :=
-      match self with
-      | Reference inner_tok | MutableReference inner_tok | Vector inner_tok 
-        => 1 + count_nat inner_tok
-      | StructInstantiation (_, inner_toks) 
-        => Datatypes.S $ List.list_sum $ List.map count_nat inner_toks
-      | Signer | Bool | Address | U8 | U16 | U32 | U64 | U128 | U256 
-      | Struct _ | TypeParameter _ 
-        => 1
-      end.
-
-    Definition preorder_traversal_count (self : Self) : Z :=
-      Z.of_nat $ count_nat self.
-
-  End Impl_SignatureToken.
+  Definition preorder_traversal_count (self : t) : Z :=
+    Z.of_nat $ count_nat self.
 End SignatureToken.
 
 (* pub struct TypeSignature(pub SignatureToken); *)
@@ -1279,228 +1145,231 @@ Module CompiledModule.
     struct_defs : list StructDefinition.t;
     function_defs : list FunctionDefinition.t;
   }.
-  Module Impl_CompiledModule.
-    Definition Self := move_sui.simulations.move_binary_format.file_format.CompiledModule.t.
 
-    (* 
-    pub fn field_handle_at(&self, idx: FieldHandleIndex) -> &FieldHandle {
-        let handle = &self.field_handles[idx.into_index()];
-        debug_assert!(handle.owner.into_index() < self.struct_defs.len()); // invariant
-        handle
-    }
-    *)
-    Definition default_field_handle : FieldHandle.t. Admitted.
-    Definition field_handle_at (self : Self) (idx : FieldHandleIndex.t)
-      : FieldHandle.t :=
-      let idx := idx.(FieldHandleIndex.a0) in
-      let handle := List.nth (Z.to_nat idx) self.(field_handles) default_field_handle in
-      (* TODO: Implement debugs *)
-      handle.
+  (* 
+  pub fn field_handle_at(&self, idx: FieldHandleIndex) -> &FieldHandle {
+      let handle = &self.field_handles[idx.into_index()];
+      debug_assert!(handle.owner.into_index() < self.struct_defs.len()); // invariant
+      handle
+  }
+  *)
+  Definition default_field_handle : FieldHandle.t. Admitted.
+  Definition field_handle_at (self : t) (idx : FieldHandleIndex.t)
+    : FieldHandle.t :=
+    let idx := idx.(FieldHandleIndex.a0) in
+    let handle := List.nth (Z.to_nat idx) self.(field_handles) default_field_handle in
+    (* TODO: Implement debugs *)
+    handle.
 
-    (* 
-    pub fn struct_instantiation_at(
-        &self,
-        idx: StructDefInstantiationIndex,
-    ) -> &StructDefInstantiation {
-        &self.struct_def_instantiations[idx.into_index()]
-    }
-    *)
-    (* NOTE: into_index is actually just `idx.0 as usize` so we just inline it *)
-    Definition default_struct_def_instantiations : StructDefInstantiation.t. Admitted.
-    Definition struct_instantiation_at (self : Self) (idx : StructDefInstantiationIndex.t)
-      : StructDefInstantiation.t :=
-      let idx := idx.(StructDefInstantiationIndex.a0) in
-      List.nth (Z.to_nat idx) self.(struct_def_instantiations) default_struct_def_instantiations.
+  (* 
+  pub fn struct_instantiation_at(
+      &self,
+      idx: StructDefInstantiationIndex,
+  ) -> &StructDefInstantiation {
+      &self.struct_def_instantiations[idx.into_index()]
+  }
+  *)
+  (* NOTE: into_index is actually just `idx.0 as usize` so we just inline it *)
+  Definition default_struct_def_instantiations : StructDefInstantiation.t. Admitted.
+  Definition struct_instantiation_at (self : t) (idx : StructDefInstantiationIndex.t)
+    : StructDefInstantiation.t :=
+    let idx := idx.(StructDefInstantiationIndex.a0) in
+    List.nth (Z.to_nat idx) self.(struct_def_instantiations) default_struct_def_instantiations.
 
-    (* 
-    pub fn struct_def_at(&self, idx: StructDefinitionIndex) -> &StructDefinition {
-        &self.struct_defs[idx.into_index()]
-    }
-    *)
-    Definition default_struct_defs : StructDefinition.t. Admitted.
-    Definition struct_def_at (self : Self) (idx : StructDefinitionIndex.t) 
-      : StructDefinition.t :=
-      let idx := idx.(StructDefinitionIndex.a0) in
-      List.nth (Z.to_nat idx) self.(struct_defs) default_struct_defs.
+  (* 
+  pub fn struct_def_at(&self, idx: StructDefinitionIndex) -> &StructDefinition {
+      &self.struct_defs[idx.into_index()]
+  }
+  *)
+  Definition default_struct_defs : StructDefinition.t. Admitted.
+  Definition struct_def_at (self : t) (idx : StructDefinitionIndex.t) 
+    : StructDefinition.t :=
+    let idx := idx.(StructDefinitionIndex.a0) in
+    List.nth (Z.to_nat idx) self.(struct_defs) default_struct_defs.
 
-    (* 
-    pub fn struct_handle_at(&self, idx: StructHandleIndex) -> &StructHandle {
-        let handle = &self.struct_handles[idx.into_index()];
-        debug_assert!(handle.module.into_index() < self.module_handles.len()); // invariant
-        handle
-    }
-    *)
-    Definition default_struct_handle : StructHandle.t. Admitted.
-    Definition struct_handle_at (self : Self) (idx : StructHandleIndex.t) : StructHandle.t :=
-      let idx := idx.(StructHandleIndex.a0) in
-      let handle := List.nth (Z.to_nat idx) self.(struct_handles) default_struct_handle in
-      (* TODO: Implement `debug_assert`? Should I wrap it up with a panic monad?  *)
-      handle.
+  (* 
+  pub fn struct_handle_at(&self, idx: StructHandleIndex) -> &StructHandle {
+      let handle = &self.struct_handles[idx.into_index()];
+      debug_assert!(handle.module.into_index() < self.module_handles.len()); // invariant
+      handle
+  }
+  *)
+  Definition default_struct_handle : StructHandle.t. Admitted.
+  Definition struct_handle_at (self : t) (idx : StructHandleIndex.t) : StructHandle.t :=
+    let idx := idx.(StructHandleIndex.a0) in
+    let handle := List.nth (Z.to_nat idx) self.(struct_handles) default_struct_handle in
+    (* TODO: Implement `debug_assert`? Should I wrap it up with a panic monad?  *)
+    handle.
 
-    (* 
-    pub fn signature_at(&self, idx: SignatureIndex) -> &Signature {
-        &self.signatures[idx.into_index()]
-    }
-    *)
-    Definition default_signature : Signature.t. Admitted.
-    Definition signature_at (self : Self) (idx : SignatureIndex.t) : Signature.t :=
-      let idx := idx.(SignatureIndex.a0) in
-      List.nth (Z.to_nat idx) self.(signatures) default_signature.
+  (* 
+  pub fn signature_at(&self, idx: SignatureIndex) -> &Signature {
+      &self.signatures[idx.into_index()]
+  }
+  *)
+  Definition default_signature : Signature.t. Admitted.
+  Definition signature_at (self : t) (idx : SignatureIndex.t) : Signature.t :=
+    let idx := idx.(SignatureIndex.a0) in
+    List.nth (Z.to_nat idx) self.(signatures) default_signature.
 
-    (* 
-    pub fn constant_at(&self, idx: ConstantPoolIndex) -> &Constant {
-        &self.constant_pool[idx.into_index()]
-    }
-    *)
-    Definition default_constant : Constant.t. Admitted.
-    Definition constant_at (self : Self) (idx : ConstantPoolIndex.t) : Constant.t :=
-      let idx := idx.(ConstantPoolIndex.a0) in
-      List.nth (Z.to_nat idx) self.(constant_pool) default_constant.
+  (* 
+  pub fn constant_at(&self, idx: ConstantPoolIndex) -> &Constant {
+      &self.constant_pool[idx.into_index()]
+  }
+  *)
+  Definition default_constant : Constant.t. Admitted.
+  Definition constant_at (self : t) (idx : ConstantPoolIndex.t) : Constant.t :=
+    let idx := idx.(ConstantPoolIndex.a0) in
+    List.nth (Z.to_nat idx) self.(constant_pool) default_constant.
 
-    (* 
-    pub fn function_handle_at(&self, idx: FunctionHandleIndex) -> &FunctionHandle {
-        let handle = &self.function_handles[idx.into_index()];
-        debug_assert!(handle.parameters.into_index() < self.signatures.len()); // invariant
-        debug_assert!(handle.return_.into_index() < self.signatures.len()); // invariant
-        handle
-    }
-    *)
-    Definition default_function_handle : FunctionHandle.t. Admitted.
-    Definition function_handle_at (self : Self) (idx : FunctionHandleIndex.t) 
-      : FunctionHandle.t :=
-      let idx := idx.(FunctionHandleIndex.a0) in
-      let handle := List.nth (Z.to_nat idx) self.(function_handles) default_function_handle in
-      (* TODO: Implement the debugs *)
-      handle.
+  (* 
+  pub fn function_handle_at(&self, idx: FunctionHandleIndex) -> &FunctionHandle {
+      let handle = &self.function_handles[idx.into_index()];
+      debug_assert!(handle.parameters.into_index() < self.signatures.len()); // invariant
+      debug_assert!(handle.return_.into_index() < self.signatures.len()); // invariant
+      handle
+  }
+  *)
+  Definition default_function_handle : FunctionHandle.t. Admitted.
+  Definition function_handle_at (self : t) (idx : FunctionHandleIndex.t) 
+    : FunctionHandle.t :=
+    let idx := idx.(FunctionHandleIndex.a0) in
+    let handle := List.nth (Z.to_nat idx) self.(function_handles) default_function_handle in
+    (* TODO: Implement the debugs *)
+    handle.
 
-    (* 
-    pub fn field_instantiation_at(&self, idx: FieldInstantiationIndex) -> &FieldInstantiation {
-        &self.field_instantiations[idx.into_index()]
-    }
-    *)
-    Definition default_field_instantiations : FieldInstantiation.t. Admitted.
-    Definition field_instantiation_at (self : Self) (idx : FieldInstantiationIndex.t)
-      : FieldInstantiation.t :=
-      let idx := idx.(FieldInstantiationIndex.a0) in
-      List.nth (Z.to_nat idx) self.(field_instantiations) default_field_instantiations.
+  (* 
+  pub fn field_instantiation_at(&self, idx: FieldInstantiationIndex) -> &FieldInstantiation {
+      &self.field_instantiations[idx.into_index()]
+  }
+  *)
+  Definition default_field_instantiations : FieldInstantiation.t. Admitted.
+  Definition field_instantiation_at (self : t) (idx : FieldInstantiationIndex.t)
+    : FieldInstantiation.t :=
+    let idx := idx.(FieldInstantiationIndex.a0) in
+    List.nth (Z.to_nat idx) self.(field_instantiations) default_field_instantiations.
 
-    (* 
-    pub fn function_instantiation_at(
-        &self,
-        idx: FunctionInstantiationIndex,
-    ) -> &FunctionInstantiation {
-        &self.function_instantiations[idx.into_index()]
-    }
-    *)
-    Definition default_function_instantiations : FunctionInstantiation.t. Admitted.
-    Definition function_instantiation_at (self : Self) (idx : FunctionInstantiationIndex.t)
-      : FunctionInstantiation.t :=
-      let idx := idx.(FunctionInstantiationIndex.a0) in
-      List.nth (Z.to_nat idx) self.(function_instantiations) default_function_instantiations.
+  (* 
+  pub fn function_instantiation_at(
+      &self,
+      idx: FunctionInstantiationIndex,
+  ) -> &FunctionInstantiation {
+      &self.function_instantiations[idx.into_index()]
+  }
+  *)
+  Definition default_function_instantiations : FunctionInstantiation.t. Admitted.
+  Definition function_instantiation_at (self : t) (idx : FunctionInstantiationIndex.t)
+    : FunctionInstantiation.t :=
+    let idx := idx.(FunctionInstantiationIndex.a0) in
+    List.nth (Z.to_nat idx) self.(function_instantiations) default_function_instantiations.
 
-    (* 
-    pub fn abilities(
-        &self,
-        ty: &SignatureToken,
-        constraints: &[AbilitySet],
-    ) -> PartialVMResult<AbilitySet> {
-        use SignatureToken::*;
+  (* 
+  pub fn abilities(
+      &self,
+      ty: &SignatureToken,
+      constraints: &[AbilitySet],
+  ) -> PartialVMResult<AbilitySet> {
+      use SignatureToken::*;
 
-        match ty {
-            Bool | U8 | U16 | U32 | U64 | U128 | U256 | Address => Ok(AbilitySet::PRIMITIVES),
+      match ty {
+          Bool | U8 | U16 | U32 | U64 | U128 | U256 | Address => Ok(AbilitySet::PRIMITIVES),
 
-            Reference(_) | MutableReference(_) => Ok(AbilitySet::REFERENCES),
-            Signer => Ok(AbilitySet::SIGNER),
-            TypeParameter(idx) => Ok(constraints[*idx as usize]),
-            Vector(ty) => AbilitySet::polymorphic_abilities(
-                AbilitySet::VECTOR,
-                vec![false],
-                vec![self.abilities(ty, constraints)?],
-            ),
-            Struct(idx) => {
-                let sh = self.struct_handle_at(*idx); //*)
-                Ok(sh.abilities)
-            }
-            StructInstantiation(struct_inst) => {
-                let (idx, type_args) = &**struct_inst;
-                let sh = self.struct_handle_at(*idx); //*)
-                let declared_abilities = sh.abilities;
-                let type_arguments = type_args
-                    .iter()
-                    .map(|arg| self.abilities(arg, constraints))
-                    .collect::<PartialVMResult<Vec<_>>>()?;
-                AbilitySet::polymorphic_abilities(
-                    declared_abilities,
-                    sh.type_parameters.iter().map(|param| param.is_phantom),
-                    type_arguments,
-                )
-            }
-        }
-    }
-    *)
-    Fixpoint abilities (self : Self) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
-      : PartialVMResult.t AbilitySet.t :=
-      let default_ability := AbilitySet.EMPTY in
-      match ty with
-      | SignatureToken.Bool | SignatureToken.U8 | SignatureToken.U16 
-      | SignatureToken.U32 | SignatureToken.U64 | SignatureToken.U128 
-      | SignatureToken.U256 | SignatureToken.Address 
-        => Result.Ok AbilitySet.PRIMITIVES
+          Reference(_) | MutableReference(_) => Ok(AbilitySet::REFERENCES),
+          Signer => Ok(AbilitySet::SIGNER),
+          TypeParameter(idx) => Ok(constraints[*idx as usize]),
+          Vector(ty) => AbilitySet::polymorphic_abilities(
+              AbilitySet::VECTOR,
+              vec![false],
+              vec![self.abilities(ty, constraints)?],
+          ),
+          Struct(idx) => {
+              let sh = self.struct_handle_at(*idx); //*)
+              Ok(sh.abilities)
+          }
+          StructInstantiation(struct_inst) => {
+              let (idx, type_args) = &**struct_inst;
+              let sh = self.struct_handle_at(*idx); //*)
+              let declared_abilities = sh.abilities;
+              let type_arguments = type_args
+                  .iter()
+                  .map(|arg| self.abilities(arg, constraints))
+                  .collect::<PartialVMResult<Vec<_>>>()?;
+              AbilitySet::polymorphic_abilities(
+                  declared_abilities,
+                  sh.type_parameters.iter().map(|param| param.is_phantom),
+                  type_arguments,
+              )
+          }
+      }
+  }
+  *)
+  Fixpoint abilities (self : t) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
+    : PartialVMResult.t AbilitySet.t :=
+    let default_ability := AbilitySet.EMPTY in
+    match ty with
+    | SignatureToken.Bool | SignatureToken.U8 | SignatureToken.U16 
+    | SignatureToken.U32 | SignatureToken.U64 | SignatureToken.U128 
+    | SignatureToken.U256 | SignatureToken.Address 
+      => Result.Ok AbilitySet.PRIMITIVES
 
-      | SignatureToken.Reference _ | SignatureToken.MutableReference _ 
-        => Result.Ok AbilitySet.REFERENCES
+    | SignatureToken.Reference _ | SignatureToken.MutableReference _ 
+      => Result.Ok AbilitySet.REFERENCES
 
-      | SignatureToken.Signer => Result.Ok AbilitySet.SIGNER
+    | SignatureToken.Signer => Result.Ok AbilitySet.SIGNER
 
-      | SignatureToken.TypeParameter idx => 
-        let idx := idx.(TypeParameterIndex.a0) in
-        let ability := List.nth (Z.to_nat idx) constraints default_ability in
-        Result.Ok ability
+    | SignatureToken.TypeParameter idx => 
+      let ability := List.nth (Z.to_nat idx) constraints default_ability in
+      Result.Ok ability
 
-      | SignatureToken.Vector ty => 
-      let abilities_result := abilities self ty constraints in
-        match abilities_result with
-        | Result.Ok  a => AbilitySet.Impl_AbilitySet
-                            .polymorphic_abilities AbilitySet.VECTOR [false] [a]
-        | Result.Err x => Result.Err x
+    | SignatureToken.Vector ty => 
+    let abilities_result := abilities self ty constraints in
+      match abilities_result with
+      | Result.Ok  a => AbilitySet.Impl_AbilitySet
+                          .polymorphic_abilities AbilitySet.VECTOR [false] [a]
+      | Result.Err x => Result.Err x
+      end
+
+    | SignatureToken.Struct idx =>
+        let sh := struct_handle_at self idx in
+          Result.Ok sh.(StructHandle.abilities)
+
+    | SignatureToken.StructInstantiation struct_inst => 
+        let (idx, type_args) := struct_inst in
+        let sh := struct_handle_at self idx in
+        let declared_abilities := sh.(StructHandle.abilities) in
+        let is_phantom_list := List.map 
+          (fun x => x.(StructTypeParameter.is_phantom)) 
+          sh.(StructHandle.type_parameters) in
+        let type_arguments := List.map (fun x => abilities self x constraints) type_args in
+        let type_arguments :=
+          let check_type_arguments := 
+            (fix check_type_arguments (l1 : list (PartialVMResult.t AbilitySet.t))
+              (l2 : list AbilitySet.t)
+              : PartialVMResult.t (list AbilitySet.t) :=
+            match l1 with
+            | []      => Result.Ok l2
+            | x :: xs =>
+                match x with
+                | Result.Err err  => Result.Err err
+                | Result.Ok  x    => check_type_arguments xs (x :: l2)
+                end
+            end
+          ) in
+          check_type_arguments type_arguments [] in
+        match type_arguments with
+        | Result.Ok  type_arguments =>
+            AbilitySet.Impl_AbilitySet.polymorphic_abilities
+              declared_abilities is_phantom_list type_arguments
+        | Result.Err err            => Result.Err err
         end
+    end.
 
-      | SignatureToken.Struct idx =>
-          let sh := struct_handle_at self idx in
-            Result.Ok sh.(StructHandle.abilities)
-
-      | SignatureToken.StructInstantiation struct_inst => 
-          let (idx, type_args) := struct_inst in
-          let sh := struct_handle_at self idx in
-          let declared_abilities := sh.(StructHandle.abilities) in
-          let is_phantom_list := List.map 
-            (fun x => x.(AbilitySet.StructTypeParameter.is_phantom)) 
-            sh.(StructHandle.type_parameters) in
-          let type_arguments := List.map (fun x => abilities self x constraints) type_args in
-          let type_arguments :=
-            let check_type_arguments := 
-              (fix check_type_arguments (l1 : list (PartialVMResult.t AbilitySet.t))
-                (l2 : list AbilitySet.t)
-                : PartialVMResult.t (list AbilitySet.t) :=
-              match l1 with
-              | []      => Result.Ok l2
-              | x :: xs =>
-                  match x with
-                  | Result.Err err  => Result.Err err
-                  | Result.Ok  x    => check_type_arguments xs (x :: l2)
-                  end
-              end
-            ) in
-            check_type_arguments type_arguments [] in
-          match type_arguments with
-          | Result.Ok  type_arguments =>
-              AbilitySet.Impl_AbilitySet.polymorphic_abilities
-                declared_abilities is_phantom_list type_arguments
-          | Result.Err err            => Result.Err err
-          end
-      end.
-
-  End Impl_CompiledModule.
+    (*
+    /// Returns the code key of `self`
+    pub fn self_id(&self) -> ModuleId {
+        self.module_id_for_handle(self.self_handle())
+    }
+    *)
+    Parameter self_id : t -> ModuleId.t.
 End CompiledModule.
 
 (*

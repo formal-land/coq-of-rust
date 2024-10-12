@@ -4,13 +4,8 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
-Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
-Module Bytecode := file_format.Bytecode.
-Module CompiledModule := file_format.CompiledModule.
-Module Constant := file_format.Constant.
-Module ConstantPoolIndex := file_format.ConstantPoolIndex.
-Module StructDefinitionIndex := file_format.StructDefinitionIndex.
-Module FieldHandleIndex := file_format.FieldHandleIndex.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format_index.
 
 Require CoqOfRust.move_sui.simulations.move_vm_config.runtime.
 Module VMConfig := runtime.VMConfig.
@@ -224,7 +219,7 @@ Module Resolver.
     }
     *)
     Definition constant_at (self : Self) (idx : ConstantPoolIndex.t) : Constant.t :=
-      CompiledModule.Impl_CompiledModule.constant_at self.(Resolver.binary).(BinaryType.compiled) idx.
+      CompiledModule.constant_at self.(Resolver.binary).(BinaryType.compiled) idx.
 
     (* 
     pub(crate) fn field_count(&self, idx: StructDefinitionIndex) -> u16 {

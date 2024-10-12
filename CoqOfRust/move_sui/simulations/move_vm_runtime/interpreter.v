@@ -4,38 +4,13 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
-Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
-Module Bytecode := file_format.Bytecode.
-Module FunctionHandleIndex := file_format.FunctionHandleIndex.
-Module FunctionInstantiationIndex := file_format.FunctionInstantiationIndex.
-Module SignatureToken.
-  Include file_format.SignatureToken.
-End SignatureToken.
-
-Require CoqOfRust.move_sui.simulations.move_vm_types.values.values_impl.
-Module Locals := values_impl.Locals.
-Module Value := values_impl.Value.
-Module ValueImpl := values_impl.ValueImpl.
-Module AccountAddress := values_impl.AccountAddress.
-Module ContainerRef := values_impl.ContainerRef.
-Module IndexedRef := values_impl.IndexedRef.
-Module VMValueCast := values_impl.VMValueCast.
-Module StructRef := values_impl.StructRef.
-
-Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
-Module PartialVMResult := errors.PartialVMResult.
-Module PartialVMError := errors.PartialVMError.
-
-Require CoqOfRust.move_sui.simulations.move_vm_runtime.loader.
-Module Function := loader.Function.
-Module Resolver := loader.Resolver.
-Module Loader := loader.Loader.
-
-Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
-Module StatusCode := vm_status.StatusCode.
-
-Require CoqOfRust.move_sui.simulations.move_vm_config.runtime.
-Module VMConfig := runtime.VMConfig.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.errors.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format_index.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format.
+Require Import CoqOfRust.move_sui.simulations.move_core_types.vm_status.
+Require Import CoqOfRust.move_sui.simulations.move_vm_config.runtime.
+Require Import CoqOfRust.move_sui.simulations.move_vm_runtime.loader.
+Require Import CoqOfRust.move_sui.simulations.move_vm_types.values.values_impl.
 
 (* TODO(progress):
 - Investigate `unpack`
