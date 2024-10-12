@@ -4,6 +4,7 @@ Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
+Require Import core.simulations.option.
 Require Import CoqOfRust.move_sui.simulations.move_abstract_stack.lib.
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format_index.
@@ -108,7 +109,8 @@ Module TypeSafetyChecker.
     Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t :=
       Locals.Impl_Locals.local_at self.(locals) i.
 
-    Definition abilities (self : Self) (t : SignatureToken.t) : PartialVMResult.t AbilitySet.t :=
+    Definition abilities (self : Self) (t : SignatureToken.t) :
+        M! (PartialVMResult.t AbilitySet.t) :=
       CompiledModule.abilities self.(module) t $
         FunctionContext.type_parameters self.(function_context).
 
@@ -295,7 +297,6 @@ Fixpoint instantiate (token : SignatureToken.t) (subst: Signature.t) :
         SignatureToken.Bool (* We should never arrive here *)
   end.
 
-Definition default_field_definition : FieldDefinition.t. Admitted.
 (* 
 // helper for both `ImmBorrowField` and `MutBorrowField`
 fn borrow_field(
@@ -360,9 +361,9 @@ Definition borrow_field
       returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker.error
         verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
     else 
-    let field_handle :=
+    letS! field_handle := return!toS! $
       CompiledModule.field_handle_at verifier.(TypeSafetyChecker.module) field_handle_index in
-    let struct_def :=
+    letS! struct_def := return!toS! $
       CompiledModule.struct_def_at
         verifier.(TypeSafetyChecker.module) field_handle.(FieldHandle.owner) in
     let expected_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
@@ -385,8 +386,10 @@ Definition borrow_field
         returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
         .error verifier StatusCode.BORROWFIELD_BAD_FIELD_ERROR offset
       | StructFieldInformation.Declared fields =>
-        let field := Z.to_nat field_handle.(FieldHandle.field) in
-        returnS!? $ List.nth field fields default_field_definition
+        let field_index := Z.to_nat field_handle.(FieldHandle.field) in
+        return!toS!? $ Option.expect
+          (List.nth_error fields field_index)
+          "invalid index for fields in borrow_field"
       end in
     let field_type := instantiate
       field_def.(FieldDefinition.signature).(TypeSignature.a0) type_args in
@@ -481,9 +484,10 @@ Definition borrow_global
   then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
     .error verifier StatusCode.BORROWLOC_REFERENCE_ERROR offset
   else
-    let struct_def := CompiledModule.struct_def_at verifier.(TypeSafetyChecker.module) idx in
+    letS! struct_def := return!toS! $
+      CompiledModule.struct_def_at verifier.(TypeSafetyChecker.module) idx in
     let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
-    letS!? abilities := returnS! $ TypeSafetyChecker.Impl_TypeSafetyChecker.abilities verifier struct_type in 
+    letS!? abilities := return!toS! $ TypeSafetyChecker.Impl_TypeSafetyChecker.abilities verifier struct_type in 
       if AbilitySet.Impl_AbilitySet.has_key abilities
       then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker.error 
           verifier StatusCode.BORROWGLOBAL_WITHOUT_KEY_ABILITY offset
@@ -522,14 +526,12 @@ Definition call
     (type_actuals : Signature.t)
     : MS! TypeSafetyChecker.t (PartialVMResult.t unit) :=
   letS! verifier := readS! in
-  let parameters := CompiledModule.signature_at 
+  letS! parameters := return!toS! $ CompiledModule.signature_at
     verifier.(TypeSafetyChecker.module) function_handle.(FunctionHandle.parameters) in
-  let parameters := List.rev parameters.(Signature.a0) in
-  let fold :=
-  (fix fold (l : list SignatureToken.t) : MS! TypeSafetyChecker.t (PartialVMResult.t unit) :=
-    match l with
-    | [] => returnS! $ Result.Ok tt
-    | parameter :: ls =>
+  doS!? foldS!?
+    tt
+    (List.rev parameters.(Signature.a0))
+    (fun (_ : unit) parameter =>
       letS! arg :=
         liftS! TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS! arg := return!toS! $ safe_unwrap_err arg in
@@ -540,26 +542,18 @@ Definition call
       then
         returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
           .error verifier StatusCode.CALL_TYPE_MISMATCH_ERROR offset
-      else fold ls
-    end
-  ) in
-  letS!? result := fold parameters in
-  let return_types := CompiledModule.signature_at 
+      else returnS!? tt
+    ) in
+  letS! return_types := return!toS! $ CompiledModule.signature_at
     verifier.(TypeSafetyChecker.module) function_handle.(FunctionHandle.return_) in
-  let return_types := Signature.a0 return_types in
-  let fold :=
-  (fix fold (l : list SignatureToken.t) : MS! TypeSafetyChecker.t (PartialVMResult.t unit) :=
-    match l with
-    | [] => returnS! $ Result.Ok tt
-    | return_type :: ls =>
-      letS! result := TypeSafetyChecker.Impl_TypeSafetyChecker.push $ 
-        instantiate return_type type_actuals in
-      match result with
-      | Result.Err x => returnS! $ Result.Err x
-      | _ => fold ls
-      end
-    end
-  ) in fold return_types.
+  let return_types := return_types.(Signature.a0) in
+  foldS!?
+    tt
+    return_types
+    (fun (_ : unit) return_type =>
+      TypeSafetyChecker.Impl_TypeSafetyChecker.push $
+        instantiate return_type type_actuals
+    ).
 
 (* 
 fn type_fields_signature(
@@ -735,7 +729,7 @@ Definition _exists (offset : CodeOffset.t) (struct_def : StructDefinition.t)
   : MS! TypeSafetyChecker.t (PartialVMResult.t unit) :=
   letS! verifier := readS! in
   let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
-  letS!? abilities := returnS! $ TypeSafetyChecker.Impl_TypeSafetyChecker
+  letS!? abilities := return!toS! $ TypeSafetyChecker.Impl_TypeSafetyChecker
     .abilities verifier struct_type in
   if negb $ AbilitySet.Impl_AbilitySet.has_key abilities
   then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -822,7 +816,7 @@ Definition move_to
     MS! TypeSafetyChecker.t (PartialVMResult.t unit) :=
   letS! verifier := readS! in
   let struct_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
-  letS!? abilities := returnS! $ TypeSafetyChecker.Impl_TypeSafetyChecker.abilities verifier struct_type in
+  letS!? abilities := return!toS! $ TypeSafetyChecker.Impl_TypeSafetyChecker.abilities verifier struct_type in
   if negb $ AbilitySet.Impl_AbilitySet.has_key abilities
   then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
     .error verifier StatusCode.MOVETO_WITHOUT_KEY_ABILITY offset
@@ -995,7 +989,7 @@ Definition verify_instr
         letS! operand :=
           liftS! TypeSafetyChecker.lens_self_stack AbstractStack.pop in
         letS! operand := return!toS! $ safe_unwrap_err operand in
-        let abilities := CompiledModule
+        letS! abilities := return!toS! $ CompiledModule
           .abilities verifier.(TypeSafetyChecker.module) operand
             verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
         match abilities with
@@ -1137,10 +1131,10 @@ Definition verify_instr
     }
     *)
     | Bytecode.MutBorrowFieldGeneric field_inst_index => 
-      let field_inst := CompiledModule.field_instantiation_at
+      letS! field_inst := return!toS! $ CompiledModule.field_instantiation_at
         verifier.(TypeSafetyChecker.module) field_inst_index in
       let type_parameters := field_inst.(FieldInstantiation.type_parameters) in
-      let type_inst := CompiledModule.signature_at
+      letS! type_inst := return!toS! $ CompiledModule.signature_at
         verifier.(TypeSafetyChecker.module) type_parameters in
       borrow_field offset true field_inst.(FieldInstantiation.handle) type_inst
 
@@ -1166,11 +1160,11 @@ Definition verify_instr
     }
     *)
     | Bytecode.ImmBorrowFieldGeneric field_inst_index => 
-      let field_inst :=
+      letS! field_inst := return!toS! $
         CompiledModule.field_instantiation_at
           verifier.(TypeSafetyChecker.module) field_inst_index in
       let type_parameters := field_inst.(FieldInstantiation.type_parameters) in
-      let type_inst :=
+      letS! type_inst := return!toS! $
         CompiledModule.signature_at
           verifier.(TypeSafetyChecker.module) type_parameters in
       borrow_field offset false 
@@ -1215,7 +1209,7 @@ Definition verify_instr
           }
     *)
     | Bytecode.LdConst idx => 
-        let constant :=
+        letS! constant :=return!toS! $
           CompiledModule.constant_at verifier.(TypeSafetyChecker.module) idx in
         let type_ := constant.(Constant.type_) in
           TypeSafetyChecker.Impl_TypeSafetyChecker.push type_ 
@@ -1246,7 +1240,7 @@ Definition verify_instr
     | Bytecode.CopyLoc idx => 
         let local_signature := TypeSafetyChecker.Impl_TypeSafetyChecker
           .local_at verifier $ LocalIndex.Build_t idx in
-        let abilities :=
+        letS! abilities := return!toS! $
           CompiledModule.abilities
             verifier.(TypeSafetyChecker.module) local_signature 
             verifier.(TypeSafetyChecker.function_context).(FunctionContext.type_parameters) in
@@ -1285,7 +1279,7 @@ Definition verify_instr
     }
     *)
     | Bytecode.Call idx => 
-      let function_handle :=
+      letS! function_handle := return!toS! $
         CompiledModule.function_handle_at verifier.(TypeSafetyChecker.module) idx in
       call offset function_handle $ Signature.Build_t []
 
@@ -1298,13 +1292,13 @@ Definition verify_instr
               call(verifier, meter, offset, func_handle, type_args)?
           }
     *)
-    | Bytecode.CallGeneric idx => 
-      let func_inst := CompiledModule.function_instantiation_at
+    | Bytecode.CallGeneric idx =>
+      letS! func_inst := return!toS! $ CompiledModule.function_instantiation_at
         verifier.(TypeSafetyChecker.module) idx in
-      let func_handle := CompiledModule
+      letS! func_handle := return!toS! $ CompiledModule
         .function_handle_at verifier.(TypeSafetyChecker.module) 
           func_inst.(FunctionInstantiation.handle) in
-      let type_args := CompiledModule
+      letS! type_args := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           func_inst.(FunctionInstantiation.type_parameters) in
       call offset func_handle type_args
@@ -1322,7 +1316,7 @@ Definition verify_instr
         }
     *)
     | Bytecode.Pack idx => 
-      let struct_definition := CompiledModule
+      letS! struct_definition := return!toS! $ CompiledModule
         .struct_def_at verifier.(TypeSafetyChecker.module) idx in
       pack offset struct_definition $ Signature.Build_t []
 
@@ -1337,11 +1331,11 @@ Definition verify_instr
     *)
     | Bytecode.PackGeneric idx => 
       let module := verifier.(TypeSafetyChecker.module) in
-      let struct_inst := CompiledModule
+      letS! struct_inst := return!toS! $ CompiledModule
         .struct_instantiation_at module idx in
-      let struct_def := CompiledModule
+      letS! struct_def := return!toS! $ CompiledModule
         .struct_def_at module struct_inst.(StructDefInstantiation.def) in
-      let type_args := CompiledModule
+      letS! type_args := return!toS! $ CompiledModule
         .signature_at module struct_inst.(StructDefInstantiation.type_parameters) in
       pack offset struct_def type_args
 
@@ -1358,7 +1352,7 @@ Definition verify_instr
     }
     *)
     | Bytecode.Unpack idx => 
-      let struct_definition := CompiledModule
+      letS! struct_definition := return!toS! $ CompiledModule
         .struct_def_at verifier.(TypeSafetyChecker.module) idx in
       unpack offset struct_definition $ Signature.Build_t []
 
@@ -1372,11 +1366,11 @@ Definition verify_instr
     }
     *)
     | Bytecode.UnpackGeneric idx => 
-      let struct_inst := CompiledModule
+      letS! struct_inst := return!toS! $ CompiledModule
         .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
-      let struct_def := CompiledModule
+      letS! struct_def := return!toS! $ CompiledModule
         .struct_def_at verifier.(TypeSafetyChecker.module) struct_inst.(StructDefInstantiation.def) in
-      let type_args := CompiledModule
+      letS! type_args := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.type_parameters) in
       unpack offset struct_def type_args
@@ -1403,7 +1397,7 @@ Definition verify_instr
       letS! operand := return!toS! $ safe_unwrap_err operand in
       match operand with
       | SignatureToken.Reference inner =>
-        letS!? abilities := returnS! $ TypeSafetyChecker.Impl_TypeSafetyChecker.abilities 
+        letS!? abilities := return!toS! $ TypeSafetyChecker.Impl_TypeSafetyChecker.abilities 
           verifier inner in
         if negb $ AbilitySet.Impl_AbilitySet.has_copy abilities
         then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -1411,7 +1405,7 @@ Definition verify_instr
         else TypeSafetyChecker.Impl_TypeSafetyChecker.push inner
       (* Actually exactly the same content *)
       | SignatureToken.MutableReference inner =>
-        letS!? abilities := returnS! $ TypeSafetyChecker.Impl_TypeSafetyChecker
+        letS!? abilities := return!toS! $ TypeSafetyChecker.Impl_TypeSafetyChecker
           .abilities verifier inner in
         if negb $ AbilitySet.Impl_AbilitySet.has_copy abilities
         then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -1456,7 +1450,7 @@ Definition verify_instr
         | _ => returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
           .error verifier StatusCode.WRITEREF_NO_MUTABLE_REFERENCE_ERROR offset
         end in
-      letS!? abilities := returnS! $ TypeSafetyChecker.Impl_TypeSafetyChecker
+      letS!? abilities := return!toS! $ TypeSafetyChecker.Impl_TypeSafetyChecker
         .abilities verifier ref_inner_signature in
       if negb (AbilitySet.Impl_AbilitySet.has_drop abilities)
       then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -1637,7 +1631,7 @@ Definition verify_instr
       letS! operand2 :=
         liftS! TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS! operand2 := return!toS! $ safe_unwrap_err operand2 in
-      let abilities := TypeSafetyChecker.Impl_TypeSafetyChecker.abilities 
+      letS! abilities := return!toS! $ TypeSafetyChecker.Impl_TypeSafetyChecker.abilities 
         verifier operand1 in
       letS! abilities := return!toS! $ safe_unwrap_err abilities in
       if andb 
@@ -1690,9 +1684,9 @@ Definition verify_instr
     }
     *)
     | Bytecode.MutBorrowGlobalGenericDeprecated idx => 
-      let struct_inst := CompiledModule
+      letS! struct_inst := return!toS! $ CompiledModule
         .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
-      let type_inst := CompiledModule
+      letS! type_inst := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.type_parameters) in
       borrow_global offset true struct_inst.(StructDefInstantiation.def) type_inst
@@ -1714,9 +1708,9 @@ Definition verify_instr
     }
     *)
     | Bytecode.ImmBorrowGlobalGenericDeprecated idx => 
-      let struct_inst := CompiledModule
+      letS! struct_inst := return!toS! $ CompiledModule
         .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
-      let type_inst := CompiledModule
+      letS! type_inst := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.type_parameters) in
       borrow_global offset false struct_inst.(StructDefInstantiation.def) type_inst
@@ -1728,9 +1722,9 @@ Definition verify_instr
     }
     *)
     | Bytecode.ExistsDeprecated idx => 
-      let struct_def := CompiledModule
+      letS! struct_def := return!toS! $ CompiledModule
         .struct_def_at verifier.(TypeSafetyChecker.module) idx in
-        _exists offset struct_def $ Signature.Build_t []
+      _exists offset struct_def $ Signature.Build_t []
 
     (* 
     Bytecode::ExistsGenericDeprecated(idx) => {
@@ -1742,12 +1736,12 @@ Definition verify_instr
     }
     *)
     | Bytecode.ExistsGenericDeprecated idx => 
-      let struct_inst := CompiledModule
+      letS! struct_inst := return!toS! $ CompiledModule
         .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
-      let struct_def := CompiledModule
+      letS! struct_def := return!toS! $ CompiledModule
         .struct_def_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.def) in
-      let type_args := CompiledModule
+      letS! type_args := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.type_parameters) in
       _exists offset struct_def type_args
@@ -1759,7 +1753,7 @@ Definition verify_instr
     }
     *)
     | Bytecode.MoveFromDeprecated idx => 
-      let struct_def := CompiledModule
+      letS! struct_def := return!toS! $ CompiledModule
         .struct_def_at verifier.(TypeSafetyChecker.module) idx in
       move_from offset struct_def $ Signature.Build_t []
 
@@ -1773,12 +1767,12 @@ Definition verify_instr
     }
     *)
     | Bytecode.MoveFromGenericDeprecated idx => 
-    let struct_inst := CompiledModule
+    letS! struct_inst := return!toS! $ CompiledModule
       .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
-    let struct_def := CompiledModule
+    letS! struct_def := return!toS! $ CompiledModule
       .struct_def_at verifier.(TypeSafetyChecker.module) 
         struct_inst.(StructDefInstantiation.def) in
-    let type_args := CompiledModule
+    letS! type_args := return!toS! $ CompiledModule
       .signature_at verifier.(TypeSafetyChecker.module) 
         struct_inst.(StructDefInstantiation.type_parameters) in
     move_from offset struct_def type_args
@@ -1790,7 +1784,7 @@ Definition verify_instr
     }
     *)
     | Bytecode.MoveToDeprecated idx => 
-      let struct_def := CompiledModule
+      letS! struct_def := return!toS! $ CompiledModule
         .struct_def_at verifier.(TypeSafetyChecker.module) idx in
       move_to offset struct_def $ Signature.Build_t []
 
@@ -1804,12 +1798,12 @@ Definition verify_instr
     }
     *)
     | Bytecode.MoveToGenericDeprecated idx =>  
-      let struct_inst := CompiledModule
+      letS! struct_inst := return!toS! $ CompiledModule
         .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
-      let struct_def := CompiledModule
+      letS! struct_def := return!toS! $ CompiledModule
         .struct_def_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.def) in
-      let type_args := CompiledModule
+      letS! type_args := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) 
           struct_inst.(StructDefInstantiation.type_parameters) in
       move_to offset struct_def type_args
@@ -1830,27 +1824,31 @@ Definition verify_instr
         verifier.push(meter, ST::Vector(Box::new(element_type.clone())))?;
     }
     *)
-    | Bytecode.VecPack idx num => 
-      let element_type := CompiledModule
+    | Bytecode.VecPack idx num =>
+      letS! element_type := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) idx in
-
-      let element_type := List.nth 0 element_type.(Signature.a0) 
-        SignatureToken.Bool (* We should never reach here *) in
-      letS!? _ := if num >? 0
-        then 
+      letS! element_type :=
+        return!toS! $ Option.expect
+          (List.nth_error element_type.(Signature.a0) 0)
+          "index error for element_type" in
+      letS!? _ :=
+        if num >? 0 then
           let num_to_pop := num in
-          letS! is_mismatched :=
+          letS! t :=
             liftS! TypeSafetyChecker.lens_self_stack $
               AbstractStack.pop_eq_n num_to_pop in
-          let is_mismatched := match is_mismatched with
-          | Result.Err _ => true
-          | Result.Ok x => SignatureToken.t_beq x element_type
-          end in
-          if is_mismatched
-          then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
-            .error verifier (StatusCode.TYPE_MISMATCH) offset
-          else returnS! $ Result.Ok tt
-        else returnS! $ Result.Ok tt in
+          let is_mismatched :=
+            match t with
+            | Result.Err _ => true
+            | Result.Ok t => negb (SignatureToken.t_beq element_type t)
+            end in
+          if is_mismatched then
+            returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
+              .error verifier (StatusCode.TYPE_MISMATCH) offset
+          else
+            returnS! $ Result.Ok tt
+        else
+          returnS! $ Result.Ok tt in
       let item := SignatureToken.Vector element_type in
       TypeSafetyChecker.Impl_TypeSafetyChecker.push $ SignatureToken.Reference item
 
@@ -1870,7 +1868,7 @@ Definition verify_instr
       letS! operand :=
         liftS! TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS! operand := return!toS! $ safe_unwrap_err operand in
-      let declared_element_type := CompiledModule
+      letS! declared_element_type := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) idx in
       let declared_element_type := 
         List.nth 0 declared_element_type.(Signature.a0) 
@@ -1892,7 +1890,7 @@ Definition verify_instr
     }
     *)
     | Bytecode.VecImmBorrow idx =>
-      let declared_element_type := CompiledModule
+      letS! declared_element_type := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) idx in
       let declared_element_type :=
         List.nth 0 declared_element_type.(Signature.a0)
@@ -1906,7 +1904,7 @@ Definition verify_instr
     }
     *)
     | Bytecode.VecMutBorrow idx =>
-      let declared_element_type := CompiledModule
+      letS! declared_element_type := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) idx in
       let declared_element_type :=
         List.nth 0 declared_element_type.(Signature.a0)
@@ -1934,7 +1932,7 @@ Definition verify_instr
       letS! operand_vec :=
         liftS! TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS! operand_vec := return!toS! $ safe_unwrap_err operand_vec in
-      let declared_element_type := CompiledModule
+      letS! declared_element_type := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) idx in
       let declared_element_type := List.nth 0 declared_element_type.(Signature.a0) 
         SignatureToken.Bool (* We should never reach here *) in
@@ -1964,7 +1962,7 @@ Definition verify_instr
       letS! operand_vec :=
         liftS! TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS! operand_vec := return!toS! $ safe_unwrap_err operand_vec in
-      let declared_element_type := CompiledModule
+      letS! declared_element_type := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) idx in
       let declared_element_type := List.nth 0 declared_element_type.(Signature.a0) 
         SignatureToken.Bool (* We should never reach here *) in
@@ -1992,10 +1990,11 @@ Definition verify_instr
       letS! operand_vec :=
         liftS! TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS! operand_vec := return!toS! $ safe_unwrap_err operand_vec in
-      let declared_element_type := CompiledModule
+      letS! declared_element_type := return!toS! $ CompiledModule
         .signature_at verifier.(TypeSafetyChecker.module) idx in
-      let declared_element_type := List.nth 0 declared_element_type.(Signature.a0) 
-        SignatureToken.Bool (* We should never reach here *) in
+      letS! declared_element_type := return!toS! $ Option.expect
+        (List.nth_error declared_element_type.(Signature.a0) 0)
+        "index error for declared_element_type" in
       if negb $ SignatureToken.t_beq operand_vec $
         SignatureToken.Vector declared_element_type
       then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
@@ -2034,7 +2033,7 @@ Definition verify_instr
       then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
         .error verifier StatusCode.TYPE_MISMATCH offset
       else
-        let declared_element_type := CompiledModule
+        letS! declared_element_type := return!toS! $ CompiledModule
           .signature_at verifier.(TypeSafetyChecker.module) idx in
         let declared_element_type := 
           List.nth 0 declared_element_type.(Signature.a0) 

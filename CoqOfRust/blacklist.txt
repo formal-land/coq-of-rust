@@ -22,5 +22,3 @@ core/links/cmp.v
 move_sui/links/
 # We ignore the metering for now
 move_sui/simulations/move_bytecode_verifier_meter/lib.v
-# Some Sui tests are not working yet
-move_sui/simulations/move_bytecode_verifier/type_safety_tests/mod.v

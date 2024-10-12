@@ -218,7 +218,7 @@ Module Resolver.
         self.binary.compiled.constant_at(idx)
     }
     *)
-    Definition constant_at (self : Self) (idx : ConstantPoolIndex.t) : Constant.t :=
+    Definition constant_at (self : Self) (idx : ConstantPoolIndex.t) : M! Constant.t :=
       CompiledModule.constant_at self.(Resolver.binary).(BinaryType.compiled) idx.
 
     (* 

@@ -60,17 +60,18 @@ Module Impl_FunctionContext.
       M! Self :=
     let signature_at := CompiledModule.signature_at in
     let! cfg := control_flow_graph.Impl_VMControlFlowGraph.new code.(file_format.CodeUnit.code) in
-    let result : Self :=
-    {|
+    let! parameters := signature_at module function_handle.(FunctionHandle.parameters) in
+    let! return_ := signature_at module function_handle.(FunctionHandle.return_) in
+    let! locals := signature_at module code.(file_format.CodeUnit.locals) in
+    return! {|
       FunctionContext.index := Some index;
       FunctionContext.code := code;
-      FunctionContext.parameters := signature_at module function_handle.(FunctionHandle.parameters);
-      FunctionContext.return_ := signature_at module function_handle.(FunctionHandle.return_);
-      FunctionContext.locals := signature_at module code.(file_format.CodeUnit.locals);
+      FunctionContext.parameters := parameters;
+      FunctionContext.return_ := return_;
+      FunctionContext.locals := locals;
       FunctionContext.type_parameters := function_handle.(FunctionHandle.type_parameters);
       FunctionContext.cfg := cfg;
-    |} in
-    return! result.
+    |}.
 
   Definition parameters (self : Self) := self.(FunctionContext.parameters).
 

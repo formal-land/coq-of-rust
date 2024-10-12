@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
 Require core.simulations.assert.
 Require core.simulations.integer.
+Require Import core.simulations.option.
 Require core.simulations.slice.
 
 Import simulations.M.Notations.
@@ -1153,13 +1154,12 @@ Module CompiledModule.
       handle
   }
   *)
-  Definition default_field_handle : FieldHandle.t. Admitted.
-  Definition field_handle_at (self : t) (idx : FieldHandleIndex.t)
-    : FieldHandle.t :=
+  Definition field_handle_at (self : t) (idx : FieldHandleIndex.t) : M! FieldHandle.t :=
     let idx := idx.(FieldHandleIndex.a0) in
-    let handle := List.nth (Z.to_nat idx) self.(field_handles) default_field_handle in
+    Option.expect
+      (List.nth_error self.(field_handles) (Z.to_nat idx))
+      "field_handle_at index error".
     (* TODO: Implement debugs *)
-    handle.
 
   (* 
   pub fn struct_instantiation_at(
@@ -1170,22 +1170,24 @@ Module CompiledModule.
   }
   *)
   (* NOTE: into_index is actually just `idx.0 as usize` so we just inline it *)
-  Definition default_struct_def_instantiations : StructDefInstantiation.t. Admitted.
-  Definition struct_instantiation_at (self : t) (idx : StructDefInstantiationIndex.t)
-    : StructDefInstantiation.t :=
+  Definition struct_instantiation_at (self : t) (idx : StructDefInstantiationIndex.t) :
+      M! StructDefInstantiation.t :=
     let idx := idx.(StructDefInstantiationIndex.a0) in
-    List.nth (Z.to_nat idx) self.(struct_def_instantiations) default_struct_def_instantiations.
+    Option.expect
+      (List.nth_error self.(struct_def_instantiations) (Z.to_nat idx))
+      "struct_instantiation_at index error".
 
   (* 
   pub fn struct_def_at(&self, idx: StructDefinitionIndex) -> &StructDefinition {
       &self.struct_defs[idx.into_index()]
   }
   *)
-  Definition default_struct_defs : StructDefinition.t. Admitted.
   Definition struct_def_at (self : t) (idx : StructDefinitionIndex.t) 
-    : StructDefinition.t :=
+    : M! StructDefinition.t :=
     let idx := idx.(StructDefinitionIndex.a0) in
-    List.nth (Z.to_nat idx) self.(struct_defs) default_struct_defs.
+    Option.expect
+      (List.nth_error self.(struct_defs) (Z.to_nat idx))
+      "struct_def_at index error".
 
   (* 
   pub fn struct_handle_at(&self, idx: StructHandleIndex) -> &StructHandle {
@@ -1194,32 +1196,30 @@ Module CompiledModule.
       handle
   }
   *)
-  Definition default_struct_handle : StructHandle.t. Admitted.
-  Definition struct_handle_at (self : t) (idx : StructHandleIndex.t) : StructHandle.t :=
+  Definition struct_handle_at (self : t) (idx : StructHandleIndex.t) : M! StructHandle.t :=
     let idx := idx.(StructHandleIndex.a0) in
-    let handle := List.nth (Z.to_nat idx) self.(struct_handles) default_struct_handle in
+    Option.expect
+      (List.nth_error self.(struct_handles) (Z.to_nat idx))
+      "struct_handle_at index error".
     (* TODO: Implement `debug_assert`? Should I wrap it up with a panic monad?  *)
-    handle.
 
   (* 
   pub fn signature_at(&self, idx: SignatureIndex) -> &Signature {
       &self.signatures[idx.into_index()]
   }
   *)
-  Definition default_signature : Signature.t. Admitted.
-  Definition signature_at (self : t) (idx : SignatureIndex.t) : Signature.t :=
+  Definition signature_at (self : t) (idx : SignatureIndex.t) : M! Signature.t :=
     let idx := idx.(SignatureIndex.a0) in
-    List.nth (Z.to_nat idx) self.(signatures) default_signature.
+    Option.expect (List.nth_error self.(signatures) (Z.to_nat idx)) "signature_at index error".
 
   (* 
   pub fn constant_at(&self, idx: ConstantPoolIndex) -> &Constant {
       &self.constant_pool[idx.into_index()]
   }
   *)
-  Definition default_constant : Constant.t. Admitted.
-  Definition constant_at (self : t) (idx : ConstantPoolIndex.t) : Constant.t :=
+  Definition constant_at (self : t) (idx : ConstantPoolIndex.t) : M! Constant.t :=
     let idx := idx.(ConstantPoolIndex.a0) in
-    List.nth (Z.to_nat idx) self.(constant_pool) default_constant.
+    Option.expect (List.nth_error self.(constant_pool) (Z.to_nat idx)) "constant_at index error".
 
   (* 
   pub fn function_handle_at(&self, idx: FunctionHandleIndex) -> &FunctionHandle {
@@ -1229,24 +1229,24 @@ Module CompiledModule.
       handle
   }
   *)
-  Definition default_function_handle : FunctionHandle.t. Admitted.
-  Definition function_handle_at (self : t) (idx : FunctionHandleIndex.t) 
-    : FunctionHandle.t :=
+  Definition function_handle_at (self : t) (idx : FunctionHandleIndex.t)  : M! FunctionHandle.t :=
     let idx := idx.(FunctionHandleIndex.a0) in
-    let handle := List.nth (Z.to_nat idx) self.(function_handles) default_function_handle in
+    Option.expect
+      (List.nth_error self.(function_handles) (Z.to_nat idx))
+      "function_handle_at index error".
     (* TODO: Implement the debugs *)
-    handle.
 
   (* 
   pub fn field_instantiation_at(&self, idx: FieldInstantiationIndex) -> &FieldInstantiation {
       &self.field_instantiations[idx.into_index()]
   }
   *)
-  Definition default_field_instantiations : FieldInstantiation.t. Admitted.
   Definition field_instantiation_at (self : t) (idx : FieldInstantiationIndex.t)
-    : FieldInstantiation.t :=
+    : M! FieldInstantiation.t :=
     let idx := idx.(FieldInstantiationIndex.a0) in
-    List.nth (Z.to_nat idx) self.(field_instantiations) default_field_instantiations.
+    Option.expect
+      (List.nth_error self.(field_instantiations) (Z.to_nat idx))
+      "field_instantiation_at index error".
 
   (* 
   pub fn function_instantiation_at(
@@ -1256,11 +1256,12 @@ Module CompiledModule.
       &self.function_instantiations[idx.into_index()]
   }
   *)
-  Definition default_function_instantiations : FunctionInstantiation.t. Admitted.
   Definition function_instantiation_at (self : t) (idx : FunctionInstantiationIndex.t)
-    : FunctionInstantiation.t :=
+    : M! FunctionInstantiation.t :=
     let idx := idx.(FunctionInstantiationIndex.a0) in
-    List.nth (Z.to_nat idx) self.(function_instantiations) default_function_instantiations.
+    Option.expect
+      (List.nth_error self.(function_instantiations) (Z.to_nat idx))
+      "function_instantiation_at index error".
 
   (* 
   pub fn abilities(
@@ -1303,44 +1304,44 @@ Module CompiledModule.
   }
   *)
   Fixpoint abilities (self : t) (ty : SignatureToken.t) (constraints : list AbilitySet.t) 
-    : PartialVMResult.t AbilitySet.t :=
+    : M! (PartialVMResult.t AbilitySet.t) :=
     let default_ability := AbilitySet.EMPTY in
     match ty with
     | SignatureToken.Bool | SignatureToken.U8 | SignatureToken.U16 
     | SignatureToken.U32 | SignatureToken.U64 | SignatureToken.U128 
     | SignatureToken.U256 | SignatureToken.Address 
-      => Result.Ok AbilitySet.PRIMITIVES
+      => return!? AbilitySet.PRIMITIVES
 
     | SignatureToken.Reference _ | SignatureToken.MutableReference _ 
-      => Result.Ok AbilitySet.REFERENCES
+      => return!? AbilitySet.REFERENCES
 
-    | SignatureToken.Signer => Result.Ok AbilitySet.SIGNER
+    | SignatureToken.Signer => return!? AbilitySet.SIGNER
 
     | SignatureToken.TypeParameter idx => 
       let ability := List.nth (Z.to_nat idx) constraints default_ability in
-      Result.Ok ability
+      return!? ability
 
     | SignatureToken.Vector ty => 
-    let abilities_result := abilities self ty constraints in
+      let! abilities_result := abilities self ty constraints in
       match abilities_result with
-      | Result.Ok  a => AbilitySet.Impl_AbilitySet
+      | Result.Ok  a => return! $ AbilitySet.Impl_AbilitySet
                           .polymorphic_abilities AbilitySet.VECTOR [false] [a]
-      | Result.Err x => Result.Err x
+      | Result.Err x => return! $ Result.Err x
       end
 
     | SignatureToken.Struct idx =>
-        let sh := struct_handle_at self idx in
-          Result.Ok sh.(StructHandle.abilities)
+        let! sh := struct_handle_at self idx in
+        return!? sh.(StructHandle.abilities)
 
     | SignatureToken.StructInstantiation struct_inst => 
         let (idx, type_args) := struct_inst in
-        let sh := struct_handle_at self idx in
+        let! sh := struct_handle_at self idx in
         let declared_abilities := sh.(StructHandle.abilities) in
         let is_phantom_list := List.map 
           (fun x => x.(StructTypeParameter.is_phantom)) 
           sh.(StructHandle.type_parameters) in
-        let type_arguments := List.map (fun x => abilities self x constraints) type_args in
-        let type_arguments :=
+        let! type_arguments := map! type_args (fun x => abilities self x constraints) in
+        let!? type_arguments :=
           let check_type_arguments := 
             (fix check_type_arguments (l1 : list (PartialVMResult.t AbilitySet.t))
               (l2 : list AbilitySet.t)
@@ -1353,14 +1354,10 @@ Module CompiledModule.
                 | Result.Ok  x    => check_type_arguments xs (x :: l2)
                 end
             end
-          ) in
-          check_type_arguments type_arguments [] in
-        match type_arguments with
-        | Result.Ok  type_arguments =>
-            AbilitySet.Impl_AbilitySet.polymorphic_abilities
-              declared_abilities is_phantom_list type_arguments
-        | Result.Err err            => Result.Err err
-        end
+            ) in
+          return! $ check_type_arguments type_arguments [] in
+        return! $ AbilitySet.Impl_AbilitySet.polymorphic_abilities
+          declared_abilities is_phantom_list type_arguments
     end.
 
     (*

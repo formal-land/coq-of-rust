@@ -57,11 +57,13 @@ Module Panic.
     | Panic error => Panic error
     end.
 
-  Fixpoint fold_left {A B : Set} (init : A) (l : list B) (f : A -> B -> t A) : t A :=
-    match l with
-    | nil => return_ init
-    | cons x xs => bind (fold_left init xs f) (fun init => f init x)
-    end.
+  Definition fold_left {A B : Set} (init : A) (l : list B) (f : A -> B -> t A) : t A :=
+    List.fold_left (fun acc x => bind acc (fun acc => f acc x)) l (return_ init).
+
+  Definition map {A B : Set} (l : list A) (f : A -> t B) : t (list B) :=
+    List.fold_right
+      (fun x acc => bind acc (fun acc => bind (f x) (fun x => return_ (x :: acc))))
+      (return_ []) l.
 End Panic.
 
 Module PanicNotations.
@@ -79,6 +81,8 @@ Module PanicNotations.
     (at level 200, X at level 100, Y at level 200).
 
   Notation "fold!" := Panic.fold_left.
+
+  Notation "map!" := Panic.map.
 End PanicNotations.
 
 Module PanicResult.
