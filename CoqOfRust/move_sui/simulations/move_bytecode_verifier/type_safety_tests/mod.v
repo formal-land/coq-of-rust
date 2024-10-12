@@ -4588,8 +4588,7 @@ Definition test_vec_unpack_correct_type : M! unit :=
   assert_is_ok result.
 
 Goal test_vec_unpack_correct_type = return! tt.
-Proof.
-Admitted.
+Proof. reflexivity. Qed.
 
 (*
 #[test]
@@ -4693,8 +4692,7 @@ Definition test_vec_unpack_too_few_elements : M! unit :=
   assert_is_ok result.
 
 Goal test_vec_unpack_too_few_elements = return! tt.
-Proof.
-Admitted.
+Proof. reflexivity. Qed.
 
 (*
 #[test]
@@ -7065,7 +7063,7 @@ Definition test_move_to_generic_deprecated_too_few_args : M!? _ unit :=
 Goal
   exists (Error : Set) (error : Error),
   test_move_to_generic_deprecated_too_few_args = panic! error.
-Proof. repeat eexists.
+Proof.
 Admitted.
 
 (*

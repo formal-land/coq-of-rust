@@ -139,11 +139,8 @@ Module StatePanic.
     fun _ => return! (tt, state).
 
   (** We also put the current [state] in the panic message. *)
-  Definition panic_any {State Error A : Set} (err : Error) : t State A :=
+  Definition panic {State Error A : Set} (err : Error) : t State A :=
     fun state => panic! (err, state).
-
-  Definition panic {State A : Set} (msg : string) : t State A :=
-    panic_any msg.
 
   Definition lift_from_panic {State A : Set} (value : M! A) : t State A :=
     fun state =>
@@ -175,8 +172,6 @@ Module StatePanicNotations.
   Notation "readS!" := StatePanic.read.
 
   Notation "writeS!" := StatePanic.write.
-
-  Notation "panic_anyS!" := StatePanic.panic_any.
 
   Notation "panicS!" := StatePanic.panic.
 

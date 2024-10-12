@@ -1849,8 +1849,7 @@ Definition verify_instr
             returnS! $ Result.Ok tt
         else
           returnS! $ Result.Ok tt in
-      let item := SignatureToken.Vector element_type in
-      TypeSafetyChecker.Impl_TypeSafetyChecker.push $ SignatureToken.Reference item
+      TypeSafetyChecker.Impl_TypeSafetyChecker.push $ SignatureToken.Vector element_type
 
     (* 
     Bytecode::VecLen(idx) => {
@@ -1997,8 +1996,9 @@ Definition verify_instr
         "index error for declared_element_type" in
       if negb $ SignatureToken.t_beq operand_vec $
         SignatureToken.Vector declared_element_type
-      then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
-        .error verifier StatusCode.TYPE_MISMATCH offset
+      then
+        returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
+          .error verifier StatusCode.TYPE_MISMATCH offset
       else 
         TypeSafetyChecker.Impl_TypeSafetyChecker.push_n declared_element_type num
 

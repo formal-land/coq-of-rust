@@ -12,7 +12,7 @@ Module Assert.
         MS! State unit :=
       ifS! b
       then returnS! tt
-      else panicS! "assertion failed".
+      else panicS! "assertion failed"%string.
 
     Definition assert_eq
         {State A : Set} (x y :  MS! State A) `{Eq.Trait A} :
