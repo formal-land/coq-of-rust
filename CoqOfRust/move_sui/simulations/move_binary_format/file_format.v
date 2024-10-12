@@ -893,10 +893,10 @@ Module Bytecode.
   | MutBorrowFieldGeneric (_ : FieldInstantiationIndex.t)
   | ImmBorrowField (_ : FieldHandleIndex.t)
   | ImmBorrowFieldGeneric (_ : FieldInstantiationIndex.t)
-  | MutBorrowGlobal (_ : StructDefinitionIndex.t)
-  | MutBorrowGlobalGeneric (_ : StructDefInstantiationIndex.t)
-  | ImmBorrowGlobal (_ : StructDefinitionIndex.t)
-  | ImmBorrowGlobalGeneric (_ : StructDefInstantiationIndex.t)
+  | MutBorrowGlobalDeprecated (_ : StructDefinitionIndex.t)
+  | MutBorrowGlobalGenericDeprecated (_ : StructDefInstantiationIndex.t)
+  | ImmBorrowGlobalDeprecated (_ : StructDefinitionIndex.t)
+  | ImmBorrowGlobalGenericDeprecated (_ : StructDefInstantiationIndex.t)
   | Add
   | Sub
   | Mul
@@ -916,12 +916,12 @@ Module Bytecode.
   | Ge
   | Abort
   | Nop
-  | Exists (_ : StructDefinitionIndex.t)
-  | ExistsGeneric (_ : StructDefInstantiationIndex.t)
-  | MoveFrom (_ : StructDefinitionIndex.t)
-  | MoveFromGeneric (_ : StructDefInstantiationIndex.t)
-  | MoveTo (_ : StructDefinitionIndex.t)
-  | MoveToGeneric (_ : StructDefInstantiationIndex.t)
+  | ExistsDeprecated (_ : StructDefinitionIndex.t)
+  | ExistsGenericDeprecated (_ : StructDefInstantiationIndex.t)
+  | MoveFromDeprecated (_ : StructDefinitionIndex.t)
+  | MoveFromGenericDeprecated (_ : StructDefInstantiationIndex.t)
+  | MoveToDeprecated (_ : StructDefinitionIndex.t)
+  | MoveToGenericDeprecated (_ : StructDefInstantiationIndex.t)
   | Shl
   | Shr
   | VecPack (_ : SignatureIndex.t) (_ : Z)

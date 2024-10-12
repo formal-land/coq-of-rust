@@ -356,50 +356,47 @@ Definition borrow_field
     letS! operand :=
       liftS! TypeSafetyChecker.lens_self_stack AbstractStack.pop in
     letS! operand  := return!toS! $ safe_unwrap_err operand in
-    if andb mut_ (negb $ SignatureToken.is_mutable_reference operand)
-    then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
-      .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
+    if andb mut_ (negb $ SignatureToken.is_mutable_reference operand) then
+      returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker.error
+        verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
     else 
-
-      let field_handle :=
-        CompiledModule.field_handle_at verifier.(TypeSafetyChecker.module) field_handle_index in
-      let struct_def :=
-        CompiledModule.struct_def_at
-          verifier.(TypeSafetyChecker.module) field_handle.(FieldHandle.owner) in
-      let expected_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
-
-      (* NOTE: The following patterns on result are interesting... *)
-      let result_2 := match operand with
-      | SignatureToken.Reference _ =>
-        Result.Ok tt 
-      | SignatureToken.MutableReference inner =>
-        if SignatureToken.t_beq inner expected_type then Result.Ok tt
-        else Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
-          .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
-      | _ => Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
-        .error verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
+    let field_handle :=
+      CompiledModule.field_handle_at verifier.(TypeSafetyChecker.module) field_handle_index in
+    let struct_def :=
+      CompiledModule.struct_def_at
+        verifier.(TypeSafetyChecker.module) field_handle.(FieldHandle.owner) in
+    let expected_type := materialize_type struct_def.(StructDefinition.struct_handle) type_args in
+    (* NOTE: The following patterns on result are interesting... *)
+    let valid_condition :=
+      match operand with
+      | SignatureToken.Reference inner | SignatureToken.MutableReference inner =>
+        SignatureToken.t_beq inner expected_type
+      | _ => false
       end in
-      match result_2 with
-      | Result.Err x => returnS! $ Result.Err x
-      | _ =>
-        let field_def := match struct_def.(StructDefinition.field_information) with
-        | StructFieldInformation.Native =>
-          Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
-          .error verifier StatusCode.BORROWFIELD_BAD_FIELD_ERROR offset
-        | StructFieldInformation.Declared fields =>
-          let field := Z.to_nat field_handle.(FieldHandle.field) in
-          Result.Ok $ List.nth field fields default_field_definition
-        end in
-        match field_def with
-        | Result.Err x => returnS! $ Result.Err x
-        | Result.Ok field_def =>
-          let field_type := instantiate 
-            field_def.(FieldDefinition.signature).(TypeSignature.a0) type_args in
-          TypeSafetyChecker.Impl_TypeSafetyChecker
-            .push $ if mut_ then SignatureToken.MutableReference field_type
-              else SignatureToken.Reference field_type
-        end (* end match for result_3 *)
-      end (* end match for result_2 *).
+    doS!?
+      if negb valid_condition then
+        returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker.error
+          verifier StatusCode.BORROWFIELD_TYPE_MISMATCH_ERROR offset
+      else
+        returnS!? tt in
+    letS!? field_def :=
+      match struct_def.(StructDefinition.field_information) with
+      | StructFieldInformation.Native =>
+        returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
+        .error verifier StatusCode.BORROWFIELD_BAD_FIELD_ERROR offset
+      | StructFieldInformation.Declared fields =>
+        let field := Z.to_nat field_handle.(FieldHandle.field) in
+        returnS!? $ List.nth field fields default_field_definition
+      end in
+    let field_type := instantiate
+      field_def.(FieldDefinition.signature).(TypeSignature.a0) type_args in
+    TypeSafetyChecker.Impl_TypeSafetyChecker.push (
+      if mut_ then
+        SignatureToken.MutableReference field_type
+      else
+        SignatureToken.Reference field_type
+    ).
+
 (* 
 fn borrow_loc(
     verifier: &mut TypeSafetyChecker,
@@ -1042,7 +1039,7 @@ Definition verify_instr
         if negb $ SignatureToken.t_beq operand $ TypeSafetyChecker.Impl_TypeSafetyChecker
           .local_at verifier (LocalIndex.Build_t idx)
         then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
-          .error verifier StatusCode.BR_TYPE_MISMATCH_ERROR offset
+          .error verifier StatusCode.STLOC_TYPE_MISMATCH_ERROR offset
         else returnS! $ Result.Ok tt
 
     (* 
@@ -1461,7 +1458,7 @@ Definition verify_instr
         end in
       letS!? abilities := returnS! $ TypeSafetyChecker.Impl_TypeSafetyChecker
         .abilities verifier ref_inner_signature in
-      if AbilitySet.Impl_AbilitySet.has_drop abilities
+      if negb (AbilitySet.Impl_AbilitySet.has_drop abilities)
       then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
         .error verifier StatusCode.WRITEREF_WITHOUT_DROP_ABILITY offset
       else if negb $ SignatureToken.t_beq val_operand ref_inner_signature
@@ -1682,7 +1679,7 @@ Definition verify_instr
         borrow_global(verifier, meter, offset, true, *idx, &Signature(vec![]))?
     }
     *)
-    | Bytecode.MutBorrowGlobal idx => borrow_global offset true idx $ Signature.Build_t []
+    | Bytecode.MutBorrowGlobalDeprecated idx => borrow_global offset true idx $ Signature.Build_t []
 
     (* 
     Bytecode::MutBorrowGlobalGenericDeprecated(idx) => {
@@ -1692,7 +1689,7 @@ Definition verify_instr
         borrow_global(verifier, meter, offset, true, struct_inst.def, type_inst)?
     }
     *)
-    | Bytecode.MutBorrowGlobalGeneric idx => 
+    | Bytecode.MutBorrowGlobalGenericDeprecated idx => 
       let struct_inst := CompiledModule
         .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
       let type_inst := CompiledModule
@@ -1705,7 +1702,8 @@ Definition verify_instr
         borrow_global(verifier, meter, offset, false, *idx, &Signature(vec![]))?
     }
     *)
-    | Bytecode.ImmBorrowGlobal idx => borrow_global offset false idx $ Signature.Build_t []
+    | Bytecode.ImmBorrowGlobalDeprecated idx =>
+      borrow_global offset false idx $ Signature.Build_t []
 
     (* 
     Bytecode::ImmBorrowGlobalGenericDeprecated(idx) => {
@@ -1715,7 +1713,7 @@ Definition verify_instr
         borrow_global(verifier, meter, offset, false, struct_inst.def, type_inst)?
     }
     *)
-    | Bytecode.ImmBorrowGlobalGeneric idx => 
+    | Bytecode.ImmBorrowGlobalGenericDeprecated idx => 
       let struct_inst := CompiledModule
         .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
       let type_inst := CompiledModule
@@ -1729,7 +1727,7 @@ Definition verify_instr
         exists(verifier, meter, offset, struct_def, &Signature(vec![]))?
     }
     *)
-    | Bytecode.Exists idx => 
+    | Bytecode.ExistsDeprecated idx => 
       let struct_def := CompiledModule
         .struct_def_at verifier.(TypeSafetyChecker.module) idx in
         _exists offset struct_def $ Signature.Build_t []
@@ -1743,7 +1741,7 @@ Definition verify_instr
         exists(verifier, meter, offset, struct_def, type_args)?
     }
     *)
-    | Bytecode.ExistsGeneric idx => 
+    | Bytecode.ExistsGenericDeprecated idx => 
       let struct_inst := CompiledModule
         .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
       let struct_def := CompiledModule
@@ -1760,7 +1758,7 @@ Definition verify_instr
         move_from(verifier, meter, offset, struct_def, &Signature(vec![]))?
     }
     *)
-    | Bytecode.MoveFrom idx => 
+    | Bytecode.MoveFromDeprecated idx => 
       let struct_def := CompiledModule
         .struct_def_at verifier.(TypeSafetyChecker.module) idx in
       move_from offset struct_def $ Signature.Build_t []
@@ -1774,7 +1772,7 @@ Definition verify_instr
         move_from(verifier, meter, offset, struct_def, type_args)?
     }
     *)
-    | Bytecode.MoveFromGeneric idx => 
+    | Bytecode.MoveFromGenericDeprecated idx => 
     let struct_inst := CompiledModule
       .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
     let struct_def := CompiledModule
@@ -1791,7 +1789,7 @@ Definition verify_instr
         move_to(verifier, offset, struct_def, &Signature(vec![]))?
     }
     *)
-    | Bytecode.MoveTo idx => 
+    | Bytecode.MoveToDeprecated idx => 
       let struct_def := CompiledModule
         .struct_def_at verifier.(TypeSafetyChecker.module) idx in
       move_to offset struct_def $ Signature.Build_t []
@@ -1805,7 +1803,7 @@ Definition verify_instr
         move_to(verifier, offset, struct_def, type_args)?
     }
     *)
-    | Bytecode.MoveToGeneric idx =>  
+    | Bytecode.MoveToGenericDeprecated idx =>  
       let struct_inst := CompiledModule
         .struct_instantiation_at verifier.(TypeSafetyChecker.module) idx in
       let struct_def := CompiledModule

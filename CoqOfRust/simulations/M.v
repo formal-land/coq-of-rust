@@ -226,6 +226,10 @@ Module StatePanicResultNotations.
     (StatePanicResult.bind X (fun x => Y))
     (at level 200, x pattern, X at level 100, Y at level 200).
 
+  Notation "'doS!?' X 'in' Y" :=
+    (StatePanicResult.bind X (fun (_ : unit) => Y))
+    (at level 200, X at level 100, Y at level 200).
+
   Notation "foldS!?" := StatePanicResult.fold_left.
 
   Notation "return!toS!?" := StatePanicResult.lift_from_panic.
