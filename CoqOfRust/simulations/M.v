@@ -111,6 +111,47 @@ Module PanicResultNotations.
     (at level 200, x pattern, X at level 100, Y at level 200).
 End PanicResultNotations.
 
+Module State.
+  Definition t (State A : Set) : Set := State -> A * State.
+
+  Definition return_ {State A : Set} (value : A) : t State A :=
+    fun state => (value, state).
+
+  Definition bind {State A B : Set} (value : t State A) (f : A -> t State B) : t State B :=
+    fun state =>
+      let (value, state) := value state in
+      f value state.
+
+  (** Same as [List.fold_left] but for functions that return a monadic value. We use the order of
+      parameters from the `for` operator, with initialization first, the remaining elements, and then
+      the body of the loop. The idea is to look similar to the source code. *)
+  Definition fold_left {State A B : Set} (init : A) (l : list B) (f : A -> B -> t State A) :
+      t State A :=
+    List.fold_left (fun acc x => bind acc (fun acc => f acc x)) l (return_ init).
+
+  Definition read {State : Set} : t State State :=
+    fun state => (state, state).
+
+  Definition write {State : Set} (state : State) : t State unit :=
+    fun _ => (tt, state).
+End State.
+
+Module StateNotations.
+  Notation "'MS" := State.t.
+
+  Notation "'returnS" := State.return_.
+
+  Notation "'letS' x ':=' X 'in' Y" :=
+    (State.bind X (fun x => Y))
+    (at level 200, x pattern, X at level 100, Y at level 200).
+
+  Notation "'foldS" := State.fold_left.
+
+  Notation "'readS" := State.read.
+
+  Notation "'writeS" := State.write.
+End StateNotations.
+
 Module StatePanic.
   Import PanicNotations.
 
