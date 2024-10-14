@@ -204,17 +204,6 @@ Module AbilitySet.
       let '(Build_t other) := other in
       Build_t $ Z.land self other.
 
-    Definition zip {A B} (xs : list A) (ys : list B) :=
-      let zip_helper :=
-        (fix zip_helper {A B} (xs : list A) (ys : list B) (ls : list (A * B)) :=
-          match xs, ys with
-          | []      , []        => ls
-          | []      , y :: ys   => ls
-          | x :: xs , []        => ls
-          | x::xs   , y::ys     => zip_helper xs ys $ (x, y) :: ls
-          end) in
-      zip_helper xs ys [].
-
     (* Customized `into_iter` solely turns `AbilitySet` type into `Ability`.
        The name is being kept for consistency with the original code. 
        There's a lot of thing going on digging into the `Iterator` trait.
@@ -226,25 +215,12 @@ Module AbilitySet.
        - Later this `Ability` value is further processed with a `fold`. This `fold`
          uses a customized `next` to get the next value, until `next` returns `None`.
     *)
-    Definition into_iter (a : Self) : Ability.t :=
-      let '(Build_t z) := a in Ability.of_Z z.
-
-    (* Ad hoc `fold` specifically for `Ability` and the function below.
-      This `fold` is ensured to loop for 8 times exactly *)
-    Definition fold (a result : Self) (f : Self -> Self -> Self) : Self :=
-      let fold_helper :=
-        (fix fold_helper (a result : Self) (f : Self -> Self -> Self) (n8 : nat) : Self :=
-          match n8 with
-          | S n =>
-            let '(AbilitySet.Build_t a0) := a in
-            let b := AbilitySet.Build_t 
-              $ Z.land a0 $ Z.shiftl 0x01 $ Z.of_nat $ Nat.sub 8 n8 in
-            fold_helper a (f a b) f n
-          | O => result
-          end
-          ) in
-      fold_helper a (AbilitySet.Build_t 0) f 8%nat
-      .
+    Definition into_iter (a : Self) : list Ability.t :=
+      let '(Build_t z) := a in
+      (if Z.testbit z 0 then [Ability.Copy] else []) ++
+      (if Z.testbit z 1 then [Ability.Drop] else []) ++
+      (if Z.testbit z 2 then [Ability.Store] else []) ++
+      (if Z.testbit z 3 then [Ability.Key] else []).
 
     (* 
     /// For a polymorphic type, its actual abilities correspond to its declared abilities but
@@ -296,8 +272,8 @@ Module AbilitySet.
         Ok(abs)
     }
     *)
-    Definition polymorphic_abilities (declared_abilities : Self) 
-      (declared_phantom_parameters: list bool) (type_arguments : list Self) 
+    Definition polymorphic_abilities (declared_abilities : Self)
+      (declared_phantom_parameters: list bool) (type_arguments : list Self)
       : PartialVMResult.t Self :=
       let len_dpp := Z.of_nat $ List.length declared_phantom_parameters in
       let len_ta  := Z.of_nat $ List.length type_arguments in
@@ -305,15 +281,15 @@ Module AbilitySet.
       (* TODO: correctly deal with the `PartialVMError` in the future *)
       then Result.Err (PartialVMError.new (StatusCode.VERIFIER_INVARIANT_VIOLATION))
       else 
-      let abs := zip type_arguments declared_phantom_parameters in
+      let abs := List.combine type_arguments declared_phantom_parameters in
       let abs := List.filter (fun x =>
         let '(_, is_phantom) := x in negb is_phantom
       ) abs in
       let abs := List.map (fun x =>
         let '(ty_arg_abilities, _) := x in
         let ty_arg_abilities := into_iter ty_arg_abilities in
-        let ty_arg_abilities := required_by ty_arg_abilities in
-        fold ty_arg_abilities EMPTY union
+        let ty_arg_abilitiess := List.map required_by ty_arg_abilities in
+        List.fold_left union ty_arg_abilitiess EMPTY
       ) abs in
       let abs := List.fold_left (fun acc ty_arg_abilities => 
           intersect acc ty_arg_abilities
