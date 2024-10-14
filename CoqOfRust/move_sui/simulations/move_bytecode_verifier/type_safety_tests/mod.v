@@ -5483,8 +5483,7 @@ Definition test_vec_push_back_type_mismatch : M! unit :=
     ).
 
 Goal test_vec_push_back_type_mismatch = return! tt.
-Proof.
-Admitted.
+Proof. reflexivity. Qed.
 
 (*
 #[test]
@@ -6027,7 +6026,8 @@ Definition test_vec_swap_wrong_type : M! unit :=
 
 Goal test_vec_swap_wrong_type = return! tt.
 Proof.
-Admitted.
+  reflexivity.
+Qed.
 
 (*
 #[test]
@@ -6243,7 +6243,8 @@ Definition test_exists_generic_deprecated_correct_type : M! unit :=
 
 Goal test_exists_generic_deprecated_correct_type = return! tt.
 Proof.
-Admitted.
+  reflexivity.
+Qed.
 
 (*
 #[test]
@@ -6346,8 +6347,9 @@ Definition test_exists_generic_deprecated_no_arg : M!? _ unit :=
 Goal
   exists (Error : Set) (error : Error),
   test_exists_generic_deprecated_no_arg = panic! error.
-Proof. repeat eexists.
-Admitted.
+Proof.
+  repeat eexists.
+Qed.
 
 (*
 #[test]
@@ -6450,7 +6452,8 @@ Definition test_move_from_deprecated_no_key : M! unit :=
 
 Goal test_move_from_deprecated_no_key = return! tt.
 Proof.
-Admitted.
+  reflexivity.
+Qed.
 
 (*
 #[test]
@@ -6580,7 +6583,8 @@ Definition test_move_from_generic_deprecated_no_key : M! unit :=
 
 Goal test_move_from_generic_deprecated_no_key = return! tt.
 Proof.
-Admitted.
+  reflexivity.
+Qed.
 
 (*
 #[test]
@@ -6875,7 +6879,8 @@ Definition test_move_to_generic_deprecated_correct_type : M! unit :=
 
 Goal test_move_to_generic_deprecated_correct_type = return! tt.
 Proof.
-Admitted.
+  reflexivity.
+Qed.
 
 (*
 #[test]
@@ -6915,7 +6920,8 @@ Definition test_move_to_generic_deprecated_mismatched_types : M! unit :=
 
 Goal test_move_to_generic_deprecated_mismatched_types = return! tt.
 Proof.
-Admitted.
+  reflexivity.
+Qed.
 
 (*
 #[test]
@@ -6989,7 +6995,8 @@ Definition test_move_to_generic_deprecated_wrong_type : M! unit :=
 
 Goal test_move_to_generic_deprecated_wrong_type = return! tt.
 Proof.
-Admitted.
+  reflexivity.
+Qed.
 
 (*
 #[test]
@@ -7064,7 +7071,8 @@ Goal
   exists (Error : Set) (error : Error),
   test_move_to_generic_deprecated_too_few_args = panic! error.
 Proof.
-Admitted.
+  repeat eexists.
+Qed.
 
 (*
 #[test]
@@ -7089,8 +7097,7 @@ Definition test_move_to_generic_deprecated_no_arg : M!? _ unit :=
 Goal
   exists (Error : Set) (error : Error),
   test_move_to_generic_deprecated_no_arg = panic! error.
-Proof. repeat eexists.
-Admitted.
+Proof. repeat eexists. Qed.
 
 (*
 #[test]
@@ -7125,8 +7132,7 @@ Goal List.Forall
     Bytecode.ImmBorrowGlobalDeprecated (StructDefinitionIndex.Build_t 0);
     Bytecode.MutBorrowGlobalDeprecated (StructDefinitionIndex.Build_t 0)
   ].
-Proof. repeat constructor.
-Admitted.
+Proof. repeat constructor. Qed.
 
 
 (*
@@ -7171,8 +7177,7 @@ Goal List.Forall
     Bytecode.ImmBorrowGlobalDeprecated (StructDefinitionIndex.Build_t 0);
     Bytecode.MutBorrowGlobalDeprecated (StructDefinitionIndex.Build_t 0)
   ].
-Proof. repeat constructor.
-Admitted.
+Proof. repeat constructor. Qed.
 
 (*
 #[test]
@@ -7216,8 +7221,7 @@ Goal List.Forall
     Bytecode.ImmBorrowGlobalDeprecated (StructDefinitionIndex.Build_t 0);
     Bytecode.MutBorrowGlobalDeprecated (StructDefinitionIndex.Build_t 0)
   ].
-Proof. repeat constructor.
-Admitted.
+Proof. repeat constructor. Qed.
 
 (*
 #[test]
@@ -7324,8 +7328,7 @@ Goal List.Forall
     Bytecode.ImmBorrowGlobalGenericDeprecated (StructDefInstantiationIndex.Build_t 0);
     Bytecode.MutBorrowGlobalGenericDeprecated (StructDefInstantiationIndex.Build_t 0)
   ].
-Proof. repeat constructor.
-Admitted.
+Proof. repeat constructor. Qed.
 
 (*
 #[test]
@@ -7373,8 +7376,7 @@ Goal List.Forall
     Bytecode.ImmBorrowGlobalGenericDeprecated (StructDefInstantiationIndex.Build_t 0);
     Bytecode.MutBorrowGlobalGenericDeprecated (StructDefInstantiationIndex.Build_t 0)
   ].
-Proof. repeat constructor.
-Admitted.
+Proof. repeat constructor. Qed.
 
 (*
 #[test]
