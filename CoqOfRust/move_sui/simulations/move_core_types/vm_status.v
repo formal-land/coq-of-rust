@@ -1,6 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
-Require Import CoqOfRust.lib.lib.
 
 Import simulations.M.Notations.
 
@@ -295,8 +294,8 @@ pub enum StatusCode {
 }
 *)
 (* NOTE: We might want to implement a function to translate the StatusCode to its corresponded integer in the future *)
-Module StatusCode. 
-  Inductive t : Set := 
+Module StatusCode.
+  Inductive t : Set :=
   | UNKNOWN_VALIDATION_STATUS
   | INVALID_SIGNATURE
   | INVALID_AUTH_KEY

@@ -71,4 +71,12 @@ Module CompiledModule.
     struct_defs : Vec.t StructDefinition.t;
     function_defs : Vec.t FunctionDefinition.t;
   }.
+
+  (*
+  /// Returns the code key of `self`
+  pub fn self_id(&self) -> ModuleId {
+      self.module_id_for_handle(self.self_handle())
+  }
+  *)
+  Parameter self_id : t -> ModuleId.t.
 End CompiledModule.
