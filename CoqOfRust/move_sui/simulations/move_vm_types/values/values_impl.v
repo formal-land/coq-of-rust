@@ -689,3 +689,495 @@ Module Locals.
         . *)
   End Impl_Locals.
 End Locals.
+
+(*
+impl IntegerValue {
+    pub fn add_checked(self, other: Self) -> PartialVMResult<Self> {
+        use IntegerValue::*;
+        let res = match (self, other) {
+            (U8(l), U8(r)) => u8::checked_add(l, r).map(IntegerValue::U8),
+            (U16(l), U16(r)) => u16::checked_add(l, r).map(IntegerValue::U16),
+            (U32(l), U32(r)) => u32::checked_add(l, r).map(IntegerValue::U32),
+            (U64(l), U64(r)) => u64::checked_add(l, r).map(IntegerValue::U64),
+            (U128(l), U128(r)) => u128::checked_add(l, r).map(IntegerValue::U128),
+            (U256(l), U256(r)) => u256::U256::checked_add(l, r).map(IntegerValue::U256),
+            (l, r) => {
+                let msg = format!("Cannot add {:?} and {:?}", l, r);
+                return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
+            }
+        };
+        res.ok_or_else(|| PartialVMError::new(StatusCode::ARITHMETIC_ERROR))
+    }
+
+    pub fn sub_checked(self, other: Self) -> PartialVMResult<Self> {
+        use IntegerValue::*;
+        let res = match (self, other) {
+            (U8(l), U8(r)) => u8::checked_sub(l, r).map(IntegerValue::U8),
+            (U16(l), U16(r)) => u16::checked_sub(l, r).map(IntegerValue::U16),
+            (U32(l), U32(r)) => u32::checked_sub(l, r).map(IntegerValue::U32),
+            (U64(l), U64(r)) => u64::checked_sub(l, r).map(IntegerValue::U64),
+            (U128(l), U128(r)) => u128::checked_sub(l, r).map(IntegerValue::U128),
+            (U256(l), U256(r)) => u256::U256::checked_sub(l, r).map(IntegerValue::U256),
+            (l, r) => {
+                let msg = format!("Cannot sub {:?} from {:?}", r, l);
+                return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
+            }
+        };
+        res.ok_or_else(|| PartialVMError::new(StatusCode::ARITHMETIC_ERROR))
+    }
+
+    pub fn mul_checked(self, other: Self) -> PartialVMResult<Self> {
+        use IntegerValue::*;
+        let res = match (self, other) {
+            (U8(l), U8(r)) => u8::checked_mul(l, r).map(IntegerValue::U8),
+            (U16(l), U16(r)) => u16::checked_mul(l, r).map(IntegerValue::U16),
+            (U32(l), U32(r)) => u32::checked_mul(l, r).map(IntegerValue::U32),
+            (U64(l), U64(r)) => u64::checked_mul(l, r).map(IntegerValue::U64),
+            (U128(l), U128(r)) => u128::checked_mul(l, r).map(IntegerValue::U128),
+            (U256(l), U256(r)) => u256::U256::checked_mul(l, r).map(IntegerValue::U256),
+            (l, r) => {
+                let msg = format!("Cannot mul {:?} and {:?}", l, r);
+                return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
+            }
+        };
+        res.ok_or_else(|| PartialVMError::new(StatusCode::ARITHMETIC_ERROR))
+    }
+
+    pub fn div_checked(self, other: Self) -> PartialVMResult<Self> {
+        use IntegerValue::*;
+        let res = match (self, other) {
+            (U8(l), U8(r)) => u8::checked_div(l, r).map(IntegerValue::U8),
+            (U16(l), U16(r)) => u16::checked_div(l, r).map(IntegerValue::U16),
+            (U32(l), U32(r)) => u32::checked_div(l, r).map(IntegerValue::U32),
+            (U64(l), U64(r)) => u64::checked_div(l, r).map(IntegerValue::U64),
+            (U128(l), U128(r)) => u128::checked_div(l, r).map(IntegerValue::U128),
+            (U256(l), U256(r)) => u256::U256::checked_div(l, r).map(IntegerValue::U256),
+            (l, r) => {
+                let msg = format!("Cannot div {:?} by {:?}", l, r);
+                return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
+            }
+        };
+        res.ok_or_else(|| PartialVMError::new(StatusCode::ARITHMETIC_ERROR))
+    }
+
+    pub fn rem_checked(self, other: Self) -> PartialVMResult<Self> {
+        use IntegerValue::*;
+        let res = match (self, other) {
+            (U8(l), U8(r)) => u8::checked_rem(l, r).map(IntegerValue::U8),
+            (U16(l), U16(r)) => u16::checked_rem(l, r).map(IntegerValue::U16),
+            (U32(l), U32(r)) => u32::checked_rem(l, r).map(IntegerValue::U32),
+            (U64(l), U64(r)) => u64::checked_rem(l, r).map(IntegerValue::U64),
+            (U128(l), U128(r)) => u128::checked_rem(l, r).map(IntegerValue::U128),
+            (U256(l), U256(r)) => u256::U256::checked_rem(l, r).map(IntegerValue::U256),
+            (l, r) => {
+                let msg = format!("Cannot rem {:?} by {:?}", l, r);
+                return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
+            }
+        };
+        res.ok_or_else(|| PartialVMError::new(StatusCode::ARITHMETIC_ERROR))
+    }
+
+    pub fn bit_or(self, other: Self) -> PartialVMResult<Self> {
+        use IntegerValue::*;
+        Ok(match (self, other) {
+            (U8(l), U8(r)) => IntegerValue::U8(l | r),
+            (U16(l), U16(r)) => IntegerValue::U16(l | r),
+            (U32(l), U32(r)) => IntegerValue::U32(l | r),
+            (U64(l), U64(r)) => IntegerValue::U64(l | r),
+            (U128(l), U128(r)) => IntegerValue::U128(l | r),
+            (U256(l), U256(r)) => IntegerValue::U256(l | r),
+            (l, r) => {
+                let msg = format!("Cannot bit_or {:?} and {:?}", l, r);
+                return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
+            }
+        })
+    }
+
+    pub fn bit_and(self, other: Self) -> PartialVMResult<Self> {
+        use IntegerValue::*;
+        Ok(match (self, other) {
+            (U8(l), U8(r)) => IntegerValue::U8(l & r),
+            (U16(l), U16(r)) => IntegerValue::U16(l & r),
+            (U32(l), U32(r)) => IntegerValue::U32(l & r),
+            (U64(l), U64(r)) => IntegerValue::U64(l & r),
+            (U128(l), U128(r)) => IntegerValue::U128(l & r),
+            (U256(l), U256(r)) => IntegerValue::U256(l & r),
+            (l, r) => {
+                let msg = format!("Cannot bit_and {:?} and {:?}", l, r);
+                return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
+            }
+        })
+    }
+
+    pub fn bit_xor(self, other: Self) -> PartialVMResult<Self> {
+        use IntegerValue::*;
+        Ok(match (self, other) {
+            (U8(l), U8(r)) => IntegerValue::U8(l ^ r),
+            (U16(l), U16(r)) => IntegerValue::U16(l ^ r),
+            (U32(l), U32(r)) => IntegerValue::U32(l ^ r),
+            (U64(l), U64(r)) => IntegerValue::U64(l ^ r),
+            (U128(l), U128(r)) => IntegerValue::U128(l ^ r),
+            (U256(l), U256(r)) => IntegerValue::U256(l ^ r),
+            (l, r) => {
+                let msg = format!("Cannot bit_xor {:?} and {:?}", l, r);
+                return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
+            }
+        })
+    }
+
+    pub fn shl_checked(self, n_bits: u8) -> PartialVMResult<Self> {
+        use IntegerValue::*;
+
+        Ok(match self {
+            U8(x) => {
+                if n_bits >= 8 {
+                    return Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR));
+                }
+                IntegerValue::U8(x << n_bits)
+            }
+            U16(x) => {
+                if n_bits >= 16 {
+                    return Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR));
+                }
+                IntegerValue::U16(x << n_bits)
+            }
+            U32(x) => {
+                if n_bits >= 32 {
+                    return Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR));
+                }
+                IntegerValue::U32(x << n_bits)
+            }
+            U64(x) => {
+                if n_bits >= 64 {
+                    return Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR));
+                }
+                IntegerValue::U64(x << n_bits)
+            }
+            U128(x) => {
+                if n_bits >= 128 {
+                    return Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR));
+                }
+                IntegerValue::U128(x << n_bits)
+            }
+            U256(x) => IntegerValue::U256(x << n_bits),
+        })
+    }
+
+    pub fn shr_checked(self, n_bits: u8) -> PartialVMResult<Self> {
+        use IntegerValue::*;
+
+        Ok(match self {
+            U8(x) => {
+                if n_bits >= 8 {
+                    return Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR));
+                }
+                IntegerValue::U8(x >> n_bits)
+            }
+            U16(x) => {
+                if n_bits >= 16 {
+                    return Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR));
+                }
+                IntegerValue::U16(x >> n_bits)
+            }
+            U32(x) => {
+                if n_bits >= 32 {
+                    return Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR));
+                }
+                IntegerValue::U32(x >> n_bits)
+            }
+            U64(x) => {
+                if n_bits >= 64 {
+                    return Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR));
+                }
+                IntegerValue::U64(x >> n_bits)
+            }
+            U128(x) => {
+                if n_bits >= 128 {
+                    return Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR));
+                }
+                IntegerValue::U128(x >> n_bits)
+            }
+            U256(x) => IntegerValue::U256(x >> n_bits),
+        })
+    }
+
+    pub fn lt(self, other: Self) -> PartialVMResult<bool> {
+        use IntegerValue::*;
+
+        Ok(match (self, other) {
+            (U8(l), U8(r)) => l < r,
+            (U16(l), U16(r)) => l < r,
+            (U32(l), U32(r)) => l < r,
+            (U64(l), U64(r)) => l < r,
+            (U128(l), U128(r)) => l < r,
+            (U256(l), U256(r)) => l < r,
+            (l, r) => {
+                let msg = format!(
+                    "Cannot compare {:?} and {:?}: incompatible integer types",
+                    l, r
+                );
+                return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
+            }
+        })
+    }
+
+    pub fn le(self, other: Self) -> PartialVMResult<bool> {
+        use IntegerValue::*;
+
+        Ok(match (self, other) {
+            (U8(l), U8(r)) => l <= r,
+            (U16(l), U16(r)) => l <= r,
+            (U32(l), U32(r)) => l <= r,
+            (U64(l), U64(r)) => l <= r,
+            (U128(l), U128(r)) => l <= r,
+            (U256(l), U256(r)) => l <= r,
+            (l, r) => {
+                let msg = format!(
+                    "Cannot compare {:?} and {:?}: incompatible integer types",
+                    l, r
+                );
+                return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
+            }
+        })
+    }
+
+    pub fn gt(self, other: Self) -> PartialVMResult<bool> {
+        use IntegerValue::*;
+
+        Ok(match (self, other) {
+            (U8(l), U8(r)) => l > r,
+            (U16(l), U16(r)) => l > r,
+            (U32(l), U32(r)) => l > r,
+            (U64(l), U64(r)) => l > r,
+            (U128(l), U128(r)) => l > r,
+            (U256(l), U256(r)) => l > r,
+            (l, r) => {
+                let msg = format!(
+                    "Cannot compare {:?} and {:?}: incompatible integer types",
+                    l, r
+                );
+                return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
+            }
+        })
+    }
+
+    pub fn ge(self, other: Self) -> PartialVMResult<bool> {
+        use IntegerValue::*;
+
+        Ok(match (self, other) {
+            (U8(l), U8(r)) => l >= r,
+            (U16(l), U16(r)) => l >= r,
+            (U32(l), U32(r)) => l >= r,
+            (U64(l), U64(r)) => l >= r,
+            (U128(l), U128(r)) => l >= r,
+            (U256(l), U256(r)) => l >= r,
+            (l, r) => {
+                let msg = format!(
+                    "Cannot compare {:?} and {:?}: incompatible integer types",
+                    l, r
+                );
+                return Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(msg));
+            }
+        })
+    }
+
+    pub fn into_value(self) -> Value {
+        use IntegerValue::*;
+
+        match self {
+            U8(x) => Value::u8(x),
+            U16(x) => Value::u16(x),
+            U32(x) => Value::u32(x),
+            U64(x) => Value::u64(x),
+            U128(x) => Value::u128(x),
+            U256(x) => Value::u256(x),
+        }
+    }
+}
+
+impl IntegerValue {
+    pub fn cast_u8(self) -> PartialVMResult<u8> {
+        use IntegerValue::*;
+
+        match self {
+            U8(x) => Ok(x),
+            U16(x) => {
+                if x > (std::u8::MAX as u16) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u16({}) to u8", x)))
+                } else {
+                    Ok(x as u8)
+                }
+            }
+            U32(x) => {
+                if x > (std::u8::MAX as u32) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u32({}) to u8", x)))
+                } else {
+                    Ok(x as u8)
+                }
+            }
+            U64(x) => {
+                if x > (std::u8::MAX as u64) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u64({}) to u8", x)))
+                } else {
+                    Ok(x as u8)
+                }
+            }
+            U128(x) => {
+                if x > (std::u8::MAX as u128) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u128({}) to u8", x)))
+                } else {
+                    Ok(x as u8)
+                }
+            }
+            U256(x) => {
+                if x > (u256::U256::from(std::u8::MAX)) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u256({}) to u8", x)))
+                } else {
+                    Ok(x.unchecked_as_u8())
+                }
+            }
+        }
+    }
+
+    pub fn cast_u16(self) -> PartialVMResult<u16> {
+        use IntegerValue::*;
+
+        match self {
+            U8(x) => Ok(x as u16),
+            U16(x) => Ok(x),
+            U32(x) => {
+                if x > (std::u16::MAX as u32) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u32({}) to u16", x)))
+                } else {
+                    Ok(x as u16)
+                }
+            }
+            U64(x) => {
+                if x > (std::u16::MAX as u64) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u64({}) to u16", x)))
+                } else {
+                    Ok(x as u16)
+                }
+            }
+            U128(x) => {
+                if x > (std::u16::MAX as u128) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u128({}) to u16", x)))
+                } else {
+                    Ok(x as u16)
+                }
+            }
+            U256(x) => {
+                if x > (u256::U256::from(std::u16::MAX)) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u256({}) to u16", x)))
+                } else {
+                    Ok(x.unchecked_as_u16())
+                }
+            }
+        }
+    }
+
+    pub fn cast_u32(self) -> PartialVMResult<u32> {
+        use IntegerValue::*;
+
+        match self {
+            U8(x) => Ok(x as u32),
+            U16(x) => Ok(x as u32),
+            U32(x) => Ok(x),
+            U64(x) => {
+                if x > (std::u32::MAX as u64) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u64({}) to u32", x)))
+                } else {
+                    Ok(x as u32)
+                }
+            }
+            U128(x) => {
+                if x > (std::u32::MAX as u128) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u128({}) to u32", x)))
+                } else {
+                    Ok(x as u32)
+                }
+            }
+            U256(x) => {
+                if x > (u256::U256::from(std::u32::MAX)) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u128({}) to u32", x)))
+                } else {
+                    Ok(x.unchecked_as_u32())
+                }
+            }
+        }
+    }
+
+    pub fn cast_u64(self) -> PartialVMResult<u64> {
+        use IntegerValue::*;
+
+        match self {
+            U8(x) => Ok(x as u64),
+            U16(x) => Ok(x as u64),
+            U32(x) => Ok(x as u64),
+            U64(x) => Ok(x),
+            U128(x) => {
+                if x > (std::u64::MAX as u128) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u128({}) to u64", x)))
+                } else {
+                    Ok(x as u64)
+                }
+            }
+            U256(x) => {
+                if x > (u256::U256::from(std::u64::MAX)) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u256({}) to u64", x)))
+                } else {
+                    Ok(x.unchecked_as_u64())
+                }
+            }
+        }
+    }
+
+    pub fn cast_u128(self) -> PartialVMResult<u128> {
+        use IntegerValue::*;
+
+        match self {
+            U8(x) => Ok(x as u128),
+            U16(x) => Ok(x as u128),
+            U32(x) => Ok(x as u128),
+            U64(x) => Ok(x as u128),
+            U128(x) => Ok(x),
+            U256(x) => {
+                if x > (u256::U256::from(std::u128::MAX)) {
+                    Err(PartialVMError::new(StatusCode::ARITHMETIC_ERROR)
+                        .with_message(format!("Cannot cast u256({}) to u128", x)))
+                } else {
+                    Ok(x.unchecked_as_u128())
+                }
+            }
+        }
+    }
+
+    pub fn cast_u256(self) -> PartialVMResult<u256::U256> {
+        use IntegerValue::*;
+
+        Ok(match self {
+            U8(x) => u256::U256::from(x),
+            U16(x) => u256::U256::from(x),
+            U32(x) => u256::U256::from(x),
+            U64(x) => u256::U256::from(x),
+            U128(x) => u256::U256::from(x),
+            U256(x) => x,
+        })
+    }
+}
+*)
+
