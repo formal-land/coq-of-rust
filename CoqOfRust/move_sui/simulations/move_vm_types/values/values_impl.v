@@ -699,23 +699,23 @@ Module IntegerValue.
       then Some (ValueImpl.U8 (l + r))
       else None
     | ValueImpl.U16 l, ValueImpl.U16 r =>
-      if (l + r <=? Z.of_nat (Z.to_nat (2^16 - 1)))%Z
+      if (l + r <=? 2^16 - 1)
       then Some (ValueImpl.U16 (l + r))
       else None
     | ValueImpl.U32 l, ValueImpl.U32 r =>
-      if (l + r <=? Z.of_nat (Z.to_nat (2^32 - 1)))%Z
+      if (l + r <=? 2^32 - 1)
       then Some (ValueImpl.U32 (l + r))
       else None
     | ValueImpl.U64 l, ValueImpl.U64 r =>
-      if (l + r <=? Z.of_nat (Z.to_nat (2^64 - 1)))%Z
+      if (l + r <=? 2^64 - 1)
       then Some (ValueImpl.U64 (l + r))
       else None
     | ValueImpl.U128 l, ValueImpl.U128 r =>
-      if (l + r <=? Z.of_nat (Z.to_nat (2^128 - 1)))%Z
+      if (l + r <=? 2^128 - 1)
       then Some (ValueImpl.U128 (l + r))
       else None
     | ValueImpl.U256 l, ValueImpl.U256 r =>
-      if (l + r <=? Z.of_nat (Z.to_nat (2^256 - 1)))%Z
+      if (l + r <=? 2^256 - 1)
       then Some (ValueImpl.U256 (l + r))
       else None
     | _, _ => None
