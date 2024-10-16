@@ -979,6 +979,50 @@ Module IntegerValue.
   | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
+  Definition lt (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  match self, other with
+  | ValueImpl.U8 l, ValueImpl.U8 r => Result.Ok (ValueImpl.Bool (l <? r))
+  | ValueImpl.U16 l, ValueImpl.U16 r => Result.Ok (ValueImpl.Bool (l <? r))
+  | ValueImpl.U32 l, ValueImpl.U32 r => Result.Ok (ValueImpl.Bool (l <? r))
+  | ValueImpl.U64 l, ValueImpl.U64 r => Result.Ok (ValueImpl.Bool (l <? r))
+  | ValueImpl.U128 l, ValueImpl.U128 r => Result.Ok (ValueImpl.Bool (l <? r))
+  | ValueImpl.U256 l, ValueImpl.U256 r => Result.Ok (ValueImpl.Bool (l <? r))
+  | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  end.
+
+  Definition le (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  match self, other with
+  | ValueImpl.U8 l, ValueImpl.U8 r => Result.Ok (ValueImpl.Bool (l <=? r))
+  | ValueImpl.U16 l, ValueImpl.U16 r => Result.Ok (ValueImpl.Bool (l <=? r))
+  | ValueImpl.U32 l, ValueImpl.U32 r => Result.Ok (ValueImpl.Bool (l <=? r))
+  | ValueImpl.U64 l, ValueImpl.U64 r => Result.Ok (ValueImpl.Bool (l <=? r))
+  | ValueImpl.U128 l, ValueImpl.U128 r => Result.Ok (ValueImpl.Bool (l <=? r))
+  | ValueImpl.U256 l, ValueImpl.U256 r => Result.Ok (ValueImpl.Bool (l <=? r))
+  | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  end.
+
+  Definition gt (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  match self, other with
+  | ValueImpl.U8 l, ValueImpl.U8 r => Result.Ok (ValueImpl.Bool (l >? r))
+  | ValueImpl.U16 l, ValueImpl.U16 r => Result.Ok (ValueImpl.Bool (l >? r))
+  | ValueImpl.U32 l, ValueImpl.U32 r => Result.Ok (ValueImpl.Bool (l >? r))
+  | ValueImpl.U64 l, ValueImpl.U64 r => Result.Ok (ValueImpl.Bool (l >? r))
+  | ValueImpl.U128 l, ValueImpl.U128 r => Result.Ok (ValueImpl.Bool (l >? r))
+  | ValueImpl.U256 l, ValueImpl.U256 r => Result.Ok (ValueImpl.Bool (l >? r))
+  | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  end.
+
+  Definition ge (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  match self, other with
+  | ValueImpl.U8 l, ValueImpl.U8 r => Result.Ok (ValueImpl.Bool (l >=? r))
+  | ValueImpl.U16 l, ValueImpl.U16 r => Result.Ok (ValueImpl.Bool (l >=? r))
+  | ValueImpl.U32 l, ValueImpl.U32 r => Result.Ok (ValueImpl.Bool (l >=? r))
+  | ValueImpl.U64 l, ValueImpl.U64 r => Result.Ok (ValueImpl.Bool (l >=? r))
+  | ValueImpl.U128 l, ValueImpl.U128 r => Result.Ok (ValueImpl.Bool (l >=? r))
+  | ValueImpl.U256 l, ValueImpl.U256 r => Result.Ok (ValueImpl.Bool (l >=? r))
+  | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  end.
+
 End IntegerValue.
 (*
 impl IntegerValue {
