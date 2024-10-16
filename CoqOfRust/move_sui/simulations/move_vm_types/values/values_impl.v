@@ -921,6 +921,64 @@ Module IntegerValue.
     | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     end.
 
+  Definition shl_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+    match self, other with
+    | ValueImpl.U8 l, ValueImpl.U8 r =>
+      if r <? 8
+      then Result.Ok (ValueImpl.U8 (Z.shiftl l r))
+      else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    | ValueImpl.U16 l, ValueImpl.U16 r =>
+      if r <? 16
+      then Result.Ok (ValueImpl.U8 (Z.shiftl l r))
+      else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    | ValueImpl.U32 l, ValueImpl.U32 r =>
+      if r <? 32
+      then Result.Ok (ValueImpl.U8 (Z.shiftl l r))
+      else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    | ValueImpl.U64 l, ValueImpl.U64 r =>
+      if r <? 64
+      then Result.Ok (ValueImpl.U8 (Z.shiftl l r))
+      else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    | ValueImpl.U128 l, ValueImpl.U128 r =>
+      if r <? 128
+      then Result.Ok (ValueImpl.U8 (Z.shiftl l r))
+      else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    | ValueImpl.U256 l, ValueImpl.U256 r =>
+      if r <? 256
+      then Result.Ok (ValueImpl.U8 (Z.shiftl l r))
+      else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    end.
+
+  Definition shr_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  match self, other with
+  | ValueImpl.U8 l, ValueImpl.U8 r =>
+    if r <? 8
+    then Result.Ok (ValueImpl.U8 (Z.shiftr l r))
+    else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  | ValueImpl.U16 l, ValueImpl.U16 r =>
+    if r <? 16
+    then Result.Ok (ValueImpl.U8 (Z.shiftr l r))
+    else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  | ValueImpl.U32 l, ValueImpl.U32 r =>
+    if r <? 32
+    then Result.Ok (ValueImpl.U8 (Z.shiftr l r))
+    else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  | ValueImpl.U64 l, ValueImpl.U64 r =>
+    if r <? 64
+    then Result.Ok (ValueImpl.U8 (Z.shiftr l r))
+    else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  | ValueImpl.U128 l, ValueImpl.U128 r =>
+    if r <? 128
+    then Result.Ok (ValueImpl.U8 (Z.shiftr l r))
+    else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  | ValueImpl.U256 l, ValueImpl.U256 r =>
+    if r <? 256
+    then Result.Ok (ValueImpl.U8 (Z.shiftr l r))
+    else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  end.
+
 End IntegerValue.
 (*
 impl IntegerValue {
