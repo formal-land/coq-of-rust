@@ -750,6 +750,35 @@ Module IntegerValue.
     | _, _ => None
     end.
 
+  Definition checked_mul (a : ValueImpl.t) (b : ValueImpl.t) : option ValueImpl.t :=
+    match a, b with
+    | ValueImpl.U8 l, ValueImpl.U8 r =>
+      if l * r <=? 2^8 - 1
+      then Some (ValueImpl.U8 (l * r))
+      else None
+    | ValueImpl.U16 l, ValueImpl.U16 r =>
+      if l * r <=? 2^16 - 1
+      then Some (ValueImpl.U16 (l * r))
+      else None
+    | ValueImpl.U32 l, ValueImpl.U32 r =>
+      if l * r <=? 2^32 - 1
+      then Some (ValueImpl.U32 (l * r))
+      else None
+    | ValueImpl.U64 l, ValueImpl.U64 r =>
+      if l * r <=? 2^64 - 1
+      then Some (ValueImpl.U64 (l * r))
+      else None
+    | ValueImpl.U128 l, ValueImpl.U128 r =>
+      if l * r <=? 2^128 - 1
+      then Some (ValueImpl.U128 (l * r))
+      else None
+    | ValueImpl.U256 l, ValueImpl.U256 r =>
+      if l * r <=? 2^256 - 1
+      then Some (ValueImpl.U256 (l * r))
+      else None
+    | _, _ => None
+    end.
+  
   Definition add_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
     match checked_add self other with
     | Some res => Result.Ok res
@@ -762,6 +791,11 @@ Module IntegerValue.
     | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     end.
 
+  Definition mul_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+    match checked_mul self other with
+    | Some res => Result.Ok res
+    | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    end.
 
 End IntegerValue.
 (*
