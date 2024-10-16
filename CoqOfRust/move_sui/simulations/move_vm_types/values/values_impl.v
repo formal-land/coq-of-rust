@@ -855,6 +855,23 @@ Module IntegerValue.
       Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
+  Definition bit_and (a : ValueImpl.t) (b : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  match a, b with
+  | ValueImpl.U8 l, ValueImpl.U8 r => 
+      Result.Ok (ValueImpl.U8 (Z.land l r))
+  | ValueImpl.U16 l, ValueImpl.U16 r =>
+      Result.Ok (ValueImpl.U16 (Z.land l r))
+  | ValueImpl.U32 l, ValueImpl.U32 r =>
+      Result.Ok (ValueImpl.U32 (Z.land l r))
+  | ValueImpl.U64 l, ValueImpl.U64 r =>
+      Result.Ok (ValueImpl.U64 (Z.land l r))
+  | ValueImpl.U128 l, ValueImpl.U128 r =>
+      Result.Ok (ValueImpl.U128 (Z.land l r))
+  | ValueImpl.U256 l, ValueImpl.U256 r =>
+      Result.Ok (ValueImpl.U256 (Z.land l r))
+  | _, _ =>
+      Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  end.
 
   Definition add_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
     match checked_add self other with
