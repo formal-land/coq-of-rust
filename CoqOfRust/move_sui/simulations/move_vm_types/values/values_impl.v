@@ -778,6 +778,35 @@ Module IntegerValue.
       else None
     | _, _ => None
     end.
+
+  Definition checked_div (a : ValueImpl.t) (b : ValueImpl.t) : option ValueImpl.t :=
+    match a, b with
+    | ValueImpl.U8 l, ValueImpl.U8 r =>
+      if r =? 0
+      then None
+      else Some (ValueImpl.U8 (l / r))
+    | ValueImpl.U16 l, ValueImpl.U16 r =>
+      if r =? 0
+      then None
+      else Some (ValueImpl.U16 (l / r))
+    | ValueImpl.U32 l, ValueImpl.U32 r =>
+      if r =? 0
+      then None
+      else Some (ValueImpl.U32 (l / r))
+    | ValueImpl.U64 l, ValueImpl.U64 r =>
+      if r =? 0
+      then None
+      else Some (ValueImpl.U64 (l / r))
+    | ValueImpl.U128 l, ValueImpl.U128 r =>
+      if r =? 0
+      then None
+      else Some (ValueImpl.U128 (l / r))
+    | ValueImpl.U256 l, ValueImpl.U256 r =>
+      if r =? 0
+      then None
+      else Some (ValueImpl.U256 (l / r))
+    | _, _ => None
+    end.
   
   Definition add_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
     match checked_add self other with
@@ -793,6 +822,12 @@ Module IntegerValue.
 
   Definition mul_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
     match checked_mul self other with
+    | Some res => Result.Ok res
+    | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    end.
+
+  Definition div_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+    match checked_div self other with
     | Some res => Result.Ok res
     | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     end.
