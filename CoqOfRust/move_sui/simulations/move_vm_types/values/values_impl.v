@@ -808,6 +808,35 @@ Module IntegerValue.
     | _, _ => None
     end.
   
+  Definition checked_rem (a : ValueImpl.t) (b : ValueImpl.t) : option ValueImpl.t :=
+  match a, b with
+  | ValueImpl.U8 l, ValueImpl.U8 r =>
+    if r =? 0
+    then None
+    else Some (ValueImpl.U8 (l mod r))
+  | ValueImpl.U16 l, ValueImpl.U16 r =>
+    if r =? 0
+    then None
+    else Some (ValueImpl.U16 (l mod r))
+  | ValueImpl.U32 l, ValueImpl.U32 r =>
+    if r =? 0
+    then None
+    else Some (ValueImpl.U32 (l mod r))
+  | ValueImpl.U64 l, ValueImpl.U64 r =>
+    if r =? 0
+    then None
+    else Some (ValueImpl.U64 (l mod r))
+  | ValueImpl.U128 l, ValueImpl.U128 r =>
+    if r =? 0
+    then None
+    else Some (ValueImpl.U128 (l mod r))
+  | ValueImpl.U256 l, ValueImpl.U256 r =>
+    if r =? 0
+    then None
+    else Some (ValueImpl.U256 (l mod r))
+  | _, _ => None
+  end.
+
   Definition add_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
     match checked_add self other with
     | Some res => Result.Ok res
@@ -828,6 +857,12 @@ Module IntegerValue.
 
   Definition div_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
     match checked_div self other with
+    | Some res => Result.Ok res
+    | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+    end.
+
+  Definition rem_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+    match checked_rem self other with
     | Some res => Result.Ok res
     | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     end.
