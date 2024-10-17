@@ -692,431 +692,434 @@ End Locals.
 
 Module IntegerValue.
 
-  Definition checked_add (a : ValueImpl.t) (b : ValueImpl.t) : option ValueImpl.t :=
+  Inductive t : Type :=
+  | U8 : Z -> t
+  | U16 : Z -> t
+  | U32 : Z -> t
+  | U64 : Z -> t
+  | U128 : Z -> t
+  | U256 : Z -> t
+  .
+
+  Definition checked_add (a : IntegerValue.t) (b : IntegerValue.t) : option IntegerValue.t :=
     match a, b with
-    | ValueImpl.U8 l, ValueImpl.U8 r =>
+    | IntegerValue.U8 l, IntegerValue.U8 r =>
       if l + r <=? 2^8 - 1
-      then Some (ValueImpl.U8 (l + r))
+      then Some (IntegerValue.U8 (l + r))
       else None
-    | ValueImpl.U16 l, ValueImpl.U16 r =>
+    | IntegerValue.U16 l, IntegerValue.U16 r =>
       if l + r <=? 2^16 - 1
-      then Some (ValueImpl.U16 (l + r))
+      then Some (IntegerValue.U16 (l + r))
       else None
-    | ValueImpl.U32 l, ValueImpl.U32 r =>
+    | IntegerValue.U32 l, IntegerValue.U32 r =>
       if l + r <=? 2^32 - 1
-      then Some (ValueImpl.U32 (l + r))
+      then Some (IntegerValue.U32 (l + r))
       else None
-    | ValueImpl.U64 l, ValueImpl.U64 r =>
+    | IntegerValue.U64 l, IntegerValue.U64 r =>
       if l + r <=? 2^64 - 1
-      then Some (ValueImpl.U64 (l + r))
+      then Some (IntegerValue.U64 (l + r))
       else None
-    | ValueImpl.U128 l, ValueImpl.U128 r =>
+    | IntegerValue.U128 l, IntegerValue.U128 r =>
       if l + r <=? 2^128 - 1
-      then Some (ValueImpl.U128 (l + r))
+      then Some (IntegerValue.U128 (l + r))
       else None
-    | ValueImpl.U256 l, ValueImpl.U256 r =>
+    | IntegerValue.U256 l, IntegerValue.U256 r =>
       if l + r <=? 2^256 - 1
-      then Some (ValueImpl.U256 (l + r))
+      then Some (IntegerValue.U256 (l + r))
       else None
     | _, _ => None
     end.
 
-  Definition checked_sub (a : ValueImpl.t) (b : ValueImpl.t) : option ValueImpl.t :=
+  Definition checked_sub (a : IntegerValue.t) (b : IntegerValue.t) : option IntegerValue.t :=
     match a, b with
-    | ValueImpl.U8 l, ValueImpl.U8 r =>
+    | IntegerValue.U8 l, IntegerValue.U8 r =>
       if l >=? r
-      then Some (ValueImpl.U8 (l - r))
+      then Some (IntegerValue.U8 (l - r))
       else None
-    | ValueImpl.U16 l, ValueImpl.U16 r =>
+    | IntegerValue.U16 l, IntegerValue.U16 r =>
       if l >=? r
-      then Some (ValueImpl.U16 (l - r))
+      then Some (IntegerValue.U16 (l - r))
       else None
-    | ValueImpl.U32 l, ValueImpl.U32 r =>
+    | IntegerValue.U32 l, IntegerValue.U32 r =>
       if l >=? r
-      then Some (ValueImpl.U32 (l - r))
+      then Some (IntegerValue.U32 (l - r))
       else None
-    | ValueImpl.U64 l, ValueImpl.U64 r =>
+    | IntegerValue.U64 l, IntegerValue.U64 r =>
       if l >=? r
-      then Some (ValueImpl.U64 (l - r))
+      then Some (IntegerValue.U64 (l - r))
       else None
-    | ValueImpl.U128 l, ValueImpl.U128 r =>
+    | IntegerValue.U128 l, IntegerValue.U128 r =>
       if l >=? r
-      then Some (ValueImpl.U128 (l - r))
+      then Some (IntegerValue.U128 (l - r))
       else None
-    | ValueImpl.U256 l, ValueImpl.U256 r =>
+    | IntegerValue.U256 l, IntegerValue.U256 r =>
       if l >=? r
-      then Some (ValueImpl.U256 (l - r))
+      then Some (IntegerValue.U256 (l - r))
       else None
     | _, _ => None
     end.
 
-  Definition checked_mul (a : ValueImpl.t) (b : ValueImpl.t) : option ValueImpl.t :=
+  Definition checked_mul (a : IntegerValue.t) (b : IntegerValue.t) : option IntegerValue.t :=
     match a, b with
-    | ValueImpl.U8 l, ValueImpl.U8 r =>
+    | IntegerValue.U8 l, IntegerValue.U8 r =>
       if l * r <=? 2^8 - 1
-      then Some (ValueImpl.U8 (l * r))
+      then Some (IntegerValue.U8 (l * r))
       else None
-    | ValueImpl.U16 l, ValueImpl.U16 r =>
+    | IntegerValue.U16 l, IntegerValue.U16 r =>
       if l * r <=? 2^16 - 1
-      then Some (ValueImpl.U16 (l * r))
+      then Some (IntegerValue.U16 (l * r))
       else None
-    | ValueImpl.U32 l, ValueImpl.U32 r =>
+    | IntegerValue.U32 l, IntegerValue.U32 r =>
       if l * r <=? 2^32 - 1
-      then Some (ValueImpl.U32 (l * r))
+      then Some (IntegerValue.U32 (l * r))
       else None
-    | ValueImpl.U64 l, ValueImpl.U64 r =>
+    | IntegerValue.U64 l, IntegerValue.U64 r =>
       if l * r <=? 2^64 - 1
-      then Some (ValueImpl.U64 (l * r))
+      then Some (IntegerValue.U64 (l * r))
       else None
-    | ValueImpl.U128 l, ValueImpl.U128 r =>
+    | IntegerValue.U128 l, IntegerValue.U128 r =>
       if l * r <=? 2^128 - 1
-      then Some (ValueImpl.U128 (l * r))
+      then Some (IntegerValue.U128 (l * r))
       else None
-    | ValueImpl.U256 l, ValueImpl.U256 r =>
+    | IntegerValue.U256 l, IntegerValue.U256 r =>
       if l * r <=? 2^256 - 1
-      then Some (ValueImpl.U256 (l * r))
+      then Some (IntegerValue.U256 (l * r))
       else None
     | _, _ => None
     end.
 
-  Definition checked_div (a : ValueImpl.t) (b : ValueImpl.t) : option ValueImpl.t :=
+  Definition checked_div (a : IntegerValue.t) (b : IntegerValue.t) : option IntegerValue.t :=
     match a, b with
-    | ValueImpl.U8 l, ValueImpl.U8 r =>
+    | IntegerValue.U8 l, IntegerValue.U8 r =>
       if r =? 0
       then None
-      else Some (ValueImpl.U8 (l / r))
-    | ValueImpl.U16 l, ValueImpl.U16 r =>
+      else Some (IntegerValue.U8 (l / r))
+    | IntegerValue.U16 l, IntegerValue.U16 r =>
       if r =? 0
       then None
-      else Some (ValueImpl.U16 (l / r))
-    | ValueImpl.U32 l, ValueImpl.U32 r =>
+      else Some (IntegerValue.U16 (l / r))
+    | IntegerValue.U32 l, IntegerValue.U32 r =>
       if r =? 0
       then None
-      else Some (ValueImpl.U32 (l / r))
-    | ValueImpl.U64 l, ValueImpl.U64 r =>
+      else Some (IntegerValue.U32 (l / r))
+    | IntegerValue.U64 l, IntegerValue.U64 r =>
       if r =? 0
       then None
-      else Some (ValueImpl.U64 (l / r))
-    | ValueImpl.U128 l, ValueImpl.U128 r =>
+      else Some (IntegerValue.U64 (l / r))
+    | IntegerValue.U128 l, IntegerValue.U128 r =>
       if r =? 0
       then None
-      else Some (ValueImpl.U128 (l / r))
-    | ValueImpl.U256 l, ValueImpl.U256 r =>
+      else Some (IntegerValue.U128 (l / r))
+    | IntegerValue.U256 l, IntegerValue.U256 r =>
       if r =? 0
       then None
-      else Some (ValueImpl.U256 (l / r))
+      else Some (IntegerValue.U256 (l / r))
     | _, _ => None
     end.
   
-  Definition checked_rem (a : ValueImpl.t) (b : ValueImpl.t) : option ValueImpl.t :=
+  Definition checked_rem (a : IntegerValue.t) (b : IntegerValue.t) : option IntegerValue.t :=
   match a, b with
-  | ValueImpl.U8 l, ValueImpl.U8 r =>
+  | IntegerValue.U8 l, IntegerValue.U8 r =>
     if r =? 0
     then None
-    else Some (ValueImpl.U8 (l mod r))
-  | ValueImpl.U16 l, ValueImpl.U16 r =>
+    else Some (IntegerValue.U8 (l mod r))
+  | IntegerValue.U16 l, IntegerValue.U16 r =>
     if r =? 0
     then None
-    else Some (ValueImpl.U16 (l mod r))
-  | ValueImpl.U32 l, ValueImpl.U32 r =>
+    else Some (IntegerValue.U16 (l mod r))
+  | IntegerValue.U32 l, IntegerValue.U32 r =>
     if r =? 0
     then None
-    else Some (ValueImpl.U32 (l mod r))
-  | ValueImpl.U64 l, ValueImpl.U64 r =>
+    else Some (IntegerValue.U32 (l mod r))
+  | IntegerValue.U64 l, IntegerValue.U64 r =>
     if r =? 0
     then None
-    else Some (ValueImpl.U64 (l mod r))
-  | ValueImpl.U128 l, ValueImpl.U128 r =>
+    else Some (IntegerValue.U64 (l mod r))
+  | IntegerValue.U128 l, IntegerValue.U128 r =>
     if r =? 0
     then None
-    else Some (ValueImpl.U128 (l mod r))
-  | ValueImpl.U256 l, ValueImpl.U256 r =>
+    else Some (IntegerValue.U128 (l mod r))
+  | IntegerValue.U256 l, IntegerValue.U256 r =>
     if r =? 0
     then None
-    else Some (ValueImpl.U256 (l mod r))
+    else Some (IntegerValue.U256 (l mod r))
   | _, _ => None
   end.
 
- Definition bit_or (a : ValueImpl.t) (b : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+ Definition bit_or (a : IntegerValue.t) (b : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
   match a, b with
-  | ValueImpl.U8 l, ValueImpl.U8 r => 
-      Result.Ok (ValueImpl.U8 (Z.lor l r))
-  | ValueImpl.U16 l, ValueImpl.U16 r =>
-      Result.Ok (ValueImpl.U16 (Z.lor l r))
-  | ValueImpl.U32 l, ValueImpl.U32 r =>
-      Result.Ok (ValueImpl.U32 (Z.lor l r))
-  | ValueImpl.U64 l, ValueImpl.U64 r =>
-      Result.Ok (ValueImpl.U64 (Z.lor l r))
-  | ValueImpl.U128 l, ValueImpl.U128 r =>
-      Result.Ok (ValueImpl.U128 (Z.lor l r))
-  | ValueImpl.U256 l, ValueImpl.U256 r =>
-      Result.Ok (ValueImpl.U256 (Z.lor l r))
+  | IntegerValue.U8 l, IntegerValue.U8 r => 
+      Result.Ok (IntegerValue.U8 (Z.lor l r))
+  | IntegerValue.U16 l, IntegerValue.U16 r =>
+      Result.Ok (IntegerValue.U16 (Z.lor l r))
+  | IntegerValue.U32 l, IntegerValue.U32 r =>
+      Result.Ok (IntegerValue.U32 (Z.lor l r))
+  | IntegerValue.U64 l, IntegerValue.U64 r =>
+      Result.Ok (IntegerValue.U64 (Z.lor l r))
+  | IntegerValue.U128 l, IntegerValue.U128 r =>
+      Result.Ok (IntegerValue.U128 (Z.lor l r))
+  | IntegerValue.U256 l, IntegerValue.U256 r =>
+      Result.Ok (IntegerValue.U256 (Z.lor l r))
   | _, _ =>
       Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-  Definition bit_and (a : ValueImpl.t) (b : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition bit_and (a : IntegerValue.t) (b : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
   match a, b with
-  | ValueImpl.U8 l, ValueImpl.U8 r => 
-      Result.Ok (ValueImpl.U8 (Z.land l r))
-  | ValueImpl.U16 l, ValueImpl.U16 r =>
-      Result.Ok (ValueImpl.U16 (Z.land l r))
-  | ValueImpl.U32 l, ValueImpl.U32 r =>
-      Result.Ok (ValueImpl.U32 (Z.land l r))
-  | ValueImpl.U64 l, ValueImpl.U64 r =>
-      Result.Ok (ValueImpl.U64 (Z.land l r))
-  | ValueImpl.U128 l, ValueImpl.U128 r =>
-      Result.Ok (ValueImpl.U128 (Z.land l r))
-  | ValueImpl.U256 l, ValueImpl.U256 r =>
-      Result.Ok (ValueImpl.U256 (Z.land l r))
+  | IntegerValue.U8 l, IntegerValue.U8 r => 
+      Result.Ok (IntegerValue.U8 (Z.land l r))
+  | IntegerValue.U16 l, IntegerValue.U16 r =>
+      Result.Ok (IntegerValue.U16 (Z.land l r))
+  | IntegerValue.U32 l, IntegerValue.U32 r =>
+      Result.Ok (IntegerValue.U32 (Z.land l r))
+  | IntegerValue.U64 l, IntegerValue.U64 r =>
+      Result.Ok (IntegerValue.U64 (Z.land l r))
+  | IntegerValue.U128 l, IntegerValue.U128 r =>
+      Result.Ok (IntegerValue.U128 (Z.land l r))
+  | IntegerValue.U256 l, IntegerValue.U256 r =>
+      Result.Ok (IntegerValue.U256 (Z.land l r))
   | _, _ =>
       Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-  Definition bit_xor (a : ValueImpl.t) (b : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition bit_xor (a : IntegerValue.t) (b : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
   match a, b with
-  | ValueImpl.U8 l, ValueImpl.U8 r => 
-      Result.Ok (ValueImpl.U8 (Z.lxor l r))
-  | ValueImpl.U16 l, ValueImpl.U16 r =>
-      Result.Ok (ValueImpl.U16 (Z.lxor l r))
-  | ValueImpl.U32 l, ValueImpl.U32 r =>
-      Result.Ok (ValueImpl.U32 (Z.lxor l r))
-  | ValueImpl.U64 l, ValueImpl.U64 r =>
-      Result.Ok (ValueImpl.U64 (Z.lxor l r))
-  | ValueImpl.U128 l, ValueImpl.U128 r =>
-      Result.Ok (ValueImpl.U128 (Z.lxor l r))
-  | ValueImpl.U256 l, ValueImpl.U256 r =>
-      Result.Ok (ValueImpl.U256 (Z.lxor l r))
+  | IntegerValue.U8 l, IntegerValue.U8 r => 
+      Result.Ok (IntegerValue.U8 (Z.lxor l r))
+  | IntegerValue.U16 l, IntegerValue.U16 r =>
+      Result.Ok (IntegerValue.U16 (Z.lxor l r))
+  | IntegerValue.U32 l, IntegerValue.U32 r =>
+      Result.Ok (IntegerValue.U32 (Z.lxor l r))
+  | IntegerValue.U64 l, IntegerValue.U64 r =>
+      Result.Ok (IntegerValue.U64 (Z.lxor l r))
+  | IntegerValue.U128 l, IntegerValue.U128 r =>
+      Result.Ok (IntegerValue.U128 (Z.lxor l r))
+  | IntegerValue.U256 l, IntegerValue.U256 r =>
+      Result.Ok (IntegerValue.U256 (Z.lxor l r))
   | _, _ =>
       Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-  Definition add_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition add_checked (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
     match checked_add self other with
     | Some res => Result.Ok res
     | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     end.
 
-  Definition sub_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition sub_checked (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
     match checked_sub self other with
     | Some res => Result.Ok res
     | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     end.
 
-  Definition mul_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition mul_checked (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
     match checked_mul self other with
     | Some res => Result.Ok res
     | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     end.
 
-  Definition div_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition div_checked (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
     match checked_div self other with
     | Some res => Result.Ok res
     | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     end.
 
-  Definition rem_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition rem_checked (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
     match checked_rem self other with
     | Some res => Result.Ok res
     | None => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     end.
 
-  Definition shl_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition shl_checked (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
     match self, other with
-    | ValueImpl.U8 l, ValueImpl.U8 r =>
+    | IntegerValue.U8 l, IntegerValue.U8 r =>
       if r <? 8
-      then Result.Ok (ValueImpl.U8 (Z.shiftl l r))
+      then Result.Ok (IntegerValue.U8 (Z.shiftl l r))
       else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-    | ValueImpl.U16 l, ValueImpl.U16 r =>
+    | IntegerValue.U16 l, IntegerValue.U16 r =>
       if r <? 16
-      then Result.Ok (ValueImpl.U8 (Z.shiftl l r))
+      then Result.Ok (IntegerValue.U8 (Z.shiftl l r))
       else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-    | ValueImpl.U32 l, ValueImpl.U32 r =>
+    | IntegerValue.U32 l, IntegerValue.U32 r =>
       if r <? 32
-      then Result.Ok (ValueImpl.U8 (Z.shiftl l r))
+      then Result.Ok (IntegerValue.U8 (Z.shiftl l r))
       else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-    | ValueImpl.U64 l, ValueImpl.U64 r =>
+    | IntegerValue.U64 l, IntegerValue.U64 r =>
       if r <? 64
-      then Result.Ok (ValueImpl.U8 (Z.shiftl l r))
+      then Result.Ok (IntegerValue.U8 (Z.shiftl l r))
       else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-    | ValueImpl.U128 l, ValueImpl.U128 r =>
+    | IntegerValue.U128 l, IntegerValue.U128 r =>
       if r <? 128
-      then Result.Ok (ValueImpl.U8 (Z.shiftl l r))
+      then Result.Ok (IntegerValue.U8 (Z.shiftl l r))
       else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-    | ValueImpl.U256 l, ValueImpl.U256 r =>
+    | IntegerValue.U256 l, IntegerValue.U256 r =>
       if r <? 256
-      then Result.Ok (ValueImpl.U8 (Z.shiftl l r))
+      then Result.Ok (IntegerValue.U8 (Z.shiftl l r))
       else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
     end.
 
-  Definition shr_checked (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition shr_checked (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
   match self, other with
-  | ValueImpl.U8 l, ValueImpl.U8 r =>
+  | IntegerValue.U8 l, IntegerValue.U8 r =>
     if r <? 8
-    then Result.Ok (ValueImpl.U8 (Z.shiftr l r))
+    then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U16 l, ValueImpl.U16 r =>
+  | IntegerValue.U16 l, IntegerValue.U16 r =>
     if r <? 16
-    then Result.Ok (ValueImpl.U8 (Z.shiftr l r))
+    then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U32 l, ValueImpl.U32 r =>
+  | IntegerValue.U32 l, IntegerValue.U32 r =>
     if r <? 32
-    then Result.Ok (ValueImpl.U8 (Z.shiftr l r))
+    then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U64 l, ValueImpl.U64 r =>
+  | IntegerValue.U64 l, IntegerValue.U64 r =>
     if r <? 64
-    then Result.Ok (ValueImpl.U8 (Z.shiftr l r))
+    then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U128 l, ValueImpl.U128 r =>
+  | IntegerValue.U128 l, IntegerValue.U128 r =>
     if r <? 128
-    then Result.Ok (ValueImpl.U8 (Z.shiftr l r))
+    then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U256 l, ValueImpl.U256 r =>
+  | IntegerValue.U256 l, IntegerValue.U256 r =>
     if r <? 256
-    then Result.Ok (ValueImpl.U8 (Z.shiftr l r))
+    then Result.Ok (IntegerValue.U8 (Z.shiftr l r))
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-  Definition lt (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition lt (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t bool :=
   match self, other with
-  | ValueImpl.U8 l, ValueImpl.U8 r => Result.Ok (ValueImpl.Bool (l <? r))
-  | ValueImpl.U16 l, ValueImpl.U16 r => Result.Ok (ValueImpl.Bool (l <? r))
-  | ValueImpl.U32 l, ValueImpl.U32 r => Result.Ok (ValueImpl.Bool (l <? r))
-  | ValueImpl.U64 l, ValueImpl.U64 r => Result.Ok (ValueImpl.Bool (l <? r))
-  | ValueImpl.U128 l, ValueImpl.U128 r => Result.Ok (ValueImpl.Bool (l <? r))
-  | ValueImpl.U256 l, ValueImpl.U256 r => Result.Ok (ValueImpl.Bool (l <? r))
+  | IntegerValue.U8 l, IntegerValue.U8 r => Result.Ok (l <? r)
+  | IntegerValue.U16 l, IntegerValue.U16 r => Result.Ok (l <? r)
+  | IntegerValue.U32 l, IntegerValue.U32 r => Result.Ok (l <? r)
+  | IntegerValue.U64 l, IntegerValue.U64 r => Result.Ok (l <? r)
+  | IntegerValue.U128 l, IntegerValue.U128 r => Result.Ok (l <? r)
+  | IntegerValue.U256 l, IntegerValue.U256 r => Result.Ok (l <? r)
   | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-  Definition le (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition le (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t bool :=
   match self, other with
-  | ValueImpl.U8 l, ValueImpl.U8 r => Result.Ok (ValueImpl.Bool (l <=? r))
-  | ValueImpl.U16 l, ValueImpl.U16 r => Result.Ok (ValueImpl.Bool (l <=? r))
-  | ValueImpl.U32 l, ValueImpl.U32 r => Result.Ok (ValueImpl.Bool (l <=? r))
-  | ValueImpl.U64 l, ValueImpl.U64 r => Result.Ok (ValueImpl.Bool (l <=? r))
-  | ValueImpl.U128 l, ValueImpl.U128 r => Result.Ok (ValueImpl.Bool (l <=? r))
-  | ValueImpl.U256 l, ValueImpl.U256 r => Result.Ok (ValueImpl.Bool (l <=? r))
+  | IntegerValue.U8 l, IntegerValue.U8 r => Result.Ok (l <=? r)
+  | IntegerValue.U16 l, IntegerValue.U16 r => Result.Ok (l <=? r)
+  | IntegerValue.U32 l, IntegerValue.U32 r => Result.Ok (l <=? r)
+  | IntegerValue.U64 l, IntegerValue.U64 r => Result.Ok (l <=? r)
+  | IntegerValue.U128 l, IntegerValue.U128 r => Result.Ok (l <=? r)
+  | IntegerValue.U256 l, IntegerValue.U256 r => Result.Ok (l <=? r)
   | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-  Definition gt (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition gt (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t bool :=
   match self, other with
-  | ValueImpl.U8 l, ValueImpl.U8 r => Result.Ok (ValueImpl.Bool (l >? r))
-  | ValueImpl.U16 l, ValueImpl.U16 r => Result.Ok (ValueImpl.Bool (l >? r))
-  | ValueImpl.U32 l, ValueImpl.U32 r => Result.Ok (ValueImpl.Bool (l >? r))
-  | ValueImpl.U64 l, ValueImpl.U64 r => Result.Ok (ValueImpl.Bool (l >? r))
-  | ValueImpl.U128 l, ValueImpl.U128 r => Result.Ok (ValueImpl.Bool (l >? r))
-  | ValueImpl.U256 l, ValueImpl.U256 r => Result.Ok (ValueImpl.Bool (l >? r))
+  | IntegerValue.U8 l, IntegerValue.U8 r => Result.Ok (l >? r)
+  | IntegerValue.U16 l, IntegerValue.U16 r => Result.Ok (l >? r)
+  | IntegerValue.U32 l, IntegerValue.U32 r => Result.Ok (l >? r)
+  | IntegerValue.U64 l, IntegerValue.U64 r => Result.Ok (l >? r)
+  | IntegerValue.U128 l, IntegerValue.U128 r => Result.Ok (l >? r)
+  | IntegerValue.U256 l, IntegerValue.U256 r => Result.Ok (l >? r)
   | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-  Definition ge (self : ValueImpl.t) (other : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition ge (self : IntegerValue.t) (other : IntegerValue.t) : PartialVMResult.t bool :=
   match self, other with
-  | ValueImpl.U8 l, ValueImpl.U8 r => Result.Ok (ValueImpl.Bool (l >=? r))
-  | ValueImpl.U16 l, ValueImpl.U16 r => Result.Ok (ValueImpl.Bool (l >=? r))
-  | ValueImpl.U32 l, ValueImpl.U32 r => Result.Ok (ValueImpl.Bool (l >=? r))
-  | ValueImpl.U64 l, ValueImpl.U64 r => Result.Ok (ValueImpl.Bool (l >=? r))
-  | ValueImpl.U128 l, ValueImpl.U128 r => Result.Ok (ValueImpl.Bool (l >=? r))
-  | ValueImpl.U256 l, ValueImpl.U256 r => Result.Ok (ValueImpl.Bool (l >=? r))
+  | IntegerValue.U8 l, IntegerValue.U8 r => Result.Ok (l >=? r)
+  | IntegerValue.U16 l, IntegerValue.U16 r => Result.Ok (l >=? r)
+  | IntegerValue.U32 l, IntegerValue.U32 r => Result.Ok (l >=? r)
+  | IntegerValue.U64 l, IntegerValue.U64 r => Result.Ok (l >=? r)
+  | IntegerValue.U128 l, IntegerValue.U128 r => Result.Ok (l >=? r)
+  | IntegerValue.U256 l, IntegerValue.U256 r => Result.Ok (l >=? r)
   | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-  Definition cast_u8 (self : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+  Definition cast_u8 (self : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
   match self with
-  | ValueImpl.U8 l => Result.Ok (ValueImpl.U8 l)
-  | ValueImpl.U16 l => if l <=? 2^8 - 1
-    then Result.Ok (ValueImpl.U8 l)
+  | IntegerValue.U8 l => Result.Ok (IntegerValue.U8 l)
+  | IntegerValue.U16 l => if l <=? 2^8 - 1
+    then Result.Ok (IntegerValue.U8 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U32 l => if l <=? 2^8 - 1
-    then Result.Ok (ValueImpl.U8 l)
+  | IntegerValue.U32 l => if l <=? 2^8 - 1
+    then Result.Ok (IntegerValue.U8 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U64 l => if l <=? 2^8 - 1
-    then Result.Ok (ValueImpl.U8 l)
+  | IntegerValue.U64 l => if l <=? 2^8 - 1
+    then Result.Ok (IntegerValue.U8 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U128 l => if l <=? 2^8 - 1
-    then Result.Ok (ValueImpl.U8 l)
+  | IntegerValue.U128 l => if l <=? 2^8 - 1
+    then Result.Ok (IntegerValue.U8 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U256 l => if l <=? 2^8 - 1
-    then Result.Ok (ValueImpl.U8 l)
+  | IntegerValue.U256 l => if l <=? 2^8 - 1
+    then Result.Ok (IntegerValue.U8 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-Definition cast_u16 (self : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+Definition cast_u16 (self : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
   match self with
-  | ValueImpl.U8 l => Result.Ok (ValueImpl.U16 l)
-  | ValueImpl.U16 l => Result.Ok (ValueImpl.U16 l)
-  | ValueImpl.U32 l => if l <=? 2^16 - 1
-    then Result.Ok (ValueImpl.U16 l)
+  | IntegerValue.U8 l => Result.Ok (IntegerValue.U16 l)
+  | IntegerValue.U16 l => Result.Ok (IntegerValue.U16 l)
+  | IntegerValue.U32 l => if l <=? 2^16 - 1
+    then Result.Ok (IntegerValue.U16 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U64 l => if l <=? 2^16 - 1
-    then Result.Ok (ValueImpl.U16 l)
+  | IntegerValue.U64 l => if l <=? 2^16 - 1
+    then Result.Ok (IntegerValue.U16 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U128 l => if l <=? 2^16 - 1
-    then Result.Ok (ValueImpl.U16 l)
+  | IntegerValue.U128 l => if l <=? 2^16 - 1
+    then Result.Ok (IntegerValue.U16 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U256 l => if l <=? 2^16 - 1
-    then Result.Ok (ValueImpl.U16 l)
+  | IntegerValue.U256 l => if l <=? 2^16 - 1
+    then Result.Ok (IntegerValue.U16 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-Definition cast_u32 (self : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+Definition cast_u32 (self : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
   match self with
-  | ValueImpl.U8 l => Result.Ok (ValueImpl.U32 l)
-  | ValueImpl.U16 l => Result.Ok (ValueImpl.U32 l)
-  | ValueImpl.U32 l => Result.Ok (ValueImpl.U32 l)
-  | ValueImpl.U64 l => if l <=? 2^32 - 1
-    then Result.Ok (ValueImpl.U32 l)
+  | IntegerValue.U8 l => Result.Ok (IntegerValue.U32 l)
+  | IntegerValue.U16 l => Result.Ok (IntegerValue.U32 l)
+  | IntegerValue.U32 l => Result.Ok (IntegerValue.U32 l)
+  | IntegerValue.U64 l => if l <=? 2^32 - 1
+    then Result.Ok (IntegerValue.U32 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U128 l => if l <=? 2^32 - 1
-    then Result.Ok (ValueImpl.U32 l)
+  | IntegerValue.U128 l => if l <=? 2^32 - 1
+    then Result.Ok (IntegerValue.U32 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U256 l => if l <=? 2^32 - 1
-    then Result.Ok (ValueImpl.U32 l)
+  | IntegerValue.U256 l => if l <=? 2^32 - 1
+    then Result.Ok (IntegerValue.U32 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-Definition cast_u64 (self : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+Definition cast_u64 (self : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
   match self with
-  | ValueImpl.U8 l => Result.Ok (ValueImpl.U64 l)
-  | ValueImpl.U16 l => Result.Ok (ValueImpl.U64 l)
-  | ValueImpl.U32 l => Result.Ok (ValueImpl.U64 l)
-  | ValueImpl.U64 l => Result.Ok (ValueImpl.U64 l)
-  | ValueImpl.U128 l => if l <=? 2^64 - 1
-    then Result.Ok (ValueImpl.U64 l)
+  | IntegerValue.U8 l => Result.Ok (IntegerValue.U64 l)
+  | IntegerValue.U16 l => Result.Ok (IntegerValue.U64 l)
+  | IntegerValue.U32 l => Result.Ok (IntegerValue.U64 l)
+  | IntegerValue.U64 l => Result.Ok (IntegerValue.U64 l)
+  | IntegerValue.U128 l => if l <=? 2^64 - 1
+    then Result.Ok (IntegerValue.U64 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | ValueImpl.U256 l => if l <=? 2^64 - 1
-    then Result.Ok (ValueImpl.U64 l)
+  | IntegerValue.U256 l => if l <=? 2^64 - 1
+    then Result.Ok (IntegerValue.U64 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-Definition cast_u128 (self : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+Definition cast_u128 (self : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
   match self with
-  | ValueImpl.U8 l => Result.Ok (ValueImpl.U128 l)
-  | ValueImpl.U16 l => Result.Ok (ValueImpl.U128 l)
-  | ValueImpl.U32 l => Result.Ok (ValueImpl.U128 l)
-  | ValueImpl.U64 l => Result.Ok (ValueImpl.U128 l)
-  | ValueImpl.U128 l => Result.Ok (ValueImpl.U128 l)
-  | ValueImpl.U256 l => if l <=? 2^128 - 1
-    then Result.Ok (ValueImpl.U128 l)
+  | IntegerValue.U8 l => Result.Ok (IntegerValue.U128 l)
+  | IntegerValue.U16 l => Result.Ok (IntegerValue.U128 l)
+  | IntegerValue.U32 l => Result.Ok (IntegerValue.U128 l)
+  | IntegerValue.U64 l => Result.Ok (IntegerValue.U128 l)
+  | IntegerValue.U128 l => Result.Ok (IntegerValue.U128 l)
+  | IntegerValue.U256 l => if l <=? 2^128 - 1
+    then Result.Ok (IntegerValue.U128 l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
-  | _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-Definition cast_u256 (self : ValueImpl.t) : PartialVMResult.t ValueImpl.t :=
+Definition cast_u256 (self : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
   match self with
-  | ValueImpl.U8 l => Result.Ok (ValueImpl.U256 l)
-  | ValueImpl.U16 l => Result.Ok (ValueImpl.U256 l)
-  | ValueImpl.U32 l => Result.Ok (ValueImpl.U256 l)
-  | ValueImpl.U64 l => Result.Ok (ValueImpl.U256 l)
-  | ValueImpl.U128 l => Result.Ok (ValueImpl.U256 l)
-  | ValueImpl.U256 l => Result.Ok (ValueImpl.U256 l)
-  | _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
+  | IntegerValue.U8 l => Result.Ok (IntegerValue.U256 l)
+  | IntegerValue.U16 l => Result.Ok (IntegerValue.U256 l)
+  | IntegerValue.U32 l => Result.Ok (IntegerValue.U256 l)
+  | IntegerValue.U64 l => Result.Ok (IntegerValue.U256 l)
+  | IntegerValue.U128 l => Result.Ok (IntegerValue.U256 l)
+  | IntegerValue.U256 l => Result.Ok (IntegerValue.U256 l)
   end.
 
 End IntegerValue.
