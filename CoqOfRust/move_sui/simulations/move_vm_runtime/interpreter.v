@@ -1039,7 +1039,16 @@ Definition execute_instruction (pc : Z)
           .push(Value::u8(integer_value.cast_u8()?))?;
   }
   *)
-  | Bytecode.CastU8 => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.CastU8 =>
+    letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+    ) in
+    letS!? integer_value := returnS! $ IntegerValue.cast_u8 integer_value in
+    doS!? liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+        ValueImpl.U8 integer_value
+    ) in
+    returnS!? InstrRet.Ok
 
   (*
   Bytecode::CastU16 => {
