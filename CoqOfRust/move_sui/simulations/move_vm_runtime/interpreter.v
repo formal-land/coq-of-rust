@@ -1039,7 +1039,16 @@ Definition execute_instruction (pc : Z)
           .push(Value::u8(integer_value.cast_u8()?))?;
   }
   *)
-  | Bytecode.CastU8 => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.CastU8 =>
+    letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+    ) in
+    letS!? integer_value := returnS! $ IntegerValue.cast_u8 integer_value in
+    doS!? liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+        ValueImpl.U8 integer_value
+    ) in
+    returnS!? InstrRet.Ok
 
   (*
   Bytecode::CastU16 => {
@@ -1050,7 +1059,17 @@ Definition execute_instruction (pc : Z)
           .push(Value::u16(integer_value.cast_u16()?))?;
   }
   *)
-  | Bytecode.CastU16 => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.CastU16 =>
+    letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+    ) in
+    letS!? integer_value := returnS! $ IntegerValue.cast_u16 integer_value in
+    doS!? liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+        ValueImpl.U16 integer_value
+    ) in
+    returnS!? InstrRet.Ok
+
 
   (*
   Bytecode::CastU32 => {
@@ -1061,7 +1080,16 @@ Definition execute_instruction (pc : Z)
           .push(Value::u32(integer_value.cast_u32()?))?;
   }
   *)
-  | Bytecode.CastU32 => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.CastU32 =>
+    letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+    ) in
+    letS!? integer_value := returnS! $ IntegerValue.cast_u32 integer_value in
+    doS!? liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+        ValueImpl.U32 integer_value
+    ) in
+    returnS!? InstrRet.Ok
 
   (*
   Bytecode::CastU64 => {
@@ -1072,7 +1100,16 @@ Definition execute_instruction (pc : Z)
           .push(Value::u64(integer_value.cast_u64()?))?;
   }
   *)
-  | Bytecode.CastU64 => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.CastU64 =>
+    letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+    ) in
+    letS!? integer_value := returnS! $ IntegerValue.cast_u64 integer_value in
+    doS!? liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+        ValueImpl.U64 integer_value
+    ) in
+    returnS!? InstrRet.Ok
 
   (*
   Bytecode::CastU128 => {
@@ -1083,7 +1120,16 @@ Definition execute_instruction (pc : Z)
           .push(Value::u128(integer_value.cast_u128()?))?;
   }
   *)
-  | Bytecode.CastU128 => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.CastU128 =>
+    letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+    ) in
+    letS!? integer_value := returnS! $ IntegerValue.cast_u128 integer_value in
+    doS!? liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+        ValueImpl.U128 integer_value
+    ) in
+    returnS!? InstrRet.Ok
 
   (*
   Bytecode::CastU256 => {
@@ -1094,7 +1140,16 @@ Definition execute_instruction (pc : Z)
           .push(Value::u256(integer_value.cast_u256()?))?;
   }
   *)
-  | Bytecode.CastU256 => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.CastU256 =>
+    letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+    ) in
+    letS!? integer_value := returnS! $ IntegerValue.cast_u256 integer_value in
+    doS!? liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+        ValueImpl.U256 integer_value
+    ) in
+    returnS!? InstrRet.Ok
 
   (*
   Bytecode::Add => {
