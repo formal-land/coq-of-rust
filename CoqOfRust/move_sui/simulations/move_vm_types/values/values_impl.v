@@ -1032,94 +1032,94 @@ Module IntegerValue.
   | _, _ => Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-  Definition cast_u8 (self : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
+  Definition cast_u8 (self : IntegerValue.t) : PartialVMResult.t Z :=
   match self with
-  | IntegerValue.U8 l => Result.Ok (IntegerValue.U8 l)
+  | IntegerValue.U8 l => Result.Ok (l)
   | IntegerValue.U16 l => if l <=? 2^8 - 1
-    then Result.Ok (IntegerValue.U8 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   | IntegerValue.U32 l => if l <=? 2^8 - 1
-    then Result.Ok (IntegerValue.U8 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   | IntegerValue.U64 l => if l <=? 2^8 - 1
-    then Result.Ok (IntegerValue.U8 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   | IntegerValue.U128 l => if l <=? 2^8 - 1
-    then Result.Ok (IntegerValue.U8 l)
+    then Result.Ok ( l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   | IntegerValue.U256 l => if l <=? 2^8 - 1
-    then Result.Ok (IntegerValue.U8 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-Definition cast_u16 (self : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
+Definition cast_u16 (self : IntegerValue.t) : PartialVMResult.t Z :=
   match self with
-  | IntegerValue.U8 l => Result.Ok (IntegerValue.U16 l)
-  | IntegerValue.U16 l => Result.Ok (IntegerValue.U16 l)
+  | IntegerValue.U8 l => Result.Ok (l)
+  | IntegerValue.U16 l => Result.Ok (l)
   | IntegerValue.U32 l => if l <=? 2^16 - 1
-    then Result.Ok (IntegerValue.U16 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   | IntegerValue.U64 l => if l <=? 2^16 - 1
-    then Result.Ok (IntegerValue.U16 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   | IntegerValue.U128 l => if l <=? 2^16 - 1
-    then Result.Ok (IntegerValue.U16 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   | IntegerValue.U256 l => if l <=? 2^16 - 1
-    then Result.Ok (IntegerValue.U16 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-Definition cast_u32 (self : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
+Definition cast_u32 (self : IntegerValue.t) : PartialVMResult.t Z :=
   match self with
-  | IntegerValue.U8 l => Result.Ok (IntegerValue.U32 l)
-  | IntegerValue.U16 l => Result.Ok (IntegerValue.U32 l)
-  | IntegerValue.U32 l => Result.Ok (IntegerValue.U32 l)
+  | IntegerValue.U8 l => Result.Ok (l)
+  | IntegerValue.U16 l => Result.Ok (l)
+  | IntegerValue.U32 l => Result.Ok (l)
   | IntegerValue.U64 l => if l <=? 2^32 - 1
-    then Result.Ok (IntegerValue.U32 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   | IntegerValue.U128 l => if l <=? 2^32 - 1
-    then Result.Ok (IntegerValue.U32 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   | IntegerValue.U256 l => if l <=? 2^32 - 1
-    then Result.Ok (IntegerValue.U32 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-Definition cast_u64 (self : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
+Definition cast_u64 (self : IntegerValue.t) : PartialVMResult.t Z :=
   match self with
-  | IntegerValue.U8 l => Result.Ok (IntegerValue.U64 l)
-  | IntegerValue.U16 l => Result.Ok (IntegerValue.U64 l)
-  | IntegerValue.U32 l => Result.Ok (IntegerValue.U64 l)
-  | IntegerValue.U64 l => Result.Ok (IntegerValue.U64 l)
+  | IntegerValue.U8 l => Result.Ok (l)
+  | IntegerValue.U16 l => Result.Ok (l)
+  | IntegerValue.U32 l => Result.Ok (l)
+  | IntegerValue.U64 l => Result.Ok (l)
   | IntegerValue.U128 l => if l <=? 2^64 - 1
-    then Result.Ok (IntegerValue.U64 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   | IntegerValue.U256 l => if l <=? 2^64 - 1
-    then Result.Ok (IntegerValue.U64 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-Definition cast_u128 (self : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
+Definition cast_u128 (self : IntegerValue.t) : PartialVMResult.t Z :=
   match self with
-  | IntegerValue.U8 l => Result.Ok (IntegerValue.U128 l)
-  | IntegerValue.U16 l => Result.Ok (IntegerValue.U128 l)
-  | IntegerValue.U32 l => Result.Ok (IntegerValue.U128 l)
-  | IntegerValue.U64 l => Result.Ok (IntegerValue.U128 l)
-  | IntegerValue.U128 l => Result.Ok (IntegerValue.U128 l)
+  | IntegerValue.U8 l => Result.Ok (l)
+  | IntegerValue.U16 l => Result.Ok (l)
+  | IntegerValue.U32 l => Result.Ok (l)
+  | IntegerValue.U64 l => Result.Ok (l)
+  | IntegerValue.U128 l => Result.Ok (l)
   | IntegerValue.U256 l => if l <=? 2^128 - 1
-    then Result.Ok (IntegerValue.U128 l)
+    then Result.Ok (l)
     else Result.Err (PartialVMError.new StatusCode.ARITHMETIC_ERROR)
   end.
 
-Definition cast_u256 (self : IntegerValue.t) : PartialVMResult.t IntegerValue.t :=
+Definition cast_u256 (self : IntegerValue.t) : PartialVMResult.t Z :=
   match self with
-  | IntegerValue.U8 l => Result.Ok (IntegerValue.U256 l)
-  | IntegerValue.U16 l => Result.Ok (IntegerValue.U256 l)
-  | IntegerValue.U32 l => Result.Ok (IntegerValue.U256 l)
-  | IntegerValue.U64 l => Result.Ok (IntegerValue.U256 l)
-  | IntegerValue.U128 l => Result.Ok (IntegerValue.U256 l)
-  | IntegerValue.U256 l => Result.Ok (IntegerValue.U256 l)
+  | IntegerValue.U8 l => Result.Ok (l)
+  | IntegerValue.U16 l => Result.Ok (l)
+  | IntegerValue.U32 l => Result.Ok (l)
+  | IntegerValue.U64 l => Result.Ok (l)
+  | IntegerValue.U128 l => Result.Ok (l)
+  | IntegerValue.U256 l => Result.Ok (l)
   end.
 
 End IntegerValue.
