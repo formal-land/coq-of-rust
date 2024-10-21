@@ -1614,3 +1614,32 @@ impl IntegerValue {
 }
 *)
 
+(*
+impl VMValueCast<IntegerValue> for Value {
+    fn cast(self) -> PartialVMResult<IntegerValue> {
+        match self.0 {
+            ValueImpl::U8(x) => Ok(IntegerValue::U8(x)),
+            ValueImpl::U16(x) => Ok(IntegerValue::U16(x)),
+            ValueImpl::U32(x) => Ok(IntegerValue::U32(x)),
+            ValueImpl::U64(x) => Ok(IntegerValue::U64(x)),
+            ValueImpl::U128(x) => Ok(IntegerValue::U128(x)),
+            ValueImpl::U256(x) => Ok(IntegerValue::U256(x)),
+            v => Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR)
+                .with_message(format!("cannot cast {:?} to integer", v,))),
+        }
+    }
+}
+*)
+Global Instance Impl_VMValueCast_IntegerValue_for_Value :
+    VMValueCast.Trait Value.t IntegerValue.t : Set := {
+  cast self :=
+    match self with
+    | ValueImpl.U8 x => return? $ IntegerValue.U8 x
+    | ValueImpl.U16 x => return? $ IntegerValue.U16 x
+    | ValueImpl.U32 x => return? $ IntegerValue.U32 x
+    | ValueImpl.U64 x => return? $ IntegerValue.U64 x
+    | ValueImpl.U128 x => return? $ IntegerValue.U128 x
+    | ValueImpl.U256 x => return? $ IntegerValue.U256 x
+    | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+    end;
+}.

@@ -334,40 +334,58 @@ Module Interpreter.
     |}.
   End Lens.
 
-  Module Impl_Interpreter.
-    Definition Self : Set. Admitted.
+  (*
+  /// Perform a binary operation to two values at the top of the stack.
+  fn binop<F, T>(&mut self, f: F) -> PartialVMResult<()>
+  where
+      Value: VMValueCast<T>,
+      F: FnOnce(T, T) -> PartialVMResult<Value>,
+  {
+      let rhs = self.operand_stack.pop_as::<T>()?;
+      let lhs = self.operand_stack.pop_as::<T>()?;
+      let result = f(lhs, rhs)?;
+      self.operand_stack.push(result)
+  }
+  *)
+  Definition binop {T : Set} `{VMValueCast.Trait Value.t T}
+      (f : T -> T -> PartialVMResult.t Value.t) :
+      MS! t (PartialVMResult.t unit) :=
+    letS!? lhs := liftS! Lens.lens_self_stack $ Stack.Impl_Stack.pop_as T in
+    letS!? rhs := liftS! Lens.lens_self_stack $ Stack.Impl_Stack.pop_as T in
+    letS!? result := returnS! $ f lhs rhs in
+    liftS! Lens.lens_self_stack $ Stack.Impl_Stack.push result.
 
-    (* 
-        /// Perform a binary operation to two values at the top of the stack.
-    fn binop<F, T>(&mut self, f: F) -> PartialVMResult<()>
-    where
-        Value: VMValueCast<T>,
-        F: FnOnce(T, T) -> PartialVMResult<Value>,
-    {
-        let rhs = self.operand_stack.pop_as::<T>()?;
-        let lhs = self.operand_stack.pop_as::<T>()?;
-        let result = f(lhs, rhs)?;
-        self.operand_stack.push(result)
-    }
-
-    /// Perform a binary operation for integer values.
-    fn binop_int<F>(&mut self, f: F) -> PartialVMResult<()>
-    where
-        F: FnOnce(IntegerValue, IntegerValue) -> PartialVMResult<IntegerValue>,
-    {
-        self.binop(|lhs, rhs| {
-            Ok(match f(lhs, rhs)? {
-                IntegerValue::U8(x) => Value::u8(x),
-                IntegerValue::U16(x) => Value::u16(x),
-                IntegerValue::U32(x) => Value::u32(x),
-                IntegerValue::U64(x) => Value::u64(x),
-                IntegerValue::U128(x) => Value::u128(x),
-                IntegerValue::U256(x) => Value::u256(x),
-            })
-        })
-    }
-    *)
-  End Impl_Interpreter.
+  (*
+  /// Perform a binary operation for integer values.
+  fn binop_int<F>(&mut self, f: F) -> PartialVMResult<()>
+  where
+      F: FnOnce(IntegerValue, IntegerValue) -> PartialVMResult<IntegerValue>,
+  {
+      self.binop(|lhs, rhs| {
+          Ok(match f(lhs, rhs)? {
+              IntegerValue::U8(x) => Value::u8(x),
+              IntegerValue::U16(x) => Value::u16(x),
+              IntegerValue::U32(x) => Value::u32(x),
+              IntegerValue::U64(x) => Value::u64(x),
+              IntegerValue::U128(x) => Value::u128(x),
+              IntegerValue::U256(x) => Value::u256(x),
+          })
+      })
+  }
+  *)
+  Definition binop_int (f : IntegerValue.t -> IntegerValue.t -> PartialVMResult.t IntegerValue.t) :
+    MS! t (PartialVMResult.t unit) :=
+    binop (fun lhs rhs =>
+      let? result := f lhs rhs in
+      match result with
+      | IntegerValue.U8 x => return? $ ValueImpl.U8 x
+      | IntegerValue.U16 x => return? $ ValueImpl.U16 x
+      | IntegerValue.U32 x => return? $ ValueImpl.U32 x
+      | IntegerValue.U64 x => return? $ ValueImpl.U64 x
+      | IntegerValue.U128 x => return? $ ValueImpl.U128 x
+      | IntegerValue.U256 x => return? $ ValueImpl.U256 x
+      end
+    ).
 End Interpreter.
 
 (* 
