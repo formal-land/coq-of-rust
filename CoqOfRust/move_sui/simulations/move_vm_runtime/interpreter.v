@@ -1182,7 +1182,10 @@ Definition execute_instruction (pc : Z)
       interpreter.binop_int(IntegerValue::add_checked)?
   }
   *)
-  | Bytecode.Add => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.Add =>
+    letS!? _ := liftS! Interpreter.Lens.lens_state_self (
+      Interpreter.Impl_Interpreter.binop_int IntegerValue.add_checked) in
+    returnS! $ Result.Ok InstrRet.Ok
 
   (*
   Bytecode::Sub => {
@@ -1190,7 +1193,10 @@ Definition execute_instruction (pc : Z)
       interpreter.binop_int(IntegerValue::sub_checked)?
   }
   *)
-  | Bytecode.Sub => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.Sub => 
+    letS!? _ := liftS! Interpreter.Lens.lens_state_self (
+      Interpreter.Impl_Interpreter.binop_int IntegerValue.sub_checked) in
+    returnS! $ Result.Ok InstrRet.Ok
 
   (*
   Bytecode::Mul => {
@@ -1198,7 +1204,10 @@ Definition execute_instruction (pc : Z)
       interpreter.binop_int(IntegerValue::mul_checked)?
   }
   *)
-  | Bytecode.Mul => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.Mul =>
+    letS!? _ := liftS! Interpreter.Lens.lens_state_self (
+      Interpreter.Impl_Interpreter.binop_int IntegerValue.mul_checked) in
+    returnS! $ Result.Ok InstrRet.Ok
 
   (*
   Bytecode::Mod => {
@@ -1206,7 +1215,10 @@ Definition execute_instruction (pc : Z)
       interpreter.binop_int(IntegerValue::rem_checked)?
   }
   *)
-  | Bytecode.Mod => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.Mod =>
+    letS!? _ := liftS! Interpreter.Lens.lens_state_self (
+      Interpreter.Impl_Interpreter.binop_int IntegerValue.rem_checked) in
+    returnS! $ Result.Ok InstrRet.Ok
 
   (*
   Bytecode::Div => {
@@ -1214,7 +1226,10 @@ Definition execute_instruction (pc : Z)
       interpreter.binop_int(IntegerValue::div_checked)?
   }
   *)
-  | Bytecode.Div => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.Div =>
+    letS!? _ := liftS! Interpreter.Lens.lens_state_self (
+      Interpreter.Impl_Interpreter.binop_int IntegerValue.div_checked) in
+    returnS! $ Result.Ok InstrRet.Ok
 
   (*
   Bytecode::BitOr => {
@@ -1222,7 +1237,10 @@ Definition execute_instruction (pc : Z)
       interpreter.binop_int(IntegerValue::bit_or)?
   }
   *)
-  | Bytecode.BitOr => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.BitOr =>
+    letS!? _ := liftS! Interpreter.Lens.lens_state_self (
+      Interpreter.Impl_Interpreter.binop_int IntegerValue.bit_or) in
+    returnS! $ Result.Ok InstrRet.Ok
 
   (*
   Bytecode::BitAnd => {
@@ -1230,15 +1248,20 @@ Definition execute_instruction (pc : Z)
       interpreter.binop_int(IntegerValue::bit_and)?
   }
   *)
-  | Bytecode.BitAnd => returnS! $ Result.Ok InstrRet.Ok
-
+  | Bytecode.BitAnd =>
+    letS!? _ := liftS! Interpreter.Lens.lens_state_self (
+      Interpreter.Impl_Interpreter.binop_int IntegerValue.bit_and) in
+    returnS! $ Result.Ok InstrRet.Ok
   (*
   Bytecode::Xor => {
       gas_meter.charge_simple_instr(S::Xor)?;
       interpreter.binop_int(IntegerValue::bit_xor)?
   }
   *)
-  | Bytecode.Xor => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.Xor =>
+    letS!? _ := liftS! Interpreter.Lens.lens_state_self (
+      Interpreter.Impl_Interpreter.binop_int IntegerValue.bit_xor) in
+    returnS! $ Result.Ok InstrRet.Ok
 
   | _ => returnS! $ Result.Ok InstrRet.Ok
   end.
