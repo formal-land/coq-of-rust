@@ -354,10 +354,10 @@ Module Interpreter.
     Definition binop {T : Set} `{VMValueCast.Trait Value.t T}
       (f : T -> T -> PartialVMResult.t Value.t) :
       MS! t (PartialVMResult.t unit) :=
-    letS!? lhs := liftS! Lens.lens_self_stack $ Stack.Impl_Stack.pop_as T in
-    letS!? rhs := liftS! Lens.lens_self_stack $ Stack.Impl_Stack.pop_as T in
+    letS!? lhs := liftS! Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as T in
+    letS!? rhs := liftS! Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as T in
     letS!? result := returnS! $ f lhs rhs in
-    liftS! Lens.lens_self_stack $ Stack.Impl_Stack.push result.
+    liftS! Lens.lens_operand_stack $ Stack.Impl_Stack.push result.
 
     (*
     /// Perform a binary operation for integer values.
@@ -619,7 +619,7 @@ Definition debug_execute_instruction (pc : Z)
 
   | Bytecode.ImmBorrowField fh_idx => 
   letS!? reference := liftS! Interpreter.Lens.lens_state_self (
-    liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as StructRef.t) in 
+    liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as StructRef.t) in 
   let offset := Resolver.Impl_Resolver.field_offset resolver in
   (* TODO: Implement `borrow_field` *)
 
@@ -655,7 +655,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.Pop => 
     letS!? popped_val := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop) in 
+      liftS! Interpreter.Lens.lens_operand_stack Stack.Impl_Stack.pop) in 
     returnS! $ Result.Ok InstrRet.Ok
 
   (* 
@@ -677,7 +677,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.BrTrue offset => 
     letS!? popped_val := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as bool) in 
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as bool) in 
     letS! _ := writeS! (offset, locals, interpreter) in
     returnS! $ Result.Ok InstrRet.Branch
 
@@ -692,7 +692,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.BrFalse offset => 
     letS!? popped_val := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as bool) in 
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as bool) in 
     letS! _ := writeS! (offset, locals, interpreter) in
     returnS! $ Result.Ok InstrRet.Branch
 
@@ -715,7 +715,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.LdU8 int_const => 
     letS!? _ := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U8 int_const) in 
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $ ValueImpl.U8 int_const) in 
     returnS! $ Result.Ok InstrRet.Ok
 
   (*
@@ -726,7 +726,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.LdU16 int_const => 
     letS!? _ := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U16 int_const) in 
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $ ValueImpl.U16 int_const) in 
     returnS! $ Result.Ok InstrRet.Ok
 
   (*
@@ -737,7 +737,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.LdU32 int_const => 
     letS!? _ := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U32 int_const) in 
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $ ValueImpl.U32 int_const) in 
     returnS! $ Result.Ok InstrRet.Ok
 
   (*
@@ -748,7 +748,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.LdU64 int_const => 
     letS!? _ := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U64 int_const) in 
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $ ValueImpl.U64 int_const) in 
     returnS! $ Result.Ok InstrRet.Ok
 
   (*
@@ -759,7 +759,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.LdU128 int_const => 
     letS!? _ := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U128 int_const) in 
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $ ValueImpl.U128 int_const) in 
     returnS! $ Result.Ok InstrRet.Ok
 
   (*
@@ -770,7 +770,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.LdU256 int_const => 
     letS!? _ := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.U256 int_const) in 
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $ ValueImpl.U256 int_const) in 
     returnS! $ Result.Ok InstrRet.Ok
 
   (* 
@@ -812,7 +812,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.LdTrue => 
     letS!? _ := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.Bool true) in 
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $ ValueImpl.Bool true) in 
     returnS! $ Result.Ok InstrRet.Ok
 
   (*
@@ -823,7 +823,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.LdFalse => 
     letS!? _ := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $ ValueImpl.Bool false) in 
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $ ValueImpl.Bool false) in 
     returnS! $ Result.Ok InstrRet.Ok
 
   (* 
@@ -840,7 +840,7 @@ Definition execute_instruction (pc : Z)
     | Result.Err e => returnS! $ Result.Err e
     | Result.Ok local =>
       letS!? _ := liftS! Interpreter.Lens.lens_state_self (
-        liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push local) in 
+        liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push local) in 
       returnS! $ Result.Ok InstrRet.Ok
     end
 
@@ -863,7 +863,7 @@ Definition execute_instruction (pc : Z)
       .(VMConfig.enable_invariant_violation_check_in_swap_loc) in
     letS!? local := liftS! lens_state_locals $ Locals.Impl_Locals.move_loc idx config in
     letS!? _ := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push local) in 
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push local) in 
     returnS! $ Result.Ok InstrRet.Ok
 
   (* 
@@ -882,7 +882,7 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.StLoc idx => 
   letS!? value_to_store := liftS! Interpreter.Lens.lens_state_self (
-    liftS! Interpreter.Lens.lens_self_stack Stack.Impl_Stack.pop) in 
+    liftS! Interpreter.Lens.lens_operand_stack Stack.Impl_Stack.pop) in 
   let config := resolver.(Resolver.loader).(Loader.vm_config)
     .(VMConfig.enable_invariant_violation_check_in_swap_loc) in
   letS!? local := liftS! (lens_state_store_loc_state value_to_store) $ Locals.Impl_Locals.store_loc idx config in
@@ -938,7 +938,7 @@ Definition execute_instruction (pc : Z)
     letS!? reference := liftS! Interpreter.Lens.lens_state_self (
       (* NOTE: Notice that since we identify the instance by the `ValueImpl`
       item, here we have to apply the `StructRef` instance indirectly *)
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as ContainerRef.t) in 
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as ContainerRef.t) in 
     (* NOTE: below is a test clause to show that the popped value is indeed `StructRef`
     let reference : StructRef.t := reference in
     *)
@@ -1066,11 +1066,11 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.CastU8 =>
     letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
     ) in
     letS!? integer_value := returnS! $ IntegerValue.cast_u8 integer_value in
     doS!? liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $
         ValueImpl.U8 integer_value
     ) in
     returnS!? InstrRet.Ok
@@ -1086,11 +1086,11 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.CastU16 =>
     letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
     ) in
     letS!? integer_value := returnS! $ IntegerValue.cast_u16 integer_value in
     doS!? liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $
         ValueImpl.U16 integer_value
     ) in
     returnS!? InstrRet.Ok
@@ -1107,11 +1107,11 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.CastU32 =>
     letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
     ) in
     letS!? integer_value := returnS! $ IntegerValue.cast_u32 integer_value in
     doS!? liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $
         ValueImpl.U32 integer_value
     ) in
     returnS!? InstrRet.Ok
@@ -1127,11 +1127,11 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.CastU64 =>
     letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
     ) in
     letS!? integer_value := returnS! $ IntegerValue.cast_u64 integer_value in
     doS!? liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $
         ValueImpl.U64 integer_value
     ) in
     returnS!? InstrRet.Ok
@@ -1147,11 +1147,11 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.CastU128 =>
     letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
     ) in
     letS!? integer_value := returnS! $ IntegerValue.cast_u128 integer_value in
     doS!? liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $
         ValueImpl.U128 integer_value
     ) in
     returnS!? InstrRet.Ok
@@ -1167,11 +1167,11 @@ Definition execute_instruction (pc : Z)
   *)
   | Bytecode.CastU256 =>
     letS!? integer_value := liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as IntegerValue.t
     ) in
     letS!? integer_value := returnS! $ IntegerValue.cast_u256 integer_value in
     doS!? liftS! Interpreter.Lens.lens_state_self (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push $
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push $
         ValueImpl.U256 integer_value
     ) in
     returnS!? InstrRet.Ok
