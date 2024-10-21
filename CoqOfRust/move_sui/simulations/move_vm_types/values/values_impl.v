@@ -447,6 +447,43 @@ Module Value.
   Definition coerce_Locals_Container (self : t) : Container.ValueImpl.t. Admitted.
 End Value.
 
+(*
+#[derive(Debug)]
+pub struct Struct {
+    fields: Vec<ValueImpl>,
+}
+*)
+
+Module Struct.
+  Record t : Set := {
+    fields : list ValueImpl.t;
+  }.
+End Struct.
+
+Module Impl_Struct.
+  Definition Self := move_sui.simulations.move_vm_types.values.values_impl.Struct.t.
+
+  (* 
+  pub fn pack<I: IntoIterator<Item = Value>>(vals: I) -> Self {
+      Self {
+          fields: vals.into_iter().map(|v| v.0).collect(),
+      }
+  }
+  *)
+  Definition pack (vals : list Value.t) : Self :=
+    {|
+      Struct.fields := vals;
+    |}.
+
+  (*
+  pub fn unpack(self) -> PartialVMResult<impl Iterator<Item = Value>> {
+      Ok(self.fields.into_iter().map(Value))
+  }
+  *)
+  Definition unpack (self : Self) : PartialVMResult.t (list Value.t) :=
+    Result.Ok self.(Struct.fields).
+End Impl_Struct.
+
 (* pub struct StructRef(ContainerRef); *)
 Module StructRef.
   Definition t := ContainerRef.t.
