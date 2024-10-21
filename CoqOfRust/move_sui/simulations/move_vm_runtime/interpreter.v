@@ -328,7 +328,7 @@ Module Interpreter.
       Lens.write state self := let '(a, b, _) := state in (a, b, self);
     |}.
 
-    Definition lens_self_stack : Lens.t t Stack.t := {|
+    Definition lens_operand_stack : Lens.t t Stack.t := {|
       Lens.read self := self.(operand_stack);
       Lens.write self stack := self <| Interpreter.operand_stack := stack |>;
     |}.
@@ -349,7 +349,17 @@ Module Interpreter.
         let result = f(lhs, rhs)?;
         self.operand_stack.push(result)
     }
+    *)
 
+    Definition binop {T : Set} `{VMValueCast.Trait Value.t T}
+      (f : T -> T -> PartialVMResult.t Value.t) :
+      MS! t (PartialVMResult.t unit) :=
+    letS!? lhs := liftS! Lens.lens_self_stack $ Stack.Impl_Stack.pop_as T in
+    letS!? rhs := liftS! Lens.lens_self_stack $ Stack.Impl_Stack.pop_as T in
+    letS!? result := returnS! $ f lhs rhs in
+    liftS! Lens.lens_self_stack $ Stack.Impl_Stack.push result.
+
+    (*
     /// Perform a binary operation for integer values.
     fn binop_int<F>(&mut self, f: F) -> PartialVMResult<()>
     where
@@ -367,6 +377,21 @@ Module Interpreter.
         })
     }
     *)
+
+    Definition binop_int (f : IntegerValue.t -> IntegerValue.t -> PartialVMResult.t IntegerValue.t) :
+    MS! t (PartialVMResult.t unit) :=
+    binop (fun lhs rhs =>
+      let? result := f lhs rhs in
+      match result with
+      | IntegerValue.U8 x => return? $ ValueImpl.U8 x
+      | IntegerValue.U16 x => return? $ ValueImpl.U16 x
+      | IntegerValue.U32 x => return? $ ValueImpl.U32 x
+      | IntegerValue.U64 x => return? $ ValueImpl.U64 x
+      | IntegerValue.U128 x => return? $ ValueImpl.U128 x
+      | IntegerValue.U256 x => return? $ ValueImpl.U256 x
+      end
+    ).
+
   End Impl_Interpreter.
 End Interpreter.
 
