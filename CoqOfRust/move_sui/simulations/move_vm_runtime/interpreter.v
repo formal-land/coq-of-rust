@@ -1017,7 +1017,15 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.Unpack _ => 
-  returnS! $ Result.Ok InstrRet.Ok
+    letS!? struct_ := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as Struct.t) in
+    letS!? values := returnS! $ Impl_Struct.unpack struct_ in
+    doS!? foldS!? tt values (fun acc value =>
+      liftS! Interpreter.Lens.lens_state_self (
+        liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push value
+      )
+    ) in
+    returnS! $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::UnpackGeneric(_si_idx) => {
