@@ -1,4 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
+Require Import Coq.Lists.List.
+Import ListNotations.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.lib.lib.
 
@@ -7,6 +9,7 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult.
 Module PartialVMError := errors.PartialVMError.
+Import PartialVMResult.
 
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
@@ -1678,6 +1681,51 @@ Global Instance Impl_VMValueCast_IntegerValue_for_Value :
     | ValueImpl.U64 x => return? $ IntegerValue.U64 x
     | ValueImpl.U128 x => return? $ IntegerValue.U128 x
     | ValueImpl.U256 x => return? $ IntegerValue.U256 x
+    | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+    end;
+}.
+
+(*
+fn take_unique_ownership<T: Debug>(r: Rc<RefCell<T>>) -> PartialVMResult<T> {
+    match Rc::try_unwrap(r) {
+        Ok(cell) => Ok(cell.into_inner()),
+        Err(r) => Err(
+            PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                .with_message(format!("moving value {:?} with dangling references", r)),
+        ),
+    }
+*)
+
+Definition take_unique_ownership {T : Set} (refCell : T) : PartialVMResult.t T :=
+  Result.Ok refCell.
+
+(*
+?H: Cannot infer the implicit parameter H of Stack.Impl_Stack.pop_as
+whose type is "VMValueCast.Trait Value.t Struct.t" (no type class
+instance found) in environment:
+*)
+(*
+impl VMValueCast<Struct> for Value {
+    fn cast(self) -> PartialVMResult<Struct> {
+        match self.0 {
+            ValueImpl::Container(Container::Struct(r)) => Ok(Struct {
+                fields: take_unique_ownership(r)?,
+            }),
+            v => Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR)
+                .with_message(format!("cannot cast {:?} to struct", v,))),
+        }
+    }
+}
+*)
+
+Global Instance Impl_VMValueCast_Struct_for_Value : VMValueCast.Trait Value.t Struct.t : Set := {
+  cast self :=
+    match self with
+    | ValueImpl.Container (Container.Struct r) =>
+      match take_unique_ownership r with
+      | Result.Ok inner_r => Result.Ok (Struct.Build_t (map Value.coerce_Container_Locals inner_r))
+      | Result.Err e => Result.Err e
+      end
     | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
     end;
 }.
