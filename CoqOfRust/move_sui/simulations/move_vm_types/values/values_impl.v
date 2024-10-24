@@ -464,7 +464,6 @@ Module Struct.
 End Struct.
 
 Module Impl_Struct.
-  Definition Self := move_sui.simulations.move_vm_types.values.values_impl.Struct.t.
 
   (* 
   pub fn pack<I: IntoIterator<Item = Value>>(vals: I) -> Self {
@@ -473,7 +472,7 @@ Module Impl_Struct.
       }
   }
   *)
-  Definition pack (vals : list Value.t) : Self :=
+  Definition pack (vals : list Value.t) : Struct.t :=
     {|
       Struct.fields := vals;
     |}.
@@ -483,7 +482,7 @@ Module Impl_Struct.
       Ok(self.fields.into_iter().map(Value))
   }
   *)
-  Definition unpack (self : Self) : PartialVMResult.t (list Value.t) :=
+  Definition unpack (self : Struct.t) : PartialVMResult.t (list Value.t) :=
     Result.Ok self.(Struct.fields).
 End Impl_Struct.
 
