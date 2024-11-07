@@ -69,15 +69,11 @@ enum Container {
 *)
 Module Container.
 
-  Module ValueImpl.
-    Parameter t : Set.
-  End ValueImpl.
-
   Inductive t : Set :=
   (* TODO: Resolve mutual dependency issue below *)
-  | Locals : list ValueImpl.t -> t
-  | Vec : list ValueImpl.t -> t
-  | Struct : list ValueImpl.t -> t
+  (*| Locals : list ValueImpl.t -> t*)
+  (* | Vec : list ValueImpl.t -> t *)
+  (* | Struct : list ValueImpl.t -> t *)
   | VecU8 : list Z -> t
   | VecU64 : list Z -> t
   | VecU128 : list Z -> t
@@ -87,6 +83,42 @@ Module Container.
   | VecU32 : list Z -> t
   | VecU256 : list Z -> t
   .
+
+  (*
+  fn copy_value(&self) -> PartialVMResult<Self> {
+        let copy_rc_ref_vec_val = |r: &Rc<RefCell<Vec<ValueImpl>>>| {
+            Ok(Rc::new(RefCell::new(
+                r.borrow()
+                    .iter()
+                    .map(|v| v.copy_value())
+                    .collect::<PartialVMResult<_>>()?,
+            )))
+        };
+
+        Ok(match self {
+            Self::Vec(r) => Self::Vec(copy_rc_ref_vec_val(r)?),
+            Self::Struct(r) => Self::Struct(copy_rc_ref_vec_val(r)?),
+
+            Self::VecU8(r) => Self::VecU8(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU16(r) => Self::VecU16(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU32(r) => Self::VecU32(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU64(r) => Self::VecU64(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU128(r) => Self::VecU128(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU256(r) => Self::VecU256(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecBool(r) => Self::VecBool(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecAddress(r) => Self::VecAddress(Rc::new(RefCell::new(r.borrow().clone()))),
+
+            Self::Locals(_) => {
+                return Err(
+                    PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                        .with_message("cannot copy a Locals container".to_string()),
+                )
+            }
+        })
+    }*)
+  Definition copy_value (self : t) : PartialVMResult.t t := 
+    Result.Ok self.
+
 End Container.
 
 (* 
@@ -103,15 +135,30 @@ enum ContainerRef {
 }
 *)
 Module ContainerRef.
-  Record __Global : Set := {
-    status : GlobalDataStatus.t;
-    container: Container.t;
-  }.
+  Module __Global.
+    Record t : Set := {
+      status : GlobalDataStatus.t;
+      container: Container.t;
+    }.
+  End __Global.
 
   Inductive t : Set :=
   | Local : Container.t -> t
-  | _Global : __Global -> t
+  | _Global : __Global.t -> t
   .
+
+  (*
+  fn container(&self) -> &Container {
+        match self {
+            Self::Local(container) | Self::Global { container, .. } => container,
+        }
+    }
+  *)
+  Definition container (self : t) : Container.t :=
+    match self with
+    | Local container => container
+    | _Global g => g.(__Global.container)
+    end.
 
   (* NOTE: This function is ignored
   fn copy_by_ref(&self) -> Self {
@@ -156,11 +203,24 @@ enum ReferenceImpl {
     ContainerRef(ContainerRef),
 }
 *)
+
+(*
+impl ReferenceImpl {
+    fn read_ref(self) -> PartialVMResult<Value> {
+        match self {
+            Self::ContainerRef(r) => r.read_ref(),
+            Self::IndexedRef(r) => r.read_ref(),
+        }
+    }
+}
+*)
+
 Module ReferenceImpl.
   Inductive t : Set :=
   | IndexedRef : IndexedRef.t -> t
   | ContainerRef : ContainerRef.t -> t
   .
+
 End ReferenceImpl.
 
 (* 
@@ -255,7 +315,7 @@ Module Value.
   impl_vm_value_cast!(IndexedRef, IndexedRef);
   *)
   Module Impl_Value.
-    Definition Self := move_sui.simulations.move_vm_types.values.values_impl.Value.t.
+    Definition Self := Value.t.
     Module cast.
       Global Instance cast_u8 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
@@ -446,9 +506,70 @@ Module Value.
 
   End Impl_Value.
 
-  Definition coerce_Container_Locals (c : Container.ValueImpl.t) : t. Admitted.
-  Definition coerce_Locals_Container (self : t) : Container.ValueImpl.t. Admitted.
+  Definition coerce_Container_Locals (c : Value.t) : t. Admitted.
+  Definition coerce_Locals_Container (self : t) : Value.t. Admitted.
 End Value.
+
+(*
+impl ContainerRef {
+    fn read_ref(self) -> PartialVMResult<Value> {
+        Ok(Value(ValueImpl::Container(self.container().copy_value()?)))
+    }
+}
+*)
+
+Module Impl_ContainerRef.
+  Definition Self := ContainerRef.t.
+
+  Definition read_ref (self : Self) : PartialVMResult.t Value.t :=
+    let? copy_value := Container.copy_value (ContainerRef.container self) in
+    Result.Ok $ ValueImpl.Container copy_value.
+
+End Impl_ContainerRef.
+
+(*
+impl IndexedRef {
+    fn read_ref(self) -> PartialVMResult<Value> {
+        use Container::*;
+
+        let res = match self.container_ref.container() {
+            Locals(r) | Vec(r) | Struct(r) => r.borrow()[self.idx].copy_value()?,
+            VecU8(r) => ValueImpl::U8(r.borrow()[self.idx]),
+            VecU16(r) => ValueImpl::U16(r.borrow()[self.idx]),
+            VecU32(r) => ValueImpl::U32(r.borrow()[self.idx]),
+            VecU64(r) => ValueImpl::U64(r.borrow()[self.idx]),
+            VecU128(r) => ValueImpl::U128(r.borrow()[self.idx]),
+            VecU256(r) => ValueImpl::U256(r.borrow()[self.idx]),
+            VecBool(r) => ValueImpl::Bool(r.borrow()[self.idx]),
+            VecAddress(r) => ValueImpl::Address(r.borrow()[self.idx]),
+        };
+
+        Ok(Value(res))
+    }
+}
+*)
+
+
+(*
+impl ReferenceImpl {
+    fn read_ref(self) -> PartialVMResult<Value> {
+        match self {
+            Self::ContainerRef(r) => r.read_ref(),
+            Self::IndexedRef(r) => r.read_ref(),
+        }
+    }
+}
+*)
+
+Module Impl_ReferenceImpl.
+  Definition Self := ReferenceImpl.t.
+
+  Definition read_ref (self : Self) : PartialVMResult.t Value.t :=
+    match self with
+    | ReferenceImpl.ContainerRef r => Impl_ContainerRef.read_ref r
+    | ReferenceImpl.IndexedRef r => Impl_IndexedRef.read_ref r
+    end.
+End Impl_ReferenceImpl.
 
 (*
 #[derive(Debug)]
