@@ -549,6 +549,12 @@ impl IndexedRef {
 }
 *)
 
+Module Impl_IndexedRef.
+  Definition Self := IndexedRef.t.
+
+  Definition read_ref (self : Self) : PartialVMResult.t Value.t . Admitted.
+  (* To implement*)
+End Impl_IndexedRef.
 
 (*
 impl ReferenceImpl {
@@ -1838,6 +1844,7 @@ impl VMValueCast<Struct> for Value {
 }
 *)
 
+(* 
 Global Instance Impl_VMValueCast_Struct_for_Value : VMValueCast.Trait Value.t Struct.t : Set := {
   cast self :=
     match self with
@@ -1849,3 +1856,4 @@ Global Instance Impl_VMValueCast_Struct_for_Value : VMValueCast.Trait Value.t St
     | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
     end;
 }.
+*)
