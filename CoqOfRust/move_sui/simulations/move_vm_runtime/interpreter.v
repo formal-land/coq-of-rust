@@ -1017,6 +1017,7 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.Unpack _ => 
+    (*
     letS!? struct_ := liftS! Interpreter.Lens.lens_state_self (
       liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as Struct.t) in
     letS!? values := returnS! $ Impl_Struct.unpack struct_ in
@@ -1025,6 +1026,7 @@ Definition execute_instruction (pc : Z)
         liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push value
       )
     ) in
+    *)
     returnS! $ Result.Ok InstrRet.Ok
 
   (* 
@@ -1042,6 +1044,7 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.UnpackGeneric _ => 
+    (*
     letS!? struct_ := liftS! Interpreter.Lens.lens_state_self (
       liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as Struct.t) in
     letS!? values := returnS! $ Impl_Struct.unpack struct_ in
@@ -1050,6 +1053,7 @@ Definition execute_instruction (pc : Z)
         liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push value
       )
     ) in
+    *)
     returnS! $ Result.Ok InstrRet.Ok
 
   (* 
@@ -1061,7 +1065,6 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.ReadRef => returnS! $ Result.Ok InstrRet.Ok
-
   (* 
   Bytecode::WriteRef => {
       let reference = interpreter.operand_stack.pop_as::<Reference>()?;
