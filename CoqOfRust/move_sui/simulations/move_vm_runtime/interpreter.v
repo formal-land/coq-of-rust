@@ -1064,7 +1064,13 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(value)?;
   }
   *)
-  | Bytecode.ReadRef => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.ReadRef => 
+    letS!? reference := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as Reference.t) in
+    letS!? value := returnS! $ Impl_ReferenceImpl.read_ref reference in
+    letS!? _ := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push value) in
+    returnS! $ Result.Ok InstrRet.Ok
   (* 
   Bytecode::WriteRef => {
       let reference = interpreter.operand_stack.pop_as::<Reference>()?;
