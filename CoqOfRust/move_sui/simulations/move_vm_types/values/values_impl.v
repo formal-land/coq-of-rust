@@ -1857,3 +1857,31 @@ Global Instance Impl_VMValueCast_Struct_for_Value : VMValueCast.Trait Value.t St
     end;
 }.
 *)
+
+(*
+?H: Cannot infer the implicit parameter H of Stack.Impl_Stack.pop_as whose
+type is "VMValueCast.Trait Value.t Reference.t" (no type class instance
+found) in environment:
+*)
+
+(*
+impl VMValueCast<Reference> for Value {
+  fn cast(self) -> PartialVMResult<Reference> {
+    match self.0 {
+      ValueImpl::ContainerRef(r) => Ok(Reference(ReferenceImpl::ContainerRef(r))),
+      ValueImpl::IndexedRef(r) => Ok(Reference(ReferenceImpl::IndexedRef(r))),
+      v => Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR)
+        .with_message(format!("cannot cast {:?} to reference", v,))),
+    }
+  }
+}
+*)
+
+Global Instance Impl_VMValueCast_Reference_for_Value : VMValueCast.Trait Value.t Reference.t : Set := {
+  cast self :=
+  match self with
+  | ValueImpl.ContainerRef r => Result.Ok (ReferenceImpl.ContainerRef r)
+  | ValueImpl.IndexedRef r => Result.Ok (ReferenceImpl.IndexedRef r)
+  | _ => Result.Err (PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR)
+  end;
+}.
