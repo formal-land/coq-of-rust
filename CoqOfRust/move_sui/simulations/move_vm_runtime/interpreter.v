@@ -1017,7 +1017,17 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.Unpack _ => 
-  returnS! $ Result.Ok InstrRet.Ok
+    (*
+    letS!? struct_ := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as Struct.t) in
+    letS!? values := returnS! $ Impl_Struct.unpack struct_ in
+    doS!? foldS!? tt values (fun acc value =>
+      liftS! Interpreter.Lens.lens_state_self (
+        liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push value
+      )
+    ) in
+    *)
+    returnS! $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::UnpackGeneric(_si_idx) => {
@@ -1033,7 +1043,18 @@ Definition execute_instruction (pc : Z)
       }
   }
   *)
-  | Bytecode.UnpackGeneric _ => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.UnpackGeneric _ => 
+    (*
+    letS!? struct_ := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as Struct.t) in
+    letS!? values := returnS! $ Impl_Struct.unpack struct_ in
+    doS!? foldS!? tt values (fun acc value =>
+      liftS! Interpreter.Lens.lens_state_self (
+        liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push value
+      )
+    ) in
+    *)
+    returnS! $ Result.Ok InstrRet.Ok
 
   (* 
   Bytecode::ReadRef => {
@@ -1043,8 +1064,13 @@ Definition execute_instruction (pc : Z)
       interpreter.operand_stack.push(value)?;
   }
   *)
-  | Bytecode.ReadRef => returnS! $ Result.Ok InstrRet.Ok
-
+  | Bytecode.ReadRef => 
+    letS!? reference := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as Reference.t) in
+    letS!? value := returnS! $ Impl_ReferenceImpl.read_ref reference in
+    letS!? _ := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.push value) in
+    returnS! $ Result.Ok InstrRet.Ok
   (* 
   Bytecode::WriteRef => {
       let reference = interpreter.operand_stack.pop_as::<Reference>()?;
@@ -1053,7 +1079,13 @@ Definition execute_instruction (pc : Z)
       reference.write_ref(value)?;
   }
   *)
-  | Bytecode.WriteRef => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.WriteRef =>
+    letS!? reference := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as Reference.t) in
+    letS!? value := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_operand_stack Stack.Impl_Stack.pop) in
+    letS!? _ := returnS! $ Impl_ReferenceImpl.write_ref reference value in
+    returnS! $ Result.Ok InstrRet.Ok
 
   (*
   Bytecode::CastU8 => {

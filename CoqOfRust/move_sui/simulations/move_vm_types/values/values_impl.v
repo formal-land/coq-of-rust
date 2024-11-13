@@ -66,15 +66,11 @@ enum Container {
 *)
 Module Container.
 
-  Module ValueImpl.
-    Parameter t : Set.
-  End ValueImpl.
-
   Inductive t : Set :=
   (* TODO: Resolve mutual dependency issue below *)
-  | Locals : list ValueImpl.t -> t
-  | Vec : list ValueImpl.t -> t
-  | Struct : list ValueImpl.t -> t
+  (*| Locals : list ValueImpl.t -> t*)
+  (* | Vec : list ValueImpl.t -> t *)
+  (* | Struct : list ValueImpl.t -> t *)
   | VecU8 : list Z -> t
   | VecU64 : list Z -> t
   | VecU128 : list Z -> t
@@ -84,6 +80,42 @@ Module Container.
   | VecU32 : list Z -> t
   | VecU256 : list Z -> t
   .
+
+  (*
+  fn copy_value(&self) -> PartialVMResult<Self> {
+        let copy_rc_ref_vec_val = |r: &Rc<RefCell<Vec<ValueImpl>>>| {
+            Ok(Rc::new(RefCell::new(
+                r.borrow()
+                    .iter()
+                    .map(|v| v.copy_value())
+                    .collect::<PartialVMResult<_>>()?,
+            )))
+        };
+
+        Ok(match self {
+            Self::Vec(r) => Self::Vec(copy_rc_ref_vec_val(r)?),
+            Self::Struct(r) => Self::Struct(copy_rc_ref_vec_val(r)?),
+
+            Self::VecU8(r) => Self::VecU8(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU16(r) => Self::VecU16(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU32(r) => Self::VecU32(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU64(r) => Self::VecU64(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU128(r) => Self::VecU128(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU256(r) => Self::VecU256(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecBool(r) => Self::VecBool(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecAddress(r) => Self::VecAddress(Rc::new(RefCell::new(r.borrow().clone()))),
+
+            Self::Locals(_) => {
+                return Err(
+                    PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                        .with_message("cannot copy a Locals container".to_string()),
+                )
+            }
+        })
+    }*)
+  Definition copy_value (self : t) : PartialVMResult.t t := 
+    Result.Ok self.
+
 End Container.
 
 (* 
@@ -100,15 +132,30 @@ enum ContainerRef {
 }
 *)
 Module ContainerRef.
-  Record __Global : Set := {
-    status : GlobalDataStatus.t;
-    container: Container.t;
-  }.
+  Module __Global.
+    Record t : Set := {
+      status : GlobalDataStatus.t;
+      container: Container.t;
+    }.
+  End __Global.
 
   Inductive t : Set :=
   | Local : Container.t -> t
-  | _Global : __Global -> t
+  | _Global : __Global.t -> t
   .
+
+  (*
+  fn container(&self) -> &Container {
+        match self {
+            Self::Local(container) | Self::Global { container, .. } => container,
+        }
+    }
+  *)
+  Definition container (self : t) : Container.t :=
+    match self with
+    | Local container => container
+    | _Global g => g.(__Global.container)
+    end.
 
   (* NOTE: This function is ignored
   fn copy_by_ref(&self) -> Self {
@@ -153,6 +200,7 @@ enum ReferenceImpl {
     ContainerRef(ContainerRef),
 }
 *)
+
 Module ReferenceImpl.
   Inductive t : Set :=
   | IndexedRef : IndexedRef.t -> t
@@ -252,7 +300,7 @@ Module Value.
   impl_vm_value_cast!(IndexedRef, IndexedRef);
   *)
   Module Impl_Value.
-    Definition Self := move_sui.simulations.move_vm_types.values.values_impl.Value.t.
+    Definition Self := Value.t.
     Module cast.
       Global Instance cast_u8 : VMValueCast.Trait Self Z : Set := {
         cast (self : Self) := match self with
@@ -443,9 +491,224 @@ Module Value.
 
   End Impl_Value.
 
-  Definition coerce_Container_Locals (c : Container.ValueImpl.t) : t. Admitted.
-  Definition coerce_Locals_Container (self : t) : Container.ValueImpl.t. Admitted.
+  Definition coerce_Container_Locals (c : Value.t) : t. Admitted.
+  Definition coerce_Locals_Container (self : t) : Value.t. Admitted.
 End Value.
+
+(*
+impl ContainerRef {
+    fn read_ref(self) -> PartialVMResult<Value> {
+        Ok(Value(ValueImpl::Container(self.container().copy_value()?)))
+    }
+}
+*)
+
+(*
+impl ContainerRef {
+    fn write_ref(self, v: Value) -> PartialVMResult<()> {
+        match v.0 {
+            ValueImpl::Container(c) => {
+                macro_rules! assign {
+                    ($r1: expr, $tc: ident) => {{
+                        let r = match c {
+                            Container::$tc(v) => v,
+                            _ => {
+                                return Err(PartialVMError::new(
+                                    StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
+                                )
+                                .with_message(
+                                    "failed to write_ref: container type mismatch".to_string(),
+                                ))
+                            }
+                        };
+                        *$r1.borrow_mut() = take_unique_ownership(r)?;
+                    }};
+                }
+
+                match self.container() {
+                    Container::Struct(r) => assign!(r, Struct),
+                    Container::Vec(r) => assign!(r, Vec),
+                    Container::VecU8(r) => assign!(r, VecU8),
+                    Container::VecU16(r) => assign!(r, VecU16),
+                    Container::VecU32(r) => assign!(r, VecU32),
+                    Container::VecU64(r) => assign!(r, VecU64),
+                    Container::VecU128(r) => assign!(r, VecU128),
+                    Container::VecU256(r) => assign!(r, VecU256),
+                    Container::VecBool(r) => assign!(r, VecBool),
+                    Container::VecAddress(r) => assign!(r, VecAddress),
+                    Container::Locals(_) => {
+                        return Err(PartialVMError::new(
+                            StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
+                        )
+                        .with_message("cannot overwrite Container::Locals".to_string()))
+                    }
+                }
+                self.mark_dirty();
+            }
+            _ => {
+                return Err(
+                    PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                        .with_message(format!(
+                            "cannot write value {:?} to container ref {:?}",
+                            v, self
+                        )),
+                )
+            }
+        }
+        Ok(())
+    }
+}
+*)
+
+Module Impl_ContainerRef.
+  Definition Self := ContainerRef.t.
+
+  Definition read_ref (self : Self) : PartialVMResult.t Value.t :=
+    let? copy_value := Container.copy_value (ContainerRef.container self) in
+    Result.Ok $ ValueImpl.Container copy_value.
+
+  Definition write_ref (self : Self) (v : Value.t) : PartialVMResult.t unit. Admitted.
+
+End Impl_ContainerRef.
+
+(*
+impl IndexedRef {
+    fn read_ref(self) -> PartialVMResult<Value> {
+        use Container::*;
+
+        let res = match self.container_ref.container() {
+            Locals(r) | Vec(r) | Struct(r) => r.borrow()[self.idx].copy_value()?,
+            VecU8(r) => ValueImpl::U8(r.borrow()[self.idx]),
+            VecU16(r) => ValueImpl::U16(r.borrow()[self.idx]),
+            VecU32(r) => ValueImpl::U32(r.borrow()[self.idx]),
+            VecU64(r) => ValueImpl::U64(r.borrow()[self.idx]),
+            VecU128(r) => ValueImpl::U128(r.borrow()[self.idx]),
+            VecU256(r) => ValueImpl::U256(r.borrow()[self.idx]),
+            VecBool(r) => ValueImpl::Bool(r.borrow()[self.idx]),
+            VecAddress(r) => ValueImpl::Address(r.borrow()[self.idx]),
+        };
+
+        Ok(Value(res))
+    }
+}
+*)
+
+(*
+impl IndexedRef {
+    fn write_ref(self, x: Value) -> PartialVMResult<()> {
+        match &x.0 {
+            ValueImpl::IndexedRef(_)
+            | ValueImpl::ContainerRef(_)
+            | ValueImpl::Invalid
+            | ValueImpl::Container(_) => {
+                return Err(
+                    PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                        .with_message(format!(
+                            "cannot write value {:?} to indexed ref {:?}",
+                            x, self
+                        )),
+                )
+            }
+            _ => (),
+        }
+
+        match (self.container_ref.container(), &x.0) {
+            (Container::Locals(r), _) | (Container::Vec(r), _) | (Container::Struct(r), _) => {
+                let mut v = r.borrow_mut();
+                v[self.idx] = x.0;
+            }
+            (Container::VecU8(r), ValueImpl::U8(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecU16(r), ValueImpl::U16(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecU32(r), ValueImpl::U32(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecU64(r), ValueImpl::U64(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecU128(r), ValueImpl::U128(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecU256(r), ValueImpl::U256(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecBool(r), ValueImpl::Bool(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecAddress(r), ValueImpl::Address(x)) => r.borrow_mut()[self.idx] = *x,
+
+            (Container::VecU8(_), _)
+            | (Container::VecU16(_), _)
+            | (Container::VecU32(_), _)
+            | (Container::VecU64(_), _)
+            | (Container::VecU128(_), _)
+            | (Container::VecU256(_), _)
+            | (Container::VecBool(_), _)
+            | (Container::VecAddress(_), _) => {
+                return Err(
+                    PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(format!(
+                        "cannot write value {:?} to indexed ref {:?}",
+                        x, self
+                    )),
+                )
+            }
+        }
+        self.container_ref.mark_dirty();
+        Ok(())
+    }
+}
+*)
+
+Module Impl_IndexedRef.
+  Definition Self := IndexedRef.t.
+
+  Definition default_address : AccountAddress.t. Admitted.
+
+  Definition read_ref (self : Self) : PartialVMResult.t Value.t :=
+    let idx := Z.to_nat self.(IndexedRef.idx) in
+    let container := ContainerRef.container self.(IndexedRef.container_ref) in
+    match container with
+    | Container.VecBool r => Result.Ok $ ValueImpl.Bool (List.nth idx r false)
+    | Container.VecAddress r => Result.Ok $ ValueImpl.Address (List.nth idx r default_address)
+    | _ => match container with
+           | Container.VecU8 r => Result.Ok $ ValueImpl.U8 (List.nth idx r 0)
+           | Container.VecU16 r => Result.Ok $ ValueImpl.U16 (List.nth idx r 0)
+           | Container.VecU32 r => Result.Ok $ ValueImpl.U32 (List.nth idx r 0)
+           | Container.VecU64 r => Result.Ok $ ValueImpl.U64 (List.nth idx r 0)
+           | Container.VecU128 r => Result.Ok $ ValueImpl.U128 (List.nth idx r 0)
+           | Container.VecU256 r => Result.Ok $ ValueImpl.U256 (List.nth idx r 0)
+           | _ => Result.Err $ PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
+           end
+    end.
+
+  Definition write_ref (self : Self) (x : Value.t) : PartialVMResult.t unit. Admitted.
+
+End Impl_IndexedRef.
+
+(*
+impl ReferenceImpl {
+    fn read_ref(self) -> PartialVMResult<Value> {
+        match self {
+            Self::ContainerRef(r) => r.read_ref(),
+            Self::IndexedRef(r) => r.read_ref(),
+        }
+    }
+}
+
+impl ReferenceImpl {
+    fn write_ref(self, x: Value) -> PartialVMResult<()> {
+        match self {
+            Self::ContainerRef(r) => r.write_ref(x),
+            Self::IndexedRef(r) => r.write_ref(x),
+        }
+    }
+}
+*)
+
+Module Impl_ReferenceImpl.
+  Definition Self := ReferenceImpl.t.
+
+  Definition read_ref (self : Self) : PartialVMResult.t Value.t :=
+    match self with
+    | ReferenceImpl.ContainerRef r => Impl_ContainerRef.read_ref r
+    | ReferenceImpl.IndexedRef r => Impl_IndexedRef.read_ref r
+    end.
+
+  Definition write_ref (self : Self) (x : Value.t) : PartialVMResult.t unit :=
+    match self with
+    | ReferenceImpl.ContainerRef r => Impl_ContainerRef.write_ref r x
+    | ReferenceImpl.IndexedRef r => Impl_IndexedRef.write_ref r x
+    end.
+End Impl_ReferenceImpl.
 
 (*
 #[derive(Debug)]
@@ -461,7 +724,6 @@ Module Struct.
 End Struct.
 
 Module Impl_Struct.
-  Definition Self := move_sui.simulations.move_vm_types.values.values_impl.Struct.t.
 
   (* 
   pub fn pack<I: IntoIterator<Item = Value>>(vals: I) -> Self {
@@ -470,7 +732,7 @@ Module Impl_Struct.
       }
   }
   *)
-  Definition pack (vals : list Value.t) : Self :=
+  Definition pack (vals : list Value.t) : Struct.t :=
     {|
       Struct.fields := vals;
     |}.
@@ -480,7 +742,7 @@ Module Impl_Struct.
       Ok(self.fields.into_iter().map(Value))
   }
   *)
-  Definition unpack (self : Self) : PartialVMResult.t (list Value.t) :=
+  Definition unpack (self : Struct.t) : PartialVMResult.t (list Value.t) :=
     Result.Ok self.(Struct.fields).
 End Impl_Struct.
 
@@ -1680,4 +1942,79 @@ Global Instance Impl_VMValueCast_IntegerValue_for_Value :
     | ValueImpl.U256 x => return? $ IntegerValue.U256 x
     | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
     end;
+}.
+
+(*
+fn take_unique_ownership<T: Debug>(r: Rc<RefCell<T>>) -> PartialVMResult<T> {
+    match Rc::try_unwrap(r) {
+        Ok(cell) => Ok(cell.into_inner()),
+        Err(r) => Err(
+            PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                .with_message(format!("moving value {:?} with dangling references", r)),
+        ),
+    }
+*)
+
+Definition take_unique_ownership {T : Set} (refCell : T) : PartialVMResult.t T :=
+  Result.Ok refCell.
+
+(*
+?H: Cannot infer the implicit parameter H of Stack.Impl_Stack.pop_as
+whose type is "VMValueCast.Trait Value.t Struct.t" (no type class
+instance found) in environment:
+*)
+(*
+impl VMValueCast<Struct> for Value {
+    fn cast(self) -> PartialVMResult<Struct> {
+        match self.0 {
+            ValueImpl::Container(Container::Struct(r)) => Ok(Struct {
+                fields: take_unique_ownership(r)?,
+            }),
+            v => Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR)
+                .with_message(format!("cannot cast {:?} to struct", v,))),
+        }
+    }
+}
+*)
+
+(* 
+Global Instance Impl_VMValueCast_Struct_for_Value : VMValueCast.Trait Value.t Struct.t : Set := {
+  cast self :=
+    match self with
+    | ValueImpl.Container (Container.Struct r) =>
+      match take_unique_ownership r with
+      | Result.Ok inner_r => Result.Ok (Struct.Build_t (map Value.coerce_Container_Locals inner_r))
+      | Result.Err e => Result.Err e
+      end
+    | _ => Result.Err $ PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR
+    end;
+}.
+*)
+
+(*
+?H: Cannot infer the implicit parameter H of Stack.Impl_Stack.pop_as whose
+type is "VMValueCast.Trait Value.t Reference.t" (no type class instance
+found) in environment:
+*)
+
+(*
+impl VMValueCast<Reference> for Value {
+  fn cast(self) -> PartialVMResult<Reference> {
+    match self.0 {
+      ValueImpl::ContainerRef(r) => Ok(Reference(ReferenceImpl::ContainerRef(r))),
+      ValueImpl::IndexedRef(r) => Ok(Reference(ReferenceImpl::IndexedRef(r))),
+      v => Err(PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR)
+        .with_message(format!("cannot cast {:?} to reference", v,))),
+    }
+  }
+}
+*)
+
+Global Instance Impl_VMValueCast_Reference_for_Value : VMValueCast.Trait Value.t Reference.t : Set := {
+  cast self :=
+  match self with
+  | ValueImpl.ContainerRef r => Result.Ok (ReferenceImpl.ContainerRef r)
+  | ValueImpl.IndexedRef r => Result.Ok (ReferenceImpl.IndexedRef r)
+  | _ => Result.Err (PartialVMError.new StatusCode.INTERNAL_TYPE_ERROR)
+  end;
 }.
