@@ -204,17 +204,6 @@ enum ReferenceImpl {
 }
 *)
 
-(*
-impl ReferenceImpl {
-    fn read_ref(self) -> PartialVMResult<Value> {
-        match self {
-            Self::ContainerRef(r) => r.read_ref(),
-            Self::IndexedRef(r) => r.read_ref(),
-        }
-    }
-}
-*)
-
 Module ReferenceImpl.
   Inductive t : Set :=
   | IndexedRef : IndexedRef.t -> t
