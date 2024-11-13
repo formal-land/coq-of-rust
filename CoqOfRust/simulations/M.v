@@ -43,13 +43,15 @@ Module Panic.
   (** The [Panic] works with an existential type, so we can return any payload for errors. This is
       useful for debugging. Then we cannot catch the error and compute with it as we do not know the
       type anymore, but catching panic errors is not supposed to happen in Rust. *)
-  | Panic {Error : Set} : Error -> t A.
+  | Panic : {Error : Set @ Error} -> t A.
+  Arguments Value {_}.
+  Arguments Panic {_}.
 
-  Arguments Value {A}%type_scope.
-  Arguments Panic {A Error}%type_scope.
+  Definition return_ {A : Set} (value : A) : t A :=
+    Value value.
 
-  Definition return_ {A : Set} (value : A) : t A := Value value.
-  Definition panic {A Error : Set} (error : Error) : t A := Panic error.
+  Definition panic {A Error : Set} (error : Error) : t A :=
+    Panic (existS Error error).
 
   Definition bind {A B : Set} (value : t A) (f : A -> t B) : t B :=
     match value with
@@ -70,7 +72,7 @@ Module PanicNotations.
   Notation "M!" := Panic.t.
 
   Notation "return!" := Panic.return_.
-  Notation "panic!" := Panic.Panic.
+  Notation "panic!" := Panic.panic.
 
   Notation "'let!' x ':=' X 'in' Y" :=
     (Panic.bind X (fun x => Y))

@@ -629,10 +629,10 @@ Definition debug_execute_instruction (pc : Z)
   end.
 
 (* NOTE: this function is of `impl Frame` (but doesn't involve `Frame` item?) *)
-Definition execute_instruction (pc : Z) 
-  (locals : Locals.t) (ty_args : list _Type.t)
+Definition execute_instruction
+  (ty_args : list _Type.t)
   (function : Function.t) (resolver : Resolver.t)
-  (interpreter : Interpreter.t) (* (gas_meter : GasMeter.t) *) (* NOTE: We ignore gas since it's never implemented *)
+  (* (gas_meter : GasMeter.t) *) (* NOTE: We ignore gas since it's never implemented *)
   (instruction : Bytecode.t)
   : MS! State (PartialVMResult.t InstrRet.t) :=
   letS! (pc, locals, interpreter) := readS! in
