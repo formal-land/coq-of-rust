@@ -1,6 +1,4 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import Coq.Lists.List.
-Import ListNotations.
 Require Import CoqOfRust.simulations.M.
 Require Import CoqOfRust.lib.lib.
 
@@ -9,7 +7,6 @@ Import simulations.M.Notations.
 Require CoqOfRust.move_sui.simulations.move_binary_format.errors.
 Module PartialVMResult := errors.PartialVMResult.
 Module PartialVMError := errors.PartialVMError.
-Import PartialVMResult.
 
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
@@ -209,7 +206,6 @@ Module ReferenceImpl.
   | IndexedRef : IndexedRef.t -> t
   | ContainerRef : ContainerRef.t -> t
   .
-
 End ReferenceImpl.
 
 (* 
@@ -661,15 +657,15 @@ Module Impl_IndexedRef.
     let idx := Z.to_nat self.(IndexedRef.idx) in
     let container := ContainerRef.container self.(IndexedRef.container_ref) in
     match container with
-    | Container.VecBool r => Result.Ok $ ValueImpl.Bool (nth idx r false)
-    | Container.VecAddress r => Result.Ok $ ValueImpl.Address (nth idx r default_address)
+    | Container.VecBool r => Result.Ok $ ValueImpl.Bool (List.nth idx r false)
+    | Container.VecAddress r => Result.Ok $ ValueImpl.Address (List.nth idx r default_address)
     | _ => match container with
-           | Container.VecU8 r => Result.Ok $ ValueImpl.U8 (nth idx r 0)
-           | Container.VecU16 r => Result.Ok $ ValueImpl.U16 (nth idx r 0)
-           | Container.VecU32 r => Result.Ok $ ValueImpl.U32 (nth idx r 0)
-           | Container.VecU64 r => Result.Ok $ ValueImpl.U64 (nth idx r 0)
-           | Container.VecU128 r => Result.Ok $ ValueImpl.U128 (nth idx r 0)
-           | Container.VecU256 r => Result.Ok $ ValueImpl.U256 (nth idx r 0)
+           | Container.VecU8 r => Result.Ok $ ValueImpl.U8 (List.nth idx r 0)
+           | Container.VecU16 r => Result.Ok $ ValueImpl.U16 (List.nth idx r 0)
+           | Container.VecU32 r => Result.Ok $ ValueImpl.U32 (List.nth idx r 0)
+           | Container.VecU64 r => Result.Ok $ ValueImpl.U64 (List.nth idx r 0)
+           | Container.VecU128 r => Result.Ok $ ValueImpl.U128 (List.nth idx r 0)
+           | Container.VecU256 r => Result.Ok $ ValueImpl.U256 (List.nth idx r 0)
            | _ => Result.Err $ PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
            end
     end.
