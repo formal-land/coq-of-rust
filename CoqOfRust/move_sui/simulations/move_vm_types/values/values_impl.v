@@ -518,12 +518,71 @@ impl ContainerRef {
 }
 *)
 
+(*
+impl ContainerRef {
+    fn write_ref(self, v: Value) -> PartialVMResult<()> {
+        match v.0 {
+            ValueImpl::Container(c) => {
+                macro_rules! assign {
+                    ($r1: expr, $tc: ident) => {{
+                        let r = match c {
+                            Container::$tc(v) => v,
+                            _ => {
+                                return Err(PartialVMError::new(
+                                    StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
+                                )
+                                .with_message(
+                                    "failed to write_ref: container type mismatch".to_string(),
+                                ))
+                            }
+                        };
+                        *$r1.borrow_mut() = take_unique_ownership(r)?;
+                    }};
+                }
+
+                match self.container() {
+                    Container::Struct(r) => assign!(r, Struct),
+                    Container::Vec(r) => assign!(r, Vec),
+                    Container::VecU8(r) => assign!(r, VecU8),
+                    Container::VecU16(r) => assign!(r, VecU16),
+                    Container::VecU32(r) => assign!(r, VecU32),
+                    Container::VecU64(r) => assign!(r, VecU64),
+                    Container::VecU128(r) => assign!(r, VecU128),
+                    Container::VecU256(r) => assign!(r, VecU256),
+                    Container::VecBool(r) => assign!(r, VecBool),
+                    Container::VecAddress(r) => assign!(r, VecAddress),
+                    Container::Locals(_) => {
+                        return Err(PartialVMError::new(
+                            StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
+                        )
+                        .with_message("cannot overwrite Container::Locals".to_string()))
+                    }
+                }
+                self.mark_dirty();
+            }
+            _ => {
+                return Err(
+                    PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                        .with_message(format!(
+                            "cannot write value {:?} to container ref {:?}",
+                            v, self
+                        )),
+                )
+            }
+        }
+        Ok(())
+    }
+}
+*)
+
 Module Impl_ContainerRef.
   Definition Self := ContainerRef.t.
 
   Definition read_ref (self : Self) : PartialVMResult.t Value.t :=
     let? copy_value := Container.copy_value (ContainerRef.container self) in
     Result.Ok $ ValueImpl.Container copy_value.
+
+  Definition write_ref (self : Self) (v : Value.t) : PartialVMResult.t unit. Admitted.
 
 End Impl_ContainerRef.
 
@@ -549,11 +608,86 @@ impl IndexedRef {
 }
 *)
 
+(*
+impl IndexedRef {
+    fn write_ref(self, x: Value) -> PartialVMResult<()> {
+        match &x.0 {
+            ValueImpl::IndexedRef(_)
+            | ValueImpl::ContainerRef(_)
+            | ValueImpl::Invalid
+            | ValueImpl::Container(_) => {
+                return Err(
+                    PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                        .with_message(format!(
+                            "cannot write value {:?} to indexed ref {:?}",
+                            x, self
+                        )),
+                )
+            }
+            _ => (),
+        }
+
+        match (self.container_ref.container(), &x.0) {
+            (Container::Locals(r), _) | (Container::Vec(r), _) | (Container::Struct(r), _) => {
+                let mut v = r.borrow_mut();
+                v[self.idx] = x.0;
+            }
+            (Container::VecU8(r), ValueImpl::U8(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecU16(r), ValueImpl::U16(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecU32(r), ValueImpl::U32(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecU64(r), ValueImpl::U64(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecU128(r), ValueImpl::U128(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecU256(r), ValueImpl::U256(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecBool(r), ValueImpl::Bool(x)) => r.borrow_mut()[self.idx] = *x,
+            (Container::VecAddress(r), ValueImpl::Address(x)) => r.borrow_mut()[self.idx] = *x,
+
+            (Container::VecU8(_), _)
+            | (Container::VecU16(_), _)
+            | (Container::VecU32(_), _)
+            | (Container::VecU64(_), _)
+            | (Container::VecU128(_), _)
+            | (Container::VecU256(_), _)
+            | (Container::VecBool(_), _)
+            | (Container::VecAddress(_), _) => {
+                return Err(
+                    PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(format!(
+                        "cannot write value {:?} to indexed ref {:?}",
+                        x, self
+                    )),
+                )
+            }
+        }
+        self.container_ref.mark_dirty();
+        Ok(())
+    }
+}
+*)
+
 Module Impl_IndexedRef.
   Definition Self := IndexedRef.t.
 
-  Definition read_ref (self : Self) : PartialVMResult.t Value.t . Admitted.
-  (* To implement*)
+  Definition default_address : AccountAddress.t. Admitted.
+
+  Definition read_ref (self : Self) : PartialVMResult.t Value.t :=
+    let idx := Z.to_nat self.(IndexedRef.idx) in
+    let container := ContainerRef.container self.(IndexedRef.container_ref) in
+    match container with
+    | Container.VecBool r => Result.Ok $ ValueImpl.Bool (nth idx r false)
+    | Container.VecAddress r => Result.Ok $ ValueImpl.Address (nth idx r default_address)
+    | _ => match container with
+           | Container.VecU8 r => Result.Ok $ ValueImpl.U8 (nth idx r 0)
+           | Container.VecU16 r => Result.Ok $ ValueImpl.U16 (nth idx r 0)
+           | Container.VecU32 r => Result.Ok $ ValueImpl.U32 (nth idx r 0)
+           | Container.VecU64 r => Result.Ok $ ValueImpl.U64 (nth idx r 0)
+           | Container.VecU128 r => Result.Ok $ ValueImpl.U128 (nth idx r 0)
+           | Container.VecU256 r => Result.Ok $ ValueImpl.U256 (nth idx r 0)
+           | _ => Result.Err $ PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
+           end
+    end.
+    (* TO BE CHECKED -> If out of bounds -> returns array[0], in Rust, does it Panic? *)
+
+  Definition write_ref (self : Self) (x : Value.t) : PartialVMResult.t unit. Admitted.
+
 End Impl_IndexedRef.
 
 (*
@@ -562,6 +696,15 @@ impl ReferenceImpl {
         match self {
             Self::ContainerRef(r) => r.read_ref(),
             Self::IndexedRef(r) => r.read_ref(),
+        }
+    }
+}
+
+impl ReferenceImpl {
+    fn write_ref(self, x: Value) -> PartialVMResult<()> {
+        match self {
+            Self::ContainerRef(r) => r.write_ref(x),
+            Self::IndexedRef(r) => r.write_ref(x),
         }
     }
 }
@@ -574,6 +717,12 @@ Module Impl_ReferenceImpl.
     match self with
     | ReferenceImpl.ContainerRef r => Impl_ContainerRef.read_ref r
     | ReferenceImpl.IndexedRef r => Impl_IndexedRef.read_ref r
+    end.
+
+  Definition write_ref (self : Self) (x : Value.t) : PartialVMResult.t unit :=
+    match self with
+    | ReferenceImpl.ContainerRef r => Impl_ContainerRef.write_ref r x
+    | ReferenceImpl.IndexedRef r => Impl_IndexedRef.write_ref r x
     end.
 End Impl_ReferenceImpl.
 
