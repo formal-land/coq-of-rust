@@ -669,7 +669,6 @@ Module Impl_IndexedRef.
            | _ => Result.Err $ PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
            end
     end.
-    (* TO BE CHECKED -> If out of bounds -> returns array[0], in Rust, does it Panic? *)
 
   Definition write_ref (self : Self) (x : Value.t) : PartialVMResult.t unit. Admitted.
 
