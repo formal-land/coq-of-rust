@@ -136,7 +136,7 @@ Module AbstractStack.
     }
   *)
 
-  Definition push_n {A : Set} (item : A) `{Eq.Trait A} (n : Z) :
+  Definition push_n {A : Set} `{Eq.Trait A} (item : A) (n : Z) :
       MS! (t A) (Result.t unit AbsStackError.t) :=
     if n =? 0
     then returnS! (Result.Ok tt)
@@ -173,7 +173,7 @@ Module AbstractStack.
     }
   *)
 
-  Definition push {A : Set} (item : A) `{Eq.Trait A} :
+  Definition push {A : Set} `{Eq.Trait A} (item : A) :
       MS! (t A) (Result.t unit AbsStackError.t) :=
     push_n item 1.
 
