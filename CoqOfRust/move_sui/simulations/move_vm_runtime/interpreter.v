@@ -1080,12 +1080,12 @@ Definition execute_instruction (pc : Z)
   }
   *)
   | Bytecode.WriteRef =>
-  letS!? reference := liftS! Interpreter.Lens.lens_state_self (
-    liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as Reference.t) in
-  letS!? value := liftS! Interpreter.Lens.lens_state_self (
-    liftS! Interpreter.Lens.lens_operand_stack Stack.Impl_Stack.pop) in
-  letS!? _ := returnS! $ Impl_ReferenceImpl.write_ref reference value in
-  returnS! $ Result.Ok InstrRet.Ok
+    letS!? reference := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as Reference.t) in
+    letS!? value := liftS! Interpreter.Lens.lens_state_self (
+      liftS! Interpreter.Lens.lens_operand_stack Stack.Impl_Stack.pop) in
+    letS!? _ := returnS! $ Impl_ReferenceImpl.write_ref reference value in
+    returnS! $ Result.Ok InstrRet.Ok
 
   (*
   Bytecode::CastU8 => {
