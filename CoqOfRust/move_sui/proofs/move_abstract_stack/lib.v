@@ -85,6 +85,9 @@ Qed.
     destruct stack as [stack].
     unfold AbstractStack.pop_any_n, flatten.
     destruct (_ || _); simpl. trivial.
+    destruct (AbstractStack.pop_any_n_helper stack (Datatypes.length stack) n) eqn:Hpop_helper.
+    - simpl. unfold AbstractStack.pop_any_n_helper in Hpop_helper. 
+    cbn. destruct Datatypes.length. cbn. trivial.
   Admitted.
   
 End AbstractStack.
