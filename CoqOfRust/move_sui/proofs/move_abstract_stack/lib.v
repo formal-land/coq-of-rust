@@ -73,7 +73,7 @@ Qed.
     lia.
   Qed.
 
-  Lemma flatten_pop_any_n {A : Set} `{Eq.Trait A} (n : Z) (stack : AbstractStack.t A) :
+  Lemma flatten_pop_any_n {A : Set} `{Eq.Trait A} (n : Z) (stack : AbstractStack.t A):
     match AbstractStack.pop_any_n n stack with
     | Panic.Value (Result.Ok tt, stack') =>
       exists items,
@@ -84,10 +84,7 @@ Qed.
   Proof.
     destruct stack as [stack].
     unfold AbstractStack.pop_any_n, flatten.
-    destruct (_ || _); simpl. trivial.
-    destruct (AbstractStack.pop_any_n_helper stack (Datatypes.length stack) n) eqn:Hpop_helper.
-    - simpl. unfold AbstractStack.pop_any_n_helper in Hpop_helper. 
-    cbn. destruct Datatypes.length. cbn. trivial.
+    destruct (_ || _). simpl. trivial.
   Admitted.
   
 End AbstractStack.
