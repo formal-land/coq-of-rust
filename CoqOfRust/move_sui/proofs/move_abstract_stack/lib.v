@@ -82,5 +82,9 @@ Qed.
     | _ => True
     end.
   Proof.
+    destruct stack as [stack].
+    unfold AbstractStack.pop_any_n, flatten.
+    destruct (_ || _); simpl. trivial.
   Admitted.
+  
 End AbstractStack.
