@@ -71,8 +71,7 @@ Module AbstractStack.
       rewrite <- List.repeat_app.
       now replace (Z.to_nat n + Z.to_nat (count - n))%nat
         with (Z.to_nat count) by lia.
-Qed.
-
+  Qed.
 
   Lemma flatten_pop {A : Set} `{Eq.Trait A} (stack : AbstractStack.t A) :
     match AbstractStack.pop stack with
