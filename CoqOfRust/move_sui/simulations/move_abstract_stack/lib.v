@@ -5,6 +5,7 @@ Require Import CoqOfRust.core.simulations.integer.
 Require Import CoqOfRust.core.simulations.option.
 Require Import CoqOfRust.core.simulations.eq.
 Require Import CoqOfRust.core.simulations.assert.
+Require Import CoqOfRust.lib.simulations.lib.
 Import simulations.M.Notations.
 Import simulations.eq.Notations.
 Import simulations.assert.Notations.
@@ -153,7 +154,7 @@ Module AbstractStack.
             if item =? last_item
             then
               liftS!of! (lens!of? vec.first_mut) (
-                writeS! ((count + n)%Z, last_item)
+                writeS! (BinOp.Wrap.add IntegerKind.U64 count n, last_item)
               )
             else
               letS! values := readS! in
