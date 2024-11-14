@@ -10,7 +10,8 @@ Module AbstractStack.
   Definition flatten {A : Set} (abstract_stack : AbstractStack.t A) : list A :=
     List.flat_map (fun '(n, v) => List.repeat v (Z.to_nat n)) abstract_stack.(AbstractStack.values).
 
-  Lemma flatten_push_n {A : Set} `{Eq.Trait A} (item : A) (n : Z) (stack : AbstractStack.t A) :
+  Lemma flatten_push_n {A : Set} `{Eq.Trait A} (item : A) (n : Z) (stack : AbstractStack.t A)
+      (H_n : n >= 0) :
     match AbstractStack.push_n item n stack with
     | Panic.Value (Result.Ok tt, stack') =>
       flatten stack' = List.repeat item (Z.to_nat n) ++ flatten stack
@@ -18,11 +19,23 @@ Module AbstractStack.
     end.
   Proof.
     destruct stack as [stack].
-    unfold AbstractStack.push_n, flatten. simpl.
-    destruct (n=?0)%Z eqn:H_n.
+    unfold AbstractStack.push_n; cbn.
+    destruct (n =? 0)%Z eqn:?; cbn.
     - replace n with 0 by lia.
       simpl. reflexivity.
-    - Admitted.
+    - destruct integer.U64.checked_add as [new_len|]; cbn; [|trivial].
+      destruct stack as [|[count last_item] stack]; cbn; [reflexivity|].
+      unfold StatePanic.bind, Lens.lift, LensPanic.lift, LensOption.lift; cbn.
+      destruct H.(Eq.eqb); cbn; [|reflexivity].
+      assert (last_item = item) by admit.
+      replace last_item with item by assumption.
+      rewrite List.app_assoc.
+      rewrite <- List.repeat_app.
+      assert (count >= 0) by admit.
+      now replace (Z.to_nat n + Z.to_nat count)%nat
+        with (Z.to_nat (count + n))%nat
+        by lia.
+  Admitted.
 
   Lemma flatten_push {A : Set} `{Eq.Trait A} (item : A) (stack : AbstractStack.t A) :
     match AbstractStack.push item stack with
@@ -34,6 +47,7 @@ Module AbstractStack.
     unfold AbstractStack.push.
     pose proof (flatten_push_n item 1 stack) as H_push_n.
     apply H_push_n.
+    lia.
   Qed.
 
   Lemma flatten_pop_eq_n {A : Set} `{Eq.Trait A} (n : Z) (stack : AbstractStack.t A)
@@ -73,7 +87,8 @@ Qed.
     lia.
   Qed.
 
-  Lemma flatten_pop_any_n {A : Set} `{Eq.Trait A} (n : Z) (stack : AbstractStack.t A) :
+  Lemma flatten_pop_any_n {A : Set} `{Eq.Trait A} (n : Z) (stack : AbstractStack.t A) 
+   (H_n : n >= 0) :
     match AbstractStack.pop_any_n n stack with
     | Panic.Value (Result.Ok tt, stack') =>
       exists items,
