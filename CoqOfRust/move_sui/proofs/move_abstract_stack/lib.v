@@ -73,7 +73,7 @@ Qed.
     lia.
   Qed.
 
-  Lemma flatten_pop_any_n {A : Set} `{Eq.Trait A} (n : Z) (stack : AbstractStack.t A):
+  Lemma flatten_pop_any_n {A : Set} `{Eq.Trait A} (n : Z) (stack : AbstractStack.t A) :
     match AbstractStack.pop_any_n n stack with
     | Panic.Value (Result.Ok tt, stack') =>
       exists items,
