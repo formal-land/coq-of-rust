@@ -17,7 +17,12 @@ Module AbstractStack.
     | _ => True
     end.
   Proof.
-  Admitted.
+    destruct stack as [stack].
+    unfold AbstractStack.push_n, flatten. simpl.
+    destruct (n=?0)%Z eqn:H_n.
+    - replace n with 0 by lia.
+      simpl. reflexivity.
+    - Admitted.
 
   Lemma flatten_push {A : Set} `{Eq.Trait A} (item : A) (stack : AbstractStack.t A) :
     match AbstractStack.push item stack with
@@ -31,14 +36,29 @@ Module AbstractStack.
     apply H_push_n.
   Qed.
 
-  Lemma flatten_pop_eq_n {A : Set} `{Eq.Trait A} (n : Z) (stack : AbstractStack.t A) :
+  Lemma flatten_pop_eq_n {A : Set} `{Eq.Trait A} (n : Z) (stack : AbstractStack.t A)
+      (H_n : n >= 0) :
     match AbstractStack.pop_eq_n n stack with
     | Panic.Value (Result.Ok item, stack') =>
       flatten stack = List.repeat item (Z.to_nat n) ++ flatten stack'
     | _ => True
     end.
   Proof.
-  Admitted.
+  destruct stack as [stack].
+  unfold AbstractStack.pop_eq_n, flatten.
+  destruct (_ || _); simpl.
+  - trivial.
+  - unfold List.hd_error.
+    destruct stack as [|[count last] stack]; simpl; [reflexivity |].
+    destruct (_ <? n)%Z eqn:?; simpl; [reflexivity |].
+    destruct (_ =? n)%Z eqn:?; simpl.
+    + now replace n with count by lia.
+    + rewrite List.app_assoc.
+      rewrite <- List.repeat_app.
+      now replace (Z.to_nat n + Z.to_nat (count - n))%nat
+        with (Z.to_nat count) by lia.
+Qed.
+
 
   Lemma flatten_pop {A : Set} `{Eq.Trait A} (stack : AbstractStack.t A) :
     match AbstractStack.pop stack with
@@ -50,6 +70,7 @@ Module AbstractStack.
     unfold AbstractStack.pop.
     pose proof (flatten_pop_eq_n 1 stack) as H_pop_eq_n.
     apply H_pop_eq_n.
+    lia.
   Qed.
 
   Lemma flatten_pop_any_n {A : Set} `{Eq.Trait A} (n : Z) (stack : AbstractStack.t A) :
