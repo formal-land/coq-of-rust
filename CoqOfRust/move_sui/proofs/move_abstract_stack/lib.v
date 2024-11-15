@@ -28,7 +28,7 @@ Module AbstractStack.
   Definition flatten {A : Set} (abstract_stack : AbstractStack.t A) : list A :=
     List.flat_map (fun '(n, v) => List.repeat v (Z.to_nat n)) abstract_stack.(AbstractStack.values).
 
-  Lemma flatten_push_n_is_valid {A : Set} `{Eq.Trait A}
+  Lemma push_n_is_valid {A : Set} `{Eq.Trait A}
       (item : A) (n : Z) (stack : AbstractStack.t A)
       (H_n : Integer.Valid.t IntegerKind.U64 n)
       (H_stack : AbstractStack.Valid.t stack) :
@@ -77,6 +77,60 @@ Module AbstractStack.
     }
   Admitted.
 
+  Lemma push_is_valid {A : Set} `{Eq.Trait A}
+      (item : A) (stack : AbstractStack.t A)
+      (H_stack : AbstractStack.Valid.t stack) :
+    match AbstractStack.push item stack with
+    | Panic.Value (Result.Ok tt, stack') =>
+      AbstractStack.Valid.t stack'
+    | Panic.Value (Result.Err _, stack') =>
+      stack' = stack
+    | _ => True
+    end.
+  Proof.
+  Admitted.
+
+  Lemma pop_eq_n_is_valid {A : Set} `{Eq.Trait A}
+      (n : Z) (stack : AbstractStack.t A)
+      (H_n : Integer.Valid.t IntegerKind.U64 n)
+      (H_stack : AbstractStack.Valid.t stack) :
+    match AbstractStack.pop_eq_n n stack with
+    | Panic.Value (Result.Ok item, stack') =>
+      AbstractStack.Valid.t stack'
+    | Panic.Value (Result.Err _, stack') =>
+      stack' = stack
+    | _ => True
+    end.
+  Proof.
+  Admitted.
+
+  Lemma pop_is_valid {A : Set} `{Eq.Trait A}
+      (stack : AbstractStack.t A)
+      (H_stack : AbstractStack.Valid.t stack) :
+    match AbstractStack.pop stack with
+    | Panic.Value (Result.Ok item, stack') =>
+      AbstractStack.Valid.t stack'
+    | Panic.Value (Result.Err _, stack') =>
+      stack' = stack
+    | _ => True
+    end.
+  Proof.
+  Admitted.
+
+  Lemma pop_any_n_is_valid {A : Set} `{Eq.Trait A}
+      (n : Z) (stack : AbstractStack.t A)
+      (H_n : Integer.Valid.t IntegerKind.U64 n)
+      (H_stack : AbstractStack.Valid.t stack) :
+    match AbstractStack.pop_any_n n stack with
+    | Panic.Value (Result.Ok tt, stack') =>
+      AbstractStack.Valid.t stack'
+    | Panic.Value (Result.Err _, stack') =>
+      stack' = stack
+    | _ => True
+    end.
+  Proof.
+  Admitted.
+
   Lemma flatten_push_n {A : Set} `{Eq.Trait A} (item : A) (n : Z) (stack : AbstractStack.t A) :
     match AbstractStack.push_n item n stack with
     | Panic.Value (Result.Ok tt, stack') =>
@@ -105,6 +159,7 @@ Module AbstractStack.
     | _ => True
     end.
   Proof.
+  unfold AbstractStack.pop_eq_n.
   Admitted.
 
   Lemma flatten_pop {A : Set} `{Eq.Trait A} (stack : AbstractStack.t A) :
