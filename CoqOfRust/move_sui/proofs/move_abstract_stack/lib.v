@@ -88,7 +88,10 @@ Module AbstractStack.
     | _ => True
     end.
   Proof.
-  Admitted.
+    apply push_n_is_valid.
+    { unfold Integer.Valid.t. cbn. lia. }
+    { assumption. }
+  Qed.
 
   Lemma pop_eq_n_is_valid {A : Set} `{Eq.Trait A}
       (n : Z) (stack : AbstractStack.t A)
@@ -115,7 +118,10 @@ Module AbstractStack.
     | _ => True
     end.
   Proof.
-  Admitted.
+    apply pop_eq_n_is_valid.
+    { unfold Integer.Valid.t. cbn. lia. }
+    { assumption. }
+  Qed.
 
   Lemma pop_any_n_is_valid {A : Set} `{Eq.Trait A}
       (n : Z) (stack : AbstractStack.t A)
