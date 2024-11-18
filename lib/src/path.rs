@@ -6,11 +6,13 @@ use rustc_hir::{
     hir_id::HirId,
     QPath,
 };
+use serde::Serialize;
 use std::fmt;
 use std::rc::Rc;
 use std::vec;
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize)]
+#[serde(transparent)]
 pub(crate) struct Path {
     pub(crate) segments: Vec<String>,
 }

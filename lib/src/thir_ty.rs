@@ -125,7 +125,7 @@ pub(crate) fn compile_type<'a>(
                 )
                 .collect();
 
-            Rc::new(CoqType::Dyn(traits))
+            Rc::new(CoqType::Dyn { traits })
         }
         TyKind::FnDef(_, _) => {
             let fn_sig = ty.fn_sig(env.tcx);
@@ -140,20 +140,21 @@ pub(crate) fn compile_type<'a>(
         // Generator(DefId, &'tcx List<GenericArg<'tcx>>, Movability),
         // GeneratorWitness(DefId, &'tcx List<GenericArg<'tcx>>),
         TyKind::Never => CoqType::path(&["never"]),
-        TyKind::Tuple(tys) => Rc::new(CoqType::Tuple(
-            tys.iter()
+        TyKind::Tuple(tys) => Rc::new(CoqType::Tuple {
+            tys: tys
+                .iter()
                 .map(|ty| compile_type(env, span, generics, &ty))
                 .collect(),
-        )),
+        }),
         TyKind::Alias(_, _) => Rc::new(CoqType::Associated),
         TyKind::Param(param) => {
             if generics.has_self && param.index == 0 {
-                return Rc::new(CoqType::Var("Self".to_string()));
+                return CoqType::var("Self");
             }
 
             let type_param = generics.type_param(*param, env.tcx);
 
-            Rc::new(CoqType::Var(compile_generic_param(env, type_param.def_id)))
+            CoqType::var(compile_generic_param(env, type_param.def_id).as_ref())
         }
         // Bound(DebruijnIndex, BoundTy),
         // Placeholder(Placeholder<BoundTy>),
