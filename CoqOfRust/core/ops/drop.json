@@ -1,0 +1,183 @@
+[
+  {
+    "file_name": "core/src/ops/drop.rs",
+    "item": {
+      "type": "Module",
+      "name": "ops",
+      "body": [
+        {
+          "file_name": "core/src/ops/drop.rs",
+          "item": {
+            "type": "Module",
+            "name": "drop",
+            "body": [
+              {
+                "file_name": "core/src/ops/drop.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "Drop",
+                  "path": [
+                    "core",
+                    "ops",
+                    "drop",
+                    "Drop"
+                  ],
+                  "const_params": [],
+                  "ty_params": [],
+                  "body": [
+                    [
+                      "drop",
+                      {
+                        "Definition": {
+                          "const_params": [],
+                          "ty_params": [],
+                          "ty": {
+                            "type": "Function",
+                            "args": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Var",
+                                    "name": "Self"
+                                  }
+                                ]
+                              }
+                            ],
+                            "ret": {
+                              "type": "Path",
+                              "path": [
+                                "unit"
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/ops/drop.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "fallback_surface_drop",
+                  "path": [
+                    "core",
+                    "ops",
+                    "drop",
+                    "fallback_surface_drop"
+                  ],
+                  "snippet": [
+                    "pub(crate) fn fallback_surface_drop<T: Drop + ?Sized>(x: &mut T) {",
+                    "    <T as Drop>::drop(x)",
+                    "}"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "x",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&mut"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "T"
+                              }
+                            ]
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "x",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "x"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "GetTraitMethod": {
+                                  "trait_name": [
+                                    "core",
+                                    "ops",
+                                    "drop",
+                                    "Drop"
+                                  ],
+                                  "self_ty": {
+                                    "type": "Var",
+                                    "name": "T"
+                                  },
+                                  "trait_tys": [],
+                                  "method_name": "drop",
+                                  "generic_tys": []
+                                }
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "LocalVar": "M.read"
+                                    },
+                                    "args": [
+                                      {
+                                        "LocalVar": "x"
+                                      }
+                                    ],
+                                    "kind": "Effectful"
+                                  }
+                                }
+                              ],
+                              "kind": "Closure"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

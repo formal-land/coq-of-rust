@@ -1,0 +1,3213 @@
+[
+  {
+    "file_name": "core/src/intrinsics/mir.rs",
+    "item": {
+      "type": "Module",
+      "name": "intrinsics",
+      "body": [
+        {
+          "file_name": "core/src/intrinsics/mir.rs",
+          "item": {
+            "type": "Module",
+            "name": "mir",
+            "body": [
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "TypeEnum",
+                  "name": "BasicBlock",
+                  "const_params": [],
+                  "ty_params": [],
+                  "variants": [
+                    {
+                      "name": "Normal",
+                      "item": {
+                        "type": "Tuple",
+                        "tys": []
+                      },
+                      "discriminant": null
+                    },
+                    {
+                      "name": "Cleanup",
+                      "item": {
+                        "type": "Tuple",
+                        "tys": []
+                      },
+                      "discriminant": null
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "TypeEnum",
+                  "name": "UnwindTerminateReason",
+                  "const_params": [],
+                  "ty_params": [],
+                  "variants": [
+                    {
+                      "name": "Abi",
+                      "item": {
+                        "type": "Tuple",
+                        "tys": []
+                      },
+                      "discriminant": null
+                    },
+                    {
+                      "name": "InCleanup",
+                      "item": {
+                        "type": "Tuple",
+                        "tys": []
+                      },
+                      "discriminant": null
+                    }
+                  ]
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "TypeStructTuple",
+                  "name": "UnwindActionArg",
+                  "const_params": [],
+                  "ty_params": [],
+                  "fields": []
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_UnwindContinue",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "UnwindContinue"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "intrinsics",
+                            "mir",
+                            "UnwindActionArg"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "LocalVar": "M.never_to_any"
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "intrinsics",
+                                      "mir",
+                                      "UnwindContinue.panic_cold_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Effectful"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_UnwindUnreachable",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "UnwindUnreachable"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "intrinsics",
+                            "mir",
+                            "UnwindActionArg"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "LocalVar": "M.never_to_any"
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "intrinsics",
+                                      "mir",
+                                      "UnwindUnreachable.panic_cold_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Effectful"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_UnwindTerminate",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "UnwindTerminate"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "reason",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "intrinsics",
+                                "mir",
+                                "UnwindTerminateReason"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "intrinsics",
+                            "mir",
+                            "UnwindActionArg"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "reason",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "reason"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "UnwindTerminate.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_UnwindCleanup",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "UnwindCleanup"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "goto",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "intrinsics",
+                                "mir",
+                                "BasicBlock"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "intrinsics",
+                            "mir",
+                            "UnwindActionArg"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "goto",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "goto"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "UnwindCleanup.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "TypeStructTuple",
+                  "name": "ReturnToArg",
+                  "const_params": [],
+                  "ty_params": [],
+                  "fields": []
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_ReturnTo",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "ReturnTo"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "goto",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "intrinsics",
+                                "mir",
+                                "BasicBlock"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "intrinsics",
+                            "mir",
+                            "ReturnToArg"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "goto",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "goto"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "ReturnTo.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Return",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Return"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "intrinsics",
+                            "mir",
+                            "BasicBlock"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "LocalVar": "M.never_to_any"
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "intrinsics",
+                                      "mir",
+                                      "Return.panic_cold_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Effectful"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Goto",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Goto"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "destination",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "intrinsics",
+                                "mir",
+                                "BasicBlock"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "intrinsics",
+                            "mir",
+                            "BasicBlock"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "destination",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "destination"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "Goto.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Unreachable",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Unreachable"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "intrinsics",
+                            "mir",
+                            "BasicBlock"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "LocalVar": "M.never_to_any"
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "intrinsics",
+                                      "mir",
+                                      "Unreachable.panic_cold_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Effectful"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Drop",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Drop"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "place",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ],
+                        [
+                          "goto",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "intrinsics",
+                                "mir",
+                                "ReturnToArg"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          null
+                        ],
+                        [
+                          "unwind_action",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "intrinsics",
+                                "mir",
+                                "UnwindActionArg"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "place",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "place"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "goto",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "goto"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "unwind_action",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "unwind_action"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.never_to_any"
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "GetFunction": {
+                                                "func": [
+                                                  "core",
+                                                  "intrinsics",
+                                                  "mir",
+                                                  "Drop.panic_cold_explicit"
+                                                ],
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Call",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Call"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "call",
+                          {
+                            "type": "Tuple",
+                            "tys": []
+                          },
+                          null
+                        ],
+                        [
+                          "goto",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "intrinsics",
+                                "mir",
+                                "ReturnToArg"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          null
+                        ],
+                        [
+                          "unwind_action",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "intrinsics",
+                                "mir",
+                                "UnwindActionArg"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "call",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "call"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "goto",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "goto"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "unwind_action",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "unwind_action"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.never_to_any"
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "GetFunction": {
+                                                "func": [
+                                                  "core",
+                                                  "intrinsics",
+                                                  "mir",
+                                                  "Call.panic_cold_explicit"
+                                                ],
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_TailCall",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "TailCall"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "call",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "call",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "call"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "TailCall.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_UnwindResume",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "UnwindResume"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "LocalVar": "M.never_to_any"
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetFunction": {
+                                    "func": [
+                                      "core",
+                                      "intrinsics",
+                                      "mir",
+                                      "UnwindResume.panic_cold_explicit"
+                                    ],
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Effectful"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_StorageLive",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "StorageLive"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "local",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "local",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "local"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "StorageLive.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_StorageDead",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "StorageDead"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "local",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "local",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "local"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "StorageDead.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Assume",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Assume"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "operand",
+                          {
+                            "type": "Path",
+                            "path": [
+                              "bool"
+                            ]
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "operand",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "operand"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "Assume.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Deinit",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Deinit"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "place",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "place",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "place"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "Deinit.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Checked",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Checked"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "binop",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Tuple",
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          {
+                            "type": "Path",
+                            "path": [
+                              "bool"
+                            ]
+                          }
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "binop",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "binop"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "Checked.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Len",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Len"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "place",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "usize"
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "place",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "place"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "Len.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_PtrMetadata",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "PtrMetadata"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "P"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "place",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "*const"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Var",
+                                "name": "P"
+                              }
+                            ]
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Associated"
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "place",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "place"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "PtrMetadata.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_CopyForDeref",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "CopyForDeref"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "place",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Var",
+                        "name": "T"
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "place",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "place"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "CopyForDeref.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Retag",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Retag"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "place",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "place",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "place"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "Retag.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Move",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Move"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "place",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Var",
+                        "name": "T"
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "place",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "place"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "Move.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Static",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Static"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "s",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "&"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "s",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "s"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "Static.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_StaticMut",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "StaticMut"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "s",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "*mut"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "s",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "s"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "StaticMut.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Discriminant",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Discriminant"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "place",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Associated"
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "place",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "place"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "Discriminant.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_SetDiscriminant",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "SetDiscriminant"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "place",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ],
+                        [
+                          "index",
+                          {
+                            "type": "Path",
+                            "path": [
+                              "u32"
+                            ]
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "place",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "place"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "index",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "index"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.never_to_any"
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "GetFunction": {
+                                            "func": [
+                                              "core",
+                                              "intrinsics",
+                                              "mir",
+                                              "SetDiscriminant.panic_cold_explicit"
+                                            ],
+                                            "generic_tys": []
+                                          }
+                                        },
+                                        "args": [],
+                                        "kind": "Closure"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Offset",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Offset"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "ptr",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ],
+                        [
+                          "count",
+                          {
+                            "type": "Var",
+                            "name": "U"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Var",
+                        "name": "T"
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "ptr",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "ptr"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "count",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "count"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.never_to_any"
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "GetFunction": {
+                                            "func": [
+                                              "core",
+                                              "intrinsics",
+                                              "mir",
+                                              "Offset.panic_cold_explicit"
+                                            ],
+                                            "generic_tys": []
+                                          }
+                                        },
+                                        "args": [],
+                                        "kind": "Closure"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Field",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Field"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "F"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "place",
+                          {
+                            "type": "Tuple",
+                            "tys": []
+                          },
+                          null
+                        ],
+                        [
+                          "field",
+                          {
+                            "type": "Path",
+                            "path": [
+                              "u32"
+                            ]
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Var",
+                        "name": "F"
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "place",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "place"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "field",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "field"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.never_to_any"
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "GetFunction": {
+                                            "func": [
+                                              "core",
+                                              "intrinsics",
+                                              "mir",
+                                              "Field.panic_cold_explicit"
+                                            ],
+                                            "generic_tys": []
+                                          }
+                                        },
+                                        "args": [],
+                                        "kind": "Closure"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_Variant",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "Variant"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "place",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ],
+                        [
+                          "index",
+                          {
+                            "type": "Path",
+                            "path": [
+                              "u32"
+                            ]
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Tuple",
+                        "tys": []
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "place",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "place"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "index",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "index"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.never_to_any"
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "GetFunction": {
+                                            "func": [
+                                              "core",
+                                              "intrinsics",
+                                              "mir",
+                                              "Variant.panic_cold_explicit"
+                                            ],
+                                            "generic_tys": []
+                                          }
+                                        },
+                                        "args": [],
+                                        "kind": "Closure"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_CastTransmute",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "CastTransmute"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "operand",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Var",
+                        "name": "U"
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "operand",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "operand"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "CastTransmute.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "value_CastPtrToPtr",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "CastPtrToPtr"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T",
+                      "U"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "operand",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Var",
+                        "name": "U"
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "operand",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "operand"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "CastPtrToPtr.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "__internal_make_place",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "__internal_make_place"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "place",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "*mut"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          }
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "place",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "place"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.never_to_any"
+                              },
+                              "args": [
+                                {
+                                  "Call": {
+                                    "func": {
+                                      "GetFunction": {
+                                        "func": [
+                                          "core",
+                                          "intrinsics",
+                                          "mir",
+                                          "__internal_make_place.panic_cold_explicit"
+                                        ],
+                                        "generic_tys": []
+                                      }
+                                    },
+                                    "args": [],
+                                    "kind": "Closure"
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/intrinsics/mir.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "__debuginfo",
+                  "path": [
+                    "core",
+                    "intrinsics",
+                    "mir",
+                    "__debuginfo"
+                  ],
+                  "snippet": [
+                    "        pub fn $($sig)* { panic!() }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [
+                      "T"
+                    ],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "name",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "&"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Path",
+                                "path": [
+                                  "str"
+                                ]
+                              }
+                            ]
+                          },
+                          null
+                        ],
+                        [
+                          "s",
+                          {
+                            "type": "Var",
+                            "name": "T"
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "name",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "name"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "s",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "s"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.never_to_any"
+                                  },
+                                  "args": [
+                                    {
+                                      "Call": {
+                                        "func": {
+                                          "GetFunction": {
+                                            "func": [
+                                              "core",
+                                              "intrinsics",
+                                              "mir",
+                                              "__debuginfo.panic_cold_explicit"
+                                            ],
+                                            "generic_tys": []
+                                          }
+                                        },
+                                        "args": [],
+                                        "kind": "Closure"
+                                      }
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

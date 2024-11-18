@@ -1,0 +1,1057 @@
+[
+  {
+    "file_name": "alloc/src/collections/btree/borrow.rs",
+    "item": {
+      "type": "Module",
+      "name": "collections",
+      "body": [
+        {
+          "file_name": "alloc/src/collections/btree/borrow.rs",
+          "item": {
+            "type": "Module",
+            "name": "btree",
+            "body": [
+              {
+                "file_name": "alloc/src/collections/btree/borrow.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "borrow",
+                  "body": [
+                    {
+                      "file_name": "alloc/src/collections/btree/borrow.rs",
+                      "item": {
+                        "type": "TypeStructStruct",
+                        "name": "DormantMutRef",
+                        "const_params": [],
+                        "ty_params": [
+                          "T"
+                        ],
+                        "fields": [
+                          [
+                            "ptr",
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "core",
+                                  "ptr",
+                                  "non_null",
+                                  "NonNull"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Var",
+                                  "name": "T"
+                                }
+                              ]
+                            }
+                          ],
+                          [
+                            "_marker",
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "core",
+                                  "marker",
+                                  "PhantomData"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "&mut"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Var",
+                                      "name": "T"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/borrow.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "T"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sync"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "&mut"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Var",
+                                  "name": "T"
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "borrow",
+                              "DormantMutRef"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "T"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "marker",
+                          "Sync"
+                        ],
+                        "trait_ty_params": [],
+                        "items": []
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/borrow.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "T"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Send"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "&mut"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Var",
+                                  "name": "T"
+                                }
+                              ]
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "borrow",
+                              "DormantMutRef"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "T"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "marker",
+                          "Send"
+                        ],
+                        "trait_ty_params": [],
+                        "items": []
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/borrow.rs",
+                      "item": {
+                        "type": "Impl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "T"
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "borrow",
+                              "DormantMutRef"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "T"
+                            }
+                          ]
+                        },
+                        "items": [
+                          {
+                            "name": "new",
+                            "snippet": [
+                              "    pub fn new(t: &'a mut T) -> (&'a mut T, Self) {",
+                              "        let ptr = NonNull::from(t);",
+                              "        // SAFETY: we hold the borrow throughout 'a via `_marker`, and we expose",
+                              "        // only this reference, so it is unique.",
+                              "        let new_ref = unsafe { &mut *ptr.as_ptr() };",
+                              "        (new_ref, Self { ptr, _marker: PhantomData })",
+                              "    }"
+                            ],
+                            "kind": {
+                              "Definition": {
+                                "definition": {
+                                  "const_params": [],
+                                  "ty_params": [],
+                                  "signature_and_body": {
+                                    "args": [
+                                      [
+                                        "t",
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "&mut"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        },
+                                        null
+                                      ]
+                                    ],
+                                    "ret_ty": {
+                                      "type": "Tuple",
+                                      "tys": [
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "&mut"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "collections",
+                                              "btree",
+                                              "borrow",
+                                              "DormantMutRef"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "t",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "t"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Let": {
+                                                  "name": "ptr",
+                                                  "is_user": true,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetTraitMethod": {
+                                                                "trait_name": [
+                                                                  "core",
+                                                                  "convert",
+                                                                  "From"
+                                                                ],
+                                                                "self_ty": {
+                                                                  "type": "Application",
+                                                                  "func": {
+                                                                    "type": "Path",
+                                                                    "path": [
+                                                                      "core",
+                                                                      "ptr",
+                                                                      "non_null",
+                                                                      "NonNull"
+                                                                    ]
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": [
+                                                                    {
+                                                                      "type": "Var",
+                                                                      "name": "T"
+                                                                    }
+                                                                  ]
+                                                                },
+                                                                "trait_tys": [
+                                                                  {
+                                                                    "type": "Application",
+                                                                    "func": {
+                                                                      "type": "Path",
+                                                                      "path": [
+                                                                        "&mut"
+                                                                      ]
+                                                                    },
+                                                                    "consts": [],
+                                                                    "tys": [
+                                                                      {
+                                                                        "type": "Var",
+                                                                        "name": "T"
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ],
+                                                                "method_name": "from",
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "t"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Let": {
+                                                      "name": "new_ref",
+                                                      "is_user": true,
+                                                      "init": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.alloc"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "GetAssociatedFunction": {
+                                                                    "ty": {
+                                                                      "type": "Application",
+                                                                      "func": {
+                                                                        "type": "Path",
+                                                                        "path": [
+                                                                          "core",
+                                                                          "ptr",
+                                                                          "non_null",
+                                                                          "NonNull"
+                                                                        ]
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": [
+                                                                        {
+                                                                          "type": "Var",
+                                                                          "name": "T"
+                                                                        }
+                                                                      ]
+                                                                    },
+                                                                    "func": "as_ptr",
+                                                                    "generic_tys": []
+                                                                  }
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "LocalVar": "M.read"
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "LocalVar": "ptr"
+                                                                        }
+                                                                      ],
+                                                                      "kind": "Effectful"
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "kind": "Closure"
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      },
+                                                      "body": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.alloc"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Tuple": {
+                                                                "elements": [
+                                                                  {
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "LocalVar": "M.read"
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "LocalVar": "new_ref"
+                                                                        }
+                                                                      ],
+                                                                      "kind": "Effectful"
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "StructStruct": {
+                                                                      "path": [
+                                                                        "alloc",
+                                                                        "collections",
+                                                                        "btree",
+                                                                        "borrow",
+                                                                        "DormantMutRef"
+                                                                      ],
+                                                                      "fields": [
+                                                                        [
+                                                                          "ptr",
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.read"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "LocalVar": "ptr"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        [
+                                                                          "_marker",
+                                                                          {
+                                                                            "StructTuple": {
+                                                                              "path": [
+                                                                                "core",
+                                                                                "marker",
+                                                                                "PhantomData"
+                                                                              ],
+                                                                              "fields": []
+                                                                            }
+                                                                          }
+                                                                        ]
+                                                                      ],
+                                                                      "base": null
+                                                                    }
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "awaken",
+                            "snippet": [
+                              "    pub unsafe fn awaken(self) -> &'a mut T {",
+                              "        // SAFETY: our own safety conditions imply this reference is again unique.",
+                              "        unsafe { &mut *self.ptr.as_ptr() }",
+                              "    }"
+                            ],
+                            "kind": {
+                              "Definition": {
+                                "definition": {
+                                  "const_params": [],
+                                  "ty_params": [],
+                                  "signature_and_body": {
+                                    "args": [
+                                      [
+                                        "self",
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "alloc",
+                                              "collections",
+                                              "btree",
+                                              "borrow",
+                                              "DormantMutRef"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Var",
+                                              "name": "T"
+                                            }
+                                          ]
+                                        },
+                                        null
+                                      ]
+                                    ],
+                                    "ret_ty": {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        }
+                                      ]
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "self",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "self"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetAssociatedFunction": {
+                                                "ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "core",
+                                                      "ptr",
+                                                      "non_null",
+                                                      "NonNull"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": [
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "T"
+                                                    }
+                                                  ]
+                                                },
+                                                "func": "as_ptr",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          },
+                                                          {
+                                                            "InternalString": "alloc::collections::btree::borrow::DormantMutRef"
+                                                          },
+                                                          {
+                                                            "InternalString": "ptr"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "reborrow",
+                            "snippet": [
+                              "    pub unsafe fn reborrow(&mut self) -> &'a mut T {",
+                              "        // SAFETY: our own safety conditions imply this reference is again unique.",
+                              "        unsafe { &mut *self.ptr.as_ptr() }",
+                              "    }"
+                            ],
+                            "kind": {
+                              "Definition": {
+                                "definition": {
+                                  "const_params": [],
+                                  "ty_params": [],
+                                  "signature_and_body": {
+                                    "args": [
+                                      [
+                                        "self",
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "&mut"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Application",
+                                              "func": {
+                                                "type": "Path",
+                                                "path": [
+                                                  "alloc",
+                                                  "collections",
+                                                  "btree",
+                                                  "borrow",
+                                                  "DormantMutRef"
+                                                ]
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "type": "Var",
+                                                  "name": "T"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        null
+                                      ]
+                                    ],
+                                    "ret_ty": {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&mut"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        }
+                                      ]
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "self",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "self"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetAssociatedFunction": {
+                                                "ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "core",
+                                                      "ptr",
+                                                      "non_null",
+                                                      "NonNull"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": [
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "T"
+                                                    }
+                                                  ]
+                                                },
+                                                "func": "as_ptr",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          },
+                                                          {
+                                                            "InternalString": "alloc::collections::btree::borrow::DormantMutRef"
+                                                          },
+                                                          {
+                                                            "InternalString": "ptr"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "reborrow_shared",
+                            "snippet": [
+                              "    pub unsafe fn reborrow_shared(&self) -> &'a T {",
+                              "        // SAFETY: our own safety conditions imply this reference is again unique.",
+                              "        unsafe { &*self.ptr.as_ptr() }",
+                              "    }"
+                            ],
+                            "kind": {
+                              "Definition": {
+                                "definition": {
+                                  "const_params": [],
+                                  "ty_params": [],
+                                  "signature_and_body": {
+                                    "args": [
+                                      [
+                                        "self",
+                                        {
+                                          "type": "Application",
+                                          "func": {
+                                            "type": "Path",
+                                            "path": [
+                                              "&"
+                                            ]
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "type": "Application",
+                                              "func": {
+                                                "type": "Path",
+                                                "path": [
+                                                  "alloc",
+                                                  "collections",
+                                                  "btree",
+                                                  "borrow",
+                                                  "DormantMutRef"
+                                                ]
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "type": "Var",
+                                                  "name": "T"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        null
+                                      ]
+                                    ],
+                                    "ret_ty": {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "&"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Var",
+                                          "name": "T"
+                                        }
+                                      ]
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "self",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "self"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetAssociatedFunction": {
+                                                "ty": {
+                                                  "type": "Application",
+                                                  "func": {
+                                                    "type": "Path",
+                                                    "path": [
+                                                      "core",
+                                                      "ptr",
+                                                      "non_null",
+                                                      "NonNull"
+                                                    ]
+                                                  },
+                                                  "consts": [],
+                                                  "tys": [
+                                                    {
+                                                      "type": "Var",
+                                                      "name": "T"
+                                                    }
+                                                  ]
+                                                },
+                                                "func": "as_ptr",
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          },
+                                                          {
+                                                            "InternalString": "alloc::collections::btree::borrow::DormantMutRef"
+                                                          },
+                                                          {
+                                                            "InternalString": "ptr"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

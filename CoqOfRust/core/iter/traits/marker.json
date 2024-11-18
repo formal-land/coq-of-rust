@@ -1,0 +1,337 @@
+[
+  {
+    "file_name": "core/src/iter/traits/marker.rs",
+    "item": {
+      "type": "Module",
+      "name": "iter",
+      "body": [
+        {
+          "file_name": "core/src/iter/traits/marker.rs",
+          "item": {
+            "type": "Module",
+            "name": "traits",
+            "body": [
+              {
+                "file_name": "core/src/iter/traits/marker.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "marker",
+                  "body": [
+                    {
+                      "file_name": "core/src/iter/traits/marker.rs",
+                      "item": {
+                        "type": "Trait",
+                        "name": "TrustedFused",
+                        "path": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "marker",
+                          "TrustedFused"
+                        ],
+                        "const_params": [],
+                        "ty_params": [],
+                        "body": []
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/traits/marker.rs",
+                      "item": {
+                        "type": "Trait",
+                        "name": "FusedIterator",
+                        "path": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "marker",
+                          "FusedIterator"
+                        ],
+                        "const_params": [],
+                        "ty_params": [],
+                        "body": []
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/traits/marker.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "I"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "iter",
+                                "traits",
+                                "marker",
+                                "FusedIterator"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "I"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "I"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "I"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "marker",
+                          "FusedIterator"
+                        ],
+                        "trait_ty_params": [],
+                        "items": []
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/traits/marker.rs",
+                      "item": {
+                        "type": "Trait",
+                        "name": "TrustedLen",
+                        "path": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "marker",
+                          "TrustedLen"
+                        ],
+                        "const_params": [],
+                        "ty_params": [],
+                        "body": []
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/traits/marker.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "I"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "iter",
+                                "traits",
+                                "marker",
+                                "TrustedLen"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "I"
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "type": "Var",
+                              "name": "I"
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "I"
+                            }
+                          ]
+                        },
+                        "of_trait": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "marker",
+                          "TrustedLen"
+                        ],
+                        "trait_ty_params": [],
+                        "items": []
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/traits/marker.rs",
+                      "item": {
+                        "type": "Trait",
+                        "name": "InPlaceIterable",
+                        "path": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "marker",
+                          "InPlaceIterable"
+                        ],
+                        "const_params": [],
+                        "ty_params": [],
+                        "body": [
+                          [
+                            "value_EXPAND_BY",
+                            {
+                              "Definition": {
+                                "const_params": [],
+                                "ty_params": [],
+                                "ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "option",
+                                      "Option"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "num",
+                                          "nonzero",
+                                          "NonZero"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Path",
+                                          "path": [
+                                            "usize"
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          [
+                            "value_MERGE_BY",
+                            {
+                              "Definition": {
+                                "const_params": [],
+                                "ty_params": [],
+                                "ty": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "core",
+                                      "option",
+                                      "Option"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "num",
+                                          "nonzero",
+                                          "NonZero"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": [
+                                        {
+                                          "type": "Path",
+                                          "path": [
+                                            "usize"
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "core/src/iter/traits/marker.rs",
+                      "item": {
+                        "type": "Trait",
+                        "name": "TrustedStep",
+                        "path": [
+                          "core",
+                          "iter",
+                          "traits",
+                          "marker",
+                          "TrustedStep"
+                        ],
+                        "const_params": [],
+                        "ty_params": [],
+                        "body": []
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

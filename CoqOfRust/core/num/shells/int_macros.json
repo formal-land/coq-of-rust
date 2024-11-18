@@ -1,0 +1,446 @@
+[
+  {
+    "file_name": "core/src/num/shells/int_macros.rs",
+    "item": {
+      "type": "Module",
+      "name": "i128",
+      "body": [
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MIN",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MIN"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MAX",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MAX"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "file_name": "core/src/num/shells/int_macros.rs",
+    "item": {
+      "type": "Module",
+      "name": "i16",
+      "body": [
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MIN",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MIN"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MAX",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MAX"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "file_name": "core/src/num/shells/int_macros.rs",
+    "item": {
+      "type": "Module",
+      "name": "i32",
+      "body": [
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MIN",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MIN"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MAX",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MAX"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "file_name": "core/src/num/shells/int_macros.rs",
+    "item": {
+      "type": "Module",
+      "name": "i64",
+      "body": [
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MIN",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MIN"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MAX",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MAX"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "file_name": "core/src/num/shells/int_macros.rs",
+    "item": {
+      "type": "Module",
+      "name": "i8",
+      "body": [
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MIN",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MIN"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MAX",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MAX"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "file_name": "core/src/num/shells/int_macros.rs",
+    "item": {
+      "type": "Module",
+      "name": "isize",
+      "body": [
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MIN",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MIN"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MAX",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MAX"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "file_name": "core/src/num/shells/int_macros.rs",
+    "item": {
+      "type": "Module",
+      "name": "u128",
+      "body": [
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MIN",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MIN"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MAX",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MAX"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "file_name": "core/src/num/shells/int_macros.rs",
+    "item": {
+      "type": "Module",
+      "name": "u16",
+      "body": [
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MIN",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MIN"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MAX",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MAX"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "file_name": "core/src/num/shells/int_macros.rs",
+    "item": {
+      "type": "Module",
+      "name": "u32",
+      "body": [
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MIN",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MIN"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MAX",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MAX"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "file_name": "core/src/num/shells/int_macros.rs",
+    "item": {
+      "type": "Module",
+      "name": "u64",
+      "body": [
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MIN",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MIN"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MAX",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MAX"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "file_name": "core/src/num/shells/int_macros.rs",
+    "item": {
+      "type": "Module",
+      "name": "u8",
+      "body": [
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MIN",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MIN"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MAX",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MAX"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "file_name": "core/src/num/shells/int_macros.rs",
+    "item": {
+      "type": "Module",
+      "name": "usize",
+      "body": [
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MIN",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MIN"
+              ]
+            }
+          }
+        },
+        {
+          "file_name": "core/src/num/shells/int_macros.rs",
+          "item": {
+            "type": "Const",
+            "name": "value_MAX",
+            "value": {
+              "GetConst": [
+                "core",
+                "num",
+                "MAX"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+]

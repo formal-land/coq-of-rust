@@ -2,6 +2,13 @@
 
 VFILES := $(shell find -L . -name "*.v" | grep -v -f blacklist.txt | sort)
 
+PYTHON_LINKS_FILES := $(shell find links -name "*.py")
+
+OUTPUT_LINKS_FILES := $(PYTHON_LINKS_FILES:.py=.v)
+
+# Default target
+all: $(OUTPUT_FILES) links
+
 default: all
 
 # We use the '@' to avoid displaying this command as the parameters list is
@@ -27,3 +34,8 @@ clean: clean-coq
 	$(MAKE) clean-util # done separately to enforce order
 
 distclean: clean
+
+%.v: %.py links.py
+	PYTHONPATH=. python $< > $@
+
+links: $(OUTPUT_LINKS_FILES)

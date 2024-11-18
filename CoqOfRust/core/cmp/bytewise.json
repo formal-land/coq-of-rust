@@ -1,0 +1,3017 @@
+[
+  {
+    "file_name": "core/src/cmp/bytewise.rs",
+    "item": {
+      "type": "Module",
+      "name": "cmp",
+      "body": [
+        {
+          "file_name": "core/src/cmp/bytewise.rs",
+          "item": {
+            "type": "Module",
+            "name": "bytewise",
+            "body": [
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "Trait",
+                  "name": "BytewiseEq",
+                  "path": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "const_params": [],
+                  "ty_params": [
+                    "Rhs"
+                  ],
+                  "body": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "u8"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "u16"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "u32"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "u64"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "u128"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "usize"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "i8"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "i16"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "i32"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "i64"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "i128"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "isize"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "bool"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Path",
+                    "path": [
+                      "char"
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "cmp",
+                        "Ordering"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "num",
+                        "nonzero",
+                        "NonZero"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Path",
+                        "path": [
+                          "u8"
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "num",
+                        "nonzero",
+                        "NonZero"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Path",
+                        "path": [
+                          "u16"
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "num",
+                        "nonzero",
+                        "NonZero"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Path",
+                        "path": [
+                          "u32"
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "num",
+                        "nonzero",
+                        "NonZero"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Path",
+                        "path": [
+                          "u64"
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "num",
+                        "nonzero",
+                        "NonZero"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Path",
+                        "path": [
+                          "u128"
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "num",
+                        "nonzero",
+                        "NonZero"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Path",
+                        "path": [
+                          "usize"
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "num",
+                        "nonzero",
+                        "NonZero"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Path",
+                        "path": [
+                          "i8"
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "num",
+                        "nonzero",
+                        "NonZero"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Path",
+                        "path": [
+                          "i16"
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "num",
+                        "nonzero",
+                        "NonZero"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Path",
+                        "path": [
+                          "i32"
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "num",
+                        "nonzero",
+                        "NonZero"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Path",
+                        "path": [
+                          "i64"
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "num",
+                        "nonzero",
+                        "NonZero"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Path",
+                        "path": [
+                          "i128"
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "num",
+                        "nonzero",
+                        "NonZero"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Path",
+                        "path": [
+                          "isize"
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "option",
+                        "Option"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "num",
+                            "nonzero",
+                            "NonZero"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "u8"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "option",
+                        "Option"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "num",
+                            "nonzero",
+                            "NonZero"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "u16"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "option",
+                        "Option"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "num",
+                            "nonzero",
+                            "NonZero"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "u32"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "option",
+                        "Option"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "num",
+                            "nonzero",
+                            "NonZero"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "u64"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "option",
+                        "Option"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "num",
+                            "nonzero",
+                            "NonZero"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "u128"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "option",
+                        "Option"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "num",
+                            "nonzero",
+                            "NonZero"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "usize"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "option",
+                        "Option"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "num",
+                            "nonzero",
+                            "NonZero"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "i8"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "option",
+                        "Option"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "num",
+                            "nonzero",
+                            "NonZero"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "i16"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "option",
+                        "Option"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "num",
+                            "nonzero",
+                            "NonZero"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "i32"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "option",
+                        "Option"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "num",
+                            "nonzero",
+                            "NonZero"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "i64"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "option",
+                        "Option"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "num",
+                            "nonzero",
+                            "NonZero"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "i128"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [],
+                  "predicates": [],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "option",
+                        "Option"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": [
+                      {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "core",
+                            "num",
+                            "nonzero",
+                            "NonZero"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": [
+                          {
+                            "type": "Path",
+                            "path": [
+                              "isize"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      "Default"
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 0
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 0
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 1
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 1
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 2
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 2
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 3
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 3
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 4
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 4
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 6
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 6
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 8
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 8
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 12
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 12
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 16
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 16
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 24
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 24
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 32
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 32
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 48
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 48
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              },
+              {
+                "file_name": "core/src/cmp/bytewise.rs",
+                "item": {
+                  "type": "TraitImpl",
+                  "generic_consts": [],
+                  "generic_tys": [
+                    "T",
+                    "U"
+                  ],
+                  "predicates": [
+                    {
+                      "bound": {
+                        "name": [
+                          "core",
+                          "cmp",
+                          "bytewise",
+                          "BytewiseEq"
+                        ],
+                        "ty_params": [
+                          [
+                            "Rhs",
+                            {
+                              "OptionalValue": {
+                                "type": "Var",
+                                "name": "U"
+                              }
+                            }
+                          ]
+                        ]
+                      },
+                      "ty": {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    }
+                  ],
+                  "self_ty": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "array"
+                      ]
+                    },
+                    "consts": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 64
+                          }
+                        }
+                      }
+                    ],
+                    "tys": [
+                      {
+                        "type": "Var",
+                        "name": "T"
+                      }
+                    ]
+                  },
+                  "of_trait": [
+                    "core",
+                    "cmp",
+                    "bytewise",
+                    "BytewiseEq"
+                  ],
+                  "trait_ty_params": [
+                    [
+                      "Rhs",
+                      {
+                        "OptionalValue": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "array"
+                            ]
+                          },
+                          "consts": [
+                            {
+                              "Literal": {
+                                "Integer": {
+                                  "kind": "Usize",
+                                  "negative_sign": false,
+                                  "value": 64
+                                }
+                              }
+                            }
+                          ],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "U"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ],
+                  "items": []
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

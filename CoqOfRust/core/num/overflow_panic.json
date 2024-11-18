@@ -1,0 +1,868 @@
+[
+  {
+    "file_name": "core/src/num/overflow_panic.rs",
+    "item": {
+      "type": "Module",
+      "name": "num",
+      "body": [
+        {
+          "file_name": "core/src/num/overflow_panic.rs",
+          "item": {
+            "type": "Module",
+            "name": "overflow_panic",
+            "body": [
+              {
+                "file_name": "core/src/num/overflow_panic.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "add",
+                  "path": [
+                    "core",
+                    "num",
+                    "overflow_panic",
+                    "add"
+                  ],
+                  "snippet": [
+                    "pub const fn add() -> ! {",
+                    "    panic!(\"attempt to add with overflow\")",
+                    "}"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "never"
+                        ]
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "GetFunction": {
+                              "func": [
+                                "core",
+                                "panicking",
+                                "panic_fmt"
+                              ],
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetAssociatedFunction": {
+                                    "ty": {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Arguments"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    },
+                                    "func": "new_const",
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [
+                                  {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "Array": {
+                                            "elements": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "attempt to add with overflow"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "is_internal": false
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                ],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Closure"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/num/overflow_panic.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "sub",
+                  "path": [
+                    "core",
+                    "num",
+                    "overflow_panic",
+                    "sub"
+                  ],
+                  "snippet": [
+                    "pub const fn sub() -> ! {",
+                    "    panic!(\"attempt to subtract with overflow\")",
+                    "}"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "never"
+                        ]
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "GetFunction": {
+                              "func": [
+                                "core",
+                                "panicking",
+                                "panic_fmt"
+                              ],
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetAssociatedFunction": {
+                                    "ty": {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Arguments"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    },
+                                    "func": "new_const",
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [
+                                  {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "Array": {
+                                            "elements": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "attempt to subtract with overflow"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "is_internal": false
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                ],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Closure"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/num/overflow_panic.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "mul",
+                  "path": [
+                    "core",
+                    "num",
+                    "overflow_panic",
+                    "mul"
+                  ],
+                  "snippet": [
+                    "pub const fn mul() -> ! {",
+                    "    panic!(\"attempt to multiply with overflow\")",
+                    "}"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "never"
+                        ]
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "GetFunction": {
+                              "func": [
+                                "core",
+                                "panicking",
+                                "panic_fmt"
+                              ],
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetAssociatedFunction": {
+                                    "ty": {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Arguments"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    },
+                                    "func": "new_const",
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [
+                                  {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "Array": {
+                                            "elements": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "attempt to multiply with overflow"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "is_internal": false
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                ],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Closure"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/num/overflow_panic.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "div",
+                  "path": [
+                    "core",
+                    "num",
+                    "overflow_panic",
+                    "div"
+                  ],
+                  "snippet": [
+                    "pub const fn div() -> ! {",
+                    "    panic!(\"attempt to divide with overflow\")",
+                    "}"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "never"
+                        ]
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "GetFunction": {
+                              "func": [
+                                "core",
+                                "panicking",
+                                "panic_fmt"
+                              ],
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetAssociatedFunction": {
+                                    "ty": {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Arguments"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    },
+                                    "func": "new_const",
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [
+                                  {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "Array": {
+                                            "elements": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "attempt to divide with overflow"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "is_internal": false
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                ],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Closure"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/num/overflow_panic.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "rem",
+                  "path": [
+                    "core",
+                    "num",
+                    "overflow_panic",
+                    "rem"
+                  ],
+                  "snippet": [
+                    "pub const fn rem() -> ! {",
+                    "    panic!(\"attempt to calculate the remainder with overflow\")",
+                    "}"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "never"
+                        ]
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "GetFunction": {
+                              "func": [
+                                "core",
+                                "panicking",
+                                "panic_fmt"
+                              ],
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetAssociatedFunction": {
+                                    "ty": {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Arguments"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    },
+                                    "func": "new_const",
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [
+                                  {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "Array": {
+                                            "elements": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "attempt to calculate the remainder with overflow"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "is_internal": false
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                ],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Closure"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/num/overflow_panic.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "neg",
+                  "path": [
+                    "core",
+                    "num",
+                    "overflow_panic",
+                    "neg"
+                  ],
+                  "snippet": [
+                    "pub const fn neg() -> ! {",
+                    "    panic!(\"attempt to negate with overflow\")",
+                    "}"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "never"
+                        ]
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "GetFunction": {
+                              "func": [
+                                "core",
+                                "panicking",
+                                "panic_fmt"
+                              ],
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetAssociatedFunction": {
+                                    "ty": {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Arguments"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    },
+                                    "func": "new_const",
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [
+                                  {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "Array": {
+                                            "elements": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "attempt to negate with overflow"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "is_internal": false
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                ],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Closure"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/num/overflow_panic.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "shr",
+                  "path": [
+                    "core",
+                    "num",
+                    "overflow_panic",
+                    "shr"
+                  ],
+                  "snippet": [
+                    "pub const fn shr() -> ! {",
+                    "    panic!(\"attempt to shift right with overflow\")",
+                    "}"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "never"
+                        ]
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "GetFunction": {
+                              "func": [
+                                "core",
+                                "panicking",
+                                "panic_fmt"
+                              ],
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetAssociatedFunction": {
+                                    "ty": {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Arguments"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    },
+                                    "func": "new_const",
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [
+                                  {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "Array": {
+                                            "elements": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "attempt to shift right with overflow"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "is_internal": false
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                ],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Closure"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "file_name": "core/src/num/overflow_panic.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "shl",
+                  "path": [
+                    "core",
+                    "num",
+                    "overflow_panic",
+                    "shl"
+                  ],
+                  "snippet": [
+                    "pub const fn shl() -> ! {",
+                    "    panic!(\"attempt to shift left with overflow\")",
+                    "}"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [],
+                      "ret_ty": {
+                        "type": "Path",
+                        "path": [
+                          "never"
+                        ]
+                      },
+                      "body": {
+                        "Call": {
+                          "func": {
+                            "GetFunction": {
+                              "func": [
+                                "core",
+                                "panicking",
+                                "panic_fmt"
+                              ],
+                              "generic_tys": []
+                            }
+                          },
+                          "args": [
+                            {
+                              "Call": {
+                                "func": {
+                                  "GetAssociatedFunction": {
+                                    "ty": {
+                                      "type": "Application",
+                                      "func": {
+                                        "type": "Path",
+                                        "path": [
+                                          "core",
+                                          "fmt",
+                                          "Arguments"
+                                        ]
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    },
+                                    "func": "new_const",
+                                    "generic_tys": []
+                                  }
+                                },
+                                "args": [
+                                  {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "Array": {
+                                            "elements": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Literal": {
+                                                        "String": "attempt to shift left with overflow"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "is_internal": false
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                ],
+                                "kind": "Closure"
+                              }
+                            }
+                          ],
+                          "kind": "Closure"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

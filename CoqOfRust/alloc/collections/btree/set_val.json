@@ -1,0 +1,1536 @@
+[
+  {
+    "file_name": "alloc/src/collections/btree/set_val.rs",
+    "item": {
+      "type": "Module",
+      "name": "collections",
+      "body": [
+        {
+          "file_name": "alloc/src/collections/btree/set_val.rs",
+          "item": {
+            "type": "Module",
+            "name": "btree",
+            "body": [
+              {
+                "file_name": "alloc/src/collections/btree/set_val.rs",
+                "item": {
+                  "type": "Module",
+                  "name": "set_val",
+                  "body": [
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "TypeStructTuple",
+                        "name": "SetValZST",
+                        "const_params": [],
+                        "ty_params": [],
+                        "fields": []
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "set_val",
+                              "SetValZST"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        },
+                        "of_trait": [
+                          "core",
+                          "fmt",
+                          "Debug"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "fmt",
+                            "snippet": [
+                              "Debug"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "alloc",
+                                                    "collections",
+                                                    "btree",
+                                                    "set_val",
+                                                    "SetValZST"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "f",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "core",
+                                                    "fmt",
+                                                    "Formatter"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "result",
+                                            "Result"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Tuple",
+                                            "tys": []
+                                          },
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "fmt",
+                                                "Error"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": []
+                                          }
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "f",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "f"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "core",
+                                                            "fmt",
+                                                            "Formatter"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": []
+                                                      },
+                                                      "func": "write_str",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "f"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Literal": {
+                                                              "String": "SetValZST"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "set_val",
+                              "SetValZST"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        },
+                        "of_trait": [
+                          "core",
+                          "cmp",
+                          "Eq"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "assert_receiver_is_total_eq",
+                            "snippet": [
+                              "Eq"
+                            ],
+                            "kind": {
+                              "OptionalValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "alloc",
+                                                    "collections",
+                                                    "btree",
+                                                    "set_val",
+                                                    "SetValZST"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Tuple",
+                                        "tys": []
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Tuple": {
+                                              "elements": []
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "set_val",
+                              "SetValZST"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        },
+                        "of_trait": [
+                          "core",
+                          "marker",
+                          "StructuralPartialEq"
+                        ],
+                        "trait_ty_params": [],
+                        "items": []
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "set_val",
+                              "SetValZST"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        },
+                        "of_trait": [
+                          "core",
+                          "cmp",
+                          "PartialEq"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Rhs",
+                            "Default"
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "eq",
+                            "snippet": [
+                              "PartialEq"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "alloc",
+                                                    "collections",
+                                                    "btree",
+                                                    "set_val",
+                                                    "SetValZST"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "other",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "alloc",
+                                                    "collections",
+                                                    "btree",
+                                                    "set_val",
+                                                    "SetValZST"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Path",
+                                        "path": [
+                                          "bool"
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "other",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "other"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Literal": {
+                                                  "Bool": true
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "ne",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "set_val",
+                              "SetValZST"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        },
+                        "of_trait": [
+                          "core",
+                          "cmp",
+                          "Ord"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "cmp",
+                            "snippet": [
+                              "Ord"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "alloc",
+                                                    "collections",
+                                                    "btree",
+                                                    "set_val",
+                                                    "SetValZST"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "other",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "alloc",
+                                                    "collections",
+                                                    "btree",
+                                                    "set_val",
+                                                    "SetValZST"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "cmp",
+                                            "Ordering"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "other",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "other"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "StructTuple": {
+                                                  "path": [
+                                                    "core",
+                                                    "cmp",
+                                                    "Ordering",
+                                                    "Equal"
+                                                  ],
+                                                  "fields": []
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "max",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "min",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "clamp",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "set_val",
+                              "SetValZST"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        },
+                        "of_trait": [
+                          "core",
+                          "cmp",
+                          "PartialOrd"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Rhs",
+                            "Default"
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "partial_cmp",
+                            "snippet": [
+                              "PartialOrd"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "alloc",
+                                                    "collections",
+                                                    "btree",
+                                                    "set_val",
+                                                    "SetValZST"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "other",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "alloc",
+                                                    "collections",
+                                                    "btree",
+                                                    "set_val",
+                                                    "SetValZST"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "option",
+                                            "Option"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "cmp",
+                                                "Ordering"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": []
+                                          }
+                                        ]
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "other",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "other"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "StructTuple": {
+                                                  "path": [
+                                                    "core",
+                                                    "option",
+                                                    "Option",
+                                                    "Some"
+                                                  ],
+                                                  "fields": [
+                                                    {
+                                                      "StructTuple": {
+                                                        "path": [
+                                                          "core",
+                                                          "cmp",
+                                                          "Ordering",
+                                                          "Equal"
+                                                        ],
+                                                        "fields": []
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "lt",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "le",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "gt",
+                            "snippet": null,
+                            "kind": "Default"
+                          },
+                          {
+                            "name": "ge",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "set_val",
+                              "SetValZST"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        },
+                        "of_trait": [
+                          "core",
+                          "hash",
+                          "Hash"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "hash",
+                            "snippet": [
+                              "Hash"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [
+                                      "__H"
+                                    ],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "alloc",
+                                                    "collections",
+                                                    "btree",
+                                                    "set_val",
+                                                    "SetValZST"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "state",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&mut"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Var",
+                                                "name": "__H"
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Tuple",
+                                        "tys": []
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "state",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "state"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Tuple": {
+                                                  "elements": []
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "hash_slice",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "set_val",
+                              "SetValZST"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        },
+                        "of_trait": [
+                          "core",
+                          "clone",
+                          "Clone"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "clone",
+                            "snippet": [
+                              "Clone"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Application",
+                                                "func": {
+                                                  "type": "Path",
+                                                  "path": [
+                                                    "alloc",
+                                                    "collections",
+                                                    "btree",
+                                                    "set_val",
+                                                    "SetValZST"
+                                                  ]
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            ]
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "alloc",
+                                            "collections",
+                                            "btree",
+                                            "set_val",
+                                            "SetValZST"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "StructTuple": {
+                                              "path": [
+                                                "alloc",
+                                                "collections",
+                                                "btree",
+                                                "set_val",
+                                                "SetValZST"
+                                              ],
+                                              "fields": []
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "clone_from",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "set_val",
+                              "SetValZST"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        },
+                        "of_trait": [
+                          "core",
+                          "default",
+                          "Default"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "default",
+                            "snippet": [
+                              "Default"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [],
+                                      "ret_ty": {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "alloc",
+                                            "collections",
+                                            "btree",
+                                            "set_val",
+                                            "SetValZST"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      },
+                                      "body": {
+                                        "StructTuple": {
+                                          "path": [
+                                            "alloc",
+                                            "collections",
+                                            "btree",
+                                            "set_val",
+                                            "SetValZST"
+                                          ],
+                                          "fields": []
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "Trait",
+                        "name": "IsSetVal",
+                        "path": [
+                          "alloc",
+                          "collections",
+                          "btree",
+                          "set_val",
+                          "IsSetVal"
+                        ],
+                        "const_params": [],
+                        "ty_params": [],
+                        "body": [
+                          [
+                            "is_set_val",
+                            {
+                              "Definition": {
+                                "const_params": [],
+                                "ty_params": [],
+                                "ty": {
+                                  "type": "Function",
+                                  "args": [],
+                                  "ret": {
+                                    "type": "Path",
+                                    "path": [
+                                      "bool"
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "V"
+                        ],
+                        "predicates": [],
+                        "self_ty": {
+                          "type": "Var",
+                          "name": "V"
+                        },
+                        "of_trait": [
+                          "alloc",
+                          "collections",
+                          "btree",
+                          "set_val",
+                          "IsSetVal"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "is_set_val",
+                            "snippet": [
+                              "    default fn is_set_val() -> bool {",
+                              "        false",
+                              "    }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [],
+                                      "ret_ty": {
+                                        "type": "Path",
+                                        "path": [
+                                          "bool"
+                                        ]
+                                      },
+                                      "body": {
+                                        "Literal": {
+                                          "Bool": false
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "file_name": "alloc/src/collections/btree/set_val.rs",
+                      "item": {
+                        "type": "TraitImpl",
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "alloc",
+                              "collections",
+                              "btree",
+                              "set_val",
+                              "SetValZST"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": []
+                        },
+                        "of_trait": [
+                          "alloc",
+                          "collections",
+                          "btree",
+                          "set_val",
+                          "IsSetVal"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "is_set_val",
+                            "snippet": [
+                              "    fn is_set_val() -> bool {",
+                              "        true",
+                              "    }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [],
+                                      "ret_ty": {
+                                        "type": "Path",
+                                        "path": [
+                                          "bool"
+                                        ]
+                                      },
+                                      "body": {
+                                        "Literal": {
+                                          "Bool": true
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

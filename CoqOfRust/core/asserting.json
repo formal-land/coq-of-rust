@@ -1,0 +1,1893 @@
+[
+  {
+    "file_name": "core/src/asserting.rs",
+    "item": {
+      "type": "Module",
+      "name": "asserting",
+      "body": [
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "TypeStructTuple",
+            "name": "TryCaptureWithoutDebug",
+            "const_params": [],
+            "ty_params": [],
+            "fields": []
+          }
+        },
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "Trait",
+            "name": "TryCaptureGeneric",
+            "path": [
+              "core",
+              "asserting",
+              "TryCaptureGeneric"
+            ],
+            "const_params": [],
+            "ty_params": [
+              "E",
+              "M_"
+            ],
+            "body": [
+              [
+                "try_capture",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "Self"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "core",
+                                  "asserting",
+                                  "Capture"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Var",
+                                  "name": "E"
+                                },
+                                {
+                                  "type": "Var",
+                                  "name": "M_"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "ret": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "E"
+            ],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "&"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Application",
+                  "func": {
+                    "type": "Path",
+                    "path": [
+                      "core",
+                      "asserting",
+                      "Wrapper"
+                    ]
+                  },
+                  "consts": [],
+                  "tys": [
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "&"
+                        ]
+                      },
+                      "consts": [],
+                      "tys": [
+                        {
+                          "type": "Var",
+                          "name": "E"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "of_trait": [
+              "core",
+              "asserting",
+              "TryCaptureGeneric"
+            ],
+            "trait_ty_params": [
+              [
+                "E",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "E"
+                  }
+                }
+              ],
+              [
+                "M",
+                {
+                  "RequiredValue": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "asserting",
+                        "TryCaptureWithoutDebug"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "try_capture",
+                "snippet": [
+                  "    fn try_capture(&self, _: &mut Capture<E, TryCaptureWithoutDebug>) {}"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "asserting",
+                                            "Wrapper"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "&"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "type": "Var",
+                                                "name": "E"
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "β1",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "asserting",
+                                        "Capture"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "E"
+                                      },
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "asserting",
+                                            "TryCaptureWithoutDebug"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              "Wild"
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Path",
+                            "path": [
+                              "unit"
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "β1",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "β1"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Match": {
+                                      "scrutinee": {
+                                        "LocalVar": "β1"
+                                      },
+                                      "arms": [
+                                        {
+                                          "Lambda": {
+                                            "args": [
+                                              [
+                                                "γ",
+                                                null
+                                              ]
+                                            ],
+                                            "body": {
+                                              "Tuple": {
+                                                "elements": []
+                                              }
+                                            },
+                                            "is_for_match": true,
+                                            "is_internal": true
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "E"
+            ],
+            "predicates": [],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "asserting",
+                  "Capture"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "E"
+                },
+                {
+                  "type": "Application",
+                  "func": {
+                    "type": "Path",
+                    "path": [
+                      "core",
+                      "asserting",
+                      "TryCaptureWithoutDebug"
+                    ]
+                  },
+                  "consts": [],
+                  "tys": []
+                }
+              ]
+            },
+            "of_trait": [
+              "core",
+              "fmt",
+              "Debug"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "fmt",
+                "snippet": [
+                  "    fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), core::fmt::Error> {",
+                  "        f.write_str(\"N/A\")",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "asserting",
+                                        "Capture"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "E"
+                                      },
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "asserting",
+                                            "TryCaptureWithoutDebug"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "f",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "fmt",
+                                        "Formatter"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "result",
+                                "Result"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Tuple",
+                                "tys": []
+                              },
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "fmt",
+                                    "Error"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "f",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "f"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "GetAssociatedFunction": {
+                                          "ty": {
+                                            "type": "Application",
+                                            "func": {
+                                              "type": "Path",
+                                              "path": [
+                                                "core",
+                                                "fmt",
+                                                "Formatter"
+                                              ]
+                                            },
+                                            "consts": [],
+                                            "tys": []
+                                          },
+                                          "func": "write_str",
+                                          "generic_tys": []
+                                        }
+                                      },
+                                      "args": [
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "f"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Literal": {
+                                                  "String": "N/A"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Closure"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "TypeStructTuple",
+            "name": "TryCaptureWithDebug",
+            "const_params": [],
+            "ty_params": [],
+            "fields": []
+          }
+        },
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "Trait",
+            "name": "TryCapturePrintable",
+            "path": [
+              "core",
+              "asserting",
+              "TryCapturePrintable"
+            ],
+            "const_params": [],
+            "ty_params": [
+              "E",
+              "M_"
+            ],
+            "body": [
+              [
+                "try_capture",
+                {
+                  "Definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "ty": {
+                      "type": "Function",
+                      "args": [
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "Self"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "&mut"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "core",
+                                  "asserting",
+                                  "Capture"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Var",
+                                  "name": "E"
+                                },
+                                {
+                                  "type": "Var",
+                                  "name": "M_"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "ret": {
+                        "type": "Path",
+                        "path": [
+                          "unit"
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "E"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "asserting",
+                    "Printable"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "E"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "asserting",
+                  "Wrapper"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Application",
+                  "func": {
+                    "type": "Path",
+                    "path": [
+                      "&"
+                    ]
+                  },
+                  "consts": [],
+                  "tys": [
+                    {
+                      "type": "Var",
+                      "name": "E"
+                    }
+                  ]
+                }
+              ]
+            },
+            "of_trait": [
+              "core",
+              "asserting",
+              "TryCapturePrintable"
+            ],
+            "trait_ty_params": [
+              [
+                "E",
+                {
+                  "RequiredValue": {
+                    "type": "Var",
+                    "name": "E"
+                  }
+                }
+              ],
+              [
+                "M",
+                {
+                  "RequiredValue": {
+                    "type": "Application",
+                    "func": {
+                      "type": "Path",
+                      "path": [
+                        "core",
+                        "asserting",
+                        "TryCaptureWithDebug"
+                      ]
+                    },
+                    "consts": [],
+                    "tys": []
+                  }
+                }
+              ]
+            ],
+            "items": [
+              {
+                "name": "try_capture",
+                "snippet": [
+                  "    fn try_capture(&self, to: &mut Capture<E, TryCaptureWithDebug>) {",
+                  "        to.elem = Some(*self.0);",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "asserting",
+                                        "Wrapper"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "&"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "type": "Var",
+                                            "name": "E"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "to",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "asserting",
+                                        "Capture"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "E"
+                                      },
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "asserting",
+                                            "TryCaptureWithDebug"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Path",
+                            "path": [
+                              "unit"
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "to",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "to"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.read"
+                                      },
+                                      "args": [
+                                        {
+                                          "Let": {
+                                            "name": null,
+                                            "is_user": true,
+                                            "init": {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.write"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "to"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        {
+                                                          "InternalString": "core::asserting::Capture"
+                                                        },
+                                                        {
+                                                          "InternalString": "elem"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  {
+                                                    "StructTuple": {
+                                                      "path": [
+                                                        "core",
+                                                        "option",
+                                                        "Option",
+                                                        "Some"
+                                                      ],
+                                                      "fields": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.SubPointer.get_struct_tuple_field"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.read"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "LocalVar": "self"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          },
+                                                                          {
+                                                                            "InternalString": "core::asserting::Wrapper"
+                                                                          },
+                                                                          {
+                                                                            "LocalVar": "0"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            "body": {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.alloc"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Tuple": {
+                                                      "elements": []
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "E"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "asserting",
+                    "Printable"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "E"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "asserting",
+                  "Capture"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "E"
+                },
+                {
+                  "type": "Application",
+                  "func": {
+                    "type": "Path",
+                    "path": [
+                      "core",
+                      "asserting",
+                      "TryCaptureWithDebug"
+                    ]
+                  },
+                  "consts": [],
+                  "tys": []
+                }
+              ]
+            },
+            "of_trait": [
+              "core",
+              "fmt",
+              "Debug"
+            ],
+            "trait_ty_params": [],
+            "items": [
+              {
+                "name": "fmt",
+                "snippet": [
+                  "    fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), core::fmt::Error> {",
+                  "        match self.elem {",
+                  "            None => f.write_str(\"N/A\"),",
+                  "            Some(ref value) => Debug::fmt(value, f),",
+                  "        }",
+                  "    }"
+                ],
+                "kind": {
+                  "RequiredValue": {
+                    "Definition": {
+                      "definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "signature_and_body": {
+                          "args": [
+                            [
+                              "self",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "asserting",
+                                        "Capture"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Var",
+                                        "name": "E"
+                                      },
+                                      {
+                                        "type": "Application",
+                                        "func": {
+                                          "type": "Path",
+                                          "path": [
+                                            "core",
+                                            "asserting",
+                                            "TryCaptureWithDebug"
+                                          ]
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              null
+                            ],
+                            [
+                              "f",
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "&mut"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "fmt",
+                                        "Formatter"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  }
+                                ]
+                              },
+                              null
+                            ]
+                          ],
+                          "ret_ty": {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "result",
+                                "Result"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "type": "Tuple",
+                                "tys": []
+                              },
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "core",
+                                    "fmt",
+                                    "Error"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            ]
+                          },
+                          "body": {
+                            "Let": {
+                              "name": "self",
+                              "is_user": false,
+                              "init": {
+                                "Call": {
+                                  "func": {
+                                    "LocalVar": "M.alloc"
+                                  },
+                                  "args": [
+                                    {
+                                      "LocalVar": "self"
+                                    }
+                                  ],
+                                  "kind": "Effectful"
+                                }
+                              },
+                              "body": {
+                                "Let": {
+                                  "name": "f",
+                                  "is_user": false,
+                                  "init": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "f"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "body": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.read"
+                                      },
+                                      "args": [
+                                        {
+                                          "Match": {
+                                            "scrutinee": {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.read"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  {
+                                                    "InternalString": "core::asserting::Capture"
+                                                  },
+                                                  {
+                                                    "InternalString": "elem"
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            "arms": [
+                                              {
+                                                "Lambda": {
+                                                  "args": [
+                                                    [
+                                                      "γ",
+                                                      null
+                                                    ]
+                                                  ],
+                                                  "body": {
+                                                    "Let": {
+                                                      "name": null,
+                                                      "is_user": false,
+                                                      "init": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.is_struct_tuple"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "LocalVar": "γ"
+                                                            },
+                                                            {
+                                                              "InternalString": "core::option::Option::None"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      },
+                                                      "body": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.alloc"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "Call": {
+                                                                "func": {
+                                                                  "GetAssociatedFunction": {
+                                                                    "ty": {
+                                                                      "type": "Application",
+                                                                      "func": {
+                                                                        "type": "Path",
+                                                                        "path": [
+                                                                          "core",
+                                                                          "fmt",
+                                                                          "Formatter"
+                                                                        ]
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": []
+                                                                    },
+                                                                    "func": "write_str",
+                                                                    "generic_tys": []
+                                                                  }
+                                                                },
+                                                                "args": [
+                                                                  {
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "LocalVar": "M.read"
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "LocalVar": "f"
+                                                                        }
+                                                                      ],
+                                                                      "kind": "Effectful"
+                                                                    }
+                                                                  },
+                                                                  {
+                                                                    "Call": {
+                                                                      "func": {
+                                                                        "LocalVar": "M.read"
+                                                                      },
+                                                                      "args": [
+                                                                        {
+                                                                          "Literal": {
+                                                                            "String": "N/A"
+                                                                          }
+                                                                        }
+                                                                      ],
+                                                                      "kind": "Effectful"
+                                                                    }
+                                                                  }
+                                                                ],
+                                                                "kind": "Closure"
+                                                              }
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  "is_for_match": true,
+                                                  "is_internal": true
+                                                }
+                                              },
+                                              {
+                                                "Lambda": {
+                                                  "args": [
+                                                    [
+                                                      "γ",
+                                                      null
+                                                    ]
+                                                  ],
+                                                  "body": {
+                                                    "Let": {
+                                                      "name": "γ0_0",
+                                                      "is_user": false,
+                                                      "init": {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.SubPointer.get_struct_tuple_field"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "LocalVar": "γ"
+                                                            },
+                                                            {
+                                                              "InternalString": "core::option::Option::Some"
+                                                            },
+                                                            {
+                                                              "InternalInteger": 0
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      },
+                                                      "body": {
+                                                        "Let": {
+                                                          "name": "value",
+                                                          "is_user": false,
+                                                          "init": {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.alloc"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "γ0_0"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          },
+                                                          "body": {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.alloc"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "GetTraitMethod": {
+                                                                        "trait_name": [
+                                                                          "core",
+                                                                          "fmt",
+                                                                          "Debug"
+                                                                        ],
+                                                                        "self_ty": {
+                                                                          "type": "Var",
+                                                                          "name": "E"
+                                                                        },
+                                                                        "trait_tys": [],
+                                                                        "method_name": "fmt",
+                                                                        "generic_tys": []
+                                                                      }
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.read"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "LocalVar": "value"
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "Call": {
+                                                                          "func": {
+                                                                            "LocalVar": "M.read"
+                                                                          },
+                                                                          "args": [
+                                                                            {
+                                                                              "LocalVar": "f"
+                                                                            }
+                                                                          ],
+                                                                          "kind": "Effectful"
+                                                                        }
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Closure"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  "is_for_match": true,
+                                                  "is_internal": true
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "TypeStructStruct",
+            "name": "Capture",
+            "const_params": [],
+            "ty_params": [
+              "E",
+              "M_"
+            ],
+            "fields": [
+              [
+                "elem",
+                {
+                  "type": "Application",
+                  "func": {
+                    "type": "Path",
+                    "path": [
+                      "core",
+                      "option",
+                      "Option"
+                    ]
+                  },
+                  "consts": [],
+                  "tys": [
+                    {
+                      "type": "Var",
+                      "name": "E"
+                    }
+                  ]
+                }
+              ],
+              [
+                "phantom",
+                {
+                  "type": "Application",
+                  "func": {
+                    "type": "Path",
+                    "path": [
+                      "core",
+                      "marker",
+                      "PhantomData"
+                    ]
+                  },
+                  "consts": [],
+                  "tys": [
+                    {
+                      "type": "Var",
+                      "name": "M_"
+                    }
+                  ]
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "Impl",
+            "generic_consts": [],
+            "generic_tys": [
+              "M_",
+              "T"
+            ],
+            "self_ty": {
+              "type": "Application",
+              "func": {
+                "type": "Path",
+                "path": [
+                  "core",
+                  "asserting",
+                  "Capture"
+                ]
+              },
+              "consts": [],
+              "tys": [
+                {
+                  "type": "Var",
+                  "name": "M_"
+                },
+                {
+                  "type": "Var",
+                  "name": "T"
+                }
+              ]
+            },
+            "items": [
+              {
+                "name": "new",
+                "snippet": [
+                  "    pub const fn new() -> Self {",
+                  "        Self { elem: None, phantom: PhantomData }",
+                  "    }"
+                ],
+                "kind": {
+                  "Definition": {
+                    "definition": {
+                      "const_params": [],
+                      "ty_params": [],
+                      "signature_and_body": {
+                        "args": [],
+                        "ret_ty": {
+                          "type": "Application",
+                          "func": {
+                            "type": "Path",
+                            "path": [
+                              "core",
+                              "asserting",
+                              "Capture"
+                            ]
+                          },
+                          "consts": [],
+                          "tys": [
+                            {
+                              "type": "Var",
+                              "name": "M_"
+                            },
+                            {
+                              "type": "Var",
+                              "name": "T"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "StructStruct": {
+                            "path": [
+                              "core",
+                              "asserting",
+                              "Capture"
+                            ],
+                            "fields": [
+                              [
+                                "elem",
+                                {
+                                  "StructTuple": {
+                                    "path": [
+                                      "core",
+                                      "option",
+                                      "Option",
+                                      "None"
+                                    ],
+                                    "fields": []
+                                  }
+                                }
+                              ],
+                              [
+                                "phantom",
+                                {
+                                  "StructTuple": {
+                                    "path": [
+                                      "core",
+                                      "marker",
+                                      "PhantomData"
+                                    ],
+                                    "fields": []
+                                  }
+                                }
+                              ]
+                            ],
+                            "base": null
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "TypeStructTuple",
+            "name": "Wrapper",
+            "const_params": [],
+            "ty_params": [
+              "T"
+            ],
+            "fields": [
+              {
+                "type": "Var",
+                "name": "T"
+              }
+            ]
+          }
+        },
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "Trait",
+            "name": "Printable",
+            "path": [
+              "core",
+              "asserting",
+              "Printable"
+            ],
+            "const_params": [],
+            "ty_params": [],
+            "body": []
+          }
+        },
+        {
+          "file_name": "core/src/asserting.rs",
+          "item": {
+            "type": "TraitImpl",
+            "generic_consts": [],
+            "generic_tys": [
+              "T"
+            ],
+            "predicates": [
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "marker",
+                    "Copy"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              },
+              {
+                "bound": {
+                  "name": [
+                    "core",
+                    "fmt",
+                    "Debug"
+                  ],
+                  "ty_params": []
+                },
+                "ty": {
+                  "type": "Var",
+                  "name": "T"
+                }
+              }
+            ],
+            "self_ty": {
+              "type": "Var",
+              "name": "T"
+            },
+            "of_trait": [
+              "core",
+              "asserting",
+              "Printable"
+            ],
+            "trait_ty_params": [],
+            "items": []
+          }
+        }
+      ]
+    }
+  }
+]

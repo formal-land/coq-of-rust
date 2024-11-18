@@ -1,0 +1,651 @@
+[
+  {
+    "file_name": "alloc/src/fmt.rs",
+    "item": {
+      "type": "Module",
+      "name": "fmt",
+      "body": [
+        {
+          "file_name": "alloc/src/fmt.rs",
+          "item": {
+            "type": "Definition",
+            "name": "format",
+            "path": [
+              "alloc",
+              "fmt",
+              "format"
+            ],
+            "snippet": [
+              "pub fn format(args: Arguments<'_>) -> string::String {",
+              "    fn format_inner(args: Arguments<'_>) -> string::String {",
+              "        let capacity = args.estimated_capacity();",
+              "        let mut output = string::String::with_capacity(capacity);",
+              "        output",
+              "            .write_fmt(args)",
+              "            .expect(\"a formatting trait implementation returned an error when the underlying stream did not\");",
+              "        output",
+              "    }",
+              "",
+              "    args.as_str().map_or_else(|| format_inner(args), crate::borrow::ToOwned::to_owned)",
+              "}"
+            ],
+            "definition": {
+              "const_params": [],
+              "ty_params": [],
+              "signature_and_body": {
+                "args": [
+                  [
+                    "args",
+                    {
+                      "type": "Application",
+                      "func": {
+                        "type": "Path",
+                        "path": [
+                          "core",
+                          "fmt",
+                          "Arguments"
+                        ]
+                      },
+                      "consts": [],
+                      "tys": []
+                    },
+                    null
+                  ]
+                ],
+                "ret_ty": {
+                  "type": "Application",
+                  "func": {
+                    "type": "Path",
+                    "path": [
+                      "alloc",
+                      "string",
+                      "String"
+                    ]
+                  },
+                  "consts": [],
+                  "tys": []
+                },
+                "body": {
+                  "Let": {
+                    "name": "args",
+                    "is_user": false,
+                    "init": {
+                      "Call": {
+                        "func": {
+                          "LocalVar": "M.alloc"
+                        },
+                        "args": [
+                          {
+                            "LocalVar": "args"
+                          }
+                        ],
+                        "kind": "Effectful"
+                      }
+                    },
+                    "body": {
+                      "Call": {
+                        "func": {
+                          "GetAssociatedFunction": {
+                            "ty": {
+                              "type": "Application",
+                              "func": {
+                                "type": "Path",
+                                "path": [
+                                  "core",
+                                  "option",
+                                  "Option"
+                                ]
+                              },
+                              "consts": [],
+                              "tys": [
+                                {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "&"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "type": "Path",
+                                      "path": [
+                                        "str"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            "func": "map_or_else",
+                            "generic_tys": [
+                              {
+                                "type": "Application",
+                                "func": {
+                                  "type": "Path",
+                                  "path": [
+                                    "alloc",
+                                    "string",
+                                    "String"
+                                  ]
+                                },
+                                "consts": [],
+                                "tys": []
+                              },
+                              {
+                                "type": "Function",
+                                "args": [
+                                  {
+                                    "type": "Tuple",
+                                    "tys": []
+                                  }
+                                ],
+                                "ret": {
+                                  "type": "Application",
+                                  "func": {
+                                    "type": "Path",
+                                    "path": [
+                                      "alloc",
+                                      "string",
+                                      "String"
+                                    ]
+                                  },
+                                  "consts": [],
+                                  "tys": []
+                                }
+                              },
+                              {
+                                "type": "Function",
+                                "args": [
+                                  {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "&"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "type": "Path",
+                                        "path": [
+                                          "str"
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "ret": {
+                                  "type": "Associated"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "args": [
+                          {
+                            "Call": {
+                              "func": {
+                                "GetAssociatedFunction": {
+                                  "ty": {
+                                    "type": "Application",
+                                    "func": {
+                                      "type": "Path",
+                                      "path": [
+                                        "core",
+                                        "fmt",
+                                        "Arguments"
+                                      ]
+                                    },
+                                    "consts": [],
+                                    "tys": []
+                                  },
+                                  "func": "as_str",
+                                  "generic_tys": []
+                                }
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "args"
+                                }
+                              ],
+                              "kind": "Closure"
+                            }
+                          },
+                          {
+                            "Lambda": {
+                              "args": [
+                                [
+                                  "α0",
+                                  {
+                                    "type": "Path",
+                                    "path": [
+                                      "unit"
+                                    ]
+                                  }
+                                ]
+                              ],
+                              "body": {
+                                "Match": {
+                                  "scrutinee": {
+                                    "Call": {
+                                      "func": {
+                                        "LocalVar": "M.alloc"
+                                      },
+                                      "args": [
+                                        {
+                                          "LocalVar": "α0"
+                                        }
+                                      ],
+                                      "kind": "Effectful"
+                                    }
+                                  },
+                                  "arms": [
+                                    {
+                                      "Lambda": {
+                                        "args": [
+                                          [
+                                            "γ",
+                                            null
+                                          ]
+                                        ],
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "GetFunction": {
+                                                "func": [
+                                                  "alloc",
+                                                  "fmt",
+                                                  "format.format_inner"
+                                                ],
+                                                "generic_tys": []
+                                              }
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "args"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Closure"
+                                          }
+                                        },
+                                        "is_for_match": true,
+                                        "is_internal": true
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                              "is_for_match": false,
+                              "is_internal": false
+                            }
+                          },
+                          {
+                            "GetTraitMethod": {
+                              "trait_name": [
+                                "alloc",
+                                "borrow",
+                                "ToOwned"
+                              ],
+                              "self_ty": {
+                                "type": "Path",
+                                "path": [
+                                  "str"
+                                ]
+                              },
+                              "trait_tys": [],
+                              "method_name": "to_owned",
+                              "generic_tys": []
+                            }
+                          }
+                        ],
+                        "kind": "Closure"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "file_name": "alloc/src/fmt.rs",
+          "item": {
+            "type": "Module",
+            "name": "format",
+            "body": [
+              {
+                "file_name": "alloc/src/fmt.rs",
+                "item": {
+                  "type": "Definition",
+                  "name": "format_inner",
+                  "path": [
+                    "alloc",
+                    "fmt",
+                    "format",
+                    "format_inner"
+                  ],
+                  "snippet": [
+                    "    fn format_inner(args: Arguments<'_>) -> string::String {",
+                    "        let capacity = args.estimated_capacity();",
+                    "        let mut output = string::String::with_capacity(capacity);",
+                    "        output",
+                    "            .write_fmt(args)",
+                    "            .expect(\"a formatting trait implementation returned an error when the underlying stream did not\");",
+                    "        output",
+                    "    }"
+                  ],
+                  "definition": {
+                    "const_params": [],
+                    "ty_params": [],
+                    "signature_and_body": {
+                      "args": [
+                        [
+                          "args",
+                          {
+                            "type": "Application",
+                            "func": {
+                              "type": "Path",
+                              "path": [
+                                "core",
+                                "fmt",
+                                "Arguments"
+                              ]
+                            },
+                            "consts": [],
+                            "tys": []
+                          },
+                          null
+                        ]
+                      ],
+                      "ret_ty": {
+                        "type": "Application",
+                        "func": {
+                          "type": "Path",
+                          "path": [
+                            "alloc",
+                            "string",
+                            "String"
+                          ]
+                        },
+                        "consts": [],
+                        "tys": []
+                      },
+                      "body": {
+                        "Let": {
+                          "name": "args",
+                          "is_user": false,
+                          "init": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.alloc"
+                              },
+                              "args": [
+                                {
+                                  "LocalVar": "args"
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          },
+                          "body": {
+                            "Call": {
+                              "func": {
+                                "LocalVar": "M.read"
+                              },
+                              "args": [
+                                {
+                                  "Let": {
+                                    "name": "capacity",
+                                    "is_user": true,
+                                    "init": {
+                                      "Call": {
+                                        "func": {
+                                          "LocalVar": "M.alloc"
+                                        },
+                                        "args": [
+                                          {
+                                            "Call": {
+                                              "func": {
+                                                "GetAssociatedFunction": {
+                                                  "ty": {
+                                                    "type": "Application",
+                                                    "func": {
+                                                      "type": "Path",
+                                                      "path": [
+                                                        "core",
+                                                        "fmt",
+                                                        "Arguments"
+                                                      ]
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  },
+                                                  "func": "estimated_capacity",
+                                                  "generic_tys": []
+                                                }
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "args"
+                                                }
+                                              ],
+                                              "kind": "Closure"
+                                            }
+                                          }
+                                        ],
+                                        "kind": "Effectful"
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "output",
+                                        "is_user": true,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "type": "Application",
+                                                        "func": {
+                                                          "type": "Path",
+                                                          "path": [
+                                                            "alloc",
+                                                            "string",
+                                                            "String"
+                                                          ]
+                                                        },
+                                                        "consts": [],
+                                                        "tys": []
+                                                      },
+                                                      "func": "with_capacity",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "capacity"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Let": {
+                                            "name": null,
+                                            "is_user": true,
+                                            "init": {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.alloc"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetAssociatedFunction": {
+                                                          "ty": {
+                                                            "type": "Application",
+                                                            "func": {
+                                                              "type": "Path",
+                                                              "path": [
+                                                                "core",
+                                                                "result",
+                                                                "Result"
+                                                              ]
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "type": "Tuple",
+                                                                "tys": []
+                                                              },
+                                                              {
+                                                                "type": "Application",
+                                                                "func": {
+                                                                  "type": "Path",
+                                                                  "path": [
+                                                                    "core",
+                                                                    "fmt",
+                                                                    "Error"
+                                                                  ]
+                                                                },
+                                                                "consts": [],
+                                                                "tys": []
+                                                              }
+                                                            ]
+                                                          },
+                                                          "func": "expect",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetTraitMethod": {
+                                                                "trait_name": [
+                                                                  "core",
+                                                                  "fmt",
+                                                                  "Write"
+                                                                ],
+                                                                "self_ty": {
+                                                                  "type": "Application",
+                                                                  "func": {
+                                                                    "type": "Path",
+                                                                    "path": [
+                                                                      "alloc",
+                                                                      "string",
+                                                                      "String"
+                                                                    ]
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                },
+                                                                "trait_tys": [],
+                                                                "method_name": "write_fmt",
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "LocalVar": "output"
+                                                              },
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "args"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        },
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Literal": {
+                                                                  "String": "a formatting trait implementation returned an error when the underlying stream did not"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            "body": {
+                                              "LocalVar": "output"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              ],
+                              "kind": "Effectful"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

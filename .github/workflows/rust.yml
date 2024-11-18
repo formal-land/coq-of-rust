@@ -66,8 +66,8 @@ jobs:
             cp ../../../../rust-toolchain ./
             cargo build
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/alloc/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/alloc/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ../../../..
           endGroup
           startGroup "Translate the core library"
@@ -75,8 +75,8 @@ jobs:
             cp ../../../../rust-toolchain ./
             cargo build
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/core/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/core/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ../../../..
           endGroup
           startGroup "Save space"
@@ -128,38 +128,38 @@ jobs:
             cd crates
             # move-abstract-stack
             cd move-abstract-stack
-            cargo coq-of-rust
+            cargo coq-of-rust --with-json
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/move_sui/translations/move_abstract_stack/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/move_sui/translations/move_abstract_stack/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ..
             # move-binary-format
             cd move-binary-format
-            cargo coq-of-rust
+            cargo coq-of-rust --with-json
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/move_sui/translations/move_binary_format/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/move_sui/translations/move_binary_format/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ..
             # move-bytecode-verifier
             cd move-bytecode-verifier
-            cargo coq-of-rust
+            cargo coq-of-rust --with-json
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/move_sui/translations/move_bytecode_verifier/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/move_sui/translations/move_bytecode_verifier/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ..
             # move-bytecode-verifier-meter
             cd move-bytecode-verifier-meter
-            cargo coq-of-rust
+            cargo coq-of-rust --with-json
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/move_sui/translations/move_bytecode_verifier_meter/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/move_sui/translations/move_bytecode_verifier_meter/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ..
             # move-core-types
             cd move-core-types
-            cargo coq-of-rust
+            cargo coq-of-rust --with-json
             touch src/lib.rs
-            cargo coq-of-rust
-            rsync -acv src/ ../../../../CoqOfRust/move_sui/translations/move_core_types/ --include='*/' --include='*.v' --exclude='*'
+            cargo coq-of-rust --with-json
+            rsync -acv src/ ../../../../CoqOfRust/move_sui/translations/move_core_types/ --include='*/' --include='*.v' --include='*.json' --exclude='*'
             cd ..
             cd ../../..
           endGroup
