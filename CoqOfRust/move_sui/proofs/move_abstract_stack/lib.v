@@ -155,7 +155,7 @@ Module AbstractStack.
         cbn in *. lia. }
     }
   Qed.
-  
+
   Lemma pop_any_n_is_valid {A : Set} `{Eq.Trait A}
       (n : Z) (stack : AbstractStack.t A)
       (H_n : Integer.Valid.t IntegerKind.U64 n)
@@ -170,8 +170,10 @@ Module AbstractStack.
   Proof.
     unfold AbstractStack.pop_any_n.
     destruct (AbstractStack.is_empty stack || (n >? stack.(AbstractStack.len))) eqn:H_or.
-    simpl. reflexivity.
-    destruct (AbstractStack.pop_any_n_helper stack.(AbstractStack.values) n) as [values'|] eqn:H_pop_any_n_helper.
+    simpl; reflexivity.
+    pose proof (pop_any_n_helper_is_valid stack.(AbstractStack.values) n) as H_pop_any_n_helper.
+    destruct (AbstractStack.pop_any_n_helper stack.(AbstractStack.values) n) as [values'|]; cbn; [|trivial].
+    constructor; cbn.
   Admitted.
 
   Lemma flatten_push_n {A : Set} `{Eq.Trait A} (item : A) (n : Z) (stack : AbstractStack.t A) :
