@@ -12,12 +12,18 @@ Module AbstractStack.
   Definition get_length {A : Set} (stack : AbstractStack.t A) : Z :=
     List.fold_right (fun '(n, _) acc => n + acc)%Z 0 stack.(AbstractStack.values).
 
-  Module Valid.
-    Record t {A : Set} (stack : AbstractStack.t A) : Prop := {
-      values :
+  Module Stack.
+    Module Valid.
+      Definition t {A : Set} (stack : list (Z * A)) : Prop :=
         List.Forall
           (fun '(n, _) => Integer.Valid.t IntegerKind.U64 n)
-          stack.(AbstractStack.values);
+          stack.
+    End Valid.
+  End Stack.
+
+  Module Valid.
+    Record t {A : Set} (stack : AbstractStack.t A) : Prop := {
+      values : Stack.Valid.t stack.(AbstractStack.values);
       len :
         Integer.Valid.t IntegerKind.U64 stack.(AbstractStack.len) /\
         stack.(AbstractStack.len) = get_length stack;
@@ -123,6 +129,33 @@ Module AbstractStack.
     { assumption. }
   Qed.
 
+  Lemma pop_any_n_helper_is_valid {A : Set}
+    (values : list (Z * A)) (rem : Z)
+    (H_values : AbstractStack.Stack.Valid.t values)
+    (*Rust lib.rs : while rem > 0 { *)
+    (H_rem : rem >= 0) :
+    match AbstractStack.pop_any_n_helper values rem with
+    | Panic.Value values' =>
+      AbstractStack.Stack.Valid.t values'
+    | Panic.Panic _ =>
+      True
+    end.
+  Proof.
+    revert rem H_rem.
+    induction values; intros; cbn.
+    { destruct (rem >? 0); cbn; trivial. }
+    { unfold Stack.Valid.t in H_values.
+      inversion H_values.
+      destruct (rem >? 0); cbn; trivial.
+      destruct a as [count last].
+      destruct (count <=? rem) eqn:?; cbn; trivial.
+      { apply IHvalues; [trivial|lia]. }
+      { constructor; trivial.
+        unfold Integer.Valid.t in *.
+        cbn in *. lia. }
+    }
+  Qed.
+  
   Lemma pop_any_n_is_valid {A : Set} `{Eq.Trait A}
       (n : Z) (stack : AbstractStack.t A)
       (H_n : Integer.Valid.t IntegerKind.U64 n)
@@ -138,7 +171,7 @@ Module AbstractStack.
     unfold AbstractStack.pop_any_n.
     destruct (AbstractStack.is_empty stack || (n >? stack.(AbstractStack.len))) eqn:H_or.
     simpl. reflexivity.
-    (* Stuck on AbstractStack.pop_any_n_helper Fixpoint, (recursivity) *)
+    destruct (AbstractStack.pop_any_n_helper stack.(AbstractStack.values) n) as [values'|] eqn:H_pop_any_n_helper.
   Admitted.
 
   Lemma flatten_push_n {A : Set} `{Eq.Trait A} (item : A) (n : Z) (stack : AbstractStack.t A) :
