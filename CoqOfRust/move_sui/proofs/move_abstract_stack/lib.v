@@ -138,7 +138,7 @@ Module AbstractStack.
     unfold AbstractStack.pop_any_n.
     destruct (AbstractStack.is_empty stack || (n >? stack.(AbstractStack.len))) eqn:H_or.
     simpl. reflexivity.
-    destruct stack as [values len].
+    (* Stuck on AbstractStack.pop_any_n_helper Fixpoint, (recursivity) *)
   Admitted.
 
   Lemma flatten_push_n {A : Set} `{Eq.Trait A} (item : A) (n : Z) (stack : AbstractStack.t A) :
