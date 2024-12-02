@@ -66,10 +66,11 @@ Module AbstractStack.
     { unfold "liftS!", "liftS!of!", "liftS!of?", StatePanic.bind; cbn.
       destruct H.(Eq.eqb); cbn.
       { constructor; cbn.
-        { inversion_clear H_values.
-          constructor; [|assumption].
-          (* TODO *)
-          admit.
+        {
+          inversion_clear H_values.
+          constructor.
+          { unfold Integer.Valid.t; cbn; lia. }
+          { assumption. }
         }
         { split; [hauto lq: on|].
           (* FIX *)
