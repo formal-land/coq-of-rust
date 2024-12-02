@@ -31,10 +31,15 @@ Ltac step :=
     destruct_match_in e
   end.
 
+Ltac Zify.zify_pre_hook ::=
+  autounfold with coq_of_rust_z in *;
+  trivial.
+
 Module Integer.
   Module Valid.
     Definition t (kind : IntegerKind.t) (z : Z) : Prop :=
       Integer.min kind <= z <= Integer.max kind.
+    Global Hint Unfold t : coq_of_rust_z.
   End Valid.
 
   Lemma normalize_wrap_is_valid (kind : IntegerKind.t) (z : Z) :
