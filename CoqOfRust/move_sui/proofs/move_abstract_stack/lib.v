@@ -8,10 +8,6 @@ Require Import CoqOfRust.move_sui.simulations.move_abstract_stack.lib.
 Import simulations.M.Notations.
 
 Module AbstractStack.
-  (** The length as computed by summing all the repetition numbers *)
-  Definition get_length {A : Set} (stack : AbstractStack.t A) : Z :=
-    List.fold_right (fun '(n, _) acc => n + acc)%Z 0 stack.(AbstractStack.values).
-
   Module Stack.
     Module Valid.
       Definition t {A : Set} (stack : list (Z * A)) : Prop :=
@@ -19,7 +15,14 @@ Module AbstractStack.
           (fun '(n, _) => Integer.Valid.t IntegerKind.U64 n)
           stack.
     End Valid.
+
+    Definition get_length {A : Set} (stack : list (Z * A)) : Z :=
+      List.fold_right (fun '(n, _) acc => n + acc)%Z 0 stack.
   End Stack.
+
+  (** The length as computed by summing all the repetition numbers *)
+  Definition get_length {A : Set} (stack : AbstractStack.t A) : Z :=
+    Stack.get_length stack.(AbstractStack.values).
 
   Module Valid.
     Record t {A : Set} (stack : AbstractStack.t A) : Prop := {
@@ -156,6 +159,38 @@ Module AbstractStack.
     }
   Qed.
 
+  Lemma get_length_pop_any_n_helper {A : Set}
+    (values : list (Z * A)) (rem : Z)
+    (H_values : AbstractStack.Stack.Valid.t values)
+    (H_rem : rem >= 0) :
+    match AbstractStack.pop_any_n_helper values rem with
+    | Panic.Value values' =>
+      AbstractStack.Stack.get_length values' = AbstractStack.Stack.get_length values - rem
+    | Panic.Panic _ => True
+    end.
+  Proof.
+    revert rem H_rem.
+    induction values as [|[count last] values]; intros; cbn.
+    { step.
+      { cbn. trivial. }
+      { cbn. lia. }
+    }
+    { step; cbn.
+      { step; cbn.
+        {
+          assert(H_values' : Stack.Valid.t values). {
+            best.
+          }
+          pose proof (IHvalues H_values' (rem - count)) as IHValues'.
+          step; [|trivial].
+          rewrite IHValues'; unfold Stack.get_length; lia.
+        }
+        { lia. }
+      }
+      { lia. }
+    }
+  Qed.
+
   Lemma pop_any_n_is_valid {A : Set} `{Eq.Trait A}
       (n : Z) (stack : AbstractStack.t A)
       (H_n : Integer.Valid.t IntegerKind.U64 n)
@@ -169,12 +204,39 @@ Module AbstractStack.
     end.
   Proof.
     unfold AbstractStack.pop_any_n.
-    destruct (AbstractStack.is_empty stack || (n >? stack.(AbstractStack.len))) eqn:H_or.
+    step.
+    rename Heqb into H_or.
     simpl; reflexivity.
     pose proof (pop_any_n_helper_is_valid stack.(AbstractStack.values) n) as H_pop_any_n_helper.
+    pose proof (get_length_pop_any_n_helper stack.(AbstractStack.values) n) as H_pop_any_n_helper'.
     destruct (AbstractStack.pop_any_n_helper stack.(AbstractStack.values) n) as [values'|]; cbn; [|trivial].
-    constructor; cbn.
-  Admitted.
+    constructor; cbn. 
+    { apply H_pop_any_n_helper. 
+      { 
+        destruct H_stack as [H_values H_len].
+        assumption.
+      }
+      { unfold Integer.Valid.t in H_n.
+        cbn in H_n.
+        lia.
+      }
+    }
+    { split.
+      { unfold Integer.Valid.t; cbn.
+        unfold Integer.Valid.t in H_n; cbn in H_n.
+        destruct H_stack as [H_values H_len].
+        unfold Integer.Valid.t in H_len; cbn in H_len.
+        lia.
+      }
+      {
+        unfold Stack.get_length in H_pop_any_n_helper'.
+        rewrite H_pop_any_n_helper'.
+        { best. }
+        { apply H_stack. }
+        { destruct H_n. unfold Integer.min in H0. lia. }
+      }
+    }
+  Qed.
 
   Lemma flatten_push_n {A : Set} `{Eq.Trait A} (item : A) (n : Z) (stack : AbstractStack.t A) :
     match AbstractStack.push_n item n stack with
