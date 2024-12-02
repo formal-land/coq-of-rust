@@ -66,8 +66,7 @@ Module AbstractStack.
     { unfold "liftS!", "liftS!of!", "liftS!of?", StatePanic.bind; cbn.
       destruct H.(Eq.eqb); cbn.
       { constructor; cbn.
-        {
-          inversion_clear H_values.
+        { inversion_clear H_values.
           constructor.
           { unfold Integer.Valid.t; cbn; lia. }
           { assumption. }
@@ -115,6 +114,7 @@ Module AbstractStack.
     | _ => True
     end.
   Proof.
+
   Admitted.
 
   Lemma pop_is_valid {A : Set} `{Eq.Trait A}
@@ -178,9 +178,8 @@ Module AbstractStack.
     }
     { step; cbn.
       { step; cbn.
-        {
-          assert(H_values' : Stack.Valid.t values). {
-            best.
+        { assert(H_values' : Stack.Valid.t values). {
+            sauto lq: on rew: off.
           }
           pose proof (IHvalues H_values' (rem - count)) as IHValues'.
           step; [|trivial].
@@ -213,8 +212,7 @@ Module AbstractStack.
     destruct (AbstractStack.pop_any_n_helper stack.(AbstractStack.values) n) as [values'|]; cbn; [|trivial].
     constructor; cbn. 
     { apply H_pop_any_n_helper. 
-      { 
-        destruct H_stack as [H_values H_len].
+      { destruct H_stack as [H_values H_len].
         assumption.
       }
       { unfold Integer.Valid.t in H_n.
@@ -229,10 +227,9 @@ Module AbstractStack.
         unfold Integer.Valid.t in H_len; cbn in H_len.
         lia.
       }
-      {
-        unfold Stack.get_length in H_pop_any_n_helper'.
+      { unfold Stack.get_length in H_pop_any_n_helper'.
         rewrite H_pop_any_n_helper'.
-        { best. }
+        { sauto lq: on rew: off. }
         { apply H_stack. }
         { destruct H_n. unfold Integer.min in H0. lia. }
       }
@@ -267,7 +264,7 @@ Module AbstractStack.
     | _ => True
     end.
   Proof.
-  unfold AbstractStack.pop_eq_n.
+    unfold AbstractStack.pop_eq_n.
   Admitted.
 
   Lemma flatten_pop {A : Set} `{Eq.Trait A} (stack : AbstractStack.t A) :
