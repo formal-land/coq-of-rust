@@ -72,6 +72,7 @@ Module Integer.
     | IntegerKind.I128 => -2^127
     | IntegerKind.Isize => -2^63
     end.
+  Global Hint Unfold min : coq_of_rust_z.
 
   Definition max (kind : IntegerKind.t) : Z :=
     match kind with
@@ -88,6 +89,7 @@ Module Integer.
     | IntegerKind.I128 => 2^127 - 1
     | IntegerKind.Isize => 2^63 - 1
     end.
+  Global Hint Unfold max : coq_of_rust_z.
 
   Definition normalize_wrap (kind : IntegerKind.t) (z : Z) : Z :=
     match kind with

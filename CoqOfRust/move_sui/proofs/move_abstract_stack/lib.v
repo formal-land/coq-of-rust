@@ -66,11 +66,7 @@ Module AbstractStack.
     { unfold "liftS!", "liftS!of!", "liftS!of?", StatePanic.bind; cbn.
       destruct H.(Eq.eqb); cbn.
       { constructor; cbn.
-        { inversion_clear H_values.
-          constructor.
-          { unfold Integer.Valid.t; cbn; lia. }
-          { assumption. }
-        }
+        { inversion_clear H_values; constructor; lia. }
         { split; [hauto lq: on|].
           (* FIX *)
           admit.
@@ -97,9 +93,7 @@ Module AbstractStack.
     | _ => True
     end.
   Proof.
-    apply push_n_is_valid.
-    { unfold Integer.Valid.t. cbn. lia. }
-    { assumption. }
+    apply push_n_is_valid; lia.
   Qed.
 
   Lemma pop_eq_n_is_valid {A : Set} `{Eq.Trait A}
@@ -127,9 +121,7 @@ Module AbstractStack.
     | _ => True
     end.
   Proof.
-    apply pop_eq_n_is_valid.
-    { unfold Integer.Valid.t. cbn. lia. }
-    { assumption. }
+    apply pop_eq_n_is_valid; lia.
   Qed.
 
   Lemma pop_any_n_helper_is_valid {A : Set}
@@ -152,10 +144,8 @@ Module AbstractStack.
       destruct (rem >? 0); cbn; trivial.
       destruct a as [count last].
       destruct (count <=? rem) eqn:?; cbn; trivial.
-      { apply IHvalues; [trivial|lia]. }
-      { constructor; trivial.
-        unfold Integer.Valid.t in *.
-        cbn in *. lia. }
+      { apply IHvalues; lia. }
+      { constructor; lia. }
     }
   Qed.
 
@@ -171,10 +161,7 @@ Module AbstractStack.
   Proof.
     revert rem H_rem.
     induction values as [|[count last] values]; intros; cbn.
-    { step.
-      { cbn. trivial. }
-      { cbn. lia. }
-    }
+    { step; cbn; lia. }
     { step; cbn.
       { step; cbn.
         { assert(H_values' : Stack.Valid.t values). {
@@ -214,23 +201,19 @@ Module AbstractStack.
       { destruct H_stack as [H_values H_len].
         assumption.
       }
-      { unfold Integer.Valid.t in H_n.
-        cbn in H_n.
-        lia.
-      }
+      { lia. }
     }
     { split.
       { unfold Integer.Valid.t; cbn.
         unfold Integer.Valid.t in H_n; cbn in H_n.
         destruct H_stack as [H_values H_len].
-        unfold Integer.Valid.t in H_len; cbn in H_len.
         lia.
       }
       { unfold Stack.get_length in H_pop_any_n_helper'.
         rewrite H_pop_any_n_helper'.
         { sauto lq: on rew: off. }
         { apply H_stack. }
-        { destruct H_n. unfold Integer.min in H0. lia. }
+        { lia. }
       }
     }
   Qed.
