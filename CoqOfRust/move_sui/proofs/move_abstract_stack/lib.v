@@ -114,7 +114,6 @@ Module AbstractStack.
     | _ => True
     end.
   Proof.
-
   Admitted.
 
   Lemma pop_is_valid {A : Set} `{Eq.Trait A}
