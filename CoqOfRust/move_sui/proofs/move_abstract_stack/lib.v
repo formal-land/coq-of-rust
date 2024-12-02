@@ -8,16 +8,25 @@ Require Import CoqOfRust.move_sui.simulations.move_abstract_stack.lib.
 Import simulations.M.Notations.
 
 Module AbstractStack.
+  Module Stack.
+    Module Valid.
+      Definition t {A : Set} (stack : list (Z * A)) : Prop :=
+        List.Forall
+          (fun '(n, _) => Integer.Valid.t IntegerKind.U64 n)
+          stack.
+    End Valid.
+
+    Definition get_length {A : Set} (stack : list (Z * A)) : Z :=
+      List.fold_right (fun '(n, _) acc => n + acc)%Z 0 stack.
+  End Stack.
+
   (** The length as computed by summing all the repetition numbers *)
   Definition get_length {A : Set} (stack : AbstractStack.t A) : Z :=
-    List.fold_right (fun '(n, _) acc => n + acc)%Z 0 stack.(AbstractStack.values).
+    Stack.get_length stack.(AbstractStack.values).
 
   Module Valid.
     Record t {A : Set} (stack : AbstractStack.t A) : Prop := {
-      values :
-        List.Forall
-          (fun '(n, _) => Integer.Valid.t IntegerKind.U64 n)
-          stack.(AbstractStack.values);
+      values : Stack.Valid.t stack.(AbstractStack.values);
       len :
         Integer.Valid.t IntegerKind.U64 stack.(AbstractStack.len) /\
         stack.(AbstractStack.len) = get_length stack;
@@ -28,7 +37,7 @@ Module AbstractStack.
   Definition flatten {A : Set} (abstract_stack : AbstractStack.t A) : list A :=
     List.flat_map (fun '(n, v) => List.repeat v (Z.to_nat n)) abstract_stack.(AbstractStack.values).
 
-  Lemma flatten_push_n_is_valid {A : Set} `{Eq.Trait A}
+  Lemma push_n_is_valid {A : Set} `{Eq.Trait A}
       (item : A) (n : Z) (stack : AbstractStack.t A)
       (H_n : Integer.Valid.t IntegerKind.U64 n)
       (H_stack : AbstractStack.Valid.t stack) :
@@ -58,9 +67,9 @@ Module AbstractStack.
       destruct H.(Eq.eqb); cbn.
       { constructor; cbn.
         { inversion_clear H_values.
-          constructor; [|assumption].
-          (* TODO *)
-          admit.
+          constructor.
+          { unfold Integer.Valid.t; cbn; lia. }
+          { assumption. }
         }
         { split; [hauto lq: on|].
           (* FIX *)
@@ -76,6 +85,155 @@ Module AbstractStack.
       }
     }
   Admitted.
+
+  Lemma push_is_valid {A : Set} `{Eq.Trait A}
+      (item : A) (stack : AbstractStack.t A)
+      (H_stack : AbstractStack.Valid.t stack) :
+    match AbstractStack.push item stack with
+    | Panic.Value (Result.Ok tt, stack') =>
+      AbstractStack.Valid.t stack'
+    | Panic.Value (Result.Err _, stack') =>
+      stack' = stack
+    | _ => True
+    end.
+  Proof.
+    apply push_n_is_valid.
+    { unfold Integer.Valid.t. cbn. lia. }
+    { assumption. }
+  Qed.
+
+  Lemma pop_eq_n_is_valid {A : Set} `{Eq.Trait A}
+      (n : Z) (stack : AbstractStack.t A)
+      (H_n : Integer.Valid.t IntegerKind.U64 n)
+      (H_stack : AbstractStack.Valid.t stack) :
+    match AbstractStack.pop_eq_n n stack with
+    | Panic.Value (Result.Ok item, stack') =>
+      AbstractStack.Valid.t stack'
+    | Panic.Value (Result.Err _, stack') =>
+      stack' = stack
+    | _ => True
+    end.
+  Proof.
+  Admitted.
+
+  Lemma pop_is_valid {A : Set} `{Eq.Trait A}
+      (stack : AbstractStack.t A)
+      (H_stack : AbstractStack.Valid.t stack) :
+    match AbstractStack.pop stack with
+    | Panic.Value (Result.Ok item, stack') =>
+      AbstractStack.Valid.t stack'
+    | Panic.Value (Result.Err _, stack') =>
+      stack' = stack
+    | _ => True
+    end.
+  Proof.
+    apply pop_eq_n_is_valid.
+    { unfold Integer.Valid.t. cbn. lia. }
+    { assumption. }
+  Qed.
+
+  Lemma pop_any_n_helper_is_valid {A : Set}
+    (values : list (Z * A)) (rem : Z)
+    (H_values : AbstractStack.Stack.Valid.t values)
+    (*Rust lib.rs : while rem > 0 { *)
+    (H_rem : rem >= 0) :
+    match AbstractStack.pop_any_n_helper values rem with
+    | Panic.Value values' =>
+      AbstractStack.Stack.Valid.t values'
+    | Panic.Panic _ =>
+      True
+    end.
+  Proof.
+    revert rem H_rem.
+    induction values; intros; cbn.
+    { destruct (rem >? 0); cbn; trivial. }
+    { unfold Stack.Valid.t in H_values.
+      inversion H_values.
+      destruct (rem >? 0); cbn; trivial.
+      destruct a as [count last].
+      destruct (count <=? rem) eqn:?; cbn; trivial.
+      { apply IHvalues; [trivial|lia]. }
+      { constructor; trivial.
+        unfold Integer.Valid.t in *.
+        cbn in *. lia. }
+    }
+  Qed.
+
+  Lemma get_length_pop_any_n_helper {A : Set}
+    (values : list (Z * A)) (rem : Z)
+    (H_values : AbstractStack.Stack.Valid.t values)
+    (H_rem : rem >= 0) :
+    match AbstractStack.pop_any_n_helper values rem with
+    | Panic.Value values' =>
+      AbstractStack.Stack.get_length values' = AbstractStack.Stack.get_length values - rem
+    | Panic.Panic _ => True
+    end.
+  Proof.
+    revert rem H_rem.
+    induction values as [|[count last] values]; intros; cbn.
+    { step.
+      { cbn. trivial. }
+      { cbn. lia. }
+    }
+    { step; cbn.
+      { step; cbn.
+        { assert(H_values' : Stack.Valid.t values). {
+            sauto lq: on rew: off.
+          }
+          pose proof (IHvalues H_values' (rem - count)) as IHValues'.
+          step; [|trivial].
+          rewrite IHValues'; unfold Stack.get_length; lia.
+        }
+        { lia. }
+      }
+      { lia. }
+    }
+  Qed.
+
+  Lemma pop_any_n_is_valid {A : Set} `{Eq.Trait A}
+      (n : Z) (stack : AbstractStack.t A)
+      (H_n : Integer.Valid.t IntegerKind.U64 n)
+      (H_stack : AbstractStack.Valid.t stack) :
+    match AbstractStack.pop_any_n n stack with
+    | Panic.Value (Result.Ok tt, stack') =>
+      AbstractStack.Valid.t stack'
+    | Panic.Value (Result.Err _, stack') =>
+      stack' = stack
+    | _ => True
+    end.
+  Proof.
+    unfold AbstractStack.pop_any_n.
+    step.
+    rename Heqb into H_or.
+    simpl; reflexivity.
+    pose proof (pop_any_n_helper_is_valid stack.(AbstractStack.values) n) as H_pop_any_n_helper.
+    pose proof (get_length_pop_any_n_helper stack.(AbstractStack.values) n) as H_pop_any_n_helper'.
+    destruct (AbstractStack.pop_any_n_helper stack.(AbstractStack.values) n) as [values'|]; cbn; [|trivial].
+    constructor; cbn. 
+    { apply H_pop_any_n_helper. 
+      { destruct H_stack as [H_values H_len].
+        assumption.
+      }
+      { unfold Integer.Valid.t in H_n.
+        cbn in H_n.
+        lia.
+      }
+    }
+    { split.
+      { unfold Integer.Valid.t; cbn.
+        unfold Integer.Valid.t in H_n; cbn in H_n.
+        destruct H_stack as [H_values H_len].
+        unfold Integer.Valid.t in H_len; cbn in H_len.
+        lia.
+      }
+      { unfold Stack.get_length in H_pop_any_n_helper'.
+        rewrite H_pop_any_n_helper'.
+        { sauto lq: on rew: off. }
+        { apply H_stack. }
+        { destruct H_n. unfold Integer.min in H0. lia. }
+      }
+    }
+  Qed.
 
   Lemma flatten_push_n {A : Set} `{Eq.Trait A} (item : A) (n : Z) (stack : AbstractStack.t A) :
     match AbstractStack.push_n item n stack with
@@ -105,6 +263,7 @@ Module AbstractStack.
     | _ => True
     end.
   Proof.
+    unfold AbstractStack.pop_eq_n.
   Admitted.
 
   Lemma flatten_pop {A : Set} `{Eq.Trait A} (stack : AbstractStack.t A) :

@@ -268,17 +268,14 @@ Module AbstractStack.
     }
   *)
 
-  Fixpoint pop_any_n_helper {A : Set} (values : list (Z * A)) (l : nat) (rem : Z) :
+  Fixpoint pop_any_n_helper {A : Set} (values : list (Z * A)) (rem : Z) :
       M! (list (Z * A)) :=
     if rem >? 0 then
       match values with
       | [] => panic! "unreachable"
       | (count, last) :: values =>
         if count <=? rem then
-          match l with
-          | O => panic! "unreachable"
-          | S l' => pop_any_n_helper values l' (rem - count)
-          end
+        pop_any_n_helper values (rem - count)
         else
           return! ((count - rem, last) :: values)
       end
@@ -289,7 +286,7 @@ Module AbstractStack.
     if (is_empty self || (n >? self.(len)))%bool then
       return! (Result.Err AbsStackError.Underflow, self)
     else
-      let! values := pop_any_n_helper self.(values) (List.length self.(values)) n in
+      let! values := pop_any_n_helper self.(values) n in
       let self := {|
         values := values;
         len := self.(len) - n
