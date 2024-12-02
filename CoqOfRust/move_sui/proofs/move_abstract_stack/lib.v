@@ -108,6 +108,24 @@ Module AbstractStack.
     | _ => True
     end.
   Proof.
+    unfold AbstractStack.pop_eq_n.
+    step.
+    { destruct stack as [values len]; best. }
+    { destruct stack as [values len].
+      cbn.
+      destruct values as [|[count last_item] values].
+      { sauto. }
+      { cbn; step.
+        { destruct values as [|[count' last_item']].
+          { sauto. }
+          { cbn. reflexivity. }
+        }
+        { step; cbn in *.
+          {(* apply H_stack -> Unable to unify (count, last_item) with := value *) }
+          {(* Same goal as H_stack hypothesis, but with - n, don't know yet how to move further *)}
+        }
+      }
+    }
   Admitted.
 
   Lemma pop_is_valid {A : Set} `{Eq.Trait A}
