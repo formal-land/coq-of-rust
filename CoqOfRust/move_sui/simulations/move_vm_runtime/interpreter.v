@@ -195,7 +195,9 @@ const CALL_STACK_SIZE_LIMIT: usize = 1024; *)
 Definition OPERAND_STACK_SIZE_LIMIT : Z := 1024.
 Definition CALL_STACK_SIZE_LIMIT : Z := 1024.
 
-(* /// The operand stack.
+(* /// The operand stack. Note that we reverse the stack compared to the order in Rust in order to
+/// have a more natural stack order in Coq.
+
 struct Stack {
     value: Vec<Value>,
 } *)
@@ -241,7 +243,7 @@ Module Stack.
       if (Z.of_nat $ List.length self_value) <? OPERAND_STACK_SIZE_LIMIT
       then 
         (* We push at the end of the list *)
-        letS! _ := writeS! $ self <| Stack.value := List.app self_value [value] |> in
+        letS! _ := writeS! $ self <| Stack.value := value :: self_value |> in
         returnS! $ Result.Ok tt
       else returnS! $ Result.Err $ 
         PartialVMError.new StatusCode.EXECUTION_STACK_OVERFLOW.
@@ -258,10 +260,8 @@ Module Stack.
       letS! self := readS! in
       (* We check manually if we can pop an element *)
       let '(Build_t self_value) := self in 
-      let self_value := List.rev self_value in
       match self_value with
-      | x :: xs => 
-        let self_value := List.rev xs in
+      | x :: self_value => 
         letS! _ := writeS! self <| Stack.value := self_value |> in
         returnS! $ Result.Ok x
       | _ => returnS! $ Result.Err $ 
@@ -279,7 +279,7 @@ Module Stack.
     }
     *)
     Definition pop_as (result_type : Set)
-      `{!VMValueCast.Trait Value.t result_type}
+      `{VMValueCast.Trait Value.t result_type}
       : MS! Self (PartialVMResult.t result_type) :=
       letS!? v := pop in
       returnS! $ (VMValueCast.cast v).
@@ -678,7 +678,6 @@ Definition execute_instruction
   | Bytecode.BrTrue offset => 
     letS!? popped_val := liftS! Interpreter.Lens.lens_state_self (
       liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as bool) in 
-    letS! _ := writeS! (offset, locals, interpreter) in
     returnS! $ Result.Ok InstrRet.Branch
 
   (* 
@@ -693,7 +692,6 @@ Definition execute_instruction
   | Bytecode.BrFalse offset => 
     letS!? popped_val := liftS! Interpreter.Lens.lens_state_self (
       liftS! Interpreter.Lens.lens_operand_stack $ Stack.Impl_Stack.pop_as bool) in 
-    letS! _ := writeS! (offset, locals, interpreter) in
     returnS! $ Result.Ok InstrRet.Branch
 
   (* 
@@ -704,7 +702,6 @@ Definition execute_instruction
   }
   *)
   | Bytecode.Branch offset =>
-    letS! _ := writeS! (offset, locals, interpreter) in
     returnS! $ Result.Ok InstrRet.Branch
 
   (*

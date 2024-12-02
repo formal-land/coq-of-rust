@@ -501,7 +501,7 @@ pub enum SignatureToken {
 }
 *)
 Module SignatureToken.
-  Inductive t : Set := 
+  Inductive t : Set :=
   | Bool
   | U8
   | U64

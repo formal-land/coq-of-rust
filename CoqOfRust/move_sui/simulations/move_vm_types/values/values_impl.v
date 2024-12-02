@@ -12,9 +12,6 @@ Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
 Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
-Module SignatureToken.
-  Include file_format.SignatureToken.
-End SignatureToken.
 
 (* TODO(progress): 
   - Implement `Reference`:
