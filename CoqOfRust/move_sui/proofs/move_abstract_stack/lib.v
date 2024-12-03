@@ -119,10 +119,10 @@ Module AbstractStack.
         { reflexivity. }
         { step; cbn in *.
           { constructor; cbn.
-            { best. }
+            { sauto lq: on rew: off. }
             { split; destruct H_stack as [H_values H_len]; cbn in *.
               { lia. }
-              { destruct H_len. best. } 
+              { destruct H_len. hauto l: on. } 
             }
           }
           { constructor; cbn; inversion_clear H_stack as [H_values H_len].
