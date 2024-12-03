@@ -271,7 +271,8 @@ Module AbstractStack.
     apply H_push_n.
   Qed.
 
-  Lemma flatten_pop_eq_n {A : Set} `{Eq.Trait A} (n : Z) (stack : AbstractStack.t A) :
+  Lemma flatten_pop_eq_n {A : Set} `{Eq.Trait A} (n : Z) (stack : AbstractStack.t A) 
+  (H_n : n >= 0) :
     match AbstractStack.pop_eq_n n stack with
     | Panic.Value (Result.Ok item, stack') =>
       flatten stack = List.repeat item (Z.to_nat n) ++ flatten stack'
@@ -279,7 +280,25 @@ Module AbstractStack.
     end.
   Proof.
     unfold AbstractStack.pop_eq_n.
-  Admitted.
+    step; cbn.
+    { trivial. }
+    { destruct stack as [values len]; cbn.
+      destruct values as [|[count last_item] values]; cbn.
+      { trivial. }
+      { destruct (count <? n) eqn:H_count_is_negative; cbn.
+        { trivial. }
+        { destruct (count =? n) eqn:H_count_eq_n; cbn.
+          { replace count with n by lia. reflexivity. }
+          { rewrite List.app_assoc.
+            f_equal.
+            rewrite <- List.repeat_app.
+            f_equal.
+            rewrite <- Z2Nat.inj_add; lia.
+          }
+        }
+      }
+    }
+  Qed.
 
   Lemma flatten_pop {A : Set} `{Eq.Trait A} (stack : AbstractStack.t A) :
     match AbstractStack.pop stack with
