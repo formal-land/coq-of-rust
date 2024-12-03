@@ -125,22 +125,19 @@ Module AbstractStack.
               { destruct H_len. best. } 
             }
           }
-          { constructor; cbn.
-            { inversion_clear H_stack as [H_values H_len].
-              inversion_clear H_values.
+          { constructor; cbn; inversion_clear H_stack as [H_values H_len].
+            { inversion_clear H_values.
               constructor; [lia | assumption].
             }
             { split.
-              { inversion_clear H_stack as [H_values H_len].
-                destruct H_len as [H_len_valid H_len_eq].
+              { destruct H_len as [H_len_valid H_len_eq].
                 unfold get_length in *; cbn in *.
                 rewrite H_len_eq.
                 unfold Stack.get_length; cbn; lia. }
-              { inversion_clear H_stack as [H_values H_len].
-                inversion_clear H_values; cbn in *.
+              { inversion_clear H_values; cbn in *.
                 inversion_clear H_len. lia. }
             }
-          }  
+          }
         }
       }
     }
