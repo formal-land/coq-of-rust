@@ -127,8 +127,7 @@ Module AbstractStack.
           }
           { constructor; cbn; inversion_clear H_stack as [H_values H_len].
             { inversion_clear H_values.
-              constructor; [lia | assumption].
-            }
+              constructor; [lia | assumption]. }
             { split.
               { destruct H_len as [H_len_valid H_len_eq].
                 unfold get_length in *; cbn in *.
