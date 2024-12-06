@@ -16,8 +16,6 @@ Module TypeSafetyChecker.
       stack : AbstractStack.Valid.t x.(TypeSafetyChecker.stack);
     }.
   End Valid.
-
-
 End TypeSafetyChecker.
 
 Module IsValueOfType.
@@ -460,8 +458,15 @@ Proof.
   { guard_instruction (Bytecode.Branch z).
     admit.
   }
+  (*
+  Lemma push_n_is_valid {A : Set} `{Eq.Trait A}
+      (item : A) (n : Z) (stack : AbstractStack.t A)
+      (H_n : Integer.Valid.t IntegerKind.U64 n)
+      (H_stack : AbstractStack.Valid.t stack) :
+  *)
   { guard_instruction (Bytecode.LdU8 z).
-    admit.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    pose proof (AbstractStack.push_n_is_valid (SignatureToken.U8) z type_safety_checker.(TypeSafetyChecker.stack) _ H_type_safety_checker).
   }
   {
     guard_instruction (Bytecode.LdU16 z).
