@@ -65,9 +65,14 @@ Ltac guard_instruction expected_instruction :=
   end.
 
 Ltac unfold_state_monad :=
-  unfold StatePanicResult.bind, StatePanic.bind, StatePanic.bind,
-    "return!toS!", "liftS!", "readS!";
-  cbn.
+  repeat (
+    unfold StatePanicResult.bind, StatePanic.bind, StatePanic.bind,
+      "return!toS!", 
+      "liftS!", 
+      "readS!", 
+      "return!toS!?";
+    cbn
+  ).
 
 Ltac destruct_abstract_push :=
   unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push;
@@ -172,6 +177,12 @@ Proof.
     rewrite H_push.
     hauto l: on.
   }
+  { guard_instruction (Bytecode.LdU16 z).
+    admit.
+  }
+  { guard_instruction (Bytecode.LdU32 z).
+    admit.
+  }
   { guard_instruction (Bytecode.LdU64 z).
     destruct_abstract_push.
     lib.step; cbn; [|exact I].
@@ -188,6 +199,9 @@ Proof.
     rewrite H_push.
     hauto l: on.
   }
+  { guard_instruction (Bytecode.LdU256 z).
+    admit.
+  }
   { guard_instruction Bytecode.CastU8.
     destruct_abstract_pop H_interpreter.
     lib.step; cbn; [exact I|].
@@ -198,6 +212,12 @@ Proof.
       unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
       sauto lq: on
     ).
+  }
+  { guard_instruction Bytecode.CastU16.
+    admit.
+  }
+  { guard_instruction Bytecode.CastU32.
+    admit.
   }
   { guard_instruction Bytecode.CastU64.
     destruct_abstract_pop H_interpreter.
@@ -220,6 +240,9 @@ Proof.
       unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
       sauto lq: on
     ).
+  }
+  { guard_instruction Bytecode.CastU256.
+    admit.
   }
   { guard_instruction (Bytecode.LdConst t).
     admit.
@@ -415,24 +438,6 @@ Proof.
   { guard_instruction (Bytecode.VecSwap t).
     admit.
   }
-  { guard_instruction (Bytecode.LdU16 z).
-    admit.
-  }
-  { guard_instruction (Bytecode.LdU32 z).
-    admit.
-  }
-  { guard_instruction (Bytecode.LdU256 z).
-    admit.
-  }
-  { guard_instruction Bytecode.CastU16.
-    admit.
-  }
-  { guard_instruction Bytecode.CastU32.
-    admit.
-  }
-  { guard_instruction Bytecode.CastU256.
-    admit.
-  }
 Admitted.
 
 Lemma verify_instr_is_valid (instruction : Bytecode.t) (pc : Z) (type_safety_checker : TypeSafetyChecker.t)
@@ -458,35 +463,54 @@ Proof.
   { guard_instruction (Bytecode.Branch z).
     admit.
   }
-  (*
-  Lemma push_n_is_valid {A : Set} `{Eq.Trait A}
-      (item : A) (n : Z) (stack : AbstractStack.t A)
-      (H_n : Integer.Valid.t IntegerKind.U64 n)
-      (H_stack : AbstractStack.Valid.t stack) :
-  *)
   { guard_instruction (Bytecode.LdU8 z).
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
-    pose proof (AbstractStack.push_n_is_valid SignatureToken.U8 z).
-    unfold state
-    {  }
-    
-    admit.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    pose proof (AbstractStack.push_is_valid SignatureToken.U8 type_safety_checker.(TypeSafetyChecker.stack)).
+    destruct AbstractStack.push as [[result stack']|]; cbn; [|trivial].
+    destruct result; cbn; [|trivial].
+    sauto q: on.
   }
   {
     guard_instruction (Bytecode.LdU16 z).
-    admit.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    pose proof (AbstractStack.push_is_valid SignatureToken.U16 type_safety_checker.(TypeSafetyChecker.stack)).
+    destruct AbstractStack.push as [[result stack']|]; cbn; [|trivial].
+    destruct result; cbn; [|trivial].
+    sauto q: on.
   }
   { guard_instruction (Bytecode.LdU32 z).
-    admit.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    pose proof (AbstractStack.push_is_valid SignatureToken.U32 type_safety_checker.(TypeSafetyChecker.stack)).
+    destruct AbstractStack.push as [[result stack']|]; cbn; [|trivial].
+    destruct result; cbn; [|trivial].
+    sauto q: on.
   }
   { guard_instruction (Bytecode.LdU64 z).
-    admit.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    pose proof (AbstractStack.push_is_valid SignatureToken.U64 type_safety_checker.(TypeSafetyChecker.stack)).
+    destruct AbstractStack.push as [[result stack']|]; cbn; [|trivial].
+    destruct result; cbn; [|trivial].
+    sauto q: on.
   }
   { guard_instruction (Bytecode.LdU128 z).
-    admit.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    pose proof (AbstractStack.push_is_valid SignatureToken.U128 type_safety_checker.(TypeSafetyChecker.stack)).
+    destruct AbstractStack.push as [[result stack']|]; cbn; [|trivial].
+    destruct result; cbn; [|trivial].
+    sauto q: on.
   }
   { guard_instruction (Bytecode.LdU256 z).
-    admit.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    pose proof (AbstractStack.push_is_valid SignatureToken.U256 type_safety_checker.(TypeSafetyChecker.stack)).
+    destruct AbstractStack.push as [[result stack']|]; cbn; [|trivial].
+    destruct result; cbn; [|trivial].
+    sauto q: on.
   }
   { guard_instruction Bytecode.CastU8.
 
