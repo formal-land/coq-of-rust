@@ -10,6 +10,16 @@ Require Import move_sui.simulations.move_vm_types.values.values_impl.
 
 Import simulations.M.Notations.
 
+Module TypeSafetyChecker.
+  Module Valid.
+    Record t (x : TypeSafetyChecker.t) : Prop := {
+      stack : AbstractStack.Valid.t x.(TypeSafetyChecker.stack);
+    }.
+  End Valid.
+
+
+End TypeSafetyChecker.
+
 Module IsValueOfType.
   Definition t (value : Value.t) (typ : SignatureToken.t) : Prop :=
     match value, typ with
