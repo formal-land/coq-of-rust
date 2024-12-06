@@ -410,6 +410,7 @@ Module Notations.
   Include ResultNotations.
   Include PanicNotations.
   Include PanicResultNotations.
+  Include StateNotations.
   Include StatePanicNotations.
   Include StatePanicResultNotations.
   Include LensNotations.
