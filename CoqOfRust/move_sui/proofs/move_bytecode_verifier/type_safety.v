@@ -444,3 +444,237 @@ Lemma verify_instr_is_valid (instruction : Bytecode.t) (pc : Z) (type_safety_che
   | _ => True
   end.
 Proof.
+  destruct instruction eqn:H_instruction; cbn.
+  { guard_instruction Bytecode.Pop.
+    admit.
+  }
+  { guard_instruction Bytecode.Ret.
+    admit.
+  }
+  { guard_instruction (Bytecode.BrTrue z).
+    admit.
+  }
+  { guard_instruction (Bytecode.BrFalse z).
+    admit.
+  }
+  { guard_instruction (Bytecode.Branch z).
+    admit.
+  }
+  { guard_instruction (Bytecode.LdU8 z).
+    admit.
+  }
+  {
+    guard_instruction (Bytecode.LdU16 z).
+    admit.
+  }
+  { guard_instruction (Bytecode.LdU32 z).
+    admit.
+  }
+  { guard_instruction (Bytecode.LdU64 z).
+    admit.
+  }
+  { guard_instruction (Bytecode.LdU128 z).
+    admit.
+  }
+  { guard_instruction (Bytecode.LdU256 z).
+    admit.
+  }
+  { guard_instruction Bytecode.CastU8.
+    admit.
+  }
+  { guard_instruction Bytecode.CastU16.
+    admit.
+  }
+  { guard_instruction Bytecode.CastU32.
+    admit.
+  }
+  { guard_instruction Bytecode.CastU64.
+    admit.
+  }
+  { guard_instruction Bytecode.CastU128.
+    admit.
+  }
+  { guard_instruction Bytecode.CastU256.
+    admit.
+  }
+  { guard_instruction (Bytecode.LdConst t).
+    admit.
+  }
+  { guard_instruction Bytecode.LdTrue.
+    admit.
+  }
+  { guard_instruction Bytecode.LdFalse.
+    admit.
+  }
+  { guard_instruction (Bytecode.CopyLoc z).
+    admit.
+  }
+  { guard_instruction (Bytecode.MoveLoc z).
+    admit.
+  }
+  { guard_instruction (Bytecode.StLoc z).
+    admit.
+  }
+  { guard_instruction (Bytecode.Call t).
+    admit.
+  }
+  { guard_instruction (Bytecode.CallGeneric t).
+    admit.
+  }
+  { guard_instruction (Bytecode.Pack t).
+    admit.
+  }
+  { guard_instruction (Bytecode.PackGeneric t).
+    admit.
+  }
+  { guard_instruction (Bytecode.Unpack t).
+    admit.
+  }
+  { guard_instruction (Bytecode.UnpackGeneric t).
+    admit.
+  }
+  { guard_instruction Bytecode.ReadRef.
+    admit.
+  }
+  { guard_instruction Bytecode.WriteRef.
+    admit.
+  }
+  { guard_instruction Bytecode.FreezeRef.
+    admit.
+  }
+  { guard_instruction (Bytecode.MutBorrowLoc z).
+    admit.
+  }
+  { guard_instruction (Bytecode.ImmBorrowLoc z).
+    admit.
+  }
+  { guard_instruction (Bytecode.MutBorrowField t).
+    admit.
+  }
+  { guard_instruction (Bytecode.MutBorrowFieldGeneric t).
+    admit.
+  }
+  { guard_instruction (Bytecode.ImmBorrowField t).
+    admit.
+  }
+  { guard_instruction (Bytecode.ImmBorrowFieldGeneric t).
+    admit.
+  }
+  { guard_instruction (Bytecode.MutBorrowGlobalDeprecated t).
+    admit.
+  }
+  { guard_instruction (Bytecode.MutBorrowGlobalGenericDeprecated t).
+    admit.
+  }
+  { guard_instruction (Bytecode.ImmBorrowGlobalDeprecated t).
+    admit.
+  }
+  { guard_instruction (Bytecode.ImmBorrowGlobalGenericDeprecated t).
+    admit.
+  }
+  { guard_instruction Bytecode.Add.
+    admit.
+  }
+  { guard_instruction Bytecode.Sub.
+    admit.
+  }
+  { guard_instruction Bytecode.Mul.
+    admit.
+  }
+  { guard_instruction Bytecode.Mod.
+    admit.
+  }
+  { guard_instruction Bytecode.Div.
+    admit.
+  }
+  { guard_instruction Bytecode.BitOr.
+    admit.
+  }
+  { guard_instruction Bytecode.BitAnd.
+    admit.
+  }
+  { guard_instruction Bytecode.Xor.
+    admit.
+  }
+  { guard_instruction Bytecode.Or.
+    admit.
+  }
+  { guard_instruction Bytecode.And.
+    admit.
+  }
+  { guard_instruction Bytecode.Not.
+    admit.
+  }
+  { guard_instruction Bytecode.Eq.
+    admit.
+  }
+  { guard_instruction Bytecode.Neq.
+    admit.
+  }
+  { guard_instruction Bytecode.Lt.
+    admit.
+  }
+  { guard_instruction Bytecode.Gt.
+    admit.
+  }
+  { guard_instruction Bytecode.Le.
+    admit.
+  }
+  { guard_instruction Bytecode.Ge.
+    admit.
+  }
+  { guard_instruction Bytecode.Abort.
+    admit.
+  }
+  { guard_instruction Bytecode.Nop.
+    admit.
+  }
+  { guard_instruction (Bytecode.ExistsDeprecated t).
+    admit.
+  }
+  { guard_instruction (Bytecode.ExistsGenericDeprecated t).
+    admit.
+  }
+  { guard_instruction (Bytecode.MoveFromDeprecated t).
+    admit.
+  }
+  { guard_instruction (Bytecode.MoveFromGenericDeprecated t).
+    admit.
+  }
+  { guard_instruction (Bytecode.MoveToDeprecated t).
+    admit.
+  }
+  { guard_instruction (Bytecode.MoveToGenericDeprecated t).
+    admit.
+  }
+  { guard_instruction Bytecode.Shl.
+    admit.
+  }
+  { guard_instruction Bytecode.Shr.
+    admit.
+  }
+  { guard_instruction (Bytecode.VecPack t z).
+    admit.
+  }
+  { guard_instruction (Bytecode.VecLen t).
+    admit.
+  }
+  { guard_instruction (Bytecode.VecImmBorrow t).
+    admit.
+  }
+  { guard_instruction (Bytecode.VecMutBorrow t).
+    admit.
+  }
+  { guard_instruction (Bytecode.VecPushBack t).
+    admit.
+  }
+  { guard_instruction (Bytecode.VecPopBack t).
+    admit.
+  }
+  { guard_instruction (Bytecode.VecUnpack t z).
+    admit.
+  }
+  { guard_instruction (Bytecode.VecSwap t).
+    admit.
+  }
+Admitted.
