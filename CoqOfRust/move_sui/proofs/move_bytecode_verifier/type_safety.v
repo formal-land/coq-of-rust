@@ -436,3 +436,11 @@ Proof.
     admit.
   }
 Admitted.
+
+Lemma verify_instr_is_valid (instruction : Bytecode.t) (pc : Z) (type_safety_checker : TypeSafetyChecker.t)
+  (H_type_safety_checker : TypeSafetyChecker.Valid.t type_safety_checker) :
+  match verify_instr instruction pc type_safety_checker with
+  | Panic.Value (Result.Ok _, type_safety_checker') => TypeSafetyChecker.Valid.t type_safety_checker'
+  | _ => True
+  end.
+Proof.
