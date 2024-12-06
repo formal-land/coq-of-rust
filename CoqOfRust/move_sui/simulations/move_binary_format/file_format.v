@@ -844,11 +844,17 @@ Module Bytecode.
   | BrFalse (_ : Z)
   | Branch (_ : Z)
   | LdU8 (_ : Z)
+  | LdU16 (_ : Z)
+  | LdU32 (_ : Z)
   | LdU64 (_ : Z)
   | LdU128 (_ : Z)
+  | LdU256 (_ : Z)
   | CastU8
+  | CastU16
+  | CastU32
   | CastU64
   | CastU128
+  | CastU256
   | LdConst (_ : ConstantPoolIndex.t)
   | LdTrue
   | LdFalse
@@ -908,13 +914,7 @@ Module Bytecode.
   | VecPushBack (_ : SignatureIndex.t)
   | VecPopBack (_ : SignatureIndex.t)
   | VecUnpack (_ : SignatureIndex.t) (_ : Z)
-  | VecSwap (_ : SignatureIndex.t)
-  | LdU16 (_ : Z)
-  | LdU32 (_ : Z)
-  | LdU256 (_ : Z)
-  | CastU16
-  | CastU32
-  | CastU256.
+  | VecSwap (_ : SignatureIndex.t).
 
   Definition is_unconditional_branch (self : t) : bool :=
     match self with
