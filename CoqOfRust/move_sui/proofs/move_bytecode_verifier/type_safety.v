@@ -466,7 +466,11 @@ Proof.
   *)
   { guard_instruction (Bytecode.LdU8 z).
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
-    pose proof (AbstractStack.push_n_is_valid (SignatureToken.U8) z type_safety_checker.(TypeSafetyChecker.stack) _ H_type_safety_checker).
+    pose proof (AbstractStack.push_n_is_valid SignatureToken.U8 z).
+    unfold state
+    {  }
+    
+    admit.
   }
   {
     guard_instruction (Bytecode.LdU16 z).
@@ -485,6 +489,7 @@ Proof.
     admit.
   }
   { guard_instruction Bytecode.CastU8.
+
     admit.
   }
   { guard_instruction Bytecode.CastU16.
