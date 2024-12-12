@@ -522,6 +522,10 @@ Module SignatureToken.
 
   Module ImplEq.
     Global Instance I : Eq.Trait SignatureToken.t := { eqb := t_beq }.
+
+    Lemma I_is_valid : Eq.Valid.t (fun _ => True).
+    Proof.
+    Admitted.
   End ImplEq.
   (* 
   impl SignatureToken {

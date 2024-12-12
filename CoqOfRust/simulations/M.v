@@ -416,4 +416,17 @@ Module Notations.
   Include LensNotations.
 
   Notation "f $ x" := (f x) (at level 60, right associativity, only parsing).
+
+  (** Convenient as the state monads hide the state variable which can be needed for reduction *)
+  Ltac unfold_state_monad :=
+    repeat (
+      unfold StatePanicResult.bind, StatePanic.bind, StatePanic.bind,
+        "returnS!",
+        "return!toS!", 
+        "liftS!", 
+        "liftS!of?",
+        "readS!", 
+        "return!toS!?";
+      cbn
+    ).
 End Notations.
