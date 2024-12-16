@@ -502,7 +502,7 @@ Proof.
     admit.
   }
   { guard_instruction (Bytecode.Branch z).
-    admit.
+    apply H_type_safety_checker.
   }
   { guard_instruction (Bytecode.LdU8 z).
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
@@ -679,6 +679,8 @@ Proof.
     admit.
   }
   { guard_instruction (Bytecode.MoveLoc z).
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
     admit.
   }
   { guard_instruction (Bytecode.StLoc z).
