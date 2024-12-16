@@ -729,7 +729,18 @@ Proof.
     admit.
   }
   { guard_instruction Bytecode.FreezeRef.
-    admit.
+    unfold_state_monad.
+    destruct H_type_safety_checker as [H_stack].
+    destruct type_safety_checker; cbn in *.
+    pose proof (AbstractStack.pop_is_valid stack H_stack).
+    destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
+    destruct operand as [[]|]; cbn; trivial.
+    unfold set; cbn.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    pose proof (AbstractStack.push_is_valid (SignatureToken.Reference t) stack' H).
+    repeat (step; cbn; trivial).
+    sauto q: on.
   }
   { guard_instruction (Bytecode.MutBorrowLoc z).
     admit.
