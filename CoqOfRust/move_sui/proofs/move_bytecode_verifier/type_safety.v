@@ -539,10 +539,20 @@ Proof.
     admit.
   }
   { guard_instruction Bytecode.LdTrue.
-    admit.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    pose proof (AbstractStack.push_is_valid SignatureToken.Bool type_safety_checker.(TypeSafetyChecker.stack)).
+    destruct AbstractStack.push as [[result stack']|]; cbn; [|trivial].
+    destruct result; cbn; [|trivial].
+    sauto q: on.
   }
   { guard_instruction Bytecode.LdFalse.
-    admit.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    pose proof (AbstractStack.push_is_valid SignatureToken.Bool type_safety_checker.(TypeSafetyChecker.stack)).
+    destruct AbstractStack.push as [[result stack']|]; cbn; [|trivial].
+    destruct result; cbn; [|trivial].
+    sauto q: on.
   }
   { guard_instruction (Bytecode.CopyLoc z).
     admit.
@@ -665,7 +675,7 @@ Proof.
     admit.
   }
   { guard_instruction Bytecode.Nop.
-    admit.
+    apply H_type_safety_checker.
   }
   { guard_instruction (Bytecode.ExistsDeprecated t).
     admit.
