@@ -282,7 +282,7 @@ Proof.
       repeat (lib.step; cbn; [|exact I]);
       unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
       (* U256 too big? sauto lq: on *)
-      admit.
+      admit
     ).
   }
   { guard_instruction (Bytecode.LdConst t).
