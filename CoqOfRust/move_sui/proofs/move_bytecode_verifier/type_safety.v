@@ -230,10 +230,26 @@ Proof.
     ).
   }
   { guard_instruction Bytecode.CastU16.
-    admit.
+    destruct_abstract_pop H_interpreter.
+    lib.step; cbn; [exact I|].
+    destruct_abstract_push.
+    destruct stack as [|operand stack]; cbn; [exact I|].
+    destruct operand; cbn; try exact I; (
+      repeat (lib.step; cbn; [|exact I]);
+      unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
+      sauto lq: on
+    ).
   }
   { guard_instruction Bytecode.CastU32.
-    admit.
+    destruct_abstract_pop H_interpreter.
+    lib.step; cbn; [exact I|].
+    destruct_abstract_push.
+    destruct stack as [|operand stack]; cbn; [exact I|].
+    destruct operand; cbn; try exact I; (
+      repeat (lib.step; cbn; [|exact I]);
+      unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
+      sauto lq: on
+    ).
   }
   { guard_instruction Bytecode.CastU64.
     destruct_abstract_pop H_interpreter.
@@ -258,7 +274,15 @@ Proof.
     ).
   }
   { guard_instruction Bytecode.CastU256.
-    admit.
+    destruct_abstract_pop H_interpreter.
+    lib.step; cbn; [exact I|].
+    destruct_abstract_push.
+    destruct stack as [|operand stack]; cbn; [exact I|].
+    destruct operand; cbn; try exact I; (
+      repeat (lib.step; cbn; [|exact I]);
+      unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
+      sauto lq: on
+    ).
   }
   { guard_instruction (Bytecode.LdConst t).
     admit.
