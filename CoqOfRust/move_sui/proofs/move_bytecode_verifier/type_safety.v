@@ -773,12 +773,38 @@ Proof.
     admit.
   }
   { guard_instruction Bytecode.Add.
+    unfold_state_monad.
+    destruct H_type_safety_checker as [H_stack].
+    destruct type_safety_checker; cbn in *.
+    pose proof (AbstractStack.pop_is_valid stack H_stack).
+    destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
+    destruct operand as [operand1|]; cbn; [|trivial].
+    pose proof (AbstractStack.pop_is_valid stack' H).
+    destruct AbstractStack.pop as [[operand2 stack'']|]; cbn; [|trivial].
+    destruct operand2 as [operand2|]; cbn; [|trivial].
+    unfold set; cbn.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    (* STUCK *)
     admit.
   }
   { guard_instruction Bytecode.Sub.
     admit.
   }
   { guard_instruction Bytecode.Mul.
+    unfold_state_monad.
+    destruct H_type_safety_checker as [H_stack].
+    destruct type_safety_checker; cbn in *.
+    pose proof (AbstractStack.pop_is_valid stack H_stack).
+    destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
+    destruct operand; cbn; trivial.
+    pose proof (AbstractStack.pop_is_valid stack' H).
+    destruct AbstractStack.pop as [[operand stack'']|]; cbn; [|trivial].
+    destruct operand; cbn; trivial.
+    unfold set; cbn.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    (* STUCK *)
     admit.
   }
   { guard_instruction Bytecode.Mod.
