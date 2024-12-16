@@ -179,10 +179,20 @@ Proof.
     hauto l: on.
   }
   { guard_instruction (Bytecode.LdU16 z).
-    admit.
+    destruct_abstract_push.
+    lib.step; cbn; [|exact I].
+    unfold IsInterpreterContextOfType.t; cbn.
+    unfold IsStackValueOfType.t; cbn.
+    rewrite H_push.
+    hauto l: on.
   }
   { guard_instruction (Bytecode.LdU32 z).
-    admit.
+    destruct_abstract_push.
+    lib.step; cbn; [|exact I].
+    unfold IsInterpreterContextOfType.t; cbn.
+    unfold IsStackValueOfType.t; cbn.
+    rewrite H_push.
+    hauto l: on.
   }
   { guard_instruction (Bytecode.LdU64 z).
     destruct_abstract_push.
@@ -201,7 +211,12 @@ Proof.
     hauto l: on.
   }
   { guard_instruction (Bytecode.LdU256 z).
-    admit.
+    destruct_abstract_push.
+    lib.step; cbn; [|exact I].
+    unfold IsInterpreterContextOfType.t; cbn.
+    unfold IsStackValueOfType.t; cbn.
+    rewrite H_push.
+    hauto l: on.
   }
   { guard_instruction Bytecode.CastU8.
     destruct_abstract_pop H_interpreter.
