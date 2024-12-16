@@ -893,7 +893,7 @@ Proof.
     destruct p as [t0' type_safety_checker'].
     destruct t0'; cbn; trivial.
     unfold set; cbn.
-    best.
+    hauto l: on.
   }
   { guard_instruction Bytecode.Shr.
     unfold_state_monad.
@@ -914,7 +914,7 @@ Proof.
     destruct p as [t0' type_safety_checker'].
     destruct t0'; cbn; trivial.
     unfold set; cbn.
-    best.
+    hauto l: on.
   }
   { guard_instruction (Bytecode.VecPack t z).
     admit.
