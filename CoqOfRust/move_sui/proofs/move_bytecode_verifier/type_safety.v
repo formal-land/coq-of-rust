@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
+Require Import CoqOfRust.lib.proofs.lib.
 Require Import move_sui.proofs.move_abstract_stack.lib.
 Require Import move_sui.proofs.move_binary_format.file_format.
 Require Import move_sui.simulations.move_abstract_stack.lib.
@@ -513,7 +514,10 @@ Proof.
     sauto q: on.
   }
   { guard_instruction Bytecode.CastU8.
-
+    unfold_state_monad.
+    destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
+    destruct operand; cbn; [|trivial].
+    step; cbn. trivial.
     admit.
   }
   { guard_instruction Bytecode.CastU16.
