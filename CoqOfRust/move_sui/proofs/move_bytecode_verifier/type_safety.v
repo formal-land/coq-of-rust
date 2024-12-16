@@ -490,16 +490,34 @@ Lemma verify_instr_is_valid (instruction : Bytecode.t) (pc : Z) (type_safety_che
 Proof.
   destruct instruction eqn:H_instruction; cbn.
   { guard_instruction Bytecode.Pop.
-    admit.
+    unfold_state_monad.
+    destruct H_type_safety_checker as [H_stack].
+    destruct type_safety_checker; cbn in *.
+    pose proof (AbstractStack.pop_is_valid stack H_stack).
+    destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
+    repeat (step; cbn; trivial).
+    sauto.
   }
   { guard_instruction Bytecode.Ret.
     admit.
   }
   { guard_instruction (Bytecode.BrTrue z).
-    admit.
+    unfold_state_monad.
+    destruct H_type_safety_checker as [H_stack].
+    destruct type_safety_checker; cbn in *.
+    pose proof (AbstractStack.pop_is_valid stack H_stack).
+    destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
+    repeat (step; cbn; trivial).
+    sauto.
   }
   { guard_instruction (Bytecode.BrFalse z).
-    admit.
+    unfold_state_monad.
+    destruct H_type_safety_checker as [H_stack].
+    destruct type_safety_checker; cbn in *.
+    pose proof (AbstractStack.pop_is_valid stack H_stack).
+    destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
+    repeat (step; cbn; trivial).
+    sauto.
   }
   { guard_instruction (Bytecode.Branch z).
     apply H_type_safety_checker.
