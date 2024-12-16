@@ -740,6 +740,7 @@ Proof.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid (SignatureToken.Reference t) stack' H).
     repeat (step; cbn; trivial).
+    unfold set; cbn.
     sauto q: on.
   }
   { guard_instruction (Bytecode.MutBorrowLoc z).
@@ -887,16 +888,33 @@ Proof.
     step; cbn; trivial.
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
-    pose proof (AbstractStack.push_is_valid SignatureToken.U8 stack' H).
+    pose proof (AbstractStack.push_is_valid t0 stack'' H0).
     step; cbn; [|trivial].
     destruct p as [t0' type_safety_checker'].
     destruct t0'; cbn; trivial.
     unfold set; cbn.
-    (* STUCK *)
-    admit.
+    best.
   }
   { guard_instruction Bytecode.Shr.
-    admit.
+    unfold_state_monad.
+    destruct H_type_safety_checker as [H_stack].
+    destruct type_safety_checker; cbn in *.
+    pose proof (AbstractStack.pop_is_valid stack H_stack).
+    destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
+    destruct operand; cbn; trivial.
+    pose proof (AbstractStack.pop_is_valid stack' H).
+    destruct AbstractStack.pop as [[operand stack'']|]; cbn; [|trivial].
+    destruct operand; cbn; trivial.
+    unfold set; cbn.
+    step; cbn; trivial.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    pose proof (AbstractStack.push_is_valid t0 stack'' H0).
+    step; cbn; [|trivial].
+    destruct p as [t0' type_safety_checker'].
+    destruct t0'; cbn; trivial.
+    unfold set; cbn.
+    best.
   }
   { guard_instruction (Bytecode.VecPack t z).
     admit.
