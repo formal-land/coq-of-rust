@@ -1012,7 +1012,22 @@ Proof.
     hauto l: on.
   }
   { guard_instruction Bytecode.Not.
-    admit.
+    unfold_state_monad.
+    destruct H_type_safety_checker as [H_stack].
+    destruct type_safety_checker; cbn in *.
+    pose proof (AbstractStack.pop_is_valid stack H_stack).
+    destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
+    destruct operand as [operand1|]; cbn; [|trivial].
+    unfold set; cbn.
+    step; cbn; trivial.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    pose proof (AbstractStack.push_is_valid SignatureToken.Bool stack' H).
+    step; cbn; [|trivial].
+    destruct p as [t0 type_safety_checker'].
+    destruct t0; cbn; trivial.
+    unfold set; cbn.
+    hauto l: on.
   }
   { guard_instruction Bytecode.Eq.
     admit.
