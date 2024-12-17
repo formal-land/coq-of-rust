@@ -1055,7 +1055,15 @@ Proof.
     admit.
   }
   { guard_instruction Bytecode.Abort.
-    admit.
+    unfold_state_monad.
+    destruct H_type_safety_checker as [H_stack].
+    destruct type_safety_checker; cbn in *.
+    pose proof (AbstractStack.pop_is_valid stack H_stack).
+    destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
+    destruct operand; cbn; trivial.
+    step; cbn; trivial.
+    unfold set; cbn.
+    hauto l: on.
   }
   { guard_instruction Bytecode.Nop.
     apply H_type_safety_checker.
