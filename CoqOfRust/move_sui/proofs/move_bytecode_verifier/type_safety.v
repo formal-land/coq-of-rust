@@ -730,7 +730,14 @@ Proof.
     admit.
   }
   { guard_instruction (Bytecode.StLoc z).
-    admit.
+    unfold_state_monad.
+    destruct H_type_safety_checker as [H_stack].
+    destruct type_safety_checker; cbn in *.
+    pose proof (AbstractStack.pop_is_valid stack H_stack).
+    destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
+    unfold set; cbn.
+    repeat(step; cbn; trivial).
+    best.
   }
   { guard_instruction (Bytecode.Call t).
     admit.
