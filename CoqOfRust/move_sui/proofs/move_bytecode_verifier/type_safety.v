@@ -737,7 +737,7 @@ Proof.
     destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
     unfold set; cbn.
     repeat(step; cbn; trivial).
-    best.
+    hauto drew: off.
   }
   { guard_instruction (Bytecode.Call t).
     admit.
