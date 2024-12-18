@@ -510,13 +510,14 @@ Proof.
 Admitted.
 
 Lemma verify_instr_is_valid (instruction : Bytecode.t) (pc : Z) (type_safety_checker : TypeSafetyChecker.t)
-  (H_type_safety_checker : TypeSafetyChecker.Valid.t type_safety_checker) :
+  (H_type_safety_checker : TypeSafetyChecker.Valid.t type_safety_checker)
+  (H_instruction_bytecode : Bytecode.Valid.t instruction) :
   match verify_instr instruction pc type_safety_checker with
   | Panic.Value (Result.Ok _, type_safety_checker') => TypeSafetyChecker.Valid.t type_safety_checker'
   | _ => True
   end.
 Proof.
-  destruct instruction eqn:H_instruction; cbn.
+  destruct instruction eqn:H_instruction; cbn in *.
   { guard_instruction Bytecode.Pop.
     unfold_state_monad.
     destruct H_type_safety_checker as [H_stack].
@@ -1253,6 +1254,10 @@ Proof.
     hauto l: on.
   }
   { guard_instruction (Bytecode.VecPack t z).
+    unfold_state_monad.
+    destruct H_type_safety_checker as [H_stack].
+    destruct type_safety_checker; cbn in *.
+    pose proof (AbstractStack.pop_is_valid stack H_stack).
     admit.
   }
   { guard_instruction (Bytecode.VecLen t).
