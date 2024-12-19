@@ -300,13 +300,6 @@ Module AbstractStack.
     hauto l: on.
   Qed.
 
-  Ltac pose_pop :=
-    match goal with
-    | H_stack : _ |- context[AbstractStack.pop ?stack] =>
-      let H_check_pop := fresh "H_check_pop" in
-      pose proof (check_pop stack H_stack) as H_check_pop
-    end.
-
   Lemma pop_any_n_helper_is_valid {A : Set}
     (values : list (Z * A)) (rem : Z)
     (H_values : AbstractStack.Stack.Valid.t values)
