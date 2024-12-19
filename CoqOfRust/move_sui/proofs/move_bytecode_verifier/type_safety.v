@@ -723,11 +723,24 @@ Proof.
     sauto q: on.
   }
   { guard_instruction (Bytecode.CopyLoc z).
-    admit.
-  }
-  { guard_instruction (Bytecode.MoveLoc z).
+    unfold_state_monad.
+    do 3 (step; cbn; trivial).
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    destruct H_type_safety_checker as [H_stack].
+    pose proof (AbstractStack.push_is_valid
+      (TypeSafetyChecker.Impl_TypeSafetyChecker.local_at type_safety_checker {| file_format_index.LocalIndex.a0 := z |})
+      type_safety_checker.(TypeSafetyChecker.stack)
+      H_stack
+    ).
+    do 2 (step; cbn; trivial).
+    unfold safe_unwrap_err.
+    step; cbn; trivial.
+    destruct u.
+    constructor; cbn.
+    apply H.
+  }
+  { guard_instruction (Bytecode.MoveLoc z).
     admit.
   }
   { guard_instruction (Bytecode.StLoc z).
@@ -1254,10 +1267,6 @@ Proof.
     hauto l: on.
   }
   { guard_instruction (Bytecode.VecPack t z).
-    unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
-    destruct type_safety_checker; cbn in *.
-    pose proof (AbstractStack.pop_is_valid stack H_stack).
     admit.
   }
   { guard_instruction (Bytecode.VecLen t).

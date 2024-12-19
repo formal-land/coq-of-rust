@@ -46,6 +46,7 @@ Module CompiledModule.
   
   
   Lemma struct_instantiation_at_is_valid (self : CompiledModule.t) (idx : StructDefInstantiationIndex.t) : Prop. 
+  
   Proof.
   Admitted.
   
