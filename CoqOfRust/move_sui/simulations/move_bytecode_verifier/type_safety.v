@@ -2090,7 +2090,7 @@ Definition verify_instr
         verifier.push(meter, ST::U256)?;
     }
     *)
-    | Bytecode.CastU16 => 
+    | Bytecode.CastU16 =>
       letS! operand :=
         liftS! TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS! operand := return!toS! $ safe_unwrap_err operand in
@@ -2098,7 +2098,7 @@ Definition verify_instr
       then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
         .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
       else TypeSafetyChecker.Impl_TypeSafetyChecker.push SignatureToken.U16
-    | Bytecode.CastU32 => 
+    | Bytecode.CastU32 =>
       letS! operand :=
         liftS! TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS! operand := return!toS! $ safe_unwrap_err operand in
@@ -2106,14 +2106,14 @@ Definition verify_instr
       then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
         .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
       else TypeSafetyChecker.Impl_TypeSafetyChecker.push SignatureToken.U32
-    | Bytecode.CastU256 => 
+    | Bytecode.CastU256 =>
       letS! operand :=
         liftS! TypeSafetyChecker.lens_self_stack AbstractStack.pop in
       letS! operand := return!toS! $ safe_unwrap_err operand in
       if negb $ SignatureToken.is_integer operand
       then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
         .error verifier StatusCode.INTEGER_OP_TYPE_MISMATCH_ERROR offset
-      else TypeSafetyChecker.Impl_TypeSafetyChecker.push SignatureToken.U64
+      else TypeSafetyChecker.Impl_TypeSafetyChecker.push SignatureToken.U256
     end.
 
 (* 

@@ -72,6 +72,8 @@ Class Setter{R E: Type}(getter: R -> E): Type :=
   set : E -> R -> R.
 
 Arguments set {R E} (getter) {Setter} (fieldUpdater) (r).
+(* Reduce when calling the [cbn] tactic *)
+Arguments set /.
 
 Global Hint Extern 1 (@Setter ?R ?E ?getter) =>
   exact_setter R getter : typeclass_instances.
