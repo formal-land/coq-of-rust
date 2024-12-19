@@ -978,7 +978,6 @@ Module Impl_Locals.
 End Impl_Locals.
 
 Module IntegerValue.
-
   Inductive t : Type :=
   | U8 : Z -> t
   | U16 : Z -> t
@@ -987,6 +986,17 @@ Module IntegerValue.
   | U128 : Z -> t
   | U256 : Z -> t
   .
+
+  (** This function is not in the original Rust code but is convenient for the proofs. *)
+  Definition to_value_impl (self : t) : ValueImpl.t :=
+    match self with
+    | U8 x => ValueImpl.U8 x
+    | U16 x => ValueImpl.U16 x
+    | U32 x => ValueImpl.U32 x
+    | U64 x => ValueImpl.U64 x
+    | U128 x => ValueImpl.U128 x
+    | U256 x => ValueImpl.U256 x
+    end.
 
   Definition checked_add (a : IntegerValue.t) (b : IntegerValue.t) : option IntegerValue.t :=
     match a, b with
@@ -1103,7 +1113,7 @@ Module IntegerValue.
       else Some (IntegerValue.U256 (l / r))
     | _, _ => None
     end.
-  
+
   Definition checked_rem (a : IntegerValue.t) (b : IntegerValue.t) : option IntegerValue.t :=
   match a, b with
   | IntegerValue.U8 l, IntegerValue.U8 r =>

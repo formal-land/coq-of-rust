@@ -34,27 +34,32 @@ Module IsValueOfType.
     | _, _ => False
     end.
 
-  Lemma value_of_bool (value : Value.t) (H_value : IsValueOfType.t value SignatureToken.Bool) :
+  Lemma value_of_bool (value : Value.t) (ty : SignatureToken.t)
+    (H_value : t value ty)
+    (* This is the form in which is appears in the proofs *)
+    (H_ty : ty = SignatureToken.Bool) :
     exists b, value = ValueImpl.Bool b.
   Proof.
-    destruct value; cbn; try contradiction.
+    destruct ty; cbn in *; try easy; clear H_ty.
+    destruct value; cbn in *; try easy.
     now eexists.
   Qed.
 
   Lemma value_of_integer (value : Value.t) (ty : SignatureToken.t)
       (H_value : t value ty)
       (H_ty : SignatureToken.is_integer ty = true) :
-    match value with
-    | ValueImpl.U8 _
-    | ValueImpl.U16 _
-    | ValueImpl.U32 _
-    | ValueImpl.U64 _
-    | ValueImpl.U128 _
-    | ValueImpl.U256 _ => True
-    | _ => False
-    end.
+    exists (integer_value : IntegerValue.t),
+    value = IntegerValue.to_value_impl integer_value.
   Proof.
-    now destruct value, ty; cbn in *.
+    destruct value, ty; cbn in *; try easy;
+      (
+        (now eexists (IntegerValue.U8 _)) ||
+        (now eexists (IntegerValue.U16 _)) ||
+        (now eexists (IntegerValue.U32 _)) ||
+        (now eexists (IntegerValue.U64 _)) ||
+        (now eexists (IntegerValue.U128 _)) ||
+        (now eexists (IntegerValue.U256 _))
+      ).
   Qed.
 End IsValueOfType.
 
@@ -144,13 +149,54 @@ Ltac destruct_abstract_push :=
     destruct_post H_check_push
   end.
 
+Ltac destruct_initial_if :=
+  step; cbn; try exact I;
+  repeat match goal with
+  | H : _ && _ = true |- _ =>
+    destruct (andb_prop _ _ H);
+    clear H
+  end;
+  repeat rewrite Bool.negb_false_iff in *;
+  (* We put the equalities to a constant in a different form *)
+  repeat match goal with
+  | H_Eq : _, H : SignatureToken.t_beq ?x ?y = true |- _ =>
+    match y with
+    | SignatureToken.Bool => assert (x = y) by now apply H_Eq
+    end;
+    clear H
+  end;
+  (* For all the equalities on variables we duplicate *)
+  repeat match goal with
+  | H_Eq : _, H_ty_eq : SignatureToken.t_beq ?x1 ?x2 = true |- _ =>
+    assert (SignatureToken.is_integer x2 = true) by (
+      now replace x2 with x1 by now apply H_Eq
+    );
+    clear H_ty_eq
+  end;
+  (* We apply our known lemma for values of specific types *)
+  repeat (
+    match goal with
+    | H_value : _, H_ty : _ |- _ =>
+      destruct_post (IsValueOfType.value_of_bool _ _ H_value H_ty);
+      clear H_ty
+    end ||
+    match goal with
+    | H_value : _, H_ty : _ |- _ =>
+      destruct_post (IsValueOfType.value_of_integer _ _ H_value H_ty);
+      clear H_ty
+    end
+  );
+  cbn; trivial.
+
 Lemma progress
     (ty_args : list _Type.t) (function : loader.Function.t) (resolver : loader.Resolver.t)
     (instruction : Bytecode.t)
     (pc : Z) (locals : Locals.t) (interpreter : Interpreter.t)
     (type_safety_checker : TypeSafetyChecker.t)
     (H_type_safety_checker : TypeSafetyChecker.Valid.t type_safety_checker)
-    (H_interpreter : IsInterpreterContextOfType.t locals interpreter type_safety_checker) :
+    (H_interpreter : IsInterpreterContextOfType.t locals interpreter type_safety_checker)
+    (* This lemma is not true for [Bytecode.Ret] *)
+    (H_not_Ret : instruction <> Bytecode.Ret) :
   let state := {|
     State.pc := pc;
     State.locals := locals;
@@ -191,27 +237,15 @@ Proof.
     repeat (step; cbn; try easy).
   }
   { guard_instruction Bytecode.Ret.
-    admit.
+    congruence.
   }
   { guard_instruction (Bytecode.BrTrue z).
     destruct_abstract_pop.
-    pose proof SignatureToken.t_beq_is_valid operand_ty SignatureToken.Bool as H_beq.
-    destruct SignatureToken.t_beq; cbn; [|exact I].
-    replace operand_ty with SignatureToken.Bool in * by hauto lq: on; clear H_beq.
-    match goal with
-    | H : _ |- _ => destruct_post (IsValueOfType.value_of_bool _ H)
-    end; cbn.
-    hauto l: on.
+    destruct_initial_if.
   }
   { guard_instruction (Bytecode.BrFalse z).
     destruct_abstract_pop.
-    pose proof SignatureToken.t_beq_is_valid operand_ty SignatureToken.Bool as H_beq.
-    destruct SignatureToken.t_beq; cbn; [|exact I].
-    replace operand_ty with SignatureToken.Bool in * by hauto lq: on; clear H_beq.
-    match goal with
-    | H : _ |- _ => destruct_post (IsValueOfType.value_of_bool _ H)
-    end; cbn.
-    hauto l: on.
+    destruct_initial_if.
   }
   { guard_instruction (Bytecode.Branch z).
     apply H_interpreter.
@@ -381,59 +415,112 @@ Proof.
   { guard_instruction Bytecode.Add.
     destruct_abstract_pop.
     destruct_abstract_pop.
-    step; cbn; [|exact I].
+    destruct_initial_if.
     destruct_abstract_push.
-    match goal with
-    | H : _ && _ = true |- _ => destruct (andb_prop _ _ H); clear H
-    end.
-    match goal with
-    | H : SignatureToken.t_beq ?x1 ?x2 = true |- _ =>
-      assert (SignatureToken.is_integer x2 = true); [
-        now replace x2 with x1 by now apply H_Eq
-      |];
-      clear H
-    end.
-    repeat match goal with
-    | H_value : _, H_ty : _ |- _ =>
-      pose proof (IsValueOfType.value_of_integer _ _ H_value H_ty);
-      clear H_ty
-    end.
-    step; cbn in *; try easy; (
-      step; cbn in *; try easy;
+    destruct_all IntegerValue.t; cbn in *; try easy; (
       unfold IntegerValue.add_checked; cbn;
       repeat (step; cbn; try easy);
       sauto lq: on
     ).
   }
   { guard_instruction Bytecode.Sub.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    destruct_all IntegerValue.t; cbn in *; try easy; (
+      unfold IntegerValue.sub_checked; cbn;
+      repeat (step; cbn; try easy);
+      sauto lq: on
+    ).
   }
   { guard_instruction Bytecode.Mul.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    destruct_all IntegerValue.t; cbn in *; try easy; (
+      unfold IntegerValue.mul_checked; cbn;
+      repeat (step; cbn; try easy);
+      sauto lq: on
+    ).
   }
   { guard_instruction Bytecode.Mod.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    destruct_all IntegerValue.t; cbn in *; try easy; (
+      unfold IntegerValue.rem_checked; cbn;
+      repeat (step; cbn; try easy);
+      sauto lq: on
+    ).
   }
   { guard_instruction Bytecode.Div.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    destruct_all IntegerValue.t; cbn in *; try easy; (
+      unfold IntegerValue.div_checked; cbn;
+      repeat (step; cbn; try easy);
+      sauto lq: on
+    ).
   }
   { guard_instruction Bytecode.BitOr.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    destruct_all IntegerValue.t; cbn in *; try easy; (
+      unfold IntegerValue.bit_or; cbn;
+      repeat (step; cbn; try easy);
+      sauto lq: on
+    ).
   }
   { guard_instruction Bytecode.BitAnd.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    destruct_all IntegerValue.t; cbn in *; try easy; (
+      unfold IntegerValue.bit_and; cbn;
+      repeat (step; cbn; try easy);
+      sauto lq: on
+    ).
   }
   { guard_instruction Bytecode.Xor.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    destruct_all IntegerValue.t; cbn in *; try easy; (
+      unfold IntegerValue.bit_xor; cbn;
+      repeat (step; cbn; try easy);
+      sauto lq: on
+    ).
   }
   { guard_instruction Bytecode.Or.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    step; cbn; try easy.
+    hauto l: on.
   }
   { guard_instruction Bytecode.And.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    step; cbn; try easy.
+    hauto l: on.
   }
   { guard_instruction Bytecode.Not.
-    admit.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    hauto l: on.
   }
   { guard_instruction Bytecode.Eq.
     admit.
@@ -442,22 +529,46 @@ Proof.
     admit.
   }
   { guard_instruction Bytecode.Lt.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    destruct_all IntegerValue.t; cbn in *; try easy;
+      repeat (step; cbn; try easy);
+      sauto lq: on.
   }
   { guard_instruction Bytecode.Gt.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    destruct_all IntegerValue.t; cbn in *; try easy;
+      repeat (step; cbn; try easy);
+      sauto lq: on.
   }
   { guard_instruction Bytecode.Le.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    destruct_all IntegerValue.t; cbn in *; try easy;
+      repeat (step; cbn; try easy);
+      sauto lq: on.
   }
   { guard_instruction Bytecode.Ge.
-    admit.
+    destruct_abstract_pop.
+    destruct_abstract_pop.
+    destruct_initial_if.
+    destruct_abstract_push.
+    destruct_all IntegerValue.t; cbn in *; try easy;
+      repeat (step; cbn; try easy);
+      sauto lq: on.
   }
   { guard_instruction Bytecode.Abort.
     admit.
   }
   { guard_instruction Bytecode.Nop.
-    admit.
+    assumption.
   }
   { guard_instruction (Bytecode.ExistsDeprecated t).
     admit.
