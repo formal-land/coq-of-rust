@@ -606,21 +606,17 @@ Definition execute_instruction
       interpreter.operand_stack.push(val)?
   }
   *)
-  (* NOTE: paused from investigation *)
-  | Bytecode.LdConst idx => execute_instruction_TODO
-    (* let constant := Resolver.Impl_Resolver.constant_at resolver idx in
-    (* TODO: 
-      - resolve mutual dependency issue 
-      - figure out the logic to load a constant *)
-    let val := Value.Impl_Value.deserialize_constant constant in
-    let val := match val with
-    | Some v => v
-    | None => PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
-    end in
-    letS!? _ := liftS! State.Lens.interpreter (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push val) in 
-    returnS! $ Result.Ok InstrRet.Ok *)
-
+  | Bytecode.LdConst idx =>
+    letS! constant := return!toS! $ Resolver.Impl_Resolver.constant_at resolver idx in
+    match Impl_Value.deserialize_constant constant with
+    | None =>
+      returnS! $ Result.Err $
+        PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
+    | Some val =>
+      letS!? _ := liftS! State.Lens.interpreter (
+        liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.push val) in
+      returnS! $ Result.Ok InstrRet.Ok
+    end
   (* 
   Bytecode::LdTrue => {
       gas_meter.charge_simple_instr(S::LdTrue)?;

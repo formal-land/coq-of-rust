@@ -99,3 +99,16 @@ Module BinOp.
     Qed.
   End Error.
 End BinOp.
+
+Module List.
+  Lemma Forall_nth_error {A : Set} (P : A -> Prop) (l : list A) (n : nat)
+      (H_l : List.Forall P l) :
+    match List.nth_error l n with
+    | Some x => P x
+    | None => True
+    end.
+  Proof.
+    generalize dependent n.
+    induction H_l; intros; destruct n; cbn; sfirstorder.
+  Qed.
+End List.

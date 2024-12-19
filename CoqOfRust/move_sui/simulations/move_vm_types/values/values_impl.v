@@ -11,7 +11,7 @@ Module PartialVMError := errors.PartialVMError.
 Require CoqOfRust.move_sui.simulations.move_core_types.vm_status.
 Module StatusCode := vm_status.StatusCode.
 
-Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
+Require Import CoqOfRust.move_sui.simulations.move_binary_format.file_format.
 
 (* TODO(progress): 
   - Implement `Reference`:
@@ -20,11 +20,6 @@ Require CoqOfRust.move_sui.simulations.move_binary_format.file_format.
     - write_ref
     - read_ref
 *)
-
-(* NOTE(STUB): Only implement if necessary *)
-Module Constant.
-  Parameter t : Set.
-End Constant.
 
 Module AccountAddress.
   Parameter t : Set.
@@ -491,6 +486,18 @@ Module Value.
   Definition coerce_Container_Locals (c : Value.t) : t. Admitted.
   Definition coerce_Locals_Container (self : t) : Value.t. Admitted.
 End Value.
+
+Module Impl_Value.
+  (*
+  pub fn deserialize_constant(constant: &Constant) -> Option<Value> {
+      let layout = Self::constant_sig_token_to_layout(&constant.type_)?;
+      Value::simple_deserialize(&constant.data, &layout)
+  }
+  *)
+  (** We keep this function as axiom for now, as its definition would be quite complex and the
+      details are not required for the verification of the type-checker. *)
+  Parameter deserialize_constant : Constant.t -> option Value.t.
+End Impl_Value.
 
 (*
 impl ContainerRef {
