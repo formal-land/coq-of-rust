@@ -741,7 +741,24 @@ Proof.
     apply H.
   }
   { guard_instruction (Bytecode.MoveLoc z).
-    admit.
+    destruct H_type_safety_checker as [H_stack].
+    pose proof (TypeSafetyChecker.Impl_TypeSafetyChecker.push
+      (TypeSafetyChecker.Impl_TypeSafetyChecker.local_at type_safety_checker {| file_format_index.LocalIndex.a0 := z |})
+      type_safety_checker
+    ).
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    with_strategy opaque [AbstractStack.push] unfold_state_monad.
+    pose proof (AbstractStack.push_is_valid
+      (TypeSafetyChecker.Impl_TypeSafetyChecker.local_at type_safety_checker {| file_format_index.LocalIndex.a0 := z |})
+      type_safety_checker.(TypeSafetyChecker.stack)
+      H_stack
+    ).
+    do 2 (step; cbn; trivial).
+    unfold safe_unwrap_err.
+    step; cbn; trivial.
+    destruct u.
+    constructor; cbn.
+    apply H0.
   }
   { guard_instruction (Bytecode.StLoc z).
     unfold_state_monad.
