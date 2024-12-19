@@ -63,6 +63,7 @@ Module IsStackValueOfType.
     List.Forall2 IsValueOfType.t
       stack.(Stack.value)
       (AbstractStack.flatten abstract_stack).
+  Arguments t /.
 
   Lemma pop stack operand_ty stack_ty :
     List.Forall2 IsValueOfType.t stack (operand_ty :: AbstractStack.flatten stack_ty) ->
@@ -89,6 +90,7 @@ Module IsInterpreterContextOfType.
     IsStackValueOfType.t
       interpreter.(Interpreter.operand_stack)
       type_safety_checker.(TypeSafetyChecker.stack).
+  Arguments t /.
 End IsInterpreterContextOfType.
 
 (* To know in which case we are *)
@@ -124,6 +126,11 @@ Ltac destruct_abstract_pop :=
     destruct (AbstractStack.pop stack) as [[[?operand_ty |] ?stack_ty] |];
       cbn; [|exact I | exact I];
     destruct_post H_check_pop
+  end;
+  match goal with
+  | H_interpreter : _ |- _ =>
+    destruct_post (IsStackValueOfType.pop _ _ _ H_interpreter);
+    clear H_interpreter
   end.
 
 Ltac destruct_abstract_push :=
@@ -178,13 +185,10 @@ Proof.
   destruct interpreter as [[stack]].
   destruct type_safety_checker as [module function_context locals_ty stack_ty]; cbn in *.
   destruct H_type_safety_checker as [H_stack_ty]; cbn in *.
-  destruct instruction eqn:H_instruction_eq; cbn in *;
-    unfold IsInterpreterContextOfType.t, IsStackValueOfType.t in H_interpreter;
-    cbn in *.
+  destruct instruction eqn:H_instruction_eq; cbn in *.
   { guard_instruction Bytecode.Pop.
     destruct_abstract_pop.
     repeat (step; cbn; try easy).
-    sauto lq: on rew: off.
   }
   { guard_instruction Bytecode.Ret.
     admit.
@@ -194,8 +198,6 @@ Proof.
     pose proof SignatureToken.t_beq_is_valid operand_ty SignatureToken.Bool as H_beq.
     destruct SignatureToken.t_beq; cbn; [|exact I].
     replace operand_ty with SignatureToken.Bool in * by hauto lq: on; clear H_beq.
-    destruct_post (IsStackValueOfType.pop _ _ _ H_interpreter);
-      clear H_interpreter; cbn.
     match goal with
     | H : _ |- _ => destruct_post (IsValueOfType.value_of_bool _ H)
     end; cbn.
@@ -206,8 +208,6 @@ Proof.
     pose proof SignatureToken.t_beq_is_valid operand_ty SignatureToken.Bool as H_beq.
     destruct SignatureToken.t_beq; cbn; [|exact I].
     replace operand_ty with SignatureToken.Bool in * by hauto lq: on; clear H_beq.
-    destruct_post (IsStackValueOfType.pop _ _ _ H_interpreter);
-      clear H_interpreter; cbn.
     match goal with
     | H : _ |- _ => destruct_post (IsValueOfType.value_of_bool _ H)
     end; cbn.
@@ -219,104 +219,80 @@ Proof.
   { guard_instruction (Bytecode.LdU8 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn.
     sauto lq: on.
   }
   { guard_instruction (Bytecode.LdU16 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn.
     sauto lq: on.
   }
   { guard_instruction (Bytecode.LdU32 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn.
     sauto lq: on.
   }
   { guard_instruction (Bytecode.LdU64 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn.
     sauto lq: on.
   }
   { guard_instruction (Bytecode.LdU128 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn.
     sauto lq: on.
   }
   { guard_instruction (Bytecode.LdU256 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn.
     sauto lq: on.
   }
   { guard_instruction Bytecode.CastU8.
     destruct_abstract_pop.
     step; cbn; [exact I|].
     destruct_abstract_push.
-    destruct stack as [|operand stack]; cbn; try easy.
-    inversion_clear H_interpreter.
-    destruct operand; cbn; (try easy); (try now destruct operand_ty);
+    step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
-      sauto lq: on.
+      sauto lq: on rew: off.
   }
   { guard_instruction Bytecode.CastU16.
     destruct_abstract_pop.
     step; cbn; [exact I|].
     destruct_abstract_push.
-    destruct stack as [|operand stack]; cbn; try easy.
-    inversion_clear H_interpreter.
-    destruct operand; cbn; (try easy); (try now destruct operand_ty);
+    step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
-      sauto lq: on.
+      sauto lq: on rew: off.
   }
   { guard_instruction Bytecode.CastU32.
     destruct_abstract_pop.
     step; cbn; [exact I|].
     destruct_abstract_push.
-    destruct stack as [|operand stack]; cbn; try easy.
-    inversion_clear H_interpreter.
-    destruct operand; cbn; (try easy); (try now destruct operand_ty);
+    step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
-      sauto lq: on.
+      sauto lq: on rew: off.
   }
   { guard_instruction Bytecode.CastU64.
     destruct_abstract_pop.
     step; cbn; [exact I|].
     destruct_abstract_push.
-    destruct stack as [|operand stack]; cbn; try easy.
-    inversion_clear H_interpreter.
-    destruct operand; cbn; (try easy); (try now destruct operand_ty);
+    step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
-      sauto lq: on.
+      sauto lq: on rew: off.
   }
   { guard_instruction Bytecode.CastU128.
     destruct_abstract_pop.
     step; cbn; [exact I|].
     destruct_abstract_push.
-    destruct stack as [|operand stack]; cbn; try easy.
-    inversion_clear H_interpreter.
-    destruct operand; cbn; (try easy); (try now destruct operand_ty);
+    step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
-      sauto lq: on.
+      sauto lq: on rew: off.
   }
   { guard_instruction Bytecode.CastU256.
     destruct_abstract_pop.
     step; cbn; [exact I|].
     destruct_abstract_push.
-    destruct stack as [|operand stack]; cbn; try easy.
-    inversion_clear H_interpreter.
-    destruct operand; cbn; (try easy); (try now destruct operand_ty);
+    step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
-      sauto lq: on.
+      sauto lq: on rew: off.
   }
   { guard_instruction (Bytecode.LdConst t).
     admit.
@@ -324,13 +300,11 @@ Proof.
   { guard_instruction Bytecode.LdTrue.
     destruct_abstract_push.
     step; cbn; [|exact I].
-    unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn.
     sauto lq: on.
   }
   { guard_instruction Bytecode.LdFalse.
     destruct_abstract_push.
     step; cbn; [|exact I].
-    unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn.
     sauto lq: on.
   }
   { guard_instruction (Bytecode.CopyLoc z).
@@ -406,17 +380,7 @@ Proof.
   }
   { guard_instruction Bytecode.Add.
     destruct_abstract_pop.
-    match goal with
-    | H_interpreter : List.Forall2 _ _ _ |- _ =>
-      destruct_post (IsStackValueOfType.pop _ _ _ H_interpreter);
-      clear H_interpreter
-    end.
     destruct_abstract_pop.
-    match goal with
-    | H_interpreter : List.Forall2 _ _ _ |- _ =>
-      destruct_post (IsStackValueOfType.pop _ _ _ H_interpreter);
-      clear H_interpreter
-    end.
     step; cbn; [|exact I].
     destruct_abstract_push.
     match goal with
@@ -438,7 +402,6 @@ Proof.
       step; cbn in *; try easy;
       unfold IntegerValue.add_checked; cbn;
       repeat (step; cbn; try easy);
-      unfold IsInterpreterContextOfType.t, IsStackValueOfType.t; cbn;
       sauto lq: on
     ).
   }
