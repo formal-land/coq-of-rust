@@ -742,10 +742,6 @@ Proof.
   }
   { guard_instruction (Bytecode.MoveLoc z).
     destruct H_type_safety_checker as [H_stack].
-    pose proof (TypeSafetyChecker.Impl_TypeSafetyChecker.push
-      (TypeSafetyChecker.Impl_TypeSafetyChecker.local_at type_safety_checker {| file_format_index.LocalIndex.a0 := z |})
-      type_safety_checker
-    ).
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid
@@ -758,7 +754,7 @@ Proof.
     step; cbn; trivial.
     destruct u.
     constructor; cbn.
-    apply H0.
+    apply H.
   }
   { guard_instruction (Bytecode.StLoc z).
     unfold_state_monad.
@@ -792,6 +788,10 @@ Proof.
     admit.
   }
   { guard_instruction Bytecode.WriteRef.
+    unfold_state_monad.
+    step; cbn; trivial.
+    step; cbn; trivial.
+    step; cbn; trivial.
     admit.
   }
   { guard_instruction Bytecode.FreezeRef.
