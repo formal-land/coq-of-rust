@@ -30,23 +30,35 @@ Module CompiledModule.
   Proof.
   Admitted.
 
-  (*
-  Definition signature_at (self : t) (idx : SignatureIndex.t) : M! Signature.t :=
-    let idx := idx.(SignatureIndex.a0) in
-    Option.expect (List.nth_error self.(signatures) (Z.to_nat idx)) "signature_at index error".
-  *)
-  Lemma signature_at_is_valid (self : CompiledModule.t) (idx : SignatureIndex.t) :
-  match CompiledModule.signature_at self idx with
+  Lemma struct_instantiation_at_is_valid (self : CompiledModule.t) (idx : StructDefInstantiationIndex.t) : 
+  match CompiledModule.struct_instantiation_at self idx with
   | Panic.Value _ => True
   | Panic.Panic _ => True
   end.
   Proof.
   Admitted.
 
-  
-  
-  Lemma struct_instantiation_at_is_valid (self : CompiledModule.t) (idx : StructDefInstantiationIndex.t) : Prop. 
-  
+  Lemma struct_def_at_is_valid (self : CompiledModule.t) (idx : StructDefinitionIndex.t) :
+  match CompiledModule.struct_def_at self idx with
+  | Panic.Value _ => True
+  | Panic.Panic _ => True
+  end.
+  Proof.
+  Admitted.
+
+  Lemma struct_handle_at_is_valid (self : CompiledModule.t) (idx : StructHandleIndex.t) :
+  match CompiledModule.struct_handle_at self idx with
+  | Panic.Value _ => True
+  | Panic.Panic _ => True
+  end.
+  Proof.
+  Admitted.
+
+  Lemma signature_at_is_valid (self : CompiledModule.t) (idx : SignatureIndex.t) :
+  match CompiledModule.signature_at self idx with
+  | Panic.Value _ => True
+  | Panic.Panic _ => True
+  end.
   Proof.
   Admitted.
   
