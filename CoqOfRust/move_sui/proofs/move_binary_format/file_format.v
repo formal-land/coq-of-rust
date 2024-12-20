@@ -61,7 +61,47 @@ Module CompiledModule.
   end.
   Proof.
   Admitted.
-  
+
+  Lemma constant_at_is_valid (self : CompiledModule.t) (idx : ConstantPoolIndex.t) :
+  match CompiledModule.constant_at self idx with
+  | Panic.Value _ => True
+  | Panic.Panic _ => True
+  end.
+  Proof.
+  Admitted.
+
+  Lemma function_handle_at_is_valid (self : CompiledModule.t) (idx : FunctionHandleIndex.t) :
+  match CompiledModule.function_handle_at self idx with
+  | Panic.Value _ => True
+  | Panic.Panic _ => True
+  end.
+  Proof.
+  Admitted.
+
+  Lemma field_instantiation_at_is_valid (self : CompiledModule.t) (idx : FieldInstantiationIndex.t) :
+  match CompiledModule.field_instantiation_at self idx with
+  | Panic.Value _ => True
+  | Panic.Panic _ => True
+  end.
+  Proof.
+  Admitted.
+
+  Lemma function_instantiation_at_is_valid (self : CompiledModule.t) (idx : FunctionInstantiationIndex.t) :
+  match CompiledModule.function_instantiation_at self idx with
+  | Panic.Value _ => True
+  | Panic.Panic _ => True
+  end.
+  Proof.
+  Admitted.
+
+  Lemma abilities_is_valid (self : CompiledModule.t) (ty : SignatureToken.t) (constraints : list AbilitySet.t) :
+  match CompiledModule.abilities self ty constraints with
+  | Panic.Value _ => True
+  | Panic.Panic _ => True
+  end.
+  Proof.
+  Admitted.
+
 End CompiledModule.
 
 Module Bytecode.
