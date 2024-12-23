@@ -779,9 +779,21 @@ Proof.
     admit.
   }
   { guard_instruction (Bytecode.Unpack t).
+    unfold_state_monad.
+    destruct CompiledModule.struct_def_at; cbn; trivial.
+    destruct H_type_safety_checker as [H_stack].
+    destruct type_safety_checker; cbn in *.
+    unfold set; cbn.
+    pose proof (AbstractStack.pop_is_valid stack H_stack).
+    destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
+    unfold safe_unwrap_err.
+    step; cbn; trivial.
+    step; cbn; trivial.
+    (* FOLD Issue *)
     admit.
   }
   { guard_instruction (Bytecode.UnpackGeneric t).
+
     admit.
   }
   { guard_instruction Bytecode.ReadRef.
