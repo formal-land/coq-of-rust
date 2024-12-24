@@ -111,4 +111,16 @@ Module List.
     generalize dependent n.
     induction H_l; intros; destruct n; cbn; sfirstorder.
   Qed.
+
+  Lemma Forall2_nth_error {A B : Set} (P : A -> B -> Prop) (l1 : list A) (l2 : list B) (n : nat)
+      (H_l : List.Forall2 P l1 l2) :
+    match List.nth_error l1 n, List.nth_error l2 n with
+    | Some x1, Some x2 => P x1 x2
+    | Some _, None | None, Some _ => False
+    | _, _ => True
+    end.
+  Proof.
+    generalize dependent n.
+    induction H_l; intros; destruct n; cbn; sfirstorder.
+  Qed.
 End List.

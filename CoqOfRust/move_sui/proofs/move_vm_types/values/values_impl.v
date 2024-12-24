@@ -6,8 +6,9 @@ Require Import move_sui.simulations.move_binary_format.file_format.
 Require Import move_sui.simulations.move_vm_types.values.values_impl.
 
 Module IsValueOfType.
-  Definition t (value : Value.t) (typ : SignatureToken.t) : Prop :=
+  Definition t (value : ValueImpl.t) (typ : SignatureToken.t) : Prop :=
     match value, typ with
+    | ValueImpl.Invalid, _ => False
     | ValueImpl.U8 _, SignatureToken.U8 => True
     | ValueImpl.U16 _, SignatureToken.U16 => True
     | ValueImpl.U32 _, SignatureToken.U32 => True

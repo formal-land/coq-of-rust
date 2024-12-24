@@ -42,38 +42,36 @@ Module Locals.
     parameters : Signature.t;
     locals : Signature.t;
   }.
-
-  Module Impl_Locals.
-    Definition Self : Set := 
-      move_sui.simulations.move_bytecode_verifier.type_safety.Locals.t.
-
-    Definition new (parameters locals : Signature.t) : Self :=
-      {|
-        Locals.param_count := Signature.len parameters;
-        Locals.parameters := parameters;
-        Locals.locals := locals;
-      |}.
-
-    (* 
-    fn local_at(&self, i: LocalIndex) -> &SignatureToken {
-        let idx = i as usize;
-        if idx < self.param_count {
-            &self.parameters.0[idx]
-        } else {
-            &self.locals.0[idx - self.param_count]
-        }
-    }
-    *)
-    Definition local_at (self : t) (i : LocalIndex.t) : SignatureToken.t :=
-      let idx := i.(LocalIndex.a0) in 
-      if idx <? self.(param_count)
-      then List.nth (Z.to_nat idx) self.(parameters).(Signature.a0) 
-        SignatureToken.Bool (* This should never arrive at *)
-      else List.nth (Z.to_nat $ idx - self.(param_count)) self.(locals).(Signature.a0) 
-        SignatureToken.Bool. (* This should never arrive at *)
-
-  End Impl_Locals.
 End Locals.
+
+Module Impl_Locals.
+  Definition Self : Set :=
+    Locals.t.
+
+  Definition new (parameters locals : Signature.t) : Self :=
+    {|
+      Locals.param_count := Signature.len parameters;
+      Locals.parameters := parameters;
+      Locals.locals := locals;
+    |}.
+
+  (* 
+  fn local_at(&self, i: LocalIndex) -> &SignatureToken {
+      let idx = i as usize;
+      if idx < self.param_count {
+          &self.parameters.0[idx]
+      } else {
+          &self.locals.0[idx - self.param_count]
+      }
+  }
+  *)
+  Definition local_at (self : Self) (i : LocalIndex.t) : M! SignatureToken.t :=
+    let idx := i.(LocalIndex.a0) in
+    if idx <? self.(Locals.param_count) then
+      Panic.List.nth self.(Locals.parameters).(Signature.a0) (Z.to_nat idx)
+    else
+      Panic.List.nth self.(Locals.locals).(Signature.a0) (Z.to_nat $ idx - self.(Locals.param_count)).
+End Impl_Locals.
 
 Definition TYPE_NODE_COST : Z := 30.
 
@@ -95,7 +93,7 @@ Module TypeSafetyChecker.
       move_sui.simulations.move_bytecode_verifier.type_safety.TypeSafetyChecker.t.
 
     Definition new (module : CompiledModule.t) (function_context : FunctionContext.t) : Self :=
-      let locals := Locals.Impl_Locals.new 
+      let locals := Impl_Locals.new 
       (* NOTE: We directly access the corresponded fields here for conveniency *)
       function_context.(FunctionContext.parameters)
       function_context.(FunctionContext.locals) in
@@ -106,8 +104,8 @@ Module TypeSafetyChecker.
         TypeSafetyChecker.stack := AbstractStack.new;
       |}.
 
-    Definition local_at (self : Self) (i : LocalIndex.t) : SignatureToken.t :=
-      Locals.Impl_Locals.local_at self.(locals) i.
+    Definition local_at (self : Self) (i : LocalIndex.t) : M! SignatureToken.t :=
+      Impl_Locals.local_at self.(locals) i.
 
     Definition abilities (self : Self) (t : SignatureToken.t) :
         M! (PartialVMResult.t AbilitySet.t) :=
@@ -428,7 +426,8 @@ fn borrow_loc(
 Definition borrow_loc (offset : CodeOffset.t) (mut_ : bool) (idx : LocalIndex.t)
   : MS! TypeSafetyChecker.t (PartialVMResult.t unit) :=
   letS! verifier := readS! in
-  let loc_signature := TypeSafetyChecker.Impl_TypeSafetyChecker.local_at verifier idx in
+  letS! loc_signature :=
+    return!toS! $ TypeSafetyChecker.Impl_TypeSafetyChecker.local_at verifier idx in
   if SignatureToken.is_reference loc_signature
   then returnS! $ Result.Err $ 
     TypeSafetyChecker.Impl_TypeSafetyChecker.error 
@@ -1039,9 +1038,10 @@ Definition verify_instr
     | Bytecode.StLoc idx => 
         letS! operand :=
           liftS! TypeSafetyChecker.lens_self_stack AbstractStack.pop in
+        letS! operand_at := return!toS! $ TypeSafetyChecker.Impl_TypeSafetyChecker
+          .local_at verifier (LocalIndex.Build_t idx) in
         letS! operand := return!toS! $ safe_unwrap_err operand in
-        if negb $ SignatureToken.t_beq operand $ TypeSafetyChecker.Impl_TypeSafetyChecker
-          .local_at verifier (LocalIndex.Build_t idx)
+        if negb $ SignatureToken.t_beq operand operand_at
         then returnS! $ Result.Err $ TypeSafetyChecker.Impl_TypeSafetyChecker
           .error verifier StatusCode.STLOC_TYPE_MISMATCH_ERROR offset
         else returnS! $ Result.Ok tt
@@ -1248,8 +1248,10 @@ Definition verify_instr
     }
     *)
     | Bytecode.CopyLoc idx => 
-        let local_signature := TypeSafetyChecker.Impl_TypeSafetyChecker
-          .local_at verifier $ LocalIndex.Build_t idx in
+        letS! local_signature :=
+          return!toS! $
+            TypeSafetyChecker.Impl_TypeSafetyChecker.local_at verifier $
+              LocalIndex.Build_t idx in
         letS! abilities := return!toS! $
           CompiledModule.abilities
             verifier.(TypeSafetyChecker.module) local_signature 
@@ -1270,7 +1272,7 @@ Definition verify_instr
           }
     *)
     | Bytecode.MoveLoc idx => 
-      let local_signature := TypeSafetyChecker.Impl_TypeSafetyChecker
+      letS! local_signature := return!toS! $ TypeSafetyChecker.Impl_TypeSafetyChecker
         .local_at verifier $ LocalIndex.Build_t idx in
       TypeSafetyChecker.Impl_TypeSafetyChecker.push local_signature
 

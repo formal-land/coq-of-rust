@@ -56,59 +56,22 @@ enum Container {
     VecU256(Rc<RefCell<Vec<u256::U256>>>),
 }
 *)
-Module Container.
-
-  Inductive t : Set :=
-  (* TODO: Resolve mutual dependency issue below *)
-  (*| Locals : list ValueImpl.t -> t*)
-  (* | Vec : list ValueImpl.t -> t *)
-  (* | Struct : list ValueImpl.t -> t *)
-  | VecU8 : list Z -> t
-  | VecU64 : list Z -> t
-  | VecU128 : list Z -> t
-  | VecBool : list bool -> t
-  | VecAddress : list AccountAddress.t -> t
-  | VecU16 : list Z -> t
-  | VecU32 : list Z -> t
-  | VecU256 : list Z -> t
+Module ContainerSkeleton.
+  Inductive t {ValueImpl : Set} : Set :=
+  | Locals (locals : list ValueImpl)
+  | Vec (vec : list ValueImpl)
+  | Struct (fields : list ValueImpl)
+  | VecU8 (vec : list Z)
+  | VecU64 (vec : list Z)
+  | VecU128 (vec : list Z)
+  | VecBool (vec : list bool)
+  | VecAddress (vec : list AccountAddress.t)
+  | VecU16 (vec : list Z)
+  | VecU32 (vec : list Z)
+  | VecU256 (vec : list Z)
   .
-
-  (*
-  fn copy_value(&self) -> PartialVMResult<Self> {
-        let copy_rc_ref_vec_val = |r: &Rc<RefCell<Vec<ValueImpl>>>| {
-            Ok(Rc::new(RefCell::new(
-                r.borrow()
-                    .iter()
-                    .map(|v| v.copy_value())
-                    .collect::<PartialVMResult<_>>()?,
-            )))
-        };
-
-        Ok(match self {
-            Self::Vec(r) => Self::Vec(copy_rc_ref_vec_val(r)?),
-            Self::Struct(r) => Self::Struct(copy_rc_ref_vec_val(r)?),
-
-            Self::VecU8(r) => Self::VecU8(Rc::new(RefCell::new(r.borrow().clone()))),
-            Self::VecU16(r) => Self::VecU16(Rc::new(RefCell::new(r.borrow().clone()))),
-            Self::VecU32(r) => Self::VecU32(Rc::new(RefCell::new(r.borrow().clone()))),
-            Self::VecU64(r) => Self::VecU64(Rc::new(RefCell::new(r.borrow().clone()))),
-            Self::VecU128(r) => Self::VecU128(Rc::new(RefCell::new(r.borrow().clone()))),
-            Self::VecU256(r) => Self::VecU256(Rc::new(RefCell::new(r.borrow().clone()))),
-            Self::VecBool(r) => Self::VecBool(Rc::new(RefCell::new(r.borrow().clone()))),
-            Self::VecAddress(r) => Self::VecAddress(Rc::new(RefCell::new(r.borrow().clone()))),
-
-            Self::Locals(_) => {
-                return Err(
-                    PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
-                        .with_message("cannot copy a Locals container".to_string()),
-                )
-            }
-        })
-    }*)
-  Definition copy_value (self : t) : PartialVMResult.t t := 
-    Result.Ok self.
-
-End Container.
+  Arguments t : clear implicits.
+End ContainerSkeleton.
 
 (* 
 /// A ContainerRef is a direct reference to a container, which could live either in the frame
@@ -123,50 +86,21 @@ enum ContainerRef {
     },
 }
 *)
-Module ContainerRef.
-  Module __Global.
-    Record t : Set := {
+Module ContainerRefSkeleton.
+  Module Global_.
+    Record t {ValueImpl : Set} : Set := {
       status : GlobalDataStatus.t;
-      container: Container.t;
+      container: ContainerSkeleton.t ValueImpl;
     }.
-  End __Global.
+    Arguments t : clear implicits.
+  End Global_.
 
-  Inductive t : Set :=
-  | Local : Container.t -> t
-  | _Global : __Global.t -> t
+  Inductive t {ValueImpl : Set} : Set :=
+  | Local : ContainerSkeleton.t ValueImpl -> t
+  | Global_ : Global_.t ValueImpl -> t
   .
-
-  (*
-  fn container(&self) -> &Container {
-        match self {
-            Self::Local(container) | Self::Global { container, .. } => container,
-        }
-    }
-  *)
-  Definition container (self : t) : Container.t :=
-    match self with
-    | Local container => container
-    | _Global g => g.(__Global.container)
-    end.
-
-  (* NOTE: This function is ignored
-  fn copy_by_ref(&self) -> Self {
-      match self {
-          Self::Vec(r) => Self::Vec(Rc::clone(r)),
-          Self::Struct(r) => Self::Struct(Rc::clone(r)),
-          Self::VecU8(r) => Self::VecU8(Rc::clone(r)),
-          Self::VecU16(r) => Self::VecU16(Rc::clone(r)),
-          Self::VecU32(r) => Self::VecU32(Rc::clone(r)),
-          Self::VecU64(r) => Self::VecU64(Rc::clone(r)),
-          Self::VecU128(r) => Self::VecU128(Rc::clone(r)),
-          Self::VecU256(r) => Self::VecU256(Rc::clone(r)),
-          Self::VecBool(r) => Self::VecBool(Rc::clone(r)),
-          Self::VecAddress(r) => Self::VecAddress(Rc::clone(r)),
-          Self::Locals(r) => Self::Locals(Rc::clone(r)),
-      }
-  }
-  *)
-End ContainerRef.
+  Arguments t : clear implicits.
+End ContainerRefSkeleton.
 
 (* 
 /// A Move reference pointing to an element in a container.
@@ -176,38 +110,13 @@ struct IndexedRef {
     container_ref: ContainerRef,
 }
 *)
-Module IndexedRef.
-  Record t : Set := {
+Module IndexedRefSkeleton.
+  Record t {ValueImpl : Set} : Set := {
     idx : Z;
-    container_ref : ContainerRef.t;
+    container_ref : ContainerRefSkeleton.t ValueImpl;
   }.
-End IndexedRef.
-
-(* 
-/// An umbrella enum for references. It is used to hide the internals of the public type
-/// Reference.
-#[derive(Debug)]
-enum ReferenceImpl {
-    IndexedRef(IndexedRef),
-    ContainerRef(ContainerRef),
-}
-*)
-
-Module ReferenceImpl.
-  Inductive t : Set :=
-  | IndexedRef : IndexedRef.t -> t
-  | ContainerRef : ContainerRef.t -> t
-  .
-End ReferenceImpl.
-
-(* 
-/// A generic Move reference that offers two functionalities: read_ref & write_ref.
-#[derive(Debug)]
-pub struct Reference(ReferenceImpl);
-*)
-Module Reference.
-  Definition t := ReferenceImpl.t.
-End Reference.
+  Arguments t : clear implicits.
+End IndexedRefSkeleton.
 
 (* 
 enum ValueImpl {
@@ -239,11 +148,230 @@ Module ValueImpl.
   | U256 : Z -> t
   | Bool : bool -> t
   | Address : AccountAddress.t -> t
-  | Container : Container.t -> t
-  | ContainerRef : ContainerRef.t -> t
-  | IndexedRef : IndexedRef.t -> t
+  | Container : ContainerSkeleton.t t -> t
+  | ContainerRef : ContainerRefSkeleton.t t -> t
+  | IndexedRef : IndexedRefSkeleton.t t -> t
   .
 End ValueImpl.
+
+Module Container.
+  Definition t : Set := ContainerSkeleton.t ValueImpl.t.
+End Container.
+
+Module ContainerRef.
+  Definition t : Set := ContainerRefSkeleton.t ValueImpl.t.
+End ContainerRef.
+
+Module IndexedRef.
+  Definition t : Set := IndexedRefSkeleton.t ValueImpl.t.
+End IndexedRef.
+
+(* 
+/// An umbrella enum for references. It is used to hide the internals of the public type
+/// Reference.
+#[derive(Debug)]
+enum ReferenceImpl {
+    IndexedRef(IndexedRef),
+    ContainerRef(ContainerRef),
+}
+*)
+Module ReferenceImpl.
+  Inductive t : Set :=
+  | IndexedRef : IndexedRef.t -> t
+  | ContainerRef : ContainerRef.t -> t
+  .
+End ReferenceImpl.
+
+(* 
+/// A generic Move reference that offers two functionalities: read_ref & write_ref.
+#[derive(Debug)]
+pub struct Reference(ReferenceImpl);
+*)
+Module Reference.
+  Definition t := ReferenceImpl.t.
+End Reference.
+
+Module Impl_ContainerRef.
+  Definition Self : Set := ContainerRef.t.
+
+  (*
+  fn copy_value(&self) -> Self {
+        match self {
+            Self::Local(container) => Self::Local(container.copy_by_ref()),
+            Self::Global { status, container } => Self::Global {
+                status: Rc::clone(status),
+                container: container.copy_by_ref(),
+            },
+        }
+    }
+  *)
+  (* If we unroll the definition this is the identity function (ignoring the pointers) *)
+  Definition copy_value (self : Self) : Self :=
+    self.
+
+  (*
+  fn container(&self) -> &Container {
+      match self {
+          Self::Local(container) | Self::Global { container, .. } => container,
+      }
+  }
+  *)
+  Definition container (self : Self) : Container.t :=
+    match self with
+    | ContainerRefSkeleton.Local container
+    | ContainerRefSkeleton.Global_ {| ContainerRefSkeleton.Global_.container := container |} =>
+      container
+    end.
+End Impl_ContainerRef.
+
+Module Impl_IndexedRef.
+  Definition Self : Set := IndexedRef.t.
+
+  (*
+  fn copy_value(&self) -> Self {
+        Self {
+            idx: self.idx,
+            container_ref: self.container_ref.copy_value(),
+        }
+    }
+  *)
+  (* If we unroll the definition this is the identity function (ignoring the pointers) *)
+  Definition copy_value (self : Self) : Self :=
+    self.
+End Impl_IndexedRef.
+
+Module Impl_ValueImpl.
+  Definition Self : Set := ValueImpl.t.
+
+  (*
+  fn copy_value(&self) -> PartialVMResult<Self> {
+        use ValueImpl::*;
+
+        Ok(match self {
+            Invalid => Invalid,
+
+            U8(x) => U8( *x),
+            U16(x) => U16( *x),
+            U32(x) => U32( *x),
+            U64(x) => U64( *x),
+            U128(x) => U128( *x),
+            U256(x) => U256( *x),
+            Bool(x) => Bool( *x),
+            Address(x) => Address( *x),
+
+            ContainerRef(r) => ContainerRef(r.copy_value()),
+            IndexedRef(r) => IndexedRef(r.copy_value()),
+
+            // When cloning a container, we need to make sure we make a deep
+            // copy of the data instead of a shallow copy of the Rc.
+            Container(c) => Container(c.copy_value()?),
+        })
+    }
+  *)
+  Reserved Notation "'Container_copy_value".
+
+  Fixpoint copy_value (self : Self) : PartialVMResult.t Self :=
+    (* impl Container { *)
+    (*
+    fn copy_value(&self) -> PartialVMResult<Self> {
+        let copy_rc_ref_vec_val = |r: &Rc<RefCell<Vec<ValueImpl>>>| {
+            Ok(Rc::new(RefCell::new(
+                r.borrow()
+                    .iter()
+                    .map(|v| v.copy_value())
+                    .collect::<PartialVMResult<_>>()?,
+            )))
+        };
+
+        Ok(match self {
+            Self::Vec(r) => Self::Vec(copy_rc_ref_vec_val(r)?),
+            Self::Struct(r) => Self::Struct(copy_rc_ref_vec_val(r)?),
+
+            Self::VecU8(r) => Self::VecU8(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU16(r) => Self::VecU16(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU32(r) => Self::VecU32(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU64(r) => Self::VecU64(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU128(r) => Self::VecU128(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecU256(r) => Self::VecU256(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecBool(r) => Self::VecBool(Rc::new(RefCell::new(r.borrow().clone()))),
+            Self::VecAddress(r) => Self::VecAddress(Rc::new(RefCell::new(r.borrow().clone()))),
+
+            Self::Locals(_) => {
+                return Err(
+                    PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                        .with_message("cannot copy a Locals container".to_string()),
+                )
+            }
+        })
+    }
+    *)
+    (* let Container_copy_value (self : Container.t) : PartialVMResult.t Container.t :=
+      match self with
+      | ContainerSkeleton.Vec vec =>
+        let? vec := Result.map copy_value vec in
+        Result.Ok $ ContainerSkeleton.Vec vec
+      | ContainerSkeleton.Struct f =>
+        let? f := Result.map copy_value f in
+        Result.Ok $ ContainerSkeleton.Struct f
+      | ContainerSkeleton.VecU8 v => Result.Ok $ ContainerSkeleton.VecU8 v
+      | ContainerSkeleton.VecU64 v => Result.Ok $ ContainerSkeleton.VecU64 v
+      | ContainerSkeleton.VecU128 v => Result.Ok $ ContainerSkeleton.VecU128 v
+      | ContainerSkeleton.VecBool v => Result.Ok $ ContainerSkeleton.VecBool v
+      | ContainerSkeleton.VecAddress v => Result.Ok $ ContainerSkeleton.VecAddress v
+      | ContainerSkeleton.VecU16 v => Result.Ok $ ContainerSkeleton.VecU16 v
+      | ContainerSkeleton.VecU32 v => Result.Ok $ ContainerSkeleton.VecU32 v
+      | ContainerSkeleton.VecU256 v => Result.Ok $ ContainerSkeleton.VecU256 v
+      | ContainerSkeleton.Locals _ =>
+        Result.Err $ PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
+      end in *)
+    match self with
+    | ValueImpl.Invalid => Result.Ok ValueImpl.Invalid
+    | ValueImpl.U8 x => Result.Ok $ ValueImpl.U8 x
+    | ValueImpl.U16 x => Result.Ok $ ValueImpl.U16 x
+    | ValueImpl.U32 x => Result.Ok $ ValueImpl.U32 x
+    | ValueImpl.U64 x => Result.Ok $ ValueImpl.U64 x
+    | ValueImpl.U128 x => Result.Ok $ ValueImpl.U128 x
+    | ValueImpl.U256 x => Result.Ok $ ValueImpl.U256 x
+    | ValueImpl.Bool x => Result.Ok $ ValueImpl.Bool x
+    | ValueImpl.Address x => Result.Ok $ ValueImpl.Address x
+    | ValueImpl.ContainerRef r =>
+      Result.Ok $ ValueImpl.ContainerRef (Impl_ContainerRef.copy_value r)
+    | ValueImpl.IndexedRef r =>
+      Result.Ok $ ValueImpl.IndexedRef (Impl_IndexedRef.copy_value r)
+    | ValueImpl.Container c =>
+      let? copy_value := 'Container_copy_value c in
+      Result.Ok $ ValueImpl.Container copy_value
+    end
+
+    where "'Container_copy_value" := (fun (self : Container.t) =>
+      match self with
+      | ContainerSkeleton.Vec vec =>
+        let? vec := Result.map copy_value vec in
+        Result.Ok $ ContainerSkeleton.Vec vec
+      | ContainerSkeleton.Struct f =>
+        let? f := Result.map copy_value f in
+        Result.Ok $ ContainerSkeleton.Struct f
+      | ContainerSkeleton.VecU8 v => Result.Ok $ ContainerSkeleton.VecU8 v
+      | ContainerSkeleton.VecU64 v => Result.Ok $ ContainerSkeleton.VecU64 v
+      | ContainerSkeleton.VecU128 v => Result.Ok $ ContainerSkeleton.VecU128 v
+      | ContainerSkeleton.VecBool v => Result.Ok $ ContainerSkeleton.VecBool v
+      | ContainerSkeleton.VecAddress v => Result.Ok $ ContainerSkeleton.VecAddress v
+      | ContainerSkeleton.VecU16 v => Result.Ok $ ContainerSkeleton.VecU16 v
+      | ContainerSkeleton.VecU32 v => Result.Ok $ ContainerSkeleton.VecU32 v
+      | ContainerSkeleton.VecU256 v => Result.Ok $ ContainerSkeleton.VecU256 v
+      | ContainerSkeleton.Locals _ =>
+        Result.Err $ PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
+      end
+    ).
+
+  Definition Container_copy_value := 'Container_copy_value.
+End Impl_ValueImpl.
+
+Module Impl_Container.
+  Definition Self : Set := Container.t.
+
+  Definition copy_value : Self -> PartialVMResult.t Self := Impl_ValueImpl.Container_copy_value.
+End Impl_Container.
 
 (* 
 pub trait VMValueCast<T> {
@@ -260,6 +388,7 @@ End VMValueCast.
 (* pub struct Value(ValueImpl); *)
 Module Value.
   Definition t : Set := ValueImpl.t.
+  Arguments t /.
 
   (* 
   NOTE: We just roughly implement it as a collection of functions since it's also performance-wise nice. 
@@ -499,107 +628,132 @@ Module Impl_Value.
   Parameter deserialize_constant : Constant.t -> option Value.t.
 End Impl_Value.
 
-(*
-impl ContainerRef {
-    fn read_ref(self) -> PartialVMResult<Value> {
-        Ok(Value(ValueImpl::Container(self.container().copy_value()?)))
-    }
-}
-*)
-
-(*
-impl ContainerRef {
-    fn write_ref(self, v: Value) -> PartialVMResult<()> {
-        match v.0 {
-            ValueImpl::Container(c) => {
-                macro_rules! assign {
-                    ($r1: expr, $tc: ident) => {{
-                        let r = match c {
-                            Container::$tc(v) => v,
-                            _ => {
-                                return Err(PartialVMError::new(
-                                    StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
-                                )
-                                .with_message(
-                                    "failed to write_ref: container type mismatch".to_string(),
-                                ))
-                            }
-                        };
-                        *$r1.borrow_mut() = take_unique_ownership(r)?;
-                    }};
-                }
-
-                match self.container() {
-                    Container::Struct(r) => assign!(r, Struct),
-                    Container::Vec(r) => assign!(r, Vec),
-                    Container::VecU8(r) => assign!(r, VecU8),
-                    Container::VecU16(r) => assign!(r, VecU16),
-                    Container::VecU32(r) => assign!(r, VecU32),
-                    Container::VecU64(r) => assign!(r, VecU64),
-                    Container::VecU128(r) => assign!(r, VecU128),
-                    Container::VecU256(r) => assign!(r, VecU256),
-                    Container::VecBool(r) => assign!(r, VecBool),
-                    Container::VecAddress(r) => assign!(r, VecAddress),
-                    Container::Locals(_) => {
-                        return Err(PartialVMError::new(
-                            StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
-                        )
-                        .with_message("cannot overwrite Container::Locals".to_string()))
-                    }
-                }
-                self.mark_dirty();
-            }
-            _ => {
-                return Err(
-                    PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
-                        .with_message(format!(
-                            "cannot write value {:?} to container ref {:?}",
-                            v, self
-                        )),
-                )
-            }
-        }
-        Ok(())
-    }
-}
-*)
-
-Module Impl_ContainerRef.
+Module Impl_ContainerRef'.
   Definition Self := ContainerRef.t.
 
+  (*
+  fn read_ref(self) -> PartialVMResult<Value> {
+      Ok(Value(ValueImpl::Container(self.container().copy_value()?)))
+  }
+  *)
   Definition read_ref (self : Self) : PartialVMResult.t Value.t :=
-    let? copy_value := Container.copy_value (ContainerRef.container self) in
+    let? copy_value := Impl_Container.copy_value (Impl_ContainerRef.container self) in
     Result.Ok $ ValueImpl.Container copy_value.
 
+  (*
+  fn write_ref(self, v: Value) -> PartialVMResult<()> {
+    match v.0 {
+        ValueImpl::Container(c) => {
+            macro_rules! assign {
+                ($r1: expr, $tc: ident) => {{
+                    let r = match c {
+                        Container::$tc(v) => v,
+                        _ => {
+                            return Err(PartialVMError::new(
+                                StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
+                            )
+                            .with_message(
+                              "failed to write_ref: container type mismatch".to_string(),
+                              ))
+                          }
+                      };
+                      *$r1.borrow_mut() = take_unique_ownership(r)?;
+                  }};
+              }
+
+              match self.container() {
+                  Container::Struct(r) => assign!(r, Struct),
+                  Container::Vec(r) => assign!(r, Vec),
+                  Container::VecU8(r) => assign!(r, VecU8),
+                  Container::VecU16(r) => assign!(r, VecU16),
+                  Container::VecU32(r) => assign!(r, VecU32),
+                  Container::VecU64(r) => assign!(r, VecU64),
+                  Container::VecU128(r) => assign!(r, VecU128),
+                  Container::VecU256(r) => assign!(r, VecU256),
+                  Container::VecBool(r) => assign!(r, VecBool),
+                  Container::VecAddress(r) => assign!(r, VecAddress),
+                  Container::Locals(_) => {
+                      return Err(PartialVMError::new(
+                          StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR,
+                      )
+                      .with_message("cannot overwrite Container::Locals".to_string()))
+                  }
+              }
+              self.mark_dirty();
+          }
+          _ => {
+              return Err(
+                  PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
+                      .with_message(format!(
+                          "cannot write value {:?} to container ref {:?}",
+                          v, self
+                      )),
+              )
+          }
+      }
+      Ok(())
+  }
+  *)
   Definition write_ref (self : Self) (v : Value.t) : PartialVMResult.t unit. Admitted.
+End Impl_ContainerRef'.
 
-End Impl_ContainerRef.
+Module Impl_IndexedRef'.
+  Definition Self := IndexedRef.t.
 
-(*
-impl IndexedRef {
-    fn read_ref(self) -> PartialVMResult<Value> {
-        use Container::*;
+  (*
+  fn read_ref(self) -> PartialVMResult<Value> {
+      use Container::*;
 
-        let res = match self.container_ref.container() {
-            Locals(r) | Vec(r) | Struct(r) => r.borrow()[self.idx].copy_value()?,
-            VecU8(r) => ValueImpl::U8(r.borrow()[self.idx]),
-            VecU16(r) => ValueImpl::U16(r.borrow()[self.idx]),
-            VecU32(r) => ValueImpl::U32(r.borrow()[self.idx]),
-            VecU64(r) => ValueImpl::U64(r.borrow()[self.idx]),
-            VecU128(r) => ValueImpl::U128(r.borrow()[self.idx]),
-            VecU256(r) => ValueImpl::U256(r.borrow()[self.idx]),
-            VecBool(r) => ValueImpl::Bool(r.borrow()[self.idx]),
-            VecAddress(r) => ValueImpl::Address(r.borrow()[self.idx]),
-        };
+      let res = match self.container_ref.container() {
+          Locals(r) | Vec(r) | Struct(r) => r.borrow()[self.idx].copy_value()?,
+          VecU8(r) => ValueImpl::U8(r.borrow()[self.idx]),
+          VecU16(r) => ValueImpl::U16(r.borrow()[self.idx]),
+          VecU32(r) => ValueImpl::U32(r.borrow()[self.idx]),
+          VecU64(r) => ValueImpl::U64(r.borrow()[self.idx]),
+          VecU128(r) => ValueImpl::U128(r.borrow()[self.idx]),
+          VecU256(r) => ValueImpl::U256(r.borrow()[self.idx]),
+          VecBool(r) => ValueImpl::Bool(r.borrow()[self.idx]),
+          VecAddress(r) => ValueImpl::Address(r.borrow()[self.idx]),
+      };
 
-        Ok(Value(res))
-    }
-}
-*)
+      Ok(Value(res))
+  }
+  *)
+  Definition read_ref (self : Self) : M! (PartialVMResult.t Value.t) :=
+    match Impl_ContainerRef.container self.(IndexedRefSkeleton.container_ref) with
+    | ContainerSkeleton.Locals r
+    | ContainerSkeleton.Vec r
+    | ContainerSkeleton.Struct r =>
+      let! v := Panic.List.nth r (Z.to_nat self.(IndexedRefSkeleton.idx)) in
+      return! $ Impl_ValueImpl.copy_value v
+    | ContainerSkeleton.VecU8 r =>
+      let! v := Panic.List.nth r (Z.to_nat self.(IndexedRefSkeleton.idx)) in
+      return!? $ ValueImpl.U8 v
+    | ContainerSkeleton.VecU16 r =>
+      let! v := Panic.List.nth r (Z.to_nat self.(IndexedRefSkeleton.idx)) in
+      return!? $ ValueImpl.U16 v
+    | ContainerSkeleton.VecU32 r =>
+      let! v := Panic.List.nth r (Z.to_nat self.(IndexedRefSkeleton.idx)) in
+      return!? $ ValueImpl.U32 v
+    | ContainerSkeleton.VecU64 r =>
+      let! v := Panic.List.nth r (Z.to_nat self.(IndexedRefSkeleton.idx)) in
+      return!? $ ValueImpl.U64 v
+    | ContainerSkeleton.VecU128 r =>
+      let! v := Panic.List.nth r (Z.to_nat self.(IndexedRefSkeleton.idx)) in
+      return!? $ ValueImpl.U128 v
+    | ContainerSkeleton.VecU256 r =>
+      let! v := Panic.List.nth r (Z.to_nat self.(IndexedRefSkeleton.idx)) in
+      return!? $ ValueImpl.U256 v
+    | ContainerSkeleton.VecBool r =>
+      let! v := Panic.List.nth r (Z.to_nat self.(IndexedRefSkeleton.idx)) in
+      return!? $ ValueImpl.Bool v
+    | ContainerSkeleton.VecAddress r =>
+      let! v := Panic.List.nth r (Z.to_nat self.(IndexedRefSkeleton.idx)) in
+      return!? $ ValueImpl.Address v
+    end.
 
-(*
-impl IndexedRef {
-    fn write_ref(self, x: Value) -> PartialVMResult<()> {
+  (*
+  fn write_ref(self, x: Value) -> PartialVMResult<()> {
         match &x.0 {
             ValueImpl::IndexedRef(_)
             | ValueImpl::ContainerRef(_)
@@ -608,109 +762,80 @@ impl IndexedRef {
                 return Err(
                     PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)
                         .with_message(format!(
-                            "cannot write value {:?} to indexed ref {:?}",
-                            x, self
-                        )),
-                )
-            }
-            _ => (),
-        }
+                          "cannot write value {:?} to indexed ref {:?}",
+                          x, self
+                      )),
+              )
+          }
+          _ => (),
+      }
 
-        match (self.container_ref.container(), &x.0) {
-            (Container::Locals(r), _) | (Container::Vec(r), _) | (Container::Struct(r), _) => {
-                let mut v = r.borrow_mut();
-                v[self.idx] = x.0;
-            }
-            (Container::VecU8(r), ValueImpl::U8(x)) => r.borrow_mut()[self.idx] = *x,
-            (Container::VecU16(r), ValueImpl::U16(x)) => r.borrow_mut()[self.idx] = *x,
-            (Container::VecU32(r), ValueImpl::U32(x)) => r.borrow_mut()[self.idx] = *x,
-            (Container::VecU64(r), ValueImpl::U64(x)) => r.borrow_mut()[self.idx] = *x,
-            (Container::VecU128(r), ValueImpl::U128(x)) => r.borrow_mut()[self.idx] = *x,
-            (Container::VecU256(r), ValueImpl::U256(x)) => r.borrow_mut()[self.idx] = *x,
-            (Container::VecBool(r), ValueImpl::Bool(x)) => r.borrow_mut()[self.idx] = *x,
-            (Container::VecAddress(r), ValueImpl::Address(x)) => r.borrow_mut()[self.idx] = *x,
+      match (self.container_ref.container(), &x.0) {
+          (Container::Locals(r), _) | (Container::Vec(r), _) | (Container::Struct(r), _) => {
+              let mut v = r.borrow_mut();
+              v[self.idx] = x.0;
+          }
+          (Container::VecU8(r), ValueImpl::U8(x)) => r.borrow_mut()[self.idx] = *x,
+          (Container::VecU16(r), ValueImpl::U16(x)) => r.borrow_mut()[self.idx] = *x,
+          (Container::VecU32(r), ValueImpl::U32(x)) => r.borrow_mut()[self.idx] = *x,
+          (Container::VecU64(r), ValueImpl::U64(x)) => r.borrow_mut()[self.idx] = *x,
+          (Container::VecU128(r), ValueImpl::U128(x)) => r.borrow_mut()[self.idx] = *x,
+          (Container::VecU256(r), ValueImpl::U256(x)) => r.borrow_mut()[self.idx] = *x,
+          (Container::VecBool(r), ValueImpl::Bool(x)) => r.borrow_mut()[self.idx] = *x,
+          (Container::VecAddress(r), ValueImpl::Address(x)) => r.borrow_mut()[self.idx] = *x,
 
-            (Container::VecU8(_), _)
-            | (Container::VecU16(_), _)
-            | (Container::VecU32(_), _)
-            | (Container::VecU64(_), _)
-            | (Container::VecU128(_), _)
-            | (Container::VecU256(_), _)
-            | (Container::VecBool(_), _)
-            | (Container::VecAddress(_), _) => {
-                return Err(
-                    PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(format!(
-                        "cannot write value {:?} to indexed ref {:?}",
-                        x, self
-                    )),
-                )
-            }
-        }
-        self.container_ref.mark_dirty();
-        Ok(())
-    }
-}
-*)
-
-Module Impl_IndexedRef.
-  Definition Self := IndexedRef.t.
-
-  Definition default_address : AccountAddress.t. Admitted.
-
-  Definition read_ref (self : Self) : PartialVMResult.t Value.t :=
-    let idx := Z.to_nat self.(IndexedRef.idx) in
-    let container := ContainerRef.container self.(IndexedRef.container_ref) in
-    match container with
-    | Container.VecBool r => Result.Ok $ ValueImpl.Bool (List.nth idx r false)
-    | Container.VecAddress r => Result.Ok $ ValueImpl.Address (List.nth idx r default_address)
-    | _ => match container with
-           | Container.VecU8 r => Result.Ok $ ValueImpl.U8 (List.nth idx r 0)
-           | Container.VecU16 r => Result.Ok $ ValueImpl.U16 (List.nth idx r 0)
-           | Container.VecU32 r => Result.Ok $ ValueImpl.U32 (List.nth idx r 0)
-           | Container.VecU64 r => Result.Ok $ ValueImpl.U64 (List.nth idx r 0)
-           | Container.VecU128 r => Result.Ok $ ValueImpl.U128 (List.nth idx r 0)
-           | Container.VecU256 r => Result.Ok $ ValueImpl.U256 (List.nth idx r 0)
-           | _ => Result.Err $ PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
-           end
-    end.
-
+          (Container::VecU8(_), _)
+          | (Container::VecU16(_), _)
+          | (Container::VecU32(_), _)
+          | (Container::VecU64(_), _)
+          | (Container::VecU128(_), _)
+          | (Container::VecU256(_), _)
+          | (Container::VecBool(_), _)
+          | (Container::VecAddress(_), _) => {
+              return Err(
+                  PartialVMError::new(StatusCode::INTERNAL_TYPE_ERROR).with_message(format!(
+                      "cannot write value {:?} to indexed ref {:?}",
+                      x, self
+                  )),
+              )
+          }
+      }
+      self.container_ref.mark_dirty();
+      Ok(())
+  }
+  *)
   Definition write_ref (self : Self) (x : Value.t) : PartialVMResult.t unit. Admitted.
-
-End Impl_IndexedRef.
-
-(*
-impl ReferenceImpl {
-    fn read_ref(self) -> PartialVMResult<Value> {
-        match self {
-            Self::ContainerRef(r) => r.read_ref(),
-            Self::IndexedRef(r) => r.read_ref(),
-        }
-    }
-}
-
-impl ReferenceImpl {
-    fn write_ref(self, x: Value) -> PartialVMResult<()> {
-        match self {
-            Self::ContainerRef(r) => r.write_ref(x),
-            Self::IndexedRef(r) => r.write_ref(x),
-        }
-    }
-}
-*)
+End Impl_IndexedRef'.
 
 Module Impl_ReferenceImpl.
   Definition Self := ReferenceImpl.t.
 
-  Definition read_ref (self : Self) : PartialVMResult.t Value.t :=
+  (*
+  fn read_ref(self) -> PartialVMResult<Value> {
+      match self {
+          Self::ContainerRef(r) => r.read_ref(),
+          Self::IndexedRef(r) => r.read_ref(),
+      }
+  }
+  *)
+  Definition read_ref (self : Self) : M! (PartialVMResult.t Value.t) :=
     match self with
-    | ReferenceImpl.ContainerRef r => Impl_ContainerRef.read_ref r
-    | ReferenceImpl.IndexedRef r => Impl_IndexedRef.read_ref r
+    | ReferenceImpl.ContainerRef r => return! $ Impl_ContainerRef'.read_ref r
+    | ReferenceImpl.IndexedRef r => Impl_IndexedRef'.read_ref r
     end.
 
+  (*
+  fn write_ref(self, x: Value) -> PartialVMResult<()> {
+      match self {
+          Self::ContainerRef(r) => r.write_ref(x),
+          Self::IndexedRef(r) => r.write_ref(x),
+      }
+  }
+  *)
   Definition write_ref (self : Self) (x : Value.t) : PartialVMResult.t unit :=
     match self with
-    | ReferenceImpl.ContainerRef r => Impl_ContainerRef.write_ref r x
-    | ReferenceImpl.IndexedRef r => Impl_IndexedRef.write_ref r x
+    | ReferenceImpl.ContainerRef r => Impl_ContainerRef'.write_ref r x
+    | ReferenceImpl.IndexedRef r => Impl_IndexedRef'.write_ref r x
     end.
 End Impl_ReferenceImpl.
 
@@ -786,8 +911,6 @@ End Locals.
 Module Impl_Locals.
   Definition Self := move_sui.simulations.move_vm_types.values.values_impl.Locals.t.
 
-  Definition default_valueimpl := ValueImpl.Invalid.
-
   (* 
   pub fn copy_loc(&self, idx: usize) -> PartialVMResult<Value> {
       let v = self.0.borrow();
@@ -806,18 +929,12 @@ Module Impl_Locals.
   }
   *)
   Definition copy_loc (self : Self) (idx : Z) : PartialVMResult.t Value.t :=
-    (* idx is out of range, which is the 3rd case for the match clause *)
-    if Z.of_nat $ List.length self <=? idx
-    then Result.Err $ PartialVMError.new
-      StatusCode.VERIFIER_INVARIANT_VIOLATION
-    else
-    (* Now we deal with the former 2 cases *)
-      let v := List.nth (Z.to_nat idx) self default_valueimpl in
-      match v with
-      | ValueImpl.Invalid => Result.Err $ PartialVMError.new
-        StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
-      | _ => Result.Ok $ v
-      end.
+    match List.nth_error self (Z.to_nat idx) with
+    | Some ValueImpl.Invalid =>
+      Result.Err $ PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
+    | Some v => Impl_ValueImpl.copy_value v
+    | None => Result.Err $ PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
+    end.
 
   (* 
   fn swap_loc(&mut self, idx: usize, x: Value, violation_check: bool) -> PartialVMResult<Value> {

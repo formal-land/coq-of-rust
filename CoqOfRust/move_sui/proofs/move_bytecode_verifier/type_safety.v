@@ -69,21 +69,47 @@ Module IsStackValueOfType.
   Qed.
 End IsStackValueOfType.
 
-(** Here we show that all the stack operations on values follow the stack operations on types *)
-Module Stack.
-  (* TODO *)
-End Stack.
+Module IsLocalsOfType.
+  Record t (locals : values_impl.Locals.t) (locals_ty : type_safety.Locals.t) : Prop := {
+    param_count : locals_ty.(type_safety.Locals.param_count) = 0;
+    parameters : locals_ty.(type_safety.Locals.parameters) = {| Signature.a0 := [] |};
+    locals :
+      List.Forall2 IsValueOfType.t
+        locals
+        locals_ty.(type_safety.Locals.locals).(Signature.a0);
+  }.
+
+  Lemma local_at_eq locals locals_ty index
+      (H : t locals locals_ty)
+      (H_index : Integer.Valid.t IntegerKind.U8 index) :
+    Impl_Locals.local_at locals_ty {| file_format_index.LocalIndex.a0 := index |} =
+    Panic.List.nth
+      locals_ty.(type_safety.Locals.locals).(Signature.a0)
+      (Z.to_nat index).
+  Proof.
+    unfold Impl_Locals.local_at.
+    destruct H as [H_param_count ? ?].
+    rewrite H_param_count.
+    step; cbn in *.
+    { lia. }
+    { f_equal; lia. }
+  Qed.
+End IsLocalsOfType.
 
 Module IsInterpreterContextOfType.
-  (** For now we do not use the [locals] but they should be eventually *)
-  Definition t
+  Record t
       (locals : Locals.t) (interpreter : Interpreter.t)
       (type_safety_checker : TypeSafetyChecker.t) :
-      Prop :=
-    IsStackValueOfType.t
-      interpreter.(Interpreter.operand_stack)
-      type_safety_checker.(TypeSafetyChecker.stack).
-  Arguments t /.
+      Prop := {
+    locals :
+      IsLocalsOfType.t
+        locals
+        type_safety_checker.(TypeSafetyChecker.locals);
+    stack :
+      IsStackValueOfType.t
+        interpreter.(Interpreter.operand_stack)
+        type_safety_checker.(TypeSafetyChecker.stack);
+  }.
 End IsInterpreterContextOfType.
 
 (* To know in which case we are *)
@@ -181,6 +207,7 @@ Lemma progress
     (instruction : Bytecode.t)
     (pc : Z) (locals : Locals.t) (interpreter : Interpreter.t)
     (type_safety_checker : TypeSafetyChecker.t)
+    (H_instruction : Bytecode.Valid.t instruction)
     (H_type_safety_checker : TypeSafetyChecker.Valid.t type_safety_checker)
     (H_interpreter : IsInterpreterContextOfType.t locals interpreter type_safety_checker)
     (H_resolver :
@@ -215,7 +242,7 @@ Lemma progress
     | StatusCode.ARITHMETIC_ERROR => True
     | _ => False
     end
-  | _, _ => True
+  | Panic.Panic _, _ | Panic.Value (Result.Err _, _), _ => True
   end.
 Proof.
   Opaque AbstractStack.flatten.
@@ -224,6 +251,7 @@ Proof.
   destruct type_safety_checker as [module function_context locals_ty stack_ty]; cbn in *.
   destruct H_type_safety_checker as [H_module H_stack_ty]; cbn in *.
   destruct H_module as [H_constant_pool].
+  destruct H_interpreter as [H_locals_typing H_stack_typing].
   destruct instruction eqn:H_instruction_eq; cbn in *.
   { guard_instruction Bytecode.Pop.
     destruct_abstract_pop.
@@ -235,43 +263,45 @@ Proof.
   { guard_instruction (Bytecode.BrTrue z).
     destruct_abstract_pop.
     destruct_initial_if.
+    now constructor.
   }
   { guard_instruction (Bytecode.BrFalse z).
     destruct_abstract_pop.
     destruct_initial_if.
+    now constructor.
   }
   { guard_instruction (Bytecode.Branch z).
-    apply H_interpreter.
+    easy.
   }
   { guard_instruction (Bytecode.LdU8 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    sauto lq: on.
+    sauto q: on.
   }
   { guard_instruction (Bytecode.LdU16 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    sauto lq: on.
+    sauto q: on.
   }
   { guard_instruction (Bytecode.LdU32 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    sauto lq: on.
+    sauto q: on.
   }
   { guard_instruction (Bytecode.LdU64 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    sauto lq: on.
+    sauto q: on.
   }
   { guard_instruction (Bytecode.LdU128 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    sauto lq: on.
+    sauto q: on.
   }
   { guard_instruction (Bytecode.LdU256 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    sauto lq: on.
+    sauto q: on.
   }
   { guard_instruction Bytecode.CastU8.
     destruct_abstract_pop.
@@ -279,7 +309,8 @@ Proof.
     destruct_abstract_push.
     step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      sauto lq: on rew: off.
+      constructor; cbn;
+      sauto lq: on.
   }
   { guard_instruction Bytecode.CastU16.
     destruct_abstract_pop.
@@ -287,7 +318,8 @@ Proof.
     destruct_abstract_push.
     step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      sauto lq: on rew: off.
+      constructor; cbn;
+      sauto lq: on.
   }
   { guard_instruction Bytecode.CastU32.
     destruct_abstract_pop.
@@ -295,7 +327,8 @@ Proof.
     destruct_abstract_push.
     step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      sauto lq: on rew: off.
+      constructor; cbn;
+      sauto lq: on.
   }
   { guard_instruction Bytecode.CastU64.
     destruct_abstract_pop.
@@ -303,7 +336,8 @@ Proof.
     destruct_abstract_push.
     step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      sauto lq: on rew: off.
+      constructor; cbn;
+      sauto lq: on.
   }
   { guard_instruction Bytecode.CastU128.
     destruct_abstract_pop.
@@ -311,7 +345,8 @@ Proof.
     destruct_abstract_push.
     step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      sauto lq: on rew: off.
+      constructor; cbn;
+      sauto lq: on.
   }
   { guard_instruction Bytecode.CastU256.
     destruct_abstract_pop.
@@ -319,7 +354,8 @@ Proof.
     destruct_abstract_push.
     step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      sauto lq: on rew: off.
+      constructor; cbn;
+      sauto lq: on.
   }
   { guard_instruction (Bytecode.LdConst t).
     unfold_state_monad.
@@ -336,25 +372,58 @@ Proof.
     unfold Constant.Valid.t in *.
     destruct Impl_Value.deserialize_constant as [value|]; cbn; [|easy].
     step; cbn; try easy.
-    hauto l: on.
+    sauto q: on.
   }
   { guard_instruction Bytecode.LdTrue.
     destruct_abstract_push.
     step; cbn; [|exact I].
-    sauto lq: on.
+    sauto q: on.
   }
   { guard_instruction Bytecode.LdFalse.
     destruct_abstract_push.
     step; cbn; [|exact I].
-    sauto lq: on.
+    sauto q: on.
   }
   { guard_instruction (Bytecode.CopyLoc z).
     unfold_state_monad.
-    do 3 (step; cbn; try easy).
-    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.local_at in *; cbn in *.
+    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.local_at; cbn.
+    match goal with
+    | |- context[Impl_Locals.local_at ?locals_ty ?index] =>
+      let H_eq := fresh "H_eq" in
+      pose proof (IsLocalsOfType.local_at_eq
+        locals
+        locals_ty
+        index.(file_format_index.LocalIndex.a0)
+        H_locals_typing
+      ) as H_eq;
+      cbn in H_eq;
+      rewrite H_eq by assumption;
+      clear H_eq
+    end.
+    do 4 (step; cbn; try easy).
     destruct_abstract_push.
     unfold Impl_Locals.copy_loc.
-    admit.
+    unfold Panic.List.nth in *.
+    destruct H_locals_typing as [? ? H_locals].
+    destruct locals_ty as [? ? [locals_ty]]; cbn in *.
+    pose proof List.Forall2_nth_error _ locals locals_ty (Z.to_nat z) H_locals as H_nth_error.
+    unfold Value.t in H_nth_error.
+    destruct (List.nth_error locals) as [local|] eqn:H_nth_error_eq; cbn.
+    { destruct local eqn:H_local_eq; cbn.
+      { admit. }
+      all: try (
+        step; cbn; try easy;
+        constructor; cbn; [hauto l: on|];
+        match goal with
+        | H : _ = _ |- _ => rewrite H
+        end;
+        constructor; try assumption;
+        destruct (List.nth_error locals_ty); try easy;
+        hauto lq: on
+      ).
+      { admit. }
+    }
+    { now destruct (List.nth_error locals_ty). }
   }
   { guard_instruction (Bytecode.MoveLoc z).
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.local_at; cbn.
@@ -428,6 +497,8 @@ Proof.
     destruct_all IntegerValue.t; cbn in *; try easy; (
       unfold IntegerValue.add_checked; cbn;
       repeat (step; cbn; try easy);
+      constructor; cbn;
+      try assumption;
       sauto lq: on
     ).
   }
@@ -439,6 +510,8 @@ Proof.
     destruct_all IntegerValue.t; cbn in *; try easy; (
       unfold IntegerValue.sub_checked; cbn;
       repeat (step; cbn; try easy);
+      constructor; cbn;
+      try assumption;
       sauto lq: on
     ).
   }
@@ -450,6 +523,8 @@ Proof.
     destruct_all IntegerValue.t; cbn in *; try easy; (
       unfold IntegerValue.mul_checked; cbn;
       repeat (step; cbn; try easy);
+      constructor; cbn;
+      try assumption;
       sauto lq: on
     ).
   }
@@ -461,6 +536,8 @@ Proof.
     destruct_all IntegerValue.t; cbn in *; try easy; (
       unfold IntegerValue.rem_checked; cbn;
       repeat (step; cbn; try easy);
+      constructor; cbn;
+      try assumption;
       sauto lq: on
     ).
   }
@@ -472,6 +549,8 @@ Proof.
     destruct_all IntegerValue.t; cbn in *; try easy; (
       unfold IntegerValue.div_checked; cbn;
       repeat (step; cbn; try easy);
+      constructor; cbn;
+      try assumption;
       sauto lq: on
     ).
   }
@@ -483,6 +562,8 @@ Proof.
     destruct_all IntegerValue.t; cbn in *; try easy; (
       unfold IntegerValue.bit_or; cbn;
       repeat (step; cbn; try easy);
+      constructor; cbn;
+      try assumption;
       sauto lq: on
     ).
   }
@@ -494,6 +575,8 @@ Proof.
     destruct_all IntegerValue.t; cbn in *; try easy; (
       unfold IntegerValue.bit_and; cbn;
       repeat (step; cbn; try easy);
+      constructor; cbn;
+      try assumption;
       sauto lq: on
     ).
   }
@@ -505,6 +588,8 @@ Proof.
     destruct_all IntegerValue.t; cbn in *; try easy; (
       unfold IntegerValue.bit_xor; cbn;
       repeat (step; cbn; try easy);
+      constructor; cbn;
+      try assumption;
       sauto lq: on
     ).
   }
@@ -514,7 +599,7 @@ Proof.
     destruct_initial_if.
     destruct_abstract_push.
     step; cbn; try easy.
-    hauto l: on.
+    constructor; cbn; sauto lq: on.
   }
   { guard_instruction Bytecode.And.
     destruct_abstract_pop.
@@ -522,13 +607,14 @@ Proof.
     destruct_initial_if.
     destruct_abstract_push.
     step; cbn; try easy.
-    hauto l: on.
+    constructor; cbn; sauto lq: on.
   }
   { guard_instruction Bytecode.Not.
     destruct_abstract_pop.
     destruct_initial_if.
     destruct_abstract_push.
-    hauto l: on.
+    step; cbn; try easy.
+    constructor; cbn; sauto lq: on.
   }
   { guard_instruction Bytecode.Eq.
     admit.
@@ -543,6 +629,7 @@ Proof.
     destruct_abstract_push.
     destruct_all IntegerValue.t; cbn in *; try easy;
       repeat (step; cbn; try easy);
+      constructor; cbn;
       sauto lq: on.
   }
   { guard_instruction Bytecode.Gt.
@@ -552,6 +639,7 @@ Proof.
     destruct_abstract_push.
     destruct_all IntegerValue.t; cbn in *; try easy;
       repeat (step; cbn; try easy);
+      constructor; cbn;
       sauto lq: on.
   }
   { guard_instruction Bytecode.Le.
@@ -561,6 +649,7 @@ Proof.
     destruct_abstract_push.
     destruct_all IntegerValue.t; cbn in *; try easy;
       repeat (step; cbn; try easy);
+      constructor; cbn;
       sauto lq: on.
   }
   { guard_instruction Bytecode.Ge.
@@ -570,13 +659,14 @@ Proof.
     destruct_abstract_push.
     destruct_all IntegerValue.t; cbn in *; try easy;
       repeat (step; cbn; try easy);
+      constructor; cbn;
       sauto lq: on.
   }
   { guard_instruction Bytecode.Abort.
     admit.
   }
   { guard_instruction Bytecode.Nop.
-    assumption.
+    now constructor; cbn.
   }
   { guard_instruction (Bytecode.ExistsDeprecated t).
     admit.
@@ -838,8 +928,8 @@ Proof.
     do 3 (step; cbn; trivial).
     unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
-    pose proof (AbstractStack.push_is_valid
+    admit.
+    (* pose proof (AbstractStack.push_is_valid
       (TypeSafetyChecker.Impl_TypeSafetyChecker.local_at type_safety_checker {| file_format_index.LocalIndex.a0 := z |})
       type_safety_checker.(TypeSafetyChecker.stack)
       H_stack
@@ -849,11 +939,11 @@ Proof.
     step; cbn; trivial.
     destruct u.
     constructor; cbn.
-    apply H.
+    apply H. *)
   }
   { guard_instruction (Bytecode.MoveLoc z).
-    destruct H_type_safety_checker as [H_stack].
-    unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
+    admit.
+    (* unfold TypeSafetyChecker.Impl_TypeSafetyChecker.push.
     with_strategy opaque [AbstractStack.push] unfold_state_monad.
     pose proof (AbstractStack.push_is_valid
       (TypeSafetyChecker.Impl_TypeSafetyChecker.local_at type_safety_checker {| file_format_index.LocalIndex.a0 := z |})
@@ -865,11 +955,10 @@ Proof.
     step; cbn; trivial.
     destruct u.
     constructor; cbn.
-    apply H.
+    apply H. *)
   }
   { guard_instruction (Bytecode.StLoc z).
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
@@ -892,7 +981,6 @@ Proof.
   { guard_instruction (Bytecode.Unpack t).
     unfold_state_monad.
     destruct CompiledModule.struct_def_at; cbn; trivial.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     unfold set; cbn.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
@@ -983,7 +1071,6 @@ Proof.
   }
   { guard_instruction Bytecode.Sub.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
@@ -1024,7 +1111,6 @@ Proof.
   }
   { guard_instruction Bytecode.Mod.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
@@ -1045,7 +1131,6 @@ Proof.
   }
   { guard_instruction Bytecode.Div.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
@@ -1066,7 +1151,6 @@ Proof.
   }
   { guard_instruction Bytecode.BitOr.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
@@ -1087,7 +1171,6 @@ Proof.
   }
   { guard_instruction Bytecode.BitAnd.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
@@ -1108,7 +1191,6 @@ Proof.
   }
   { guard_instruction Bytecode.Xor.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
@@ -1129,7 +1211,6 @@ Proof.
   }
   { guard_instruction Bytecode.Or.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
@@ -1150,7 +1231,6 @@ Proof.
   }
   { guard_instruction Bytecode.And.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
@@ -1171,7 +1251,6 @@ Proof.
   }
   { guard_instruction Bytecode.Not.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].
@@ -1189,7 +1268,6 @@ Proof.
   }
   { guard_instruction Bytecode.Eq.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand1 stack']|]; cbn; [|trivial].
@@ -1214,7 +1292,6 @@ Proof.
   }
   { guard_instruction Bytecode.Neq.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand1 stack']|]; cbn; [|trivial].
@@ -1239,7 +1316,6 @@ Proof.
   }
   { guard_instruction Bytecode.Lt.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand1 stack']|]; cbn; [|trivial].
@@ -1262,7 +1338,6 @@ Proof.
   }
   { guard_instruction Bytecode.Gt.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand1 stack']|]; cbn; [|trivial].
@@ -1285,7 +1360,6 @@ Proof.
   }
   { guard_instruction Bytecode.Le.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand1 stack']|]; cbn; [|trivial].
@@ -1308,7 +1382,6 @@ Proof.
   }
   { guard_instruction Bytecode.Ge.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand1 stack']|]; cbn; [|trivial].
@@ -1331,7 +1404,6 @@ Proof.
   }
   { guard_instruction Bytecode.Abort.
     unfold_state_monad.
-    destruct H_type_safety_checker as [H_stack].
     destruct type_safety_checker; cbn in *.
     pose proof (AbstractStack.pop_is_valid stack H_stack).
     destruct AbstractStack.pop as [[operand stack']|]; cbn; [|trivial].

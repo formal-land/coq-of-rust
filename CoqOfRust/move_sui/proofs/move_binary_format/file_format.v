@@ -13,7 +13,30 @@ Module SignatureToken.
   Admitted.
 End SignatureToken.
 
+Module Constant.
+  Module Valid.
+    Definition t (x : Constant.t) : Prop :=
+      match Impl_Value.deserialize_constant x with
+      | None => False
+      | Some value => IsValueOfType.t value x.(Constant.type_)
+      end.
+  End Valid.
+End Constant.
+
+Module ConstantPool.
+  Module Valid.
+    Definition t (x : ConstantPool.t) : Prop :=
+      List.Forall Constant.Valid.t x.
+  End Valid.
+End ConstantPool.
+
 Module CompiledModule.
+  Module Valid.
+    Record t (x : CompiledModule.t) : Prop := {
+      constant_pool : ConstantPool.Valid.t x.(CompiledModule.constant_pool);
+    }.
+  End Valid.
+
   Lemma field_handle_at_is_valid (self : CompiledModule.t) (idx : FieldHandleIndex.t) :
     match CompiledModule.field_handle_at self idx with
     | Panic.Value _ => True
@@ -119,7 +142,7 @@ Module Bytecode.
       | Bytecode.LdConst _ => True
       | Bytecode.LdTrue => True
       | Bytecode.LdFalse => True
-      | Bytecode.CopyLoc _ => True
+      | Bytecode.CopyLoc z => Integer.Valid.t IntegerKind.U8 z
       | Bytecode.MoveLoc _ => True
       | Bytecode.StLoc _ => True
       | Bytecode.Call _ => True
@@ -179,28 +202,3 @@ Module Bytecode.
       end.
   End Valid.
 End Bytecode.
-
-Module Constant.
-  Module Valid.
-    Definition t (x : Constant.t) : Prop :=
-      match Impl_Value.deserialize_constant x with
-      | None => False
-      | Some value => IsValueOfType.t value x.(Constant.type_)
-      end.
-  End Valid.
-End Constant.
-
-Module ConstantPool.
-  Module Valid.
-    Definition t (x : ConstantPool.t) : Prop :=
-      List.Forall Constant.Valid.t x.
-  End Valid.
-End ConstantPool.
-
-Module CompiledModule.
-  Module Valid.
-    Record t (x : CompiledModule.t) : Prop := {
-      constant_pool : ConstantPool.Valid.t x.(CompiledModule.constant_pool);
-    }.
-  End Valid.
-End CompiledModule.

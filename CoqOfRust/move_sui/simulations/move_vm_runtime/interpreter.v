@@ -885,7 +885,7 @@ Definition execute_instruction
   | Bytecode.ReadRef => 
     letS!? reference := liftS! State.Lens.interpreter (
       liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.pop_as Reference.t) in
-    letS!? value := returnS! $ Impl_ReferenceImpl.read_ref reference in
+    letS!? value := return!toS! $ Impl_ReferenceImpl.read_ref reference in
     letS!? _ := liftS! State.Lens.interpreter (
       liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.push value) in
     returnS! $ Result.Ok InstrRet.Ok

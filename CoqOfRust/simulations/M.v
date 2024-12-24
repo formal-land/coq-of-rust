@@ -21,6 +21,9 @@ Module Result.
   Definition fold_left {A B Error : Set} (init : A) (l : list B) (f : A -> B -> t A Error) :
       t A Error :=
     List.fold_left (fun acc x => bind acc (fun acc => f acc x)) l (return_ init).
+
+  Definition map {A B Error : Set} (f : A -> t B Error) (l : list A) : t (list B) Error :=
+    fold_left [] l (fun acc x => bind (f x) (fun y => return_ (y :: acc))).
 End Result.
 
 Module ResultNotations.
@@ -49,6 +52,7 @@ Module Panic.
 
   Definition return_ {A : Set} (value : A) : t A :=
     Value value.
+  Arguments return_ /.
 
   Definition panic {A Error : Set} (error : Error) : t A :=
     Panic (existS Error error).
@@ -66,6 +70,14 @@ Module Panic.
     List.fold_right
       (fun x acc => bind acc (fun acc => bind (f x) (fun x => return_ (x :: acc))))
       (return_ []) l.
+
+  Module List.
+    Definition nth {A : Set} (l : list A) (n : nat) : t A :=
+      match List.nth_error l n with
+      | Some value => return_ value
+      | None => panic "List.nth: index out of bounds"
+      end.
+  End List.
 End Panic.
 
 Module PanicNotations.
