@@ -13,13 +13,8 @@ Module modexp.
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
                 [ Value.Integer IntegerKind.U64 5 ]
               |);
-              Value.StructTuple
-                "revm_primitives::precompile::Precompile::Standard"
-                [
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "revm_precompile::modexp::byzantium_run", [] |))
-                ]
+              (* ReifyFnPointer *)
+              M.pointer_coercion (M.get_function (| "revm_precompile::modexp::byzantium_run", [] |))
             ]
         |))).
   
@@ -34,13 +29,8 @@ Module modexp.
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
                 [ Value.Integer IntegerKind.U64 5 ]
               |);
-              Value.StructTuple
-                "revm_primitives::precompile::Precompile::Standard"
-                [
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion
-                    (M.get_function (| "revm_precompile::modexp::berlin_run", [] |))
-                ]
+              (* ReifyFnPointer *)
+              M.pointer_coercion (M.get_function (| "revm_precompile::modexp::berlin_run", [] |))
             ]
         |))).
   
@@ -293,7 +283,7 @@ Module modexp.
   pub fn calculate_iteration_count(exp_length: u64, exp_highp: &U256) -> u64 {
       let mut iteration_count: u64 = 0;
   
-      if exp_length <= 32 && *exp_highp == U256::ZERO {
+      if exp_length <= 32 && exp_highp.is_zero() {
           iteration_count = 0;
       } else if exp_length <= 32 {
           iteration_count = exp_highp.bit_len() as u64 - 1;
@@ -329,8 +319,7 @@ Module modexp.
                             |),
                             ltac:(M.monadic
                               (M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
+                                M.get_associated_function (|
                                   Ty.apply
                                     (Ty.path "ruint::Uint")
                                     [
@@ -338,19 +327,10 @@ Module modexp.
                                       Value.Integer IntegerKind.Usize 4
                                     ]
                                     [],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "ruint::Uint")
-                                      [
-                                        Value.Integer IntegerKind.Usize 256;
-                                        Value.Integer IntegerKind.Usize 4
-                                      ]
-                                      []
-                                  ],
-                                  "eq",
+                                  "is_zero",
                                   []
                                 |),
-                                [ M.read (| exp_highp |); M.get_constant (| "ruint::ZERO" |) ]
+                                [ M.read (| exp_highp |) ]
                               |)))
                           |)
                         |)) in
@@ -499,36 +479,36 @@ Module modexp.
   {
       // If there is no minimum gas, return error.
       if min_gas > gas_limit {
-          return Err(Error::OutOfGas);
+          return Err(PrecompileError::OutOfGas.into());
       }
   
       // The format of input is:
       // <length_of_BASE> <length_of_EXPONENT> <length_of_MODULUS> <BASE> <EXPONENT> <MODULUS>
       // Where every length is a 32-byte left-padded integer representing the number of bytes
-      // to be taken up by the next value
+      // to be taken up by the next value.
       const HEADER_LENGTH: usize = 96;
   
-      // Extract the header.
+      // Extract the header
       let base_len = U256::from_be_bytes(right_pad_with_offset::<32>(input, 0).into_owned());
       let exp_len = U256::from_be_bytes(right_pad_with_offset::<32>(input, 32).into_owned());
       let mod_len = U256::from_be_bytes(right_pad_with_offset::<32>(input, 64).into_owned());
   
-      // cast base and modulus to usize, it does not make sense to handle larger values
+      // Cast base and modulus to usize, it does not make sense to handle larger values
       let Ok(base_len) = usize::try_from(base_len) else {
-          return Err(Error::ModexpBaseOverflow);
+          return Err(PrecompileError::ModexpBaseOverflow.into());
       };
       let Ok(mod_len) = usize::try_from(mod_len) else {
-          return Err(Error::ModexpModOverflow);
+          return Err(PrecompileError::ModexpModOverflow.into());
       };
   
       // Handle a special case when both the base and mod length are zero.
       if base_len == 0 && mod_len == 0 {
-          return Ok((min_gas, Bytes::new()));
+          return Ok(PrecompileOutput::new(min_gas, Bytes::new()));
       }
   
       // Cast exponent length to usize, since it does not make sense to handle larger values.
       let Ok(exp_len) = usize::try_from(exp_len) else {
-          return Err(Error::ModexpModOverflow);
+          return Err(PrecompileError::ModexpExpOverflow.into());
       };
   
       // Used to extract ADJUSTED_EXPONENT_LENGTH.
@@ -538,7 +518,7 @@ Module modexp.
       let input = input.get(HEADER_LENGTH..).unwrap_or_default();
   
       let exp_highp = {
-          // get right padded bytes so if data.len is less then exp_len we will get right padded zeroes.
+          // Get right padded bytes so if data.len is less then exp_len we will get right padded zeroes.
           let right_padded_highp = right_pad_with_offset::<32>(input, base_len);
           // If exp_len is less then 32 bytes get only exp_len bytes and do left padding.
           let out = left_pad::<32>(&right_padded_highp[..exp_highp_len]);
@@ -548,7 +528,7 @@ Module modexp.
       // Check if we have enough gas.
       let gas_cost = calc_gas(base_len as u64, exp_len as u64, mod_len as u64, &exp_highp);
       if gas_cost > gas_limit {
-          return Err(Error::OutOfGas);
+          return Err(PrecompileError::OutOfGas.into());
       }
   
       // Padding is needed if the input does not contain all 3 values.
@@ -561,8 +541,11 @@ Module modexp.
       // Call the modexp.
       let output = modexp(base, exponent, modulus);
   
-      // left pad the result to modulus length. bytes will always by less or equal to modulus length.
-      Ok((gas_cost, left_pad_vec(&output, mod_len).into_owned().into()))
+      // Left pad the result to modulus length. bytes will always by less or equal to modulus length.
+      Ok(PrecompileOutput::new(
+          gas_cost,
+          left_pad_vec(&output, mod_len).into_owned().into(),
+      ))
   }
   *)
   Definition run_inner (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -596,9 +579,20 @@ Module modexp.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::OutOfGas"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -816,7 +810,13 @@ Module modexp.
                                                 Value.StructTuple
                                                   "core::result::Result::Ok"
                                                   [
-                                                    Value.Tuple
+                                                    M.call_closure (|
+                                                      M.get_associated_function (|
+                                                        Ty.path
+                                                          "revm_precompile::interface::PrecompileOutput",
+                                                        "new",
+                                                        []
+                                                      |),
                                                       [
                                                         M.read (| min_gas |);
                                                         M.call_closure (|
@@ -829,6 +829,7 @@ Module modexp.
                                                           []
                                                         |)
                                                       ]
+                                                    |)
                                                   ]
                                               |)
                                             |)
@@ -1092,9 +1093,24 @@ Module modexp.
                                                         Value.StructTuple
                                                           "core::result::Result::Err"
                                                           [
-                                                            Value.StructTuple
-                                                              "revm_primitives::precompile::PrecompileError::OutOfGas"
-                                                              []
+                                                            M.call_closure (|
+                                                              M.get_trait_method (|
+                                                                "core::convert::Into",
+                                                                Ty.path
+                                                                  "revm_precompile::interface::PrecompileError",
+                                                                [
+                                                                  Ty.path
+                                                                    "revm_precompile::interface::PrecompileErrors"
+                                                                ],
+                                                                "into",
+                                                                []
+                                                              |),
+                                                              [
+                                                                Value.StructTuple
+                                                                  "revm_precompile::interface::PrecompileError::OutOfGas"
+                                                                  []
+                                                              ]
+                                                            |)
                                                           ]
                                                       |)
                                                     |)
@@ -1352,7 +1368,13 @@ Module modexp.
                                                         Value.StructTuple
                                                           "core::result::Result::Ok"
                                                           [
-                                                            Value.Tuple
+                                                            M.call_closure (|
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "revm_precompile::interface::PrecompileOutput",
+                                                                "new",
+                                                                []
+                                                              |),
                                                               [
                                                                 M.read (| gas_cost |);
                                                                 M.call_closure (|
@@ -1422,6 +1444,7 @@ Module modexp.
                                                                   ]
                                                                 |)
                                                               ]
+                                                            |)
                                                           ]
                                                       |)))
                                                 ]
@@ -1448,14 +1471,14 @@ Module modexp.
   
   (*
   pub fn byzantium_gas_calc(base_len: u64, exp_len: u64, mod_len: u64, exp_highp: &U256) -> u64 {
-      // output of this function is bounded by 2^128
+      // Output of this function is bounded by 2^128
       fn mul_complexity(x: u64) -> U256 {
           if x <= 64 {
               U256::from(x * x)
           } else if x <= 1_024 {
               U256::from(x * x / 4 + 96 * x - 3_072)
           } else {
-              // up-cast to avoid overflow
+              // Up-cast to avoid overflow
               let x = U256::from(x);
               let x_sq = x * x; // x < 2^64 => x*x < 2^128 < 2^256 (no overflow)
               x_sq / U256::from(16) + U256::from(480) * x - U256::from(199_680)
@@ -1591,7 +1614,7 @@ Module modexp.
             } else if x <= 1_024 {
                 U256::from(x * x / 4 + 96 * x - 3_072)
             } else {
-                // up-cast to avoid overflow
+                // Up-cast to avoid overflow
                 let x = U256::from(x);
                 let x_sq = x * x; // x < 2^64 => x*x < 2^128 < 2^256 (no overflow)
                 x_sq / U256::from(16) + U256::from(480) * x - U256::from(199_680)

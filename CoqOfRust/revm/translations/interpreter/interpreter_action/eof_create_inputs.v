@@ -3,30 +3,36 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module interpreter_action.
   Module eof_create_inputs.
-    (* StructRecord
-      {
-        name := "EOFCreateInput";
-        const_params := [];
-        ty_params := [];
-        fields :=
-          [
-            ("caller", Ty.path "alloy_primitives::bits::address::Address");
-            ("created_address", Ty.path "alloy_primitives::bits::address::Address");
-            ("value",
-              Ty.apply
-                (Ty.path "ruint::Uint")
-                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                []);
-            ("eof_init_code", Ty.path "revm_primitives::bytecode::eof::Eof");
-            ("gas_limit", Ty.path "u64");
-            ("return_memory_range",
-              Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ])
-          ];
-      } *)
+    (*
+    Enum EOFCreateKind
+    {
+      const_params := [];
+      ty_params := [];
+      variants :=
+        [
+          {
+            name := "Tx";
+            item := StructRecord [ ("initdata", Ty.path "alloy_primitives::bytes_::Bytes") ];
+            discriminant := None;
+          };
+          {
+            name := "Opcode";
+            item :=
+              StructRecord
+                [
+                  ("initcode", Ty.path "revm_bytecode::eof::Eof");
+                  ("input", Ty.path "alloy_primitives::bytes_::Bytes");
+                  ("created_address", Ty.path "alloy_primitives::bits::address::Address")
+                ];
+            discriminant := None;
+          }
+        ];
+    }
+    *)
     
-    Module Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    Module Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
       Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind".
       
       (* Debug *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -36,74 +42,78 @@ Module interpreter_action.
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
             M.read (|
-              let~ names :=
-                M.alloc (|
-                  M.alloc (|
-                    Value.Array
-                      [
-                        M.read (| Value.String "caller" |);
-                        M.read (| Value.String "created_address" |);
-                        M.read (| Value.String "value" |);
-                        M.read (| Value.String "eof_init_code" |);
-                        M.read (| Value.String "gas_limit" |);
-                        M.read (| Value.String "return_memory_range" |)
-                      ]
-                  |)
-                |) in
-              let~ values :=
-                M.alloc (|
-                  M.alloc (|
-                    Value.Array
-                      [
+              M.match_operator (|
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
                         M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                          "caller"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                          "created_address"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                          "value"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                          "eof_init_code"
-                        |);
-                        M.SubPointer.get_struct_record_field (|
-                          M.read (| self |),
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                          "gas_limit"
-                        |);
-                        M.alloc (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                            "return_memory_range"
-                          |)
+                          γ,
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
+                          "initdata"
+                        |) in
+                      let __self_0 := M.alloc (| γ1_0 |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Formatter",
+                            "debug_struct_field1_finish",
+                            []
+                          |),
+                          [
+                            M.read (| f |);
+                            M.read (| Value.String "Tx" |);
+                            M.read (| Value.String "initdata" |);
+                            __self_0
+                          ]
                         |)
-                      ]
-                  |)
-                |) in
-              M.alloc (|
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "core::fmt::Formatter",
-                    "debug_struct_fields_finish",
-                    []
-                  |),
-                  [
-                    M.read (| f |);
-                    M.read (| Value.String "EOFCreateInput" |);
-                    M.read (| names |);
-                    M.read (| values |)
-                  ]
-                |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                          "initcode"
+                        |) in
+                      let γ1_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                          "input"
+                        |) in
+                      let γ1_2 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                          "created_address"
+                        |) in
+                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_1 := M.alloc (| γ1_1 |) in
+                      let __self_2 := M.alloc (| γ1_2 |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Formatter",
+                            "debug_struct_field3_finish",
+                            []
+                          |),
+                          [
+                            M.read (| f |);
+                            M.read (| Value.String "Opcode" |);
+                            M.read (| Value.String "initcode" |);
+                            M.read (| __self_0 |);
+                            M.read (| Value.String "input" |);
+                            M.read (| __self_1 |);
+                            M.read (| Value.String "created_address" |);
+                            __self_2
+                          ]
+                        |)
+                      |)))
+                ]
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -115,21 +125,507 @@ Module interpreter_action.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-    End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
     
-    Module Impl_core_default_Default_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
       Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind".
       
-      (* Default *)
+      (* Clone *)
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
+                          "initdata"
+                        |) in
+                      let __self_0 := M.alloc (| γ1_0 |) in
+                      M.alloc (|
+                        Value.StructRecord
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx"
+                          [
+                            ("initdata",
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::clone::Clone",
+                                  Ty.path "alloy_primitives::bytes_::Bytes",
+                                  [],
+                                  "clone",
+                                  []
+                                |),
+                                [ M.read (| __self_0 |) ]
+                              |))
+                          ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                          "initcode"
+                        |) in
+                      let γ1_1 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                          "input"
+                        |) in
+                      let γ1_2 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                          "created_address"
+                        |) in
+                      let __self_0 := M.alloc (| γ1_0 |) in
+                      let __self_1 := M.alloc (| γ1_1 |) in
+                      let __self_2 := M.alloc (| γ1_2 |) in
+                      M.alloc (|
+                        Value.StructRecord
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
+                          [
+                            ("initcode",
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::clone::Clone",
+                                  Ty.path "revm_bytecode::eof::Eof",
+                                  [],
+                                  "clone",
+                                  []
+                                |),
+                                [ M.read (| __self_0 |) ]
+                              |));
+                            ("input",
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::clone::Clone",
+                                  Ty.path "alloy_primitives::bytes_::Bytes",
+                                  [],
+                                  "clone",
+                                  []
+                                |),
+                                [ M.read (| __self_1 |) ]
+                              |));
+                            ("created_address",
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::clone::Clone",
+                                  Ty.path "alloy_primitives::bits::address::Address",
+                                  [],
+                                  "clone",
+                                  []
+                                |),
+                                [ M.read (| __self_2 |) ]
+                              |))
+                          ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::clone::Clone"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("clone", InstanceField.Method clone) ].
+    End Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+    
+    Module Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+      Definition Self : Ty.t :=
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::StructuralPartialEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [].
+    End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+    
+    Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+      Definition Self : Ty.t :=
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind".
+      
+      (* PartialEq *)
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              let~ __self_discr :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (|
+                      "core::intrinsics::discriminant_value",
+                      [
+                        Ty.path
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                      ]
+                    |),
+                    [ M.read (| self |) ]
+                  |)
+                |) in
+              let~ __arg1_discr :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_function (|
+                      "core::intrinsics::discriminant_value",
+                      [
+                        Ty.path
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                      ]
+                    |),
+                    [ M.read (| other |) ]
+                  |)
+                |) in
+              M.alloc (|
+                LogicalOp.and (|
+                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                  ltac:(M.monadic
+                    (M.read (|
+                      M.match_operator (|
+                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let γ0_0 := M.read (| γ0_0 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_record_field (|
+                                  γ0_0,
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
+                                  "initdata"
+                                |) in
+                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let γ0_1 := M.read (| γ0_1 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_record_field (|
+                                  γ0_1,
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx",
+                                  "initdata"
+                                |) in
+                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                    ],
+                                    "eq",
+                                    []
+                                  |),
+                                  [ __self_0; __arg1_0 ]
+                                |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let γ0_0 := M.read (| γ0_0 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_record_field (|
+                                  γ0_0,
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                                  "initcode"
+                                |) in
+                              let γ2_1 :=
+                                M.SubPointer.get_struct_record_field (|
+                                  γ0_0,
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                                  "input"
+                                |) in
+                              let γ2_2 :=
+                                M.SubPointer.get_struct_record_field (|
+                                  γ0_0,
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                                  "created_address"
+                                |) in
+                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let __self_1 := M.alloc (| γ2_1 |) in
+                              let __self_2 := M.alloc (| γ2_2 |) in
+                              let γ0_1 := M.read (| γ0_1 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_record_field (|
+                                  γ0_1,
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                                  "initcode"
+                                |) in
+                              let γ2_1 :=
+                                M.SubPointer.get_struct_record_field (|
+                                  γ0_1,
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                                  "input"
+                                |) in
+                              let γ2_2 :=
+                                M.SubPointer.get_struct_record_field (|
+                                  γ0_1,
+                                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                                  "created_address"
+                                |) in
+                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              let __arg1_1 := M.alloc (| γ2_1 |) in
+                              let __arg1_2 := M.alloc (| γ2_2 |) in
+                              M.alloc (|
+                                LogicalOp.and (|
+                                  LogicalOp.and (|
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "revm_bytecode::eof::Eof" ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "revm_bytecode::eof::Eof" ]
+                                        ],
+                                        "eq",
+                                        []
+                                      |),
+                                      [ __self_0; __arg1_0 ]
+                                    |),
+                                    ltac:(M.monadic
+                                      (M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::cmp::PartialEq",
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "alloy_primitives::bytes_::Bytes" ],
+                                          [
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                          ],
+                                          "eq",
+                                          []
+                                        |),
+                                        [ __self_1; __arg1_1 ]
+                                      |)))
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::cmp::PartialEq",
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.path "alloy_primitives::bits::address::Address" ],
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.path "alloy_primitives::bits::address::Address" ]
+                                        ],
+                                        "eq",
+                                        []
+                                      |),
+                                      [ __self_2; __arg1_2 ]
+                                    |)))
+                                |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                M.never_to_any (|
+                                  M.call_closure (|
+                                    M.get_function (| "core::intrinsics::unreachable", [] |),
+                                    []
+                                  |)
+                                |)
+                              |)))
+                        ]
+                      |)
+                    |)))
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::PartialEq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("eq", InstanceField.Method eq) ].
+    End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+    
+    Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+      Definition Self : Ty.t :=
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind".
+      
+      (* Eq *)
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                Value.DeclaredButUndefined,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        Value.DeclaredButUndefined,
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.match_operator (|
+                                Value.DeclaredButUndefined,
+                                [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                              |)))
+                        ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
+    End Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+    
+    Module Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+      Definition Self : Ty.t :=
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind".
+      
+      (*
+          pub fn created_address(&self) -> Option<&Address> {
+              match self {
+                  EOFCreateKind::Opcode {
+                      created_address, ..
+                  } => Some(created_address),
+                  EOFCreateKind::Tx { .. } => None,
+              }
+          }
+      *)
+      Definition created_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_record_field (|
+                          γ,
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode",
+                          "created_address"
+                        |) in
+                      let created_address := M.alloc (| γ1_0 |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ M.read (| created_address |) ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let _ :=
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Tx"
+                        |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_created_address :
+        M.IsAssociatedFunction Self "created_address" created_address.
+    End Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+    
+    Module Impl_core_default_Default_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+      Definition Self : Ty.t :=
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind".
+      
+      (*
+          fn default() -> Self {
+              EOFCreateKind::Opcode {
+                  initcode: Eof::default(),
+                  input: Bytes::default(),
+                  created_address: Address::default(),
+              }
+          }
+      *)
       Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [] =>
           ltac:(M.monadic
             (Value.StructRecord
-              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
+              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
               [
-                ("caller",
+                ("initcode",
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "revm_bytecode::eof::Eof",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |));
+                ("input",
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::default::Default",
+                      Ty.path "alloy_primitives::bytes_::Bytes",
+                      [],
+                      "default",
+                      []
+                    |),
+                    []
+                  |));
+                ("created_address",
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
@@ -139,8 +635,110 @@ Module interpreter_action.
                       []
                     |),
                     []
-                  |));
-                ("created_address",
+                  |))
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::default::Default"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("default", InstanceField.Method default) ].
+    End Impl_core_default_Default_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateKind.
+    
+    (* StructRecord
+      {
+        name := "EOFCreateInputs";
+        const_params := [];
+        ty_params := [];
+        fields :=
+          [
+            ("caller", Ty.path "alloy_primitives::bits::address::Address");
+            ("value",
+              Ty.apply
+                (Ty.path "ruint::Uint")
+                [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                []);
+            ("gas_limit", Ty.path "u64");
+            ("kind",
+              Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind")
+          ];
+      } *)
+    
+    Module Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
+      Definition Self : Ty.t :=
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs".
+      
+      (* Debug *)
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "core::fmt::Formatter",
+                "debug_struct_field4_finish",
+                []
+              |),
+              [
+                M.read (| f |);
+                M.read (| Value.String "EOFCreateInputs" |);
+                M.read (| Value.String "caller" |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                  "caller"
+                |);
+                M.read (| Value.String "value" |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                  "value"
+                |);
+                M.read (| Value.String "gas_limit" |);
+                M.SubPointer.get_struct_record_field (|
+                  M.read (| self |),
+                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                  "gas_limit"
+                |);
+                M.read (| Value.String "kind" |);
+                M.alloc (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.read (| self |),
+                    "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                    "kind"
+                  |)
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::fmt::Debug"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+    End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
+    
+    Module Impl_core_default_Default_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
+      Definition Self : Ty.t :=
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs".
+      
+      (* Default *)
+      Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [] =>
+          ltac:(M.monadic
+            (Value.StructRecord
+              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
+              [
+                ("caller",
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
@@ -159,17 +757,6 @@ Module interpreter_action.
                         (Ty.path "ruint::Uint")
                         [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                         [],
-                      [],
-                      "default",
-                      []
-                    |),
-                    []
-                  |));
-                ("eof_init_code",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::default::Default",
-                      Ty.path "revm_primitives::bytecode::eof::Eof",
                       [],
                       "default",
                       []
@@ -187,11 +774,12 @@ Module interpreter_action.
                     |),
                     []
                   |));
-                ("return_memory_range",
+                ("kind",
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::default::Default",
-                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                      Ty.path
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
                       [],
                       "default",
                       []
@@ -208,11 +796,11 @@ Module interpreter_action.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("default", InstanceField.Method default) ].
-    End Impl_core_default_Default_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    End Impl_core_default_Default_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
     
-    Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
       Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs".
       
       (* Clone *)
       Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -221,7 +809,7 @@ Module interpreter_action.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             Value.StructRecord
-              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
+              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
               [
                 ("caller",
                   M.call_closure (|
@@ -235,25 +823,8 @@ Module interpreter_action.
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
                         "caller"
-                      |)
-                    ]
-                  |));
-                ("created_address",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "alloy_primitives::bits::address::Address",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                        "created_address"
                       |)
                     ]
                   |));
@@ -272,25 +843,8 @@ Module interpreter_action.
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
                         "value"
-                      |)
-                    ]
-                  |));
-                ("eof_init_code",
-                  M.call_closure (|
-                    M.get_trait_method (|
-                      "core::clone::Clone",
-                      Ty.path "revm_primitives::bytecode::eof::Eof",
-                      [],
-                      "clone",
-                      []
-                    |),
-                    [
-                      M.SubPointer.get_struct_record_field (|
-                        M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                        "eof_init_code"
                       |)
                     ]
                   |));
@@ -300,16 +854,17 @@ Module interpreter_action.
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
                         "gas_limit"
                       |)
                     ]
                   |));
-                ("return_memory_range",
+                ("kind",
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
+                      Ty.path
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
                       [],
                       "clone",
                       []
@@ -317,8 +872,8 @@ Module interpreter_action.
                     [
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                        "return_memory_range"
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                        "kind"
                       |)
                     ]
                   |))
@@ -332,11 +887,11 @@ Module interpreter_action.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("clone", InstanceField.Method clone) ].
-    End Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    End Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
     
-    Module Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    Module Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
       Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs".
       
       Axiom Implements :
         M.IsTraitInstance
@@ -344,11 +899,11 @@ Module interpreter_action.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [].
-    End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
     
-    Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
       Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs".
       
       (* PartialEq *)
       Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -360,106 +915,55 @@ Module interpreter_action.
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
-                  LogicalOp.and (|
-                    LogicalOp.and (|
-                      M.call_closure (|
-                        M.get_trait_method (|
-                          "core::cmp::PartialEq",
-                          Ty.path "alloy_primitives::bits::address::Address",
-                          [ Ty.path "alloy_primitives::bits::address::Address" ],
-                          "eq",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                            "caller"
-                          |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                            "caller"
-                          |)
-                        ]
-                      |),
-                      ltac:(M.monadic
-                        (M.call_closure (|
-                          M.get_trait_method (|
-                            "core::cmp::PartialEq",
-                            Ty.path "alloy_primitives::bits::address::Address",
-                            [ Ty.path "alloy_primitives::bits::address::Address" ],
-                            "eq",
-                            []
-                          |),
-                          [
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| self |),
-                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                              "created_address"
-                            |);
-                            M.SubPointer.get_struct_record_field (|
-                              M.read (| other |),
-                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                              "created_address"
-                            |)
-                          ]
-                        |)))
+                  M.call_closure (|
+                    M.get_trait_method (|
+                      "core::cmp::PartialEq",
+                      Ty.path "alloy_primitives::bits::address::Address",
+                      [ Ty.path "alloy_primitives::bits::address::Address" ],
+                      "eq",
+                      []
                     |),
-                    ltac:(M.monadic
-                      (M.call_closure (|
-                        M.get_trait_method (|
-                          "core::cmp::PartialEq",
-                          Ty.apply
-                            (Ty.path "ruint::Uint")
-                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
-                            ]
-                            [],
-                          [
-                            Ty.apply
-                              (Ty.path "ruint::Uint")
-                              [
-                                Value.Integer IntegerKind.Usize 256;
-                                Value.Integer IntegerKind.Usize 4
-                              ]
-                              []
-                          ],
-                          "eq",
-                          []
-                        |),
-                        [
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| self |),
-                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                            "value"
-                          |);
-                          M.SubPointer.get_struct_record_field (|
-                            M.read (| other |),
-                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                            "value"
-                          |)
-                        ]
-                      |)))
+                    [
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| self |),
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                        "caller"
+                      |);
+                      M.SubPointer.get_struct_record_field (|
+                        M.read (| other |),
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                        "caller"
+                      |)
+                    ]
                   |),
                   ltac:(M.monadic
                     (M.call_closure (|
                       M.get_trait_method (|
                         "core::cmp::PartialEq",
-                        Ty.path "revm_primitives::bytecode::eof::Eof",
-                        [ Ty.path "revm_primitives::bytecode::eof::Eof" ],
+                        Ty.apply
+                          (Ty.path "ruint::Uint")
+                          [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                          [],
+                        [
+                          Ty.apply
+                            (Ty.path "ruint::Uint")
+                            [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4
+                            ]
+                            []
+                        ],
                         "eq",
                         []
                       |),
                       [
                         M.SubPointer.get_struct_record_field (|
                           M.read (| self |),
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                          "eof_init_code"
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                          "value"
                         |);
                         M.SubPointer.get_struct_record_field (|
                           M.read (| other |),
-                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                          "eof_init_code"
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                          "value"
                         |)
                       ]
                     |)))
@@ -469,14 +973,14 @@ Module interpreter_action.
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| self |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
                         "gas_limit"
                       |)
                     |),
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.read (| other |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
                         "gas_limit"
                       |)
                     |)
@@ -486,21 +990,25 @@ Module interpreter_action.
                 (M.call_closure (|
                   M.get_trait_method (|
                     "core::cmp::PartialEq",
-                    Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ],
-                    [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] ],
+                    Ty.path
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind",
+                    [
+                      Ty.path
+                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind"
+                    ],
                     "eq",
                     []
                   |),
                   [
                     M.SubPointer.get_struct_record_field (|
                       M.read (| self |),
-                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                      "return_memory_range"
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                      "kind"
                     |);
                     M.SubPointer.get_struct_record_field (|
                       M.read (| other |),
-                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput",
-                      "return_memory_range"
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                      "kind"
                     |)
                   ]
                 |)))
@@ -514,11 +1022,11 @@ Module interpreter_action.
           Self
           (* Trait polymorphic types *) []
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
     
-    Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
       Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs".
       
       (* Eq *)
       Definition assert_receiver_is_total_eq
@@ -548,17 +1056,7 @@ Module interpreter_action.
                                     ltac:(M.monadic
                                       (M.match_operator (|
                                         Value.DeclaredButUndefined,
-                                        [
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              (M.match_operator (|
-                                                Value.DeclaredButUndefined,
-                                                [
-                                                  fun γ =>
-                                                    ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                                ]
-                                              |)))
-                                        ]
+                                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                                       |)))
                                 ]
                               |)))
@@ -577,57 +1075,98 @@ Module interpreter_action.
           (* Trait polymorphic types *) []
           (* Instance *)
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
-    End Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    End Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
     
-    Module Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+    Module Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
       Definition Self : Ty.t :=
-        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput".
+        Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs".
       
       (*
-          pub fn new(
-              caller: Address,
-              created_address: Address,
-              value: U256,
-              eof_init_code: Eof,
-              gas_limit: u64,
-              return_memory_range: Range<usize>,
-          ) -> EOFCreateInput {
-              EOFCreateInput {
+          pub fn new(caller: Address, value: U256, gas_limit: u64, kind: EOFCreateKind) -> Self {
+              //let (eof_init_code, input) = Eof::decode_dangling(tx.data.clone())?;
+              EOFCreateInputs {
                   caller,
-                  created_address,
                   value,
-                  eof_init_code,
                   gas_limit,
-                  return_memory_range,
+                  kind,
               }
           }
       *)
       Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [],
-            [],
-            [ caller; created_address; value; eof_init_code; gas_limit; return_memory_range ] =>
+        | [], [], [ caller; value; gas_limit; kind ] =>
+          ltac:(M.monadic
+            (let caller := M.alloc (| caller |) in
+            let value := M.alloc (| value |) in
+            let gas_limit := M.alloc (| gas_limit |) in
+            let kind := M.alloc (| kind |) in
+            Value.StructRecord
+              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs"
+              [
+                ("caller", M.read (| caller |));
+                ("value", M.read (| value |));
+                ("gas_limit", M.read (| gas_limit |));
+                ("kind", M.read (| kind |))
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
+      
+      (*
+          pub fn new_opcode(
+              caller: Address,
+              created_address: Address,
+              value: U256,
+              eof_init_code: Eof,
+              gas_limit: u64,
+              input: Bytes,
+          ) -> EOFCreateInputs {
+              EOFCreateInputs::new(
+                  caller,
+                  value,
+                  gas_limit,
+                  EOFCreateKind::Opcode {
+                      initcode: eof_init_code,
+                      input,
+                      created_address,
+                  },
+              )
+          }
+      *)
+      Definition new_opcode (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ caller; created_address; value; eof_init_code; gas_limit; input ] =>
           ltac:(M.monadic
             (let caller := M.alloc (| caller |) in
             let created_address := M.alloc (| created_address |) in
             let value := M.alloc (| value |) in
             let eof_init_code := M.alloc (| eof_init_code |) in
             let gas_limit := M.alloc (| gas_limit |) in
-            let return_memory_range := M.alloc (| return_memory_range |) in
-            Value.StructRecord
-              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput"
+            let input := M.alloc (| input |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                "new",
+                []
+              |),
               [
-                ("caller", M.read (| caller |));
-                ("created_address", M.read (| created_address |));
-                ("value", M.read (| value |));
-                ("eof_init_code", M.read (| eof_init_code |));
-                ("gas_limit", M.read (| gas_limit |));
-                ("return_memory_range", M.read (| return_memory_range |))
-              ]))
+                M.read (| caller |);
+                M.read (| value |);
+                M.read (| gas_limit |);
+                Value.StructRecord
+                  "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateKind::Opcode"
+                  [
+                    ("initcode", M.read (| eof_init_code |));
+                    ("input", M.read (| input |));
+                    ("created_address", M.read (| created_address |))
+                  ]
+              ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-    End Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInput.
+      Axiom AssociatedFunction_new_opcode : M.IsAssociatedFunction Self "new_opcode" new_opcode.
+    End Impl_revm_interpreter_interpreter_action_eof_create_inputs_EOFCreateInputs.
   End eof_create_inputs.
 End interpreter_action.

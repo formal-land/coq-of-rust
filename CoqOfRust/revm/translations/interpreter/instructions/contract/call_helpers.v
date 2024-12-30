@@ -6,18 +6,18 @@ Module instructions.
     Module call_helpers.
       (*
       pub fn get_memory_input_and_out_ranges(
-          interpreter: &mut Interpreter,
+          interpreter: &mut Interpreter<impl InterpreterTypes>,
       ) -> Option<(Bytes, Range<usize>)> {
-          pop_ret!(interpreter, in_offset, in_len, out_offset, out_len, None);
+          popn!([in_offset, in_len, out_offset, out_len], interpreter, None);
       
-          let in_range = resize_memory_and_return_range(interpreter, in_offset, in_len)?;
+          let in_range = resize_memory(interpreter, in_offset, in_len)?;
       
           let mut input = Bytes::new();
           if !in_range.is_empty() {
-              input = Bytes::copy_from_slice(interpreter.shared_memory.slice_range(in_range));
+              input = Bytes::copy_from_slice(interpreter.memory.slice(in_range).as_ref());
           }
       
-          let ret_range = resize_memory_and_return_range(interpreter, out_offset, out_len)?;
+          let ret_range = resize_memory(interpreter, out_offset, out_len)?;
           Some((input, ret_range))
       }
       *)
@@ -27,68 +27,20 @@ Module instructions.
           (α : list Value.t)
           : M :=
         match ε, τ, α with
-        | [], [], [ interpreter ] =>
+        | [], [ impl_InterpreterTypes ], [ interpreter ] =>
           ltac:(M.monadic
             (let interpreter := M.alloc (| interpreter |) in
             M.catch_return (|
               ltac:(M.monadic
                 (M.read (|
-                  let~ _ :=
-                    M.match_operator (|
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.lt (|
-                                    M.call_closure (|
-                                      M.get_associated_function (|
-                                        Ty.path "revm_interpreter::interpreter::stack::Stack",
-                                        "len",
-                                        []
-                                      |),
-                                      [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "stack"
-                                        |)
-                                      ]
-                                    |),
-                                    Value.Integer IntegerKind.Usize 4
-                                  |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ _ :=
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| interpreter |),
-                                        "revm_interpreter::interpreter::Interpreter",
-                                        "instruction_result"
-                                      |),
-                                      Value.StructTuple
-                                        "revm_interpreter::instruction_result::InstructionResult::StackUnderflow"
-                                        []
-                                    |) in
-                                  M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
                   M.match_operator (|
                     M.alloc (|
                       M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "revm_interpreter::interpreter::stack::Stack",
-                          "pop4_unsafe",
+                        M.get_trait_method (|
+                          "revm_interpreter::interpreter_types::StackTrait",
+                          Ty.associated,
+                          [],
+                          "popn",
                           []
                         |),
                         [
@@ -103,14 +55,20 @@ Module instructions.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                          let γ0_2 := M.SubPointer.get_tuple_field (| γ, 2 |) in
-                          let γ0_3 := M.SubPointer.get_tuple_field (| γ, 3 |) in
-                          let in_offset := M.copy (| γ0_0 |) in
-                          let in_len := M.copy (| γ0_1 |) in
-                          let out_offset := M.copy (| γ0_2 |) in
-                          let out_len := M.copy (| γ0_3 |) in
+                          (let γ0_0 :=
+                            M.SubPointer.get_struct_tuple_field (|
+                              γ,
+                              "core::option::Option::Some",
+                              0
+                            |) in
+                          let γ1_0 := M.SubPointer.get_slice_index (| γ0_0, 0 |) in
+                          let γ1_1 := M.SubPointer.get_slice_index (| γ0_0, 1 |) in
+                          let γ1_2 := M.SubPointer.get_slice_index (| γ0_0, 2 |) in
+                          let γ1_3 := M.SubPointer.get_slice_index (| γ0_0, 3 |) in
+                          let in_offset := M.copy (| γ1_0 |) in
+                          let in_len := M.copy (| γ1_1 |) in
+                          let out_offset := M.copy (| γ1_2 |) in
+                          let out_len := M.copy (| γ1_3 |) in
                           let~ in_range :=
                             M.copy (|
                               M.match_operator (|
@@ -134,8 +92,8 @@ Module instructions.
                                     [
                                       M.call_closure (|
                                         M.get_function (|
-                                          "revm_interpreter::instructions::contract::call_helpers::resize_memory_and_return_range",
-                                          []
+                                          "revm_interpreter::instructions::contract::call_helpers::resize_memory",
+                                          [ impl_InterpreterTypes ]
                                         |),
                                         [
                                           M.read (| interpreter |);
@@ -254,19 +212,44 @@ Module instructions.
                                           |),
                                           [
                                             M.call_closure (|
-                                              M.get_associated_function (|
-                                                Ty.path
-                                                  "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                                                "slice_range",
+                                              M.get_trait_method (|
+                                                "core::convert::AsRef",
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                                "as_ref",
                                                 []
                                               |),
                                               [
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.read (| interpreter |),
-                                                  "revm_interpreter::interpreter::Interpreter",
-                                                  "shared_memory"
-                                                |);
-                                                M.read (| in_range |)
+                                                M.call_closure (|
+                                                  M.get_trait_method (|
+                                                    "core::ops::deref::Deref",
+                                                    Ty.associated,
+                                                    [],
+                                                    "deref",
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.alloc (|
+                                                      M.call_closure (|
+                                                        M.get_trait_method (|
+                                                          "revm_interpreter::interpreter_types::MemoryTrait",
+                                                          Ty.associated,
+                                                          [],
+                                                          "slice",
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.read (| interpreter |),
+                                                            "revm_interpreter::interpreter::Interpreter",
+                                                            "memory"
+                                                          |);
+                                                          M.read (| in_range |)
+                                                        ]
+                                                      |)
+                                                    |)
+                                                  ]
+                                                |)
                                               ]
                                             |)
                                           ]
@@ -299,8 +282,8 @@ Module instructions.
                                     [
                                       M.call_closure (|
                                         M.get_function (|
-                                          "revm_interpreter::instructions::contract::call_helpers::resize_memory_and_return_range",
-                                          []
+                                          "revm_interpreter::instructions::contract::call_helpers::resize_memory",
+                                          [ impl_InterpreterTypes ]
                                         |),
                                         [
                                           M.read (| interpreter |);
@@ -387,8 +370,8 @@ Module instructions.
           get_memory_input_and_out_ranges.
       
       (*
-      pub fn resize_memory_and_return_range(
-          interpreter: &mut Interpreter,
+      pub fn resize_memory(
+          interpreter: &mut Interpreter<impl InterpreterTypes>,
           offset: U256,
           len: U256,
       ) -> Option<Range<usize>> {
@@ -403,13 +386,9 @@ Module instructions.
           Some(offset..offset + len)
       }
       *)
-      Definition resize_memory_and_return_range
-          (ε : list Value.t)
-          (τ : list Ty.t)
-          (α : list Value.t)
-          : M :=
+      Definition resize_memory (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [ interpreter; offset; len ] =>
+        | [], [ impl_InterpreterTypes ], [ interpreter; offset; len ] =>
           ltac:(M.monadic
             (let interpreter := M.alloc (| interpreter |) in
             let offset := M.alloc (| offset |) in
@@ -419,7 +398,7 @@ Module instructions.
                 (M.read (|
                   let~ len :=
                     M.copy (|
-                      let~ x :=
+                      M.match_operator (|
                         M.alloc (|
                           M.call_closure (|
                             M.get_associated_function (|
@@ -435,109 +414,119 @@ Module instructions.
                             |),
                             [ len ]
                           |)
-                        |) in
-                      let~ _ :=
-                        M.match_operator (|
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      LogicalOp.or (|
-                                        LogicalOp.or (|
-                                          BinOp.ne (|
-                                            M.read (|
-                                              M.SubPointer.get_array_field (|
-                                                M.read (| x |),
-                                                M.alloc (| Value.Integer IntegerKind.Usize 1 |)
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U64 0
-                                          |),
-                                          ltac:(M.monadic
-                                            (BinOp.ne (|
-                                              M.read (|
-                                                M.SubPointer.get_array_field (|
-                                                  M.read (| x |),
-                                                  M.alloc (| Value.Integer IntegerKind.Usize 2 |)
-                                                |)
-                                              |),
-                                              Value.Integer IntegerKind.U64 0
-                                            |)))
-                                        |),
-                                        ltac:(M.monadic
-                                          (BinOp.ne (|
-                                            M.read (|
-                                              M.SubPointer.get_array_field (|
-                                                M.read (| x |),
-                                                M.alloc (| Value.Integer IntegerKind.Usize 3 |)
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.U64 0
-                                          |)))
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.read (|
-                                      let~ _ :=
-                                        M.write (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.read (| interpreter |),
-                                            "revm_interpreter::interpreter::Interpreter",
-                                            "instruction_result"
-                                          |),
-                                          Value.StructTuple
-                                            "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
-                                            []
-                                        |) in
-                                      M.return_ (|
-                                        Value.StructTuple "core::option::Option::None" []
-                                      |)
-                                    |)
-                                  |)
-                                |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |) in
-                      M.match_operator (|
-                        M.alloc (|
-                          M.call_closure (|
-                            M.get_trait_method (|
-                              "core::convert::TryFrom",
-                              Ty.path "usize",
-                              [ Ty.path "u64" ],
-                              "try_from",
-                              []
-                            |),
-                            [
-                              M.read (|
-                                M.SubPointer.get_array_field (|
-                                  M.read (| x |),
-                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
-                                |)
-                              |)
-                            ]
-                          |)
                         |),
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ0_0 :=
-                                M.SubPointer.get_struct_tuple_field (|
-                                  γ,
-                                  "core::result::Result::Ok",
-                                  0
+                              (let x := M.copy (| γ |) in
+                              let~ _ :=
+                                M.match_operator (|
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              BinOp.bit_or
+                                                (BinOp.bit_or
+                                                  (BinOp.bit_or
+                                                    (BinOp.gt (|
+                                                      M.read (|
+                                                        M.SubPointer.get_array_field (|
+                                                          M.read (| x |),
+                                                          M.alloc (|
+                                                            Value.Integer IntegerKind.Usize 0
+                                                          |)
+                                                        |)
+                                                      |),
+                                                      M.rust_cast
+                                                        (M.read (|
+                                                          M.get_constant (| "core::num::MAX" |)
+                                                        |))
+                                                    |))
+                                                    (BinOp.ne (|
+                                                      M.read (|
+                                                        M.SubPointer.get_array_field (|
+                                                          M.read (| x |),
+                                                          M.alloc (|
+                                                            Value.Integer IntegerKind.Usize 1
+                                                          |)
+                                                        |)
+                                                      |),
+                                                      Value.Integer IntegerKind.U64 0
+                                                    |)))
+                                                  (BinOp.ne (|
+                                                    M.read (|
+                                                      M.SubPointer.get_array_field (|
+                                                        M.read (| x |),
+                                                        M.alloc (|
+                                                          Value.Integer IntegerKind.Usize 2
+                                                        |)
+                                                      |)
+                                                    |),
+                                                    Value.Integer IntegerKind.U64 0
+                                                  |)))
+                                                (BinOp.ne (|
+                                                  M.read (|
+                                                    M.SubPointer.get_array_field (|
+                                                      M.read (| x |),
+                                                      M.alloc (|
+                                                        Value.Integer IntegerKind.Usize 3
+                                                      |)
+                                                    |)
+                                                  |),
+                                                  Value.Integer IntegerKind.U64 0
+                                                |))
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              let~ _ :=
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "revm_interpreter::interpreter_types::LoopControl",
+                                                      Ty.associated,
+                                                      [],
+                                                      "set_instruction_result",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| interpreter |),
+                                                        "revm_interpreter::interpreter::Interpreter",
+                                                        "control"
+                                                      |);
+                                                      Value.StructTuple
+                                                        "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
+                                                        []
+                                                    ]
+                                                  |)
+                                                |) in
+                                              M.return_ (|
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)
+                                            |)
+                                          |)
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
                                 |) in
-                              let val := M.copy (| γ0_0 |) in
-                              val))
+                              M.alloc (|
+                                M.rust_cast
+                                  (M.read (|
+                                    M.SubPointer.get_array_field (|
+                                      M.read (| x |),
+                                      M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                    |)
+                                  |))
+                              |)))
                         ]
                       |)
                     |) in
@@ -563,7 +552,7 @@ Module instructions.
                                 |) in
                               let~ offset :=
                                 M.copy (|
-                                  let~ x :=
+                                  M.match_operator (|
                                     M.alloc (|
                                       M.call_closure (|
                                         M.get_associated_function (|
@@ -579,225 +568,262 @@ Module instructions.
                                         |),
                                         [ offset ]
                                       |)
-                                    |) in
-                                  let~ _ :=
-                                    M.match_operator (|
-                                      M.alloc (| Value.Tuple [] |),
-                                      [
-                                        fun γ =>
-                                          ltac:(M.monadic
-                                            (let γ :=
-                                              M.use
-                                                (M.alloc (|
-                                                  LogicalOp.or (|
-                                                    LogicalOp.or (|
-                                                      BinOp.ne (|
-                                                        M.read (|
-                                                          M.SubPointer.get_array_field (|
-                                                            M.read (| x |),
-                                                            M.alloc (|
-                                                              Value.Integer IntegerKind.Usize 1
-                                                            |)
-                                                          |)
-                                                        |),
-                                                        Value.Integer IntegerKind.U64 0
-                                                      |),
-                                                      ltac:(M.monadic
-                                                        (BinOp.ne (|
-                                                          M.read (|
-                                                            M.SubPointer.get_array_field (|
-                                                              M.read (| x |),
-                                                              M.alloc (|
-                                                                Value.Integer IntegerKind.Usize 2
-                                                              |)
-                                                            |)
-                                                          |),
-                                                          Value.Integer IntegerKind.U64 0
-                                                        |)))
-                                                    |),
-                                                    ltac:(M.monadic
-                                                      (BinOp.ne (|
-                                                        M.read (|
-                                                          M.SubPointer.get_array_field (|
-                                                            M.read (| x |),
-                                                            M.alloc (|
-                                                              Value.Integer IntegerKind.Usize 3
-                                                            |)
-                                                          |)
-                                                        |),
-                                                        Value.Integer IntegerKind.U64 0
-                                                      |)))
-                                                  |)
-                                                |)) in
-                                            let _ :=
-                                              M.is_constant_or_break_match (|
-                                                M.read (| γ |),
-                                                Value.Bool true
-                                              |) in
-                                            M.alloc (|
-                                              M.never_to_any (|
-                                                M.read (|
-                                                  let~ _ :=
-                                                    M.write (|
-                                                      M.SubPointer.get_struct_record_field (|
-                                                        M.read (| interpreter |),
-                                                        "revm_interpreter::interpreter::Interpreter",
-                                                        "instruction_result"
-                                                      |),
-                                                      Value.StructTuple
-                                                        "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
-                                                        []
-                                                    |) in
-                                                  M.return_ (|
-                                                    Value.StructTuple
-                                                      "core::option::Option::None"
-                                                      []
-                                                  |)
-                                                |)
-                                              |)
-                                            |)));
-                                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                      ]
-                                    |) in
-                                  M.match_operator (|
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        M.get_trait_method (|
-                                          "core::convert::TryFrom",
-                                          Ty.path "usize",
-                                          [ Ty.path "u64" ],
-                                          "try_from",
-                                          []
-                                        |),
-                                        [
-                                          M.read (|
-                                            M.SubPointer.get_array_field (|
-                                              M.read (| x |),
-                                              M.alloc (| Value.Integer IntegerKind.Usize 0 |)
-                                            |)
-                                          |)
-                                        ]
-                                      |)
                                     |),
                                     [
                                       fun γ =>
                                         ltac:(M.monadic
-                                          (let γ0_0 :=
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              γ,
-                                              "core::result::Result::Ok",
-                                              0
+                                          (let x := M.copy (| γ |) in
+                                          let~ _ :=
+                                            M.match_operator (|
+                                              M.alloc (| Value.Tuple [] |),
+                                              [
+                                                fun γ =>
+                                                  ltac:(M.monadic
+                                                    (let γ :=
+                                                      M.use
+                                                        (M.alloc (|
+                                                          BinOp.bit_or
+                                                            (BinOp.bit_or
+                                                              (BinOp.bit_or
+                                                                (BinOp.gt (|
+                                                                  M.read (|
+                                                                    M.SubPointer.get_array_field (|
+                                                                      M.read (| x |),
+                                                                      M.alloc (|
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          0
+                                                                      |)
+                                                                    |)
+                                                                  |),
+                                                                  M.rust_cast
+                                                                    (M.read (|
+                                                                      M.get_constant (|
+                                                                        "core::num::MAX"
+                                                                      |)
+                                                                    |))
+                                                                |))
+                                                                (BinOp.ne (|
+                                                                  M.read (|
+                                                                    M.SubPointer.get_array_field (|
+                                                                      M.read (| x |),
+                                                                      M.alloc (|
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      |)
+                                                                    |)
+                                                                  |),
+                                                                  Value.Integer IntegerKind.U64 0
+                                                                |)))
+                                                              (BinOp.ne (|
+                                                                M.read (|
+                                                                  M.SubPointer.get_array_field (|
+                                                                    M.read (| x |),
+                                                                    M.alloc (|
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        2
+                                                                    |)
+                                                                  |)
+                                                                |),
+                                                                Value.Integer IntegerKind.U64 0
+                                                              |)))
+                                                            (BinOp.ne (|
+                                                              M.read (|
+                                                                M.SubPointer.get_array_field (|
+                                                                  M.read (| x |),
+                                                                  M.alloc (|
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      3
+                                                                  |)
+                                                                |)
+                                                              |),
+                                                              Value.Integer IntegerKind.U64 0
+                                                            |))
+                                                        |)) in
+                                                    let _ :=
+                                                      M.is_constant_or_break_match (|
+                                                        M.read (| γ |),
+                                                        Value.Bool true
+                                                      |) in
+                                                    M.alloc (|
+                                                      M.never_to_any (|
+                                                        M.read (|
+                                                          let~ _ :=
+                                                            M.alloc (|
+                                                              M.call_closure (|
+                                                                M.get_trait_method (|
+                                                                  "revm_interpreter::interpreter_types::LoopControl",
+                                                                  Ty.associated,
+                                                                  [],
+                                                                  "set_instruction_result",
+                                                                  []
+                                                                |),
+                                                                [
+                                                                  M.SubPointer.get_struct_record_field (|
+                                                                    M.read (| interpreter |),
+                                                                    "revm_interpreter::interpreter::Interpreter",
+                                                                    "control"
+                                                                  |);
+                                                                  Value.StructTuple
+                                                                    "revm_interpreter::instruction_result::InstructionResult::InvalidOperandOOG"
+                                                                    []
+                                                                ]
+                                                              |)
+                                                            |) in
+                                                          M.return_ (|
+                                                            Value.StructTuple
+                                                              "core::option::Option::None"
+                                                              []
+                                                          |)
+                                                        |)
+                                                      |)
+                                                    |)));
+                                                fun γ =>
+                                                  ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                              ]
                                             |) in
-                                          let val := M.copy (| γ0_0 |) in
-                                          val))
+                                          M.alloc (|
+                                            M.rust_cast
+                                              (M.read (|
+                                                M.SubPointer.get_array_field (|
+                                                  M.read (| x |),
+                                                  M.alloc (| Value.Integer IntegerKind.Usize 0 |)
+                                                |)
+                                              |))
+                                          |)))
                                     ]
                                   |)
                                 |) in
-                              let~ new_size :=
+                              let~ words_num :=
                                 M.alloc (|
                                   M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "usize",
-                                      "saturating_add",
+                                    M.get_function (|
+                                      "revm_interpreter::interpreter::shared_memory::num_words",
                                       []
                                     |),
-                                    [ M.read (| offset |); M.read (| len |) ]
+                                    [
+                                      M.call_closure (|
+                                        M.get_associated_function (|
+                                          Ty.path "usize",
+                                          "saturating_add",
+                                          []
+                                        |),
+                                        [ M.read (| offset |); M.read (| len |) ]
+                                      |)
+                                    ]
                                   |)
                                 |) in
                               let~ _ :=
                                 M.match_operator (|
-                                  M.alloc (| Value.Tuple [] |),
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_interpreter::gas::Gas",
+                                        "record_memory_expansion",
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "revm_interpreter::interpreter_types::LoopControl",
+                                            Ty.associated,
+                                            [],
+                                            "gas",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| interpreter |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "control"
+                                            |)
+                                          ]
+                                        |);
+                                        M.read (| words_num |)
+                                      ]
+                                    |)
+                                  |),
                                   [
                                     fun γ =>
                                       ltac:(M.monadic
-                                        (let γ :=
-                                          M.use
-                                            (M.alloc (|
-                                              BinOp.gt (|
-                                                M.read (| new_size |),
-                                                M.call_closure (|
-                                                  M.get_associated_function (|
-                                                    Ty.path
-                                                      "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                                                    "len",
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.read (| interpreter |),
-                                                      "revm_interpreter::interpreter::Interpreter",
-                                                      "shared_memory"
-                                                    |)
-                                                  ]
-                                                |)
-                                              |)
-                                            |)) in
-                                        let _ :=
-                                          M.is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Bool true
+                                        (let _ :=
+                                          M.is_struct_tuple (|
+                                            γ,
+                                            "revm_interpreter::gas::MemoryExtensionResult::Extended"
                                           |) in
-                                        M.match_operator (|
-                                          M.alloc (| Value.Tuple [] |),
-                                          [
-                                            fun γ =>
-                                              ltac:(M.monadic
-                                                (let γ :=
-                                                  M.use
-                                                    (M.alloc (|
-                                                      UnOp.not (|
-                                                        M.call_closure (|
-                                                          M.get_function (|
-                                                            "revm_interpreter::interpreter::resize_memory",
-                                                            []
-                                                          |),
-                                                          [
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| interpreter |),
-                                                              "revm_interpreter::interpreter::Interpreter",
-                                                              "shared_memory"
-                                                            |);
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.read (| interpreter |),
-                                                              "revm_interpreter::interpreter::Interpreter",
-                                                              "gas"
-                                                            |);
-                                                            M.read (| new_size |)
-                                                          ]
-                                                        |)
-                                                      |)
-                                                    |)) in
-                                                let _ :=
-                                                  M.is_constant_or_break_match (|
-                                                    M.read (| γ |),
-                                                    Value.Bool true
-                                                  |) in
+                                        let~ _ :=
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              M.get_trait_method (|
+                                                "revm_interpreter::interpreter_types::MemoryTrait",
+                                                Ty.associated,
+                                                [],
+                                                "resize",
+                                                []
+                                              |),
+                                              [
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.read (| interpreter |),
+                                                  "revm_interpreter::interpreter::Interpreter",
+                                                  "memory"
+                                                |);
+                                                BinOp.Wrap.mul (|
+                                                  M.read (| words_num |),
+                                                  Value.Integer IntegerKind.Usize 32
+                                                |)
+                                              ]
+                                            |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)));
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let _ :=
+                                          M.is_struct_tuple (|
+                                            γ,
+                                            "revm_interpreter::gas::MemoryExtensionResult::OutOfGas"
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              let~ _ :=
                                                 M.alloc (|
-                                                  M.never_to_any (|
-                                                    M.read (|
-                                                      let~ _ :=
-                                                        M.write (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.read (| interpreter |),
-                                                            "revm_interpreter::interpreter::Interpreter",
-                                                            "instruction_result"
-                                                          |),
-                                                          Value.StructTuple
-                                                            "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
-                                                            []
-                                                        |) in
-                                                      M.return_ (|
-                                                        Value.StructTuple
-                                                          "core::option::Option::None"
-                                                          []
-                                                      |)
-                                                    |)
+                                                  M.call_closure (|
+                                                    M.get_trait_method (|
+                                                      "revm_interpreter::interpreter_types::LoopControl",
+                                                      Ty.associated,
+                                                      [],
+                                                      "set_instruction_result",
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.read (| interpreter |),
+                                                        "revm_interpreter::interpreter::Interpreter",
+                                                        "control"
+                                                      |);
+                                                      Value.StructTuple
+                                                        "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
+                                                        []
+                                                    ]
                                                   |)
-                                                |)));
-                                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                          ]
+                                                |) in
+                                              M.return_ (|
+                                                Value.StructTuple "core::option::Option::None" []
+                                              |)
+                                            |)
+                                          |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let _ :=
+                                          M.is_struct_tuple (|
+                                            γ,
+                                            "revm_interpreter::gas::MemoryExtensionResult::Same"
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |) in
                               offset));
@@ -822,28 +848,32 @@ Module instructions.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom Function_resize_memory_and_return_range :
+      Axiom Function_resize_memory :
         M.IsFunction
-          "revm_interpreter::instructions::contract::call_helpers::resize_memory_and_return_range"
-          resize_memory_and_return_range.
+          "revm_interpreter::instructions::contract::call_helpers::resize_memory"
+          resize_memory.
       
       (*
-      pub fn calc_call_gas<H: Host + ?Sized, SPEC: Spec>(
-          interpreter: &mut Interpreter,
-          is_cold: bool,
+      pub fn calc_call_gas(
+          interpreter: &mut Interpreter<impl InterpreterTypes>,
+          account_load: AccountLoad,
           has_transfer: bool,
-          new_account_accounting: bool,
           local_gas_limit: u64,
       ) -> Option<u64> {
-          let call_cost = gas::call_cost(SPEC::SPEC_ID, has_transfer, is_cold, new_account_accounting);
-      
+          let call_cost = gas::call_cost(
+              interpreter.runtime_flag.spec_id(),
+              has_transfer,
+              account_load,
+          );
           gas!(interpreter, call_cost, None);
       
           // EIP-150: Gas cost changes for IO-heavy operations
-          let gas_limit = if SPEC::enabled(TANGERINE) {
-              let gas = interpreter.gas().remaining();
-              // take l64 part of gas_limit
-              min(gas - gas / 64, local_gas_limit)
+          let gas_limit = if interpreter.runtime_flag.spec_id().is_enabled_in(TANGERINE) {
+              // Take l64 part of gas_limit
+              min(
+                  interpreter.control.gas().remaining_63_of_64_parts(),
+                  local_gas_limit,
+              )
           } else {
               local_gas_limit
           };
@@ -854,13 +884,12 @@ Module instructions.
       Definition calc_call_gas (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [],
-            [ H; SPEC ],
-            [ interpreter; is_cold; has_transfer; new_account_accounting; local_gas_limit ] =>
+            [ impl_InterpreterTypes ],
+            [ interpreter; account_load; has_transfer; local_gas_limit ] =>
           ltac:(M.monadic
             (let interpreter := M.alloc (| interpreter |) in
-            let is_cold := M.alloc (| is_cold |) in
+            let account_load := M.alloc (| account_load |) in
             let has_transfer := M.alloc (| has_transfer |) in
-            let new_account_accounting := M.alloc (| new_account_accounting |) in
             let local_gas_limit := M.alloc (| local_gas_limit |) in
             M.catch_return (|
               ltac:(M.monadic
@@ -870,12 +899,24 @@ Module instructions.
                       M.call_closure (|
                         M.get_function (| "revm_interpreter::gas::calc::call_cost", [] |),
                         [
-                          M.read (|
-                            M.get_constant (| "revm_primitives::specification::Spec::SPEC_ID" |)
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "revm_interpreter::interpreter_types::RuntimeFlag",
+                              Ty.associated,
+                              [],
+                              "spec_id",
+                              []
+                            |),
+                            [
+                              M.SubPointer.get_struct_record_field (|
+                                M.read (| interpreter |),
+                                "revm_interpreter::interpreter::Interpreter",
+                                "runtime_flag"
+                              |)
+                            ]
                           |);
                           M.read (| has_transfer |);
-                          M.read (| is_cold |);
-                          M.read (| new_account_accounting |)
+                          M.read (| account_load |)
                         ]
                       |)
                     |) in
@@ -896,10 +937,21 @@ Module instructions.
                                         []
                                       |),
                                       [
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.read (| interpreter |),
-                                          "revm_interpreter::interpreter::Interpreter",
-                                          "gas"
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "revm_interpreter::interpreter_types::LoopControl",
+                                            Ty.associated,
+                                            [],
+                                            "gas",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| interpreter |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "control"
+                                            |)
+                                          ]
                                         |);
                                         M.read (| call_cost |)
                                       ]
@@ -912,15 +964,26 @@ Module instructions.
                               M.never_to_any (|
                                 M.read (|
                                   let~ _ :=
-                                    M.write (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| interpreter |),
-                                        "revm_interpreter::interpreter::Interpreter",
-                                        "instruction_result"
-                                      |),
-                                      Value.StructTuple
-                                        "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
-                                        []
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "revm_interpreter::interpreter_types::LoopControl",
+                                          Ty.associated,
+                                          [],
+                                          "set_instruction_result",
+                                          []
+                                        |),
+                                        [
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.read (| interpreter |),
+                                            "revm_interpreter::interpreter::Interpreter",
+                                            "control"
+                                          |);
+                                          Value.StructTuple
+                                            "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
+                                            []
+                                        ]
+                                      |)
                                     |) in
                                   M.return_ (| Value.StructTuple "core::option::Option::None" [] |)
                                 |)
@@ -940,16 +1003,30 @@ Module instructions.
                                 M.use
                                   (M.alloc (|
                                     M.call_closure (|
-                                      M.get_trait_method (|
-                                        "revm_primitives::specification::Spec",
-                                        SPEC,
-                                        [],
-                                        "enabled",
+                                      M.get_associated_function (|
+                                        Ty.path "revm_specification::hardfork::SpecId",
+                                        "is_enabled_in",
                                         []
                                       |),
                                       [
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "revm_interpreter::interpreter_types::RuntimeFlag",
+                                            Ty.associated,
+                                            [],
+                                            "spec_id",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| interpreter |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "runtime_flag"
+                                            |)
+                                          ]
+                                        |);
                                         Value.StructTuple
-                                          "revm_primitives::specification::SpecId::TANGERINE"
+                                          "revm_specification::hardfork::SpecId::TANGERINE"
                                           []
                                       ]
                                     |)
@@ -959,36 +1036,34 @@ Module instructions.
                                   M.read (| γ |),
                                   Value.Bool true
                                 |) in
-                              let~ gas :=
-                                M.alloc (|
-                                  M.call_closure (|
-                                    M.get_associated_function (|
-                                      Ty.path "revm_interpreter::gas::Gas",
-                                      "remaining",
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        M.get_associated_function (|
-                                          Ty.path "revm_interpreter::interpreter::Interpreter",
-                                          "gas",
-                                          []
-                                        |),
-                                        [ M.read (| interpreter |) ]
-                                      |)
-                                    ]
-                                  |)
-                                |) in
                               M.alloc (|
                                 M.call_closure (|
                                   M.get_function (| "core::cmp::min", [ Ty.path "u64" ] |),
                                   [
-                                    BinOp.Wrap.sub (|
-                                      M.read (| gas |),
-                                      BinOp.Wrap.div (|
-                                        M.read (| gas |),
-                                        Value.Integer IntegerKind.U64 64
-                                      |)
+                                    M.call_closure (|
+                                      M.get_associated_function (|
+                                        Ty.path "revm_interpreter::gas::Gas",
+                                        "remaining_63_of_64_parts",
+                                        []
+                                      |),
+                                      [
+                                        M.call_closure (|
+                                          M.get_trait_method (|
+                                            "revm_interpreter::interpreter_types::LoopControl",
+                                            Ty.associated,
+                                            [],
+                                            "gas",
+                                            []
+                                          |),
+                                          [
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.read (| interpreter |),
+                                              "revm_interpreter::interpreter::Interpreter",
+                                              "control"
+                                            |)
+                                          ]
+                                        |)
+                                      ]
                                     |);
                                     M.read (| local_gas_limit |)
                                   ]

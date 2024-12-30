@@ -386,10 +386,7 @@ Module interpreter.
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
               f.debug_struct("SharedMemory")
                   .field("current_len", &self.len())
-                  .field(
-                      "context_memory",
-                      &crate::primitives::hex::encode(self.context_memory()),
-                  )
+                  .field("context_memory", &hex::encode(self.context_memory()))
                   .finish_non_exhaustive()
           }
       *)
@@ -513,6 +510,575 @@ Module interpreter.
           (* Trait polymorphic types *) []
           (* Instance *) [ ("default", InstanceField.Method default) ].
     End Impl_core_default_Default_for_revm_interpreter_interpreter_shared_memory_SharedMemory.
+    
+    (* Trait *)
+    (* Empty module 'MemoryGetter' *)
+    
+    Module Impl_revm_interpreter_interpreter_shared_memory_MemoryGetter_for_revm_interpreter_interpreter_shared_memory_SharedMemory.
+      Definition Self : Ty.t :=
+        Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory".
+      
+      (*
+          fn memory_mut(&mut self) -> &mut SharedMemory {
+              self
+          }
+      *)
+      Definition memory_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (| self |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn memory(&self) -> &SharedMemory {
+              self
+          }
+      *)
+      Definition memory (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (| self |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "revm_interpreter::interpreter::shared_memory::MemoryGetter"
+          Self
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [ ("memory_mut", InstanceField.Method memory_mut); ("memory", InstanceField.Method memory)
+          ].
+    End Impl_revm_interpreter_interpreter_shared_memory_MemoryGetter_for_revm_interpreter_interpreter_shared_memory_SharedMemory.
+    
+    Module Impl_revm_interpreter_interpreter_types_MemoryTrait_where_revm_interpreter_interpreter_shared_memory_MemoryGetter_T_for_alloc_rc_Rc_core_cell_RefCell_T_alloc_alloc_Global.
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply
+          (Ty.path "alloc::rc::Rc")
+          []
+          [ Ty.apply (Ty.path "core::cell::RefCell") [] [ T ]; Ty.path "alloc::alloc::Global" ].
+      
+      (*
+          fn set_data(&mut self, memory_offset: usize, data_offset: usize, len: usize, data: &[u8]) {
+              self.borrow_mut()
+                  .memory_mut()
+                  .set_data(memory_offset, data_offset, len, data);
+          }
+      *)
+      Definition set_data (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; memory_offset; data_offset; len; data ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let memory_offset := M.alloc (| memory_offset |) in
+            let data_offset := M.alloc (| data_offset |) in
+            let len := M.alloc (| len |) in
+            let data := M.alloc (| data |) in
+            M.read (|
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                      "set_data",
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "revm_interpreter::interpreter::shared_memory::MemoryGetter",
+                          T,
+                          [],
+                          "memory_mut",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
+                              Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
+                              [],
+                              "deref_mut",
+                              []
+                            |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
+                                    "borrow_mut",
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "alloc::rc::Rc")
+                                          []
+                                          [
+                                            Ty.apply (Ty.path "core::cell::RefCell") [] [ T ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        [],
+                                        "deref",
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                      |);
+                      M.read (| memory_offset |);
+                      M.read (| data_offset |);
+                      M.read (| len |);
+                      M.read (| data |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn set(&mut self, memory_offset: usize, data: &[u8]) {
+              self.borrow_mut().memory_mut().set(memory_offset, data);
+          }
+      *)
+      Definition set (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; memory_offset; data ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let memory_offset := M.alloc (| memory_offset |) in
+            let data := M.alloc (| data |) in
+            M.read (|
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                      "set",
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "revm_interpreter::interpreter::shared_memory::MemoryGetter",
+                          T,
+                          [],
+                          "memory_mut",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
+                              Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
+                              [],
+                              "deref_mut",
+                              []
+                            |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
+                                    "borrow_mut",
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "alloc::rc::Rc")
+                                          []
+                                          [
+                                            Ty.apply (Ty.path "core::cell::RefCell") [] [ T ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        [],
+                                        "deref",
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                      |);
+                      M.read (| memory_offset |);
+                      M.read (| data |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn size(&self) -> usize {
+              self.borrow().memory().len()
+          }
+      *)
+      Definition size (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                "len",
+                []
+              |),
+              [
+                M.call_closure (|
+                  M.get_trait_method (|
+                    "revm_interpreter::interpreter::shared_memory::MemoryGetter",
+                    T,
+                    [],
+                    "memory",
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.apply (Ty.path "core::cell::Ref") [] [ T ],
+                        [],
+                        "deref",
+                        []
+                      |),
+                      [
+                        M.alloc (|
+                          M.call_closure (|
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
+                              "borrow",
+                              []
+                            |),
+                            [
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::ops::deref::Deref",
+                                  Ty.apply
+                                    (Ty.path "alloc::rc::Rc")
+                                    []
+                                    [
+                                      Ty.apply (Ty.path "core::cell::RefCell") [] [ T ];
+                                      Ty.path "alloc::alloc::Global"
+                                    ],
+                                  [],
+                                  "deref",
+                                  []
+                                |),
+                                [ M.read (| self |) ]
+                              |)
+                            ]
+                          |)
+                        |)
+                      ]
+                    |)
+                  ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn copy(&mut self, destination: usize, source: usize, len: usize) {
+              self.borrow_mut()
+                  .memory_mut()
+                  .copy(destination, source, len);
+          }
+      *)
+      Definition copy (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; destination; source; len ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let destination := M.alloc (| destination |) in
+            let source := M.alloc (| source |) in
+            let len := M.alloc (| len |) in
+            M.read (|
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                      "copy",
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "revm_interpreter::interpreter::shared_memory::MemoryGetter",
+                          T,
+                          [],
+                          "memory_mut",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
+                              Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
+                              [],
+                              "deref_mut",
+                              []
+                            |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
+                                    "borrow_mut",
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "alloc::rc::Rc")
+                                          []
+                                          [
+                                            Ty.apply (Ty.path "core::cell::RefCell") [] [ T ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        [],
+                                        "deref",
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                      |);
+                      M.read (| destination |);
+                      M.read (| source |);
+                      M.read (| len |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn slice(&self, range: Range<usize>) -> impl Deref<Target = [u8]> + '_ {
+              Ref::map(self.borrow(), |i| i.memory().slice_range(range))
+          }
+      *)
+      Definition slice (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; range ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let range := M.alloc (| range |) in
+            M.call_closure (|
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::cell::Ref") [] [ T ],
+                "map",
+                [
+                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ];
+                  Ty.function
+                    [ Ty.tuple [ Ty.apply (Ty.path "&") [] [ T ] ] ]
+                    (Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
+                ]
+              |),
+              [
+                M.call_closure (|
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
+                    "borrow",
+                    []
+                  |),
+                  [
+                    M.call_closure (|
+                      M.get_trait_method (|
+                        "core::ops::deref::Deref",
+                        Ty.apply
+                          (Ty.path "alloc::rc::Rc")
+                          []
+                          [
+                            Ty.apply (Ty.path "core::cell::RefCell") [] [ T ];
+                            Ty.path "alloc::alloc::Global"
+                          ],
+                        [],
+                        "deref",
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
+                |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let i := M.copy (| γ |) in
+                                  M.call_closure (|
+                                    M.get_associated_function (|
+                                      Ty.path
+                                        "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                                      "slice_range",
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "revm_interpreter::interpreter::shared_memory::MemoryGetter",
+                                          T,
+                                          [],
+                                          "memory",
+                                          []
+                                        |),
+                                        [ M.read (| i |) ]
+                                      |);
+                                      M.read (| range |)
+                                    ]
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      (*
+          fn resize(&mut self, new_size: usize) -> bool {
+              self.borrow_mut().memory_mut().resize(new_size);
+              true
+          }
+      *)
+      Definition resize (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; new_size ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let new_size := M.alloc (| new_size |) in
+            M.read (|
+              let~ _ :=
+                M.alloc (|
+                  M.call_closure (|
+                    M.get_associated_function (|
+                      Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                      "resize",
+                      []
+                    |),
+                    [
+                      M.call_closure (|
+                        M.get_trait_method (|
+                          "revm_interpreter::interpreter::shared_memory::MemoryGetter",
+                          T,
+                          [],
+                          "memory_mut",
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
+                              Ty.apply (Ty.path "core::cell::RefMut") [] [ T ],
+                              [],
+                              "deref_mut",
+                              []
+                            |),
+                            [
+                              M.alloc (|
+                                M.call_closure (|
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::cell::RefCell") [] [ T ],
+                                    "borrow_mut",
+                                    []
+                                  |),
+                                  [
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::ops::deref::Deref",
+                                        Ty.apply
+                                          (Ty.path "alloc::rc::Rc")
+                                          []
+                                          [
+                                            Ty.apply (Ty.path "core::cell::RefCell") [] [ T ];
+                                            Ty.path "alloc::alloc::Global"
+                                          ],
+                                        [],
+                                        "deref",
+                                        []
+                                      |),
+                                      [ M.read (| self |) ]
+                                    |)
+                                  ]
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                      |);
+                      M.read (| new_size |)
+                    ]
+                  |)
+                |) in
+              M.alloc (| Value.Bool true |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "revm_interpreter::interpreter_types::MemoryTrait"
+          (Self T)
+          (* Trait polymorphic types *) []
+          (* Instance *)
+          [
+            ("set_data", InstanceField.Method (set_data T));
+            ("set", InstanceField.Method (set T));
+            ("size", InstanceField.Method (size T));
+            ("copy", InstanceField.Method (copy T));
+            ("slice", InstanceField.Method (slice T));
+            ("resize", InstanceField.Method (resize T))
+          ].
+    End Impl_revm_interpreter_interpreter_types_MemoryTrait_where_revm_interpreter_interpreter_shared_memory_MemoryGetter_T_for_alloc_rc_Rc_core_cell_RefCell_T_alloc_alloc_Global.
     
     Module Impl_revm_interpreter_interpreter_shared_memory_SharedMemory.
       Definition Self : Ty.t :=
@@ -670,7 +1236,7 @@ Module interpreter.
           pub fn free_context(&mut self) {
               if let Some(old_checkpoint) = self.checkpoints.pop() {
                   self.last_checkpoint = self.checkpoints.last().cloned().unwrap_or_default();
-                  // SAFETY: buffer length is less than or equal `old_checkpoint`
+                  // SAFETY: `buffer` length is less than or equal `old_checkpoint`
                   unsafe { self.buffer.set_len(old_checkpoint) };
               }
           }
@@ -870,35 +1436,6 @@ Module interpreter.
       Axiom AssociatedFunction_is_empty : M.IsAssociatedFunction Self "is_empty" is_empty.
       
       (*
-          pub fn current_expansion_cost(&self) -> u64 {
-              crate::gas::memory_gas_for_len(self.len())
-          }
-      *)
-      Definition current_expansion_cost (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ self ] =>
-          ltac:(M.monadic
-            (let self := M.alloc (| self |) in
-            M.call_closure (|
-              M.get_function (| "revm_interpreter::gas::calc::memory_gas_for_len", [] |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                    "len",
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |)
-              ]
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_current_expansion_cost :
-        M.IsAssociatedFunction Self "current_expansion_cost" current_expansion_cost.
-      
-      (*
           pub fn resize(&mut self, new_size: usize) {
               self.buffer.resize(self.last_checkpoint + new_size, 0);
           }
@@ -949,11 +1486,11 @@ Module interpreter.
       Axiom AssociatedFunction_resize : M.IsAssociatedFunction Self "resize" resize.
       
       (*
-          pub fn slice(&self, offset: usize, size: usize) -> &[u8] {
+          pub fn slice_len(&self, offset: usize, size: usize) -> &[u8] {
               self.slice_range(offset..offset + size)
           }
       *)
-      Definition slice (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      Definition slice_len (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
         | [], [], [ self; offset; size ] =>
           ltac:(M.monadic
@@ -979,7 +1516,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Axiom AssociatedFunction_slice : M.IsAssociatedFunction Self "slice" slice.
+      Axiom AssociatedFunction_slice_len : M.IsAssociatedFunction Self "slice_len" slice_len.
       
       (*
           pub fn slice_range(&self, range @ Range { start, end }: Range<usize>) -> &[u8] {
@@ -1357,7 +1894,7 @@ Module interpreter.
       
       (*
           pub fn get_byte(&self, offset: usize) -> u8 {
-              self.slice(offset, 1)[0]
+              self.slice_len(offset, 1)[0]
           }
       *)
       Definition get_byte (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1371,7 +1908,7 @@ Module interpreter.
                 M.call_closure (|
                   M.get_associated_function (|
                     Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                    "slice",
+                    "slice_len",
                     []
                   |),
                   [ M.read (| self |); M.read (| offset |); Value.Integer IntegerKind.Usize 1 ]
@@ -1386,7 +1923,7 @@ Module interpreter.
       
       (*
           pub fn get_word(&self, offset: usize) -> B256 {
-              self.slice(offset, 32).try_into().unwrap()
+              self.slice_len(offset, 32).try_into().unwrap()
           }
       *)
       Definition get_word (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1428,7 +1965,7 @@ Module interpreter.
                     M.call_closure (|
                       M.get_associated_function (|
                         Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                        "slice",
+                        "slice_len",
                         []
                       |),
                       [ M.read (| self |); M.read (| offset |); Value.Integer IntegerKind.Usize 32 ]
@@ -1698,7 +2235,7 @@ Module interpreter.
       (*
           pub fn set_data(&mut self, memory_offset: usize, data_offset: usize, len: usize, data: &[u8]) {
               if data_offset >= data.len() {
-                  // nullify all memory slots
+                  // Nullify all memory slots
                   self.slice_mut(memory_offset, len).fill(0);
                   return;
               }
@@ -1709,7 +2246,7 @@ Module interpreter.
               self.slice_mut(memory_offset, data_len)
                   .copy_from_slice(data);
       
-              // nullify rest of memory slots
+              // Nullify rest of memory slots
               // SAFETY: Memory is assumed to be valid, and it is commented where this assumption is made.
               self.slice_mut(memory_offset + data_len, len - data_len)
                   .fill(0);
@@ -2007,7 +2544,7 @@ Module interpreter.
       
       (*
           pub fn context_memory(&self) -> &[u8] {
-              // SAFETY: access bounded by buffer length
+              // SAFETY: Access bounded by buffer length
               unsafe {
                   self.buffer
                       .get_unchecked(self.last_checkpoint..self.buffer.len())
@@ -2086,7 +2623,7 @@ Module interpreter.
       (*
           pub fn context_memory_mut(&mut self) -> &mut [u8] {
               let buf_len = self.buffer.len();
-              // SAFETY: access bounded by buffer length
+              // SAFETY: Access bounded by buffer length
               unsafe { self.buffer.get_unchecked_mut(self.last_checkpoint..buf_len) }
           }
       *)
@@ -2168,7 +2705,7 @@ Module interpreter.
     End Impl_revm_interpreter_interpreter_shared_memory_SharedMemory.
     
     (*
-    pub const fn num_words(len: u64) -> u64 {
+    pub const fn num_words(len: usize) -> usize {
         len.saturating_add(31) / 32
     }
     *)
@@ -2179,10 +2716,10 @@ Module interpreter.
           (let len := M.alloc (| len |) in
           BinOp.Wrap.div (|
             M.call_closure (|
-              M.get_associated_function (| Ty.path "u64", "saturating_add", [] |),
-              [ M.read (| len |); Value.Integer IntegerKind.U64 31 ]
+              M.get_associated_function (| Ty.path "usize", "saturating_add", [] |),
+              [ M.read (| len |); Value.Integer IntegerKind.Usize 31 ]
             |),
-            Value.Integer IntegerKind.U64 32
+            Value.Integer IntegerKind.Usize 32
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

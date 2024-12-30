@@ -19,12 +19,8 @@ Module blake2.
                 M.get_function (| "revm_precompile::u64_to_address", [] |),
                 [ Value.Integer IntegerKind.U64 9 ]
               |);
-              Value.StructTuple
-                "revm_primitives::precompile::Precompile::Standard"
-                [
-                  (* ReifyFnPointer *)
-                  M.pointer_coercion (M.get_function (| "revm_precompile::blake2::run", [] |))
-                ]
+              (* ReifyFnPointer *)
+              M.pointer_coercion (M.get_function (| "revm_precompile::blake2::run", [] |))
             ]
         |))).
   
@@ -33,21 +29,21 @@ Module blake2.
       let input = &input[..];
   
       if input.len() != INPUT_LENGTH {
-          return Err(Error::Blake2WrongLength);
+          return Err(PrecompileError::Blake2WrongLength.into());
+      }
+  
+      // Rounds 4 bytes
+      let rounds = u32::from_be_bytes(input[..4].try_into().unwrap()) as usize;
+      let gas_used = rounds as u64 * F_ROUND;
+      if gas_used > gas_limit {
+          return Err(PrecompileError::OutOfGas.into());
       }
   
       let f = match input[212] {
           1 => true,
           0 => false,
-          _ => return Err(Error::Blake2WrongFinalIndicatorFlag),
+          _ => return Err(PrecompileError::Blake2WrongFinalIndicatorFlag.into()),
       };
-  
-      // rounds 4 bytes
-      let rounds = u32::from_be_bytes(input[..4].try_into().unwrap()) as usize;
-      let gas_used = rounds as u64 * F_ROUND;
-      if gas_used > gas_limit {
-          return Err(Error::OutOfGas);
-      }
   
       let mut h = [0u64; 8];
       let mut m = [0u64; 16];
@@ -70,7 +66,7 @@ Module blake2.
           out[i..i + 8].copy_from_slice(&h.to_le_bytes());
       }
   
-      Ok((gas_used, out.into()))
+      Ok(PrecompileOutput::new(gas_used, out.into()))
   }
   *)
   Definition run (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -150,9 +146,20 @@ Module blake2.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::Blake2WrongLength"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::Blake2WrongLength"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -160,50 +167,6 @@ Module blake2.
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
-                |) in
-              let~ f :=
-                M.copy (|
-                  M.match_operator (|
-                    M.SubPointer.get_array_field (|
-                      M.read (| input |),
-                      M.alloc (| Value.Integer IntegerKind.Usize 212 |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ |),
-                              Value.Integer IntegerKind.U8 1
-                            |) in
-                          M.alloc (| Value.Bool true |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ :=
-                            M.is_constant_or_break_match (|
-                              M.read (| γ |),
-                              Value.Integer IntegerKind.U8 0
-                            |) in
-                          M.alloc (| Value.Bool false |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    [
-                                      Value.StructTuple
-                                        "revm_primitives::precompile::PrecompileError::Blake2WrongFinalIndicatorFlag"
-                                        []
-                                    ]
-                                |)
-                              |)
-                            |)
-                          |)))
-                    ]
-                  |)
                 |) in
               let~ rounds :=
                 M.alloc (|
@@ -298,9 +261,20 @@ Module blake2.
                                 Value.StructTuple
                                   "core::result::Result::Err"
                                   [
-                                    Value.StructTuple
-                                      "revm_primitives::precompile::PrecompileError::OutOfGas"
-                                      []
+                                    M.call_closure (|
+                                      M.get_trait_method (|
+                                        "core::convert::Into",
+                                        Ty.path "revm_precompile::interface::PrecompileError",
+                                        [ Ty.path "revm_precompile::interface::PrecompileErrors" ],
+                                        "into",
+                                        []
+                                      |),
+                                      [
+                                        Value.StructTuple
+                                          "revm_precompile::interface::PrecompileError::OutOfGas"
+                                          []
+                                      ]
+                                    |)
                                   ]
                               |)
                             |)
@@ -308,6 +282,62 @@ Module blake2.
                         |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                   ]
+                |) in
+              let~ f :=
+                M.copy (|
+                  M.match_operator (|
+                    M.SubPointer.get_array_field (|
+                      M.read (| input |),
+                      M.alloc (| Value.Integer IntegerKind.Usize 212 |)
+                    |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let _ :=
+                            M.is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.U8 1
+                            |) in
+                          M.alloc (| Value.Bool true |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let _ :=
+                            M.is_constant_or_break_match (|
+                              M.read (| γ |),
+                              Value.Integer IntegerKind.U8 0
+                            |) in
+                          M.alloc (| Value.Bool false |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                M.return_ (|
+                                  Value.StructTuple
+                                    "core::result::Result::Err"
+                                    [
+                                      M.call_closure (|
+                                        M.get_trait_method (|
+                                          "core::convert::Into",
+                                          Ty.path "revm_precompile::interface::PrecompileError",
+                                          [ Ty.path "revm_precompile::interface::PrecompileErrors"
+                                          ],
+                                          "into",
+                                          []
+                                        |),
+                                        [
+                                          Value.StructTuple
+                                            "revm_precompile::interface::PrecompileError::Blake2WrongFinalIndicatorFlag"
+                                            []
+                                        ]
+                                      |)
+                                    ]
+                                |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)
                 |) in
               let~ h :=
                 M.alloc (|
@@ -1102,7 +1132,12 @@ Module blake2.
                 Value.StructTuple
                   "core::result::Result::Ok"
                   [
-                    Value.Tuple
+                    M.call_closure (|
+                      M.get_associated_function (|
+                        Ty.path "revm_precompile::interface::PrecompileOutput",
+                        "new",
+                        []
+                      |),
                       [
                         M.read (| gas_used |);
                         M.call_closure (|
@@ -1119,6 +1154,7 @@ Module blake2.
                           [ M.read (| out |) ]
                         |)
                       ]
+                    |)
                   ]
               |)
             |)))

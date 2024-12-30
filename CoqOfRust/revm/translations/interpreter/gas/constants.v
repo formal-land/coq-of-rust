@@ -19,7 +19,7 @@ Module gas.
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
     
     Definition value_RETF_GAS : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
+      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
     
     Definition value_DATA_LOAD_GAS : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
@@ -78,7 +78,7 @@ Module gas.
     Definition value_CODEDEPOSIT : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 200 |))).
     
-    Definition value_INSTANBUL_SLOAD_GAS : Value.t :=
+    Definition value_ISTANBUL_SLOAD_GAS : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 800 |))).
     
     Definition value_SSTORE_SET : Value.t :=
@@ -132,5 +132,9 @@ Module gas.
     
     Definition value_CALL_STIPEND : Value.t :=
       M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2300 |))).
+    
+    Definition value_MIN_CALLEE_GAS : Value.t :=
+      M.run
+        ltac:(M.monadic (M.get_constant (| "revm_interpreter::gas::constants::CALL_STIPEND" |))).
   End constants.
 End gas.

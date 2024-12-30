@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module interpreter_action.
   (*
-  Enum InterpreterAction
+  Enum FrameInput
   {
     const_params := [];
     ty_params := [];
@@ -12,50 +12,599 @@ Module interpreter_action.
         {
           name := "Call";
           item :=
-            StructRecord
+            StructTuple
               [
-                ("inputs",
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [
-                      Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                      Ty.path "alloc::alloc::Global"
-                    ])
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.path "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                    Ty.path "alloc::alloc::Global"
+                  ]
               ];
           discriminant := None;
         };
         {
           name := "Create";
           item :=
-            StructRecord
+            StructTuple
               [
-                ("inputs",
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [
-                      Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                      Ty.path "alloc::alloc::Global"
-                    ])
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                    Ty.path "alloc::alloc::Global"
+                  ]
               ];
           discriminant := None;
         };
         {
           name := "EOFCreate";
           item :=
-            StructRecord
+            StructTuple
               [
-                ("inputs",
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [
-                      Ty.path
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
-                      Ty.path "alloc::alloc::Global"
-                    ])
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [
+                    Ty.path
+                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs";
+                    Ty.path "alloc::alloc::Global"
+                  ]
               ];
+          discriminant := None;
+        }
+      ];
+  }
+  *)
+  
+  Module Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_FrameInput.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::FrameInput".
+    
+    (* Clone *)
+    Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            M.match_operator (|
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::FrameInput::Call",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| γ1_0 |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::interpreter_action::FrameInput::Call"
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.path
+                                    "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              "clone",
+                              []
+                            |),
+                            [ M.read (| __self_0 |) ]
+                          |)
+                        ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::FrameInput::Create",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| γ1_0 |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::interpreter_action::FrameInput::Create"
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.path
+                                    "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              "clone",
+                              []
+                            |),
+                            [ M.read (| __self_0 |) ]
+                          |)
+                        ]
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::FrameInput::EOFCreate",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| γ1_0 |) in
+                    M.alloc (|
+                      Value.StructTuple
+                        "revm_interpreter::interpreter_action::FrameInput::EOFCreate"
+                        [
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.apply
+                                (Ty.path "alloc::boxed::Box")
+                                []
+                                [
+                                  Ty.path
+                                    "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs";
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              "clone",
+                              []
+                            |),
+                            [ M.read (| __self_0 |) ]
+                          |)
+                        ]
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::clone::Clone"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("clone", InstanceField.Method clone) ].
+  End Impl_core_clone_Clone_for_revm_interpreter_interpreter_action_FrameInput.
+  
+  Module Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_FrameInput.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::FrameInput".
+    
+    (* Debug *)
+    Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; f ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let f := M.alloc (| f |) in
+          M.read (|
+            M.match_operator (|
+              self,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::FrameInput::Call",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| γ1_0 |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "debug_tuple_field1_finish",
+                          []
+                        |),
+                        [ M.read (| f |); M.read (| Value.String "Call" |); __self_0 ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::FrameInput::Create",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| γ1_0 |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "debug_tuple_field1_finish",
+                          []
+                        |),
+                        [ M.read (| f |); M.read (| Value.String "Create" |); __self_0 ]
+                      |)
+                    |)));
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::FrameInput::EOFCreate",
+                        0
+                      |) in
+                    let __self_0 := M.alloc (| γ1_0 |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Formatter",
+                          "debug_tuple_field1_finish",
+                          []
+                        |),
+                        [ M.read (| f |); M.read (| Value.String "EOFCreate" |); __self_0 ]
+                      |)
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::fmt::Debug"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+  End Impl_core_fmt_Debug_for_revm_interpreter_interpreter_action_FrameInput.
+  
+  Module Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_FrameInput.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::FrameInput".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::StructuralPartialEq"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [].
+  End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_FrameInput.
+  
+  Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_FrameInput.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::FrameInput".
+    
+    (* PartialEq *)
+    Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; other ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let other := M.alloc (| other |) in
+          M.read (|
+            let~ __self_discr :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ]
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              |) in
+            let~ __arg1_discr :=
+              M.alloc (|
+                M.call_closure (|
+                  M.get_function (|
+                    "core::intrinsics::discriminant_value",
+                    [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ]
+                  |),
+                  [ M.read (| other |) ]
+                |)
+              |) in
+            M.alloc (|
+              LogicalOp.and (|
+                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                ltac:(M.monadic
+                  (M.read (|
+                    M.match_operator (|
+                      M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "revm_interpreter::interpreter_action::FrameInput::Call",
+                                0
+                              |) in
+                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "revm_interpreter::interpreter_action::FrameInput::Call",
+                                0
+                              |) in
+                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path
+                                            "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path
+                                              "revm_interpreter::interpreter_action::call_inputs::CallInputs";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ]
+                                  ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "revm_interpreter::interpreter_action::FrameInput::Create",
+                                0
+                              |) in
+                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "revm_interpreter::interpreter_action::FrameInput::Create",
+                                0
+                              |) in
+                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path
+                                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path
+                                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ]
+                                  ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "revm_interpreter::interpreter_action::FrameInput::EOFCreate",
+                                0
+                              |) in
+                            let __self_0 := M.alloc (| γ2_0 |) in
+                            let γ0_1 := M.read (| γ0_1 |) in
+                            let γ2_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_1,
+                                "revm_interpreter::interpreter_action::FrameInput::EOFCreate",
+                                0
+                              |) in
+                            let __arg1_0 := M.alloc (| γ2_0 |) in
+                            M.alloc (|
+                              M.call_closure (|
+                                M.get_trait_method (|
+                                  "core::cmp::PartialEq",
+                                  Ty.apply
+                                    (Ty.path "&")
+                                    []
+                                    [
+                                      Ty.apply
+                                        (Ty.path "alloc::boxed::Box")
+                                        []
+                                        [
+                                          Ty.path
+                                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs";
+                                          Ty.path "alloc::alloc::Global"
+                                        ]
+                                    ],
+                                  [
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "alloc::boxed::Box")
+                                          []
+                                          [
+                                            Ty.path
+                                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs";
+                                            Ty.path "alloc::alloc::Global"
+                                          ]
+                                      ]
+                                  ],
+                                  "eq",
+                                  []
+                                |),
+                                [ __self_0; __arg1_0 ]
+                              |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.alloc (|
+                              M.never_to_any (|
+                                M.call_closure (|
+                                  M.get_function (| "core::intrinsics::unreachable", [] |),
+                                  []
+                                |)
+                              |)
+                            |)))
+                      ]
+                    |)
+                  |)))
+              |)
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::cmp::PartialEq"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *) [ ("eq", InstanceField.Method eq) ].
+  End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_FrameInput.
+  
+  Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_FrameInput.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::FrameInput".
+    
+    (* Eq *)
+    Definition assert_receiver_is_total_eq
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            M.match_operator (|
+              Value.DeclaredButUndefined,
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.match_operator (|
+                      Value.DeclaredButUndefined,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              Value.DeclaredButUndefined,
+                              [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                            |)))
+                      ]
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::cmp::Eq"
+        Self
+        (* Trait polymorphic types *) []
+        (* Instance *)
+        [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
+  End Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_FrameInput.
+  
+  Module Impl_core_convert_AsMut_revm_interpreter_interpreter_action_FrameInput_for_revm_interpreter_interpreter_action_FrameInput.
+    Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter_action::FrameInput".
+    
+    (*
+        fn as_mut(&mut self) -> &mut Self {
+            self
+        }
+    *)
+    Definition as_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (| self |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::convert::AsMut"
+        Self
+        (* Trait polymorphic types *)
+        [ (* T *) Ty.path "revm_interpreter::interpreter_action::FrameInput" ]
+        (* Instance *) [ ("as_mut", InstanceField.Method as_mut) ].
+  End Impl_core_convert_AsMut_revm_interpreter_interpreter_action_FrameInput_for_revm_interpreter_interpreter_action_FrameInput.
+  
+  (*
+  Enum InterpreterAction
+  {
+    const_params := [];
+    ty_params := [];
+    variants :=
+      [
+        {
+          name := "NewFrame";
+          item := StructTuple [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ];
           discriminant := None;
         };
         {
@@ -90,102 +639,26 @@ Module interpreter_action.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
-                        "revm_interpreter::interpreter_action::InterpreterAction::Call",
-                        "inputs"
+                        "revm_interpreter::interpreter_action::InterpreterAction::NewFrame",
+                        0
                       |) in
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
-                      Value.StructRecord
-                        "revm_interpreter::interpreter_action::InterpreterAction::Call"
+                      Value.StructTuple
+                        "revm_interpreter::interpreter_action::InterpreterAction::NewFrame"
                         [
-                          ("inputs",
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.path
-                                      "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                "clone",
-                                []
-                              |),
-                              [ M.read (| __self_0 |) ]
-                            |))
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_interpreter::interpreter_action::InterpreterAction::Create",
-                        "inputs"
-                      |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      Value.StructRecord
-                        "revm_interpreter::interpreter_action::InterpreterAction::Create"
-                        [
-                          ("inputs",
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.path
-                                      "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                "clone",
-                                []
-                              |),
-                              [ M.read (| __self_0 |) ]
-                            |))
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_interpreter::interpreter_action::InterpreterAction::EOFCreate",
-                        "inputs"
-                      |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      Value.StructRecord
-                        "revm_interpreter::interpreter_action::InterpreterAction::EOFCreate"
-                        [
-                          ("inputs",
-                            M.call_closure (|
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.apply
-                                  (Ty.path "alloc::boxed::Box")
-                                  []
-                                  [
-                                    Ty.path
-                                      "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
-                                    Ty.path "alloc::alloc::Global"
-                                  ],
-                                [],
-                                "clone",
-                                []
-                              |),
-                              [ M.read (| __self_0 |) ]
-                            |))
+                          M.call_closure (|
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.path "revm_interpreter::interpreter_action::FrameInput",
+                              [],
+                              "clone",
+                              []
+                            |),
+                            [ M.read (| __self_0 |) ]
+                          |)
                         ]
                     |)));
                 fun γ =>
@@ -260,75 +733,20 @@ Module interpreter_action.
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
                     let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
+                      M.SubPointer.get_struct_tuple_field (|
                         γ,
-                        "revm_interpreter::interpreter_action::InterpreterAction::Call",
-                        "inputs"
+                        "revm_interpreter::interpreter_action::InterpreterAction::NewFrame",
+                        0
                       |) in
                     let __self_0 := M.alloc (| γ1_0 |) in
                     M.alloc (|
                       M.call_closure (|
                         M.get_associated_function (|
                           Ty.path "core::fmt::Formatter",
-                          "debug_struct_field1_finish",
+                          "debug_tuple_field1_finish",
                           []
                         |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Call" |);
-                          M.read (| Value.String "inputs" |);
-                          __self_0
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_interpreter::interpreter_action::InterpreterAction::Create",
-                        "inputs"
-                      |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_struct_field1_finish",
-                          []
-                        |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "Create" |);
-                          M.read (| Value.String "inputs" |);
-                          __self_0
-                        ]
-                      |)
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.read (| γ |) in
-                    let γ1_0 :=
-                      M.SubPointer.get_struct_record_field (|
-                        γ,
-                        "revm_interpreter::interpreter_action::InterpreterAction::EOFCreate",
-                        "inputs"
-                      |) in
-                    let __self_0 := M.alloc (| γ1_0 |) in
-                    M.alloc (|
-                      M.call_closure (|
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::Formatter",
-                          "debug_struct_field1_finish",
-                          []
-                        |),
-                        [
-                          M.read (| f |);
-                          M.read (| Value.String "EOFCreate" |);
-                          M.read (| Value.String "inputs" |);
-                          __self_0
-                        ]
+                        [ M.read (| f |); M.read (| Value.String "NewFrame" |); __self_0 ]
                       |)
                     |)));
                 fun γ =>
@@ -464,18 +882,18 @@ Module interpreter_action.
                             let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                             let γ0_0 := M.read (| γ0_0 |) in
                             let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ0_0,
-                                "revm_interpreter::interpreter_action::InterpreterAction::Call",
-                                "inputs"
+                                "revm_interpreter::interpreter_action::InterpreterAction::NewFrame",
+                                0
                               |) in
                             let __self_0 := M.alloc (| γ2_0 |) in
                             let γ0_1 := M.read (| γ0_1 |) in
                             let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
+                              M.SubPointer.get_struct_tuple_field (|
                                 γ0_1,
-                                "revm_interpreter::interpreter_action::InterpreterAction::Call",
-                                "inputs"
+                                "revm_interpreter::interpreter_action::InterpreterAction::NewFrame",
+                                0
                               |) in
                             let __arg1_0 := M.alloc (| γ2_0 |) in
                             M.alloc (|
@@ -485,146 +903,12 @@ Module interpreter_action.
                                   Ty.apply
                                     (Ty.path "&")
                                     []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::boxed::Box")
-                                        []
-                                        [
-                                          Ty.path
-                                            "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                          Ty.path "alloc::alloc::Global"
-                                        ]
-                                    ],
+                                    [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ],
                                   [
                                     Ty.apply
                                       (Ty.path "&")
                                       []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          []
-                                          [
-                                            Ty.path
-                                              "revm_interpreter::interpreter_action::call_inputs::CallInputs";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ],
-                                  "eq",
-                                  []
-                                |),
-                                [ __self_0; __arg1_0 ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_interpreter::interpreter_action::InterpreterAction::Create",
-                                "inputs"
-                              |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_interpreter::interpreter_action::InterpreterAction::Create",
-                                "inputs"
-                              |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::boxed::Box")
-                                        []
-                                        [
-                                          Ty.path
-                                            "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                          Ty.path "alloc::alloc::Global"
-                                        ]
-                                    ],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          []
-                                          [
-                                            Ty.path
-                                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
-                                  ],
-                                  "eq",
-                                  []
-                                |),
-                                [ __self_0; __arg1_0 ]
-                              |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                            let γ0_0 := M.read (| γ0_0 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_0,
-                                "revm_interpreter::interpreter_action::InterpreterAction::EOFCreate",
-                                "inputs"
-                              |) in
-                            let __self_0 := M.alloc (| γ2_0 |) in
-                            let γ0_1 := M.read (| γ0_1 |) in
-                            let γ2_0 :=
-                              M.SubPointer.get_struct_record_field (|
-                                γ0_1,
-                                "revm_interpreter::interpreter_action::InterpreterAction::EOFCreate",
-                                "inputs"
-                              |) in
-                            let __arg1_0 := M.alloc (| γ2_0 |) in
-                            M.alloc (|
-                              M.call_closure (|
-                                M.get_trait_method (|
-                                  "core::cmp::PartialEq",
-                                  Ty.apply
-                                    (Ty.path "&")
-                                    []
-                                    [
-                                      Ty.apply
-                                        (Ty.path "alloc::boxed::Box")
-                                        []
-                                        [
-                                          Ty.path
-                                            "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
-                                          Ty.path "alloc::alloc::Global"
-                                        ]
-                                    ],
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [
-                                        Ty.apply
-                                          (Ty.path "alloc::boxed::Box")
-                                          []
-                                          [
-                                            Ty.path
-                                              "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInput";
-                                            Ty.path "alloc::alloc::Global"
-                                          ]
-                                      ]
+                                      [ Ty.path "revm_interpreter::interpreter_action::FrameInput" ]
                                   ],
                                   "eq",
                                   []
@@ -711,21 +995,7 @@ Module interpreter_action.
                   ltac:(M.monadic
                     (M.match_operator (|
                       Value.DeclaredButUndefined,
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Value.DeclaredButUndefined,
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (M.match_operator (|
-                                      Value.DeclaredButUndefined,
-                                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
-                                    |)))
-                              ]
-                            |)))
-                      ]
+                      [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
                     |)))
               ]
             |)
@@ -747,7 +1017,7 @@ Module interpreter_action.
     
     (*
         pub fn is_call(&self) -> bool {
-            matches!(self, InterpreterAction::Call { .. })
+            matches!(self, InterpreterAction::NewFrame(FrameInput::Call(..)))
         }
     *)
     Definition is_call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -762,10 +1032,16 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::InterpreterAction::NewFrame",
+                        0
+                      |) in
                     let _ :=
                       M.is_struct_tuple (|
-                        γ,
-                        "revm_interpreter::interpreter_action::InterpreterAction::Call"
+                        γ1_0,
+                        "revm_interpreter::interpreter_action::FrameInput::Call"
                       |) in
                     M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -779,7 +1055,7 @@ Module interpreter_action.
     
     (*
         pub fn is_create(&self) -> bool {
-            matches!(self, InterpreterAction::Create { .. })
+            matches!(self, InterpreterAction::NewFrame(FrameInput::Create(..)))
         }
     *)
     Definition is_create (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -794,10 +1070,16 @@ Module interpreter_action.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.read (| γ |) in
+                    let γ1_0 :=
+                      M.SubPointer.get_struct_tuple_field (|
+                        γ,
+                        "revm_interpreter::interpreter_action::InterpreterAction::NewFrame",
+                        0
+                      |) in
                     let _ :=
                       M.is_struct_tuple (|
-                        γ,
-                        "revm_interpreter::interpreter_action::InterpreterAction::Create"
+                        γ1_0,
+                        "revm_interpreter::interpreter_action::FrameInput::Create"
                       |) in
                     M.alloc (| Value.Bool true |)));
                 fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))

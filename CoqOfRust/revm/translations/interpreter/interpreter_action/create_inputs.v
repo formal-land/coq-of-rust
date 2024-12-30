@@ -11,7 +11,7 @@ Module interpreter_action.
         fields :=
           [
             ("caller", Ty.path "alloy_primitives::bits::address::Address");
-            ("scheme", Ty.path "revm_primitives::env::CreateScheme");
+            ("scheme", Ty.path "revm_context_interface::cfg::CreateScheme");
             ("value",
               Ty.apply
                 (Ty.path "ruint::Uint")
@@ -56,7 +56,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::clone::Clone",
-                      Ty.path "revm_primitives::env::CreateScheme",
+                      Ty.path "revm_context_interface::cfg::CreateScheme",
                       [],
                       "clone",
                       []
@@ -246,8 +246,8 @@ Module interpreter_action.
                       (M.call_closure (|
                         M.get_trait_method (|
                           "core::cmp::PartialEq",
-                          Ty.path "revm_primitives::env::CreateScheme",
-                          [ Ty.path "revm_primitives::env::CreateScheme" ],
+                          Ty.path "revm_context_interface::cfg::CreateScheme",
+                          [ Ty.path "revm_context_interface::cfg::CreateScheme" ],
                           "eq",
                           []
                         |),
@@ -449,7 +449,7 @@ Module interpreter_action.
                   M.call_closure (|
                     M.get_trait_method (|
                       "core::hash::Hash",
-                      Ty.path "revm_primitives::env::CreateScheme",
+                      Ty.path "revm_context_interface::cfg::CreateScheme",
                       [],
                       "hash",
                       [ __H ]
@@ -537,159 +537,6 @@ Module interpreter_action.
         Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs".
       
       (*
-          pub fn new(tx_env: &TxEnv, gas_limit: u64) -> Option<Self> {
-              let TransactTo::Create = tx_env.transact_to else {
-                  return None;
-              };
-      
-              Some(CreateInputs {
-                  caller: tx_env.caller,
-                  scheme: CreateScheme::Create,
-                  value: tx_env.value,
-                  init_code: tx_env.data.clone(),
-                  gas_limit,
-              })
-          }
-      *)
-      Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ tx_env; gas_limit ] =>
-          ltac:(M.monadic
-            (let tx_env := M.alloc (| tx_env |) in
-            let gas_limit := M.alloc (| gas_limit |) in
-            M.read (|
-              M.match_operator (|
-                M.SubPointer.get_struct_record_field (|
-                  M.read (| tx_env |),
-                  "revm_primitives::env::TxEnv",
-                  "transact_to"
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let _ :=
-                        M.is_struct_tuple (| γ, "revm_primitives::env::TransactTo::Create" |) in
-                      M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            Value.StructRecord
-                              "revm_interpreter::interpreter_action::create_inputs::CreateInputs"
-                              [
-                                ("caller",
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| tx_env |),
-                                      "revm_primitives::env::TxEnv",
-                                      "caller"
-                                    |)
-                                  |));
-                                ("scheme",
-                                  Value.StructTuple
-                                    "revm_primitives::env::CreateScheme::Create"
-                                    []);
-                                ("value",
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.read (| tx_env |),
-                                      "revm_primitives::env::TxEnv",
-                                      "value"
-                                    |)
-                                  |));
-                                ("init_code",
-                                  M.call_closure (|
-                                    M.get_trait_method (|
-                                      "core::clone::Clone",
-                                      Ty.path "alloy_primitives::bytes_::Bytes",
-                                      [],
-                                      "clone",
-                                      []
-                                    |),
-                                    [
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.read (| tx_env |),
-                                        "revm_primitives::env::TxEnv",
-                                        "data"
-                                      |)
-                                    ]
-                                  |));
-                                ("gas_limit", M.read (| gas_limit |))
-                              ]
-                          ]
-                      |)))
-                ]
-              |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_new : M.IsAssociatedFunction Self "new" new.
-      
-      (*
-          pub fn new_boxed(tx_env: &TxEnv, gas_limit: u64) -> Option<Box<Self>> {
-              Self::new(tx_env, gas_limit).map(Box::new)
-          }
-      *)
-      Definition new_boxed (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ tx_env; gas_limit ] =>
-          ltac:(M.monadic
-            (let tx_env := M.alloc (| tx_env |) in
-            let gas_limit := M.alloc (| gas_limit |) in
-            M.call_closure (|
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs" ],
-                "map",
-                [
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [
-                      Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                      Ty.path "alloc::alloc::Global"
-                    ];
-                  Ty.function
-                    [ Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs" ]
-                    (Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [
-                        Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                        Ty.path "alloc::alloc::Global"
-                      ])
-                ]
-              |),
-              [
-                M.call_closure (|
-                  M.get_associated_function (|
-                    Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs",
-                    "new",
-                    []
-                  |),
-                  [ M.read (| tx_env |); M.read (| gas_limit |) ]
-                |);
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [
-                      Ty.path "revm_interpreter::interpreter_action::create_inputs::CreateInputs";
-                      Ty.path "alloc::alloc::Global"
-                    ],
-                  "new",
-                  []
-                |)
-              ]
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Axiom AssociatedFunction_new_boxed : M.IsAssociatedFunction Self "new_boxed" new_boxed.
-      
-      (*
           pub fn created_address(&self, nonce: u64) -> Address {
               match self.scheme {
                   CreateScheme::Create => self.caller.create(nonce),
@@ -716,7 +563,10 @@ Module interpreter_action.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_struct_tuple (| γ, "revm_primitives::env::CreateScheme::Create" |) in
+                        M.is_struct_tuple (|
+                          γ,
+                          "revm_context_interface::cfg::CreateScheme::Create"
+                        |) in
                       M.alloc (|
                         M.call_closure (|
                           M.get_associated_function (|
@@ -739,7 +589,7 @@ Module interpreter_action.
                       (let γ0_0 :=
                         M.SubPointer.get_struct_record_field (|
                           γ,
-                          "revm_primitives::env::CreateScheme::Create2",
+                          "revm_context_interface::cfg::CreateScheme::Create2",
                           "salt"
                         |) in
                       let salt := M.copy (| γ0_0 |) in
