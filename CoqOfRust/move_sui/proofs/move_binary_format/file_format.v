@@ -18,7 +18,7 @@ Module Constant.
     Definition t (x : Constant.t) : Prop :=
       match Impl_Value.deserialize_constant x with
       | None => False
-      | Some value => IsValueOfType.t value x.(Constant.type_)
+      | Some value => IsValueImplOfType.t value x.(Constant.type_)
       end.
   End Valid.
 End Constant.
@@ -127,12 +127,12 @@ Module Bytecode.
       | Bytecode.BrTrue _ => True
       | Bytecode.BrFalse _ => True
       | Bytecode.Branch _ => True
-      | Bytecode.LdU8 _ => True
-      | Bytecode.LdU16 _ => True
-      | Bytecode.LdU32 _ => True
-      | Bytecode.LdU64 _ => True
-      | Bytecode.LdU128 _ => True
-      | Bytecode.LdU256 _ => True
+      | Bytecode.LdU8 z => Integer.Valid.t IntegerKind.U8 z
+      | Bytecode.LdU16 z => Integer.Valid.t IntegerKind.U16 z
+      | Bytecode.LdU32 z => Integer.Valid.t IntegerKind.U32 z
+      | Bytecode.LdU64 z => Integer.Valid.t IntegerKind.U64 z
+      | Bytecode.LdU128 z => Integer.Valid.t IntegerKind.U128 z
+      | Bytecode.LdU256 z => 0 <= z < 2^256
       | Bytecode.CastU8 => True
       | Bytecode.CastU16 => True
       | Bytecode.CastU32 => True

@@ -305,25 +305,6 @@ Module Impl_ValueImpl.
         })
     }
     *)
-    (* let Container_copy_value (self : Container.t) : PartialVMResult.t Container.t :=
-      match self with
-      | ContainerSkeleton.Vec vec =>
-        let? vec := Result.map copy_value vec in
-        Result.Ok $ ContainerSkeleton.Vec vec
-      | ContainerSkeleton.Struct f =>
-        let? f := Result.map copy_value f in
-        Result.Ok $ ContainerSkeleton.Struct f
-      | ContainerSkeleton.VecU8 v => Result.Ok $ ContainerSkeleton.VecU8 v
-      | ContainerSkeleton.VecU64 v => Result.Ok $ ContainerSkeleton.VecU64 v
-      | ContainerSkeleton.VecU128 v => Result.Ok $ ContainerSkeleton.VecU128 v
-      | ContainerSkeleton.VecBool v => Result.Ok $ ContainerSkeleton.VecBool v
-      | ContainerSkeleton.VecAddress v => Result.Ok $ ContainerSkeleton.VecAddress v
-      | ContainerSkeleton.VecU16 v => Result.Ok $ ContainerSkeleton.VecU16 v
-      | ContainerSkeleton.VecU32 v => Result.Ok $ ContainerSkeleton.VecU32 v
-      | ContainerSkeleton.VecU256 v => Result.Ok $ ContainerSkeleton.VecU256 v
-      | ContainerSkeleton.Locals _ =>
-        Result.Err $ PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
-      end in *)
     match self with
     | ValueImpl.Invalid => Result.Ok ValueImpl.Invalid
     | ValueImpl.U8 x => Result.Ok $ ValueImpl.U8 x
@@ -930,9 +911,16 @@ Module Impl_Locals.
   *)
   Definition copy_loc (self : Self) (idx : Z) : PartialVMResult.t Value.t :=
     match List.nth_error self (Z.to_nat idx) with
-    | Some ValueImpl.Invalid =>
-      Result.Err $ PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
-    | Some v => Impl_ValueImpl.copy_value v
+    | Some value =>
+      let is_invalid :=
+        match value with
+        | ValueImpl.Invalid => true
+        | _ => false
+        end in
+      if is_invalid then
+        Result.Err $ PartialVMError.new StatusCode.UNKNOWN_INVARIANT_VIOLATION_ERROR
+      else
+        Impl_ValueImpl.copy_value value
     | None => Result.Err $ PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
     end.
 

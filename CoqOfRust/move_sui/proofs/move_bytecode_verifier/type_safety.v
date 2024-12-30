@@ -21,9 +21,9 @@ Module TypeSafetyChecker.
   End Valid.
 End TypeSafetyChecker.
 
-Module IsValueOfType.
+Module IsValueImplOfType.
   Lemma value_of_bool (value : Value.t) (ty : SignatureToken.t)
-    (H_value : IsValueOfType.t value ty)
+    (H_value : IsValueImplOfType.t value ty)
     (* This is the form in which is appears in the proofs *)
     (H_ty : ty = SignatureToken.Bool) :
     exists b, value = ValueImpl.Bool b.
@@ -34,7 +34,7 @@ Module IsValueOfType.
   Qed.
 
   Lemma value_of_integer (value : Value.t) (ty : SignatureToken.t)
-      (H_value : IsValueOfType.t value ty)
+      (H_value : IsValueImplOfType.t value ty)
       (H_ty : SignatureToken.is_integer ty = true) :
     exists (integer_value : IntegerValue.t),
     value = IntegerValue.to_value_impl integer_value.
@@ -49,21 +49,21 @@ Module IsValueOfType.
         (now eexists (IntegerValue.U256 _))
       ).
   Qed.
-End IsValueOfType.
+End IsValueImplOfType.
 
 Module IsStackValueOfType.
   Definition t (stack : Stack.t) (abstract_stack : AbstractStack.t SignatureToken.t) : Prop :=
-    List.Forall2 IsValueOfType.t
+    List.Forall2 IsValueImplOfType.t
       stack.(Stack.value)
       (AbstractStack.flatten abstract_stack).
   Arguments t /.
 
   Lemma pop stack operand_ty stack_ty :
-    List.Forall2 IsValueOfType.t stack (operand_ty :: AbstractStack.flatten stack_ty) ->
+    List.Forall2 IsValueImplOfType.t stack (operand_ty :: AbstractStack.flatten stack_ty) ->
     exists value stack',
       stack = value :: stack' /\
-      IsValueOfType.t value operand_ty /\
-      List.Forall2 IsValueOfType.t stack' (AbstractStack.flatten stack_ty).
+      IsValueImplOfType.t value operand_ty /\
+      List.Forall2 IsValueImplOfType.t stack' (AbstractStack.flatten stack_ty).
   Proof.
     sauto lq: on.
   Qed.
@@ -74,7 +74,7 @@ Module IsLocalsOfType.
     param_count : locals_ty.(type_safety.Locals.param_count) = 0;
     parameters : locals_ty.(type_safety.Locals.parameters) = {| Signature.a0 := [] |};
     locals :
-      List.Forall2 IsValueOfType.t
+      List.Forall2 IsValueImplOfType.t
         locals
         locals_ty.(type_safety.Locals.locals).(Signature.a0);
   }.
@@ -147,9 +147,9 @@ Ltac destruct_abstract_pop :=
     destruct_post H_check_pop
   end;
   match goal with
-  | H_interpreter : _ |- _ =>
-    destruct_post (IsStackValueOfType.pop _ _ _ H_interpreter);
-    clear H_interpreter
+  | H_of_type : _ |- _ =>
+    destruct_post (IsStackValueOfType.pop _ _ _ H_of_type);
+    clear H_of_type
   end.
 
 Ltac destruct_abstract_push :=
@@ -191,12 +191,12 @@ Ltac destruct_initial_if :=
   repeat (
     match goal with
     | H_value : _, H_ty : _ |- _ =>
-      destruct_post (IsValueOfType.value_of_bool _ _ H_value H_ty);
+      destruct_post (IsValueImplOfType.value_of_bool _ _ H_value H_ty);
       clear H_ty
     end ||
     match goal with
     | H_value : _, H_ty : _ |- _ =>
-      destruct_post (IsValueOfType.value_of_integer _ _ H_value H_ty);
+      destruct_post (IsValueImplOfType.value_of_integer _ _ H_value H_ty);
       clear H_ty
     end
   );
@@ -209,7 +209,7 @@ Lemma progress
     (type_safety_checker : TypeSafetyChecker.t)
     (H_instruction : Bytecode.Valid.t instruction)
     (H_type_safety_checker : TypeSafetyChecker.Valid.t type_safety_checker)
-    (H_interpreter : IsInterpreterContextOfType.t locals interpreter type_safety_checker)
+    (H_of_type : IsInterpreterContextOfType.t locals interpreter type_safety_checker)
     (H_resolver :
       resolver.(loader.Resolver.binary).(loader.BinaryType.compiled) =
       type_safety_checker.(TypeSafetyChecker.module)
@@ -251,7 +251,7 @@ Proof.
   destruct type_safety_checker as [module function_context locals_ty stack_ty]; cbn in *.
   destruct H_type_safety_checker as [H_module H_stack_ty]; cbn in *.
   destruct H_module as [H_constant_pool].
-  destruct H_interpreter as [H_locals_typing H_stack_typing].
+  destruct H_of_type as [H_locals_typing H_stack_typing].
   destruct instruction eqn:H_instruction_eq; cbn in *.
   { guard_instruction Bytecode.Pop.
     destruct_abstract_pop.
@@ -276,32 +276,38 @@ Proof.
   { guard_instruction (Bytecode.LdU8 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    sauto q: on.
+    constructor; cbn; try assumption.
+    sauto lq: on.
   }
   { guard_instruction (Bytecode.LdU16 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    sauto q: on.
+    constructor; cbn; try assumption.
+    sauto lq: on.
   }
   { guard_instruction (Bytecode.LdU32 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    sauto q: on.
+    constructor; cbn; try assumption.
+    sauto lq: on.
   }
   { guard_instruction (Bytecode.LdU64 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    sauto q: on.
+    constructor; cbn; try assumption.
+    sauto lq: on.
   }
   { guard_instruction (Bytecode.LdU128 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    sauto q: on.
+    constructor; cbn; try assumption.
+    sauto lq: on.
   }
   { guard_instruction (Bytecode.LdU256 z).
     destruct_abstract_push.
     step; cbn; [|easy].
-    sauto q: on.
+    constructor; cbn; try assumption.
+    sauto lq: on.
   }
   { guard_instruction Bytecode.CastU8.
     destruct_abstract_pop.
@@ -309,7 +315,7 @@ Proof.
     destruct_abstract_push.
     step; cbn; (try easy); (try now destruct operand_ty);
       repeat (step; cbn; try easy);
-      constructor; cbn;
+      constructor; cbn; try assumption;
       sauto lq: on.
   }
   { guard_instruction Bytecode.CastU16.
@@ -409,18 +415,14 @@ Proof.
     pose proof List.Forall2_nth_error _ locals locals_ty (Z.to_nat z) H_locals as H_nth_error.
     unfold Value.t in H_nth_error.
     destruct (List.nth_error locals) as [local|] eqn:H_nth_error_eq; cbn.
-    { destruct local eqn:H_local_eq; cbn.
-      { admit. }
-      all: try (
-        step; cbn; try easy;
-        constructor; cbn; [hauto l: on|];
-        match goal with
-        | H : _ = _ |- _ => rewrite H
-        end;
-        constructor; try assumption;
-        destruct (List.nth_error locals_ty); try easy;
-        hauto lq: on
-      ).
+    { match goal with
+      | |- context[if ?is_local_expr then _ else _] =>
+        set (is_local := is_local_expr)
+      end.
+      destruct is_local eqn:H_is_invalid_eq; cbn.
+      { destruct local eqn:H_local_eq; try easy.
+        now destruct List.nth_error in H_nth_error.
+      }
       { admit. }
     }
     { now destruct (List.nth_error locals_ty). }
