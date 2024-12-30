@@ -120,6 +120,13 @@ jobs:
             cargo coq-of-rust
             rsync -acv src/ ../../../../CoqOfRust/revm/translations/revm/ --include='*/' --include='*.v' --exclude='*'
             cd ..
+            # specification
+            cd specification
+            cargo coq-of-rust
+            touch src/lib.rs
+            cargo coq-of-rust
+            rsync -acv src/ ../../../../CoqOfRust/revm/translations/specification/ --include='*/' --include='*.v' --exclude='*'
+            cd ..
             cd ../../..
           endGroup
           startGroup "Translate Move Sui"
