@@ -1,0 +1,2931 @@
+[
+  {
+    "file_name": "crates/specification/src/eip7702/recovered_authorization.rs",
+    "item": {
+      "Module": {
+        "name": "eip7702",
+        "body": [
+          {
+            "file_name": "crates/specification/src/eip7702/recovered_authorization.rs",
+            "item": {
+              "Module": {
+                "name": "recovered_authorization",
+                "body": [
+                  {
+                    "file_name": "crates/specification/src/eip7702/recovered_authorization.rs",
+                    "item": {
+                      "TypeStructStruct": {
+                        "name": "RecoveredAuthorization",
+                        "const_params": [],
+                        "ty_params": [],
+                        "fields": [
+                          [
+                            "inner",
+                            {
+                              "Application": {
+                                "func": {
+                                  "Path": {
+                                    "path": [
+                                      "alloy_eip7702",
+                                      "auth_list",
+                                      "SignedAuthorization"
+                                    ]
+                                  }
+                                },
+                                "consts": [],
+                                "tys": []
+                              }
+                            }
+                          ],
+                          [
+                            "authority",
+                            {
+                              "Application": {
+                                "func": {
+                                  "Path": {
+                                    "path": [
+                                      "core",
+                                      "option",
+                                      "Option"
+                                    ]
+                                  }
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "alloy_primitives",
+                                            "bits",
+                                            "address",
+                                            "Address"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/specification/src/eip7702/recovered_authorization.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_specification",
+                                  "eip7702",
+                                  "recovered_authorization",
+                                  "RecoveredAuthorization"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "fmt",
+                          "Debug"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "fmt",
+                            "snippet": [
+                              "Debug"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_specification",
+                                                          "eip7702",
+                                                          "recovered_authorization",
+                                                          "RecoveredAuthorization"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "f",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&mut"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "core",
+                                                          "fmt",
+                                                          "Formatter"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "core",
+                                                "result",
+                                                "Result"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "Tuple": {
+                                                "tys": []
+                                              }
+                                            },
+                                            {
+                                              "Application": {
+                                                "func": {
+                                                  "Path": {
+                                                    "path": [
+                                                      "core",
+                                                      "fmt",
+                                                      "Error"
+                                                    ]
+                                                  }
+                                                },
+                                                "consts": [],
+                                                "tys": []
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "f",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "f"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "GetAssociatedFunction": {
+                                                      "ty": {
+                                                        "Application": {
+                                                          "func": {
+                                                            "Path": {
+                                                              "path": [
+                                                                "core",
+                                                                "fmt",
+                                                                "Formatter"
+                                                              ]
+                                                            }
+                                                          },
+                                                          "consts": [],
+                                                          "tys": []
+                                                        }
+                                                      },
+                                                      "func": "debug_struct_field2_finish",
+                                                      "generic_tys": []
+                                                    }
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "f"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Literal": {
+                                                              "String": "RecoveredAuthorization"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Literal": {
+                                                              "String": "inner"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.read"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "LocalVar": "self"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          },
+                                                          {
+                                                            "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                          },
+                                                          {
+                                                            "InternalString": "inner"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Literal": {
+                                                              "String": "authority"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.alloc"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "self"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                                },
+                                                                {
+                                                                  "InternalString": "authority"
+                                                                }
+                                                              ],
+                                                              "kind": "Effectful"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Closure"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/specification/src/eip7702/recovered_authorization.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_specification",
+                                  "eip7702",
+                                  "recovered_authorization",
+                                  "RecoveredAuthorization"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "clone",
+                          "Clone"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "clone",
+                            "snippet": [
+                              "Clone"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_specification",
+                                                          "eip7702",
+                                                          "recovered_authorization",
+                                                          "RecoveredAuthorization"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "revm_specification",
+                                                "eip7702",
+                                                "recovered_authorization",
+                                                "RecoveredAuthorization"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "StructStruct": {
+                                              "path": [
+                                                "revm_specification",
+                                                "eip7702",
+                                                "recovered_authorization",
+                                                "RecoveredAuthorization"
+                                              ],
+                                              "fields": [
+                                                [
+                                                  "inner",
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "core",
+                                                            "clone",
+                                                            "Clone"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Application": {
+                                                              "func": {
+                                                                "Path": {
+                                                                  "path": [
+                                                                    "alloy_eip7702",
+                                                                    "auth_list",
+                                                                    "SignedAuthorization"
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "consts": [],
+                                                              "tys": []
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "clone",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                              },
+                                                              {
+                                                                "InternalString": "inner"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                ],
+                                                [
+                                                  "authority",
+                                                  {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "core",
+                                                            "clone",
+                                                            "Clone"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Application": {
+                                                              "func": {
+                                                                "Path": {
+                                                                  "path": [
+                                                                    "core",
+                                                                    "option",
+                                                                    "Option"
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "consts": [],
+                                                              "tys": [
+                                                                {
+                                                                  "Application": {
+                                                                    "func": {
+                                                                      "Path": {
+                                                                        "path": [
+                                                                          "alloy_primitives",
+                                                                          "bits",
+                                                                          "address",
+                                                                          "Address"
+                                                                        ]
+                                                                      }
+                                                                    },
+                                                                    "consts": [],
+                                                                    "tys": []
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "clone",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                              },
+                                                              {
+                                                                "InternalString": "authority"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                ]
+                                              ],
+                                              "base": null
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "clone_from",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/specification/src/eip7702/recovered_authorization.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_specification",
+                                  "eip7702",
+                                  "recovered_authorization",
+                                  "RecoveredAuthorization"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "hash",
+                          "Hash"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "hash",
+                            "snippet": [
+                              "Hash"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [
+                                      "__H"
+                                    ],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_specification",
+                                                          "eip7702",
+                                                          "recovered_authorization",
+                                                          "RecoveredAuthorization"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "state",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&mut"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Var": {
+                                                    "name": "__H"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Tuple": {
+                                          "tys": []
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "state",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "state"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Let": {
+                                                        "name": null,
+                                                        "is_user": true,
+                                                        "init": {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.alloc"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "GetTraitMethod": {
+                                                                      "trait_name": [
+                                                                        "core",
+                                                                        "hash",
+                                                                        "Hash"
+                                                                      ],
+                                                                      "self_ty": {
+                                                                        "Application": {
+                                                                          "func": {
+                                                                            "Path": {
+                                                                              "path": [
+                                                                                "alloy_eip7702",
+                                                                                "auth_list",
+                                                                                "SignedAuthorization"
+                                                                              ]
+                                                                            }
+                                                                          },
+                                                                          "consts": [],
+                                                                          "tys": []
+                                                                        }
+                                                                      },
+                                                                      "trait_tys": [],
+                                                                      "method_name": "hash",
+                                                                      "generic_tys": [
+                                                                        {
+                                                                          "Var": {
+                                                                            "name": "__H"
+                                                                          }
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.read"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "LocalVar": "self"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          },
+                                                                          {
+                                                                            "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                                          },
+                                                                          {
+                                                                            "InternalString": "inner"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    },
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "state"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Closure"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        "body": {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.alloc"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "GetTraitMethod": {
+                                                                      "trait_name": [
+                                                                        "core",
+                                                                        "hash",
+                                                                        "Hash"
+                                                                      ],
+                                                                      "self_ty": {
+                                                                        "Application": {
+                                                                          "func": {
+                                                                            "Path": {
+                                                                              "path": [
+                                                                                "core",
+                                                                                "option",
+                                                                                "Option"
+                                                                              ]
+                                                                            }
+                                                                          },
+                                                                          "consts": [],
+                                                                          "tys": [
+                                                                            {
+                                                                              "Application": {
+                                                                                "func": {
+                                                                                  "Path": {
+                                                                                    "path": [
+                                                                                      "alloy_primitives",
+                                                                                      "bits",
+                                                                                      "address",
+                                                                                      "Address"
+                                                                                    ]
+                                                                                  }
+                                                                                },
+                                                                                "consts": [],
+                                                                                "tys": []
+                                                                              }
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "trait_tys": [],
+                                                                      "method_name": "hash",
+                                                                      "generic_tys": [
+                                                                        {
+                                                                          "Var": {
+                                                                            "name": "__H"
+                                                                          }
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "Call": {
+                                                                              "func": {
+                                                                                "LocalVar": "M.read"
+                                                                              },
+                                                                              "args": [
+                                                                                {
+                                                                                  "LocalVar": "self"
+                                                                                }
+                                                                              ],
+                                                                              "kind": "Effectful"
+                                                                            }
+                                                                          },
+                                                                          {
+                                                                            "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                                          },
+                                                                          {
+                                                                            "InternalString": "authority"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    },
+                                                                    {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.read"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "LocalVar": "state"
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Closure"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "hash_slice",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/specification/src/eip7702/recovered_authorization.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_specification",
+                                  "eip7702",
+                                  "recovered_authorization",
+                                  "RecoveredAuthorization"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "cmp",
+                          "Eq"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "assert_receiver_is_total_eq",
+                            "snippet": [
+                              "Eq"
+                            ],
+                            "kind": {
+                              "OptionalValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_specification",
+                                                          "eip7702",
+                                                          "recovered_authorization",
+                                                          "RecoveredAuthorization"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Tuple": {
+                                          "tys": []
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Match": {
+                                                    "scrutinee": {
+                                                      "LocalVar": "Value.DeclaredButUndefined"
+                                                    },
+                                                    "arms": [
+                                                      {
+                                                        "Lambda": {
+                                                          "args": [
+                                                            [
+                                                              "γ",
+                                                              null
+                                                            ]
+                                                          ],
+                                                          "body": {
+                                                            "Match": {
+                                                              "scrutinee": {
+                                                                "LocalVar": "Value.DeclaredButUndefined"
+                                                              },
+                                                              "arms": [
+                                                                {
+                                                                  "Lambda": {
+                                                                    "args": [
+                                                                      [
+                                                                        "γ",
+                                                                        null
+                                                                      ]
+                                                                    ],
+                                                                    "body": {
+                                                                      "Call": {
+                                                                        "func": {
+                                                                          "LocalVar": "M.alloc"
+                                                                        },
+                                                                        "args": [
+                                                                          {
+                                                                            "Tuple": {
+                                                                              "elements": []
+                                                                            }
+                                                                          }
+                                                                        ],
+                                                                        "kind": "Effectful"
+                                                                      }
+                                                                    },
+                                                                    "is_for_match": true,
+                                                                    "is_internal": true
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          },
+                                                          "is_for_match": true,
+                                                          "is_internal": true
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/specification/src/eip7702/recovered_authorization.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_specification",
+                                  "eip7702",
+                                  "recovered_authorization",
+                                  "RecoveredAuthorization"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "marker",
+                          "StructuralPartialEq"
+                        ],
+                        "trait_ty_params": [],
+                        "items": []
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/specification/src/eip7702/recovered_authorization.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_specification",
+                                  "eip7702",
+                                  "recovered_authorization",
+                                  "RecoveredAuthorization"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "cmp",
+                          "PartialEq"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "Rhs",
+                            "Default"
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "eq",
+                            "snippet": [
+                              "PartialEq"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_specification",
+                                                          "eip7702",
+                                                          "recovered_authorization",
+                                                          "RecoveredAuthorization"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ],
+                                        [
+                                          "other",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_specification",
+                                                          "eip7702",
+                                                          "recovered_authorization",
+                                                          "RecoveredAuthorization"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Path": {
+                                          "path": [
+                                            "bool"
+                                          ]
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Let": {
+                                              "name": "other",
+                                              "is_user": false,
+                                              "init": {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.alloc"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "other"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              "body": {
+                                                "LogicalOperator": {
+                                                  "name": "LogicalOp.and",
+                                                  "lhs": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "core",
+                                                            "cmp",
+                                                            "PartialEq"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Application": {
+                                                              "func": {
+                                                                "Path": {
+                                                                  "path": [
+                                                                    "alloy_eip7702",
+                                                                    "auth_list",
+                                                                    "SignedAuthorization"
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "consts": [],
+                                                              "tys": []
+                                                            }
+                                                          },
+                                                          "trait_tys": [
+                                                            {
+                                                              "Application": {
+                                                                "func": {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "alloy_eip7702",
+                                                                      "auth_list",
+                                                                      "SignedAuthorization"
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "consts": [],
+                                                                "tys": []
+                                                              }
+                                                            }
+                                                          ],
+                                                          "method_name": "eq",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                              },
+                                                              {
+                                                                "InternalString": "inner"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "other"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                              },
+                                                              {
+                                                                "InternalString": "inner"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  },
+                                                  "rhs": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "core",
+                                                            "cmp",
+                                                            "PartialEq"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Application": {
+                                                              "func": {
+                                                                "Path": {
+                                                                  "path": [
+                                                                    "core",
+                                                                    "option",
+                                                                    "Option"
+                                                                  ]
+                                                                }
+                                                              },
+                                                              "consts": [],
+                                                              "tys": [
+                                                                {
+                                                                  "Application": {
+                                                                    "func": {
+                                                                      "Path": {
+                                                                        "path": [
+                                                                          "alloy_primitives",
+                                                                          "bits",
+                                                                          "address",
+                                                                          "Address"
+                                                                        ]
+                                                                      }
+                                                                    },
+                                                                    "consts": [],
+                                                                    "tys": []
+                                                                  }
+                                                                }
+                                                              ]
+                                                            }
+                                                          },
+                                                          "trait_tys": [
+                                                            {
+                                                              "Application": {
+                                                                "func": {
+                                                                  "Path": {
+                                                                    "path": [
+                                                                      "core",
+                                                                      "option",
+                                                                      "Option"
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "consts": [],
+                                                                "tys": [
+                                                                  {
+                                                                    "Application": {
+                                                                      "func": {
+                                                                        "Path": {
+                                                                          "path": [
+                                                                            "alloy_primitives",
+                                                                            "bits",
+                                                                            "address",
+                                                                            "Address"
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": []
+                                                                    }
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ],
+                                                          "method_name": "eq",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                              },
+                                                              {
+                                                                "InternalString": "authority"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        },
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "other"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              },
+                                                              {
+                                                                "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                              },
+                                                              {
+                                                                "InternalString": "authority"
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "ne",
+                            "snippet": null,
+                            "kind": "Default"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/specification/src/eip7702/recovered_authorization.rs",
+                    "item": {
+                      "Impl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_specification",
+                                  "eip7702",
+                                  "recovered_authorization",
+                                  "RecoveredAuthorization"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "items": [
+                          {
+                            "name": "new_unchecked",
+                            "snippet": [
+                              "    pub const fn new_unchecked(inner: SignedAuthorization, authority: Option<Address>) -> Self {",
+                              "        Self { inner, authority }",
+                              "    }"
+                            ],
+                            "kind": {
+                              "Definition": {
+                                "definition": {
+                                  "const_params": [],
+                                  "ty_params": [],
+                                  "signature_and_body": {
+                                    "args": [
+                                      [
+                                        "inner",
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "alloy_eip7702",
+                                                  "auth_list",
+                                                  "SignedAuthorization"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": []
+                                          }
+                                        },
+                                        null
+                                      ],
+                                      [
+                                        "authority",
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "core",
+                                                  "option",
+                                                  "Option"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "alloy_primitives",
+                                                        "bits",
+                                                        "address",
+                                                        "Address"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        null
+                                      ]
+                                    ],
+                                    "ret_ty": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "revm_specification",
+                                              "eip7702",
+                                              "recovered_authorization",
+                                              "RecoveredAuthorization"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "inner",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "inner"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Let": {
+                                            "name": "authority",
+                                            "is_user": false,
+                                            "init": {
+                                              "Call": {
+                                                "func": {
+                                                  "LocalVar": "M.alloc"
+                                                },
+                                                "args": [
+                                                  {
+                                                    "LocalVar": "authority"
+                                                  }
+                                                ],
+                                                "kind": "Effectful"
+                                              }
+                                            },
+                                            "body": {
+                                              "StructStruct": {
+                                                "path": [
+                                                  "revm_specification",
+                                                  "eip7702",
+                                                  "recovered_authorization",
+                                                  "RecoveredAuthorization"
+                                                ],
+                                                "fields": [
+                                                  [
+                                                    "inner",
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "inner"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  [
+                                                    "authority",
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "authority"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ]
+                                                ],
+                                                "base": null
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "inner",
+                            "snippet": [
+                              "    pub fn inner(&self) -> &SignedAuthorization {",
+                              "        &self.inner",
+                              "    }"
+                            ],
+                            "kind": {
+                              "Definition": {
+                                "definition": {
+                                  "const_params": [],
+                                  "ty_params": [],
+                                  "signature_and_body": {
+                                    "args": [
+                                      [
+                                        "self",
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "&"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "revm_specification",
+                                                        "eip7702",
+                                                        "recovered_authorization",
+                                                        "RecoveredAuthorization"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        null
+                                      ]
+                                    ],
+                                    "ret_ty": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "&"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "alloy_eip7702",
+                                                    "auth_list",
+                                                    "SignedAuthorization"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "self",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "self"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.SubPointer.get_struct_record_field"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "LocalVar": "self"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                              },
+                                              {
+                                                "InternalString": "inner"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "authority",
+                            "snippet": [
+                              "    pub const fn authority(&self) -> Option<Address> {",
+                              "        self.authority",
+                              "    }"
+                            ],
+                            "kind": {
+                              "Definition": {
+                                "definition": {
+                                  "const_params": [],
+                                  "ty_params": [],
+                                  "signature_and_body": {
+                                    "args": [
+                                      [
+                                        "self",
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "&"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": [
+                                              {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "revm_specification",
+                                                        "eip7702",
+                                                        "recovered_authorization",
+                                                        "RecoveredAuthorization"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        null
+                                      ]
+                                    ],
+                                    "ret_ty": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "core",
+                                              "option",
+                                              "Option"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "alloy_primitives",
+                                                    "bits",
+                                                    "address",
+                                                    "Address"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "self",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "self"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.read"
+                                            },
+                                            "args": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.read"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    {
+                                                      "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                    },
+                                                    {
+                                                      "InternalString": "authority"
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "into_parts",
+                            "snippet": [
+                              "    pub const fn into_parts(self) -> (SignedAuthorization, Option<Address>) {",
+                              "        (self.inner, self.authority)",
+                              "    }"
+                            ],
+                            "kind": {
+                              "Definition": {
+                                "definition": {
+                                  "const_params": [],
+                                  "ty_params": [],
+                                  "signature_and_body": {
+                                    "args": [
+                                      [
+                                        "self",
+                                        {
+                                          "Application": {
+                                            "func": {
+                                              "Path": {
+                                                "path": [
+                                                  "revm_specification",
+                                                  "eip7702",
+                                                  "recovered_authorization",
+                                                  "RecoveredAuthorization"
+                                                ]
+                                              }
+                                            },
+                                            "consts": [],
+                                            "tys": []
+                                          }
+                                        },
+                                        null
+                                      ]
+                                    ],
+                                    "ret_ty": {
+                                      "Tuple": {
+                                        "tys": [
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "alloy_eip7702",
+                                                    "auth_list",
+                                                    "SignedAuthorization"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            }
+                                          },
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "core",
+                                                    "option",
+                                                    "Option"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "alloy_primitives",
+                                                          "bits",
+                                                          "address",
+                                                          "Address"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "body": {
+                                      "Let": {
+                                        "name": "self",
+                                        "is_user": false,
+                                        "init": {
+                                          "Call": {
+                                            "func": {
+                                              "LocalVar": "M.alloc"
+                                            },
+                                            "args": [
+                                              {
+                                                "LocalVar": "self"
+                                              }
+                                            ],
+                                            "kind": "Effectful"
+                                          }
+                                        },
+                                        "body": {
+                                          "Tuple": {
+                                            "elements": [
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          },
+                                                          {
+                                                            "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                          },
+                                                          {
+                                                            "InternalString": "inner"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              },
+                                              {
+                                                "Call": {
+                                                  "func": {
+                                                    "LocalVar": "M.read"
+                                                  },
+                                                  "args": [
+                                                    {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "LocalVar": "self"
+                                                          },
+                                                          {
+                                                            "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                          },
+                                                          {
+                                                            "InternalString": "authority"
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  ],
+                                                  "kind": "Effectful"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/specification/src/eip7702/recovered_authorization.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_specification",
+                                  "eip7702",
+                                  "recovered_authorization",
+                                  "RecoveredAuthorization"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "convert",
+                          "From"
+                        ],
+                        "trait_ty_params": [
+                          [
+                            "T",
+                            {
+                              "RequiredValue": {
+                                "Application": {
+                                  "func": {
+                                    "Path": {
+                                      "path": [
+                                        "alloy_eip7702",
+                                        "auth_list",
+                                        "SignedAuthorization"
+                                      ]
+                                    }
+                                  },
+                                  "consts": [],
+                                  "tys": []
+                                }
+                              }
+                            }
+                          ]
+                        ],
+                        "items": [
+                          {
+                            "name": "from",
+                            "snippet": [
+                              "    fn from(signed_auth: SignedAuthorization) -> Self {",
+                              "        let authority = signed_auth.recover_authority().ok();",
+                              "        Self::new_unchecked(signed_auth, authority)",
+                              "    }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "signed_auth",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "alloy_eip7702",
+                                                    "auth_list",
+                                                    "SignedAuthorization"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "revm_specification",
+                                                "eip7702",
+                                                "recovered_authorization",
+                                                "RecoveredAuthorization"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "signed_auth",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "signed_auth"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.read"
+                                              },
+                                              "args": [
+                                                {
+                                                  "Let": {
+                                                    "name": "authority",
+                                                    "is_user": true,
+                                                    "init": {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.alloc"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "GetAssociatedFunction": {
+                                                                  "ty": {
+                                                                    "Application": {
+                                                                      "func": {
+                                                                        "Path": {
+                                                                          "path": [
+                                                                            "core",
+                                                                            "result",
+                                                                            "Result"
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": [
+                                                                        {
+                                                                          "Application": {
+                                                                            "func": {
+                                                                              "Path": {
+                                                                                "path": [
+                                                                                  "alloy_primitives",
+                                                                                  "bits",
+                                                                                  "address",
+                                                                                  "Address"
+                                                                                ]
+                                                                              }
+                                                                            },
+                                                                            "consts": [],
+                                                                            "tys": []
+                                                                          }
+                                                                        },
+                                                                        {
+                                                                          "Application": {
+                                                                            "func": {
+                                                                              "Path": {
+                                                                                "path": [
+                                                                                  "alloy_primitives",
+                                                                                  "signature",
+                                                                                  "error",
+                                                                                  "SignatureError"
+                                                                                ]
+                                                                              }
+                                                                            },
+                                                                            "consts": [],
+                                                                            "tys": []
+                                                                          }
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "func": "ok",
+                                                                  "generic_tys": []
+                                                                }
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "GetAssociatedFunction": {
+                                                                        "ty": {
+                                                                          "Application": {
+                                                                            "func": {
+                                                                              "Path": {
+                                                                                "path": [
+                                                                                  "alloy_eip7702",
+                                                                                  "auth_list",
+                                                                                  "SignedAuthorization"
+                                                                                ]
+                                                                              }
+                                                                            },
+                                                                            "consts": [],
+                                                                            "tys": []
+                                                                          }
+                                                                        },
+                                                                        "func": "recover_authority",
+                                                                        "generic_tys": []
+                                                                      }
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "signed_auth"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Closure"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Closure"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    },
+                                                    "body": {
+                                                      "Call": {
+                                                        "func": {
+                                                          "LocalVar": "M.alloc"
+                                                        },
+                                                        "args": [
+                                                          {
+                                                            "Call": {
+                                                              "func": {
+                                                                "GetAssociatedFunction": {
+                                                                  "ty": {
+                                                                    "Application": {
+                                                                      "func": {
+                                                                        "Path": {
+                                                                          "path": [
+                                                                            "revm_specification",
+                                                                            "eip7702",
+                                                                            "recovered_authorization",
+                                                                            "RecoveredAuthorization"
+                                                                          ]
+                                                                        }
+                                                                      },
+                                                                      "consts": [],
+                                                                      "tys": []
+                                                                    }
+                                                                  },
+                                                                  "func": "new_unchecked",
+                                                                  "generic_tys": []
+                                                                }
+                                                              },
+                                                              "args": [
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "signed_auth"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "Call": {
+                                                                    "func": {
+                                                                      "LocalVar": "M.read"
+                                                                    },
+                                                                    "args": [
+                                                                      {
+                                                                        "LocalVar": "authority"
+                                                                      }
+                                                                    ],
+                                                                    "kind": "Effectful"
+                                                                  }
+                                                                }
+                                                              ],
+                                                              "kind": "Closure"
+                                                            }
+                                                          }
+                                                        ],
+                                                        "kind": "Effectful"
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/specification/src/eip7702/recovered_authorization.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [],
+                        "predicates": [],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "revm_specification",
+                                  "eip7702",
+                                  "recovered_authorization",
+                                  "RecoveredAuthorization"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": []
+                          }
+                        },
+                        "of_trait": [
+                          "core",
+                          "ops",
+                          "deref",
+                          "Deref"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "Target",
+                            "snippet": [
+                              "    type Target = Authorization;"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Type": {
+                                  "ty": {
+                                    "Application": {
+                                      "func": {
+                                        "Path": {
+                                          "path": [
+                                            "alloy_eip7702",
+                                            "auth_list",
+                                            "Authorization"
+                                          ]
+                                        }
+                                      },
+                                      "consts": [],
+                                      "tys": []
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "deref",
+                            "snippet": [
+                              "    fn deref(&self) -> &Self::Target {",
+                              "        &self.inner",
+                              "    }"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "revm_specification",
+                                                          "eip7702",
+                                                          "recovered_authorization",
+                                                          "RecoveredAuthorization"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "&"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            "Associated"
+                                          ]
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Call": {
+                                              "func": {
+                                                "GetTraitMethod": {
+                                                  "trait_name": [
+                                                    "core",
+                                                    "ops",
+                                                    "deref",
+                                                    "Deref"
+                                                  ],
+                                                  "self_ty": {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "alloy_eip7702",
+                                                            "auth_list",
+                                                            "SignedAuthorization"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": []
+                                                    }
+                                                  },
+                                                  "trait_tys": [],
+                                                  "method_name": "deref",
+                                                  "generic_tys": []
+                                                }
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.SubPointer.get_struct_record_field"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.read"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "LocalVar": "self"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      },
+                                                      {
+                                                        "InternalString": "revm_specification::eip7702::recovered_authorization::RecoveredAuthorization"
+                                                      },
+                                                      {
+                                                        "InternalString": "inner"
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Closure"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

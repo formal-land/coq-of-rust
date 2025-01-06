@@ -1,0 +1,39 @@
+[
+  {
+    "file_name": "crates/specification/src/eip170.rs",
+    "item": {
+      "Module": {
+        "name": "eip170",
+        "body": [
+          {
+            "file_name": "crates/specification/src/eip170.rs",
+            "item": {
+              "Const": {
+                "name": "value_MAX_CODE_SIZE",
+                "value": {
+                  "Call": {
+                    "func": {
+                      "LocalVar": "M.alloc"
+                    },
+                    "args": [
+                      {
+                        "Literal": {
+                          "Integer": {
+                            "kind": "Usize",
+                            "negative_sign": false,
+                            "value": 24576
+                          }
+                        }
+                      }
+                    ],
+                    "kind": "Effectful"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

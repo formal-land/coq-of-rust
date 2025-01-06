@@ -29,3 +29,6 @@
 
 # Generated files for the smart contracts
 contracts/generated
+
+# Python
+__pycache__/

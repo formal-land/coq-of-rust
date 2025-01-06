@@ -1,0 +1,76 @@
+[
+  {
+    "file_name": "crates/specification/src/eip7702/constants.rs",
+    "item": {
+      "Module": {
+        "name": "eip7702",
+        "body": [
+          {
+            "file_name": "crates/specification/src/eip7702/constants.rs",
+            "item": {
+              "Module": {
+                "name": "constants",
+                "body": [
+                  {
+                    "file_name": "crates/specification/src/eip7702/constants.rs",
+                    "item": {
+                      "Const": {
+                        "name": "value_PER_AUTH_BASE_COST",
+                        "value": {
+                          "Call": {
+                            "func": {
+                              "LocalVar": "M.alloc"
+                            },
+                            "args": [
+                              {
+                                "Literal": {
+                                  "Integer": {
+                                    "kind": "U64",
+                                    "negative_sign": false,
+                                    "value": 2500
+                                  }
+                                }
+                              }
+                            ],
+                            "kind": "Effectful"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/specification/src/eip7702/constants.rs",
+                    "item": {
+                      "Const": {
+                        "name": "value_PER_EMPTY_ACCOUNT_COST",
+                        "value": {
+                          "Call": {
+                            "func": {
+                              "LocalVar": "M.alloc"
+                            },
+                            "args": [
+                              {
+                                "Literal": {
+                                  "Integer": {
+                                    "kind": "U64",
+                                    "negative_sign": false,
+                                    "value": 25000
+                                  }
+                                }
+                              }
+                            ],
+                            "kind": "Effectful"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

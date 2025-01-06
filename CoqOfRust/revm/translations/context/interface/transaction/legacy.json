@@ -1,0 +1,2834 @@
+[
+  {
+    "file_name": "crates/context/interface/src/transaction/legacy.rs",
+    "item": {
+      "Module": {
+        "name": "transaction",
+        "body": [
+          {
+            "file_name": "crates/context/interface/src/transaction/legacy.rs",
+            "item": {
+              "Module": {
+                "name": "legacy",
+                "body": [
+                  {
+                    "file_name": "crates/context/interface/src/transaction/legacy.rs",
+                    "item": {
+                      "Trait": {
+                        "name": "LegacyTx",
+                        "path": [
+                          "revm_context_interface",
+                          "transaction",
+                          "legacy",
+                          "LegacyTx"
+                        ],
+                        "const_params": [],
+                        "ty_params": [],
+                        "body": [
+                          [
+                            "kind",
+                            {
+                              "Definition": {
+                                "const_params": [],
+                                "ty_params": [],
+                                "ty": {
+                                  "Function": {
+                                    "args": [
+                                      {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "&"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "Var": {
+                                                "name": "Self"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ],
+                                    "ret": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "alloy_primitives",
+                                              "common",
+                                              "TxKind"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": []
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          ],
+                          [
+                            "chain_id",
+                            {
+                              "Definition": {
+                                "const_params": [],
+                                "ty_params": [],
+                                "ty": {
+                                  "Function": {
+                                    "args": [
+                                      {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "&"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "Var": {
+                                                "name": "Self"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ],
+                                    "ret": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "core",
+                                              "option",
+                                              "Option"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Path": {
+                                              "path": [
+                                                "u64"
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          ],
+                          [
+                            "gas_price",
+                            {
+                              "Definition": {
+                                "const_params": [],
+                                "ty_params": [],
+                                "ty": {
+                                  "Function": {
+                                    "args": [
+                                      {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "&"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "Var": {
+                                                "name": "Self"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ],
+                                    "ret": {
+                                      "Path": {
+                                        "path": [
+                                          "u128"
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/context/interface/src/transaction/legacy.rs",
+                    "item": {
+                      "Module": {
+                        "name": "underscore",
+                        "body": [
+                          {
+                            "file_name": "crates/context/interface/src/transaction/legacy.rs",
+                            "item": {
+                              "TraitImpl": {
+                                "generic_consts": [],
+                                "generic_tys": [
+                                  "T"
+                                ],
+                                "predicates": [
+                                  {
+                                    "bound": {
+                                      "name": [
+                                        "revm_context_interface",
+                                        "transaction",
+                                        "legacy",
+                                        "LegacyTx"
+                                      ],
+                                      "ty_params": []
+                                    },
+                                    "ty": {
+                                      "Var": {
+                                        "name": "T"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "bound": {
+                                      "name": [
+                                        "core",
+                                        "marker",
+                                        "Sized"
+                                      ],
+                                      "ty_params": []
+                                    },
+                                    "ty": {
+                                      "Var": {
+                                        "name": "T"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "bound": {
+                                      "name": [
+                                        "revm_context_interface",
+                                        "transaction",
+                                        "common",
+                                        "CommonTxFields"
+                                      ],
+                                      "ty_params": []
+                                    },
+                                    "ty": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "&"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Var": {
+                                              "name": "T"
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ],
+                                "self_ty": {
+                                  "Application": {
+                                    "func": {
+                                      "Path": {
+                                        "path": [
+                                          "&"
+                                        ]
+                                      }
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "Var": {
+                                          "name": "T"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "of_trait": [
+                                  "revm_context_interface",
+                                  "transaction",
+                                  "legacy",
+                                  "LegacyTx"
+                                ],
+                                "trait_ty_params": [],
+                                "items": [
+                                  {
+                                    "name": "kind",
+                                    "snippet": [
+                                      "#[auto_impl(&, Box, Arc, Rc)]"
+                                    ],
+                                    "kind": {
+                                      "RequiredValue": {
+                                        "Definition": {
+                                          "definition": {
+                                            "const_params": [],
+                                            "ty_params": [],
+                                            "signature_and_body": {
+                                              "args": [
+                                                [
+                                                  "self",
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "&"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "&"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Var": {
+                                                                  "name": "T"
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  null
+                                                ]
+                                              ],
+                                              "ret_ty": {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "alloy_primitives",
+                                                        "common",
+                                                        "TxKind"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": "self",
+                                                  "is_user": false,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "revm_context_interface",
+                                                            "transaction",
+                                                            "legacy",
+                                                            "LegacyTx"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "T"
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "kind",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "name": "chain_id",
+                                    "snippet": [
+                                      "#[auto_impl(&, Box, Arc, Rc)]"
+                                    ],
+                                    "kind": {
+                                      "RequiredValue": {
+                                        "Definition": {
+                                          "definition": {
+                                            "const_params": [],
+                                            "ty_params": [],
+                                            "signature_and_body": {
+                                              "args": [
+                                                [
+                                                  "self",
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "&"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "&"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Var": {
+                                                                  "name": "T"
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  null
+                                                ]
+                                              ],
+                                              "ret_ty": {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "core",
+                                                        "option",
+                                                        "Option"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": [
+                                                    {
+                                                      "Path": {
+                                                        "path": [
+                                                          "u64"
+                                                        ]
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": "self",
+                                                  "is_user": false,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "revm_context_interface",
+                                                            "transaction",
+                                                            "legacy",
+                                                            "LegacyTx"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "T"
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "chain_id",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "name": "gas_price",
+                                    "snippet": [
+                                      "#[auto_impl(&, Box, Arc, Rc)]"
+                                    ],
+                                    "kind": {
+                                      "RequiredValue": {
+                                        "Definition": {
+                                          "definition": {
+                                            "const_params": [],
+                                            "ty_params": [],
+                                            "signature_and_body": {
+                                              "args": [
+                                                [
+                                                  "self",
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "&"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "&"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Var": {
+                                                                  "name": "T"
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  null
+                                                ]
+                                              ],
+                                              "ret_ty": {
+                                                "Path": {
+                                                  "path": [
+                                                    "u128"
+                                                  ]
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": "self",
+                                                  "is_user": false,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "revm_context_interface",
+                                                            "transaction",
+                                                            "legacy",
+                                                            "LegacyTx"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "T"
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "gas_price",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/context/interface/src/transaction/legacy.rs",
+                    "item": {
+                      "Module": {
+                        "name": "underscore",
+                        "body": [
+                          {
+                            "file_name": "crates/context/interface/src/transaction/legacy.rs",
+                            "item": {
+                              "TraitImpl": {
+                                "generic_consts": [],
+                                "generic_tys": [
+                                  "T"
+                                ],
+                                "predicates": [
+                                  {
+                                    "bound": {
+                                      "name": [
+                                        "revm_context_interface",
+                                        "transaction",
+                                        "legacy",
+                                        "LegacyTx"
+                                      ],
+                                      "ty_params": []
+                                    },
+                                    "ty": {
+                                      "Var": {
+                                        "name": "T"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "bound": {
+                                      "name": [
+                                        "core",
+                                        "marker",
+                                        "Sized"
+                                      ],
+                                      "ty_params": []
+                                    },
+                                    "ty": {
+                                      "Var": {
+                                        "name": "T"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "bound": {
+                                      "name": [
+                                        "revm_context_interface",
+                                        "transaction",
+                                        "common",
+                                        "CommonTxFields"
+                                      ],
+                                      "ty_params": []
+                                    },
+                                    "ty": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "alloc",
+                                              "boxed",
+                                              "Box"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Var": {
+                                              "name": "T"
+                                            }
+                                          },
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "alloc",
+                                                    "alloc",
+                                                    "Global"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ],
+                                "self_ty": {
+                                  "Application": {
+                                    "func": {
+                                      "Path": {
+                                        "path": [
+                                          "alloc",
+                                          "boxed",
+                                          "Box"
+                                        ]
+                                      }
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "Var": {
+                                          "name": "T"
+                                        }
+                                      },
+                                      {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "alloc",
+                                                "alloc",
+                                                "Global"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "of_trait": [
+                                  "revm_context_interface",
+                                  "transaction",
+                                  "legacy",
+                                  "LegacyTx"
+                                ],
+                                "trait_ty_params": [],
+                                "items": [
+                                  {
+                                    "name": "kind",
+                                    "snippet": [
+                                      "#[auto_impl(&, Box, Arc, Rc)]"
+                                    ],
+                                    "kind": {
+                                      "RequiredValue": {
+                                        "Definition": {
+                                          "definition": {
+                                            "const_params": [],
+                                            "ty_params": [],
+                                            "signature_and_body": {
+                                              "args": [
+                                                [
+                                                  "self",
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "&"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "alloc",
+                                                                  "boxed",
+                                                                  "Box"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Var": {
+                                                                  "name": "T"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Application": {
+                                                                  "func": {
+                                                                    "Path": {
+                                                                      "path": [
+                                                                        "alloc",
+                                                                        "alloc",
+                                                                        "Global"
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  null
+                                                ]
+                                              ],
+                                              "ret_ty": {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "alloy_primitives",
+                                                        "common",
+                                                        "TxKind"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": "self",
+                                                  "is_user": false,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "revm_context_interface",
+                                                            "transaction",
+                                                            "legacy",
+                                                            "LegacyTx"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "T"
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "kind",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "name": "chain_id",
+                                    "snippet": [
+                                      "#[auto_impl(&, Box, Arc, Rc)]"
+                                    ],
+                                    "kind": {
+                                      "RequiredValue": {
+                                        "Definition": {
+                                          "definition": {
+                                            "const_params": [],
+                                            "ty_params": [],
+                                            "signature_and_body": {
+                                              "args": [
+                                                [
+                                                  "self",
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "&"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "alloc",
+                                                                  "boxed",
+                                                                  "Box"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Var": {
+                                                                  "name": "T"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Application": {
+                                                                  "func": {
+                                                                    "Path": {
+                                                                      "path": [
+                                                                        "alloc",
+                                                                        "alloc",
+                                                                        "Global"
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  null
+                                                ]
+                                              ],
+                                              "ret_ty": {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "core",
+                                                        "option",
+                                                        "Option"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": [
+                                                    {
+                                                      "Path": {
+                                                        "path": [
+                                                          "u64"
+                                                        ]
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": "self",
+                                                  "is_user": false,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "revm_context_interface",
+                                                            "transaction",
+                                                            "legacy",
+                                                            "LegacyTx"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "T"
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "chain_id",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "name": "gas_price",
+                                    "snippet": [
+                                      "#[auto_impl(&, Box, Arc, Rc)]"
+                                    ],
+                                    "kind": {
+                                      "RequiredValue": {
+                                        "Definition": {
+                                          "definition": {
+                                            "const_params": [],
+                                            "ty_params": [],
+                                            "signature_and_body": {
+                                              "args": [
+                                                [
+                                                  "self",
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "&"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "alloc",
+                                                                  "boxed",
+                                                                  "Box"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Var": {
+                                                                  "name": "T"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Application": {
+                                                                  "func": {
+                                                                    "Path": {
+                                                                      "path": [
+                                                                        "alloc",
+                                                                        "alloc",
+                                                                        "Global"
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  null
+                                                ]
+                                              ],
+                                              "ret_ty": {
+                                                "Path": {
+                                                  "path": [
+                                                    "u128"
+                                                  ]
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": "self",
+                                                  "is_user": false,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "revm_context_interface",
+                                                            "transaction",
+                                                            "legacy",
+                                                            "LegacyTx"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "T"
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "gas_price",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "LocalVar": "M.read"
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Effectful"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/context/interface/src/transaction/legacy.rs",
+                    "item": {
+                      "Module": {
+                        "name": "underscore",
+                        "body": [
+                          {
+                            "file_name": "crates/context/interface/src/transaction/legacy.rs",
+                            "item": {
+                              "TraitImpl": {
+                                "generic_consts": [],
+                                "generic_tys": [
+                                  "T"
+                                ],
+                                "predicates": [
+                                  {
+                                    "bound": {
+                                      "name": [
+                                        "revm_context_interface",
+                                        "transaction",
+                                        "legacy",
+                                        "LegacyTx"
+                                      ],
+                                      "ty_params": []
+                                    },
+                                    "ty": {
+                                      "Var": {
+                                        "name": "T"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "bound": {
+                                      "name": [
+                                        "core",
+                                        "marker",
+                                        "Sized"
+                                      ],
+                                      "ty_params": []
+                                    },
+                                    "ty": {
+                                      "Var": {
+                                        "name": "T"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "bound": {
+                                      "name": [
+                                        "revm_context_interface",
+                                        "transaction",
+                                        "common",
+                                        "CommonTxFields"
+                                      ],
+                                      "ty_params": []
+                                    },
+                                    "ty": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "alloc",
+                                              "sync",
+                                              "Arc"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Var": {
+                                              "name": "T"
+                                            }
+                                          },
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "alloc",
+                                                    "alloc",
+                                                    "Global"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ],
+                                "self_ty": {
+                                  "Application": {
+                                    "func": {
+                                      "Path": {
+                                        "path": [
+                                          "alloc",
+                                          "sync",
+                                          "Arc"
+                                        ]
+                                      }
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "Var": {
+                                          "name": "T"
+                                        }
+                                      },
+                                      {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "alloc",
+                                                "alloc",
+                                                "Global"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "of_trait": [
+                                  "revm_context_interface",
+                                  "transaction",
+                                  "legacy",
+                                  "LegacyTx"
+                                ],
+                                "trait_ty_params": [],
+                                "items": [
+                                  {
+                                    "name": "kind",
+                                    "snippet": [
+                                      "#[auto_impl(&, Box, Arc, Rc)]"
+                                    ],
+                                    "kind": {
+                                      "RequiredValue": {
+                                        "Definition": {
+                                          "definition": {
+                                            "const_params": [],
+                                            "ty_params": [],
+                                            "signature_and_body": {
+                                              "args": [
+                                                [
+                                                  "self",
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "&"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "alloc",
+                                                                  "sync",
+                                                                  "Arc"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Var": {
+                                                                  "name": "T"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Application": {
+                                                                  "func": {
+                                                                    "Path": {
+                                                                      "path": [
+                                                                        "alloc",
+                                                                        "alloc",
+                                                                        "Global"
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  null
+                                                ]
+                                              ],
+                                              "ret_ty": {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "alloy_primitives",
+                                                        "common",
+                                                        "TxKind"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": "self",
+                                                  "is_user": false,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "revm_context_interface",
+                                                            "transaction",
+                                                            "legacy",
+                                                            "LegacyTx"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "T"
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "kind",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetTraitMethod": {
+                                                                "trait_name": [
+                                                                  "core",
+                                                                  "ops",
+                                                                  "deref",
+                                                                  "Deref"
+                                                                ],
+                                                                "self_ty": {
+                                                                  "Application": {
+                                                                    "func": {
+                                                                      "Path": {
+                                                                        "path": [
+                                                                          "alloc",
+                                                                          "sync",
+                                                                          "Arc"
+                                                                        ]
+                                                                      }
+                                                                    },
+                                                                    "consts": [],
+                                                                    "tys": [
+                                                                      {
+                                                                        "Var": {
+                                                                          "name": "T"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "Application": {
+                                                                          "func": {
+                                                                            "Path": {
+                                                                              "path": [
+                                                                                "alloc",
+                                                                                "alloc",
+                                                                                "Global"
+                                                                              ]
+                                                                            }
+                                                                          },
+                                                                          "consts": [],
+                                                                          "tys": []
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "trait_tys": [],
+                                                                "method_name": "deref",
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "name": "chain_id",
+                                    "snippet": [
+                                      "#[auto_impl(&, Box, Arc, Rc)]"
+                                    ],
+                                    "kind": {
+                                      "RequiredValue": {
+                                        "Definition": {
+                                          "definition": {
+                                            "const_params": [],
+                                            "ty_params": [],
+                                            "signature_and_body": {
+                                              "args": [
+                                                [
+                                                  "self",
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "&"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "alloc",
+                                                                  "sync",
+                                                                  "Arc"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Var": {
+                                                                  "name": "T"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Application": {
+                                                                  "func": {
+                                                                    "Path": {
+                                                                      "path": [
+                                                                        "alloc",
+                                                                        "alloc",
+                                                                        "Global"
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  null
+                                                ]
+                                              ],
+                                              "ret_ty": {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "core",
+                                                        "option",
+                                                        "Option"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": [
+                                                    {
+                                                      "Path": {
+                                                        "path": [
+                                                          "u64"
+                                                        ]
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": "self",
+                                                  "is_user": false,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "revm_context_interface",
+                                                            "transaction",
+                                                            "legacy",
+                                                            "LegacyTx"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "T"
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "chain_id",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetTraitMethod": {
+                                                                "trait_name": [
+                                                                  "core",
+                                                                  "ops",
+                                                                  "deref",
+                                                                  "Deref"
+                                                                ],
+                                                                "self_ty": {
+                                                                  "Application": {
+                                                                    "func": {
+                                                                      "Path": {
+                                                                        "path": [
+                                                                          "alloc",
+                                                                          "sync",
+                                                                          "Arc"
+                                                                        ]
+                                                                      }
+                                                                    },
+                                                                    "consts": [],
+                                                                    "tys": [
+                                                                      {
+                                                                        "Var": {
+                                                                          "name": "T"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "Application": {
+                                                                          "func": {
+                                                                            "Path": {
+                                                                              "path": [
+                                                                                "alloc",
+                                                                                "alloc",
+                                                                                "Global"
+                                                                              ]
+                                                                            }
+                                                                          },
+                                                                          "consts": [],
+                                                                          "tys": []
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "trait_tys": [],
+                                                                "method_name": "deref",
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "name": "gas_price",
+                                    "snippet": [
+                                      "#[auto_impl(&, Box, Arc, Rc)]"
+                                    ],
+                                    "kind": {
+                                      "RequiredValue": {
+                                        "Definition": {
+                                          "definition": {
+                                            "const_params": [],
+                                            "ty_params": [],
+                                            "signature_and_body": {
+                                              "args": [
+                                                [
+                                                  "self",
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "&"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "alloc",
+                                                                  "sync",
+                                                                  "Arc"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Var": {
+                                                                  "name": "T"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Application": {
+                                                                  "func": {
+                                                                    "Path": {
+                                                                      "path": [
+                                                                        "alloc",
+                                                                        "alloc",
+                                                                        "Global"
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  null
+                                                ]
+                                              ],
+                                              "ret_ty": {
+                                                "Path": {
+                                                  "path": [
+                                                    "u128"
+                                                  ]
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": "self",
+                                                  "is_user": false,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "revm_context_interface",
+                                                            "transaction",
+                                                            "legacy",
+                                                            "LegacyTx"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "T"
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "gas_price",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetTraitMethod": {
+                                                                "trait_name": [
+                                                                  "core",
+                                                                  "ops",
+                                                                  "deref",
+                                                                  "Deref"
+                                                                ],
+                                                                "self_ty": {
+                                                                  "Application": {
+                                                                    "func": {
+                                                                      "Path": {
+                                                                        "path": [
+                                                                          "alloc",
+                                                                          "sync",
+                                                                          "Arc"
+                                                                        ]
+                                                                      }
+                                                                    },
+                                                                    "consts": [],
+                                                                    "tys": [
+                                                                      {
+                                                                        "Var": {
+                                                                          "name": "T"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "Application": {
+                                                                          "func": {
+                                                                            "Path": {
+                                                                              "path": [
+                                                                                "alloc",
+                                                                                "alloc",
+                                                                                "Global"
+                                                                              ]
+                                                                            }
+                                                                          },
+                                                                          "consts": [],
+                                                                          "tys": []
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "trait_tys": [],
+                                                                "method_name": "deref",
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "file_name": "crates/context/interface/src/transaction/legacy.rs",
+                    "item": {
+                      "Module": {
+                        "name": "underscore",
+                        "body": [
+                          {
+                            "file_name": "crates/context/interface/src/transaction/legacy.rs",
+                            "item": {
+                              "TraitImpl": {
+                                "generic_consts": [],
+                                "generic_tys": [
+                                  "T"
+                                ],
+                                "predicates": [
+                                  {
+                                    "bound": {
+                                      "name": [
+                                        "revm_context_interface",
+                                        "transaction",
+                                        "legacy",
+                                        "LegacyTx"
+                                      ],
+                                      "ty_params": []
+                                    },
+                                    "ty": {
+                                      "Var": {
+                                        "name": "T"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "bound": {
+                                      "name": [
+                                        "core",
+                                        "marker",
+                                        "Sized"
+                                      ],
+                                      "ty_params": []
+                                    },
+                                    "ty": {
+                                      "Var": {
+                                        "name": "T"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "bound": {
+                                      "name": [
+                                        "revm_context_interface",
+                                        "transaction",
+                                        "common",
+                                        "CommonTxFields"
+                                      ],
+                                      "ty_params": []
+                                    },
+                                    "ty": {
+                                      "Application": {
+                                        "func": {
+                                          "Path": {
+                                            "path": [
+                                              "alloc",
+                                              "rc",
+                                              "Rc"
+                                            ]
+                                          }
+                                        },
+                                        "consts": [],
+                                        "tys": [
+                                          {
+                                            "Var": {
+                                              "name": "T"
+                                            }
+                                          },
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "alloc",
+                                                    "alloc",
+                                                    "Global"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": []
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ],
+                                "self_ty": {
+                                  "Application": {
+                                    "func": {
+                                      "Path": {
+                                        "path": [
+                                          "alloc",
+                                          "rc",
+                                          "Rc"
+                                        ]
+                                      }
+                                    },
+                                    "consts": [],
+                                    "tys": [
+                                      {
+                                        "Var": {
+                                          "name": "T"
+                                        }
+                                      },
+                                      {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "alloc",
+                                                "alloc",
+                                                "Global"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": []
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                "of_trait": [
+                                  "revm_context_interface",
+                                  "transaction",
+                                  "legacy",
+                                  "LegacyTx"
+                                ],
+                                "trait_ty_params": [],
+                                "items": [
+                                  {
+                                    "name": "kind",
+                                    "snippet": [
+                                      "#[auto_impl(&, Box, Arc, Rc)]"
+                                    ],
+                                    "kind": {
+                                      "RequiredValue": {
+                                        "Definition": {
+                                          "definition": {
+                                            "const_params": [],
+                                            "ty_params": [],
+                                            "signature_and_body": {
+                                              "args": [
+                                                [
+                                                  "self",
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "&"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "alloc",
+                                                                  "rc",
+                                                                  "Rc"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Var": {
+                                                                  "name": "T"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Application": {
+                                                                  "func": {
+                                                                    "Path": {
+                                                                      "path": [
+                                                                        "alloc",
+                                                                        "alloc",
+                                                                        "Global"
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  null
+                                                ]
+                                              ],
+                                              "ret_ty": {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "alloy_primitives",
+                                                        "common",
+                                                        "TxKind"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": []
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": "self",
+                                                  "is_user": false,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "revm_context_interface",
+                                                            "transaction",
+                                                            "legacy",
+                                                            "LegacyTx"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "T"
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "kind",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetTraitMethod": {
+                                                                "trait_name": [
+                                                                  "core",
+                                                                  "ops",
+                                                                  "deref",
+                                                                  "Deref"
+                                                                ],
+                                                                "self_ty": {
+                                                                  "Application": {
+                                                                    "func": {
+                                                                      "Path": {
+                                                                        "path": [
+                                                                          "alloc",
+                                                                          "rc",
+                                                                          "Rc"
+                                                                        ]
+                                                                      }
+                                                                    },
+                                                                    "consts": [],
+                                                                    "tys": [
+                                                                      {
+                                                                        "Var": {
+                                                                          "name": "T"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "Application": {
+                                                                          "func": {
+                                                                            "Path": {
+                                                                              "path": [
+                                                                                "alloc",
+                                                                                "alloc",
+                                                                                "Global"
+                                                                              ]
+                                                                            }
+                                                                          },
+                                                                          "consts": [],
+                                                                          "tys": []
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "trait_tys": [],
+                                                                "method_name": "deref",
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "name": "chain_id",
+                                    "snippet": [
+                                      "#[auto_impl(&, Box, Arc, Rc)]"
+                                    ],
+                                    "kind": {
+                                      "RequiredValue": {
+                                        "Definition": {
+                                          "definition": {
+                                            "const_params": [],
+                                            "ty_params": [],
+                                            "signature_and_body": {
+                                              "args": [
+                                                [
+                                                  "self",
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "&"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "alloc",
+                                                                  "rc",
+                                                                  "Rc"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Var": {
+                                                                  "name": "T"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Application": {
+                                                                  "func": {
+                                                                    "Path": {
+                                                                      "path": [
+                                                                        "alloc",
+                                                                        "alloc",
+                                                                        "Global"
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  null
+                                                ]
+                                              ],
+                                              "ret_ty": {
+                                                "Application": {
+                                                  "func": {
+                                                    "Path": {
+                                                      "path": [
+                                                        "core",
+                                                        "option",
+                                                        "Option"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "consts": [],
+                                                  "tys": [
+                                                    {
+                                                      "Path": {
+                                                        "path": [
+                                                          "u64"
+                                                        ]
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": "self",
+                                                  "is_user": false,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "revm_context_interface",
+                                                            "transaction",
+                                                            "legacy",
+                                                            "LegacyTx"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "T"
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "chain_id",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetTraitMethod": {
+                                                                "trait_name": [
+                                                                  "core",
+                                                                  "ops",
+                                                                  "deref",
+                                                                  "Deref"
+                                                                ],
+                                                                "self_ty": {
+                                                                  "Application": {
+                                                                    "func": {
+                                                                      "Path": {
+                                                                        "path": [
+                                                                          "alloc",
+                                                                          "rc",
+                                                                          "Rc"
+                                                                        ]
+                                                                      }
+                                                                    },
+                                                                    "consts": [],
+                                                                    "tys": [
+                                                                      {
+                                                                        "Var": {
+                                                                          "name": "T"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "Application": {
+                                                                          "func": {
+                                                                            "Path": {
+                                                                              "path": [
+                                                                                "alloc",
+                                                                                "alloc",
+                                                                                "Global"
+                                                                              ]
+                                                                            }
+                                                                          },
+                                                                          "consts": [],
+                                                                          "tys": []
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "trait_tys": [],
+                                                                "method_name": "deref",
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "name": "gas_price",
+                                    "snippet": [
+                                      "#[auto_impl(&, Box, Arc, Rc)]"
+                                    ],
+                                    "kind": {
+                                      "RequiredValue": {
+                                        "Definition": {
+                                          "definition": {
+                                            "const_params": [],
+                                            "ty_params": [],
+                                            "signature_and_body": {
+                                              "args": [
+                                                [
+                                                  "self",
+                                                  {
+                                                    "Application": {
+                                                      "func": {
+                                                        "Path": {
+                                                          "path": [
+                                                            "&"
+                                                          ]
+                                                        }
+                                                      },
+                                                      "consts": [],
+                                                      "tys": [
+                                                        {
+                                                          "Application": {
+                                                            "func": {
+                                                              "Path": {
+                                                                "path": [
+                                                                  "alloc",
+                                                                  "rc",
+                                                                  "Rc"
+                                                                ]
+                                                              }
+                                                            },
+                                                            "consts": [],
+                                                            "tys": [
+                                                              {
+                                                                "Var": {
+                                                                  "name": "T"
+                                                                }
+                                                              },
+                                                              {
+                                                                "Application": {
+                                                                  "func": {
+                                                                    "Path": {
+                                                                      "path": [
+                                                                        "alloc",
+                                                                        "alloc",
+                                                                        "Global"
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "consts": [],
+                                                                  "tys": []
+                                                                }
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  null
+                                                ]
+                                              ],
+                                              "ret_ty": {
+                                                "Path": {
+                                                  "path": [
+                                                    "u128"
+                                                  ]
+                                                }
+                                              },
+                                              "body": {
+                                                "Let": {
+                                                  "name": "self",
+                                                  "is_user": false,
+                                                  "init": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "LocalVar": "M.alloc"
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "LocalVar": "self"
+                                                        }
+                                                      ],
+                                                      "kind": "Effectful"
+                                                    }
+                                                  },
+                                                  "body": {
+                                                    "Call": {
+                                                      "func": {
+                                                        "GetTraitMethod": {
+                                                          "trait_name": [
+                                                            "revm_context_interface",
+                                                            "transaction",
+                                                            "legacy",
+                                                            "LegacyTx"
+                                                          ],
+                                                          "self_ty": {
+                                                            "Var": {
+                                                              "name": "T"
+                                                            }
+                                                          },
+                                                          "trait_tys": [],
+                                                          "method_name": "gas_price",
+                                                          "generic_tys": []
+                                                        }
+                                                      },
+                                                      "args": [
+                                                        {
+                                                          "Call": {
+                                                            "func": {
+                                                              "GetTraitMethod": {
+                                                                "trait_name": [
+                                                                  "core",
+                                                                  "ops",
+                                                                  "deref",
+                                                                  "Deref"
+                                                                ],
+                                                                "self_ty": {
+                                                                  "Application": {
+                                                                    "func": {
+                                                                      "Path": {
+                                                                        "path": [
+                                                                          "alloc",
+                                                                          "rc",
+                                                                          "Rc"
+                                                                        ]
+                                                                      }
+                                                                    },
+                                                                    "consts": [],
+                                                                    "tys": [
+                                                                      {
+                                                                        "Var": {
+                                                                          "name": "T"
+                                                                        }
+                                                                      },
+                                                                      {
+                                                                        "Application": {
+                                                                          "func": {
+                                                                            "Path": {
+                                                                              "path": [
+                                                                                "alloc",
+                                                                                "alloc",
+                                                                                "Global"
+                                                                              ]
+                                                                            }
+                                                                          },
+                                                                          "consts": [],
+                                                                          "tys": []
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                "trait_tys": [],
+                                                                "method_name": "deref",
+                                                                "generic_tys": []
+                                                              }
+                                                            },
+                                                            "args": [
+                                                              {
+                                                                "Call": {
+                                                                  "func": {
+                                                                    "LocalVar": "M.read"
+                                                                  },
+                                                                  "args": [
+                                                                    {
+                                                                      "LocalVar": "self"
+                                                                    }
+                                                                  ],
+                                                                  "kind": "Effectful"
+                                                                }
+                                                              }
+                                                            ],
+                                                            "kind": "Closure"
+                                                          }
+                                                        }
+                                                      ],
+                                                      "kind": "Closure"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]

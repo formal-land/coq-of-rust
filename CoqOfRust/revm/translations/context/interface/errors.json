@@ -1,0 +1,601 @@
+[
+  {
+    "file_name": "crates/context/interface/src/errors.rs",
+    "item": {
+      "Module": {
+        "name": "errors",
+        "body": [
+          {
+            "file_name": "crates/context/interface/src/errors.rs",
+            "item": {
+              "Trait": {
+                "name": "ErrorGetter",
+                "path": [
+                  "revm_context_interface",
+                  "errors",
+                  "ErrorGetter"
+                ],
+                "const_params": [],
+                "ty_params": [],
+                "body": [
+                  [
+                    "Error",
+                    {
+                      "Type": []
+                    }
+                  ],
+                  [
+                    "take_error",
+                    {
+                      "Definition": {
+                        "const_params": [],
+                        "ty_params": [],
+                        "ty": {
+                          "Function": {
+                            "args": [
+                              {
+                                "Application": {
+                                  "func": {
+                                    "Path": {
+                                      "path": [
+                                        "&mut"
+                                      ]
+                                    }
+                                  },
+                                  "consts": [],
+                                  "tys": [
+                                    {
+                                      "Var": {
+                                        "name": "Self"
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ],
+                            "ret": {
+                              "Application": {
+                                "func": {
+                                  "Path": {
+                                    "path": [
+                                      "core",
+                                      "result",
+                                      "Result"
+                                    ]
+                                  }
+                                },
+                                "consts": [],
+                                "tys": [
+                                  {
+                                    "Tuple": {
+                                      "tys": []
+                                    }
+                                  },
+                                  "Associated"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                ]
+              }
+            }
+          },
+          {
+            "file_name": "crates/context/interface/src/errors.rs",
+            "item": {
+              "Module": {
+                "name": "underscore",
+                "body": [
+                  {
+                    "file_name": "crates/context/interface/src/errors.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "T"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "revm_context_interface",
+                                "errors",
+                                "ErrorGetter"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "Var": {
+                                "name": "T"
+                              }
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "Var": {
+                                "name": "T"
+                              }
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "&mut"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "Var": {
+                                  "name": "T"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "of_trait": [
+                          "revm_context_interface",
+                          "errors",
+                          "ErrorGetter"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "Error",
+                            "snippet": [
+                              "#[auto_impl(&mut, Box)]"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Type": {
+                                  "ty": "Associated"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "take_error",
+                            "snippet": [
+                              "#[auto_impl(&mut, Box)]"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&mut"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "&mut"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": [
+                                                      {
+                                                        "Var": {
+                                                          "name": "T"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "core",
+                                                "result",
+                                                "Result"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "Tuple": {
+                                                "tys": []
+                                              }
+                                            },
+                                            "Associated"
+                                          ]
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Call": {
+                                              "func": {
+                                                "GetTraitMethod": {
+                                                  "trait_name": [
+                                                    "revm_context_interface",
+                                                    "errors",
+                                                    "ErrorGetter"
+                                                  ],
+                                                  "self_ty": {
+                                                    "Var": {
+                                                      "name": "T"
+                                                    }
+                                                  },
+                                                  "trait_tys": [],
+                                                  "method_name": "take_error",
+                                                  "generic_tys": []
+                                                }
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.read"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "LocalVar": "self"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Closure"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "file_name": "crates/context/interface/src/errors.rs",
+            "item": {
+              "Module": {
+                "name": "underscore",
+                "body": [
+                  {
+                    "file_name": "crates/context/interface/src/errors.rs",
+                    "item": {
+                      "TraitImpl": {
+                        "generic_consts": [],
+                        "generic_tys": [
+                          "T"
+                        ],
+                        "predicates": [
+                          {
+                            "bound": {
+                              "name": [
+                                "revm_context_interface",
+                                "errors",
+                                "ErrorGetter"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "Var": {
+                                "name": "T"
+                              }
+                            }
+                          },
+                          {
+                            "bound": {
+                              "name": [
+                                "core",
+                                "marker",
+                                "Sized"
+                              ],
+                              "ty_params": []
+                            },
+                            "ty": {
+                              "Var": {
+                                "name": "T"
+                              }
+                            }
+                          }
+                        ],
+                        "self_ty": {
+                          "Application": {
+                            "func": {
+                              "Path": {
+                                "path": [
+                                  "alloc",
+                                  "boxed",
+                                  "Box"
+                                ]
+                              }
+                            },
+                            "consts": [],
+                            "tys": [
+                              {
+                                "Var": {
+                                  "name": "T"
+                                }
+                              },
+                              {
+                                "Application": {
+                                  "func": {
+                                    "Path": {
+                                      "path": [
+                                        "alloc",
+                                        "alloc",
+                                        "Global"
+                                      ]
+                                    }
+                                  },
+                                  "consts": [],
+                                  "tys": []
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "of_trait": [
+                          "revm_context_interface",
+                          "errors",
+                          "ErrorGetter"
+                        ],
+                        "trait_ty_params": [],
+                        "items": [
+                          {
+                            "name": "Error",
+                            "snippet": [
+                              "#[auto_impl(&mut, Box)]"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Type": {
+                                  "ty": "Associated"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "name": "take_error",
+                            "snippet": [
+                              "#[auto_impl(&mut, Box)]"
+                            ],
+                            "kind": {
+                              "RequiredValue": {
+                                "Definition": {
+                                  "definition": {
+                                    "const_params": [],
+                                    "ty_params": [],
+                                    "signature_and_body": {
+                                      "args": [
+                                        [
+                                          "self",
+                                          {
+                                            "Application": {
+                                              "func": {
+                                                "Path": {
+                                                  "path": [
+                                                    "&mut"
+                                                  ]
+                                                }
+                                              },
+                                              "consts": [],
+                                              "tys": [
+                                                {
+                                                  "Application": {
+                                                    "func": {
+                                                      "Path": {
+                                                        "path": [
+                                                          "alloc",
+                                                          "boxed",
+                                                          "Box"
+                                                        ]
+                                                      }
+                                                    },
+                                                    "consts": [],
+                                                    "tys": [
+                                                      {
+                                                        "Var": {
+                                                          "name": "T"
+                                                        }
+                                                      },
+                                                      {
+                                                        "Application": {
+                                                          "func": {
+                                                            "Path": {
+                                                              "path": [
+                                                                "alloc",
+                                                                "alloc",
+                                                                "Global"
+                                                              ]
+                                                            }
+                                                          },
+                                                          "consts": [],
+                                                          "tys": []
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          null
+                                        ]
+                                      ],
+                                      "ret_ty": {
+                                        "Application": {
+                                          "func": {
+                                            "Path": {
+                                              "path": [
+                                                "core",
+                                                "result",
+                                                "Result"
+                                              ]
+                                            }
+                                          },
+                                          "consts": [],
+                                          "tys": [
+                                            {
+                                              "Tuple": {
+                                                "tys": []
+                                              }
+                                            },
+                                            "Associated"
+                                          ]
+                                        }
+                                      },
+                                      "body": {
+                                        "Let": {
+                                          "name": "self",
+                                          "is_user": false,
+                                          "init": {
+                                            "Call": {
+                                              "func": {
+                                                "LocalVar": "M.alloc"
+                                              },
+                                              "args": [
+                                                {
+                                                  "LocalVar": "self"
+                                                }
+                                              ],
+                                              "kind": "Effectful"
+                                            }
+                                          },
+                                          "body": {
+                                            "Call": {
+                                              "func": {
+                                                "GetTraitMethod": {
+                                                  "trait_name": [
+                                                    "revm_context_interface",
+                                                    "errors",
+                                                    "ErrorGetter"
+                                                  ],
+                                                  "self_ty": {
+                                                    "Var": {
+                                                      "name": "T"
+                                                    }
+                                                  },
+                                                  "trait_tys": [],
+                                                  "method_name": "take_error",
+                                                  "generic_tys": []
+                                                }
+                                              },
+                                              "args": [
+                                                {
+                                                  "Call": {
+                                                    "func": {
+                                                      "LocalVar": "M.read"
+                                                    },
+                                                    "args": [
+                                                      {
+                                                        "Call": {
+                                                          "func": {
+                                                            "LocalVar": "M.read"
+                                                          },
+                                                          "args": [
+                                                            {
+                                                              "LocalVar": "self"
+                                                            }
+                                                          ],
+                                                          "kind": "Effectful"
+                                                        }
+                                                      }
+                                                    ],
+                                                    "kind": "Effectful"
+                                                  }
+                                                }
+                                              ],
+                                              "kind": "Closure"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]
