@@ -384,6 +384,24 @@ Module Impl_Interpreter.
       | IntegerValue.U256 x => return? $ ValueImpl.U256 x
       end
     ).
+
+  (*
+  /// Perform a binary operation for boolean values.
+  fn binop_bool<F, T>(&mut self, f: F) -> PartialVMResult<()>
+  where
+      Value: VMValueCast<T>,
+      F: FnOnce(T, T) -> PartialVMResult<bool>,
+  {
+      self.binop(|lhs, rhs| Ok(Value::bool(f(lhs, rhs)?)))
+  }
+  *)
+  Definition binop_bool {T : Set} `{VMValueCast.Trait Value.t T}
+    (f : T -> T -> PartialVMResult.t bool) :
+    MS! Interpreter.t (PartialVMResult.t unit) :=
+    binop (fun lhs rhs =>
+      let? result := f lhs rhs in
+      return? $ ValueImpl.Bool result
+    ).
 End Impl_Interpreter.
 
 (* 
@@ -402,187 +420,6 @@ Module Frame.
     ty_args : list _Type.t;
   }.
 End Frame.
-
-(* 
-    fn execute_instruction(
-        pc: &mut u16,
-        locals: &mut Locals,
-        ty_args: &[Type],
-        function: &Arc<Function>,
-        resolver: &Resolver,
-        interpreter: &mut Interpreter,
-        gas_meter: &mut impl GasMeter,
-        instruction: &Bytecode,
-    ) -> PartialVMResult<InstrRet> {
-        use SimpleInstruction as S;
-
-        match instruction {
-            Bytecode::Shl => {
-                gas_meter.charge_simple_instr(S::Shl)?;
-                let rhs = interpreter.operand_stack.pop_as::<u8>()?;
-                let lhs = interpreter.operand_stack.pop_as::<IntegerValue>()?;
-                interpreter
-                    .operand_stack
-                    .push(lhs.shl_checked(rhs)?.into_value())?;
-            }
-            Bytecode::Shr => {
-                gas_meter.charge_simple_instr(S::Shr)?;
-                let rhs = interpreter.operand_stack.pop_as::<u8>()?;
-                let lhs = interpreter.operand_stack.pop_as::<IntegerValue>()?;
-                interpreter
-                    .operand_stack
-                    .push(lhs.shr_checked(rhs)?.into_value())?;
-            }
-            Bytecode::Or => {
-                gas_meter.charge_simple_instr(S::Or)?;
-                interpreter.binop_bool(|l, r| Ok(l || r))?
-            }
-            Bytecode::And => {
-                gas_meter.charge_simple_instr(S::And)?;
-                interpreter.binop_bool(|l, r| Ok(l && r))?
-            }
-            Bytecode::Lt => {
-                gas_meter.charge_simple_instr(S::Lt)?;
-                interpreter.binop_bool(IntegerValue::lt)?
-            }
-            Bytecode::Gt => {
-                gas_meter.charge_simple_instr(S::Gt)?;
-                interpreter.binop_bool(IntegerValue::gt)?
-            }
-            Bytecode::Le => {
-                gas_meter.charge_simple_instr(S::Le)?;
-                interpreter.binop_bool(IntegerValue::le)?
-            }
-            Bytecode::Ge => {
-                gas_meter.charge_simple_instr(S::Ge)?;
-                interpreter.binop_bool(IntegerValue::ge)?
-            }
-            Bytecode::Abort => {
-                gas_meter.charge_simple_instr(S::Abort)?;
-                let error_code = interpreter.operand_stack.pop_as::<u64>()?;
-                let error = PartialVMError::new(StatusCode::ABORTED)
-                    .with_sub_status(error_code)
-                    .with_message(format!("{} at offset {}", function.pretty_string(), *pc,));
-                return Err(error);
-            }
-            Bytecode::Eq => {
-                let lhs = interpreter.operand_stack.pop()?;
-                let rhs = interpreter.operand_stack.pop()?;
-                gas_meter.charge_eq(&lhs, &rhs)?;
-                interpreter
-                    .operand_stack
-                    .push(Value::bool(lhs.equals(&rhs)?))?;
-            }
-            Bytecode::Neq => {
-                let lhs = interpreter.operand_stack.pop()?;
-                let rhs = interpreter.operand_stack.pop()?;
-                gas_meter.charge_neq(&lhs, &rhs)?;
-                interpreter
-                    .operand_stack
-                    .push(Value::bool(!lhs.equals(&rhs)?))?;
-            }
-            Bytecode::MutBorrowGlobalDeprecated(_)
-            | Bytecode::ImmBorrowGlobalDeprecated(_)
-            | Bytecode::MutBorrowGlobalGenericDeprecated(_)
-            | Bytecode::ImmBorrowGlobalGenericDeprecated(_)
-            | Bytecode::ExistsDeprecated(_)
-            | Bytecode::ExistsGenericDeprecated(_)
-            | Bytecode::MoveFromDeprecated(_)
-            | Bytecode::MoveFromGenericDeprecated(_)
-            | Bytecode::MoveToDeprecated(_)
-            | Bytecode::MoveToGenericDeprecated(_) => {
-                unreachable!("Global bytecodes deprecated")
-            }
-            Bytecode::FreezeRef => {
-                gas_meter.charge_simple_instr(S::FreezeRef)?;
-                // FreezeRef should just be a null op as we don't distinguish between mut
-                // and immut ref at runtime.
-            }
-            Bytecode::Not => {
-                gas_meter.charge_simple_instr(S::Not)?;
-                let value = !interpreter.operand_stack.pop_as::<bool>()?;
-                interpreter.operand_stack.push(Value::bool(value))?;
-            }
-            Bytecode::Nop => {
-                gas_meter.charge_simple_instr(S::Nop)?;
-            }
-            Bytecode::VecPack(si, num) => {
-                let ty = resolver.instantiate_single_type(*si, ty_args)?; //*)
-                Self::check_depth_of_type(resolver, &ty)?;
-                gas_meter.charge_vec_pack(
-                    make_ty!(&ty),
-                    interpreter.operand_stack.last_n(*num as usize)?, //*)
-                )?;
-                let elements = interpreter.operand_stack.popn(*num as u16)?; //*)
-                let value = Vector::pack(&ty, elements)?;
-                interpreter.operand_stack.push(value)?;
-            }
-            Bytecode::VecLen(si) => {
-                let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
-                let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
-                gas_meter.charge_vec_len(TypeWithLoader {
-                    ty,
-                    loader: resolver.loader(),
-                })?;
-                let value = vec_ref.len(ty)?;
-                interpreter.operand_stack.push(value)?;
-            }
-            Bytecode::VecImmBorrow(si) => {
-                let idx = interpreter.operand_stack.pop_as::<u64>()? as usize;
-                let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
-                let ty = resolver.instantiate_single_type(*si, ty_args)?; //*)
-                let res = vec_ref.borrow_elem(idx, &ty);
-                gas_meter.charge_vec_borrow(false, make_ty!(&ty), res.is_ok())?;
-                interpreter.operand_stack.push(res?)?;
-            }
-            Bytecode::VecMutBorrow(si) => {
-                let idx = interpreter.operand_stack.pop_as::<u64>()? as usize;
-                let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
-                let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
-                let res = vec_ref.borrow_elem(idx, ty);
-                gas_meter.charge_vec_borrow(true, make_ty!(ty), res.is_ok())?;
-                interpreter.operand_stack.push(res?)?;
-            }
-            Bytecode::VecPushBack(si) => {
-                let elem = interpreter.operand_stack.pop()?;
-                let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
-                let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
-                gas_meter.charge_vec_push_back(make_ty!(ty), &elem)?;
-                vec_ref.push_back(elem, ty, interpreter.runtime_limits_config().vector_len_max)?;
-            }
-            Bytecode::VecPopBack(si) => {
-                let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
-                let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
-                let res = vec_ref.pop(ty);
-                gas_meter.charge_vec_pop_back(make_ty!(ty), res.as_ref().ok())?;
-                interpreter.operand_stack.push(res?)?;
-            }
-            Bytecode::VecUnpack(si, num) => {
-                let vec_val = interpreter.operand_stack.pop_as::<Vector>()?;
-                let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
-                gas_meter.charge_vec_unpack(
-                    make_ty!(ty),
-                    NumArgs::new(*num), //*)
-                    vec_val.elem_views(),
-                )?;
-                let elements = vec_val.unpack(ty, *num)?;
-                for value in elements {
-                    interpreter.operand_stack.push(value)?;
-                }
-            }
-            Bytecode::VecSwap(si) => {
-                let idx2 = interpreter.operand_stack.pop_as::<u64>()? as usize;
-                let idx1 = interpreter.operand_stack.pop_as::<u64>()? as usize;
-                let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
-                let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
-                gas_meter.charge_vec_swap(make_ty!(ty))?;
-                vec_ref.swap(idx1, idx2, ty)?;
-            }
-        }
-
-        Ok(InstrRet::Ok)
-    }
-*)
 
 (* NOTE: State designed for `execute_instruction` *)
 Module State.
@@ -609,6 +446,8 @@ Module State.
     |}.
   End Lens.
 End State.
+
+Axiom execute_instruction_TODO : MS! State.t (PartialVMResult.t InstrRet.t).
 
 (* NOTE: this function is of `impl Frame` (but doesn't involve `Frame` item?) *)
 Definition execute_instruction
@@ -767,21 +606,17 @@ Definition execute_instruction
       interpreter.operand_stack.push(val)?
   }
   *)
-  (* NOTE: paused from investigation *)
-  | Bytecode.LdConst idx => returnS! $ Result.Ok InstrRet.Ok
-    (* let constant := Resolver.Impl_Resolver.constant_at resolver idx in
-    (* TODO: 
-      - resolve mutual dependency issue 
-      - figure out the logic to load a constant *)
-    let val := Value.Impl_Value.deserialize_constant constant in
-    let val := match val with
-    | Some v => v
-    | None => PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
-    end in
-    letS!? _ := liftS! State.Lens.interpreter (
-      liftS! Interpreter.Lens.lens_self_stack $ Stack.Impl_Stack.push val) in 
-    returnS! $ Result.Ok InstrRet.Ok *)
-
+  | Bytecode.LdConst idx =>
+    letS! constant := return!toS! $ Resolver.Impl_Resolver.constant_at resolver idx in
+    match Impl_Value.deserialize_constant constant with
+    | None =>
+      returnS! $ Result.Err $
+        PartialVMError.new StatusCode.VERIFIER_INVARIANT_VIOLATION
+    | Some val =>
+      letS!? _ := liftS! State.Lens.interpreter (
+        liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.push val) in
+      returnS! $ Result.Ok InstrRet.Ok
+    end
   (* 
   Bytecode::LdTrue => {
       gas_meter.charge_simple_instr(S::LdTrue)?;
@@ -898,7 +733,7 @@ Definition execute_instruction
   }
   *)
   (* NOTE: paused from investigation: mutual dependency issue for `borrow_loc` *)
-  | Bytecode.MutBorrowLoc idx => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.MutBorrowLoc idx | Bytecode.ImmBorrowLoc idx=> execute_instruction_TODO
 
   (*
   Bytecode::ImmBorrowField(fh_idx) | Bytecode::MutBorrowField(fh_idx) => {
@@ -916,7 +751,7 @@ Definition execute_instruction
   }
   *)
   (* NOTE: paused for mutual dependency issue *)
-  | Bytecode.ImmBorrowField fh_idx => 
+  | Bytecode.ImmBorrowField fh_idx | Bytecode.MutBorrowField fh_idx =>
     letS!? reference := liftS! State.Lens.interpreter (
       (* NOTE: Notice that since we identify the instance by the `ValueImpl`
       item, here we have to apply the `StructRef` instance indirectly *)
@@ -945,7 +780,8 @@ Definition execute_instruction
   }
   *)
   (* NOTE: paused for mutual dependency issue *)
-  | Bytecode.ImmBorrowFieldGeneric fi_idx => returnS! $ Result.Ok InstrRet.Ok
+  | Bytecode.ImmBorrowFieldGeneric fi_idx | Bytecode.MutBorrowFieldGeneric fi_idx =>
+    execute_instruction_TODO
 
   (* 
   Bytecode::Pack(sd_idx) => {
@@ -1049,7 +885,7 @@ Definition execute_instruction
   | Bytecode.ReadRef => 
     letS!? reference := liftS! State.Lens.interpreter (
       liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.pop_as Reference.t) in
-    letS!? value := returnS! $ Impl_ReferenceImpl.read_ref reference in
+    letS!? value := return!toS! $ Impl_ReferenceImpl.read_ref reference in
     letS!? _ := liftS! State.Lens.interpreter (
       liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.push value) in
     returnS! $ Result.Ok InstrRet.Ok
@@ -1276,6 +1112,242 @@ Definition execute_instruction
     letS!? _ := liftS! State.Lens.interpreter (
       Impl_Interpreter.binop_int IntegerValue.bit_xor) in
     returnS! $ Result.Ok InstrRet.Ok
-
-  | _ => returnS! $ Result.Ok InstrRet.Ok
+  (*
+  Bytecode::Shl => {
+    gas_meter.charge_simple_instr(S::Shl)?;
+    let rhs = interpreter.operand_stack.pop_as::<u8>()?;
+    let lhs = interpreter.operand_stack.pop_as::<IntegerValue>()?;
+    interpreter
+        .operand_stack
+        .push(lhs.shl_checked(rhs)?.into_value())?;
+  }
+  *)
+  | Bytecode.Shl =>
+    execute_instruction_TODO
+  (*
+  Bytecode::Shr => {
+      gas_meter.charge_simple_instr(S::Shr)?;
+      let rhs = interpreter.operand_stack.pop_as::<u8>()?;
+      let lhs = interpreter.operand_stack.pop_as::<IntegerValue>()?;
+      interpreter
+          .operand_stack
+          .push(lhs.shr_checked(rhs)?.into_value())?;
+  }
+  *)
+  | Bytecode.Shr =>
+    execute_instruction_TODO
+  (*
+  Bytecode::Or => {
+      gas_meter.charge_simple_instr(S::Or)?;
+      interpreter.binop_bool(|l, r| Ok(l || r))?
+  }
+  *)
+  | Bytecode.Or =>
+    letS!? _ := liftS! State.Lens.interpreter (
+      Impl_Interpreter.binop_bool (fun l r => Result.Ok (l || r))) in
+    returnS! $ Result.Ok InstrRet.Ok
+  (*
+  Bytecode::And => {
+      gas_meter.charge_simple_instr(S::And)?;
+      interpreter.binop_bool(|l, r| Ok(l && r))?
+  }
+  *)
+  | Bytecode.And =>
+    letS!? _ := liftS! State.Lens.interpreter (
+      Impl_Interpreter.binop_bool (fun l r => Result.Ok (l && r))) in
+    returnS! $ Result.Ok InstrRet.Ok
+  (*
+  Bytecode::Lt => {
+      gas_meter.charge_simple_instr(S::Lt)?;
+      interpreter.binop_bool(IntegerValue::lt)?
+  }
+  *)
+  | Bytecode.Lt =>
+    letS!? _ := liftS! State.Lens.interpreter (
+      Impl_Interpreter.binop_bool IntegerValue.lt) in
+    returnS! $ Result.Ok InstrRet.Ok
+  (*
+  Bytecode::Gt => {
+      gas_meter.charge_simple_instr(S::Gt)?;
+      interpreter.binop_bool(IntegerValue::gt)?
+  }
+  *)
+  | Bytecode.Gt =>
+    letS!? _ := liftS! State.Lens.interpreter (
+      Impl_Interpreter.binop_bool IntegerValue.gt) in
+    returnS! $ Result.Ok InstrRet.Ok
+  (*
+  Bytecode::Le => {
+      gas_meter.charge_simple_instr(S::Le)?;
+      interpreter.binop_bool(IntegerValue::le)?
+  }
+  *)
+  | Bytecode.Le =>
+    letS!? _ := liftS! State.Lens.interpreter (
+      Impl_Interpreter.binop_bool IntegerValue.le) in
+    returnS! $ Result.Ok InstrRet.Ok
+  (*
+  Bytecode::Ge => {
+      gas_meter.charge_simple_instr(S::Ge)?;
+      interpreter.binop_bool(IntegerValue::ge)?
+  }
+  *)
+  | Bytecode.Ge =>
+    letS!? _ := liftS! State.Lens.interpreter (
+      Impl_Interpreter.binop_bool IntegerValue.ge) in
+    returnS! $ Result.Ok InstrRet.Ok
+  (* Bytecode::Abort => {
+      gas_meter.charge_simple_instr(S::Abort)?;
+      let error_code = interpreter.operand_stack.pop_as::<u64>()?;
+      let error = PartialVMError::new(StatusCode::ABORTED)
+          .with_sub_status(error_code)
+          .with_message(format!("{} at offset {}", function.pretty_string(), *pc,));
+      return Err(error);
+  } *)
+  | Bytecode.Abort =>
+    execute_instruction_TODO
+  (* Bytecode::Eq => {
+      let lhs = interpreter.operand_stack.pop()?;
+      let rhs = interpreter.operand_stack.pop()?;
+      gas_meter.charge_eq(&lhs, &rhs)?;
+      interpreter
+          .operand_stack
+          .push(Value::bool(lhs.equals(&rhs)?))?;
+  } *)
+  | Bytecode.Eq => execute_instruction_TODO
+  (* Bytecode::Neq => {
+      let lhs = interpreter.operand_stack.pop()?;
+      let rhs = interpreter.operand_stack.pop()?;
+      gas_meter.charge_neq(&lhs, &rhs)?;
+      interpreter
+          .operand_stack
+          .push(Value::bool(!lhs.equals(&rhs)?))?;
+  } *)
+  | Bytecode.Neq => execute_instruction_TODO
+  (* Bytecode::MutBorrowGlobalDeprecated(_)
+  | Bytecode::ImmBorrowGlobalDeprecated(_)
+  | Bytecode::MutBorrowGlobalGenericDeprecated(_)
+  | Bytecode::ImmBorrowGlobalGenericDeprecated(_)
+  | Bytecode::ExistsDeprecated(_)
+  | Bytecode::ExistsGenericDeprecated(_)
+  | Bytecode::MoveFromDeprecated(_)
+  | Bytecode::MoveFromGenericDeprecated(_)
+  | Bytecode::MoveToDeprecated(_)
+  | Bytecode::MoveToGenericDeprecated(_) => {
+      unreachable!("Global bytecodes deprecated")
+  } *)
+  | Bytecode.MutBorrowGlobalDeprecated _
+  | Bytecode.ImmBorrowGlobalDeprecated _
+  | Bytecode.MutBorrowGlobalGenericDeprecated _
+  | Bytecode.ImmBorrowGlobalGenericDeprecated _
+  | Bytecode.ExistsDeprecated _
+  | Bytecode.ExistsGenericDeprecated _
+  | Bytecode.MoveFromDeprecated _
+  | Bytecode.MoveFromGenericDeprecated _
+  | Bytecode.MoveToDeprecated _
+  | Bytecode.MoveToGenericDeprecated _ => 
+    panicS! "Global bytecodes deprecated"
+  (* Bytecode::FreezeRef => {
+      gas_meter.charge_simple_instr(S::FreezeRef)?;
+      // FreezeRef should just be a null op as we don't distinguish between mut
+      // and immut ref at runtime.
+  } *)
+  | Bytecode.FreezeRef => 
+    returnS! $ Result.Ok InstrRet.Ok
+  (* Bytecode::Not => {
+      gas_meter.charge_simple_instr(S::Not)?;
+      let value = !interpreter.operand_stack.pop_as::<bool>()?;
+      interpreter.operand_stack.push(Value::bool(value))?;
+  } *)
+  | Bytecode.Not => 
+    letS!? value := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.pop_as bool) in
+    let value := negb value in
+    letS!? _ := liftS! State.Lens.interpreter (
+      liftS! Interpreter.Lens.operand_stack $ Stack.Impl_Stack.push $ ValueImpl.Bool value) in
+    returnS! $ Result.Ok InstrRet.Ok
+  (* Bytecode::Nop => {
+      gas_meter.charge_simple_instr(S::Nop)?;
+  } *)
+   | Bytecode.Nop => returnS! $ Result.Ok InstrRet.Ok
+  (* Bytecode::VecPack(si, num) => {
+      let ty = resolver.instantiate_single_type(*si, ty_args)?; //*)
+      Self::check_depth_of_type(resolver, &ty)?;
+      gas_meter.charge_vec_pack(
+          make_ty!(&ty),
+          interpreter.operand_stack.last_n(*num as usize)?, //*)
+      )?;
+      let elements = interpreter.operand_stack.popn(*num as u16)?; //*)
+      let value = Vector::pack(&ty, elements)?;
+      interpreter.operand_stack.push(value)?;
+  } *)
+  | Bytecode.VecPack _ _ => execute_instruction_TODO
+  (* Bytecode::VecLen(si) => {
+      let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
+      let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
+      gas_meter.charge_vec_len(TypeWithLoader {
+          ty,
+          loader: resolver.loader(),
+      })?;
+      let value = vec_ref.len(ty)?;
+      interpreter.operand_stack.push(value)?;
+  } *)
+  | Bytecode.VecLen _ => execute_instruction_TODO
+  (* Bytecode::VecImmBorrow(si) => {
+      let idx = interpreter.operand_stack.pop_as::<u64>()? as usize;
+      let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
+      let ty = resolver.instantiate_single_type(*si, ty_args)?; //*)
+      let res = vec_ref.borrow_elem(idx, &ty);
+      gas_meter.charge_vec_borrow(false, make_ty!(&ty), res.is_ok())?;
+      interpreter.operand_stack.push(res?)?;
+  } *)
+  | Bytecode.VecImmBorrow _ => execute_instruction_TODO
+  (* Bytecode::VecMutBorrow(si) => {
+      let idx = interpreter.operand_stack.pop_as::<u64>()? as usize;
+      let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
+      let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
+      let res = vec_ref.borrow_elem(idx, ty);
+      gas_meter.charge_vec_borrow(true, make_ty!(ty), res.is_ok())?;
+      interpreter.operand_stack.push(res?)?;
+  } *)
+  | Bytecode.VecMutBorrow _ => execute_instruction_TODO
+  (* Bytecode::VecPushBack(si) => {
+      let elem = interpreter.operand_stack.pop()?;
+      let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
+      let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
+      gas_meter.charge_vec_push_back(make_ty!(ty), &elem)?;
+      vec_ref.push_back(elem, ty, interpreter.runtime_limits_config().vector_len_max)?;
+  } *)
+  | Bytecode.VecPushBack _ => execute_instruction_TODO
+  (* Bytecode::VecPopBack(si) => {
+      let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
+      let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
+      let res = vec_ref.pop(ty);
+      gas_meter.charge_vec_pop_back(make_ty!(ty), res.as_ref().ok())?;
+      interpreter.operand_stack.push(res?)?;
+  } *)
+  | Bytecode.VecPopBack _ => execute_instruction_TODO
+  (* Bytecode::VecUnpack(si, num) => {
+      let vec_val = interpreter.operand_stack.pop_as::<Vector>()?;
+      let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
+      gas_meter.charge_vec_unpack(
+          make_ty!(ty),
+          NumArgs::new(*num), //*)
+          vec_val.elem_views(),
+      )?;
+      let elements = vec_val.unpack(ty, *num)?;
+      for value in elements {
+          interpreter.operand_stack.push(value)?;
+      }
+  } *)
+  | Bytecode.VecUnpack _ _ => execute_instruction_TODO
+  (* Bytecode::VecSwap(si) => {
+      let idx2 = interpreter.operand_stack.pop_as::<u64>()? as usize;
+      let idx1 = interpreter.operand_stack.pop_as::<u64>()? as usize;
+      let vec_ref = interpreter.operand_stack.pop_as::<VectorRef>()?;
+      let ty = &resolver.instantiate_single_type(*si, ty_args)?; //*)
+      gas_meter.charge_vec_swap(make_ty!(ty))?;
+      vec_ref.swap(idx1, idx2, ty)?;
+  } *)
+  | Bytecode.VecSwap _ => execute_instruction_TODO
   end.

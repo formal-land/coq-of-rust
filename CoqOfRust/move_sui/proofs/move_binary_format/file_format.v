@@ -1,9 +1,10 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.simulations.M.
-
+Require Import CoqOfRust.lib.proofs.lib.
 Require Import move_sui.simulations.move_binary_format.file_format.
 Require Import move_sui.simulations.move_binary_format.file_format_index.
-Require Import CoqOfRust.lib.proofs.lib.
+Require Import move_sui.simulations.move_vm_types.values.values_impl.
+Require Import move_sui.proofs.move_vm_types.values.values_impl.
 
 Module SignatureToken.
   Lemma t_beq_is_valid (x y : SignatureToken.t) :
@@ -12,96 +13,109 @@ Module SignatureToken.
   Admitted.
 End SignatureToken.
 
-Module CompiledModule.
-  (*
-  Definition field_handle_at (self : t) (idx : FieldHandleIndex.t) : M! FieldHandle.t :=
-    let idx := idx.(FieldHandleIndex.a0) in
-    Option.expect
-      (List.nth_error self.(field_handles) (Z.to_nat idx))
-      "field_handle_at index error".
-      *)
+Module Constant.
+  Module Valid.
+    Definition t (x : Constant.t) : Prop :=
+      match Impl_Value.deserialize_constant x with
+      | None => False
+      | Some value => IsValueImplOfType.t value x.(Constant.type_)
+      end.
+  End Valid.
+End Constant.
 
+Module ConstantPool.
+  Module Valid.
+    Definition t (x : ConstantPool.t) : Prop :=
+      List.Forall Constant.Valid.t x.
+  End Valid.
+End ConstantPool.
+
+Module CompiledModule.
+  Module Valid.
+    Record t (x : CompiledModule.t) : Prop := {
+      constant_pool : ConstantPool.Valid.t x.(CompiledModule.constant_pool);
+    }.
+  End Valid.
 
   Lemma field_handle_at_is_valid (self : CompiledModule.t) (idx : FieldHandleIndex.t) :
-  match CompiledModule.field_handle_at self idx with
-  | Panic.Value _ => True
-  | Panic.Panic _ => True
-  end.
+    match CompiledModule.field_handle_at self idx with
+    | Panic.Value _ => True
+    | Panic.Panic _ => True
+    end.
   Proof.
   Admitted.
 
   Lemma struct_instantiation_at_is_valid (self : CompiledModule.t) (idx : StructDefInstantiationIndex.t) : 
-  match CompiledModule.struct_instantiation_at self idx with
-  | Panic.Value _ => True
-  | Panic.Panic _ => True
-  end.
+    match CompiledModule.struct_instantiation_at self idx with
+    | Panic.Value _ => True
+    | Panic.Panic _ => True
+    end.
   Proof.
   Admitted.
 
   Lemma struct_def_at_is_valid (self : CompiledModule.t) (idx : StructDefinitionIndex.t) :
-  match CompiledModule.struct_def_at self idx with
-  | Panic.Value _ => True
-  | Panic.Panic _ => True
-  end.
+    match CompiledModule.struct_def_at self idx with
+    | Panic.Value _ => True
+    | Panic.Panic _ => True
+    end.
   Proof.
   Admitted.
 
   Lemma struct_handle_at_is_valid (self : CompiledModule.t) (idx : StructHandleIndex.t) :
-  match CompiledModule.struct_handle_at self idx with
-  | Panic.Value _ => True
-  | Panic.Panic _ => True
-  end.
+    match CompiledModule.struct_handle_at self idx with
+    | Panic.Value _ => True
+    | Panic.Panic _ => True
+    end.
   Proof.
   Admitted.
 
   Lemma signature_at_is_valid (self : CompiledModule.t) (idx : SignatureIndex.t) :
-  match CompiledModule.signature_at self idx with
-  | Panic.Value _ => True
-  | Panic.Panic _ => True
-  end.
+    match CompiledModule.signature_at self idx with
+    | Panic.Value _ => True
+    | Panic.Panic _ => True
+    end.
   Proof.
   Admitted.
 
   Lemma constant_at_is_valid (self : CompiledModule.t) (idx : ConstantPoolIndex.t) :
-  match CompiledModule.constant_at self idx with
-  | Panic.Value _ => True
-  | Panic.Panic _ => True
-  end.
+    match CompiledModule.constant_at self idx with
+    | Panic.Value _ => True
+    | Panic.Panic _ => True
+    end.
   Proof.
   Admitted.
 
   Lemma function_handle_at_is_valid (self : CompiledModule.t) (idx : FunctionHandleIndex.t) :
-  match CompiledModule.function_handle_at self idx with
-  | Panic.Value _ => True
-  | Panic.Panic _ => True
-  end.
+    match CompiledModule.function_handle_at self idx with
+    | Panic.Value _ => True
+    | Panic.Panic _ => True
+    end.
   Proof.
   Admitted.
 
   Lemma field_instantiation_at_is_valid (self : CompiledModule.t) (idx : FieldInstantiationIndex.t) :
-  match CompiledModule.field_instantiation_at self idx with
-  | Panic.Value _ => True
-  | Panic.Panic _ => True
-  end.
+    match CompiledModule.field_instantiation_at self idx with
+    | Panic.Value _ => True
+    | Panic.Panic _ => True
+    end.
   Proof.
   Admitted.
 
   Lemma function_instantiation_at_is_valid (self : CompiledModule.t) (idx : FunctionInstantiationIndex.t) :
-  match CompiledModule.function_instantiation_at self idx with
-  | Panic.Value _ => True
-  | Panic.Panic _ => True
-  end.
+    match CompiledModule.function_instantiation_at self idx with
+    | Panic.Value _ => True
+    | Panic.Panic _ => True
+    end.
   Proof.
   Admitted.
 
   Lemma abilities_is_valid (self : CompiledModule.t) (ty : SignatureToken.t) (constraints : list AbilitySet.t) :
-  match CompiledModule.abilities self ty constraints with
-  | Panic.Value _ => True
-  | Panic.Panic _ => True
-  end.
+    match CompiledModule.abilities self ty constraints with
+    | Panic.Value _ => True
+    | Panic.Panic _ => True
+    end.
   Proof.
   Admitted.
-
 End CompiledModule.
 
 Module Bytecode.
@@ -113,12 +127,12 @@ Module Bytecode.
       | Bytecode.BrTrue _ => True
       | Bytecode.BrFalse _ => True
       | Bytecode.Branch _ => True
-      | Bytecode.LdU8 _ => True
-      | Bytecode.LdU16 _ => True
-      | Bytecode.LdU32 _ => True
-      | Bytecode.LdU64 _ => True
-      | Bytecode.LdU128 _ => True
-      | Bytecode.LdU256 _ => True
+      | Bytecode.LdU8 z => Integer.Valid.t IntegerKind.U8 z
+      | Bytecode.LdU16 z => Integer.Valid.t IntegerKind.U16 z
+      | Bytecode.LdU32 z => Integer.Valid.t IntegerKind.U32 z
+      | Bytecode.LdU64 z => Integer.Valid.t IntegerKind.U64 z
+      | Bytecode.LdU128 z => Integer.Valid.t IntegerKind.U128 z
+      | Bytecode.LdU256 z => 0 <= z < 2^256
       | Bytecode.CastU8 => True
       | Bytecode.CastU16 => True
       | Bytecode.CastU32 => True
@@ -128,7 +142,7 @@ Module Bytecode.
       | Bytecode.LdConst _ => True
       | Bytecode.LdTrue => True
       | Bytecode.LdFalse => True
-      | Bytecode.CopyLoc _ => True
+      | Bytecode.CopyLoc z => Integer.Valid.t IntegerKind.U8 z
       | Bytecode.MoveLoc _ => True
       | Bytecode.StLoc _ => True
       | Bytecode.Call _ => True
